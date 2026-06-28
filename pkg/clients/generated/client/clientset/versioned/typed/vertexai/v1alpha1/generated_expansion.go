@@ -27,6 +27,8 @@ type VertexAIDeploymentResourcePoolExpansion interface{}
 
 type VertexAIExampleStoreExpansion interface{}
 
+type VertexAIFeatureGroupExpansion interface{}
+
 type VertexAIFeaturestoreExpansion interface{}
 
 type VertexAIFeaturestoreEntityTypeExpansion interface{}

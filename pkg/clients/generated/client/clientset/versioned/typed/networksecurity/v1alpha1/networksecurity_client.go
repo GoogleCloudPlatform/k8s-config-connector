@@ -31,12 +31,16 @@ import (
 
 type NetworksecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	NetworkSecurityAddressGroupsGetter
 	NetworkSecurityBackendAuthenticationConfigsGetter
+	NetworkSecurityFirewallEndpointAssociationsGetter
 	NetworkSecurityInterceptDeploymentsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
 	NetworkSecurityMirroringDeploymentsGetter
 	NetworkSecurityMirroringEndpointGroupsGetter
+	NetworkSecurityPartnerSSERealmsGetter
 	NetworkSecuritySACRealmsGetter
+	NetworkSecuritySecurityProfilesGetter
 }
 
 // NetworksecurityV1alpha1Client is used to interact with features provided by the networksecurity.cnrm.cloud.google.com group.
@@ -44,8 +48,16 @@ type NetworksecurityV1alpha1Client struct {
 	restClient rest.Interface
 }
 
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityAddressGroups(namespace string) NetworkSecurityAddressGroupInterface {
+	return newNetworkSecurityAddressGroups(c, namespace)
+}
+
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
 	return newNetworkSecurityBackendAuthenticationConfigs(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpointAssociations(namespace string) NetworkSecurityFirewallEndpointAssociationInterface {
+	return newNetworkSecurityFirewallEndpointAssociations(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(namespace string) NetworkSecurityInterceptDeploymentInterface {
@@ -64,8 +76,16 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringEndpointGroups(n
 	return newNetworkSecurityMirroringEndpointGroups(c, namespace)
 }
 
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityPartnerSSERealms(namespace string) NetworkSecurityPartnerSSERealmInterface {
+	return newNetworkSecurityPartnerSSERealms(c, namespace)
+}
+
 func (c *NetworksecurityV1alpha1Client) NetworkSecuritySACRealms(namespace string) NetworkSecuritySACRealmInterface {
 	return newNetworkSecuritySACRealms(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecuritySecurityProfiles(namespace string) NetworkSecuritySecurityProfileInterface {
+	return newNetworkSecuritySecurityProfiles(c, namespace)
 }
 
 // NewForConfig creates a new NetworksecurityV1alpha1Client for the given config.

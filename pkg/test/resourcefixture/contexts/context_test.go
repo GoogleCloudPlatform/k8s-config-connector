@@ -85,15 +85,18 @@ func loadTestCaseNameKindMap(root string) (map[string]string, error) {
 			}
 
 			isLowest := true
+			hasCreateYAML := false
 			for _, file := range files {
+				if !file.IsDir() && file.Name() == "create.yaml" {
+					hasCreateYAML = true
+				}
 				// Directories like "_vcr_cassettes" are not test cases.
 				if file.IsDir() && !strings.HasPrefix(file.Name(), "_") {
 					// Contains subdirectory that could map to test cases.
 					isLowest = false
-					break
 				}
 			}
-			if isLowest { // confirmed leaf directory
+			if isLowest || hasCreateYAML { // confirmed leaf directory or contains create.yaml
 				testCaseNames[potentialTestCaseName] = potentialTestKind
 			}
 		}

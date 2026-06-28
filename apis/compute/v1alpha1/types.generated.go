@@ -22,8 +22,264 @@
 // resource: ComputeInterconnect:Interconnect
 // resource: ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation
 // resource: ComputeRegionPerInstanceConfig:PerInstanceConfig
+// resource: ComputeAutoscaler:Autoscaler
+// resource: ComputeBackendServiceSignedURLKey:SignedUrlKey
+// resource: ComputeRegionAutoscaler:Autoscaler
+// resource: ComputeOrganizationSecurityPolicy:SecurityPolicy
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Autoscaler", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Autoscaler
+type Autoscaler struct {
+	// The configuration parameters for the autoscaling algorithm. You can define one or more signals for an autoscaler: cpuUtilization, customMetricUtilizations, and loadBalancingUtilization. If none of these are specified, the default will be to autoscale based on cpuUtilization to 0.6 or 60%.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.autoscaling_policy
+	AutoscalingPolicy *AutoscalingPolicy `json:"autoscalingPolicy,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#autoscaler for autoscalers.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Target recommended MIG size (number of instances) computed by autoscaler. Autoscaler calculates the recommended MIG size even when the autoscaling policy mode is different from ON. This field is empty when autoscaler is not connected to an existing managed instance group or autoscaler did not generate its prediction.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.recommended_size
+	RecommendedSize *int32 `json:"recommendedSize,omitempty"`
+
+	// [Output Only] URL of the region where the instance group resides (for autoscalers living in regional scope).
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.region
+	Region *string `json:"region,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] The status of the autoscaler configuration. Current set of possible values: - PENDING: Autoscaler backend hasn't read new/updated configuration. - DELETING: Configuration is being deleted. - ACTIVE: Configuration is acknowledged to be effective. Some warnings might be present in the statusDetails field. - ERROR: Configuration has errors. Actionable for users. Details are present in the statusDetails field. New values might be added in the future.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.status
+	Status *string `json:"status,omitempty"`
+
+	// [Output Only] Human-readable details about the current state of the autoscaler. Read the documentation for Commonly returned status messages for examples of status messages you might encounter.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.status_details
+	StatusDetails []AutoscalerStatusDetails `json:"statusDetails,omitempty"`
+
+	// URL of the managed instance group that this autoscaler will scale. This field is required when creating an autoscaler.
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.target
+	Target *string `json:"target,omitempty"`
+
+	// [Output Only] URL of the zone where the instance group resides (for autoscalers living in zonal scope).
+	// +kcc:proto:field=google.cloud.compute.v1.Autoscaler.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* unreachable type AutoscalerStatusDetails
+// +kcc:proto=google.cloud.compute.v1.AutoscalerStatusDetails
+type AutoscalerStatusDetails struct {
+	// The status message.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalerStatusDetails.message
+	Message *string `json:"message,omitempty"`
+
+	// The type of error, warning, or notice returned. Current set of possible values: - ALL_INSTANCES_UNHEALTHY (WARNING): All instances in the instance group are unhealthy (not in RUNNING state). - BACKEND_SERVICE_DOES_NOT_EXIST (ERROR): There is no backend service attached to the instance group. - CAPPED_AT_MAX_NUM_REPLICAS (WARNING): Autoscaler recommends a size greater than maxNumReplicas. - CUSTOM_METRIC_DATA_POINTS_TOO_SPARSE (WARNING): The custom metric samples are not exported often enough to be a credible base for autoscaling. - CUSTOM_METRIC_INVALID (ERROR): The custom metric that was specified does not exist or does not have the necessary labels. - MIN_EQUALS_MAX (WARNING): The minNumReplicas is equal to maxNumReplicas. This means the autoscaler cannot add or remove instances from the instance group. - MISSING_CUSTOM_METRIC_DATA_POINTS (WARNING): The autoscaler did not receive any data from the custom metric configured for autoscaling. - MISSING_LOAD_BALANCING_DATA_POINTS (WARNING): The autoscaler is configured to scale based on a load balancing signal but the instance group has not received any requests from the load balancer. - MODE_OFF (WARNING): Autoscaling is turned off. The number of instances in the group won't change automatically. The autoscaling configuration is preserved. - MODE_ONLY_UP (WARNING): Autoscaling is in the "Autoscale only out" mode. The autoscaler can add instances but not remove any. - MORE_THAN_ONE_BACKEND_SERVICE (ERROR): The instance group cannot be autoscaled because it has more than one backend service attached to it. - NOT_ENOUGH_QUOTA_AVAILABLE (ERROR): There is insufficient quota for the necessary resources, such as CPU or number of instances. - REGION_RESOURCE_STOCKOUT (ERROR): Shown only for regional autoscalers: there is a resource stockout in the chosen region. - SCALING_TARGET_DOES_NOT_EXIST (ERROR): The target to be scaled does not exist. - UNSUPPORTED_MAX_RATE_LOAD_BALANCING_CONFIGURATION (ERROR): Autoscaling does not work with an HTTP/S load balancer that has been configured for maxRate. - ZONE_RESOURCE_STOCKOUT (ERROR): For zonal autoscalers: there is a resource stockout in the chosen zone. For regional autoscalers: in at least one of the zones you're using there is a resource stockout. New values might be added in the future. Some of the values might not be available in all API versions.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalerStatusDetails.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AutoscalingPolicy
+type AutoscalingPolicy struct {
+	// The number of seconds that your application takes to initialize on a VM instance. This is referred to as the [initialization period](/compute/docs/autoscaler#cool_down_period). Specifying an accurate initialization period improves autoscaler decisions. For example, when scaling out, the autoscaler ignores data from VMs that are still initializing because those VMs might not yet represent normal usage of your application. The default initialization period is 60 seconds. Initialization periods might vary because of numerous factors. We recommend that you test how long your application takes to initialize. To do this, create a VM and time your application's startup process.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.cool_down_period_sec
+	CoolDownPeriodSec *int32 `json:"coolDownPeriodSec,omitempty"`
+
+	// Defines the CPU utilization policy that allows the autoscaler to scale based on the average CPU utilization of a managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.cpu_utilization
+	CPUUtilization *AutoscalingPolicyCPUUtilization `json:"cpuUtilization,omitempty"`
+
+	// Configuration parameters of autoscaling based on a custom metric.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.custom_metric_utilizations
+	CustomMetricUtilizations []AutoscalingPolicyCustomMetricUtilization `json:"customMetricUtilizations,omitempty"`
+
+	// Configuration parameters of autoscaling based on load balancer.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.load_balancing_utilization
+	LoadBalancingUtilization *AutoscalingPolicyLoadBalancingUtilization `json:"loadBalancingUtilization,omitempty"`
+
+	// The maximum number of instances that the autoscaler can scale out to. This is required when creating or updating an autoscaler. The maximum number of replicas must not be lower than minimal number of replicas.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.max_num_replicas
+	MaxNumReplicas *int32 `json:"maxNumReplicas,omitempty"`
+
+	// The minimum number of replicas that the autoscaler can scale in to. This cannot be less than 0. If not provided, autoscaler chooses a default value depending on maximum number of instances allowed.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.min_num_replicas
+	MinNumReplicas *int32 `json:"minNumReplicas,omitempty"`
+
+	// Defines the operating mode for this policy. The following modes are available: - OFF: Disables the autoscaler but maintains its configuration. - ONLY_SCALE_OUT: Restricts the autoscaler to add VM instances only. - ON: Enables all autoscaler activities according to its policy. For more information, see "Turning off or restricting an autoscaler"
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicy.scale_in_control
+	ScaleInControl *AutoscalingPolicyScaleInControl `json:"scaleInControl,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyCpuUtilization", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyCpuUtilization
+type AutoscalingPolicyCPUUtilization struct {
+	// Indicates whether predictive autoscaling based on CPU metric is enabled. Valid values are: * NONE (default). No predictive method is used. The autoscaler scales the group to meet current demand based on real-time metrics. * OPTIMIZE_AVAILABILITY. Predictive autoscaling improves availability by monitoring daily and weekly load patterns and scaling out ahead of anticipated demand.
+	//  Check the PredictiveMethod enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyCpuUtilization.predictive_method
+	PredictiveMethod *string `json:"predictiveMethod,omitempty"`
+
+	// The target CPU utilization that the autoscaler maintains. Must be a float value in the range (0, 1]. If not specified, the default is 0.6. If the CPU level is below the target utilization, the autoscaler scales in the number of instances until it reaches the minimum number of instances you specified or until the average CPU of your instances reaches the target utilization. If the average CPU is above the target utilization, the autoscaler scales out until it reaches the maximum number of instances you specified or until the average utilization reaches the target utilization.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyCpuUtilization.utilization_target
+	UtilizationTarget *float64 `json:"utilizationTarget,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization
+type AutoscalingPolicyCustomMetricUtilization struct {
+	// A filter string, compatible with a Stackdriver Monitoring filter string for TimeSeries.list API call. This filter is used to select a specific TimeSeries for the purpose of autoscaling and to determine whether the metric is exporting per-instance or per-group data. For the filter to be valid for autoscaling purposes, the following rules apply: - You can only use the AND operator for joining selectors. - You can only use direct equality comparison operator (=) without any functions for each selector. - You can specify the metric in both the filter string and in the metric field. However, if specified in both places, the metric must be identical. - The monitored resource type determines what kind of values are expected for the metric. If it is a gce_instance, the autoscaler expects the metric to include a separate TimeSeries for each instance in a group. In such a case, you cannot filter on resource labels. If the resource type is any other value, the autoscaler expects this metric to contain values that apply to the entire autoscaled instance group and resource label filtering can be performed to point autoscaler at the correct TimeSeries to scale upon. This is called a *per-group metric* for the purpose of autoscaling. If not specified, the type defaults to gce_instance. Try to provide a filter that is selective enough to pick just one TimeSeries for the autoscaled group or for each of the instances (if you are using gce_instance resource type). If multiple TimeSeries are returned upon the query execution, the autoscaler will sum their respective values to obtain its scaling value.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// The identifier (type) of the Stackdriver Monitoring metric. The metric cannot have negative values. The metric must have a value type of INT64 or DOUBLE.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization.metric
+	Metric *string `json:"metric,omitempty"`
+
+	// If scaling is based on a per-group metric value that represents the total amount of work to be done or resource usage, set this value to an amount assigned for a single instance of the scaled group. Autoscaler keeps the number of instances proportional to the value of this metric. The metric itself does not change value due to group resizing. A good metric to use with the target is for example pubsub.googleapis.com/subscription/num_undelivered_messages or a custom metric exporting the total number of requests coming to your instances. A bad example would be a metric exporting an average or median latency, since this value can't include a chunk assignable to a single instance, it could be better used with utilization_target instead.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization.single_instance_assignment
+	SingleInstanceAssignment *float64 `json:"singleInstanceAssignment,omitempty"`
+
+	// The target value of the metric that autoscaler maintains. This must be a positive value. A utilization metric scales number of virtual machines handling requests to increase or decrease proportionally to the metric. For example, a good metric to use as a utilization_target is https://www.googleapis.com/compute/v1/instance/network/received_bytes_count. The autoscaler works to keep this value constant for each of the instances.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization.utilization_target
+	UtilizationTarget *float64 `json:"utilizationTarget,omitempty"`
+
+	// Defines how target utilization value is expressed for a Stackdriver Monitoring metric. Either GAUGE, DELTA_PER_SECOND, or DELTA_PER_MINUTE.
+	//  Check the UtilizationTargetType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyCustomMetricUtilization.utilization_target_type
+	UtilizationTargetType *string `json:"utilizationTargetType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyLoadBalancingUtilization", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyLoadBalancingUtilization
+type AutoscalingPolicyLoadBalancingUtilization struct {
+	// Fraction of backend capacity utilization (set in HTTP(S) load balancing configuration) that the autoscaler maintains. Must be a positive float value. If not defined, the default is 0.8.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyLoadBalancingUtilization.utilization_target
+	UtilizationTarget *float64 `json:"utilizationTarget,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyScaleInControl", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyScaleInControl
+type AutoscalingPolicyScaleInControl struct {
+	// Maximum allowed number (or %) of VMs that can be deducted from the peak recommendation during the window autoscaler looks at when computing recommendations. Possibly all these VMs can be deleted at once so user service needs to be prepared to lose that many VMs in one step.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScaleInControl.max_scaled_in_replicas
+	MaxScaledInReplicas *FixedOrPercent `json:"maxScaledInReplicas,omitempty"`
+
+	// How far back autoscaling looks when computing recommendations to include directives regarding slower scale in, as described above.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScaleInControl.time_window_sec
+	TimeWindowSec *int32 `json:"timeWindowSec,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.AutoscalingPolicyScalingSchedule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule
+type AutoscalingPolicyScalingSchedule struct {
+	// A description of a scaling schedule.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule.description
+	Description *string `json:"description,omitempty"`
+
+	// A boolean value that specifies whether a scaling schedule can influence autoscaler recommendations. If set to true, then a scaling schedule has no effect. This field is optional, and its value is false by default.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// The duration of time intervals, in seconds, for which this scaling schedule is to run. The minimum allowed value is 300. This field is required.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule.duration_sec
+	DurationSec *int32 `json:"durationSec,omitempty"`
+
+	// The minimum number of VM instances that the autoscaler will recommend in time intervals starting according to schedule. This field is required.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule.min_required_replicas
+	MinRequiredReplicas *int32 `json:"minRequiredReplicas,omitempty"`
+
+	// The start timestamps of time intervals when this scaling schedule is to provide a scaling signal. This field uses the extended cron format (with an optional year field). The expression can describe a single timestamp if the optional year is set, in which case the scaling schedule runs once. The schedule is interpreted with respect to time_zone. This field is required. Note: These timestamps only describe when autoscaler starts providing the scaling signal. The VMs need additional time to become serving.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule.schedule
+	Schedule *string `json:"schedule,omitempty"`
+
+	// The time zone to use when interpreting the schedule. The value of this field must be a time zone name from the tz database: https://en.wikipedia.org/wiki/Tz_database. This field is assigned a default value of "UTC" if left empty.
+	// +kcc:proto:field=google.cloud.compute.v1.AutoscalingPolicyScalingSchedule.time_zone
+	TimeZone *string `json:"timeZone,omitempty"`
+}
+*/
+
+/* unreachable type Expr
+// +kcc:proto=google.cloud.compute.v1.Expr
+type Expr struct {
+	// Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.description
+	Description *string `json:"description,omitempty"`
+
+	// Textual representation of an expression in Common Expression Language syntax.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.expression
+	Expression *string `json:"expression,omitempty"`
+
+	// Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.location
+	Location *string `json:"location,omitempty"`
+
+	// Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
+	// +kcc:proto:field=google.cloud.compute.v1.Expr.title
+	Title *string `json:"title,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.FixedOrPercent", skipping
+
+// +kcc:proto=google.cloud.compute.v1.FixedOrPercent
+type FixedOrPercent struct {
+	// [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is fixed, then the calculated value is equal to the fixed value. - If the value is a percent, then the calculated value is percent/100 * targetSize. For example, the calculated value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded.
+	// +kcc:proto:field=google.cloud.compute.v1.FixedOrPercent.calculated
+	Calculated *int32 `json:"calculated,omitempty"`
+
+	// Specifies a fixed number of VM instances. This must be a positive integer.
+	// +kcc:proto:field=google.cloud.compute.v1.FixedOrPercent.fixed
+	Fixed *int32 `json:"fixed,omitempty"`
+
+	// Specifies a percentage of instances between 0 to 100%, inclusive. For example, specify 80 for 80%.
+	// +kcc:proto:field=google.cloud.compute.v1.FixedOrPercent.percent
+	Percent *int32 `json:"percent,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Interconnect", skipping
 
@@ -533,6 +789,571 @@ type PreservedStatePreservedNetworkIPIPAddress struct {
 	// An IPv4 internal network address to assign to the instance for this network interface.
 	// +kcc:proto:field=google.cloud.compute.v1.PreservedStatePreservedNetworkIpIpAddress.literal
 	Literal *string `json:"literal,omitempty"`
+}
+*/
+
+/* unreachable type ScalingScheduleStatus
+// +kcc:proto=google.cloud.compute.v1.ScalingScheduleStatus
+type ScalingScheduleStatus struct {
+	// [Output Only] The last time the scaling schedule became active. Note: this is a timestamp when a schedule actually became active, not when it was planned to do so. The timestamp is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.ScalingScheduleStatus.last_start_time
+	LastStartTime *string `json:"lastStartTime,omitempty"`
+
+	// [Output Only] The next time the scaling schedule is to become active. Note: this is a timestamp when a schedule is planned to run, but the actual time might be slightly different. The timestamp is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.ScalingScheduleStatus.next_start_time
+	NextStartTime *string `json:"nextStartTime,omitempty"`
+
+	// [Output Only] The current state of a scaling schedule.
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.ScalingScheduleStatus.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SecurityPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicy
+type SecurityPolicy struct {
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.adaptive_protection_config
+	AdaptiveProtectionConfig *SecurityPolicyAdaptiveProtectionConfig `json:"adaptiveProtectionConfig,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.advanced_options_config
+	AdvancedOptionsConfig *SecurityPolicyAdvancedOptionsConfig `json:"advancedOptionsConfig,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.ddos_protection_config
+	DdosProtectionConfig *SecurityPolicyDdosProtectionConfig `json:"ddosProtectionConfig,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Specifies a fingerprint for this resource, which is essentially a hash of the metadata's contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update metadata. You must always provide an up-to-date fingerprint hash in order to update or change metadata, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make get() request to the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#securityPolicyfor security policies
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A fingerprint for the labels being applied to this security policy, which is essentially a hash of the labels set used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels. To see the latest fingerprint, make get() request to the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.label_fingerprint
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
+	// Labels for this resource. These can only be added or modified by the setLabels method. Each label key/value pair must comply with RFC1035. Label values may be empty.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.recaptcha_options_config
+	RecaptchaOptionsConfig *SecurityPolicyRecaptchaOptionsConfig `json:"recaptchaOptionsConfig,omitempty"`
+
+	// [Output Only] URL of the region where the regional security policy resides. This field is not applicable to global security policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// A list of rules that belong to this policy. There must always be a default rule which is a rule with priority 2147483647 and match all condition (for the match condition this means match "*" for srcIpRanges and for the networkMatch condition every field must be either match "*" or not set). If no rules are provided when creating a security policy, a default rule with action "allow" will be added.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.rules
+	Rules []SecurityPolicyRule `json:"rules,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_INTERNAL_SERVICE: Cloud Armor internal service policies can be configured to filter HTTP requests targeting services managed by Traffic Director in a service mesh. They filter requests before the request is served from the application. - CLOUD_ARMOR_NETWORK: Cloud Armor network policies can be configured to filter packets targeting network load balancing resources such as backend services, target pools, target instances, and instances with external IPs. They filter requests before the request is served from the application. This field can be set only at resource creation time.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.type
+	Type *string `json:"type,omitempty"`
+
+	// Definitions of user-defined fields for CLOUD_ARMOR_NETWORK policies. A user-defined field consists of up to 4 bytes extracted from a fixed offset in the packet, relative to the IPv4, IPv6, TCP, or UDP header, with an optional mask to select certain bits. Rules may then specify matching values for these fields. Example: userDefinedFields: - name: "ipv4_fragment_offset" base: IPV4 offset: 6 size: 2 mask: "0x1fff"
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicy.user_defined_fields
+	UserDefinedFields []SecurityPolicyUserDefinedField `json:"userDefinedFields,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyAdaptiveProtectionConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfig
+type SecurityPolicyAdaptiveProtectionConfig struct {
+	// If set to true, enables Cloud Armor Machine Learning.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfig.layer7_ddos_defense_config
+	Layer7DdosDefenseConfig *SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig `json:"layer7DdosDefenseConfig,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig
+type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig struct {
+	// If set to true, enables CAAP for L7 DDoS detection. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig.enable
+	Enable *bool `json:"enable,omitempty"`
+
+	// Rule visibility can be one of the following: STANDARD - opaque rules. (default) PREMIUM - transparent rules. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	//  Check the RuleVisibility enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig.rule_visibility
+	RuleVisibility *string `json:"ruleVisibility,omitempty"`
+
+	// Configuration options for layer7 adaptive protection for various customizable thresholds.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig.threshold_configs
+	ThresholdConfigs []SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig `json:"thresholdConfigs,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
+type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig struct {
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.auto_deploy_confidence_threshold
+	AutoDeployConfidenceThreshold *float32 `json:"autoDeployConfidenceThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.auto_deploy_expiration_sec
+	AutoDeployExpirationSec *int32 `json:"autoDeployExpirationSec,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.auto_deploy_impacted_baseline_threshold
+	AutoDeployImpactedBaselineThreshold *float32 `json:"autoDeployImpactedBaselineThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.auto_deploy_load_threshold
+	AutoDeployLoadThreshold *float32 `json:"autoDeployLoadThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.detection_absolute_qps
+	DetectionAbsoluteQps *float32 `json:"detectionAbsoluteQps,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.detection_load_threshold
+	DetectionLoadThreshold *float32 `json:"detectionLoadThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.detection_relative_to_baseline_qps
+	DetectionRelativeToBaselineQps *float32 `json:"detectionRelativeToBaselineQps,omitempty"`
+
+	// The name must be 1-63 characters long, and comply with RFC1035. The name must be unique within the security policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Configuration options for enabling Adaptive Protection to operate on specified granular traffic units.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.traffic_granularity_configs
+	TrafficGranularityConfigs []SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig `json:"trafficGranularityConfigs,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
+type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig struct {
+	// If enabled, traffic matching each unique value for the specified type constitutes a separate traffic unit. It can only be set to true if `value` is empty.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig.enable_each_unique_value
+	EnableEachUniqueValue *bool `json:"enableEachUniqueValue,omitempty"`
+
+	// Type of this configuration.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig.type
+	Type *string `json:"type,omitempty"`
+
+	// Requests that match this value constitute a granular traffic unit.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyAdvancedOptionsConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig
+type SecurityPolicyAdvancedOptionsConfig struct {
+	// Custom configuration to apply the JSON parsing. Only applicable when json_parsing is set to STANDARD.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.json_custom_config
+	JsonCustomConfig *SecurityPolicyAdvancedOptionsConfigJsonCustomConfig `json:"jsonCustomConfig,omitempty"`
+
+	// Check the JsonParsing enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.json_parsing
+	JsonParsing *string `json:"jsonParsing,omitempty"`
+
+	// Check the LogLevel enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.log_level
+	LogLevel *string `json:"logLevel,omitempty"`
+
+	// An optional list of case-insensitive request header names to use for resolving the callers client IP address.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfig.user_ip_request_headers
+	UserIPRequestHeaders []string `json:"userIPRequestHeaders,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
+type SecurityPolicyAdvancedOptionsConfigJsonCustomConfig struct {
+	// A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig.content_types
+	ContentTypes []string `json:"contentTypes,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyDdosProtectionConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig
+type SecurityPolicyDdosProtectionConfig struct {
+	// Check the DdosProtection enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig.ddos_protection
+	DdosProtection *string `json:"ddosProtection,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRecaptchaOptionsConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRecaptchaOptionsConfig
+type SecurityPolicyRecaptchaOptionsConfig struct {
+	// An optional field to supply a reCAPTCHA site key to be used for all the rules using the redirect action with the type of GOOGLE_RECAPTCHA under the security policy. The specified site key needs to be created from the reCAPTCHA API. The user is responsible for the validity of the specified site key. If not specified, a Google-managed site key is used. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRecaptchaOptionsConfig.redirect_site_key
+	RedirectSiteKey *string `json:"redirectSiteKey,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRule
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRule
+type SecurityPolicyRule struct {
+	// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.action
+	Action *string `json:"action,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional, additional actions that are performed on headers. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.header_action
+	HeaderAction *SecurityPolicyRuleHTTPHeaderAction `json:"headerAction,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#securityPolicyRule for security policy rules
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.match
+	Match *SecurityPolicyRuleMatcher `json:"match,omitempty"`
+
+	// A match condition that incoming packets are evaluated against for CLOUD_ARMOR_NETWORK security policies. If it matches, the corresponding 'action' is enforced. The match criteria for a rule consists of built-in match fields (like 'srcIpRanges') and potentially multiple user-defined match fields ('userDefinedFields'). Field values may be extracted directly from the packet or derived from it (e.g. 'srcRegionCodes'). Some fields may not be present in every packet (e.g. 'srcPorts'). A user-defined field is only present if the base header is found in the packet and the entire field is in bounds. Each match field may specify which values can match it, listing one or more ranges, prefixes, or exact values that are considered a match for the field. A field value must be present in order to match a specified match field. If no match values are specified for a match field, then any field value is considered to match it, and it's not required to be present. For strings specifying '*' is also equivalent to match all. For a packet to match a rule, all specified match fields must match the corresponding field values derived from the packet. Example: networkMatch: srcIpRanges: - "192.0.2.0/24" - "198.51.100.0/24" userDefinedFields: - name: "ipv4_fragment_offset" values: - "1-0x1fff" The above match condition matches packets with a source IP in 192.0.2.0/24 or 198.51.100.0/24 and a user-defined field named "ipv4_fragment_offset" with a value between 1 and 0x1fff inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.network_match
+	NetworkMatch *SecurityPolicyRuleNetworkMatcher `json:"networkMatch,omitempty"`
+
+	// Preconfigured WAF configuration to be applied for the rule. If the rule does not evaluate preconfigured WAF rules, i.e., if evaluatePreconfiguredWaf() is not used, this field will have no effect.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.preconfigured_waf_config
+	PreconfiguredWafConfig *SecurityPolicyRulePreconfiguredWafConfig `json:"preconfiguredWafConfig,omitempty"`
+
+	// If set to true, the specified action is not enforced.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.preview
+	Preview *bool `json:"preview,omitempty"`
+
+	// An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.rate_limit_options
+	RateLimitOptions *SecurityPolicyRuleRateLimitOptions `json:"rateLimitOptions,omitempty"`
+
+	// Parameters defining the redirect action. Cannot be specified for any other actions. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.redirect_options
+	RedirectOptions *SecurityPolicyRuleRedirectOptions `json:"redirectOptions,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleHTTPHeaderAction
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderAction
+type SecurityPolicyRuleHTTPHeaderAction struct {
+	// The list of request headers to add or overwrite if they're already present.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderAction.request_headers_to_adds
+	RequestHeadersToAdds []SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption `json:"requestHeadersToAdds,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption
+type SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption struct {
+	// The name of the header to set.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption.header_name
+	HeaderName *string `json:"headerName,omitempty"`
+
+	// The value to set the named header to.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption.header_value
+	HeaderValue *string `json:"headerValue,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleMatcher
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcher
+type SecurityPolicyRuleMatcher struct {
+	// The configuration options available when specifying versioned_expr. This field must be specified if versioned_expr is specified and cannot be specified if versioned_expr is not specified.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.config
+	Config *SecurityPolicyRuleMatcherConfig `json:"config,omitempty"`
+
+	// User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. Expressions containing `evaluateThreatIntelligence` require Cloud Armor Managed Protection Plus tier and are not supported in Edge Policies nor in Regional Policies. Expressions containing `evaluatePreconfiguredExpr('sourceiplist-*')` require Cloud Armor Managed Protection Plus tier and are only supported in Global Security Policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.expr
+	Expr *Expr `json:"expr,omitempty"`
+
+	// The configuration options available when specifying a user defined CEVAL expression (i.e., 'expr').
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.expr_options
+	ExprOptions *SecurityPolicyRuleMatcherExprOptions `json:"exprOptions,omitempty"`
+
+	// Preconfigured versioned expression. If this field is specified, config must also be specified. Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding src_ip_range field in config.
+	//  Check the VersionedExpr enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcher.versioned_expr
+	VersionedExpr *string `json:"versionedExpr,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleMatcherConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherConfig
+type SecurityPolicyRuleMatcherConfig struct {
+	// CIDR IP address range. Maximum number of src_ip_ranges allowed is 10.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherConfig.src_ip_ranges
+	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleMatcherExprOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions
+type SecurityPolicyRuleMatcherExprOptions struct {
+	// reCAPTCHA configuration options to be applied for the rule. If the rule does not evaluate reCAPTCHA tokens, this field has no effect.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions.recaptcha_options
+	RecaptchaOptions *SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions `json:"recaptchaOptions,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
+type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions struct {
+	// A list of site keys to be used during the validation of reCAPTCHA action-tokens. The provided site keys need to be created from reCAPTCHA API under the same project where the security policy is created.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions.action_token_site_keys
+	ActionTokenSiteKeys []string `json:"actionTokenSiteKeys,omitempty"`
+
+	// A list of site keys to be used during the validation of reCAPTCHA session-tokens. The provided site keys need to be created from reCAPTCHA API under the same project where the security policy is created.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions.session_token_site_keys
+	SessionTokenSiteKeys []string `json:"sessionTokenSiteKeys,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleNetworkMatcher
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher
+type SecurityPolicyRuleNetworkMatcher struct {
+	// Destination IPv4/IPv6 addresses or CIDR prefixes, in standard text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.dest_ip_ranges
+	DestIPRanges []string `json:"destIPRanges,omitempty"`
+
+	// Destination port numbers for TCP/UDP/SCTP. Each element can be a 16-bit unsigned decimal number (e.g. "80") or range (e.g. "0-1023").
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.dest_ports
+	DestPorts []string `json:"destPorts,omitempty"`
+
+	// IPv4 protocol / IPv6 next header (after extension headers). Each element can be an 8-bit unsigned decimal number (e.g. "6"), range (e.g. "253-254"), or one of the following protocol names: "tcp", "udp", "icmp", "esp", "ah", "ipip", or "sctp".
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.ip_protocols
+	IPProtocols []string `json:"ipProtocols,omitempty"`
+
+	// BGP Autonomous System Number associated with the source IP address.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_asns
+	SrcAsns []uint32 `json:"srcAsns,omitempty"`
+
+	// Source IPv4/IPv6 addresses or CIDR prefixes, in standard text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_ip_ranges
+	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
+
+	// Source port numbers for TCP/UDP/SCTP. Each element can be a 16-bit unsigned decimal number (e.g. "80") or range (e.g. "0-1023").
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_ports
+	SrcPorts []string `json:"srcPorts,omitempty"`
+
+	// Two-letter ISO 3166-1 alpha-2 country code associated with the source IP address.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.src_region_codes
+	SrcRegionCodes []string `json:"srcRegionCodes,omitempty"`
+
+	// User-defined fields. Each element names a defined field and lists the matching values for that field.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.user_defined_fields
+	UserDefinedFields []SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch `json:"userDefinedFields,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
+type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch struct {
+	// Name of the user-defined field, as given in the definition.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch.name
+	Name *string `json:"name,omitempty"`
+
+	// Matching values of the field. Each element can be a 32-bit unsigned decimal or hexadecimal (starting with "0x") number (e.g. "64") or range (e.g. "0x400-0x7ff").
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch.values
+	Values []string `json:"values,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRulePreconfiguredWafConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfig
+type SecurityPolicyRulePreconfiguredWafConfig struct {
+	// A list of exclusions to apply during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfig.exclusions
+	Exclusions []SecurityPolicyRulePreconfiguredWafConfigExclusion `json:"exclusions,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRulePreconfiguredWafConfigExclusion
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion
+type SecurityPolicyRulePreconfiguredWafConfigExclusion struct {
+	// A list of request cookie names whose value will be excluded from inspection during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_cookies_to_exclude
+	RequestCookiesToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestCookiesToExclude,omitempty"`
+
+	// A list of request header names whose value will be excluded from inspection during preconfigured WAF evaluation.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_headers_to_exclude
+	RequestHeadersToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestHeadersToExclude,omitempty"`
+
+	// A list of request query parameter names whose value will be excluded from inspection during preconfigured WAF evaluation. Note that the parameter can be in the query string or in the POST body.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_query_params_to_exclude
+	RequestQueryParamsToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestQueryParamsToExclude,omitempty"`
+
+	// A list of request URIs from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.request_uris_to_exclude
+	RequestUrisToExclude []SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams `json:"requestUrisToExclude,omitempty"`
+
+	// A list of target rule IDs under the WAF rule set to apply the preconfigured WAF exclusion. If omitted, it refers to all the rule IDs under the WAF rule set.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.target_rule_ids
+	TargetRuleIds []string `json:"targetRuleIds,omitempty"`
+
+	// Target WAF rule set to apply the preconfigured WAF exclusion.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusion.target_rule_set
+	TargetRuleSet *string `json:"targetRuleSet,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
+type SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams struct {
+	// The match operator for the field.
+	//  Check the Op enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams.op
+	Op *string `json:"op,omitempty"`
+
+	// The value of the field.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams.val
+	Val *string `json:"val,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRateLimitOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions
+type SecurityPolicyRuleRateLimitOptions struct {
+	// Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.ban_duration_sec
+	BanDurationSec *int32 `json:"banDurationSec,omitempty"`
+
+	// Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'ban_duration_sec' when the number of requests that exceed the 'rate_limit_threshold' also exceed this 'ban_threshold'.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.ban_threshold
+	BanThreshold *SecurityPolicyRuleRateLimitOptionsThreshold `json:"banThreshold,omitempty"`
+
+	// Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.conform_action
+	ConformAction *string `json:"conformAction,omitempty"`
+
+	// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKey" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL.
+	//  Check the EnforceOnKey enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key
+	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
+
+	// If specified, any combination of values of enforce_on_key_type/enforce_on_key_name is treated as the key on which ratelimit threshold/action is enforced. You can specify up to 3 enforce_on_key_configs. If enforce_on_key_configs is specified, enforce_on_key must not be specified.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key_configs
+	EnforceOnKeyConfigs []SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig `json:"enforceOnKeyConfigs,omitempty"`
+
+	// Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.enforce_on_key_name
+	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
+
+	// Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are `deny(STATUS)`, where valid values for `STATUS` are 403, 404, 429, and 502, and `redirect`, where the redirect parameters come from `exceedRedirectOptions` below. The `redirect` action is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.exceed_action
+	ExceedAction *string `json:"exceedAction,omitempty"`
+
+	// Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.exceed_redirect_options
+	ExceedRedirectOptions *SecurityPolicyRuleRedirectOptions `json:"exceedRedirectOptions,omitempty"`
+
+	// Threshold at which to begin ratelimiting.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptions.rate_limit_threshold
+	RateLimitThreshold *SecurityPolicyRuleRateLimitOptionsThreshold `json:"rateLimitThreshold,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
+type SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig struct {
+	// Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig.enforce_on_key_name
+	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
+
+	// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKeyConfigs" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL.
+	//  Check the EnforceOnKeyType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig.enforce_on_key_type
+	EnforceOnKeyType *string `json:"enforceOnKeyType,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRateLimitOptionsThreshold
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold
+type SecurityPolicyRuleRateLimitOptionsThreshold struct {
+	// Number of HTTP(S) requests for calculating the threshold.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold.count
+	Count *int32 `json:"count,omitempty"`
+
+	// Interval over which the threshold is computed.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRateLimitOptionsThreshold.interval_sec
+	IntervalSec *int32 `json:"intervalSec,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyRuleRedirectOptions
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions
+type SecurityPolicyRuleRedirectOptions struct {
+	// Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.target
+	Target *string `json:"target,omitempty"`
+
+	// Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type SecurityPolicyUserDefinedField
+// +kcc:proto=google.cloud.compute.v1.SecurityPolicyUserDefinedField
+type SecurityPolicyUserDefinedField struct {
+	// The base relative to which 'offset' is measured. Possible values are: - IPV4: Points to the beginning of the IPv4 header. - IPV6: Points to the beginning of the IPv6 header. - TCP: Points to the beginning of the TCP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. - UDP: Points to the beginning of the UDP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. required
+	//  Check the Base enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyUserDefinedField.base
+	Base *string `json:"base,omitempty"`
+
+	// If specified, apply this mask (bitwise AND) to the field to ignore bits before matching. Encoded as a hexadecimal number (starting with "0x"). The last byte of the field (in network byte order) corresponds to the least significant byte of the mask.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyUserDefinedField.mask
+	Mask *string `json:"mask,omitempty"`
+
+	// The name of this field. Must be unique within the policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyUserDefinedField.name
+	Name *string `json:"name,omitempty"`
+
+	// Offset of the first byte of the field (in network byte order) relative to 'base'.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyUserDefinedField.offset
+	Offset *int32 `json:"offset,omitempty"`
+
+	// Size of the field in bytes. Valid values: 1-4.
+	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyUserDefinedField.size
+	Size *int32 `json:"size,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SignedUrlKey", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SignedUrlKey
+type SignedURLKey struct {
+	// Name of the key. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.SignedUrlKey.key_name
+	KeyName *string `json:"keyName,omitempty"`
+
+	// 128-bit key value used for signing the URL. The key value must be a valid RFC 4648 Section 5 base64url encoded string.
+	// +kcc:proto:field=google.cloud.compute.v1.SignedUrlKey.key_value
+	KeyValue *string `json:"keyValue,omitempty"`
 }
 */
 

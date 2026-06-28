@@ -42,31 +42,38 @@ func InitializeFakeGCPVariables() {
 	testgcp.TestSharedReservationsProject.Set("shared-reservations-project")
 }
 
+func safeReplaceAll(s, old, new string) string {
+	if old == "" {
+		return s
+	}
+	return strings.ReplaceAll(s, old, new)
+}
+
 func ReplacePlaceholdersInCAIS(caisYAMLStr string, dir string, createBytes []byte, depBytes []byte) string {
 	// Normalize placeholders back
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, "puxvndidajatl5i", "${uniqueId}")
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, testgcp.TestSharedReservationsProject.Get(), "${TEST_SHARED_RESERVATIONS_PROJECT}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, "puxvndidajatl5i", "${uniqueId}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestSharedReservationsProject.Get(), "${TEST_SHARED_RESERVATIONS_PROJECT}")
 
 	// Context-aware/Directory-specific project ID replacements to preserve original template variable names
 	hasAlloyDBProject := strings.Contains(string(createBytes), "KCC_ALLOYDB_TEST_PROJECT") || strings.Contains(string(depBytes), "KCC_ALLOYDB_TEST_PROJECT")
 
 	if hasAlloyDBProject {
-		caisYAMLStr = strings.ReplaceAll(caisYAMLStr, "mock-project", "${KCC_ALLOYDB_TEST_PROJECT}")
+		caisYAMLStr = safeReplaceAll(caisYAMLStr, "mock-project", "${KCC_ALLOYDB_TEST_PROJECT}")
 	} else if strings.Contains(dir, "containerattached") {
-		caisYAMLStr = strings.ReplaceAll(caisYAMLStr, "mock-project", "${KCC_ATTACHED_CLUSTER_TEST_PROJECT}")
+		caisYAMLStr = safeReplaceAll(caisYAMLStr, "mock-project", "${KCC_ATTACHED_CLUSTER_TEST_PROJECT}")
 	} else if strings.Contains(dir, "resourcemanagerlien") || strings.Contains(dir, "gkehubfeature") {
-		caisYAMLStr = strings.ReplaceAll(caisYAMLStr, "mock-project", "${TEST_DEPENDENT_NO_NETWORK_PROJECT_ID}")
+		caisYAMLStr = safeReplaceAll(caisYAMLStr, "mock-project", "${TEST_DEPENDENT_NO_NETWORK_PROJECT_ID}")
 	} else {
-		caisYAMLStr = strings.ReplaceAll(caisYAMLStr, "mock-project", "${projectId}")
+		caisYAMLStr = safeReplaceAll(caisYAMLStr, "mock-project", "${projectId}")
 	}
 
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, "1234567890", "${projectNumber}")
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, testgcp.TestDependentOrgProjectID.Get(), "${TEST_DEPENDENT_ORG_PROJECT_ID}")
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, testgcp.TestDependentFolderProjectID.Get(), "${TEST_DEPENDENT_FOLDER_PROJECT_ID}")
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, testgcp.TestOrgID.Get(), "${TEST_ORG_ID}")
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, testgcp.TestFolderID.Get(), "${TEST_FOLDER_ID}")
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, testgcp.TestBillingAccountIDForBillingResources.Get(), "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES}")
-	caisYAMLStr = strings.ReplaceAll(caisYAMLStr, testgcp.TestBillingAccountID.Get(), "${TEST_BILLING_ACCOUNT_ID}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, "1234567890", "${projectNumber}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestDependentOrgProjectID.Get(), "${TEST_DEPENDENT_ORG_PROJECT_ID}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestDependentFolderProjectID.Get(), "${TEST_DEPENDENT_FOLDER_PROJECT_ID}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestOrgID.Get(), "${TEST_ORG_ID}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestFolderID.Get(), "${TEST_FOLDER_ID}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestBillingAccountIDForBillingResources.Get(), "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestBillingAccountID.Get(), "${TEST_BILLING_ACCOUNT_ID}")
 
 	return caisYAMLStr
 }
@@ -75,6 +82,15 @@ func ReplacePlaceholdersInCAIS(caisYAMLStr string, dir string, createBytes []byt
 func NormalizeDynamicIDs(s string) string {
 	lines := strings.Split(s, "\n")
 	for i, line := range lines {
+		// Normalize ComputeFirewallPolicy IDs: locations/global/firewallPolicies/<firewallPolicyId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/firewallPolicies/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize BigQuery Connection IDs: locations/.../connections/<connectionId>
 		if idx := strings.Index(line, "/connections/"); idx != -1 {
 			lines[i] = line[:idx+len("/connections/")]
@@ -82,6 +98,14 @@ func NormalizeDynamicIDs(s string) string {
 		// Normalize Monitoring Notification Channel numeric IDs
 		if idx := strings.Index(line, "/notificationChannels/"); idx != -1 {
 			lines[i] = line[:idx+len("/notificationChannels/")]
+		}
+		// Normalize reCAPTCHA Enterprise Key IDs: projects/.../keys/<keyId>
+		if idx := strings.Index(line, "/keys/"); idx != -1 && strings.Contains(line, "recaptchaenterprise") {
+			lines[i] = line[:idx+len("/keys/")] + "${keyID}"
+		}
+		// Normalize IAP Brand numeric IDs: projects/.../brands/<brandId>
+		if idx := strings.Index(line, "/brands/"); idx != -1 {
+			lines[i] = line[:idx+len("/brands/")]
 		}
 		// Normalize Folder IDs: folders/<folderId>
 		if idx := strings.Index(line, "/folders/"); idx != -1 {

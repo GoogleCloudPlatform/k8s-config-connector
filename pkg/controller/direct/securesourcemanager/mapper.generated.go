@@ -25,7 +25,6 @@ package securesourcemanager
 
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
-	krmprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -53,6 +52,8 @@ func Instance_HostConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.GitSsh = direct.ValueOf(in.GitSSH)
 	return out
 }
+
+/* found existing non-generated mapping function "Instance_PrivateConfig_FromProto", skipping
 func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
 	if in == nil {
 		return nil
@@ -60,27 +61,33 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	out := &krm.Instance_PrivateConfig{}
 	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
 	if in.GetCaPool() != "" {
-		out.CAPoolRef = &krmprivatecav1beta1.PrivateCACAPoolRef{External: in.GetCaPool()}
+		out.CAPoolRef = &krmprivatecaprivatecarefs.PrivateCACAPoolRef{External: in.GetCaPool()}
 	}
 	// MISSING: HTTPServiceAttachment
 	// MISSING: SSHServiceAttachment
 	// MISSING: PSCAllowedProjects
 	return out
 }
-func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "Instance_PrivateConfig_ToProto", skipping
+
+	func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Instance_PrivateConfig{}
+		out.IsPrivate = direct.ValueOf(in.IsPrivate)
+		if in.CAPoolRef != nil {
+			out.CaPool = in.CAPoolRef.External
+		}
+		// MISSING: HTTPServiceAttachment
+		// MISSING: SSHServiceAttachment
+		// MISSING: PSCAllowedProjects
+		return out
 	}
-	out := &pb.Instance_PrivateConfig{}
-	out.IsPrivate = direct.ValueOf(in.IsPrivate)
-	if in.CAPoolRef != nil {
-		out.CaPool = in.CAPoolRef.External
-	}
-	// MISSING: HTTPServiceAttachment
-	// MISSING: SSHServiceAttachment
-	// MISSING: PSCAllowedProjects
-	return out
-}
+*/
 func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfigObservedState {
 	if in == nil {
 		return nil

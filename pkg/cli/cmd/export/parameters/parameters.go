@@ -38,6 +38,9 @@ type Parameters struct {
 
 	// HTTPClient allows for overriding the default HTTP Client
 	HTTPClient *http.Client
+
+	// DisableDirectExport can be set to true to bypass direct-reconciliation exporters.
+	DisableDirectExport bool
 }
 
 func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {

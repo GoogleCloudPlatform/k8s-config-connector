@@ -31,6 +31,18 @@ type FakeDataplexV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDataplexV1alpha1) DataplexAspectTypes(namespace string) v1alpha1.DataplexAspectTypeInterface {
+	return newFakeDataplexAspectTypes(c, namespace)
+}
+
+func (c *FakeDataplexV1alpha1) DataplexDataAttributeBindings(namespace string) v1alpha1.DataplexDataAttributeBindingInterface {
+	return newFakeDataplexDataAttributeBindings(c, namespace)
+}
+
+func (c *FakeDataplexV1alpha1) DataplexDataScans(namespace string) v1alpha1.DataplexDataScanInterface {
+	return newFakeDataplexDataScans(c, namespace)
+}
+
 func (c *FakeDataplexV1alpha1) DataplexDataTaxonomies(namespace string) v1alpha1.DataplexDataTaxonomyInterface {
 	return newFakeDataplexDataTaxonomies(c, namespace)
 }

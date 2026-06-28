@@ -111,6 +111,25 @@ conditions:
       string: string
     query: string
     ruleGroup: string
+  conditionSql:
+    booleanTest:
+      column: string
+    daily:
+      executionTime:
+        hours: integer
+        minutes: integer
+        nanos: integer
+        seconds: integer
+      periodicity: integer
+    hourly:
+      minuteOffset: integer
+      periodicity: integer
+    minutes:
+      periodicity: integer
+    query: string
+    rowCountTest:
+      comparison: string
+      threshold: integer
   conditionThreshold:
     aggregations:
     - alignmentPeriod: string
@@ -184,8 +203,7 @@ severity: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Control over how the notification channels in 'notification_channels'
-are notified when this alert fires, on a per-channel basis.</p>
+            <p>Control over how the notification channels in 'notification_channels' are notified when this alert fires, on a per-channel basis.</p>
         </td>
     </tr>
     <tr>
@@ -205,10 +223,7 @@ are notified when this alert fires, on a per-channel basis.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>The notification channels that these settings apply to. Each of these
-correspond to the name field in one of the NotificationChannel objects
-referenced in the notification_channels field of this AlertPolicy. The format is
-'projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]'.</p>
+            <p>The notification channels that these settings apply to. Each of these correspond to the name field in one of the NotificationChannel objects referenced in the notification_channels field of this AlertPolicy. The format is 'projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]'.</p>
         </td>
     </tr>
     <tr>
@@ -238,8 +253,7 @@ referenced in the notification_channels field of this AlertPolicy. The format is
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required for alert policies with a LogMatch condition.
-This limit is not implemented for alert policies that are not log-based.</p>
+            <p>Required for alert policies with a LogMatch condition. This limit is not implemented for alert policies that are not log-based.</p>
         </td>
     </tr>
     <tr>
@@ -259,8 +273,7 @@ This limit is not implemented for alert policies that are not log-based.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>How to combine the results of multiple conditions to
-determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"].</p>
+            <p>How to combine the results of multiple conditions to determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"].</p>
         </td>
     </tr>
     <tr>
@@ -270,10 +283,7 @@ determine if an incident should be opened. Possible values: ["AND", "OR", "AND_W
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A list of conditions for the policy. The conditions are combined by
-AND or OR according to the combiner field. If the combined conditions
-evaluate to true, then an incident is created. A policy can have from
-one to six conditions.</p>
+            <p>A list of conditions for the policy. The conditions are combined by AND or OR according to the combiner field. If the combined conditions evaluate to true, then an incident is created. A policy can have from one to six conditions.</p>
         </td>
     </tr>
     <tr>
@@ -293,8 +303,7 @@ one to six conditions.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A condition that checks that a time series
-continues to receive new data points.</p>
+            <p>A condition that checks that a time series continues to receive new data points.</p>
         </td>
     </tr>
     <tr>
@@ -304,15 +313,7 @@ continues to receive new data points.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Specifies the alignment of data points in
-individual time series as well as how to
-combine the retrieved time series together
-(such as when aggregating multiple streams
-on each resource to a single stream for each
-resource or when aggregating streams across
-all members of a group of resources).
-Multiple aggregations are applied in the
-order specified.</p>
+            <p>Specifies the alignment of data points in individual time series as well as how to combine the retrieved time series together (such as when aggregating multiple streams on each resource to a single stream for each resource or when aggregating streams across all members of a group of resources). Multiple aggregations are applied in the order specified.</p>
         </td>
     </tr>
     <tr>
@@ -332,20 +333,7 @@ order specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The alignment period for per-time
-series alignment. If present,
-alignmentPeriod must be at least
-60 seconds. After per-time series
-alignment, each time series will
-contain data points only on the
-period boundaries. If
-perSeriesAligner is not specified
-or equals ALIGN_NONE, then this
-field is ignored. If
-perSeriesAligner is specified and
-does not equal ALIGN_NONE, then
-this field must be defined;
-otherwise an error is returned.</p>
+            <p>The alignment period for per-time series alignment. If present, alignmentPeriod must be at least 60 seconds. After per-time series alignment, each time series will contain data points only on the period boundaries. If perSeriesAligner is not specified or equals ALIGN_NONE, then this field is ignored. If perSeriesAligner is specified and does not equal ALIGN_NONE, then this field must be defined; otherwise an error is returned.</p>
         </td>
     </tr>
     <tr>
@@ -355,23 +343,7 @@ otherwise an error is returned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The approach to be used to combine
-time series. Not all reducer
-functions may be applied to all
-time series, depending on the
-metric type and the value type of
-the original time series.
-Reduction may change the metric
-type of value type of the time
-series.Time series data must be
-aligned in order to perform cross-
-time series reduction. If
-crossSeriesReducer is specified,
-then perSeriesAligner must be
-specified and not equal ALIGN_NONE
-and alignmentPeriod must be
-specified; otherwise, an error is
-returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].</p>
+            <p>The approach to be used to combine time series. Not all reducer functions may be applied to all time series, depending on the metric type and the value type of the original time series. Reduction may change the metric type of value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].</p>
         </td>
     </tr>
     <tr>
@@ -381,31 +353,7 @@ returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>The set of fields to preserve when
-crossSeriesReducer is specified.
-The groupByFields determine how
-the time series are partitioned
-into subsets prior to applying the
-aggregation function. Each subset
-contains time series that have the
-same value for each of the
-grouping fields. Each individual
-time series is a member of exactly
-one subset. The crossSeriesReducer
-is applied to each subset of time
-series. It is not possible to
-reduce across different resource
-types, so this field implicitly
-contains resource.type. Fields not
-specified in groupByFields are
-aggregated away. If groupByFields
-is not specified and all the time
-series have the same resource
-type, then the time series are
-aggregated into a single output
-time series. If crossSeriesReducer
-is not defined, this field is
-ignored.</p>
+            <p>The set of fields to preserve when crossSeriesReducer is specified. The groupByFields determine how the time series are partitioned into subsets prior to applying the aggregation function. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The crossSeriesReducer is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains resource.type. Fields not specified in groupByFields are aggregated away. If groupByFields is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If crossSeriesReducer is not defined, this field is ignored.</p>
         </td>
     </tr>
     <tr>
@@ -425,23 +373,7 @@ ignored.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The approach to be used to align
-individual time series. Not all
-alignment functions may be applied
-to all time series, depending on
-the metric type and value type of
-the original time series.
-Alignment may change the metric
-type or the value type of the time
-series.Time series data must be
-aligned in order to perform cross-
-time series reduction. If
-crossSeriesReducer is specified,
-then perSeriesAligner must be
-specified and not equal ALIGN_NONE
-and alignmentPeriod must be
-specified; otherwise, an error is
-returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].</p>
+            <p>The approach to be used to align individual time series. Not all alignment functions may be applied to all time series, depending on the metric type and value type of the original time series. Alignment may change the metric type or the value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].</p>
         </td>
     </tr>
     <tr>
@@ -451,11 +383,7 @@ returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_IN
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The amount of time that a time series must
-fail to report new data to be considered
-failing. Currently, only values that are a
-multiple of a minute--e.g. 60s, 120s, or 300s
---are supported.</p>
+            <p>The amount of time that a time series must fail to report new data to be considered failing. Currently, only values that are a multiple of a minute--e.g. 60s, 120s, or 300s --are supported.</p>
         </td>
     </tr>
     <tr>
@@ -465,18 +393,7 @@ multiple of a minute--e.g. 60s, 120s, or 300s
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A filter that identifies which time series
-should be compared with the threshold.The
-filter is similar to the one that is
-specified in the
-MetricService.ListTimeSeries request (that
-call is useful to verify the time series
-that will be retrieved / processed) and must
-specify the metric type and optionally may
-contain restrictions on resource type,
-resource labels, and metric labels. This
-field may not exceed 2048 Unicode characters
-in length.</p>
+            <p>A filter that identifies which time series should be compared with the threshold.The filter is similar to the one that is specified in the MetricService.ListTimeSeries request (that call is useful to verify the time series that will be retrieved / processed) and must specify the metric type and optionally may contain restrictions on resource type, resource labels, and metric labels. This field may not exceed 2048 Unicode characters in length.</p>
         </td>
     </tr>
     <tr>
@@ -486,12 +403,7 @@ in length.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The number/percent of time series for which
-the comparison must hold in order for the
-condition to trigger. If unspecified, then
-the condition will trigger if the comparison
-is true for any of the time series that have
-been identified by filter and aggregations.</p>
+            <p>The number/percent of time series for which the comparison must hold in order for the condition to trigger. If unspecified, then the condition will trigger if the comparison is true for any of the time series that have been identified by filter and aggregations.</p>
         </td>
     </tr>
     <tr>
@@ -501,9 +413,7 @@ been identified by filter and aggregations.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The absolute number of time series
-that must fail the predicate for the
-condition to be triggered.</p>
+            <p>The absolute number of time series that must fail the predicate for the condition to be triggered.</p>
         </td>
     </tr>
     <tr>
@@ -513,9 +423,7 @@ condition to be triggered.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of time series that
-must fail the predicate for the
-condition to be triggered.</p>
+            <p>The percentage of time series that must fail the predicate for the condition to be triggered.</p>
         </td>
     </tr>
     <tr>
@@ -525,8 +433,7 @@ condition to be triggered.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A condition that checks for log messages matching given constraints.
-If set, no other conditions can be present.</p>
+            <p>A condition that checks for log messages matching given constraints. If set, no other conditions can be present.</p>
         </td>
     </tr>
     <tr>
@@ -546,13 +453,7 @@ If set, no other conditions can be present.</p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>A map from a label key to an extractor expression, which is used to
-extract the value for this label key. Each entry in this map is
-a specification for how data should be extracted from log entries that
-match filter. Each combination of extracted values is treated as
-a separate rule for the purposes of triggering notifications.
-Label keys and corresponding values can be used in notifications
-generated by this condition.</p>
+            <p>A map from a label key to an extractor expression, which is used to extract the value for this label key. Each entry in this map is a specification for how data should be extracted from log entries that match filter. Each combination of extracted values is treated as a separate rule for the purposes of triggering notifications. Label keys and corresponding values can be used in notifications generated by this condition.</p>
         </td>
     </tr>
     <tr>
@@ -572,21 +473,7 @@ generated by this condition.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The amount of time that a time series must
-violate the threshold to be considered
-failing. Currently, only values that are a
-multiple of a minute--e.g., 0, 60, 120, or
-300 seconds--are supported. If an invalid
-value is given, an error will be returned.
-When choosing a duration, it is useful to
-keep in mind the frequency of the underlying
-time series data (which may also be affected
-by any alignments specified in the
-aggregations field); a good duration is long
-enough so that a single outlier does not
-generate spurious alerts, but short enough
-that unhealthy states are detected and
-alerted on quickly.</p>
+            <p>The amount of time that a time series must violate the threshold to be considered failing. Currently, only values that are a multiple of a minute--e.g., 0, 60, 120, or 300 seconds--are supported. If an invalid value is given, an error will be returned. When choosing a duration, it is useful to keep in mind the frequency of the underlying time series data (which may also be affected by any alignments specified in the aggregations field); a good duration is long enough so that a single outlier does not generate spurious alerts, but short enough that unhealthy states are detected and alerted on quickly.</p>
         </td>
     </tr>
     <tr>
@@ -596,9 +483,7 @@ alerted on quickly.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A condition control that determines how
-metric-threshold conditions are evaluated when
-data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].</p>
+            <p>A condition control that determines how metric-threshold conditions are evaluated when data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].</p>
         </td>
     </tr>
     <tr>
@@ -618,14 +503,7 @@ data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVAL
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The number/percent of time series for which
-the comparison must hold in order for the
-condition to trigger. If unspecified, then
-the condition will trigger if the comparison
-is true for any of the time series that have
-been identified by filter and aggregations,
-or by the ratio, if denominator_filter and
-denominator_aggregations are specified.</p>
+            <p>The number/percent of time series for which the comparison must hold in order for the condition to trigger. If unspecified, then the condition will trigger if the comparison is true for any of the time series that have been identified by filter and aggregations, or by the ratio, if denominator_filter and denominator_aggregations are specified.</p>
         </td>
     </tr>
     <tr>
@@ -635,9 +513,7 @@ denominator_aggregations are specified.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The absolute number of time series
-that must fail the predicate for the
-condition to be triggered.</p>
+            <p>The absolute number of time series that must fail the predicate for the condition to be triggered.</p>
         </td>
     </tr>
     <tr>
@@ -647,9 +523,7 @@ condition to be triggered.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of time series that
-must fail the predicate for the
-condition to be triggered.</p>
+            <p>The percentage of time series that must fail the predicate for the condition to be triggered.</p>
         </td>
     </tr>
     <tr>
@@ -695,10 +569,7 @@ valid Prometheus label name.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Alerts are considered firing once their PromQL expression evaluated
-to be "true" for this long. Alerts whose PromQL expression was not
-evaluated to be "true" for long enough are considered pending. The
-default value is zero. Must be zero or positive.</p>
+            <p>Alerts are considered firing once their PromQL expression evaluated to be "true" for this long. Alerts whose PromQL expression was not evaluated to be "true" for long enough are considered pending. The default value is zero. Must be zero or positive.</p>
         </td>
     </tr>
     <tr>
@@ -708,11 +579,7 @@ default value is zero. Must be zero or positive.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>How often this rule should be evaluated. Must be a positive multiple
-of 30 seconds or missing. The default value is 30 seconds. If this
-PrometheusQueryLanguageCondition was generated from a Prometheus
-alerting rule, then this value should be taken from the enclosing
-rule group.</p>
+            <p>How often this rule should be evaluated. Must be a positive multiple of 30 seconds or missing. The default value is 30 seconds. If this PrometheusQueryLanguageCondition was generated from a Prometheus alerting rule, then this value should be taken from the enclosing rule group.</p>
         </td>
     </tr>
     <tr>
@@ -738,9 +605,7 @@ used for organizing and identifying the AlertPolicy.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The PromQL expression to evaluate. Every evaluation cycle this
-expression is evaluated at the current time, and all resultant time
-series become pending/firing alerts. This field must not be empty.</p>
+            <p>The PromQL expression to evaluate. Every evaluation cycle this expression is evaluated at the current time, and all resultant time series become pending/firing alerts. This field must not be empty.</p>
         </td>
     </tr>
     <tr>
@@ -765,13 +630,202 @@ valid Prometheus label name.</p>
     </tr>
     <tr>
         <td>
+            <p><code>conditions[].conditionSql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>A condition that allows alerting policies to be defined using GoogleSQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.booleanTest</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Test the boolean value in the indicated column.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.booleanTest.column</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of the column containing the boolean value.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Schedule the query to execute every so many days.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The time of day (in UTC) at which the query should run.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.hours</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Hours of day in 24 hour format.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Minutes of hour of day.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Fractions of seconds in nanoseconds.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.executionTime.seconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Seconds of minutes of the time.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.daily.periodicity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>The number of days between runs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.hourly</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Schedule the query to execute every so many hours.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.hourly.minuteOffset</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>The number of minutes after the hour (in UTC) to run the query.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.hourly.periodicity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Number of hours between runs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Schedule the query to execute every so many minutes.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.minutes.periodicity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Number of minutes between runs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.query</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The Log Analytics SQL query to run, as a string.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.rowCountTest</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Test the row count against a threshold.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.rowCountTest.comparison</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The comparison to apply between the number of rows returned by the query and the threshold.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionSql.rowCountTest.threshold</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>The value against which to compare the row count.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>conditions[].conditionThreshold</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A condition that compares a time series against a
-threshold.</p>
+            <p>A condition that compares a time series against a threshold.</p>
         </td>
     </tr>
     <tr>
@@ -781,19 +835,7 @@ threshold.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Specifies the alignment of data points in
-individual time series as well as how to
-combine the retrieved time series together
-(such as when aggregating multiple streams
-on each resource to a single stream for each
-resource or when aggregating streams across
-all members of a group of resources).
-Multiple aggregations are applied in the
-order specified.This field is similar to the
-one in the MetricService.ListTimeSeries
-request. It is advisable to use the
-ListTimeSeries method when debugging this
-field.</p>
+            <p>Specifies the alignment of data points in individual time series as well as how to combine the retrieved time series together (such as when aggregating multiple streams on each resource to a single stream for each resource or when aggregating streams across all members of a group of resources). Multiple aggregations are applied in the order specified.This field is similar to the one in the MetricService.ListTimeSeries request. It is advisable to use the ListTimeSeries method when debugging this field.</p>
         </td>
     </tr>
     <tr>
@@ -813,20 +855,7 @@ field.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The alignment period for per-time
-series alignment. If present,
-alignmentPeriod must be at least
-60 seconds. After per-time series
-alignment, each time series will
-contain data points only on the
-period boundaries. If
-perSeriesAligner is not specified
-or equals ALIGN_NONE, then this
-field is ignored. If
-perSeriesAligner is specified and
-does not equal ALIGN_NONE, then
-this field must be defined;
-otherwise an error is returned.</p>
+            <p>The alignment period for per-time series alignment. If present, alignmentPeriod must be at least 60 seconds. After per-time series alignment, each time series will contain data points only on the period boundaries. If perSeriesAligner is not specified or equals ALIGN_NONE, then this field is ignored. If perSeriesAligner is specified and does not equal ALIGN_NONE, then this field must be defined; otherwise an error is returned.</p>
         </td>
     </tr>
     <tr>
@@ -836,23 +865,7 @@ otherwise an error is returned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The approach to be used to combine
-time series. Not all reducer
-functions may be applied to all
-time series, depending on the
-metric type and the value type of
-the original time series.
-Reduction may change the metric
-type of value type of the time
-series.Time series data must be
-aligned in order to perform cross-
-time series reduction. If
-crossSeriesReducer is specified,
-then perSeriesAligner must be
-specified and not equal ALIGN_NONE
-and alignmentPeriod must be
-specified; otherwise, an error is
-returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].</p>
+            <p>The approach to be used to combine time series. Not all reducer functions may be applied to all time series, depending on the metric type and the value type of the original time series. Reduction may change the metric type of value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].</p>
         </td>
     </tr>
     <tr>
@@ -862,31 +875,7 @@ returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>The set of fields to preserve when
-crossSeriesReducer is specified.
-The groupByFields determine how
-the time series are partitioned
-into subsets prior to applying the
-aggregation function. Each subset
-contains time series that have the
-same value for each of the
-grouping fields. Each individual
-time series is a member of exactly
-one subset. The crossSeriesReducer
-is applied to each subset of time
-series. It is not possible to
-reduce across different resource
-types, so this field implicitly
-contains resource.type. Fields not
-specified in groupByFields are
-aggregated away. If groupByFields
-is not specified and all the time
-series have the same resource
-type, then the time series are
-aggregated into a single output
-time series. If crossSeriesReducer
-is not defined, this field is
-ignored.</p>
+            <p>The set of fields to preserve when crossSeriesReducer is specified. The groupByFields determine how the time series are partitioned into subsets prior to applying the aggregation function. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The crossSeriesReducer is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains resource.type. Fields not specified in groupByFields are aggregated away. If groupByFields is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If crossSeriesReducer is not defined, this field is ignored.</p>
         </td>
     </tr>
     <tr>
@@ -906,23 +895,7 @@ ignored.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The approach to be used to align
-individual time series. Not all
-alignment functions may be applied
-to all time series, depending on
-the metric type and value type of
-the original time series.
-Alignment may change the metric
-type or the value type of the time
-series.Time series data must be
-aligned in order to perform cross-
-time series reduction. If
-crossSeriesReducer is specified,
-then perSeriesAligner must be
-specified and not equal ALIGN_NONE
-and alignmentPeriod must be
-specified; otherwise, an error is
-returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].</p>
+            <p>The approach to be used to align individual time series. Not all alignment functions may be applied to all time series, depending on the metric type and value type of the original time series. Alignment may change the metric type or the value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].</p>
         </td>
     </tr>
     <tr>
@@ -932,14 +905,7 @@ returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_IN
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The comparison to apply between the time
-series (indicated by filter and aggregation)
-and the threshold (indicated by
-threshold_value). The comparison is applied
-on each time series, with the time series on
-the left-hand side and the threshold on the
-right-hand side. Only COMPARISON_LT and
-COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"].</p>
+            <p>The comparison to apply between the time series (indicated by filter and aggregation) and the threshold (indicated by threshold_value). The comparison is applied on each time series, with the time series on the left-hand side and the threshold on the right-hand side. Only COMPARISON_LT and COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"].</p>
         </td>
     </tr>
     <tr>
@@ -949,22 +915,7 @@ COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPA
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Specifies the alignment of data points in
-individual time series selected by
-denominatorFilter as well as how to combine
-the retrieved time series together (such as
-when aggregating multiple streams on each
-resource to a single stream for each
-resource or when aggregating streams across
-all members of a group of resources).When
-computing ratios, the aggregations and
-denominator_aggregations fields must use the
-same alignment period and produce time
-series that have the same periodicity and
-labels.This field is similar to the one in
-the MetricService.ListTimeSeries request. It
-is advisable to use the ListTimeSeries
-method when debugging this field.</p>
+            <p>Specifies the alignment of data points in individual time series selected by denominatorFilter as well as how to combine the retrieved time series together (such as when aggregating multiple streams on each resource to a single stream for each resource or when aggregating streams across all members of a group of resources).When computing ratios, the aggregations and denominator_aggregations fields must use the same alignment period and produce time series that have the same periodicity and labels.This field is similar to the one in the MetricService.ListTimeSeries request. It is advisable to use the ListTimeSeries method when debugging this field.</p>
         </td>
     </tr>
     <tr>
@@ -984,20 +935,7 @@ method when debugging this field.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The alignment period for per-time
-series alignment. If present,
-alignmentPeriod must be at least
-60 seconds. After per-time series
-alignment, each time series will
-contain data points only on the
-period boundaries. If
-perSeriesAligner is not specified
-or equals ALIGN_NONE, then this
-field is ignored. If
-perSeriesAligner is specified and
-does not equal ALIGN_NONE, then
-this field must be defined;
-otherwise an error is returned.</p>
+            <p>The alignment period for per-time series alignment. If present, alignmentPeriod must be at least 60 seconds. After per-time series alignment, each time series will contain data points only on the period boundaries. If perSeriesAligner is not specified or equals ALIGN_NONE, then this field is ignored. If perSeriesAligner is specified and does not equal ALIGN_NONE, then this field must be defined; otherwise an error is returned.</p>
         </td>
     </tr>
     <tr>
@@ -1007,23 +945,7 @@ otherwise an error is returned.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The approach to be used to combine
-time series. Not all reducer
-functions may be applied to all
-time series, depending on the
-metric type and the value type of
-the original time series.
-Reduction may change the metric
-type of value type of the time
-series.Time series data must be
-aligned in order to perform cross-
-time series reduction. If
-crossSeriesReducer is specified,
-then perSeriesAligner must be
-specified and not equal ALIGN_NONE
-and alignmentPeriod must be
-specified; otherwise, an error is
-returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].</p>
+            <p>The approach to be used to combine time series. Not all reducer functions may be applied to all time series, depending on the metric type and the value type of the original time series. Reduction may change the metric type of value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].</p>
         </td>
     </tr>
     <tr>
@@ -1033,31 +955,7 @@ returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>The set of fields to preserve when
-crossSeriesReducer is specified.
-The groupByFields determine how
-the time series are partitioned
-into subsets prior to applying the
-aggregation function. Each subset
-contains time series that have the
-same value for each of the
-grouping fields. Each individual
-time series is a member of exactly
-one subset. The crossSeriesReducer
-is applied to each subset of time
-series. It is not possible to
-reduce across different resource
-types, so this field implicitly
-contains resource.type. Fields not
-specified in groupByFields are
-aggregated away. If groupByFields
-is not specified and all the time
-series have the same resource
-type, then the time series are
-aggregated into a single output
-time series. If crossSeriesReducer
-is not defined, this field is
-ignored.</p>
+            <p>The set of fields to preserve when crossSeriesReducer is specified. The groupByFields determine how the time series are partitioned into subsets prior to applying the aggregation function. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The crossSeriesReducer is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains resource.type. Fields not specified in groupByFields are aggregated away. If groupByFields is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If crossSeriesReducer is not defined, this field is ignored.</p>
         </td>
     </tr>
     <tr>
@@ -1077,23 +975,7 @@ ignored.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The approach to be used to align
-individual time series. Not all
-alignment functions may be applied
-to all time series, depending on
-the metric type and value type of
-the original time series.
-Alignment may change the metric
-type or the value type of the time
-series.Time series data must be
-aligned in order to perform cross-
-time series reduction. If
-crossSeriesReducer is specified,
-then perSeriesAligner must be
-specified and not equal ALIGN_NONE
-and alignmentPeriod must be
-specified; otherwise, an error is
-returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].</p>
+            <p>The approach to be used to align individual time series. Not all alignment functions may be applied to all time series, depending on the metric type and value type of the original time series. Alignment may change the metric type or the value type of the time series.Time series data must be aligned in order to perform cross- time series reduction. If crossSeriesReducer is specified, then perSeriesAligner must be specified and not equal ALIGN_NONE and alignmentPeriod must be specified; otherwise, an error is returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].</p>
         </td>
     </tr>
     <tr>
@@ -1103,21 +985,7 @@ returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_IN
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A filter that identifies a time series that
-should be used as the denominator of a ratio
-that will be compared with the threshold. If
-a denominator_filter is specified, the time
-series specified by the filter field will be
-used as the numerator.The filter is similar
-to the one that is specified in the
-MetricService.ListTimeSeries request (that
-call is useful to verify the time series
-that will be retrieved / processed) and must
-specify the metric type and optionally may
-contain restrictions on resource type,
-resource labels, and metric labels. This
-field may not exceed 2048 Unicode characters
-in length.</p>
+            <p>A filter that identifies a time series that should be used as the denominator of a ratio that will be compared with the threshold. If a denominator_filter is specified, the time series specified by the filter field will be used as the numerator.The filter is similar to the one that is specified in the MetricService.ListTimeSeries request (that call is useful to verify the time series that will be retrieved / processed) and must specify the metric type and optionally may contain restrictions on resource type, resource labels, and metric labels. This field may not exceed 2048 Unicode characters in length.</p>
         </td>
     </tr>
     <tr>
@@ -1127,21 +995,7 @@ in length.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The amount of time that a time series must
-violate the threshold to be considered
-failing. Currently, only values that are a
-multiple of a minute--e.g., 0, 60, 120, or
-300 seconds--are supported. If an invalid
-value is given, an error will be returned.
-When choosing a duration, it is useful to
-keep in mind the frequency of the underlying
-time series data (which may also be affected
-by any alignments specified in the
-aggregations field); a good duration is long
-enough so that a single outlier does not
-generate spurious alerts, but short enough
-that unhealthy states are detected and
-alerted on quickly.</p>
+            <p>The amount of time that a time series must violate the threshold to be considered failing. Currently, only values that are a multiple of a minute--e.g., 0, 60, 120, or 300 seconds--are supported. If an invalid value is given, an error will be returned. When choosing a duration, it is useful to keep in mind the frequency of the underlying time series data (which may also be affected by any alignments specified in the aggregations field); a good duration is long enough so that a single outlier does not generate spurious alerts, but short enough that unhealthy states are detected and alerted on quickly.</p>
         </td>
     </tr>
     <tr>
@@ -1151,9 +1005,7 @@ alerted on quickly.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A condition control that determines how
-metric-threshold conditions are evaluated when
-data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].</p>
+            <p>A condition control that determines how metric-threshold conditions are evaluated when data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].</p>
         </td>
     </tr>
     <tr>
@@ -1163,18 +1015,7 @@ data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVAL
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A filter that identifies which time series
-should be compared with the threshold.The
-filter is similar to the one that is
-specified in the
-MetricService.ListTimeSeries request (that
-call is useful to verify the time series
-that will be retrieved / processed) and must
-specify the metric type and optionally may
-contain restrictions on resource type,
-resource labels, and metric labels. This
-field may not exceed 2048 Unicode characters
-in length.</p>
+            <p>A filter that identifies which time series should be compared with the threshold.The filter is similar to the one that is specified in the MetricService.ListTimeSeries request (that call is useful to verify the time series that will be retrieved / processed) and must specify the metric type and optionally may contain restrictions on resource type, resource labels, and metric labels. This field may not exceed 2048 Unicode characters in length.</p>
         </td>
     </tr>
     <tr>
@@ -1184,12 +1025,7 @@ in length.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>When this field is present, the 'MetricThreshold'
-condition forecasts whether the time series is
-predicted to violate the threshold within the
-'forecastHorizon'. When this field is not set, the
-'MetricThreshold' tests the current value of the
-timeseries against the threshold.</p>
+            <p>When this field is present, the 'MetricThreshold' condition forecasts whether the time series is predicted to violate the threshold within the 'forecastHorizon'. When this field is not set, the 'MetricThreshold' tests the current value of the timeseries against the threshold.</p>
         </td>
     </tr>
     <tr>
@@ -1199,12 +1035,7 @@ timeseries against the threshold.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The length of time into the future to forecast
-whether a timeseries will violate the threshold.
-If the predicted value is found to violate the
-threshold, and the violation is observed in all
-forecasts made for the Configured 'duration',
-then the timeseries is considered to be failing.</p>
+            <p>The length of time into the future to forecast whether a timeseries will violate the threshold. If the predicted value is found to violate the threshold, and the violation is observed in all forecasts made for the Configured 'duration', then the timeseries is considered to be failing.</p>
         </td>
     </tr>
     <tr>
@@ -1214,8 +1045,7 @@ then the timeseries is considered to be failing.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>A value against which to compare the time
-series.</p>
+            <p>A value against which to compare the time series.</p>
         </td>
     </tr>
     <tr>
@@ -1225,14 +1055,7 @@ series.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The number/percent of time series for which
-the comparison must hold in order for the
-condition to trigger. If unspecified, then
-the condition will trigger if the comparison
-is true for any of the time series that have
-been identified by filter and aggregations,
-or by the ratio, if denominator_filter and
-denominator_aggregations are specified.</p>
+            <p>The number/percent of time series for which the comparison must hold in order for the condition to trigger. If unspecified, then the condition will trigger if the comparison is true for any of the time series that have been identified by filter and aggregations, or by the ratio, if denominator_filter and denominator_aggregations are specified.</p>
         </td>
     </tr>
     <tr>
@@ -1242,9 +1065,7 @@ denominator_aggregations are specified.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The absolute number of time series
-that must fail the predicate for the
-condition to be triggered.</p>
+            <p>The absolute number of time series that must fail the predicate for the condition to be triggered.</p>
         </td>
     </tr>
     <tr>
@@ -1254,9 +1075,7 @@ condition to be triggered.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The percentage of time series that
-must fail the predicate for the
-condition to be triggered.</p>
+            <p>The percentage of time series that must fail the predicate for the condition to be triggered.</p>
         </td>
     </tr>
     <tr>
@@ -1266,11 +1085,7 @@ condition to be triggered.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A short name or phrase used to identify the
-condition in dashboards, notifications, and
-incidents. To avoid confusion, don't use the same
-display name for multiple conditions in the same
-policy.</p>
+            <p>A short name or phrase used to identify the condition in dashboards, notifications, and incidents. To avoid confusion, don't use the same display name for multiple conditions in the same policy.</p>
         </td>
     </tr>
     <tr>
@@ -1280,12 +1095,7 @@ policy.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The unique resource name for this condition.
-Its syntax is:
-projects/[PROJECT_ID]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
-[CONDITION_ID] is assigned by Stackdriver Monitoring when
-the condition is created as part of a new or updated alerting
-policy.</p>
+            <p>The unique resource name for this condition. Its syntax is: projects/[PROJECT_ID]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID] [CONDITION_ID] is assigned by Stackdriver Monitoring when the condition is created as part of a new or updated alerting policy.</p>
         </td>
     </tr>
     <tr>
@@ -1295,10 +1105,7 @@ policy.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A short name or phrase used to identify the policy in
-dashboards, notifications, and incidents. To avoid confusion, don't use
-the same display name for multiple policies in the same project. The
-name is limited to 512 Unicode characters.</p>
+            <p>A short name or phrase used to identify the policy in dashboards, notifications, and incidents. To avoid confusion, don't use the same display name for multiple policies in the same project. The name is limited to 512 Unicode characters.</p>
         </td>
     </tr>
     <tr>
@@ -1308,11 +1115,7 @@ name is limited to 512 Unicode characters.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Documentation that is included with notifications and incidents related
-to this policy. Best practice is for the documentation to include information
-to help responders understand, mitigate, escalate, and correct the underlying
-problems detected by the alerting policy. Notification channels that have
-limited capacity might not show this documentation.</p>
+            <p>Documentation that is included with notifications and incidents related to this policy. Best practice is for the documentation to include information to help responders understand, mitigate, escalate, and correct the underlying problems detected by the alerting policy. Notification channels that have limited capacity might not show this documentation.</p>
         </td>
     </tr>
     <tr>
@@ -1322,10 +1125,7 @@ limited capacity might not show this documentation.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The text of the documentation, interpreted according to mimeType.
-The content may not exceed 8,192 Unicode characters and may not
-exceed more than 10,240 bytes when encoded in UTF-8 format,
-whichever is smaller.</p>
+            <p>The text of the documentation, interpreted according to mimeType. The content may not exceed 8,192 Unicode characters and may not exceed more than 10,240 bytes when encoded in UTF-8 format, whichever is smaller.</p>
         </td>
     </tr>
     <tr>
@@ -1335,8 +1135,7 @@ whichever is smaller.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The format of the content field. Presently, only the value
-"text/markdown" is supported.</p>
+            <p>The format of the content field. Presently, only the value "text/markdown" is supported.</p>
         </td>
     </tr>
     <tr>
@@ -1366,7 +1165,7 @@ whichever is smaller.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Identifies the notification channels to which notifications should be sent when incidents are opened or closed or when new violations occur on an already opened incident.</p>
+            <p>MonitoringNotificationChannelRef is a reference to a MonitoringNotificationChannel.</p>
         </td>
     </tr>
     <tr>
@@ -1376,7 +1175,7 @@ whichever is smaller.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `MonitoringNotificationChannel` resource.</p>
+            <p>A reference to an externally managed MonitoringNotificationChannel resource. Should be in the format "projects/{{projectID}}/notificationChannels/{{channelID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1386,7 +1185,7 @@ whichever is smaller.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a MonitoringNotificationChannel resource.</p>
         </td>
     </tr>
     <tr>
@@ -1396,7 +1195,7 @@ whichever is smaller.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a MonitoringNotificationChannel resource.</p>
         </td>
     </tr>
     <tr>
@@ -1416,9 +1215,7 @@ whichever is smaller.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The severity of an alert policy indicates how important
-incidents generated by that policy are. The severity level will be displayed on
-the Incident detail page and in notifications. Possible values: ["CRITICAL", "ERROR", "WARNING"].</p>
+            <p>The severity of an alert policy indicates how important incidents generated by that policy are. The severity level will be displayed on the Incident detail page and in notifications. Possible values: ["CRITICAL", "ERROR", "WARNING"].</p>
         </td>
     </tr>
 </tbody>
@@ -1453,7 +1250,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the MonitoringAlertPolicy's current state.</p>
         </td>
     </tr>
     <tr>
@@ -1502,9 +1299,7 @@ observedGeneration: integer
         <td><code>creationRecord</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A read-only record of the creation of the alerting policy.
-If provided in a call to create or update, this field will
-be ignored.</p>
+            <p>A read-only record of the creation of the alerting policy. If provided in a call to create or update, this field will be ignored.</p>
         </td>
     </tr>
     <tr>
@@ -1532,8 +1327,7 @@ be ignored.</p>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The unique resource name for this policy.
-Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID].</p>
+            <p>The unique resource name for this policy. Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID].</p>
         </td>
     </tr>
     <tr>

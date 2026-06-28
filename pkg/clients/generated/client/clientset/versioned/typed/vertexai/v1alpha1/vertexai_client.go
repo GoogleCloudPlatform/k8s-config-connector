@@ -34,6 +34,7 @@ type VertexaiV1alpha1Interface interface {
 	VertexAIDataLabelingJobsGetter
 	VertexAIDeploymentResourcePoolsGetter
 	VertexAIExampleStoresGetter
+	VertexAIFeatureGroupsGetter
 	VertexAIFeaturestoresGetter
 	VertexAIFeaturestoreEntityTypesGetter
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
@@ -56,6 +57,10 @@ func (c *VertexaiV1alpha1Client) VertexAIDeploymentResourcePools(namespace strin
 
 func (c *VertexaiV1alpha1Client) VertexAIExampleStores(namespace string) VertexAIExampleStoreInterface {
 	return newVertexAIExampleStores(c, namespace)
+}
+
+func (c *VertexaiV1alpha1Client) VertexAIFeatureGroups(namespace string) VertexAIFeatureGroupInterface {
+	return newVertexAIFeatureGroups(c, namespace)
 }
 
 func (c *VertexaiV1alpha1Client) VertexAIFeaturestores(namespace string) VertexAIFeaturestoreInterface {

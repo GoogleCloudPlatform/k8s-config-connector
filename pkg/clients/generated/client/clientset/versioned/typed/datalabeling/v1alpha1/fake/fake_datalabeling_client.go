@@ -39,6 +39,10 @@ func (c *FakeDatalabelingV1alpha1) DataLabelingDatasets(namespace string) v1alph
 	return newFakeDataLabelingDatasets(c, namespace)
 }
 
+func (c *FakeDatalabelingV1alpha1) DataLabelingEvaluationJobs(namespace string) v1alpha1.DataLabelingEvaluationJobInterface {
+	return newFakeDataLabelingEvaluationJobs(c, namespace)
+}
+
 func (c *FakeDatalabelingV1alpha1) DataLabelingInstructions(namespace string) v1alpha1.DataLabelingInstructionInterface {
 	return newFakeDataLabelingInstructions(c, namespace)
 }

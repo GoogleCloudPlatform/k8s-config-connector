@@ -40,7 +40,7 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 
 	visitor.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
-	visitor.ReplacePath(".metadata.requestedCancellation", false)
+	visitor.RemovePath(".metadata.requestedCancellation")
 	visitor.ReplacePath(".done", true)
 
 	// SHA-1 hashes (keyId) should be 40 hex characters

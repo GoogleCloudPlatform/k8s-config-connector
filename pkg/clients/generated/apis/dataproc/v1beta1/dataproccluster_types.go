@@ -89,7 +89,7 @@ type ClusterConfig struct {
 	// +optional
 	Accelerators []ClusterAccelerators `json:"accelerators,omitempty"`
 
-	/* Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. Specify the key using the following format: `projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME`. */
+	/* Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKmsKey *string `json:"bootDiskKmsKey,omitempty"`
 
@@ -224,7 +224,7 @@ type ClusterGkeClusterConfig struct {
 }
 
 type ClusterIdentityConfig struct {
-	/* Immutable. Required. Map of user to service account. */
+	/* Required. Map of user to service account. */
 	UserServiceAccountMapping map[string]string `json:"userServiceAccountMapping"`
 }
 
@@ -372,7 +372,7 @@ type ClusterMetastoreConfig struct {
 }
 
 type ClusterMetrics struct {
-	/* Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` andd `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected. */
+	/* Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` and `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected. */
 	// +optional
 	MetricOverrides []string `json:"metricOverrides,omitempty"`
 
@@ -456,7 +456,7 @@ type ClusterSecondaryWorkerConfig struct {
 }
 
 type ClusterSecurityConfig struct {
-	/* Immutable. Optional. Identity related configuration, including service account based secure multi-tenancy user mappings. */
+	/* Optional. Identity related configuration, including service account based secure multi-tenancy user mappings. */
 	// +optional
 	IdentityConfig *ClusterIdentityConfig `json:"identityConfig,omitempty"`
 
@@ -543,7 +543,7 @@ type ClusterWorkerConfig struct {
 }
 
 type DataprocClusterSpec struct {
-	/* Immutable. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
+	/* The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
 	// +optional
 	Config *ClusterConfig `json:"config,omitempty"`
 

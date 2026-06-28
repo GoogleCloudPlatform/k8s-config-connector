@@ -21,6 +21,8 @@
 // resource: APIHubAPI:Api
 // resource: APIHubRuntimeProjectAttachment:RuntimeProjectAttachment
 // resource: APIHubPlugin:Plugin
+// resource: APIHubExternalAPI:ExternalApi
+// resource: APIHubInstance:ApiHubInstance
 
 package v1alpha1
 

@@ -58,7 +58,11 @@ func (i *MonitoringDashboardIdentity) Host() string {
 	return MonitoringDashboardIdentityFormat.Host()
 }
 
-func getIdentityFromMonitoringDashboardSpec(ctx context.Context, reader client.Reader, obj client.Object) (*MonitoringDashboardIdentity, error) {
+func (i *MonitoringDashboardIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
+func getIdentityFromMonitoringDashboardSpec(ctx context.Context, reader client.Reader, obj *MonitoringDashboard) (*MonitoringDashboardIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)

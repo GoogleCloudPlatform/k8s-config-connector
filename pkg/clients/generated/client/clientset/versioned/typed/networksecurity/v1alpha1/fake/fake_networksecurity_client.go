@@ -31,8 +31,16 @@ type FakeNetworksecurityV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityAddressGroups(namespace string) v1alpha1.NetworkSecurityAddressGroupInterface {
+	return newFakeNetworkSecurityAddressGroups(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityBackendAuthenticationConfigs(namespace string) v1alpha1.NetworkSecurityBackendAuthenticationConfigInterface {
 	return newFakeNetworkSecurityBackendAuthenticationConfigs(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityFirewallEndpointAssociations(namespace string) v1alpha1.NetworkSecurityFirewallEndpointAssociationInterface {
+	return newFakeNetworkSecurityFirewallEndpointAssociations(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptDeployments(namespace string) v1alpha1.NetworkSecurityInterceptDeploymentInterface {
@@ -51,8 +59,16 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringEndpointGroups(nam
 	return newFakeNetworkSecurityMirroringEndpointGroups(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityPartnerSSERealms(namespace string) v1alpha1.NetworkSecurityPartnerSSERealmInterface {
+	return newFakeNetworkSecurityPartnerSSERealms(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecuritySACRealms(namespace string) v1alpha1.NetworkSecuritySACRealmInterface {
 	return newFakeNetworkSecuritySACRealms(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1alpha1) NetworkSecuritySecurityProfiles(namespace string) v1alpha1.NetworkSecuritySecurityProfileInterface {
+	return newFakeNetworkSecuritySecurityProfiles(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

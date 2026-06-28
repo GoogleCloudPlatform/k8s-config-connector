@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/addresses/computeaddress-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-${uniqueId}
@@ -22,7 +22,7 @@
   name: servicedirectoryservice-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //servicedirectory.googleapis.com/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}/endpoints/servicedirectoryendpoint-${uniqueId}
   group: servicedirectory.cnrm.cloud.google.com
   kind: ServiceDirectoryEndpoint
   name: servicedirectoryendpoint-${uniqueId}

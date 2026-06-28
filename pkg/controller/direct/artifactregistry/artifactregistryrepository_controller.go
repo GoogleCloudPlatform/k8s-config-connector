@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -105,8 +106,21 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 }
 
 func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.ArtifactRegistryRepositoryIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ArtifactRegistryRepositoryAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type ArtifactRegistryRepositoryAdapter struct {
@@ -224,14 +238,21 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Repository)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Repository)
 	u.SetGroupVersionKind(krm.ArtifactRegistryRepositoryGVK)
+
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 

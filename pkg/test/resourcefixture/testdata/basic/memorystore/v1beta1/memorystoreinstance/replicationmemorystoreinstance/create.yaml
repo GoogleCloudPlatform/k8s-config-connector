@@ -1,7 +1,7 @@
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
-  name: memorystoreinstance-${uniqueId}-secondary
+  name: instance-${uniqueId}
 spec:
   shardCount: 3
   location: us-east1
@@ -11,4 +11,4 @@ spec:
     instanceRole: SECONDARY
     primaryInstance:
       instanceRef:
-        name: memorystoreinstance-${uniqueId}-primary
+        name: dependency-instance-${uniqueId}

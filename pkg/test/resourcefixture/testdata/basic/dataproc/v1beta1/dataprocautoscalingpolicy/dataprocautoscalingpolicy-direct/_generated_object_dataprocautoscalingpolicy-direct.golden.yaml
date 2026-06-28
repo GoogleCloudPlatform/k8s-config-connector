@@ -1,0 +1,36 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocAutoscalingPolicy
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dataprocautoscalingpolicy-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  basicAlgorithm:
+    yarnConfig:
+      gracefulDecommissionTimeout: 60s
+      scaleDownFactor: 0.5
+      scaleUpFactor: 0.5
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  secondaryWorkerConfig:
+    maxInstances: 2
+  workerConfig:
+    maxInstances: 2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}
+  observedGeneration: 2

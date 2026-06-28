@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //recaptchaenterprise.googleapis.com/projects/kcc-recaptcha-enterprise/keys/recaptchaenterprisekey-${uniqueId}
   group: recaptchaenterprise.cnrm.cloud.google.com
   kind: RecaptchaEnterpriseKey
   name: recaptchaenterprisekey-${uniqueId}

@@ -528,7 +528,7 @@ you do not need to provide a key to use the disk later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed ComputeImage resource. Should be in the format "projects/{{project}}/global/images/{{name}}".</p>
+            <p>A reference to an externally managed ComputeImage resource. Should be in the format "projects/{{project}}/global/images/{{name}}" or "projects/{{project}}/global/images/family/{{family}}".</p>
         </td>
     </tr>
     <tr>
@@ -788,7 +788,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed ComputeSnapshot resource. Should be in the format "projects/{{project}}/global/snapshots/{{name}}".</p>
+            <p>A reference to an externally managed ComputeSnapshot resource. Should be in the format "projects/{{projectID}}/global/snapshots/{{snapshotID}}" or "projects/{{projectID}}/regions/{{region}}/snapshots/{{snapshotID}}".</p>
         </td>
     </tr>
     <tr>

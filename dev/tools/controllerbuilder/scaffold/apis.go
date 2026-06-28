@@ -54,7 +54,7 @@ func (a *APIScaffolder) RefsFileExist(resource options.Resource) bool {
 }
 
 func (a *APIScaffolder) PathToRefsFile(resource options.Resource) string {
-	fileName := strings.ToLower(resource.ProtoMessageName()) + "_reference.go"
+	fileName := strings.ToLower(resource.Kind) + "_reference.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
@@ -87,7 +87,7 @@ func (a *APIScaffolder) IdentityFileExist(resource options.Resource) bool {
 }
 
 func (a *APIScaffolder) PathToIdentityFile(resource options.Resource) string {
-	fileName := strings.ToLower(resource.ProtoMessageName()) + "_identity.go"
+	fileName := strings.ToLower(resource.Kind) + "_identity.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
@@ -149,7 +149,7 @@ func (a *APIScaffolder) TypeFileExists(resource options.Resource) bool {
 }
 
 func (a *APIScaffolder) PathToTypeFile(resource options.Resource) string {
-	fileName := strings.ToLower(resource.ProtoMessageName()) + "_types.go"
+	fileName := strings.ToLower(resource.Kind) + "_types.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 

@@ -69,8 +69,7 @@ type KMSSecretCiphertextSpec struct {
 	// +optional
 	AdditionalAuthenticatedData *SecretciphertextAdditionalAuthenticatedData `json:"additionalAuthenticatedData,omitempty"`
 
-	/* Immutable. The full name of the CryptoKey that will be used to encrypt the provided plaintext.
-	Format: ''projects/{{project}}/locations/{{location}}/keyRings/{{keyRing}}/cryptoKeys/{{cryptoKey}}''. */
+	/* Immutable. The full name of the CryptoKey that will be used to encrypt the provided plaintext. Format: 'projects/{{project}}/locations/{{location}}/keyRings/{{keyRing}}/cryptoKeys/{{cryptoKey}}'. */
 	CryptoKey string `json:"cryptoKey"`
 
 	/* Immutable. The plaintext to be encrypted. */

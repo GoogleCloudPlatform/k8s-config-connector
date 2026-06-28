@@ -21,15 +21,40 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# Generate the KCC type structs from the GCP proto definitions
+./generate-proto.sh
+
+# Generate types for Dialogflow v2 service (KnowledgeBase, Generator)
 go run . generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
-  --resource DialogflowGenerator:Generator
+  --resource DialogflowGenerator:Generator \
+  --resource DialogflowConversationDataset:ConversationDataset
 
-# Change back to the repo root
+# Generate types for Dialogflow CX v3 service (SecuritySettings)
+go run . generate-types \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource DialogflowSecuritySettings:SecuritySettings
+
+mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
+
+# Generate types for Dialogflow v2 service again to restore types.generated.go for Dialogflow v2
+go run . generate-types \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowKnowledgeBase:KnowledgeBase \
+  --resource DialogflowGenerator:Generator \
+  --resource DialogflowConversationDataset:ConversationDataset
+
+# Generate mapper for Dialogflow CX v3 service
+go run . generate-mapper \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
-
-# Generate the CRD YAML from the type structs
 dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/dialogflow/

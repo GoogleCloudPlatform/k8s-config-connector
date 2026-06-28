@@ -24,17 +24,20 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
-  --service google.monitoring.v3,google.monitoring.metricsscope.v1 \
+  --service google.monitoring.v3,google.monitoring.metricsscope.v1,google.monitoring.dashboard.v1 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
   --include-skipped-output \
+  --resource MonitoringGroup:Group \
   --resource MonitoringMetricDescriptor:google.api.MetricDescriptor \
   --resource MonitoringNotificationChannel:NotificationChannel \
   --resource MonitoringUptimeCheckConfig:UptimeCheckConfig \
   --resource MonitoringService:Service \
-  --resource MonitoringMonitoredProject:MonitoredProject
+  --resource MonitoringMonitoredProject:MonitoredProject \
+  --resource MonitoringDashboard:Dashboard \
+  --resource MonitoringAlertPolicy:AlertPolicy
 
 go run . generate-mapper \
-  --service google.monitoring.v3,google.api,google.monitoring.metricsscope.v1 \
+  --service google.monitoring.v3,google.api,google.monitoring.metricsscope.v1,google.monitoring.dashboard.v1 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 

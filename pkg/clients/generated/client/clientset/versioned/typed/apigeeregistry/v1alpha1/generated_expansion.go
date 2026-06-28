@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type ApigeeRegistryAPIExpansion interface{}
+
 type ApigeeRegistryArtifactExpansion interface{}
 
 type ApigeeRegistryInstanceExpansion interface{}

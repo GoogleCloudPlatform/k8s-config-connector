@@ -103,6 +103,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - appoptimize.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
   resources:
   - '*'
@@ -207,6 +215,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - bigquerymigration.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
@@ -240,6 +256,14 @@ rules:
   - watch
 - apiGroups:
   - binaryauthorization.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - blockchainnodeengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -399,6 +423,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - connectors.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - contactcenterinsights.cnrm.cloud.google.com
   resources:
   - '*'
@@ -472,6 +504,14 @@ rules:
   - watch
 - apiGroups:
   - datalabeling.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datalineage.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -664,6 +704,14 @@ rules:
   - watch
 - apiGroups:
   - firestore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - geminidataanalytics.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1040,6 +1088,14 @@ rules:
   - watch
 - apiGroups:
   - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

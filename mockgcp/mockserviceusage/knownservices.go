@@ -21,6 +21,7 @@ var allServices = []string{
 	"bigquery.googleapis.com",
 	"cloudresourcemanager.googleapis.com",
 	"compute.googleapis.com",
+	"dataflow.googleapis.com",
 	"pubsub.googleapis.com",
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",
@@ -40,6 +41,7 @@ var allServices = []string{
 	"container.googleapis.com",
 	"workflows.googleapis.com",
 	"cloudapis.googleapis.com",
+	"privateca.googleapis.com",
 }
 
 func isKnownService(serviceName string) bool {

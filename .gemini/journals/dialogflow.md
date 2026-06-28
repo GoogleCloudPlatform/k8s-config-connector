@@ -1,4 +1,8 @@
-# Dialogflow Service Journal
+### [2026-05-26] DialogflowConversationDataset Scaffold
+- **Context**: Implementing Greenfield step 1 for DialogflowConversationDataset.
+- **Problem**: The proto mapping generated unreachable types due to lack of usages in the scaffolded struct.
+- **Solution**: Manually copied fields like `InputConfig` and `ConversationInfo` to the `ConversationDatasetObservedState` before re-running generation.
+- **Impact**: Enables properly typing output fields in the CRD schema.
 
 ### [2026-06-05] Dialogflow Direct Types Scaffolding and Multi-Hierarchy Identity
 - **Context**: Implementing initial direct types, CRD, and IdentityV2 for `DialogflowKnowledgeBase` under `apis/dialogflow/v1alpha1` (Issue #9287).
@@ -15,3 +19,13 @@
 - **Problem**: The issue description requested service `google.cloud.dialogflow.v1`, but Dialogflow ES Generator does not exist in `v1` and is instead located in package `google.cloud.dialogflow.v2` (GCP's Dialogflow CX `v3` has a similar but different generator pattern nested under `agents`). This mismatch caused `generate-types` to fail.
 - **Solution**: Changed the service in `generate.sh` to use `google.cloud.dialogflow.v2` and mapped the template pattern to `projects/{project}/locations/{location}/generators/{generator}`. Since DialogflowGenerator is missing from `cloudassetinventory_names.jsonl`, added it to `ignoredTemplates` in `pkg/gcpurls/registry_test.go` to avoid failures in `TestRegisteredTemplatesMatchCAI`.
 - **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowGenerator, paving the way for the subsequent adapter reconciliation logic.
+
+### 2026-06-05 DialogflowSecuritySettings Initial Types and Identity Scaffolding
+- **Context**: Implementing initial KRM types, CRD, and IdentityV2 for `DialogflowSecuritySettings`. (Issue #9288)
+- **Problem**: 
+  - Dialogflow security settings belong to Dialogflow CX and are defined in the `google.cloud.dialogflow.cx.v3.SecuritySettings` protobuf schema, rather than standard `google.cloud.dialogflow.v1` which does not contain security settings. Running the scaffolder against `google.cloud.dialogflow.v1` fails with "proto not found".
+  - The URL format for Dialogflow security settings is not listed in Cloud Asset Inventory (CAI) metadata, meaning `TestRegisteredTemplatesMatchCAI` will fail when the gcpurls template is evaluated.
+- **Solution**: 
+  - Ran `generate-types` using `--service google.cloud.dialogflow.cx.v3` to correctly reference `google.cloud.dialogflow.cx.v3.SecuritySettings`.
+  - Added `//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}` to `ignoredTemplates` in `pkg/gcpurls/registry_test.go` to explicitly allow registering the Dialogflow security settings URL template without requiring a corresponding CAI entry.
+- **Impact**: Enables smooth scaffolding and test success for Dialogflow CX resources that use direct identity models and are absent from CAI definitions.

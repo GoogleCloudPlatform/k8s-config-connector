@@ -1,0 +1,51 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: pubsubsubscription-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  ackDeadlineSeconds: 300
+  deadLetterPolicy:
+    deadLetterTopicRef:
+      name: pubsubtopic-${uniqueId}
+    maxDeliveryAttempts: 50
+  enableMessageOrdering: true
+  expirationPolicy:
+    ttl: 1296000s
+  filter: attributes.type = "key"
+  messageRetentionDuration: 302400s
+  pushConfig:
+    attributes:
+      new-attr: new-val
+      x-goog-version: v1beta2
+    noWrapper:
+      writeMetadata: false
+    oidcToken:
+      audience: https://updated.example.com/push-audience
+      serviceAccountEmail: gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+    pushEndpoint: https://updated.example.com/push
+  resourceID: pubsubsubscription-${uniqueId}
+  retainAckedMessages: false
+  retryPolicy:
+    maximumBackoff: 300s
+    minimumBackoff: 5s
+  topicRef:
+    name: pubsubtopic-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3

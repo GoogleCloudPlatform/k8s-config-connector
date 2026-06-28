@@ -1,0 +1,289 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package securesourcemanager
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
+	gcp "cloud.google.com/go/securesourcemanager/apiv1"
+	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
+	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+)
+
+func init() {
+	registry.RegisterModel(krm.SecureSourceManagerInstanceGVK, NewSecureSourceManagerInstanceModel)
+}
+
+func NewSecureSourceManagerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &secureSourceManagerInstanceModel{config: *config}, nil
+}
+
+var _ directbase.Model = &secureSourceManagerInstanceModel{}
+
+type secureSourceManagerInstanceModel struct {
+	config config.ControllerConfig
+}
+
+func (m *secureSourceManagerInstanceModel) client(ctx context.Context) (*gcp.Client, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building SecureSourceManager Instance client: %w", err)
+	}
+	return gcpClient, err
+}
+
+func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+	obj := &krm.SecureSourceManagerInstance{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+
+	if obj.Spec.KMSKeyRef != nil {
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KMSKeyRef)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.KMSKeyRef = kmsKeyRef
+	}
+
+	if obj.Spec.PrivateConfig != nil && obj.Spec.PrivateConfig.CAPoolRef != nil {
+		if err := obj.Spec.PrivateConfig.CAPoolRef.Normalize(ctx, reader, u.GetNamespace()); err != nil {
+			return nil, err
+		}
+	}
+	mapCtx := &direct.MapContext{}
+	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// Get securesourcemanager GCP client
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &secureSourceManagerInstanceAdapter{
+		id:        id.(*krm.SecureSourceManagerInstanceIdentity),
+		gcpClient: gcpClient,
+		desired:   desired,
+	}, nil
+}
+
+func (m *secureSourceManagerInstanceModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
+	if !strings.HasPrefix(url, "//securesourcemanager.googleapis.com/") {
+		return nil, nil
+	}
+
+	trimmed := strings.TrimPrefix(url, "//")
+	id := &krm.SecureSourceManagerInstanceIdentity{}
+	if err := id.FromExternal(trimmed); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &secureSourceManagerInstanceAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
+}
+
+type secureSourceManagerInstanceAdapter struct {
+	id        *krm.SecureSourceManagerInstanceIdentity
+	gcpClient *gcp.Client
+	desired   *pb.Instance
+	actual    *pb.Instance
+}
+
+var _ directbase.Adapter = &secureSourceManagerInstanceAdapter{}
+
+func (a *secureSourceManagerInstanceAdapter) Find(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting SecureSourceManagerInstance", "name", a.id.String())
+
+	req := &pb.GetInstanceRequest{Name: a.id.String()}
+	instancepb, err := a.gcpClient.GetInstance(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("getting SecureSourceManagerInstance %q: %w", a.id.String(), err)
+	}
+
+	a.actual = instancepb
+	return true, nil
+}
+
+func (a *secureSourceManagerInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating Instance", "name", a.id.String())
+
+	instance := proto.CloneOf(a.desired)
+
+	req := &pb.CreateInstanceRequest{
+		Parent:     fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		Instance:   instance,
+		InstanceId: a.id.Instance,
+	}
+	op, err := a.gcpClient.CreateInstance(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating instance %q: %w", a.id.String(), err)
+	}
+	created, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("waiting for creation of instance %q: %w", a.id.String(), err)
+	}
+	log.V(2).Info("successfully created Instance", "name", a.id.String())
+
+	return a.updateStatus(ctx, createOp, created)
+}
+
+func (a *secureSourceManagerInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating SecureSourceManagerInstance", "name", a.id.String())
+
+	diffs, _, err := compareSecureSourceManagerInstance(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	if !diffs.HasDiff() {
+		log.V(2).Info("no diff detected for SecureSourceManagerInstance", "name", a.id.String())
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
+	structuredreporting.ReportDiff(ctx, diffs)
+
+	return fmt.Errorf("SecureSourceManagerInstance resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
+}
+
+func (a *secureSourceManagerInstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Instance) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.SecureSourceManagerInstanceStatus{}
+	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareSecureSourceManagerInstance(ctx context.Context, actual, desired *pb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, SecureSourceManagerInstanceSpec_FromProto, SecureSourceManagerInstanceSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
+
+	clonedDesired := proto.CloneOf(desired)
+
+	populateDefaults := func(obj *pb.Instance) {
+		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
+func (a *secureSourceManagerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.SecureSourceManagerInstance{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(SecureSourceManagerInstanceSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Instance)
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u.Object = uObj
+	u.SetName(a.id.Instance)
+	u.SetGroupVersionKind(krm.SecureSourceManagerInstanceGVK)
+
+	export.SetLabels(u, a.actual.Labels)
+
+	return u, nil
+}
+
+// Delete implements the Adapter interface.
+func (a *secureSourceManagerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting Instance", "name", a.id.String())
+
+	req := &pb.DeleteInstanceRequest{Name: a.id.String()}
+	op, err := a.gcpClient.DeleteInstance(ctx, req)
+	if err != nil {
+		return false, fmt.Errorf("deleting Instance %q: %w", a.id.String(), err)
+	}
+	log.V(2).Info("successfully deleted Instance", "name", a.id.String())
+
+	err = op.Wait(ctx)
+	if err != nil {
+		if !strings.Contains(err.Error(), "(line 15:3): missing \"value\" field") {
+			return false, fmt.Errorf("deleting Instance %s: %w", a.id.String(), err)
+		}
+	}
+	return true, nil
+}

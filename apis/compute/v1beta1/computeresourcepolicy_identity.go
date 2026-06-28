@@ -22,7 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -64,21 +63,17 @@ func (i *ComputeResourcePolicyIdentity) Host() string {
 	return ComputeResourcePolicyIdentityFormat.Host()
 }
 
-func getIdentityFromComputeResourcePolicySpec(ctx context.Context, reader client.Reader, obj client.Object) (*ComputeResourcePolicyIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+func getIdentityFromComputeResourcePolicySpec(ctx context.Context, reader client.Reader, obj *ComputeResourcePolicy) (*ComputeResourcePolicyIdentity, error) {
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
 	}
 
-	u, ok := obj.(*unstructured.Unstructured)
-	if !ok {
-		return nil, fmt.Errorf("expected *unstructured.Unstructured, got %T", obj)
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	region, _, err := unstructured.NestedString(u.Object, "spec", "region")
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve region: %w", err)
-	}
+	region := common.ValueOf(obj.Spec.Region)
 	if region == "" {
 		return nil, fmt.Errorf("region is required but not found in spec")
 	}
@@ -97,29 +92,9 @@ func getIdentityFromComputeResourcePolicySpec(ctx context.Context, reader client
 }
 
 func (obj *ComputeResourcePolicy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	specIdentity, err := getIdentityFromComputeResourcePolicySpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
-	}
-
-	region := common.ValueOf(obj.Spec.Region)
-	if region == "" {
-		return nil, fmt.Errorf("cannot resolve region")
-	}
-
-	specIdentity := &ComputeResourcePolicyIdentity{
-		Project:        projectID,
-		Region:         region,
-		ResourcePolicy: resourceID,
 	}
 
 	externalRef := common.ValueOf(obj.Status.ExternalRef)

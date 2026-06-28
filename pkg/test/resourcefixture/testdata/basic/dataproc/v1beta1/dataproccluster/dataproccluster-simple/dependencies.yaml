@@ -18,7 +18,6 @@ metadata:
   name: iampolicymember-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-    cnrm.cloud.google.com/deletion-policy: abandon
 spec:
   member: serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com
   role: roles/dataproc.worker # required by default service account to access Dataproc data plane operations

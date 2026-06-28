@@ -109,10 +109,30 @@ spec:
                 type: object
               kmsKeyVersionNameRef:
                 description: The KMS key version with which data is encrypted.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
-                    description: A reference to an externally managed cryptoKeyVersion.
-                      Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.
+                    description: A reference to an externally managed KMSCryptoKeyVersion
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}/cryptoKeyVersions/{{cryptokeyversion}}".
+                    type: string
+                  name:
+                    description: The name of a KMSCryptoKeyVersion resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a KMSCryptoKeyVersion resource.
                     type: string
                 type: object
               processorRef:
@@ -557,10 +577,30 @@ spec:
                 type: object
               kmsKeyVersionNameRef:
                 description: The KMS key version with which data is encrypted.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
-                    description: A reference to an externally managed cryptoKeyVersion.
-                      Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.
+                    description: A reference to an externally managed KMSCryptoKeyVersion
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}/cryptoKeyVersions/{{cryptokeyversion}}".
+                    type: string
+                  name:
+                    description: The name of a KMSCryptoKeyVersion resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a KMSCryptoKeyVersion resource.
                     type: string
                 type: object
               processorRef:

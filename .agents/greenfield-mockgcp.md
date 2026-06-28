@@ -63,37 +63,23 @@ Add the following labels to the created issue:
 Use the following exact template for the issue body, replacing the bracketed placeholders (`<ResourceKind>`, `<service_name>`, `<api_version>`, `<proto_package>`, `<kind_lowercase>`, `<group>`) with the actual values for the resource:
 
 ------------ BEGIN ISSUE BODY TEMPLATE ------------
-Please implement Phase 3 (MockGCP and Alignment) for `<ResourceKind>` to verify behavioral correctness against the simulated GCP services.
+# Role
+You are a software developer for the Config Connector (KCC) project.
+Your task is to implement Phase 3 (MockGCP and Alignment) for the `<ResourceKind>` resource using the "direct" approach.
 
-Follow these instructions to implement and align the mock for `<ResourceKind>`:
+# Implementation Instructions
 
-1. **Locate E2E Fixtures**:
-   - The test fixtures are located under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/`.
+1. **Implement and Align MockGCP**: Use skill `.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md` with:
+   - ResourceKind: <ResourceKind>
+   - service_name: <service_name>
+   - group: <group>
+   - api_version: <api_version>
+   - kind_lowercase: <kind_lowercase>
+   - testname: The specific test folder name (e.g. `basic`) under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/`
 
-2. **Add or Enhance Mock Service**:
-   - If a mock service for `<service_name>` does not exist under `mockgcp/mock<service_name>/`, create one:
-     - Follow the guide in `mockgcp/GEMINI.md` and `mockgcp/README.md`.
-     - Add the relevant proto to the Makefile and run `make gen-proto` if needed.
-     - Implement the mock service entrypoint in `mockgcp/mock<service_name>/service.go` and register it in `mockgcp/register.go`.
-   - If the mock service already exists, implement the necessary CRUD (Create, Read, Update, Delete) methods for `<ResourceKind>` in `mockgcp/mock<service_name>/<kind_lowercase>.go`.
+2. **Journal Findings**: Use skill `.gemini/skills/kcc-agentic-journaler/SKILL.md` to record service-specific findings or quirks in `.gemini/journals/<service_name>.md`.
 
-3. **Incremental Mock Alignment**:
-   - Identify the test name `<testname>` (the subfolder name under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/`).
-   - Run `hack/compare-mock "fixtures/^<testname>$"` to execute the tests against the mock implementation.
-   - Use the `fix-diffs-mockgcp` skill (`mockgcp/.gemini/skills/fix-diffs-mockgcp/SKILL.md`) to align the mock logs with the real GCP output:
-     - **Output-Only Fields/IDs**: If real GCP produces dynamic values that mockgcp lacks, implement a `populate<ResourceKind>Defaults` function in `mockgcp/mock<service_name>/<kind_lowercase>.go` called on `Insert` and `Get` to match the required format.
-     - **Volatile/Random Values**: For values like timestamps or etags that are functionally identical but structurally unpredictable, update `normalize.go` for the service.
-     - **Critical Rule**: Always scope the `Previsit` normalization in `normalize.go` to ensure it only applies to your service URL (e.g. `strings.Contains(event.URL(), "<service_name>.googleapis.com")`) to prevent log corruption in unrelated services.
-   - Iterate on running `hack/compare-mock "fixtures/^<testname>$"` and making incremental code updates until the HTTP logs match real GCP perfectly with clean, minimal diffs.
-
-4. **Verify and Run Presubmits**:
-   - Run local validation: `scripts/validate-prereqs.sh`.
-   - Run the e2e fixtures presubmit: `./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>`.
-
-5. **Journal Findings**:
-   - Use the `kcc-agentic-journaler` skill to record service-specific findings or quirks in `.gemini/journals/<service_name>.md`.
-
-6. **Create PR**:
+3. **Create PR**:
    - Create a Pull Request with the mockgcp implementation and aligned golden logs.
    - Use the `send-pr` skill.
    - Pass the issue labels to the `send-pr.sh` script using the `--labels` flag (e.g. `--labels "overseer,area/direct,priority/medium,step/mockgcp,greenfield,chore/ai"`).

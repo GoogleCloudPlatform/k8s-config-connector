@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(DialogflowAgent{}).Name(),
 	}
 
+	DialogflowConversationDatasetGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowConversationDataset{}).Name(),
+	}
+
 	DialogflowEntityTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
@@ -87,6 +93,12 @@ var (
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(DialogflowKnowledgeBase{}).Name(),
+	}
+
+	DialogflowSecuritySettingsGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowSecuritySettings{}).Name(),
 	}
 
 	dialogflowAPIVersion = SchemeGroupVersion.String()

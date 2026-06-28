@@ -22,6 +22,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -29,11 +30,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-type Expectations struct {
-	Location bool // location or region
+type exportOptions struct {
+	ExpectLocation      bool // location or region
+	DisableDirectExport bool
 }
 
-func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectations *Expectations) string {
+func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *exportOptions) string {
 	exportURI := ""
 
 	projectID := resolveProjectID(h, obj)
@@ -46,7 +48,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	if err != nil {
 		h.T.Error(fmt.Errorf("retrieving location from obj: %w", err))
 	}
-	if !found && expectations.Location {
+	if !found && options.ExpectLocation {
 		h.T.Error("expected to find location or region in obj but did not find it")
 	}
 
@@ -55,8 +57,16 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	// This list should match https://cloud.google.com/asset-inventory/docs/resource-name-format
 	gvk := obj.GroupVersionKind()
 	switch gvk.GroupKind() {
-	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
-		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
+	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAddress"}:
+		exportURI = resolveCAISURI(h, obj)
+	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupVault"}:
+		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
@@ -65,6 +75,30 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 			h.T.Errorf("status.selfLink not set in BigQueryTable object")
 		}
 		exportURI = strings.ReplaceAll(statusSelfLink, "https://bigquery.googleapis.com/bigquery/v2/", "//bigquery.googleapis.com/")
+
+	case schema.GroupKind{Group: "billing.cnrm.cloud.google.com", Kind: "BillingAccount"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificate"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateIssuanceConfig"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMap"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMapEntry"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
+		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
+
+	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouter"}:
+		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
@@ -75,24 +109,36 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDocument"}:
 		exportURI = "//firestore.googleapis.com/projects/{projectID}/databases/{.spec.databaseRef}/documents/{.spec.collection}/{resourceID}"
 
+	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKey"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
 
-	case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
-		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
+	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
 
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 		exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
+
+	case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryNamespace"}:
+		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
 		network := resolveNetwork(h, obj)
 		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
 
-	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
-		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
+	case schema.GroupKind{Group: "securesourcemanager.cnrm.cloud.google.com", Kind: "SecureSourceManagerInstance"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 	}
 
 	if exportURI == "" {
@@ -146,6 +192,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"
+	exportParams.DisableDirectExport = options.DisableDirectExport
 	outputDir := h.TempDir()
 	outputPath := filepath.Join(outputDir, "export.yaml")
 	exportParams.Output = outputPath
@@ -159,7 +206,11 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	default:
 		h.Logf("exporting resource %q", exportURI)
 		if err := export.Execute(h.Ctx, &exportParams); err != nil {
-			h.Errorf("error from export.Execute of %q: %v", exportURI, err)
+			if options.DisableDirectExport {
+				h.Logf("ignoring error from export.Execute of %q under fallback/old controller: %v", exportURI, err)
+			} else {
+				h.Errorf("error from export.Execute of %q: %v", exportURI, err)
+			}
 			return ""
 		}
 	}
@@ -170,7 +221,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {
-	s := exportResource(h, obj, &Expectations{})
+	s := exportResource(h, obj, &exportOptions{})
 	if s == "" {
 		return nil
 	}
@@ -279,4 +330,18 @@ func resolveReference(h *create.Harness, obj *unstructured.Unstructured, refFiel
 		h.Fatalf("referenced %v object %v does not have status.externalRef set", gvk.Kind, key)
 	}
 	return external
+}
+
+func resolveCAISURI(h *create.Harness, obj *unstructured.Unstructured) string {
+	caisScheme := cais.NewScheme()
+	caisResults, err := cais.GetCAISIdentities(h.Ctx, caisScheme, h.GetClient(), []*unstructured.Unstructured{obj})
+	if err != nil {
+		h.T.Errorf("failed to get CAIS identity: %v", err)
+		return ""
+	}
+	if len(caisResults) == 0 || caisResults[0].CAISURL == "unknown" {
+		h.T.Errorf("failed to get CAIS identity: %v", err)
+		return ""
+	}
+	return caisResults[0].CAISURL
 }

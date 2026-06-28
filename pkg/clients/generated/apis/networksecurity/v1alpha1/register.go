@@ -53,10 +53,22 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
+	NetworkSecurityAddressGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityAddressGroup{}).Name(),
+	}
+
 	NetworkSecurityBackendAuthenticationConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(NetworkSecurityBackendAuthenticationConfig{}).Name(),
+	}
+
+	NetworkSecurityFirewallEndpointAssociationGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityFirewallEndpointAssociation{}).Name(),
 	}
 
 	NetworkSecurityInterceptDeploymentGVK = schema.GroupVersionKind{
@@ -83,10 +95,22 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityMirroringEndpointGroup{}).Name(),
 	}
 
+	NetworkSecurityPartnerSSERealmGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityPartnerSSERealm{}).Name(),
+	}
+
 	NetworkSecuritySACRealmGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(NetworkSecuritySACRealm{}).Name(),
+	}
+
+	NetworkSecuritySecurityProfileGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecuritySecurityProfile{}).Name(),
 	}
 
 	networksecurityAPIVersion = SchemeGroupVersion.String()

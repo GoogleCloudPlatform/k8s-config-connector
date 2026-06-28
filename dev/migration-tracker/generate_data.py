@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,6 +53,16 @@ def get_implemented_types(apis_dir="../../apis"):
                             implemented_kinds[kind] = []
                         implemented_kinds[kind].append(filepath)
     return implemented_kinds
+
+def get_implemented_controllers(direct_dir="../../pkg/controller/direct"):
+    implemented_controllers = set()
+    if not os.path.exists(direct_dir):
+        return implemented_controllers
+    for root, _, files in os.walk(direct_dir):
+        for file in files:
+            if file.endswith("_controller.go"):
+                implemented_controllers.add(file)
+    return implemented_controllers
 
 def build_dependency_graph(crds_dir="../../config/crds/resources"):
     known_kinds = {}
@@ -112,9 +123,20 @@ def build_dependency_graph(crds_dir="../../config/crds/resources"):
 
     return dependencies, known_kinds
 
-def parse_data(config_file_path, apis_dir, crds_dir):
+def parse_data(config_file_path, apis_dir, crds_dir, direct_dir="../../pkg/controller/direct"):
     resources = {}
     
+    # Load existing data to preserve manual updates
+    existing_resources = {}
+    data_json_path = 'data.json'
+    if os.path.exists(data_json_path):
+        try:
+            with open(data_json_path, 'r') as f:
+                existing_list = json.load(f)
+                existing_resources = {res['kind']: res for res in existing_list}
+        except Exception as e:
+            print(f"Warning: Could not load existing data.json: {e}", file=sys.stderr)
+            
     with open(config_file_path, 'r') as f:
         config_lines = f.readlines()
         
@@ -133,29 +155,46 @@ def parse_data(config_file_path, apis_dir, crds_dir):
             group = group_full.split('.')[0]
             kind = kind_match.group(1)
             
+            supported = []
+            if supported_ctrls_match:
+                ctrls_raw = supported_ctrls_match.group(1)
+                supported = re.findall(r'k8s\.ReconcilerType([A-Za-z]+)', ctrls_raw)
+            
+            # Skip if it only supports Direct (born direct or fully migrated and old controllers removed)
+            if len(supported) == 1 and supported[0] == 'Direct':
+                continue
+                
             resources[kind] = create_default_resource(kind, group)
+            resources[kind]['supportedControllers'] = supported
+            
+            # Restore existing manual fields if they exist
+            if kind in existing_resources:
+                existing = existing_resources[kind]
+                resources[kind]['state'] = existing.get('state', resources[kind]['state'])
+                resources[kind]['notes'] = existing.get('notes', resources[kind]['notes'])
+                resources[kind]['mocksLastRefreshed'] = existing.get('mocksLastRefreshed', resources[kind]['mocksLastRefreshed'])
+                if 'steps' in existing:
+                    for step, val in existing['steps'].items():
+                        resources[kind]['steps'][step] = val
             
             if default_ctrl_match:
                 resources[kind]['defaultController'] = default_ctrl_match.group(1)
                 resources[kind]['controllerType'] = default_ctrl_match.group(1)
                 
-            if supported_ctrls_match:
-                ctrls_raw = supported_ctrls_match.group(1)
-                supported = re.findall(r'k8s\.ReconcilerType([A-Za-z]+)', ctrls_raw)
-                resources[kind]['supportedControllers'] = supported
-                if 'Direct' in supported:
-                    resources[kind]['state'] = 'Completed'
-                    resources[kind]['steps'] = {
-                        "gen-types": True,
-                        "identity-reference": True,
-                        "mapper-fuzzer": True,
-                        "mocks": True,
-                        "controller": True,
-                        "tests": True
-                    }
+            if 'Direct' in supported:
+                resources[kind]['state'] = 'Completed'
+                resources[kind]['steps'] = {
+                    "gen-types": True,
+                    "identity-reference": True,
+                    "mapper-fuzzer": True,
+                    "mocks": True,
+                    "controller": True,
+                    "tests": True
+                }
 
     dependencies, known_kinds = build_dependency_graph(crds_dir)
     implemented_types = get_implemented_types(apis_dir)
+    implemented_controllers = get_implemented_controllers(direct_dir)
 
     # Calculate topological sort order and downstream count
     nodes = set(known_kinds.keys())
@@ -214,16 +253,65 @@ def parse_data(config_file_path, apis_dir, crds_dir):
             res['dependencies'] = sorted(valid_deps)
 
         if kind in implemented_types:
-            has_reference = False
+            res['steps']['gen-types'] = True
+            has_identity_reference = False
+            has_mapper = False
             for filepath in implemented_types[kind]:
-                ref_filepath = filepath.replace("_types.go", "_reference.go")
-                if os.path.exists(ref_filepath):
-                    has_reference = True
+                dirpath = os.path.dirname(filepath)
+                filename = os.path.basename(filepath)
+                prefix = filename.replace("_types.go", "")
+                
+                possible_id_ref_names = [
+                    f"{prefix}_reference.go",
+                    f"{prefix}_identity.go",
+                    f"{kind.lower()}_reference.go",
+                    f"{kind.lower()}_identity.go",
+                ]
+                
+                for name in possible_id_ref_names:
+                    if os.path.exists(os.path.join(dirpath, name)):
+                        has_identity_reference = True
+                        break
+                
+                possible_mapper_names = [
+                    f"{prefix}_mapper.go",
+                    f"{prefix}_fuzzer.go",
+                    f"{kind.lower()}_mapper.go",
+                    f"{kind.lower()}_fuzzer.go",
+                ]
+                for name in possible_mapper_names:
+                    if os.path.exists(os.path.join(dirpath, name)):
+                        has_mapper = True
+                        break
+
+                if has_identity_reference and has_mapper:
                     break
             
-            if not has_reference:
-                res['notes'] = 'Missing _reference.go'
+            if has_identity_reference:
+                res['steps']['identity-reference'] = True
+                if res.get('notes') in ('Missing _reference.go', 'Missing _reference.go or _identity.go'):
+                    res['notes'] = ''
+            else:
+                res['notes'] = 'Missing _reference.go or _identity.go'
                 res['steps']['identity-reference'] = False
+            
+            if has_mapper:
+                res['steps']['mapper-fuzzer'] = True
+
+        possible_controller_names = [
+            f"{kind.lower()}_controller.go",
+            f"{res['group'].lower()}{kind.lower()}_controller.go",
+        ]
+        if kind in implemented_types:
+            for filepath in implemented_types[kind]:
+                filename = os.path.basename(filepath)
+                prefix = filename.replace("_types.go", "")
+                possible_controller_names.append(f"{prefix}_controller.go")
+        
+        for ctrl_name in possible_controller_names:
+            if ctrl_name in implemented_controllers:
+                res['steps']['controller'] = True
+                break
 
     return list(resources.values())
 

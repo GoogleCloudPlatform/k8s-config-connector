@@ -1,32 +1,6 @@
 [
   {
     "group": "apigateway",
-    "kind": "APIGatewayAPI",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 113,
-    "downstreamCount": 0
-  },
-  {
-    "group": "apigateway",
     "kind": "APIGatewayAPIConfig",
     "version": "v1beta1",
     "controllerType": "Terraform",
@@ -48,7 +22,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 114,
+    "sortOrder": 125,
     "downstreamCount": 0
   },
   {
@@ -74,7 +48,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 115,
+    "sortOrder": 126,
     "downstreamCount": 0
   },
   {
@@ -101,60 +75,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 116,
-    "downstreamCount": 0
-  },
-  {
-    "group": "cloudquota",
-    "kind": "APIQuotaAdjusterSettings",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 117,
-    "downstreamCount": 0
-  },
-  {
-    "group": "cloudquota",
-    "kind": "APIQuotaPreference",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Folder",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 118,
+    "sortOrder": 133,
     "downstreamCount": 0
   },
   {
@@ -172,8 +93,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -181,7 +102,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 42,
+    "sortOrder": 46,
     "downstreamCount": 2
   },
   {
@@ -207,7 +128,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 119,
+    "sortOrder": 136,
     "downstreamCount": 0
   },
   {
@@ -222,8 +143,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -255,7 +176,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 120,
+    "sortOrder": 137,
     "downstreamCount": 0
   },
   {
@@ -275,16 +196,16 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 121,
+    "notes": "",
+    "sortOrder": 138,
     "downstreamCount": 0
   },
   {
@@ -299,16 +220,16 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 122,
+    "notes": "",
+    "sortOrder": 139,
     "downstreamCount": 0
   },
   {
@@ -325,8 +246,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -334,7 +255,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 123,
+    "sortOrder": 140,
     "downstreamCount": 0
   },
   {
@@ -363,34 +284,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 43,
+    "sortOrder": 47,
     "downstreamCount": 2
-  },
-  {
-    "group": "alloydb",
-    "kind": "AlloyDBInstance",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "AlloyDBCluster"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 124,
-    "downstreamCount": 0
   },
   {
     "group": "alloydb",
@@ -406,16 +301,16 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 125,
+    "notes": "",
+    "sortOrder": 142,
     "downstreamCount": 0
   },
   {
@@ -439,86 +334,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 127,
-    "downstreamCount": 0
-  },
-  {
-    "group": "apigee",
-    "kind": "ApigeeEndpointAttachment",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ApigeeOrganization"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 128,
-    "downstreamCount": 0
-  },
-  {
-    "group": "apigee",
-    "kind": "ApigeeEnvgroup",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ApigeeOrganization"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 69,
-    "downstreamCount": 1
-  },
-  {
-    "group": "apigee",
-    "kind": "ApigeeEnvgroupAttachment",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ApigeeEnvgroup",
-      "ApigeeEnvironment"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 129,
+    "sortOrder": 145,
     "downstreamCount": 0
   },
   {
@@ -535,8 +351,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -544,62 +360,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 44,
+    "sortOrder": 48,
     "downstreamCount": 2
-  },
-  {
-    "group": "apigee",
-    "kind": "ApigeeInstance",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ApigeeOrganization",
-      "KMSCryptoKey"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 70,
-    "downstreamCount": 1
-  },
-  {
-    "group": "apigee",
-    "kind": "ApigeeInstanceAttachment",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ApigeeEnvironment",
-      "ApigeeInstance"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 130,
-    "downstreamCount": 0
   },
   {
     "group": "apigee",
@@ -622,7 +384,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 131,
+    "sortOrder": 149,
     "downstreamCount": 0
   },
   {
@@ -640,8 +402,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -649,8 +411,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 21,
-    "downstreamCount": 6
+    "sortOrder": 20,
+    "downstreamCount": 7
   },
   {
     "group": "apigee",
@@ -673,7 +435,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 132,
+    "sortOrder": 153,
     "downstreamCount": 0
   },
   {
@@ -697,7 +459,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 133,
+    "sortOrder": 154,
     "downstreamCount": 0
   },
   {
@@ -721,7 +483,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 134,
+    "sortOrder": 155,
     "downstreamCount": 0
   },
   {
@@ -747,7 +509,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 135,
+    "sortOrder": 156,
     "downstreamCount": 0
   },
   {
@@ -771,7 +533,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 136,
+    "sortOrder": 157,
     "downstreamCount": 0
   },
   {
@@ -797,33 +559,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 137,
-    "downstreamCount": 0
-  },
-  {
-    "group": "apphub",
-    "kind": "AppHubApplication",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 138,
+    "sortOrder": 158,
     "downstreamCount": 0
   },
   {
@@ -833,38 +569,12 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 141,
-    "downstreamCount": 0
-  },
-  {
-    "group": "asset",
-    "kind": "AssetFeed",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Folder",
-      "Project"
-    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -876,172 +586,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 142,
-    "downstreamCount": 0
-  },
-  {
-    "group": "asset",
-    "kind": "AssetSavedQuery",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Folder",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 143,
-    "downstreamCount": 0
-  },
-  {
-    "group": "backupdr",
-    "kind": "BackupDRBackupPlan",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "BackupDRBackupVault",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 71,
-    "downstreamCount": 1
-  },
-  {
-    "group": "backupdr",
-    "kind": "BackupDRBackupPlanAssociation",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "BackupDRBackupPlan",
-      "ComputeInstance",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 145,
-    "downstreamCount": 0
-  },
-  {
-    "group": "backupdr",
-    "kind": "BackupDRBackupVault",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 45,
-    "downstreamCount": 2
-  },
-  {
-    "group": "backupdr",
-    "kind": "BackupDRManagementServer",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 146,
-    "downstreamCount": 0
-  },
-  {
-    "group": "batch",
-    "kind": "BatchJob",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project",
-      "PubSubTopic"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 147,
+    "sortOrder": 163,
     "downstreamCount": 0
   },
   {
@@ -1067,7 +612,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 149,
+    "sortOrder": 173,
     "downstreamCount": 0
   },
   {
@@ -1093,7 +638,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 150,
+    "sortOrder": 174,
     "downstreamCount": 0
   },
   {
@@ -1119,113 +664,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 151,
+    "sortOrder": 175,
     "downstreamCount": 0
-  },
-  {
-    "group": "bigquerybiglake",
-    "kind": "BigLakeTable",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 154,
-    "downstreamCount": 0
-  },
-  {
-    "group": "bigqueryanalyticshub",
-    "kind": "BigQueryAnalyticsHubDataExchange",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 72,
-    "downstreamCount": 1
-  },
-  {
-    "group": "bigqueryanalyticshub",
-    "kind": "BigQueryAnalyticsHubListing",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "BigQueryAnalyticsHubDataExchange",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 155,
-    "downstreamCount": 0
-  },
-  {
-    "group": "bigqueryconnection",
-    "kind": "BigQueryConnectionConnection",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DataprocCluster",
-      "MetastoreService",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 46,
-    "downstreamCount": 2
   },
   {
     "group": "bigquerydatapolicy",
@@ -1250,37 +690,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 157,
-    "downstreamCount": 0
-  },
-  {
-    "group": "bigquerydatatransfer",
-    "kind": "BigQueryDataTransferConfig",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project",
-      "PubSubSubscription",
-      "PubSubTopic"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 158,
+    "sortOrder": 183,
     "downstreamCount": 0
   },
   {
@@ -1308,7 +718,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 29,
+    "sortOrder": 30,
     "downstreamCount": 4
   },
   {
@@ -1325,7 +735,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1333,8 +743,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 159,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 185,
     "downstreamCount": 0
   },
   {
@@ -1362,35 +772,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 160,
-    "downstreamCount": 0
-  },
-  {
-    "group": "bigqueryreservation",
-    "kind": "BigQueryReservationAssignment",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "BigQueryReservationReservation",
-      "Folder",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 161,
+    "sortOrder": 186,
     "downstreamCount": 0
   },
   {
@@ -1407,8 +789,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -1416,34 +798,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 162,
+    "sortOrder": 189,
     "downstreamCount": 0
-  },
-  {
-    "group": "bigqueryreservation",
-    "kind": "BigQueryReservationReservation",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 73,
-    "downstreamCount": 1
   },
   {
     "group": "bigquery",
@@ -1469,7 +825,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 163,
+    "sortOrder": 190,
     "downstreamCount": 0
   },
   {
@@ -1489,15 +845,15 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 74,
+    "notes": "",
+    "sortOrder": 82,
     "downstreamCount": 1
   },
   {
@@ -1524,7 +880,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 164,
+    "sortOrder": 191,
     "downstreamCount": 0
   },
   {
@@ -1534,24 +890,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "BigtableInstance",
       "BigtableTable"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 167,
+    "sortOrder": 194,
     "downstreamCount": 0
   },
   {
@@ -1568,8 +925,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -1579,58 +936,6 @@
     "notes": "",
     "sortOrder": 17,
     "downstreamCount": 8
-  },
-  {
-    "group": "bigtable",
-    "kind": "BigtableLogicalView",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "BigtableInstance"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 168,
-    "downstreamCount": 0
-  },
-  {
-    "group": "bigtable",
-    "kind": "BigtableMaterializedView",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "BigtableInstance"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 169,
-    "downstreamCount": 0
   },
   {
     "group": "bigtable",
@@ -1646,8 +951,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -1655,7 +960,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 47,
+    "sortOrder": 51,
     "downstreamCount": 2
   },
   {
@@ -1672,8 +977,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -1681,7 +986,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 170,
+    "sortOrder": 197,
     "downstreamCount": 0
   },
   {
@@ -1707,7 +1012,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 171,
+    "sortOrder": 198,
     "downstreamCount": 0
   },
   {
@@ -1733,7 +1038,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 172,
+    "sortOrder": 200,
     "downstreamCount": 0
   },
   {
@@ -1743,23 +1048,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 173,
+    "sortOrder": 206,
     "downstreamCount": 0
   },
   {
@@ -1769,23 +1075,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 175,
+    "sortOrder": 208,
     "downstreamCount": 0
   },
   {
@@ -1795,33 +1102,8 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 176,
-    "downstreamCount": 0
-  },
-  {
-    "group": "certificatemanager",
-    "kind": "CertificateManagerDNSAuthorization",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
     ],
     "dependencies": [
       "Project"
@@ -1829,15 +1111,15 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 177,
+    "notes": "",
+    "sortOrder": 209,
     "downstreamCount": 0
   },
   {
@@ -1863,7 +1145,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 178,
+    "sortOrder": 211,
     "downstreamCount": 0
   },
   {
@@ -1887,7 +1169,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 179,
+    "sortOrder": 212,
     "downstreamCount": 0
   },
   {
@@ -1913,7 +1195,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 180,
+    "sortOrder": 213,
     "downstreamCount": 0
   },
   {
@@ -1932,7 +1214,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -1940,61 +1222,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 181,
-    "downstreamCount": 0
-  },
-  {
-    "group": "cloudbuild",
-    "kind": "CloudBuildWorkerPool",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 182,
-    "downstreamCount": 0
-  },
-  {
-    "group": "clouddeploy",
-    "kind": "CloudDeployDeliveryPipeline",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 186,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 216,
     "downstreamCount": 0
   },
   {
@@ -2020,7 +1249,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 189,
+    "sortOrder": 223,
     "downstreamCount": 0
   },
   {
@@ -2047,7 +1276,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 190,
+    "sortOrder": 224,
     "downstreamCount": 0
   },
   {
@@ -2074,7 +1303,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 191,
+    "sortOrder": 225,
     "downstreamCount": 0
   },
   {
@@ -2098,7 +1327,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 192,
+    "sortOrder": 226,
     "downstreamCount": 0
   },
   {
@@ -2122,57 +1351,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 193,
-    "downstreamCount": 0
-  },
-  {
-    "group": "cloudidentity",
-    "kind": "CloudIdentityGroup",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 77,
-    "downstreamCount": 1
-  },
-  {
-    "group": "cloudidentity",
-    "kind": "CloudIdentityMembership",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "CloudIdentityGroup"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 194,
+    "sortOrder": 227,
     "downstreamCount": 0
   },
   {
@@ -2198,93 +1377,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 195,
-    "downstreamCount": 0
-  },
-  {
-    "group": "colab",
-    "kind": "ColabRuntime",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ColabRuntimeTemplate",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 196,
-    "downstreamCount": 0
-  },
-  {
-    "group": "colab",
-    "kind": "ColabRuntimeTemplate",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 78,
-    "downstreamCount": 1
-  },
-  {
-    "group": "composer",
-    "kind": "ComposerEnvironment",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project",
-      "StorageBucket"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 197,
+    "sortOrder": 229,
     "downstreamCount": 0
   },
   {
@@ -2294,24 +1387,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork",
       "ComputeSubnetwork"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 48,
+    "sortOrder": 53,
     "downstreamCount": 2
   },
   {
@@ -2321,23 +1415,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 198,
+    "sortOrder": 233,
     "downstreamCount": 0
   },
   {
@@ -2363,7 +1458,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 18,
+    "sortOrder": 21,
     "downstreamCount": 7
   },
   {
@@ -2390,7 +1485,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 199,
+    "sortOrder": 234,
     "downstreamCount": 0
   },
   {
@@ -2431,24 +1526,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeBackendService",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 200,
+    "sortOrder": 235,
     "downstreamCount": 0
   },
   {
@@ -2458,6 +1554,7 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
@@ -2466,18 +1563,18 @@
       "KMSCryptoKey",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 456,
+    "sortOrder": 552,
     "downstreamCount": 4
   },
   {
@@ -2487,24 +1584,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeDisk",
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 453,
+    "sortOrder": 551,
     "downstreamCount": 0
   },
   {
@@ -2528,7 +1626,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 201,
+    "sortOrder": 236,
     "downstreamCount": 0
   },
   {
@@ -2545,8 +1643,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -2554,7 +1652,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 202,
+    "sortOrder": 237,
     "downstreamCount": 0
   },
   {
@@ -2571,8 +1669,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -2580,7 +1678,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 30,
+    "sortOrder": 31,
     "downstreamCount": 4
   },
   {
@@ -2606,33 +1704,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 203,
-    "downstreamCount": 0
-  },
-  {
-    "group": "compute",
-    "kind": "ComputeFirewallPolicyRule",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeFirewallPolicy"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 204,
+    "sortOrder": 238,
     "downstreamCount": 0
   },
   {
@@ -2669,7 +1741,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 79,
+    "sortOrder": 88,
     "downstreamCount": 1
   },
   {
@@ -2695,7 +1767,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 205,
+    "sortOrder": 241,
     "downstreamCount": 0
   },
   {
@@ -2721,7 +1793,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 206,
+    "sortOrder": 242,
     "downstreamCount": 0
   },
   {
@@ -2731,17 +1803,18 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
-    "state": "In Progress",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -2769,7 +1842,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 207,
+    "sortOrder": 243,
     "downstreamCount": 0
   },
   {
@@ -2792,7 +1865,7 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
+    "notes": "Missing _reference.go or _identity.go",
     "sortOrder": 12,
     "downstreamCount": 12
   },
@@ -2803,24 +1876,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeDisk",
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 454,
+    "sortOrder": 554,
     "downstreamCount": 4
   },
   {
@@ -2830,6 +1904,7 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
@@ -2839,18 +1914,18 @@
       "IAMServiceAccount",
       "KMSCryptoKey"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 31,
+    "sortOrder": 32,
     "downstreamCount": 4
   },
   {
@@ -2860,19 +1935,20 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -2905,7 +1981,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 80,
+    "sortOrder": 89,
     "downstreamCount": 1
   },
   {
@@ -2931,7 +2007,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 208,
+    "sortOrder": 244,
     "downstreamCount": 0
   },
   {
@@ -2960,7 +2036,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 19,
+    "sortOrder": 22,
     "downstreamCount": 7
   },
   {
@@ -2986,7 +2062,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 32,
+    "sortOrder": 33,
     "downstreamCount": 4
   },
   {
@@ -3012,7 +2088,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 210,
+    "sortOrder": 246,
     "downstreamCount": 0
   },
   {
@@ -3038,7 +2114,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 211,
+    "sortOrder": 247,
     "downstreamCount": 0
   },
   {
@@ -3048,35 +2124,10 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
-    "state": "In Progress",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 6,
-    "downstreamCount": 97
-  },
-  {
-    "group": "compute",
-    "kind": "ComputeNetworkAttachment",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
@@ -3088,35 +2139,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 212,
-    "downstreamCount": 0
-  },
-  {
-    "group": "compute",
-    "kind": "ComputeNetworkEdgeSecurityService",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeSecurityPolicy",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 213,
-    "downstreamCount": 0
+    "sortOrder": 4,
+    "downstreamCount": 126
   },
   {
     "group": "compute",
@@ -3143,7 +2167,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 214,
+    "sortOrder": 250,
     "downstreamCount": 0
   },
   {
@@ -3196,7 +2220,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 215,
+    "sortOrder": 251,
     "downstreamCount": 0
   },
   {
@@ -3223,7 +2247,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 216,
+    "sortOrder": 252,
     "downstreamCount": 0
   },
   {
@@ -3250,7 +2274,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 217,
+    "sortOrder": 253,
     "downstreamCount": 0
   },
   {
@@ -3267,7 +2291,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3275,8 +2299,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 218,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 254,
     "downstreamCount": 0
   },
   {
@@ -3303,7 +2327,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 219,
+    "sortOrder": 255,
     "downstreamCount": 0
   },
   {
@@ -3321,8 +2345,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3330,7 +2354,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 220,
+    "sortOrder": 256,
     "downstreamCount": 0
   },
   {
@@ -3345,16 +2369,16 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 81,
+    "notes": "",
+    "sortOrder": 90,
     "downstreamCount": 1
   },
   {
@@ -3369,7 +2393,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3377,8 +2401,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 221,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 257,
     "downstreamCount": 0
   },
   {
@@ -3402,7 +2426,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 222,
+    "sortOrder": 258,
     "downstreamCount": 0
   },
   {
@@ -3426,7 +2450,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 223,
+    "sortOrder": 259,
     "downstreamCount": 0
   },
   {
@@ -3452,7 +2476,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 224,
+    "sortOrder": 260,
     "downstreamCount": 0
   },
   {
@@ -3479,7 +2503,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 225,
+    "sortOrder": 261,
     "downstreamCount": 0
   },
   {
@@ -3503,7 +2527,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 226,
+    "sortOrder": 262,
     "downstreamCount": 0
   },
   {
@@ -3520,16 +2544,16 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
-      "controller": false,
+      "controller": true,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 227,
+    "sortOrder": 263,
     "downstreamCount": 0
   },
   {
@@ -3556,7 +2580,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 455,
+    "sortOrder": 553,
     "downstreamCount": 0
   },
   {
@@ -3584,7 +2608,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 228,
+    "sortOrder": 264,
     "downstreamCount": 0
   },
   {
@@ -3601,7 +2625,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -3609,8 +2633,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 229,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 265,
     "downstreamCount": 0
   },
   {
@@ -3636,7 +2660,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 230,
+    "sortOrder": 266,
     "downstreamCount": 0
   },
   {
@@ -3646,21 +2670,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
-    "dependencies": [],
-    "state": "Not Started",
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 231,
+    "sortOrder": 267,
     "downstreamCount": 0
   },
   {
@@ -3675,16 +2702,16 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 232,
+    "notes": "",
+    "sortOrder": 268,
     "downstreamCount": 0
   },
   {
@@ -3701,8 +2728,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3710,7 +2737,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 233,
+    "sortOrder": 269,
     "downstreamCount": 0
   },
   {
@@ -3720,23 +2747,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 22,
+    "sortOrder": 24,
     "downstreamCount": 6
   },
   {
@@ -3756,8 +2784,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3765,7 +2793,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 82,
+    "sortOrder": 91,
     "downstreamCount": 1
   },
   {
@@ -3792,7 +2820,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 234,
+    "sortOrder": 270,
     "downstreamCount": 0
   },
   {
@@ -3819,7 +2847,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 235,
+    "sortOrder": 271,
     "downstreamCount": 0
   },
   {
@@ -3843,7 +2871,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 236,
+    "sortOrder": 272,
     "downstreamCount": 0
   },
   {
@@ -3853,21 +2881,22 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 33,
+    "sortOrder": 34,
     "downstreamCount": 4
   },
   {
@@ -3877,21 +2906,22 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 10,
+    "sortOrder": 11,
     "downstreamCount": 13
   },
   {
@@ -3917,7 +2947,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 49,
+    "sortOrder": 54,
     "downstreamCount": 2
   },
   {
@@ -3941,7 +2971,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 237,
+    "sortOrder": 273,
     "downstreamCount": 0
   },
   {
@@ -3967,7 +2997,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 238,
+    "sortOrder": 274,
     "downstreamCount": 0
   },
   {
@@ -3984,8 +3014,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -3993,7 +3023,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 34,
+    "sortOrder": 35,
     "downstreamCount": 4
   },
   {
@@ -4010,15 +3040,15 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
+    "notes": "",
     "sortOrder": 9,
     "downstreamCount": 23
   },
@@ -4045,7 +3075,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 50,
+    "sortOrder": 55,
     "downstreamCount": 2
   },
   {
@@ -4071,7 +3101,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 51,
+    "sortOrder": 56,
     "downstreamCount": 2
   },
   {
@@ -4089,8 +3119,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4098,7 +3128,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 52,
+    "sortOrder": 57,
     "downstreamCount": 2
   },
   {
@@ -4126,7 +3156,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 239,
+    "sortOrder": 275,
     "downstreamCount": 0
   },
   {
@@ -4153,7 +3183,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 240,
+    "sortOrder": 276,
     "downstreamCount": 0
   },
   {
@@ -4180,7 +3210,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 53,
+    "sortOrder": 58,
     "downstreamCount": 2
   },
   {
@@ -4207,7 +3237,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 54,
+    "sortOrder": 59,
     "downstreamCount": 2
   },
   {
@@ -4233,7 +3263,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 25,
+    "sortOrder": 26,
     "downstreamCount": 5
   },
   {
@@ -4243,24 +3273,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeBackendBucket",
       "ComputeBackendService"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 26,
+    "sortOrder": 27,
     "downstreamCount": 5
   },
   {
@@ -4287,7 +3318,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 38,
+    "sortOrder": 39,
     "downstreamCount": 3
   },
   {
@@ -4315,7 +3346,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 55,
+    "sortOrder": 60,
     "downstreamCount": 2
   },
   {
@@ -4342,7 +3373,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 241,
+    "sortOrder": 277,
     "downstreamCount": 0
   },
   {
@@ -4366,7 +3397,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 243,
+    "sortOrder": 280,
     "downstreamCount": 0
   },
   {
@@ -4392,7 +3423,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 244,
+    "sortOrder": 281,
     "downstreamCount": 0
   },
   {
@@ -4409,7 +3440,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -4417,8 +3448,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 245,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 282,
     "downstreamCount": 0
   },
   {
@@ -4437,8 +3468,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4446,7 +3477,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 56,
+    "sortOrder": 61,
     "downstreamCount": 2
   },
   {
@@ -4466,8 +3497,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4475,7 +3506,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 246,
+    "sortOrder": 283,
     "downstreamCount": 0
   },
   {
@@ -4502,7 +3533,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 247,
+    "sortOrder": 288,
     "downstreamCount": 0
   },
   {
@@ -4528,7 +3559,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 83,
+    "sortOrder": 93,
     "downstreamCount": 1
   },
   {
@@ -4556,7 +3587,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 248,
+    "sortOrder": 290,
     "downstreamCount": 0
   },
   {
@@ -4582,7 +3613,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 249,
+    "sortOrder": 291,
     "downstreamCount": 0
   },
   {
@@ -4592,23 +3623,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 84,
+    "sortOrder": 94,
     "downstreamCount": 1
   },
   {
@@ -4618,23 +3650,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 250,
+    "sortOrder": 292,
     "downstreamCount": 0
   },
   {
@@ -4653,8 +3686,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4662,7 +3695,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 251,
+    "sortOrder": 293,
     "downstreamCount": 0
   },
   {
@@ -4672,23 +3705,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 252,
+    "sortOrder": 294,
     "downstreamCount": 0
   },
   {
@@ -4705,8 +3739,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4714,60 +3748,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 253,
+    "sortOrder": 295,
     "downstreamCount": 0
-  },
-  {
-    "group": "datacatalog",
-    "kind": "DataCatalogEntry",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DataCatalogEntryGroup"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 85,
-    "downstreamCount": 1
-  },
-  {
-    "group": "datacatalog",
-    "kind": "DataCatalogEntryGroup",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 57,
-    "downstreamCount": 2
   },
   {
     "group": "datacatalog",
@@ -4783,8 +3765,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4792,59 +3774,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 254,
-    "downstreamCount": 0
-  },
-  {
-    "group": "datacatalog",
-    "kind": "DataCatalogTag",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DataCatalogEntry"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 255,
-    "downstreamCount": 0
-  },
-  {
-    "group": "datacatalog",
-    "kind": "DataCatalogTagTemplate",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 256,
+    "sortOrder": 296,
     "downstreamCount": 0
   },
   {
@@ -4861,8 +3791,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4870,7 +3800,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 86,
+    "sortOrder": 96,
     "downstreamCount": 1
   },
   {
@@ -4897,7 +3827,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 257,
+    "sortOrder": 299,
     "downstreamCount": 0
   },
   {
@@ -4918,15 +3848,15 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 258,
+    "notes": "",
+    "sortOrder": 308,
     "downstreamCount": 0
   },
   {
@@ -4945,8 +3875,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -4954,168 +3884,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 259,
-    "downstreamCount": 0
-  },
-  {
-    "group": "dataform",
-    "kind": "DataformRepository",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "IAMServiceAccount",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 260,
-    "downstreamCount": 0
-  },
-  {
-    "group": "dataplex",
-    "kind": "DataplexEntryGroup",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 261,
-    "downstreamCount": 0
-  },
-  {
-    "group": "dataplex",
-    "kind": "DataplexEntryType",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 262,
-    "downstreamCount": 0
-  },
-  {
-    "group": "dataplex",
-    "kind": "DataplexLake",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project",
-      "Service"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 58,
-    "downstreamCount": 2
-  },
-  {
-    "group": "dataplex",
-    "kind": "DataplexTask",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DataplexLake",
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 263,
-    "downstreamCount": 0
-  },
-  {
-    "group": "dataplex",
-    "kind": "DataplexZone",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DataplexLake"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 264,
+    "sortOrder": 309,
     "downstreamCount": 0
   },
   {
@@ -5125,40 +3894,11 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 265,
-    "downstreamCount": 0
-  },
-  {
-    "group": "dataproc",
-    "kind": "DataprocBatch",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
+      "DCL",
       "Direct"
     ],
     "dependencies": [
-      "DataprocCluster",
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project",
-      "StorageBucket"
+      "Project"
     ],
     "state": "Completed",
     "steps": {
@@ -5171,7 +3911,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 266,
+    "sortOrder": 321,
     "downstreamCount": 0
   },
   {
@@ -5192,8 +3932,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -5201,34 +3941,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 35,
-    "downstreamCount": 4
-  },
-  {
-    "group": "dataproc",
-    "kind": "DataprocJob",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 267,
-    "downstreamCount": 0
+    "sortOrder": 25,
+    "downstreamCount": 6
   },
   {
     "group": "dataproc",
@@ -5257,7 +3971,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 268,
+    "sortOrder": 326,
     "downstreamCount": 0
   },
   {
@@ -5283,88 +3997,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 269,
-    "downstreamCount": 0
-  },
-  {
-    "group": "datastream",
-    "kind": "DatastreamConnectionProfile",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DatastreamPrivateConnection",
-      "Project",
-      "SecretManagerSecret"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 270,
-    "downstreamCount": 0
-  },
-  {
-    "group": "datastream",
-    "kind": "DatastreamPrivateConnection",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 59,
-    "downstreamCount": 2
-  },
-  {
-    "group": "datastream",
-    "kind": "DatastreamRoute",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DatastreamPrivateConnection"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 271,
+    "sortOrder": 327,
     "downstreamCount": 0
   },
   {
@@ -5390,7 +4023,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 272,
+    "sortOrder": 330,
     "downstreamCount": 0
   },
   {
@@ -5416,7 +4049,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 273,
+    "sortOrder": 331,
     "downstreamCount": 0
   },
   {
@@ -5440,7 +4073,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 274,
+    "sortOrder": 336,
     "downstreamCount": 0
   },
   {
@@ -5466,7 +4099,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 275,
+    "sortOrder": 337,
     "downstreamCount": 0
   },
   {
@@ -5490,7 +4123,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 276,
+    "sortOrder": 338,
     "downstreamCount": 0
   },
   {
@@ -5514,7 +4147,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 277,
+    "sortOrder": 339,
     "downstreamCount": 0
   },
   {
@@ -5538,7 +4171,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 278,
+    "sortOrder": 340,
     "downstreamCount": 0
   },
   {
@@ -5562,7 +4195,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 279,
+    "sortOrder": 341,
     "downstreamCount": 0
   },
   {
@@ -5586,7 +4219,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 280,
+    "sortOrder": 342,
     "downstreamCount": 0
   },
   {
@@ -5612,7 +4245,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 281,
+    "sortOrder": 344,
     "downstreamCount": 0
   },
   {
@@ -5638,7 +4271,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 282,
+    "sortOrder": 345,
     "downstreamCount": 0
   },
   {
@@ -5664,61 +4297,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 283,
+    "sortOrder": 347,
     "downstreamCount": 0
-  },
-  {
-    "group": "discoveryengine",
-    "kind": "DiscoveryEngineDataStore",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 87,
-    "downstreamCount": 1
-  },
-  {
-    "group": "documentai",
-    "kind": "DocumentAIProcessor",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 88,
-    "downstreamCount": 1
   },
   {
     "group": "documentai",
@@ -5741,34 +4321,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 286,
-    "downstreamCount": 0
-  },
-  {
-    "group": "documentai",
-    "kind": "DocumentAIProcessorVersion",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "DocumentAIProcessor",
-      "KMSCryptoKey"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 287,
+    "sortOrder": 356,
     "downstreamCount": 0
   },
   {
@@ -5795,7 +4348,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 60,
+    "sortOrder": 65,
     "downstreamCount": 2
   },
   {
@@ -5823,7 +4376,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 289,
+    "sortOrder": 359,
     "downstreamCount": 0
   },
   {
@@ -5850,7 +4403,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 290,
+    "sortOrder": 360,
     "downstreamCount": 0
   },
   {
@@ -5876,7 +4429,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 89,
+    "sortOrder": 98,
     "downstreamCount": 1
   },
   {
@@ -5903,88 +4456,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 291,
-    "downstreamCount": 0
-  },
-  {
-    "group": "essentialcontacts",
-    "kind": "EssentialContactsContact",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Folder",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 292,
-    "downstreamCount": 0
-  },
-  {
-    "group": "eventarc",
-    "kind": "EventarcChannel",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 90,
-    "downstreamCount": 1
-  },
-  {
-    "group": "eventarc",
-    "kind": "EventarcGoogleChannelConfig",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 293,
+    "sortOrder": 361,
     "downstreamCount": 0
   },
   {
@@ -5998,7 +4470,6 @@
     ],
     "dependencies": [
       "ComputeNetwork",
-      "EventarcChannel",
       "IAMServiceAccount",
       "Project",
       "Service"
@@ -6014,7 +4485,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 294,
+    "sortOrder": 367,
     "downstreamCount": 0
   },
   {
@@ -6040,7 +4511,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 295,
+    "sortOrder": 368,
     "downstreamCount": 0
   },
   {
@@ -6058,7 +4529,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6066,8 +4537,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 296,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 369,
     "downstreamCount": 0
   },
   {
@@ -6093,7 +4564,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 297,
+    "sortOrder": 370,
     "downstreamCount": 0
   },
   {
@@ -6119,7 +4590,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 298,
+    "sortOrder": 371,
     "downstreamCount": 0
   },
   {
@@ -6145,7 +4616,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 299,
+    "sortOrder": 372,
     "downstreamCount": 0
   },
   {
@@ -6169,7 +4640,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 300,
+    "sortOrder": 373,
     "downstreamCount": 0
   },
   {
@@ -6195,7 +4666,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 301,
+    "sortOrder": 374,
     "downstreamCount": 0
   },
   {
@@ -6219,7 +4690,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 91,
+    "sortOrder": 99,
     "downstreamCount": 1
   },
   {
@@ -6245,7 +4716,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 302,
+    "sortOrder": 375,
     "downstreamCount": 0
   },
   {
@@ -6269,85 +4740,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 303,
-    "downstreamCount": 0
-  },
-  {
-    "group": "firestore",
-    "kind": "FirestoreDatabase",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 39,
-    "downstreamCount": 3
-  },
-  {
-    "group": "firestore",
-    "kind": "FirestoreDocument",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "FirestoreDatabase"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 305,
-    "downstreamCount": 0
-  },
-  {
-    "group": "firestore",
-    "kind": "FirestoreField",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "FirestoreDatabase"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 306,
+    "sortOrder": 376,
     "downstreamCount": 0
   },
   {
@@ -6357,21 +4750,22 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 307,
+    "sortOrder": 380,
     "downstreamCount": 0
   },
   {
@@ -6386,124 +4780,17 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
-      "controller": false,
+      "controller": true,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 1,
-    "downstreamCount": 298
-  },
-  {
-    "group": "gkebackup",
-    "kind": "GKEBackupBackup",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "GKEBackupBackupPlan"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 92,
-    "downstreamCount": 1
-  },
-  {
-    "group": "gkebackup",
-    "kind": "GKEBackupBackupPlan",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 40,
-    "downstreamCount": 3
-  },
-  {
-    "group": "gkebackup",
-    "kind": "GKEBackupRestore",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "GKEBackupBackup",
-      "GKEBackupRestorePlan"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 308,
-    "downstreamCount": 0
-  },
-  {
-    "group": "gkebackup",
-    "kind": "GKEBackupRestorePlan",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "GKEBackupBackupPlan",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 93,
-    "downstreamCount": 1
+    "downstreamCount": 394
   },
   {
     "group": "gkehub",
@@ -6528,37 +4815,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 94,
+    "sortOrder": 102,
     "downstreamCount": 1
-  },
-  {
-    "group": "gkehub",
-    "kind": "GKEHubFeatureMembership",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "GKEHubFeature",
-      "GKEHubMembership",
-      "IAMServiceAccount",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 309,
-    "downstreamCount": 0
   },
   {
     "group": "gkehub",
@@ -6581,8 +4839,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 95,
-    "downstreamCount": 1
+    "sortOrder": 67,
+    "downstreamCount": 2
   },
   {
     "group": "healthcare",
@@ -6605,7 +4863,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 310,
+    "sortOrder": 387,
     "downstreamCount": 0
   },
   {
@@ -6629,7 +4887,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 311,
+    "sortOrder": 388,
     "downstreamCount": 0
   },
   {
@@ -6655,7 +4913,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 312,
+    "sortOrder": 389,
     "downstreamCount": 0
   },
   {
@@ -6679,7 +4937,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 313,
+    "sortOrder": 390,
     "downstreamCount": 0
   },
   {
@@ -6703,7 +4961,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 314,
+    "sortOrder": 391,
     "downstreamCount": 0
   },
   {
@@ -6729,7 +4987,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 315,
+    "sortOrder": 392,
     "downstreamCount": 0
   },
   {
@@ -6744,7 +5002,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6752,8 +5010,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 316,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 393,
     "downstreamCount": 0
   },
   {
@@ -6777,7 +5035,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 317,
+    "sortOrder": 394,
     "downstreamCount": 0
   },
   {
@@ -6791,9 +5049,7 @@
       "IAMPartialPolicy"
     ],
     "dependencies": [
-      "BigQueryConnectionConnection",
       "IAMServiceAccount",
-      "SQLInstance",
       "ServiceIdentity"
     ],
     "state": "Completed",
@@ -6806,8 +5062,8 @@
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 319,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 396,
     "downstreamCount": 0
   },
   {
@@ -6822,16 +5078,16 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
-      "controller": false,
+      "controller": true,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 320,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 397,
     "downstreamCount": 0
   },
   {
@@ -6844,14 +5100,12 @@
       "IAMPolicyMember"
     ],
     "dependencies": [
-      "BigQueryConnectionConnection",
       "IAMServiceAccount",
-      "SQLInstance",
       "ServiceIdentity"
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6859,8 +5113,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 321,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 398,
     "downstreamCount": 0
   },
   {
@@ -6875,7 +5129,7 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -6883,9 +5137,9 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
+    "notes": "Missing _reference.go or _identity.go",
     "sortOrder": 7,
-    "downstreamCount": 43
+    "downstreamCount": 53
   },
   {
     "group": "iam",
@@ -6901,8 +5155,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -6910,7 +5164,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 322,
+    "sortOrder": 399,
     "downstreamCount": 0
   },
   {
@@ -6934,7 +5188,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 96,
+    "sortOrder": 103,
     "downstreamCount": 1
   },
   {
@@ -6960,7 +5214,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 323,
+    "sortOrder": 400,
     "downstreamCount": 0
   },
   {
@@ -6986,7 +5240,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 97,
+    "sortOrder": 104,
     "downstreamCount": 1
   },
   {
@@ -7013,7 +5267,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 324,
+    "sortOrder": 401,
     "downstreamCount": 0
   },
   {
@@ -7028,8 +5282,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7037,7 +5291,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 98,
+    "sortOrder": 105,
     "downstreamCount": 1
   },
   {
@@ -7063,34 +5317,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 325,
-    "downstreamCount": 0
-  },
-  {
-    "group": "iap",
-    "kind": "IAPSettings",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Folder",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 326,
+    "sortOrder": 402,
     "downstreamCount": 0
   },
   {
@@ -7116,7 +5343,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 327,
+    "sortOrder": 404,
     "downstreamCount": 0
   },
   {
@@ -7142,7 +5369,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 328,
+    "sortOrder": 405,
     "downstreamCount": 0
   },
   {
@@ -7168,7 +5395,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 329,
+    "sortOrder": 406,
     "downstreamCount": 0
   },
   {
@@ -7192,7 +5419,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 330,
+    "sortOrder": 407,
     "downstreamCount": 0
   },
   {
@@ -7218,7 +5445,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 331,
+    "sortOrder": 408,
     "downstreamCount": 0
   },
   {
@@ -7242,7 +5469,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 99,
+    "sortOrder": 106,
     "downstreamCount": 1
   },
   {
@@ -7268,7 +5495,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 332,
+    "sortOrder": 409,
     "downstreamCount": 0
   },
   {
@@ -7294,7 +5521,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 333,
+    "sortOrder": 410,
     "downstreamCount": 0
   },
   {
@@ -7320,20 +5547,21 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 334,
+    "sortOrder": 411,
     "downstreamCount": 0
   },
   {
     "group": "kms",
-    "kind": "KMSAutokeyConfig",
+    "kind": "KMSCryptoKey",
     "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
     "supportedControllers": [
-      "Direct"
+      "Direct",
+      "Terraform"
     ],
     "dependencies": [
-      "Folder"
+      "KMSKeyRing"
     ],
     "state": "Completed",
     "steps": {
@@ -7346,34 +5574,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 335,
-    "downstreamCount": 0
-  },
-  {
-    "group": "kms",
-    "kind": "KMSCryptoKey",
-    "version": "v1beta1",
-    "controllerType": "Terraform",
-    "defaultController": "Terraform",
-    "supportedControllers": [
-      "Terraform"
-    ],
-    "dependencies": [
-      "KMSKeyRing"
-    ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 5,
-    "downstreamCount": 113
+    "sortOrder": 6,
+    "downstreamCount": 124
   },
   {
     "group": "kms",
@@ -7387,8 +5589,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7396,59 +5598,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 336,
-    "downstreamCount": 0
-  },
-  {
-    "group": "kms",
-    "kind": "KMSImportJob",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSKeyRing"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 337,
-    "downstreamCount": 0
-  },
-  {
-    "group": "kms",
-    "kind": "KMSKeyHandle",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 338,
+    "sortOrder": 413,
     "downstreamCount": 0
   },
   {
@@ -7458,22 +5608,23 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 4,
-    "downstreamCount": 115
+    "sortOrder": 5,
+    "downstreamCount": 126
   },
   {
     "group": "kms",
@@ -7487,8 +5638,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7496,7 +5647,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 339,
+    "sortOrder": 416,
     "downstreamCount": 0
   },
   {
@@ -7511,8 +5662,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7520,20 +5671,22 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 340,
+    "sortOrder": 417,
     "downstreamCount": 0
   },
   {
     "group": "logging",
-    "kind": "LoggingLink",
+    "kind": "LoggingLogBucket",
     "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
     "supportedControllers": [
+      "DCL",
       "Direct"
     ],
     "dependencies": [
-      "LoggingLogBucket"
+      "Folder",
+      "Project"
     ],
     "state": "Completed",
     "steps": {
@@ -7546,34 +5699,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 341,
-    "downstreamCount": 0
-  },
-  {
-    "group": "logging",
-    "kind": "LoggingLogBucket",
-    "version": "v1beta1",
-    "controllerType": "DCL",
-    "defaultController": "DCL",
-    "supportedControllers": [
-      "DCL"
-    ],
-    "dependencies": [
-      "Folder",
-      "Project"
-    ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 41,
+    "sortOrder": 44,
     "downstreamCount": 3
   },
   {
@@ -7583,51 +5709,25 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
+      "DCL",
+      "Direct"
     ],
     "dependencies": [
       "Folder",
       "Project"
     ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 342,
-    "downstreamCount": 0
-  },
-  {
-    "group": "logging",
-    "kind": "LoggingLogMetric",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "LoggingLogBucket",
-      "Project"
-    ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 343,
+    "notes": "",
+    "sortOrder": 419,
     "downstreamCount": 0
   },
   {
@@ -7637,6 +5737,7 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
@@ -7647,18 +5748,18 @@
       "PubSubTopic",
       "StorageBucket"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 344,
+    "sortOrder": 421,
     "downstreamCount": 0
   },
   {
@@ -7668,25 +5769,26 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
+      "DCL",
+      "Direct"
     ],
     "dependencies": [
       "Folder",
       "Project",
       "StorageBucket"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 345,
+    "sortOrder": 422,
     "downstreamCount": 0
   },
   {
@@ -7712,62 +5814,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 346,
-    "downstreamCount": 0
-  },
-  {
-    "group": "managedkafka",
-    "kind": "ManagedKafkaCluster",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 61,
-    "downstreamCount": 2
-  },
-  {
-    "group": "managedkafka",
-    "kind": "ManagedKafkaTopic",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ManagedKafkaCluster",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 348,
+    "sortOrder": 423,
     "downstreamCount": 0
   },
   {
@@ -7793,115 +5840,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 349,
+    "sortOrder": 426,
     "downstreamCount": 0
-  },
-  {
-    "group": "memorystore",
-    "kind": "MemorystoreInstance",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 350,
-    "downstreamCount": 0
-  },
-  {
-    "group": "metastore",
-    "kind": "MetastoreBackup",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "MetastoreService"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 351,
-    "downstreamCount": 0
-  },
-  {
-    "group": "metastore",
-    "kind": "MetastoreFederation",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 352,
-    "downstreamCount": 0
-  },
-  {
-    "group": "metastore",
-    "kind": "MetastoreService",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 36,
-    "downstreamCount": 4
   },
   {
     "group": "monitoring",
@@ -7915,8 +5855,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7924,35 +5864,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 100,
+    "sortOrder": 107,
     "downstreamCount": 1
-  },
-  {
-    "group": "monitoring",
-    "kind": "MonitoringDashboard",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "MonitoringAlertPolicy",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 353,
-    "downstreamCount": 0
   },
   {
     "group": "monitoring",
@@ -7968,8 +5881,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -7977,7 +5890,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 101,
+    "sortOrder": 108,
     "downstreamCount": 1
   },
   {
@@ -7994,8 +5907,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8003,7 +5916,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 354,
+    "sortOrder": 432,
     "downstreamCount": 0
   },
   {
@@ -8018,8 +5931,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8027,7 +5940,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 355,
+    "sortOrder": 433,
     "downstreamCount": 0
   },
   {
@@ -8042,8 +5955,8 @@
     "dependencies": [],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8051,7 +5964,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 356,
+    "sortOrder": 434,
     "downstreamCount": 0
   },
   {
@@ -8068,8 +5981,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8077,7 +5990,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 102,
+    "sortOrder": 109,
     "downstreamCount": 1
   },
   {
@@ -8104,7 +6017,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 357,
+    "sortOrder": 435,
     "downstreamCount": 0
   },
   {
@@ -8122,8 +6035,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8131,33 +6044,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 358,
-    "downstreamCount": 0
-  },
-  {
-    "group": "netapp",
-    "kind": "NetAppBackupPolicy",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 359,
+    "sortOrder": 436,
     "downstreamCount": 0
   },
   {
@@ -8183,62 +6070,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 103,
+    "sortOrder": 110,
     "downstreamCount": 1
-  },
-  {
-    "group": "networkconnectivity",
-    "kind": "NetworkConnectivityInternalRange",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 361,
-    "downstreamCount": 0
-  },
-  {
-    "group": "networkconnectivity",
-    "kind": "NetworkConnectivityServiceConnectionPolicy",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 362,
-    "downstreamCount": 0
   },
   {
     "group": "networkconnectivity",
@@ -8264,37 +6097,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 363,
-    "downstreamCount": 0
-  },
-  {
-    "group": "networkmanagement",
-    "kind": "NetworkManagementConnectivityTest",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeForwardingRule",
-      "ComputeInstance",
-      "ComputeNetwork",
-      "ContainerCluster",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 364,
+    "sortOrder": 442,
     "downstreamCount": 0
   },
   {
@@ -8311,8 +6114,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8320,7 +6123,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 365,
+    "sortOrder": 445,
     "downstreamCount": 0
   },
   {
@@ -8337,8 +6140,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8346,7 +6149,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 366,
+    "sortOrder": 447,
     "downstreamCount": 0
   },
   {
@@ -8372,7 +6175,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 367,
+    "sortOrder": 454,
     "downstreamCount": 0
   },
   {
@@ -8398,7 +6201,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 368,
+    "sortOrder": 455,
     "downstreamCount": 0
   },
   {
@@ -8424,7 +6227,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 369,
+    "sortOrder": 456,
     "downstreamCount": 0
   },
   {
@@ -8441,8 +6244,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8450,7 +6253,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 370,
+    "sortOrder": 457,
     "downstreamCount": 0
   },
   {
@@ -8476,7 +6279,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 371,
+    "sortOrder": 458,
     "downstreamCount": 0
   },
   {
@@ -8503,7 +6306,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 372,
+    "sortOrder": 459,
     "downstreamCount": 0
   },
   {
@@ -8513,23 +6316,24 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
+      "DCL",
+      "Direct"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 373,
+    "sortOrder": 460,
     "downstreamCount": 0
   },
   {
@@ -8556,7 +6360,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 374,
+    "sortOrder": 461,
     "downstreamCount": 0
   },
   {
@@ -8582,34 +6386,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 376,
-    "downstreamCount": 0
-  },
-  {
-    "group": "networkservices",
-    "kind": "NetworkServicesServiceBinding",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project",
-      "Service"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 377,
+    "sortOrder": 463,
     "downstreamCount": 0
   },
   {
@@ -8636,7 +6413,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 378,
+    "sortOrder": 465,
     "downstreamCount": 0
   },
   {
@@ -8663,62 +6440,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 379,
-    "downstreamCount": 0
-  },
-  {
-    "group": "notebooks",
-    "kind": "NotebookInstance",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 380,
-    "downstreamCount": 0
-  },
-  {
-    "group": "notebooks",
-    "kind": "NotebooksEnvironment",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 381,
+    "sortOrder": 466,
     "downstreamCount": 0
   },
   {
@@ -8744,7 +6466,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 382,
+    "sortOrder": 470,
     "downstreamCount": 0
   },
   {
@@ -8761,8 +6483,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -8770,7 +6492,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 383,
+    "sortOrder": 471,
     "downstreamCount": 0
   },
   {
@@ -8796,7 +6518,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 384,
+    "sortOrder": 472,
     "downstreamCount": 0
   },
   {
@@ -8820,86 +6542,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 385,
+    "sortOrder": 473,
     "downstreamCount": 0
-  },
-  {
-    "group": "orgpolicy",
-    "kind": "OrgPolicyCustomConstraint",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 386,
-    "downstreamCount": 0
-  },
-  {
-    "group": "orgpolicy",
-    "kind": "OrgPolicyPolicy",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Folder",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 387,
-    "downstreamCount": 0
-  },
-  {
-    "group": "parametermanager",
-    "kind": "ParameterManagerParameter",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 104,
-    "downstreamCount": 1
   },
   {
     "group": "privateca",
@@ -8917,15 +6561,15 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 62,
+    "notes": "",
+    "sortOrder": 69,
     "downstreamCount": 2
   },
   {
@@ -8954,7 +6598,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 389,
+    "sortOrder": 477,
     "downstreamCount": 0
   },
   {
@@ -8974,7 +6618,7 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
+      "gen-types": true,
       "identity-reference": false,
       "mapper-fuzzer": false,
       "mocks": false,
@@ -8982,8 +6626,8 @@
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 105,
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 115,
     "downstreamCount": 1
   },
   {
@@ -8993,51 +6637,25 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 106,
-    "downstreamCount": 1
-  },
-  {
-    "group": "privilegedaccessmanager",
-    "kind": "PrivilegedAccessManagerEntitlement",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
+      "DCL",
       "Direct"
     ],
     "dependencies": [
-      "Folder",
       "Project"
     ],
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 390,
-    "downstreamCount": 0
+    "notes": "",
+    "sortOrder": 116,
+    "downstreamCount": 1
   },
   {
     "group": "resourcemanager",
@@ -9054,7 +6672,7 @@
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -9063,7 +6681,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 3,
-    "downstreamCount": 292
+    "downstreamCount": 389
   },
   {
     "group": "pubsublite",
@@ -9088,7 +6706,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 391,
+    "sortOrder": 479,
     "downstreamCount": 0
   },
   {
@@ -9114,7 +6732,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 392,
+    "sortOrder": 480,
     "downstreamCount": 0
   },
   {
@@ -9140,7 +6758,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 393,
+    "sortOrder": 481,
     "downstreamCount": 0
   },
   {
@@ -9150,38 +6768,11 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
-    ],
-    "state": "In Progress",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": false,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 20,
-    "downstreamCount": 7
-  },
-  {
-    "group": "pubsub",
-    "kind": "PubSubSnapshot",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project",
-      "PubSubSubscription",
-      "PubSubTopic"
     ],
     "state": "Completed",
     "steps": {
@@ -9194,8 +6785,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 394,
-    "downstreamCount": 0
+    "sortOrder": 19,
+    "downstreamCount": 8
   },
   {
     "group": "pubsub",
@@ -9204,24 +6795,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "PubSubTopic",
       "StorageBucket"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 63,
+    "sortOrder": 70,
     "downstreamCount": 2
   },
   {
@@ -9231,37 +6823,12 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "KMSCryptoKey",
       "PubSubSchema"
-    ],
-    "state": "Not Started",
-    "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 24,
-    "downstreamCount": 6
-  },
-  {
-    "group": "recaptchaenterprise",
-    "kind": "ReCAPTCHAEnterpriseFirewallPolicy",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
     ],
     "state": "Completed",
     "steps": {
@@ -9274,8 +6841,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 395,
-    "downstreamCount": 0
+    "sortOrder": 23,
+    "downstreamCount": 7
   },
   {
     "group": "recaptchaenterprise",
@@ -9291,8 +6858,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -9300,34 +6867,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 396,
-    "downstreamCount": 0
-  },
-  {
-    "group": "redis",
-    "kind": "RedisCluster",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 397,
+    "sortOrder": 484,
     "downstreamCount": 0
   },
   {
@@ -9337,23 +6877,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 398,
+    "sortOrder": 486,
     "downstreamCount": 0
   },
   {
@@ -9379,7 +6920,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 399,
+    "sortOrder": 487,
     "downstreamCount": 0
   },
   {
@@ -9406,7 +6947,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 400,
+    "sortOrder": 488,
     "downstreamCount": 0
   },
   {
@@ -9436,7 +6977,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 401,
+    "sortOrder": 489,
     "downstreamCount": 0
   },
   {
@@ -9464,7 +7005,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 402,
+    "sortOrder": 490,
     "downstreamCount": 0
   },
   {
@@ -9476,9 +7017,7 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [
-      "SQLInstance"
-    ],
+    "dependencies": [],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9490,36 +7029,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 403,
+    "sortOrder": 492,
     "downstreamCount": 0
-  },
-  {
-    "group": "sql",
-    "kind": "SQLInstance",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "KMSCryptoKey",
-      "StorageBucket"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 27,
-    "downstreamCount": 5
   },
   {
     "group": "sql",
@@ -9530,9 +7041,7 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [
-      "SQLInstance"
-    ],
+    "dependencies": [],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9544,7 +7053,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 404,
+    "sortOrder": 493,
     "downstreamCount": 0
   },
   {
@@ -9556,9 +7065,7 @@
     "supportedControllers": [
       "Terraform"
     ],
-    "dependencies": [
-      "SQLInstance"
-    ],
+    "dependencies": [],
     "state": "Not Started",
     "steps": {
       "gen-types": false,
@@ -9570,7 +7077,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 405,
+    "sortOrder": 494,
     "downstreamCount": 0
   },
   {
@@ -9597,7 +7104,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 64,
+    "sortOrder": 71,
     "downstreamCount": 2
   },
   {
@@ -9624,61 +7131,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 406,
-    "downstreamCount": 0
-  },
-  {
-    "group": "securesourcemanager",
-    "kind": "SecureSourceManagerInstance",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 107,
-    "downstreamCount": 1
-  },
-  {
-    "group": "securesourcemanager",
-    "kind": "SecureSourceManagerRepository",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project",
-      "SecureSourceManagerInstance"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 407,
+    "sortOrder": 495,
     "downstreamCount": 0
   },
   {
@@ -9702,7 +7155,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 408,
+    "sortOrder": 499,
     "downstreamCount": 0
   },
   {
@@ -9726,7 +7179,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 409,
+    "sortOrder": 500,
     "downstreamCount": 0
   },
   {
@@ -9736,24 +7189,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "In Progress",
+    "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 11,
-    "downstreamCount": 13
+    "sortOrder": 10,
+    "downstreamCount": 15
   },
   {
     "group": "servicedirectory",
@@ -9762,24 +7216,25 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ComputeNetwork",
       "Service"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 410,
+    "sortOrder": 501,
     "downstreamCount": 0
   },
   {
@@ -9789,23 +7244,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "Project"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 108,
+    "sortOrder": 118,
     "downstreamCount": 1
   },
   {
@@ -9815,23 +7271,24 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "ServiceDirectoryNamespace"
     ],
-    "state": "Not Started",
+    "state": "Completed",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 411,
+    "sortOrder": 502,
     "downstreamCount": 0
   },
   {
@@ -9848,8 +7305,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -9857,7 +7314,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 65,
+    "sortOrder": 72,
     "downstreamCount": 2
   },
   {
@@ -9883,33 +7340,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 412,
-    "downstreamCount": 0
-  },
-  {
-    "group": "servicenetworking",
-    "kind": "ServiceNetworkingPeeredDNSDomain",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 413,
+    "sortOrder": 503,
     "downstreamCount": 0
   },
   {
@@ -9935,7 +7366,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 414,
+    "sortOrder": 505,
     "downstreamCount": 0
   },
   {
@@ -9961,34 +7392,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 415,
-    "downstreamCount": 0
-  },
-  {
-    "group": "spanner",
-    "kind": "SpannerBackupSchedule",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "SpannerDatabase"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 416,
+    "sortOrder": 506,
     "downstreamCount": 0
   },
   {
@@ -10015,7 +7419,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 109,
+    "sortOrder": 119,
     "downstreamCount": 1
   },
   {
@@ -10032,146 +7436,16 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 66,
+    "notes": "",
+    "sortOrder": 73,
     "downstreamCount": 2
-  },
-  {
-    "group": "spanner",
-    "kind": "SpannerInstanceConfig",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 417,
-    "downstreamCount": 0
-  },
-  {
-    "group": "speech",
-    "kind": "SpeechCustomClass",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 418,
-    "downstreamCount": 0
-  },
-  {
-    "group": "speech",
-    "kind": "SpeechPhraseSet",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 419,
-    "downstreamCount": 0
-  },
-  {
-    "group": "speech",
-    "kind": "SpeechRecognizer",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 420,
-    "downstreamCount": 0
-  },
-  {
-    "group": "storage",
-    "kind": "StorageAnywhereCache",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "StorageBucket"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 421,
-    "downstreamCount": 0
   },
   {
     "group": "storage",
@@ -10183,12 +7457,13 @@
       "Terraform"
     ],
     "dependencies": [
+      "ComputeNetwork",
       "KMSCryptoKey"
     ],
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -10197,7 +7472,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 8,
-    "downstreamCount": 37
+    "downstreamCount": 40
   },
   {
     "group": "storage",
@@ -10222,7 +7497,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 422,
+    "sortOrder": 513,
     "downstreamCount": 0
   },
   {
@@ -10248,34 +7523,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 423,
-    "downstreamCount": 0
-  },
-  {
-    "group": "storage",
-    "kind": "StorageFolder",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project",
-      "StorageBucket"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 424,
+    "sortOrder": 514,
     "downstreamCount": 0
   },
   {
@@ -10301,7 +7549,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 425,
+    "sortOrder": 516,
     "downstreamCount": 0
   },
   {
@@ -10327,7 +7575,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 427,
+    "sortOrder": 518,
     "downstreamCount": 0
   },
   {
@@ -10353,7 +7601,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 428,
+    "sortOrder": 519,
     "downstreamCount": 0
   },
   {
@@ -10379,7 +7627,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 429,
+    "sortOrder": 520,
     "downstreamCount": 0
   },
   {
@@ -10405,7 +7653,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 430,
+    "sortOrder": 521,
     "downstreamCount": 0
   },
   {
@@ -10424,15 +7672,15 @@
     "state": "Completed",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
       "mocks": true,
       "controller": true,
       "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 432,
+    "notes": "",
+    "sortOrder": 523,
     "downstreamCount": 0
   },
   {
@@ -10459,7 +7707,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 433,
+    "sortOrder": 524,
     "downstreamCount": 0
   },
   {
@@ -10484,7 +7732,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 434,
+    "sortOrder": 525,
     "downstreamCount": 0
   },
   {
@@ -10509,194 +7757,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 67,
-    "downstreamCount": 2
-  },
-  {
-    "group": "cloudtasks",
-    "kind": "TasksQueue",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 435,
-    "downstreamCount": 0
-  },
-  {
-    "group": "vmwareengine",
-    "kind": "VMwareEngineExternalAccessRule",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "VMwareEngineExternalAddress",
-      "VMwareEngineNetworkPolicy"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 436,
-    "downstreamCount": 0
-  },
-  {
-    "group": "vmwareengine",
-    "kind": "VMwareEngineExternalAddress",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "VMwareEnginePrivateCloud"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 110,
-    "downstreamCount": 1
-  },
-  {
-    "group": "vmwareengine",
-    "kind": "VMwareEngineNetwork",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 28,
-    "downstreamCount": 5
-  },
-  {
-    "group": "vmwareengine",
-    "kind": "VMwareEngineNetworkPeering",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project",
-      "VMwareEngineNetwork"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 437,
-    "downstreamCount": 0
-  },
-  {
-    "group": "vmwareengine",
-    "kind": "VMwareEngineNetworkPolicy",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project",
-      "VMwareEngineNetwork"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 111,
-    "downstreamCount": 1
-  },
-  {
-    "group": "vmwareengine",
-    "kind": "VMwareEnginePrivateCloud",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project",
-      "VMwareEngineNetwork"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 68,
+    "sortOrder": 74,
     "downstreamCount": 2
   },
   {
@@ -10723,7 +7784,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 438,
+    "sortOrder": 529,
     "downstreamCount": 0
   },
   {
@@ -10741,8 +7802,8 @@
     ],
     "state": "Not Started",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
+      "gen-types": true,
+      "identity-reference": true,
       "mapper-fuzzer": false,
       "mocks": false,
       "controller": false,
@@ -10750,7 +7811,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 439,
+    "sortOrder": 532,
     "downstreamCount": 0
   },
   {
@@ -10778,34 +7839,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 440,
-    "downstreamCount": 0
-  },
-  {
-    "group": "vertexai",
-    "kind": "VertexAIFeaturestore",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 441,
+    "sortOrder": 534,
     "downstreamCount": 0
   },
   {
@@ -10829,7 +7863,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 442,
+    "sortOrder": 539,
     "downstreamCount": 0
   },
   {
@@ -10853,7 +7887,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 443,
+    "sortOrder": 540,
     "downstreamCount": 0
   },
   {
@@ -10879,7 +7913,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 444,
+    "sortOrder": 541,
     "downstreamCount": 0
   },
   {
@@ -10905,34 +7939,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 445,
-    "downstreamCount": 0
-  },
-  {
-    "group": "vertexai",
-    "kind": "VertexAIMetadataStore",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 446,
+    "sortOrder": 542,
     "downstreamCount": 0
   },
   {
@@ -10958,139 +7965,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 447,
-    "downstreamCount": 0
-  },
-  {
-    "group": "workflowexecutions",
-    "kind": "WorkflowsExecution",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": false,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go",
-    "sortOrder": 448,
-    "downstreamCount": 0
-  },
-  {
-    "group": "workflows",
-    "kind": "WorkflowsWorkflow",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "IAMServiceAccount",
-      "KMSCryptoKey",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 449,
-    "downstreamCount": 0
-  },
-  {
-    "group": "workstations",
-    "kind": "Workstation",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 450,
-    "downstreamCount": 0
-  },
-  {
-    "group": "workstations",
-    "kind": "WorkstationCluster",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "ComputeNetwork",
-      "Project"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 451,
-    "downstreamCount": 0
-  },
-  {
-    "group": "workstations",
-    "kind": "WorkstationConfig",
-    "version": "v1beta1",
-    "controllerType": "Direct",
-    "defaultController": "Direct",
-    "supportedControllers": [
-      "Direct"
-    ],
-    "dependencies": [
-      "IAMServiceAccount",
-      "KMSCryptoKey"
-    ],
-    "state": "Completed",
-    "steps": {
-      "gen-types": true,
-      "identity-reference": true,
-      "mapper-fuzzer": true,
-      "mocks": true,
-      "controller": true,
-      "tests": true
-    },
-    "mocksLastRefreshed": "Never",
-    "notes": "",
-    "sortOrder": 452,
+    "sortOrder": 545,
     "downstreamCount": 0
   }
 ]

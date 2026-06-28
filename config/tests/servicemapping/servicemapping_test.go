@@ -491,6 +491,11 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 	// resources).
 	ignoredGVKList := []k8sschema.GroupVersionKind{
 		{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "ComputePublicDelegatedPrefix",
+		},
+		{
 			Group:   "networksecurity.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "NetworkSecurityClientTLSPolicy",

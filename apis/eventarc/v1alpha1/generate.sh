@@ -30,7 +30,8 @@ go run . generate-types \
   --resource EventarcChannel:Channel \
   --resource EventarcGoogleChannelConfig:GoogleChannelConfig \
   --resource EventarcEnrollment:Enrollment \
-  --resource EventarcChannelConnection:ChannelConnection
+  --resource EventarcChannelConnection:ChannelConnection \
+  --resource EventarcGoogleAPISource:GoogleApiSource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

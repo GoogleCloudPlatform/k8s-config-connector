@@ -105,6 +105,13 @@ spec:
           kind: DNSManagedZone
           version: v1beta1
           group: dns.cnrm.cloud.google.com
+      - tfField: routing_policy.health_check
+        key: healthCheckRef
+        gvk:
+          kind: ComputeHealthCheck
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
       - tfField: rrdatas
         key: rrdatasRefs
         gvk:

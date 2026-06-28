@@ -59,6 +59,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityServer{MockService: s})
 	pbv1.RegisterMirroringServer(grpcServer, &MirroringServer{MockService: s})
 	pbv1.RegisterSSERealmServiceServer(grpcServer, &SSERealmServer{MockService: s})
+	pbv1.RegisterFirewallActivationServer(grpcServer, &FirewallActivationServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -70,6 +71,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewNetworkSecurityClient(conn))
 	mux.AddService(pbv1.NewMirroringClient(conn))
 	mux.AddService(pbv1.NewSSERealmServiceClient(conn))
+	mux.AddService(pbv1.NewFirewallActivationClient(conn))
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 

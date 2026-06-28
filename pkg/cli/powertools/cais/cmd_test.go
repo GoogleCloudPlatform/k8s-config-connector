@@ -23,6 +23,7 @@ import (
 	"testing"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais/caistesting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/objects"

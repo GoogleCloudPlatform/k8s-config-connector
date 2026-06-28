@@ -39,6 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeRouterInterfaceSpec struct {
+	/* The InterconnectAttachment this interface belongs to. */
 	// +optional
 	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
 
@@ -46,6 +47,7 @@ type ComputeRouterInterfaceSpec struct {
 	// +optional
 	IpRange *string `json:"ipRange,omitempty"`
 
+	/* The private IP address assigned to this interface. */
 	// +optional
 	PrivateIpAddressRef *v1alpha1.ResourceRef `json:"privateIpAddressRef,omitempty"`
 
@@ -60,11 +62,14 @@ type ComputeRouterInterfaceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* The router this interface belongs to. */
 	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
 
+	/* The subnetwork this interface belongs to. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
+	/* The VPNTunnel this interface belongs to. */
 	// +optional
 	VpnTunnelRef *v1alpha1.ResourceRef `json:"vpnTunnelRef,omitempty"`
 }

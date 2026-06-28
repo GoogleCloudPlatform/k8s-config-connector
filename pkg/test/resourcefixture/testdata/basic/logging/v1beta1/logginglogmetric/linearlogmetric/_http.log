@@ -185,7 +185,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "width": 2.5
     }
   },
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated sample log metric",
   "disabled": true,
   "filter": "resource.type=gae_app AND severity\u003e=ERROR",
@@ -223,7 +222,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "valueType": "DISTRIBUTION"
   },
   "name": "linearlogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 

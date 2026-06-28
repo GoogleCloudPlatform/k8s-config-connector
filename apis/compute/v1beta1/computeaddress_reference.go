@@ -44,7 +44,7 @@ type ComputeAddressRef struct {
 }
 
 func init() {
-	refs.Register(&ComputeAddressRef{})
+	refs.Register(&ComputeAddressRef{}, &ComputeAddress{})
 }
 
 func (r *ComputeAddressRef) GetGVK() schema.GroupVersionKind {

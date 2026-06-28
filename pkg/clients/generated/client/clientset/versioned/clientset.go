@@ -41,6 +41,8 @@ import (
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
+	appoptimizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appoptimize/v1alpha1"
+	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/assuredworkloads/v1alpha1"
@@ -57,6 +59,7 @@ import (
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1alpha1"
@@ -65,6 +68,7 @@ import (
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
 	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
+	blockchainnodeenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/blockchainnodeengine/v1alpha1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
@@ -88,6 +92,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
+	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
@@ -97,9 +102,11 @@ import (
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1alpha1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalabeling/v1alpha1"
+	datalineagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datalineage/v1alpha1"
 	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datamigration/v1alpha1"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1alpha1"
@@ -132,6 +139,7 @@ import (
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1"
 	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
+	geminidataanalyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/geminidataanalytics/v1alpha1"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
@@ -179,6 +187,7 @@ import (
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
+	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1alpha1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
@@ -199,6 +208,7 @@ import (
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
+	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
@@ -230,6 +240,8 @@ type Interface interface {
 	AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Interface
 	ApphubV1alpha1() apphubv1alpha1.ApphubV1alpha1Interface
 	ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface
+	AppoptimizeV1alpha1() appoptimizev1alpha1.AppoptimizeV1alpha1Interface
+	ArtifactregistryV1alpha1() artifactregistryv1alpha1.ArtifactregistryV1alpha1Interface
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	AssetV1beta1() assetv1beta1.AssetV1beta1Interface
 	AssuredworkloadsV1alpha1() assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Interface
@@ -246,6 +258,7 @@ type Interface interface {
 	BigqueryconnectionV1beta1() bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Interface
 	BigquerydatapolicyV1alpha1() bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Interface
 	BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Interface
+	BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface
 	BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface
 	BigqueryreservationV1beta1() bigqueryreservationv1beta1.BigqueryreservationV1beta1Interface
 	BigtableV1alpha1() bigtablev1alpha1.BigtableV1alpha1Interface
@@ -254,6 +267,7 @@ type Interface interface {
 	BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface
 	BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
+	BlockchainnodeengineV1alpha1() blockchainnodeenginev1alpha1.BlockchainnodeengineV1alpha1Interface
 	CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface
 	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
 	CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1Interface
@@ -277,6 +291,7 @@ type Interface interface {
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface
+	ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface
 	ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
@@ -286,9 +301,11 @@ type Interface interface {
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
+	DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface
 	DataformV1beta1() dataformv1beta1.DataformV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface
+	DatalineageV1alpha1() datalineagev1alpha1.DatalineageV1alpha1Interface
 	DatamigrationV1alpha1() datamigrationv1alpha1.DatamigrationV1alpha1Interface
 	DataplexV1alpha1() dataplexv1alpha1.DataplexV1alpha1Interface
 	DataprocV1alpha1() dataprocv1alpha1.DataprocV1alpha1Interface
@@ -321,6 +338,7 @@ type Interface interface {
 	FirebasestorageV1alpha1() firebasestoragev1alpha1.FirebasestorageV1alpha1Interface
 	FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
+	GeminidataanalyticsV1alpha1() geminidataanalyticsv1alpha1.GeminidataanalyticsV1alpha1Interface
 	GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Interface
 	GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
@@ -368,6 +386,7 @@ type Interface interface {
 	RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
+	RunV1alpha1() runv1alpha1.RunV1alpha1Interface
 	RunV1beta1() runv1beta1.RunV1beta1Interface
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
 	SecuresourcemanagerV1beta1() securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Interface
@@ -388,6 +407,7 @@ type Interface interface {
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
+	VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
 	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
@@ -417,6 +437,8 @@ type Clientset struct {
 	appengineV1alpha1               *appenginev1alpha1.AppengineV1alpha1Client
 	apphubV1alpha1                  *apphubv1alpha1.ApphubV1alpha1Client
 	apphubV1beta1                   *apphubv1beta1.ApphubV1beta1Client
+	appoptimizeV1alpha1             *appoptimizev1alpha1.AppoptimizeV1alpha1Client
+	artifactregistryV1alpha1        *artifactregistryv1alpha1.ArtifactregistryV1alpha1Client
 	artifactregistryV1beta1         *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	assetV1beta1                    *assetv1beta1.AssetV1beta1Client
 	assuredworkloadsV1alpha1        *assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Client
@@ -433,6 +455,7 @@ type Clientset struct {
 	bigqueryconnectionV1beta1       *bigqueryconnectionv1beta1.BigqueryconnectionV1beta1Client
 	bigquerydatapolicyV1alpha1      *bigquerydatapolicyv1alpha1.BigquerydatapolicyV1alpha1Client
 	bigquerydatatransferV1beta1     *bigquerydatatransferv1beta1.BigquerydatatransferV1beta1Client
+	bigquerymigrationV1alpha1       *bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Client
 	bigqueryreservationV1alpha1     *bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Client
 	bigqueryreservationV1beta1      *bigqueryreservationv1beta1.BigqueryreservationV1beta1Client
 	bigtableV1alpha1                *bigtablev1alpha1.BigtableV1alpha1Client
@@ -441,6 +464,7 @@ type Clientset struct {
 	billingbudgetsV1beta1           *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
 	binaryauthorizationV1alpha1     *binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Client
 	binaryauthorizationV1beta1      *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
+	blockchainnodeengineV1alpha1    *blockchainnodeenginev1alpha1.BlockchainnodeengineV1alpha1Client
 	certificatemanagerV1alpha1      *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
 	certificatemanagerV1beta1       *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
 	cloudassetV1alpha1              *cloudassetv1alpha1.CloudassetV1alpha1Client
@@ -464,6 +488,7 @@ type Clientset struct {
 	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
 	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	configdeliveryV1alpha1          *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
+	connectorsV1alpha1              *connectorsv1alpha1.ConnectorsV1alpha1Client
 	contactcenterinsightsV1alpha1   *contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Client
 	containerV1beta1                *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1alpha1       *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
@@ -473,9 +498,11 @@ type Clientset struct {
 	datacatalogV1alpha1             *datacatalogv1alpha1.DatacatalogV1alpha1Client
 	datacatalogV1beta1              *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1                 *dataflowv1beta1.DataflowV1beta1Client
+	dataformV1alpha1                *dataformv1alpha1.DataformV1alpha1Client
 	dataformV1beta1                 *dataformv1beta1.DataformV1beta1Client
 	datafusionV1beta1               *datafusionv1beta1.DatafusionV1beta1Client
 	datalabelingV1alpha1            *datalabelingv1alpha1.DatalabelingV1alpha1Client
+	datalineageV1alpha1             *datalineagev1alpha1.DatalineageV1alpha1Client
 	datamigrationV1alpha1           *datamigrationv1alpha1.DatamigrationV1alpha1Client
 	dataplexV1alpha1                *dataplexv1alpha1.DataplexV1alpha1Client
 	dataprocV1alpha1                *dataprocv1alpha1.DataprocV1alpha1Client
@@ -508,6 +535,7 @@ type Clientset struct {
 	firebasestorageV1alpha1         *firebasestoragev1alpha1.FirebasestorageV1alpha1Client
 	firestoreV1alpha1               *firestorev1alpha1.FirestoreV1alpha1Client
 	firestoreV1beta1                *firestorev1beta1.FirestoreV1beta1Client
+	geminidataanalyticsV1alpha1     *geminidataanalyticsv1alpha1.GeminidataanalyticsV1alpha1Client
 	gkebackupV1alpha1               *gkebackupv1alpha1.GkebackupV1alpha1Client
 	gkehubV1alpha1                  *gkehubv1alpha1.GkehubV1alpha1Client
 	gkehubV1beta1                   *gkehubv1beta1.GkehubV1beta1Client
@@ -555,6 +583,7 @@ type Clientset struct {
 	recaptchaenterpriseV1beta1      *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
 	redisV1beta1                    *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
+	runV1alpha1                     *runv1alpha1.RunV1alpha1Client
 	runV1beta1                      *runv1beta1.RunV1beta1Client
 	secretmanagerV1beta1            *secretmanagerv1beta1.SecretmanagerV1beta1Client
 	securesourcemanagerV1beta1      *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
@@ -575,6 +604,7 @@ type Clientset struct {
 	storagetransferV1beta1          *storagetransferv1beta1.StoragetransferV1beta1Client
 	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
 	tpuV1alpha1                     *tpuv1alpha1.TpuV1alpha1Client
+	vectorsearchV1alpha1            *vectorsearchv1alpha1.VectorsearchV1alpha1Client
 	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
 	vertexaiV1beta1                 *vertexaiv1beta1.VertexaiV1beta1Client
 	vmwareengineV1alpha1            *vmwareenginev1alpha1.VmwareengineV1alpha1Client
@@ -665,6 +695,16 @@ func (c *Clientset) ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface {
 	return c.apphubV1beta1
 }
 
+// AppoptimizeV1alpha1 retrieves the AppoptimizeV1alpha1Client
+func (c *Clientset) AppoptimizeV1alpha1() appoptimizev1alpha1.AppoptimizeV1alpha1Interface {
+	return c.appoptimizeV1alpha1
+}
+
+// ArtifactregistryV1alpha1 retrieves the ArtifactregistryV1alpha1Client
+func (c *Clientset) ArtifactregistryV1alpha1() artifactregistryv1alpha1.ArtifactregistryV1alpha1Interface {
+	return c.artifactregistryV1alpha1
+}
+
 // ArtifactregistryV1beta1 retrieves the ArtifactregistryV1beta1Client
 func (c *Clientset) ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface {
 	return c.artifactregistryV1beta1
@@ -745,6 +785,11 @@ func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.Bi
 	return c.bigquerydatatransferV1beta1
 }
 
+// BigquerymigrationV1alpha1 retrieves the BigquerymigrationV1alpha1Client
+func (c *Clientset) BigquerymigrationV1alpha1() bigquerymigrationv1alpha1.BigquerymigrationV1alpha1Interface {
+	return c.bigquerymigrationV1alpha1
+}
+
 // BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
 func (c *Clientset) BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface {
 	return c.bigqueryreservationV1alpha1
@@ -783,6 +828,11 @@ func (c *Clientset) BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.Bi
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
 func (c *Clientset) BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface {
 	return c.binaryauthorizationV1beta1
+}
+
+// BlockchainnodeengineV1alpha1 retrieves the BlockchainnodeengineV1alpha1Client
+func (c *Clientset) BlockchainnodeengineV1alpha1() blockchainnodeenginev1alpha1.BlockchainnodeengineV1alpha1Interface {
+	return c.blockchainnodeengineV1alpha1
 }
 
 // CertificatemanagerV1alpha1 retrieves the CertificatemanagerV1alpha1Client
@@ -900,6 +950,11 @@ func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.Configdelive
 	return c.configdeliveryV1alpha1
 }
 
+// ConnectorsV1alpha1 retrieves the ConnectorsV1alpha1Client
+func (c *Clientset) ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface {
+	return c.connectorsV1alpha1
+}
+
 // ContactcenterinsightsV1alpha1 retrieves the ContactcenterinsightsV1alpha1Client
 func (c *Clientset) ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface {
 	return c.contactcenterinsightsV1alpha1
@@ -945,6 +1000,11 @@ func (c *Clientset) DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface {
 	return c.dataflowV1beta1
 }
 
+// DataformV1alpha1 retrieves the DataformV1alpha1Client
+func (c *Clientset) DataformV1alpha1() dataformv1alpha1.DataformV1alpha1Interface {
+	return c.dataformV1alpha1
+}
+
 // DataformV1beta1 retrieves the DataformV1beta1Client
 func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
 	return c.dataformV1beta1
@@ -958,6 +1018,11 @@ func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Inter
 // DatalabelingV1alpha1 retrieves the DatalabelingV1alpha1Client
 func (c *Clientset) DatalabelingV1alpha1() datalabelingv1alpha1.DatalabelingV1alpha1Interface {
 	return c.datalabelingV1alpha1
+}
+
+// DatalineageV1alpha1 retrieves the DatalineageV1alpha1Client
+func (c *Clientset) DatalineageV1alpha1() datalineagev1alpha1.DatalineageV1alpha1Interface {
+	return c.datalineageV1alpha1
 }
 
 // DatamigrationV1alpha1 retrieves the DatamigrationV1alpha1Client
@@ -1118,6 +1183,11 @@ func (c *Clientset) FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Inter
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client
 func (c *Clientset) FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface {
 	return c.firestoreV1beta1
+}
+
+// GeminidataanalyticsV1alpha1 retrieves the GeminidataanalyticsV1alpha1Client
+func (c *Clientset) GeminidataanalyticsV1alpha1() geminidataanalyticsv1alpha1.GeminidataanalyticsV1alpha1Interface {
+	return c.geminidataanalyticsV1alpha1
 }
 
 // GkebackupV1alpha1 retrieves the GkebackupV1alpha1Client
@@ -1355,6 +1425,11 @@ func (c *Clientset) ResourcemanagerV1beta1() resourcemanagerv1beta1.Resourcemana
 	return c.resourcemanagerV1beta1
 }
 
+// RunV1alpha1 retrieves the RunV1alpha1Client
+func (c *Clientset) RunV1alpha1() runv1alpha1.RunV1alpha1Interface {
+	return c.runV1alpha1
+}
+
 // RunV1beta1 retrieves the RunV1beta1Client
 func (c *Clientset) RunV1beta1() runv1beta1.RunV1beta1Interface {
 	return c.runV1beta1
@@ -1453,6 +1528,11 @@ func (c *Clientset) TagsV1beta1() tagsv1beta1.TagsV1beta1Interface {
 // TpuV1alpha1 retrieves the TpuV1alpha1Client
 func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return c.tpuV1alpha1
+}
+
+// VectorsearchV1alpha1 retrieves the VectorsearchV1alpha1Client
+func (c *Clientset) VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface {
+	return c.vectorsearchV1alpha1
 }
 
 // VertexaiV1alpha1 retrieves the VertexaiV1alpha1Client
@@ -1603,6 +1683,14 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.appoptimizeV1alpha1, err = appoptimizev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.artifactregistryV1alpha1, err = artifactregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.artifactregistryV1beta1, err = artifactregistryv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1667,6 +1755,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.bigquerymigrationV1alpha1, err = bigquerymigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.bigqueryreservationV1alpha1, err = bigqueryreservationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1696,6 +1788,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.binaryauthorizationV1beta1, err = binaryauthorizationv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.blockchainnodeengineV1alpha1, err = blockchainnodeenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1791,6 +1887,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.connectorsV1alpha1, err = connectorsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.contactcenterinsightsV1alpha1, err = contactcenterinsightsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1827,6 +1927,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.dataformV1alpha1, err = dataformv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.dataformV1beta1, err = dataformv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1836,6 +1940,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.datalabelingV1alpha1, err = datalabelingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.datalineageV1alpha1, err = datalineagev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1964,6 +2072,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.firestoreV1beta1, err = firestorev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.geminidataanalyticsV1alpha1, err = geminidataanalyticsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2155,6 +2267,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.runV1alpha1, err = runv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.runV1beta1, err = runv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2235,6 +2351,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.vectorsearchV1alpha1, err = vectorsearchv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vertexaiV1alpha1, err = vertexaiv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2304,6 +2424,8 @@ func New(c rest.Interface) *Clientset {
 	cs.appengineV1alpha1 = appenginev1alpha1.New(c)
 	cs.apphubV1alpha1 = apphubv1alpha1.New(c)
 	cs.apphubV1beta1 = apphubv1beta1.New(c)
+	cs.appoptimizeV1alpha1 = appoptimizev1alpha1.New(c)
+	cs.artifactregistryV1alpha1 = artifactregistryv1alpha1.New(c)
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.assetV1beta1 = assetv1beta1.New(c)
 	cs.assuredworkloadsV1alpha1 = assuredworkloadsv1alpha1.New(c)
@@ -2320,6 +2442,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigqueryconnectionV1beta1 = bigqueryconnectionv1beta1.New(c)
 	cs.bigquerydatapolicyV1alpha1 = bigquerydatapolicyv1alpha1.New(c)
 	cs.bigquerydatatransferV1beta1 = bigquerydatatransferv1beta1.New(c)
+	cs.bigquerymigrationV1alpha1 = bigquerymigrationv1alpha1.New(c)
 	cs.bigqueryreservationV1alpha1 = bigqueryreservationv1alpha1.New(c)
 	cs.bigqueryreservationV1beta1 = bigqueryreservationv1beta1.New(c)
 	cs.bigtableV1alpha1 = bigtablev1alpha1.New(c)
@@ -2328,6 +2451,7 @@ func New(c rest.Interface) *Clientset {
 	cs.billingbudgetsV1beta1 = billingbudgetsv1beta1.New(c)
 	cs.binaryauthorizationV1alpha1 = binaryauthorizationv1alpha1.New(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
+	cs.blockchainnodeengineV1alpha1 = blockchainnodeenginev1alpha1.New(c)
 	cs.certificatemanagerV1alpha1 = certificatemanagerv1alpha1.New(c)
 	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)
 	cs.cloudassetV1alpha1 = cloudassetv1alpha1.New(c)
@@ -2351,6 +2475,7 @@ func New(c rest.Interface) *Clientset {
 	cs.computeV1beta1 = computev1beta1.New(c)
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.configdeliveryV1alpha1 = configdeliveryv1alpha1.New(c)
+	cs.connectorsV1alpha1 = connectorsv1alpha1.New(c)
 	cs.contactcenterinsightsV1alpha1 = contactcenterinsightsv1alpha1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
@@ -2360,9 +2485,11 @@ func New(c rest.Interface) *Clientset {
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
+	cs.dataformV1alpha1 = dataformv1alpha1.New(c)
 	cs.dataformV1beta1 = dataformv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.datalabelingV1alpha1 = datalabelingv1alpha1.New(c)
+	cs.datalineageV1alpha1 = datalineagev1alpha1.New(c)
 	cs.datamigrationV1alpha1 = datamigrationv1alpha1.New(c)
 	cs.dataplexV1alpha1 = dataplexv1alpha1.New(c)
 	cs.dataprocV1alpha1 = dataprocv1alpha1.New(c)
@@ -2395,6 +2522,7 @@ func New(c rest.Interface) *Clientset {
 	cs.firebasestorageV1alpha1 = firebasestoragev1alpha1.New(c)
 	cs.firestoreV1alpha1 = firestorev1alpha1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
+	cs.geminidataanalyticsV1alpha1 = geminidataanalyticsv1alpha1.New(c)
 	cs.gkebackupV1alpha1 = gkebackupv1alpha1.New(c)
 	cs.gkehubV1alpha1 = gkehubv1alpha1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
@@ -2442,6 +2570,7 @@ func New(c rest.Interface) *Clientset {
 	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
+	cs.runV1alpha1 = runv1alpha1.New(c)
 	cs.runV1beta1 = runv1beta1.New(c)
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
 	cs.securesourcemanagerV1beta1 = securesourcemanagerv1beta1.New(c)
@@ -2462,6 +2591,7 @@ func New(c rest.Interface) *Clientset {
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
+	cs.vectorsearchV1alpha1 = vectorsearchv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
 	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)

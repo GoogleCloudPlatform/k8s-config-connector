@@ -244,9 +244,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The resource name of the backup, in the format `projects/{project_number}/locations/{location_id}/backups/{backup_id}`, that this file share has been restored from.
-
-Allowed value: The Google Cloud resource name of a `FilestoreBackup` resource (format: `projects/{{project}}/locations/{{location}}/backups/{{name}}`).</p>
+            <p>A reference to an externally managed FilestoreBackup resource. Allowed value: string of the format `projects/{{project}}/locations/{{location}}/backups/{{value}}`, where {{value}} is the `name` field of a `FilestoreBackup` resource.</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +254,7 @@ Allowed value: The Google Cloud resource name of a `FilestoreBackup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a FilestoreBackup resource.</p>
         </td>
     </tr>
     <tr>
@@ -266,7 +264,7 @@ Allowed value: The Google Cloud resource name of a `FilestoreBackup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a FilestoreBackup resource.</p>
         </td>
     </tr>
     <tr>
@@ -356,9 +354,7 @@ Allowed value: The Google Cloud resource name of a `FilestoreBackup` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the Google Compute Engine [VPC network](https://cloud.google.com/vpc/docs/vpc) to which the instance is connected.
-
-Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (format: `projects/{{project}}/global/networks/{{name}}`).</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -368,7 +364,7 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -378,7 +374,7 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -408,9 +404,7 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -420,7 +414,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -430,7 +424,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -467,6 +461,7 @@ conditions:
   type: string
 createTime: string
 etag: string
+externalRef: string
 observedGeneration: integer
 state: string
 statusMessage: string
@@ -483,7 +478,7 @@ statusMessage: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the FilestoreInstance's current state.</p>
         </td>
     </tr>
     <tr>
@@ -540,6 +535,13 @@ statusMessage: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Server-specified ETag for the instance resource to prevent simultaneous updates from overwriting each other.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the FilestoreInstance resource in GCP.</p>
         </td>
     </tr>
     <tr>

@@ -16,12 +16,15 @@
 // +generated:types
 // krm.group: monitoring.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.monitoring.v3,google.monitoring.metricsscope.v1
+// proto.service: google.monitoring.v3,google.monitoring.metricsscope.v1,google.monitoring.dashboard.v1
+// resource: MonitoringGroup:Group
 // resource: MonitoringMetricDescriptor:google.api.MetricDescriptor
 // resource: MonitoringNotificationChannel:NotificationChannel
 // resource: MonitoringUptimeCheckConfig:UptimeCheckConfig
 // resource: MonitoringService:Service
 // resource: MonitoringMonitoredProject:MonitoredProject
+// resource: MonitoringDashboard:Dashboard
+// resource: MonitoringAlertPolicy:AlertPolicy
 
 package v1beta1
 
@@ -267,6 +270,1006 @@ type MonitoredResource struct {
 }
 */
 
+/* found existing non-generated go type "Aggregation", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Aggregation
+type Aggregation struct {
+	// The `alignment_period` specifies a time interval, in seconds, that is used
+	//  to divide the data in all the
+	//  [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+	//  time. This will be done before the per-series aligner can be applied to
+	//  the data.
+	//
+	//  The value must be at least 60 seconds. If a per-series aligner other than
+	//  `ALIGN_NONE` is specified, this field is required or an error is returned.
+	//  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+	//  specified, then this field is ignored.
+	//
+	//  The maximum value of the `alignment_period` is 2 years, or 104 weeks.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Aggregation.alignment_period
+	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
+
+	// An `Aligner` describes how to bring the data points in a single
+	//  time series into temporal alignment. Except for `ALIGN_NONE`, all
+	//  alignments cause all the data points in an `alignment_period` to be
+	//  mathematically grouped together, resulting in a single data point for
+	//  each `alignment_period` with end timestamp at the end of the period.
+	//
+	//  Not all alignment operations may be applied to all time series. The valid
+	//  choices depend on the `metric_kind` and `value_type` of the original time
+	//  series. Alignment can change the `metric_kind` or the `value_type` of
+	//  the time series.
+	//
+	//  Time series data must be aligned in order to perform cross-time
+	//  series reduction. If `cross_series_reducer` is specified, then
+	//  `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+	//  and `alignment_period` must be specified; otherwise, an error is
+	//  returned.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Aggregation.per_series_aligner
+	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
+
+	// The reduction operation to be used to combine time series into a single
+	//  time series, where the value of each data point in the resulting series is
+	//  a function of all the already aligned values in the input time series.
+	//
+	//  Not all reducer operations can be applied to all time series. The valid
+	//  choices depend on the `metric_kind` and the `value_type` of the original
+	//  time series. Reduction can yield a time series with a different
+	//  `metric_kind` or `value_type` than the input time series.
+	//
+	//  Time series data must first be aligned (see `per_series_aligner`) in order
+	//  to perform cross-time series reduction. If `cross_series_reducer` is
+	//  specified, then `per_series_aligner` must be specified, and must not be
+	//  `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+	//  error is returned.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Aggregation.cross_series_reducer
+	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
+
+	// The set of fields to preserve when `cross_series_reducer` is
+	//  specified. The `group_by_fields` determine how the time series are
+	//  partitioned into subsets prior to applying the aggregation
+	//  operation. Each subset contains time series that have the same
+	//  value for each of the grouping fields. Each individual time
+	//  series is a member of exactly one subset. The
+	//  `cross_series_reducer` is applied to each subset of time series.
+	//  It is not possible to reduce across different resource types, so
+	//  this field implicitly contains `resource.type`.  Fields not
+	//  specified in `group_by_fields` are aggregated away.  If
+	//  `group_by_fields` is not specified and all the time series have
+	//  the same resource type, then the time series are aggregated into
+	//  a single output time series. If `cross_series_reducer` is not
+	//  defined, this field is ignored.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Aggregation.group_by_fields
+	GroupByFields []string `json:"groupByFields,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "AlertChart", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.AlertChart
+type AlertChart struct {
+	// Required. The resource name of the alert policy. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+	// +kcc:proto:field=google.monitoring.dashboard.v1.AlertChart.name
+	Name *string `json:"name,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ChartOptions", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.ChartOptions
+type ChartOptions struct {
+	// The chart mode.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.ChartOptions.mode
+	Mode *string `json:"mode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "CollapsibleGroup", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.CollapsibleGroup
+type CollapsibleGroup struct {
+	// The collapsed state of the widget on first page load.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.CollapsibleGroup.collapsed
+	Collapsed *bool `json:"collapsed,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ColumnLayout", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.ColumnLayout
+type ColumnLayout struct {
+	// The columns of content to display.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.ColumnLayout.columns
+	Columns []ColumnLayout_Column `json:"columns,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ColumnLayout_Column", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.ColumnLayout.Column
+type ColumnLayout_Column struct {
+	// The relative weight of this column. The column weight is used to adjust
+	//  the width of columns on the screen (relative to peers).
+	//  Greater the weight, greater the width of the column on the screen.
+	//  If omitted, a value of 1 is used while rendering.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.ColumnLayout.Column.weight
+	Weight *int64 `json:"weight,omitempty"`
+
+	// The display widgets arranged vertically in this column.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.ColumnLayout.Column.widgets
+	Widgets []Widget `json:"widgets,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.dashboard.v1.Dashboard", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Dashboard
+type Dashboard struct {
+	// Identifier. The resource name of the dashboard.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The mutable, human-readable name.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// `etag` is used for optimistic concurrency control as a way to help
+	//  prevent simultaneous updates of a policy from overwriting each other.
+	//  An `etag` is returned in the response to `GetDashboard`, and
+	//  users are expected to put that etag in the request to `UpdateDashboard` to
+	//  ensure that their change will be applied to the same version of the
+	//  Dashboard configuration. The field should not be passed during
+	//  dashboard creation.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Content is arranged with a basic layout that re-flows a simple list of
+	//  informational elements like widgets or tiles.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.grid_layout
+	GridLayout *GridLayout `json:"gridLayout,omitempty"`
+
+	// The content is arranged as a grid of tiles, with each content widget
+	//  occupying one or more grid blocks.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.mosaic_layout
+	MosaicLayout *MosaicLayout `json:"mosaicLayout,omitempty"`
+
+	// The content is divided into equally spaced rows and the widgets are
+	//  arranged horizontally.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.row_layout
+	RowLayout *RowLayout `json:"rowLayout,omitempty"`
+
+	// The content is divided into equally spaced columns and the widgets are
+	//  arranged vertically.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.column_layout
+	ColumnLayout *ColumnLayout `json:"columnLayout,omitempty"`
+
+	// Filters to reduce the amount of data charted based on the filter criteria.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.dashboard_filters
+	DashboardFilters []DashboardFilter `json:"dashboardFilters,omitempty"`
+
+	// Labels applied to the dashboard
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Dashboard.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "DashboardFilter", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.DashboardFilter
+type DashboardFilter struct {
+	// Required. The key for the label
+	// +kcc:proto:field=google.monitoring.dashboard.v1.DashboardFilter.label_key
+	LabelKey *string `json:"labelKey,omitempty"`
+
+	// The placeholder text that can be referenced in a filter string or MQL
+	//  query. If omitted, the dashboard filter will be applied to all relevant
+	//  widgets in the dashboard.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.DashboardFilter.template_variable
+	TemplateVariable *string `json:"templateVariable,omitempty"`
+
+	// A variable-length string value.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.DashboardFilter.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// The specified filter type
+	// +kcc:proto:field=google.monitoring.dashboard.v1.DashboardFilter.filter_type
+	FilterType *string `json:"filterType,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ErrorReportingPanel", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.ErrorReportingPanel
+type ErrorReportingPanel struct {
+	// The resource name of the Google Cloud Platform project. Written
+	//  as `projects/{projectID}` or `projects/{projectNumber}`, where
+	//  `{projectID}` and `{projectNumber}` can be found in the
+	//  [Google Cloud console](https://support.google.com/cloud/answer/6158840).
+	//
+	//  Examples: `projects/my-project-123`, `projects/5551234`.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.ErrorReportingPanel.project_names
+	ProjectNames []string `json:"projectNames,omitempty"`
+
+	// An identifier of the service, such as the name of the
+	//  executable, job, or Google App Engine service name. This field is expected
+	//  to have a low number of values that are relatively stable over time, as
+	//  opposed to `version`, which can be changed whenever new code is deployed.
+	//
+	//  Contains the service name for error reports extracted from Google
+	//  App Engine logs or `default` if the App Engine default service is used.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.ErrorReportingPanel.services
+	Services []string `json:"services,omitempty"`
+
+	// Represents the source code version that the developer provided,
+	//  which could represent a version label or a Git SHA-1 hash, for example.
+	//  For App Engine standard environment, the version is set to the version of
+	//  the app.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.ErrorReportingPanel.versions
+	Versions []string `json:"versions,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "GridLayout", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.GridLayout
+type GridLayout struct {
+	// The number of columns into which the view's width is divided. If omitted
+	//  or set to zero, a system default will be used while rendering.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.GridLayout.columns
+	Columns *int64 `json:"columns,omitempty"`
+
+	// The informational elements that are arranged into the columns row-first.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.GridLayout.widgets
+	Widgets []Widget `json:"widgets,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "IncidentList", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.IncidentList
+type IncidentList struct {
+	// Optional. The monitored resource for which incidents are listed.
+	//  The resource doesn't need to be fully specified. That is, you can specify
+	//  the resource type but not the values of the resource labels.
+	//  The resource type and labels are used for filtering.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.IncidentList.monitored_resources
+	MonitoredResources []MonitoredResource `json:"monitoredResources,omitempty"`
+
+	// Optional. A list of alert policy names to filter the incident list by.
+	//  Don't include the project ID prefix in the policy name. For
+	//  example, use `alertPolicies/utilization`.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.IncidentList.policy_names
+	PolicyNames []string `json:"policyNames,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "LogsPanel", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.LogsPanel
+type LogsPanel struct {
+	// A filter that chooses which log entries to return.  See [Advanced Logs
+	//  Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
+	//  Only log entries that match the filter are returned.  An empty filter
+	//  matches all log entries.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.LogsPanel.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// The names of logging resources to collect logs for. Currently only projects
+	//  are supported. If empty, the widget will default to the host project.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.LogsPanel.resource_names
+	ResourceNames []string `json:"resourceNames,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MosaicLayout", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.MosaicLayout
+type MosaicLayout struct {
+	// The number of columns in the mosaic grid. The number of columns must be
+	//  between 1 and 12, inclusive.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.MosaicLayout.columns
+	Columns *int32 `json:"columns,omitempty"`
+
+	// The tiles to display.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.MosaicLayout.tiles
+	Tiles []MosaicLayout_Tile `json:"tiles,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "MosaicLayout_Tile", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.MosaicLayout.Tile
+type MosaicLayout_Tile struct {
+	// The zero-indexed position of the tile in grid blocks relative to the
+	//  left edge of the grid. Tiles must be contained within the specified
+	//  number of columns. `x_pos` cannot be negative.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.MosaicLayout.Tile.x_pos
+	XPos *int32 `json:"xPos,omitempty"`
+
+	// The zero-indexed position of the tile in grid blocks relative to the
+	//  top edge of the grid. `y_pos` cannot be negative.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.MosaicLayout.Tile.y_pos
+	YPos *int32 `json:"yPos,omitempty"`
+
+	// The width of the tile, measured in grid blocks. Tiles must have a
+	//  minimum width of 1.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.MosaicLayout.Tile.width
+	Width *int32 `json:"width,omitempty"`
+
+	// The height of the tile, measured in grid blocks. Tiles must have a
+	//  minimum height of 1.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.MosaicLayout.Tile.height
+	Height *int32 `json:"height,omitempty"`
+
+	// The informational widget contained in the tile. For example an `XyChart`.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.MosaicLayout.Tile.widget
+	Widget *Widget `json:"widget,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PickTimeSeriesFilter", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.PickTimeSeriesFilter
+type PickTimeSeriesFilter struct {
+	// `ranking_method` is applied to each time series independently to produce
+	//  the value which will be used to compare the time series to other time
+	//  series.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PickTimeSeriesFilter.ranking_method
+	RankingMethod *string `json:"rankingMethod,omitempty"`
+
+	// How many time series to allow to pass through the filter.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PickTimeSeriesFilter.num_time_series
+	NumTimeSeries *int32 `json:"numTimeSeries,omitempty"`
+
+	// How to use the ranking to select time series that pass through the filter.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PickTimeSeriesFilter.direction
+	Direction *string `json:"direction,omitempty"`
+
+	// Select the top N streams/time series within this time interval
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PickTimeSeriesFilter.interval
+	Interval *Interval `json:"interval,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PieChart", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.PieChart
+type PieChart struct {
+	// Required. The queries for the chart's data.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PieChart.data_sets
+	DataSets []PieChart_PieChartDataSet `json:"dataSets,omitempty"`
+
+	// Required. Indicates the visualization type for the PieChart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PieChart.chart_type
+	ChartType *string `json:"chartType,omitempty"`
+
+	// Optional. Indicates whether or not the pie chart should show slices' labels
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PieChart.show_labels
+	ShowLabels *bool `json:"showLabels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PieChart_PieChartDataSet", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.PieChart.PieChartDataSet
+type PieChart_PieChartDataSet struct {
+	// Required. The query for the PieChart. See,
+	//  `google.monitoring.dashboard.v1.TimeSeriesQuery`.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PieChart.PieChartDataSet.time_series_query
+	TimeSeriesQuery *TimeSeriesQuery `json:"timeSeriesQuery,omitempty"`
+
+	// Optional. A template for the name of the slice. This name will be
+	//  displayed in the legend and the tooltip of the pie chart. It replaces the
+	//  auto-generated names for the slices. For example, if the template is set
+	//  to
+	//  `${resource.labels.zone}`, the zone's value will be used for the name
+	//  instead of the default name.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PieChart.PieChartDataSet.slice_name_template
+	SliceNameTemplate *string `json:"sliceNameTemplate,omitempty"`
+
+	// Optional. The lower bound on data point frequency for this data set,
+	//  implemented by specifying the minimum alignment period to use in a time
+	//  series query. For example, if the data is published once every 10
+	//  minutes, the `min_alignment_period` should be at least 10 minutes. It
+	//  would not make sense to fetch and align data at one minute intervals.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.PieChart.PieChartDataSet.min_alignment_period
+	MinAlignmentPeriod *string `json:"minAlignmentPeriod,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "RowLayout", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.RowLayout
+type RowLayout struct {
+	// The rows of content to display.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.RowLayout.rows
+	Rows []RowLayout_Row `json:"rows,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "RowLayout_Row", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.RowLayout.Row
+type RowLayout_Row struct {
+	// The relative weight of this row. The row weight is used to adjust the
+	//  height of rows on the screen (relative to peers). Greater the weight,
+	//  greater the height of the row on the screen. If omitted, a value
+	//  of 1 is used while rendering.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.RowLayout.Row.weight
+	Weight *int64 `json:"weight,omitempty"`
+
+	// The display widgets arranged horizontally in this row.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.RowLayout.Row.widgets
+	Widgets []Widget `json:"widgets,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Scorecard", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Scorecard
+type Scorecard struct {
+	// Required. Fields for querying time series data from the
+	//  Stackdriver metrics API.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.time_series_query
+	TimeSeriesQuery *TimeSeriesQuery `json:"timeSeriesQuery,omitempty"`
+
+	// Will cause the scorecard to show a gauge chart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.gauge_view
+	GaugeView *Scorecard_GaugeView `json:"gaugeView,omitempty"`
+
+	// Will cause the scorecard to show a spark chart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.spark_chart_view
+	SparkChartView *Scorecard_SparkChartView `json:"sparkChartView,omitempty"`
+
+	// Will cause the `Scorecard` to show only the value, with no indicator to
+	//  its value relative to its thresholds.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.blank_view
+	BlankView *Empty `json:"blankView,omitempty"`
+
+	// The thresholds used to determine the state of the scorecard given the
+	//  time series' current value. For an actual value x, the scorecard is in a
+	//  danger state if x is less than or equal to a danger threshold that triggers
+	//  below, or greater than or equal to a danger threshold that triggers above.
+	//  Similarly, if x is above/below a warning threshold that triggers
+	//  above/below, then the scorecard is in a warning state - unless x also puts
+	//  it in a danger state. (Danger trumps warning.)
+	//
+	//  As an example, consider a scorecard with the following four thresholds:
+	//
+	//  ```
+	//  {
+	//    value: 90,
+	//    category: 'DANGER',
+	//    trigger: 'ABOVE',
+	//  },
+	//  {
+	//    value: 70,
+	//    category: 'WARNING',
+	//    trigger: 'ABOVE',
+	//  },
+	//  {
+	//    value: 10,
+	//    category: 'DANGER',
+	//    trigger: 'BELOW',
+	//  },
+	//  {
+	//    value: 20,
+	//    category: 'WARNING',
+	//    trigger: 'BELOW',
+	//  }
+	//  ```
+	//
+	//  Then: values less than or equal to 10 would put the scorecard in a DANGER
+	//  state, values greater than 10 but less than or equal to 20 a WARNING state,
+	//  values strictly between 20 and 70 an OK state, values greater than or equal
+	//  to 70 but less than 90 a WARNING state, and values greater than or equal to
+	//  90 a DANGER state.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.thresholds
+	Thresholds []Threshold `json:"thresholds,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Scorecard_GaugeView", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Scorecard.GaugeView
+type Scorecard_GaugeView struct {
+	// The lower bound for this gauge chart. The value of the chart should
+	//  always be greater than or equal to this.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.GaugeView.lower_bound
+	LowerBound *float64 `json:"lowerBound,omitempty"`
+
+	// The upper bound for this gauge chart. The value of the chart should
+	//  always be less than or equal to this.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.GaugeView.upper_bound
+	UpperBound *float64 `json:"upperBound,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Scorecard_SparkChartView", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Scorecard.SparkChartView
+type Scorecard_SparkChartView struct {
+	// Required. The type of sparkchart to show in this chartView.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.SparkChartView.spark_chart_type
+	SparkChartType *string `json:"sparkChartType,omitempty"`
+
+	// The lower bound on data point frequency in the chart implemented by
+	//  specifying the minimum alignment period to use in a time series query.
+	//  For example, if the data is published once every 10 minutes it would not
+	//  make sense to fetch and align data at one minute intervals. This field is
+	//  optional and exists only as a hint.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Scorecard.SparkChartView.min_alignment_period
+	MinAlignmentPeriod *string `json:"minAlignmentPeriod,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SectionHeader", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.SectionHeader
+type SectionHeader struct {
+	// The subtitle of the section
+	// +kcc:proto:field=google.monitoring.dashboard.v1.SectionHeader.subtitle
+	Subtitle *string `json:"subtitle,omitempty"`
+
+	// Whether to insert a divider below the section in the table of contents
+	// +kcc:proto:field=google.monitoring.dashboard.v1.SectionHeader.divider_below
+	DividerBelow *bool `json:"dividerBelow,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SingleViewGroup", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.SingleViewGroup
+type SingleViewGroup struct {
+}
+*/
+
+/* found existing non-generated go type "StatisticalTimeSeriesFilter", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.StatisticalTimeSeriesFilter
+type StatisticalTimeSeriesFilter struct {
+	// `rankingMethod` is applied to a set of time series, and then the produced
+	//  value for each individual time series is used to compare a given time
+	//  series to others.
+	//  These are methods that cannot be applied stream-by-stream, but rather
+	//  require the full context of a request to evaluate time series.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.StatisticalTimeSeriesFilter.ranking_method
+	RankingMethod *string `json:"rankingMethod,omitempty"`
+
+	// How many time series to output.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.StatisticalTimeSeriesFilter.num_time_series
+	NumTimeSeries *int32 `json:"numTimeSeries,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TableDisplayOptions", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TableDisplayOptions
+type TableDisplayOptions struct {
+	// Optional. This field is unused and has been replaced by
+	//  TimeSeriesTable.column_settings
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TableDisplayOptions.shown_columns
+	ShownColumns []string `json:"shownColumns,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Text", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Text
+type Text struct {
+	// The text content to be displayed.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.content
+	Content *string `json:"content,omitempty"`
+
+	// How the text content is formatted.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.format
+	Format *string `json:"format,omitempty"`
+
+	// How the text is styled
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.style
+	Style *Text_TextStyle `json:"style,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Text_TextStyle", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Text.TextStyle
+type Text_TextStyle struct {
+	// The background color as a hex string. "#RRGGBB" or "#RGB"
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.TextStyle.background_color
+	BackgroundColor *string `json:"backgroundColor,omitempty"`
+
+	// The text color as a hex string. "#RRGGBB" or "#RGB"
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.TextStyle.text_color
+	TextColor *string `json:"textColor,omitempty"`
+
+	// The horizontal alignment of both the title and content
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.TextStyle.horizontal_alignment
+	HorizontalAlignment *string `json:"horizontalAlignment,omitempty"`
+
+	// The vertical alignment of both the title and content
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.TextStyle.vertical_alignment
+	VerticalAlignment *string `json:"verticalAlignment,omitempty"`
+
+	// The amount of padding around the widget
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.TextStyle.padding
+	Padding *string `json:"padding,omitempty"`
+
+	// Font sizes for both the title and content. The title will still be larger
+	//  relative to the content.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.TextStyle.font_size
+	FontSize *string `json:"fontSize,omitempty"`
+
+	// The pointer location for this widget (also sometimes called a "tail")
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Text.TextStyle.pointer_location
+	PointerLocation *string `json:"pointerLocation,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Threshold", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Threshold
+type Threshold struct {
+	// A label for the threshold.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Threshold.label
+	Label *string `json:"label,omitempty"`
+
+	// The value of the threshold. The value should be defined in the native scale
+	//  of the metric.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Threshold.value
+	Value *float64 `json:"value,omitempty"`
+
+	// The state color for this threshold. Color is not allowed in a XyChart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Threshold.color
+	Color *string `json:"color,omitempty"`
+
+	// The direction for the current threshold. Direction is not allowed in a
+	//  XyChart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Threshold.direction
+	Direction *string `json:"direction,omitempty"`
+
+	// The target axis to use for plotting the threshold. Target axis is not
+	//  allowed in a Scorecard.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Threshold.target_axis
+	TargetAxis *string `json:"targetAxis,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimeSeriesFilter", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesFilter
+type TimeSeriesFilter struct {
+	// Required. The [monitoring
+	//  filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
+	//  the metric types, resources, and projects to query.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilter.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// By default, the raw time series data is returned.
+	//  Use this field to combine multiple time series for different views of the
+	//  data.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilter.aggregation
+	Aggregation *Aggregation `json:"aggregation,omitempty"`
+
+	// Apply a second aggregation after `aggregation` is applied.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilter.secondary_aggregation
+	SecondaryAggregation *Aggregation `json:"secondaryAggregation,omitempty"`
+
+	// Ranking based time series filter.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilter.pick_time_series_filter
+	PickTimeSeriesFilter *PickTimeSeriesFilter `json:"pickTimeSeriesFilter,omitempty"`
+
+	// Statistics based time series filter.
+	//  Note: This field is deprecated and completely ignored by the API.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilter.statistical_time_series_filter
+	StatisticalTimeSeriesFilter *StatisticalTimeSeriesFilter `json:"statisticalTimeSeriesFilter,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimeSeriesFilterRatio", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesFilterRatio
+type TimeSeriesFilterRatio struct {
+	// The numerator of the ratio.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.numerator
+	Numerator *TimeSeriesFilterRatio_RatioPart `json:"numerator,omitempty"`
+
+	// The denominator of the ratio.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.denominator
+	Denominator *TimeSeriesFilterRatio_RatioPart `json:"denominator,omitempty"`
+
+	// Apply a second aggregation after the ratio is computed.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.secondary_aggregation
+	SecondaryAggregation *Aggregation `json:"secondaryAggregation,omitempty"`
+
+	// Ranking based time series filter.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.pick_time_series_filter
+	PickTimeSeriesFilter *PickTimeSeriesFilter `json:"pickTimeSeriesFilter,omitempty"`
+
+	// Statistics based time series filter.
+	//  Note: This field is deprecated and completely ignored by the API.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.statistical_time_series_filter
+	StatisticalTimeSeriesFilter *StatisticalTimeSeriesFilter `json:"statisticalTimeSeriesFilter,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimeSeriesFilterRatio_RatioPart", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.RatioPart
+type TimeSeriesFilterRatio_RatioPart struct {
+	// Required. The [monitoring
+	//  filter](https://cloud.google.com/monitoring/api/v3/filters) that
+	//  identifies the metric types, resources, and projects to query.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.RatioPart.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// By default, the raw time series data is returned.
+	//  Use this field to combine multiple time series for different views of the
+	//  data.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesFilterRatio.RatioPart.aggregation
+	Aggregation *Aggregation `json:"aggregation,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimeSeriesQuery", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesQuery
+type TimeSeriesQuery struct {
+	// Filter parameters to fetch time series.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.time_series_filter
+	TimeSeriesFilter *TimeSeriesFilter `json:"timeSeriesFilter,omitempty"`
+
+	// Parameters to fetch a ratio between two time series filters.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.time_series_filter_ratio
+	TimeSeriesFilterRatio *TimeSeriesFilterRatio `json:"timeSeriesFilterRatio,omitempty"`
+
+	// A query used to fetch time series with MQL.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.time_series_query_language
+	TimeSeriesQueryLanguage *string `json:"timeSeriesQueryLanguage,omitempty"`
+
+	// A query used to fetch time series with PromQL.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.prometheus_query
+	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
+
+	// The unit of data contained in fetched time series. If non-empty, this
+	//  unit will override any unit that accompanies fetched data. The format is
+	//  the same as the
+	//  [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+	//  field in `MetricDescriptor`.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.unit_override
+	UnitOverride *string `json:"unitOverride,omitempty"`
+
+	// Optional. If set, Cloud Monitoring will treat the full query duration as
+	//  the alignment period so that there will be only 1 output value.
+	//
+	//  *Note: This could override the configured alignment period except for
+	//  the cases where a series of data points are expected, like
+	//    - XyChart
+	//    - Scorecard's spark chart
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.output_full_duration
+	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimeSeriesTable", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesTable
+type TimeSeriesTable struct {
+	// Required. The data displayed in this table.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.data_sets
+	DataSets []TimeSeriesTable_TableDataSet `json:"dataSets,omitempty"`
+
+	// Optional. Store rendering strategy
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.metric_visualization
+	MetricVisualization *string `json:"metricVisualization,omitempty"`
+
+	// Optional. The list of the persistent column settings for the table.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.column_settings
+	ColumnSettings []TimeSeriesTable_ColumnSettings `json:"columnSettings,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimeSeriesTable_ColumnSettings", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesTable.ColumnSettings
+type TimeSeriesTable_ColumnSettings struct {
+	// Required. The id of the column.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.ColumnSettings.column
+	Column *string `json:"column,omitempty"`
+
+	// Required. Whether the column should be visible on page load.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.ColumnSettings.visible
+	Visible *bool `json:"visible,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TimeSeriesTable_TableDataSet", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesTable.TableDataSet
+type TimeSeriesTable_TableDataSet struct {
+	// Required. Fields for querying time series data from the
+	//  Stackdriver metrics API.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.TableDataSet.time_series_query
+	TimeSeriesQuery *TimeSeriesQuery `json:"timeSeriesQuery,omitempty"`
+
+	// Optional. A template string for naming `TimeSeries` in the resulting data
+	//  set. This should be a string with interpolations of the form
+	//  `${label_name}`, which will resolve to the label's value i.e.
+	//  "${resource.labels.project_id}."
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.TableDataSet.table_template
+	TableTemplate *string `json:"tableTemplate,omitempty"`
+
+	// Optional. The lower bound on data point frequency for this data set,
+	//  implemented by specifying the minimum alignment period to use in a time
+	//  series query For example, if the data is published once every 10 minutes,
+	//  the `min_alignment_period` should be at least 10 minutes. It would not
+	//  make sense to fetch and align data at one minute intervals.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.TableDataSet.min_alignment_period
+	MinAlignmentPeriod *string `json:"minAlignmentPeriod,omitempty"`
+
+	// Optional. Table display options for configuring how the table is
+	//  rendered.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesTable.TableDataSet.table_display_options
+	TableDisplayOptions *TableDisplayOptions `json:"tableDisplayOptions,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Widget", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.Widget
+type Widget struct {
+	// Optional. The title of the widget.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.title
+	Title *string `json:"title,omitempty"`
+
+	// A chart of time series data.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.xy_chart
+	XyChart *XyChart `json:"xyChart,omitempty"`
+
+	// A scorecard summarizing time series data.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.scorecard
+	Scorecard *Scorecard `json:"scorecard,omitempty"`
+
+	// A raw string or markdown displaying textual content.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.text
+	Text *Text `json:"text,omitempty"`
+
+	// A blank space.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.blank
+	Blank *Empty `json:"blank,omitempty"`
+
+	// A chart of alert policy data.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.alert_chart
+	AlertChart *AlertChart `json:"alertChart,omitempty"`
+
+	// A widget that displays time series data in a tabular format.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.time_series_table
+	TimeSeriesTable *TimeSeriesTable `json:"timeSeriesTable,omitempty"`
+
+	// A widget that groups the other widgets. All widgets that are within
+	//  the area spanned by the grouping widget are considered member widgets.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.collapsible_group
+	CollapsibleGroup *CollapsibleGroup `json:"collapsibleGroup,omitempty"`
+
+	// A widget that shows a stream of logs.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.logs_panel
+	LogsPanel *LogsPanel `json:"logsPanel,omitempty"`
+
+	// A widget that shows list of incidents.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.incident_list
+	IncidentList *IncidentList `json:"incidentList,omitempty"`
+
+	// A widget that displays timeseries data as a pie chart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.pie_chart
+	PieChart *PieChart `json:"pieChart,omitempty"`
+
+	// A widget that displays a list of error groups.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.error_reporting_panel
+	ErrorReportingPanel *ErrorReportingPanel `json:"errorReportingPanel,omitempty"`
+
+	// A widget that defines a section header for easier navigation of the
+	//  dashboard.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.section_header
+	SectionHeader *SectionHeader `json:"sectionHeader,omitempty"`
+
+	// A widget that groups the other widgets by using a dropdown menu.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.single_view_group
+	SingleViewGroup *SingleViewGroup `json:"singleViewGroup,omitempty"`
+
+	// Optional. The widget id. Ids may be made up of alphanumerics, dashes and
+	//  underscores. Widget ids are optional.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.Widget.id
+	ID *string `json:"id,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "XyChart", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.XyChart
+type XyChart struct {
+	// Required. The data displayed in this chart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.data_sets
+	DataSets []XyChart_DataSet `json:"dataSets,omitempty"`
+
+	// The duration used to display a comparison chart. A comparison chart
+	//  simultaneously shows values from two similar-length time periods
+	//  (e.g., week-over-week metrics).
+	//  The duration must be positive, and it can only be applied to charts with
+	//  data sets of LINE plot type.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.timeshift_duration
+	TimeshiftDuration *string `json:"timeshiftDuration,omitempty"`
+
+	// Threshold lines drawn horizontally across the chart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.thresholds
+	Thresholds []Threshold `json:"thresholds,omitempty"`
+
+	// The properties applied to the x-axis.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.x_axis
+	XAxis *XyChart_Axis `json:"xAxis,omitempty"`
+
+	// The properties applied to the y-axis.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.y_axis
+	YAxis *XyChart_Axis `json:"yAxis,omitempty"`
+
+	// The properties applied to the y2-axis.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.y2_axis
+	Y2Axis *XyChart_Axis `json:"y2Axis,omitempty"`
+
+	// Display options for the chart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.chart_options
+	ChartOptions *ChartOptions `json:"chartOptions,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "XyChart_Axis", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.XyChart.Axis
+type XyChart_Axis struct {
+	// The label of the axis.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.Axis.label
+	Label *string `json:"label,omitempty"`
+
+	// The axis scale. By default, a linear scale is used.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.Axis.scale
+	Scale *string `json:"scale,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "XyChart_DataSet", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.XyChart.DataSet
+type XyChart_DataSet struct {
+	// Required. Fields for querying time series data from the
+	//  Stackdriver metrics API.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.DataSet.time_series_query
+	TimeSeriesQuery *TimeSeriesQuery `json:"timeSeriesQuery,omitempty"`
+
+	// How this data should be plotted on the chart.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.DataSet.plot_type
+	PlotType *string `json:"plotType,omitempty"`
+
+	// A template string for naming `TimeSeries` in the resulting data set.
+	//  This should be a string with interpolations of the form `${label_name}`,
+	//  which will resolve to the label's value.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.DataSet.legend_template
+	LegendTemplate *string `json:"legendTemplate,omitempty"`
+
+	// Optional. The lower bound on data point frequency for this data set,
+	//  implemented by specifying the minimum alignment period to use in a time
+	//  series query For example, if the data is published once every 10 minutes,
+	//  the `min_alignment_period` should be at least 10 minutes. It would not
+	//  make sense to fetch and align data at one minute intervals.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.DataSet.min_alignment_period
+	MinAlignmentPeriod *string `json:"minAlignmentPeriod,omitempty"`
+
+	// Optional. The target axis to use for plotting the metric.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.XyChart.DataSet.target_axis
+	TargetAxis *string `json:"targetAxis,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.monitoring.metricsscope.v1.MonitoredProject", skipping
 
 // +kcc:proto=google.monitoring.metricsscope.v1.MonitoredProject
@@ -278,6 +1281,881 @@ type MonitoredProject struct {
 	//  `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
 	// +kcc:proto:field=google.monitoring.metricsscope.v1.MonitoredProject.name
 	Name *string `json:"name,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Aggregation", skipping
+
+// +kcc:proto=google.monitoring.v3.Aggregation
+type Aggregation struct {
+	// The `alignment_period` specifies a time interval, in seconds, that is used
+	//  to divide the data in all the
+	//  [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+	//  time. This will be done before the per-series aligner can be applied to
+	//  the data.
+	//
+	//  The value must be at least 60 seconds. If a per-series
+	//  aligner other than `ALIGN_NONE` is specified, this field is required or an
+	//  error is returned. If no per-series aligner is specified, or the aligner
+	//  `ALIGN_NONE` is specified, then this field is ignored.
+	//
+	//  The maximum value of the `alignment_period` is 104 weeks (2 years) for
+	//  charts, and 90,000 seconds (25 hours) for alerting policies.
+	// +kcc:proto:field=google.monitoring.v3.Aggregation.alignment_period
+	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
+
+	// An `Aligner` describes how to bring the data points in a single
+	//  time series into temporal alignment. Except for `ALIGN_NONE`, all
+	//  alignments cause all the data points in an `alignment_period` to be
+	//  mathematically grouped together, resulting in a single data point for
+	//  each `alignment_period` with end timestamp at the end of the period.
+	//
+	//  Not all alignment operations may be applied to all time series. The valid
+	//  choices depend on the `metric_kind` and `value_type` of the original time
+	//  series. Alignment can change the `metric_kind` or the `value_type` of
+	//  the time series.
+	//
+	//  Time series data must be aligned in order to perform cross-time
+	//  series reduction. If `cross_series_reducer` is specified, then
+	//  `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+	//  and `alignment_period` must be specified; otherwise, an error is
+	//  returned.
+	// +kcc:proto:field=google.monitoring.v3.Aggregation.per_series_aligner
+	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
+
+	// The reduction operation to be used to combine time series into a single
+	//  time series, where the value of each data point in the resulting series is
+	//  a function of all the already aligned values in the input time series.
+	//
+	//  Not all reducer operations can be applied to all time series. The valid
+	//  choices depend on the `metric_kind` and the `value_type` of the original
+	//  time series. Reduction can yield a time series with a different
+	//  `metric_kind` or `value_type` than the input time series.
+	//
+	//  Time series data must first be aligned (see `per_series_aligner`) in order
+	//  to perform cross-time series reduction. If `cross_series_reducer` is
+	//  specified, then `per_series_aligner` must be specified, and must not be
+	//  `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+	//  error is returned.
+	// +kcc:proto:field=google.monitoring.v3.Aggregation.cross_series_reducer
+	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
+
+	// The set of fields to preserve when `cross_series_reducer` is
+	//  specified. The `group_by_fields` determine how the time series are
+	//  partitioned into subsets prior to applying the aggregation
+	//  operation. Each subset contains time series that have the same
+	//  value for each of the grouping fields. Each individual time
+	//  series is a member of exactly one subset. The
+	//  `cross_series_reducer` is applied to each subset of time series.
+	//  It is not possible to reduce across different resource types, so
+	//  this field implicitly contains `resource.type`.  Fields not
+	//  specified in `group_by_fields` are aggregated away.  If
+	//  `group_by_fields` is not specified and all the time series have
+	//  the same resource type, then the time series are aggregated into
+	//  a single output time series. If `cross_series_reducer` is not
+	//  defined, this field is ignored.
+	// +kcc:proto:field=google.monitoring.v3.Aggregation.group_by_fields
+	GroupByFields []string `json:"groupByFields,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy
+type AlertPolicy struct {
+	// Identifier. Required if the policy exists. The resource name for this
+	//  policy. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+	//
+	//  `[ALERT_POLICY_ID]` is assigned by Cloud Monitoring when the policy
+	//  is created. When calling the
+	//  [alertPolicies.create][google.monitoring.v3.AlertPolicyService.CreateAlertPolicy]
+	//  method, do not include the `name` field in the alerting policy passed as
+	//  part of the request.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// A short name or phrase used to identify the policy in dashboards,
+	//  notifications, and incidents. To avoid confusion, don't use the same
+	//  display name for multiple policies in the same project. The name is
+	//  limited to 512 Unicode characters.
+	//
+	//  The convention for the display_name of a PrometheusQueryLanguageCondition
+	//  is "{rule group name}/{alert name}", where the {rule group name} and
+	//  {alert name} should be taken from the corresponding Prometheus
+	//  configuration file. This convention is not enforced.
+	//  In any case the display_name is not a unique key of the AlertPolicy.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Documentation that is included with notifications and incidents related to
+	//  this policy. Best practice is for the documentation to include information
+	//  to help responders understand, mitigate, escalate, and correct the
+	//  underlying problems detected by the alerting policy. Notification channels
+	//  that have limited capacity might not show this documentation.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.documentation
+	Documentation *AlertPolicy_Documentation `json:"documentation,omitempty"`
+
+	// User-supplied key/value data to be used for organizing and
+	//  identifying the `AlertPolicy` objects.
+	//
+	//  The field can contain up to 64 entries. Each key and value is limited to
+	//  63 Unicode characters or 128 bytes, whichever is smaller. Labels and
+	//  values can contain only lowercase letters, numerals, underscores, and
+	//  dashes. Keys must begin with a letter.
+	//
+	//  Note that Prometheus {alert name} is a
+	//  [valid Prometheus label
+	//  names](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels),
+	//  whereas Prometheus {rule group} is an unrestricted UTF-8 string.
+	//  This means that they cannot be stored as-is in user labels, because
+	//  they may contain characters that are not allowed in user-label values.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.user_labels
+	UserLabels map[string]string `json:"userLabels,omitempty"`
+
+	// A list of conditions for the policy. The conditions are combined by AND or
+	//  OR according to the `combiner` field. If the combined conditions evaluate
+	//  to true, then an incident is created. A policy can have from one to six
+	//  conditions.
+	//  If `condition_time_series_query_language` is present, it must be the only
+	//  `condition`.
+	//  If `condition_monitoring_query_language` is present, it must be the only
+	//  `condition`.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.conditions
+	Conditions []AlertPolicy_Condition `json:"conditions,omitempty"`
+
+	// How to combine the results of multiple conditions to determine if an
+	//  incident should be opened.
+	//  If `condition_time_series_query_language` is present, this must be
+	//  `COMBINE_UNSPECIFIED`.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.combiner
+	Combiner *string `json:"combiner,omitempty"`
+
+	// Whether or not the policy is enabled. On write, the default interpretation
+	//  if unset is that the policy is enabled. On read, clients should not make
+	//  any assumption about the state if it has not been populated. The
+	//  field should always be populated on List and Get operations, unless
+	//  a field projection has been specified that strips it out.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Read-only description of how the alerting policy is invalid. This field is
+	//  only set when the alerting policy is invalid. An invalid alerting policy
+	//  will not generate incidents.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.validity
+	Validity *common.Status `json:"validity,omitempty"`
+
+	// Identifies the notification channels to which notifications should be sent
+	//  when incidents are opened or closed or when new violations occur on
+	//  an already opened incident. Each element of this array corresponds to
+	//  the `name` field in each of the
+	//  [`NotificationChannel`][google.monitoring.v3.NotificationChannel]
+	//  objects that are returned from the [`ListNotificationChannels`]
+	//  [google.monitoring.v3.NotificationChannelService.ListNotificationChannels]
+	//  method. The format of the entries in this field is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.notification_channels
+	NotificationChannels []string `json:"notificationChannels,omitempty"`
+
+	// A read-only record of the creation of the alerting policy. If provided
+	//  in a call to create or update, this field will be ignored.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.creation_record
+	CreationRecord *MutationRecord `json:"creationRecord,omitempty"`
+
+	// A read-only record of the most recent change to the alerting policy. If
+	//  provided in a call to create or update, this field will be ignored.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.mutation_record
+	MutationRecord *MutationRecord `json:"mutationRecord,omitempty"`
+
+	// Control over how this alerting policy's notification channels are notified.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.alert_strategy
+	AlertStrategy *AlertPolicy_AlertStrategy `json:"alertStrategy,omitempty"`
+
+	// Optional. The severity of an alerting policy indicates how important
+	//  incidents generated by that policy are. The severity level will be
+	//  displayed on the Incident detail page and in notifications.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.severity
+	Severity *string `json:"severity,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.AlertStrategy", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.AlertStrategy
+type AlertPolicy_AlertStrategy struct {
+	// Required for log-based alerting policies, i.e. policies with a `LogMatch`
+	//  condition.
+	//
+	//  This limit is not implemented for alerting policies that do not have
+	//  a LogMatch condition.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.AlertStrategy.notification_rate_limit
+	NotificationRateLimit *AlertPolicy_AlertStrategy_NotificationRateLimit `json:"notificationRateLimit,omitempty"`
+
+	// For log-based alert policies, the notification prompts is always
+	//  [OPENED]. For non log-based alert policies, the notification prompts can
+	//  be [OPENED] or [OPENED, CLOSED].
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.AlertStrategy.notification_prompts
+	NotificationPrompts []string `json:"notificationPrompts,omitempty"`
+
+	// If an alerting policy that was active has no data for this long, any open
+	//  incidents will close
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.AlertStrategy.auto_close
+	AutoClose *string `json:"autoClose,omitempty"`
+
+	// Control how notifications will be sent out, on a per-channel basis.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.AlertStrategy.notification_channel_strategy
+	NotificationChannelStrategy []AlertPolicy_AlertStrategy_NotificationChannelStrategy `json:"notificationChannelStrategy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy
+type AlertPolicy_AlertStrategy_NotificationChannelStrategy struct {
+	// The full REST resource name for the notification channels that these
+	//  settings apply to. Each of these correspond to the name field in one
+	//  of the NotificationChannel objects referenced in the
+	//  notification_channels field of this AlertPolicy.
+	//  The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy.notification_channel_names
+	NotificationChannelNames []string `json:"notificationChannelNames,omitempty"`
+
+	// The frequency at which to send reminder notifications for open
+	//  incidents.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy.renotify_interval
+	RenotifyInterval *string `json:"renotifyInterval,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit
+type AlertPolicy_AlertStrategy_NotificationRateLimit struct {
+	// Not more than one notification per `period`.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit.period
+	Period *string `json:"period,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition
+type AlertPolicy_Condition struct {
+	// Required if the condition exists. The unique resource name for this
+	//  condition. Its format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
+	//
+	//  `[CONDITION_ID]` is assigned by Cloud Monitoring when the
+	//  condition is created as part of a new or updated alerting policy.
+	//
+	//  When calling the
+	//  [alertPolicies.create][google.monitoring.v3.AlertPolicyService.CreateAlertPolicy]
+	//  method, do not include the `name` field in the conditions of the
+	//  requested alerting policy. Cloud Monitoring creates the
+	//  condition identifiers and includes them in the new policy.
+	//
+	//  When calling the
+	//  [alertPolicies.update][google.monitoring.v3.AlertPolicyService.UpdateAlertPolicy]
+	//  method to update a policy, including a condition `name` causes the
+	//  existing condition to be updated. Conditions without names are added to
+	//  the updated policy. Existing conditions are deleted if they are not
+	//  updated.
+	//
+	//  Best practice is to preserve `[CONDITION_ID]` if you make only small
+	//  changes, such as those to condition thresholds, durations, or trigger
+	//  values.  Otherwise, treat the change as a new condition and let the
+	//  existing condition be deleted.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.name
+	Name *string `json:"name,omitempty"`
+
+	// A short name or phrase used to identify the condition in dashboards,
+	//  notifications, and incidents. To avoid confusion, don't use the same
+	//  display name for multiple conditions in the same policy.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A condition that compares a time series against a threshold.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.condition_threshold
+	ConditionThreshold *AlertPolicy_Condition_MetricThreshold `json:"conditionThreshold,omitempty"`
+
+	// A condition that checks that a time series continues to
+	//  receive new data points.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.condition_absent
+	ConditionAbsent *AlertPolicy_Condition_MetricAbsence `json:"conditionAbsent,omitempty"`
+
+	// A condition that checks for log messages matching given constraints. If
+	//  set, no other conditions can be present.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.condition_matched_log
+	ConditionMatchedLog *AlertPolicy_Condition_LogMatch `json:"conditionMatchedLog,omitempty"`
+
+	// A condition that uses the Monitoring Query Language to define
+	//  alerts.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.condition_monitoring_query_language
+	ConditionMonitoringQueryLanguage *AlertPolicy_Condition_MonitoringQueryLanguageCondition `json:"conditionMonitoringQueryLanguage,omitempty"`
+
+	// A condition that uses the Prometheus query language to define alerts.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.condition_prometheus_query_language
+	ConditionPrometheusQueryLanguage *AlertPolicy_Condition_PrometheusQueryLanguageCondition `json:"conditionPrometheusQueryLanguage,omitempty"`
+
+	// A condition that periodically evaluates a SQL query result.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.condition_sql
+	ConditionSQL *AlertPolicy_Condition_SQLCondition `json:"conditionSQL,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.LogMatch", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.LogMatch
+type AlertPolicy_Condition_LogMatch struct {
+	// Required. A logs-based filter. See [Advanced Logs
+	//  Queries](https://cloud.google.com/logging/docs/view/advanced-queries)
+	//  for how this filter should be constructed.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.LogMatch.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// Optional. A map from a label key to an extractor expression, which is
+	//  used to extract the value for this label key. Each entry in this map is
+	//  a specification for how data should be extracted from log entries that
+	//  match `filter`. Each combination of extracted values is treated as a
+	//  separate rule for the purposes of triggering notifications. Label keys
+	//  and corresponding values can be used in notifications generated by this
+	//  condition.
+	//
+	//  Please see [the documentation on logs-based metric
+	//  `valueExtractor`s](https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric.FIELDS.value_extractor)
+	//  for syntax and examples.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.LogMatch.label_extractors
+	LabelExtractors map[string]string `json:"labelExtractors,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.MetricAbsence", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.MetricAbsence
+type AlertPolicy_Condition_MetricAbsence struct {
+	// Required. A
+	//  [filter](https://cloud.google.com/monitoring/api/v3/filters) that
+	//  identifies which time series should be compared with the threshold.
+	//
+	//  The filter is similar to the one that is specified in the
+	//  [`ListTimeSeries`
+	//  request](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list)
+	//  (that call is useful to verify the time series that will be retrieved /
+	//  processed). The filter must specify the metric type and the resource
+	//  type. Optionally, it can specify resource labels and metric labels.
+	//  This field must not exceed 2048 Unicode characters in length.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricAbsence.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// Specifies the alignment of data points in individual time series as
+	//  well as how to combine the retrieved time series together (such as
+	//  when aggregating multiple streams on each resource to a single
+	//  stream for each resource or when aggregating streams across all
+	//  members of a group of resources). Multiple aggregations
+	//  are applied in the order specified.
+	//
+	//  This field is similar to the one in the [`ListTimeSeries`
+	//  request](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list).
+	//  It is advisable to use the `ListTimeSeries` method when debugging this
+	//  field.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricAbsence.aggregations
+	Aggregations []Aggregation `json:"aggregations,omitempty"`
+
+	// The amount of time that a time series must fail to report new
+	//  data to be considered failing. The minimum value of this field
+	//  is 120 seconds. Larger values that are a multiple of a
+	//  minute--for example, 240 or 300 seconds--are supported.
+	//  If an invalid value is given, an
+	//  error will be returned. The `Duration.nanos` field is
+	//  ignored.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricAbsence.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// The number/percent of time series for which the comparison must hold
+	//  in order for the condition to trigger. If unspecified, then the
+	//  condition will trigger if the comparison is true for any of the
+	//  time series that have been identified by `filter` and `aggregations`.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricAbsence.trigger
+	Trigger *AlertPolicy_Condition_Trigger `json:"trigger,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.MetricThreshold", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold
+type AlertPolicy_Condition_MetricThreshold struct {
+	// Required. A
+	//  [filter](https://cloud.google.com/monitoring/api/v3/filters) that
+	//  identifies which time series should be compared with the threshold.
+	//
+	//  The filter is similar to the one that is specified in the
+	//  [`ListTimeSeries`
+	//  request](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list)
+	//  (that call is useful to verify the time series that will be retrieved /
+	//  processed). The filter must specify the metric type and the resource
+	//  type. Optionally, it can specify resource labels and metric labels.
+	//  This field must not exceed 2048 Unicode characters in length.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// Specifies the alignment of data points in individual time series as
+	//  well as how to combine the retrieved time series together (such as
+	//  when aggregating multiple streams on each resource to a single
+	//  stream for each resource or when aggregating streams across all
+	//  members of a group of resources). Multiple aggregations
+	//  are applied in the order specified.
+	//
+	//  This field is similar to the one in the [`ListTimeSeries`
+	//  request](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list).
+	//  It is advisable to use the `ListTimeSeries` method when debugging this
+	//  field.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.aggregations
+	Aggregations []Aggregation `json:"aggregations,omitempty"`
+
+	// A [filter](https://cloud.google.com/monitoring/api/v3/filters) that
+	//  identifies a time series that should be used as the denominator of a
+	//  ratio that will be compared with the threshold. If a
+	//  `denominator_filter` is specified, the time series specified by the
+	//  `filter` field will be used as the numerator.
+	//
+	//  The filter must specify the metric type and optionally may contain
+	//  restrictions on resource type, resource labels, and metric labels.
+	//  This field may not exceed 2048 Unicode characters in length.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.denominator_filter
+	DenominatorFilter *string `json:"denominatorFilter,omitempty"`
+
+	// Specifies the alignment of data points in individual time series
+	//  selected by `denominatorFilter` as
+	//  well as how to combine the retrieved time series together (such as
+	//  when aggregating multiple streams on each resource to a single
+	//  stream for each resource or when aggregating streams across all
+	//  members of a group of resources).
+	//
+	//  When computing ratios, the `aggregations` and
+	//  `denominator_aggregations` fields must use the same alignment period
+	//  and produce time series that have the same periodicity and labels.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.denominator_aggregations
+	DenominatorAggregations []Aggregation `json:"denominatorAggregations,omitempty"`
+
+	// When this field is present, the `MetricThreshold` condition forecasts
+	//  whether the time series is predicted to violate the threshold within
+	//  the `forecast_horizon`. When this field is not set, the
+	//  `MetricThreshold` tests the current value of the timeseries against the
+	//  threshold.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.forecast_options
+	ForecastOptions *AlertPolicy_Condition_MetricThreshold_ForecastOptions `json:"forecastOptions,omitempty"`
+
+	// The comparison to apply between the time series (indicated by `filter`
+	//  and `aggregation`) and the threshold (indicated by `threshold_value`).
+	//  The comparison is applied on each time series, with the time series
+	//  on the left-hand side and the threshold on the right-hand side.
+	//
+	//  Only `COMPARISON_LT` and `COMPARISON_GT` are supported currently.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.comparison
+	Comparison *string `json:"comparison,omitempty"`
+
+	// A value against which to compare the time series.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.threshold_value
+	ThresholdValue *float64 `json:"thresholdValue,omitempty"`
+
+	// The amount of time that a time series must violate the
+	//  threshold to be considered failing. Currently, only values
+	//  that are a multiple of a minute--e.g., 0, 60, 120, or 300
+	//  seconds--are supported. If an invalid value is given, an
+	//  error will be returned. When choosing a duration, it is useful to
+	//  keep in mind the frequency of the underlying time series data
+	//  (which may also be affected by any alignments specified in the
+	//  `aggregations` field); a good duration is long enough so that a single
+	//  outlier does not generate spurious alerts, but short enough that
+	//  unhealthy states are detected and alerted on quickly.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// The number/percent of time series for which the comparison must hold
+	//  in order for the condition to trigger. If unspecified, then the
+	//  condition will trigger if the comparison is true for any of the
+	//  time series that have been identified by `filter` and `aggregations`,
+	//  or by the ratio, if `denominator_filter` and `denominator_aggregations`
+	//  are specified.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.trigger
+	Trigger *AlertPolicy_Condition_Trigger `json:"trigger,omitempty"`
+
+	// A condition control that determines how metric-threshold conditions
+	//  are evaluated when data stops arriving. To use this control, the value
+	//  of the `duration` field must be greater than or equal to 60 seconds.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.evaluation_missing_data
+	EvaluationMissingData *string `json:"evaluationMissingData,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions
+type AlertPolicy_Condition_MetricThreshold_ForecastOptions struct {
+	// Required. The length of time into the future to forecast whether a
+	//  time series will violate the threshold. If the predicted value is
+	//  found to violate the threshold, and the violation is observed in all
+	//  forecasts made for the configured `duration`, then the time series is
+	//  considered to be failing.
+	//  The forecast horizon can range from 1 hour to 60 hours.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions.forecast_horizon
+	ForecastHorizon *string `json:"forecastHorizon,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition
+type AlertPolicy_Condition_MonitoringQueryLanguageCondition struct {
+	// [Monitoring Query Language](https://cloud.google.com/monitoring/mql)
+	//  query that outputs a boolean stream.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.query
+	Query *string `json:"query,omitempty"`
+
+	// The amount of time that a time series must violate the
+	//  threshold to be considered failing. Currently, only values
+	//  that are a multiple of a minute--e.g., 0, 60, 120, or 300
+	//  seconds--are supported. If an invalid value is given, an
+	//  error will be returned. When choosing a duration, it is useful to
+	//  keep in mind the frequency of the underlying time series data
+	//  (which may also be affected by any alignments specified in the
+	//  `aggregations` field); a good duration is long enough so that a single
+	//  outlier does not generate spurious alerts, but short enough that
+	//  unhealthy states are detected and alerted on quickly.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// The number/percent of time series for which the comparison must hold
+	//  in order for the condition to trigger. If unspecified, then the
+	//  condition will trigger if the comparison is true for any of the
+	//  time series that have been identified by `filter` and `aggregations`,
+	//  or by the ratio, if `denominator_filter` and `denominator_aggregations`
+	//  are specified.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.trigger
+	Trigger *AlertPolicy_Condition_Trigger `json:"trigger,omitempty"`
+
+	// A condition control that determines how metric-threshold conditions
+	//  are evaluated when data stops arriving.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.evaluation_missing_data
+	EvaluationMissingData *string `json:"evaluationMissingData,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition
+type AlertPolicy_Condition_PrometheusQueryLanguageCondition struct {
+	// Required. The PromQL expression to evaluate. Every evaluation cycle
+	//  this expression is evaluated at the current time, and all resultant
+	//  time series become pending/firing alerts. This field must not be empty.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.query
+	Query *string `json:"query,omitempty"`
+
+	// Optional. Alerts are considered firing once their PromQL expression was
+	//  evaluated to be "true" for this long.
+	//  Alerts whose PromQL expression was not evaluated to be "true" for
+	//  long enough are considered pending.
+	//  Must be a non-negative duration or missing.
+	//  This field is optional. Its default value is zero.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Optional. How often this rule should be evaluated.
+	//  Must be a positive multiple of 30 seconds or missing.
+	//  This field is optional. Its default value is 30 seconds.
+	//  If this PrometheusQueryLanguageCondition was generated from a
+	//  Prometheus alerting rule, then this value should be taken from the
+	//  enclosing rule group.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.evaluation_interval
+	EvaluationInterval *string `json:"evaluationInterval,omitempty"`
+
+	// Optional. Labels to add to or overwrite in the PromQL query result.
+	//  Label names [must be
+	//  valid](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels).
+	//  Label values can be [templatized by using
+	//  variables](https://cloud.google.com/monitoring/alerts/doc-variables#doc-vars).
+	//  The only available variable names are the names of the labels in the
+	//  PromQL result, including "__name__" and "value". "labels" may be empty.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The rule group name of this alert in the corresponding
+	//  Prometheus configuration file.
+	//
+	//  Some external tools may require this field to be populated correctly
+	//  in order to refer to the original Prometheus configuration file.
+	//  The rule group name and the alert name are necessary to update the
+	//  relevant AlertPolicies in case the definition of the rule group changes
+	//  in the future.
+	//
+	//  This field is optional. If this field is not empty, then it must
+	//  contain a valid UTF-8 string.
+	//  This field may not exceed 2048 Unicode characters in length.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.rule_group
+	RuleGroup *string `json:"ruleGroup,omitempty"`
+
+	// Optional. The alerting rule name of this alert in the corresponding
+	//  Prometheus configuration file.
+	//
+	//  Some external tools may require this field to be populated correctly
+	//  in order to refer to the original Prometheus configuration file.
+	//  The rule group name and the alert name are necessary to update the
+	//  relevant AlertPolicies in case the definition of the rule group changes
+	//  in the future.
+	//
+	//  This field is optional. If this field is not empty, then it must be a
+	//  [valid Prometheus label
+	//  name](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels).
+	//  This field may not exceed 2048 Unicode characters in length.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.alert_rule
+	AlertRule *string `json:"alertRule,omitempty"`
+
+	// Optional. Whether to disable metric existence validation for this
+	//  condition.
+	//
+	//  This allows alerting policies to be defined on metrics that do not yet
+	//  exist, improving advanced customer workflows such as configuring
+	//  alerting policies using Terraform.
+	//
+	//  Users with the `monitoring.alertPolicyViewer` role are able to see the
+	//  name of the non-existent metric in the alerting policy condition.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.disable_metric_validation
+	DisableMetricValidation *bool `json:"disableMetricValidation,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.SqlCondition", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.SqlCondition
+type AlertPolicy_Condition_SQLCondition struct {
+	// Required. The Log Analytics SQL query to run, as a string.  The query
+	//  must conform to the required shape. Specifically, the query must not
+	//  try to filter the input by time.  A filter will automatically be
+	//  applied to filter the input so that the query receives all rows
+	//  received since the last time the query was run.
+	//
+	//  For example, the following query extracts all log entries containing an
+	//  HTTP request:
+	//
+	//      SELECT
+	//        timestamp, log_name, severity, http_request, resource, labels
+	//      FROM
+	//        my-project.global._Default._AllLogs
+	//      WHERE
+	//        http_request IS NOT NULL
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.query
+	Query *string `json:"query,omitempty"`
+
+	// Schedule the query to execute every so many minutes.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.minutes
+	Minutes *AlertPolicy_Condition_SQLCondition_Minutes `json:"minutes,omitempty"`
+
+	// Schedule the query to execute every so many hours.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.hourly
+	Hourly *AlertPolicy_Condition_SQLCondition_Hourly `json:"hourly,omitempty"`
+
+	// Schedule the query to execute every so many days.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.daily
+	Daily *AlertPolicy_Condition_SQLCondition_Daily `json:"daily,omitempty"`
+
+	// Test the row count against a threshold.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.row_count_test
+	RowCountTest *AlertPolicy_Condition_SQLCondition_RowCountTest `json:"rowCountTest,omitempty"`
+
+	// Test the boolean value in the indicated column.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.boolean_test
+	BooleanTest *AlertPolicy_Condition_SQLCondition_BooleanTest `json:"booleanTest,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.SqlCondition.BooleanTest", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.BooleanTest
+type AlertPolicy_Condition_SQLCondition_BooleanTest struct {
+	// Required. The name of the column containing the boolean value. If the
+	//  value in a row is NULL, that row is ignored.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.BooleanTest.column
+	Column *string `json:"column,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Daily", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Daily
+type AlertPolicy_Condition_SQLCondition_Daily struct {
+	// Required. The number of days between runs. Must be greater than or
+	//  equal to 1 day and less than or equal to 31 days.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Daily.periodicity
+	Periodicity *int32 `json:"periodicity,omitempty"`
+
+	// Optional. The time of day (in UTC) at which the query should run. If
+	//  left unspecified, the server picks an arbitrary time of day and runs
+	//  the query at the same time each day.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Daily.execution_time
+	ExecutionTime *TimeOfDay `json:"executionTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Hourly", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Hourly
+type AlertPolicy_Condition_SQLCondition_Hourly struct {
+	// Required. The number of hours between runs. Must be greater than or
+	//  equal to 1 hour and less than or equal to 48 hours.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Hourly.periodicity
+	Periodicity *int32 `json:"periodicity,omitempty"`
+
+	// Optional. The number of minutes after the hour (in UTC) to run the
+	//  query. Must be greater than or equal to 0 minutes and less than or
+	//  equal to 59 minutes.  If left unspecified, then an arbitrary offset
+	//  is used.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Hourly.minute_offset
+	MinuteOffset *int32 `json:"minuteOffset,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Minutes", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Minutes
+type AlertPolicy_Condition_SQLCondition_Minutes struct {
+	// Required. Number of minutes between runs. The interval must be
+	//  greater than or equal to 5 minutes and less than or equal to 1440
+	//  minutes.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.Minutes.periodicity
+	Periodicity *int32 `json:"periodicity,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.SqlCondition.RowCountTest", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.RowCountTest
+type AlertPolicy_Condition_SQLCondition_RowCountTest struct {
+	// Required. The comparison to apply between the number of rows returned
+	//  by the query and the threshold.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.RowCountTest.comparison
+	Comparison *string `json:"comparison,omitempty"`
+
+	// Required. The value against which to compare the row count.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.SqlCondition.RowCountTest.threshold
+	Threshold *int64 `json:"threshold,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Condition.Trigger", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Condition.Trigger
+type AlertPolicy_Condition_Trigger struct {
+	// The absolute number of time series that must fail
+	//  the predicate for the condition to be triggered.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.Trigger.count
+	Count *int32 `json:"count,omitempty"`
+
+	// The percentage of time series that must fail the
+	//  predicate for the condition to be triggered.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Condition.Trigger.percent
+	Percent *float64 `json:"percent,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.AlertPolicy.Documentation", skipping
+
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Documentation
+type AlertPolicy_Documentation struct {
+	// The body of the documentation, interpreted according to `mime_type`.
+	//  The content may not exceed 8,192 Unicode characters and may not exceed
+	//  more than 10,240 bytes when encoded in UTF-8 format, whichever is
+	//  smaller. This text can be [templatized by using
+	//  variables](https://cloud.google.com/monitoring/alerts/doc-variables#doc-vars).
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Documentation.content
+	Content *string `json:"content,omitempty"`
+
+	// The format of the `content` field. Presently, only the value
+	//  `"text/markdown"` is supported. See
+	//  [Markdown](https://en.wikipedia.org/wiki/Markdown) for more information.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Documentation.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Optional. The subject line of the notification. The subject line may not
+	//  exceed 10,240 bytes. In notifications generated by this policy, the
+	//  contents of the subject line after variable expansion will be truncated
+	//  to 255 bytes or shorter at the latest UTF-8 character boundary. The
+	//  255-byte limit is recommended by [this
+	//  thread](https://stackoverflow.com/questions/1592291/what-is-the-email-subject-length-limit).
+	//  It is both the limit imposed by some third-party ticketing products and
+	//  it is common to define textual fields in databases as VARCHAR(255).
+	//
+	//  The contents of the subject line can be [templatized by using
+	//  variables](https://cloud.google.com/monitoring/alerts/doc-variables#doc-vars).
+	//  If this field is missing or empty, a default subject line will be
+	//  generated.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Documentation.subject
+	Subject *string `json:"subject,omitempty"`
+
+	// Optional. Links to content such as playbooks, repositories, and other
+	//  resources. This field can contain up to 3 entries.
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Documentation.links
+	Links []AlertPolicy_Documentation_Link `json:"links,omitempty"`
+}
+*/
+
+/* unreachable type AlertPolicy_Documentation_Link
+// +kcc:proto=google.monitoring.v3.AlertPolicy.Documentation.Link
+type AlertPolicy_Documentation_Link struct {
+	// A short display name for the link. The display name must not be empty
+	//  or exceed 63 characters. Example: "playbook".
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Documentation.Link.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The url of a webpage.
+	//  A url can be templatized by using variables
+	//  in the path or the query parameters. The total length of a URL should
+	//  not exceed 2083 characters before and after variable expansion.
+	//  Example: "https://my_domain.com/playbook?name=${resource.name}"
+	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Documentation.Link.url
+	URL *string `json:"url,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.monitoring.v3.Group", skipping
+
+// +kcc:proto=google.monitoring.v3.Group
+type Group struct {
+	// Output only. The name of this group. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+	//
+	//  When creating a group, this field is ignored and a new name is created
+	//  consisting of the project specified in the call to `CreateGroup`
+	//  and a unique `[GROUP_ID]` that is generated automatically.
+	// +kcc:proto:field=google.monitoring.v3.Group.name
+	Name *string `json:"name,omitempty"`
+
+	// A user-assigned name for this group, used only for display purposes.
+	// +kcc:proto:field=google.monitoring.v3.Group.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The name of the group's parent, if it has one. The format is:
+	//
+	//      projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+	//
+	//  For groups with no parent, `parent_name` is the empty string, `""`.
+	// +kcc:proto:field=google.monitoring.v3.Group.parent_name
+	ParentName *string `json:"parentName,omitempty"`
+
+	// The filter used to determine which monitored resources belong to this
+	//  group.
+	// +kcc:proto:field=google.monitoring.v3.Group.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// If true, the members of this group are considered to be a cluster.
+	//  The system can perform additional analysis on groups that are clusters.
+	// +kcc:proto:field=google.monitoring.v3.Group.is_cluster
+	IsCluster *bool `json:"isCluster,omitempty"`
 }
 */
 
@@ -320,7 +2198,8 @@ type InternalChecker struct {
 }
 */
 
-/* unreachable type MutationRecord
+/* found existing non-generated go type with proto tag "google.monitoring.v3.MutationRecord", skipping
+
 // +kcc:proto=google.monitoring.v3.MutationRecord
 type MutationRecord struct {
 	// When the change occurred.
@@ -1068,6 +2947,56 @@ type UptimeCheckConfig_TCPCheck struct {
 	// Contains information needed to add pings to a TCP check.
 	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.TcpCheck.ping_config
 	PingConfig *UptimeCheckConfig_PingConfig `json:"pingConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Empty", skipping
+
+// +kcc:proto=google.protobuf.Empty
+type Empty struct {
+}
+*/
+
+/* unreachable type Interval
+// +kcc:proto=google.type.Interval
+type Interval struct {
+	// Optional. Inclusive start of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be the same
+	//  or after the start.
+	// +kcc:proto:field=google.type.Interval.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. Exclusive end of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be before the
+	//  end.
+	// +kcc:proto:field=google.type.Interval.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.type.TimeOfDay", skipping
+
+// +kcc:proto=google.type.TimeOfDay
+type TimeOfDay struct {
+	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// +kcc:proto:field=google.type.TimeOfDay.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Minutes of hour of day. Must be from 0 to 59.
+	// +kcc:proto:field=google.type.TimeOfDay.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+	//  allow the value 60 if it allows leap-seconds.
+	// +kcc:proto:field=google.type.TimeOfDay.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// +kcc:proto:field=google.type.TimeOfDay.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
 }
 */
 

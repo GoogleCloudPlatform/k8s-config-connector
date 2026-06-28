@@ -125,7 +125,7 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 		}
 	}
 
-	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.ProtoName)
+	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.Kind)
 	err = errors.Join(err, c.GenerateController(cArgs))
 	err = errors.Join(err, c.RegisterController())
 	return err

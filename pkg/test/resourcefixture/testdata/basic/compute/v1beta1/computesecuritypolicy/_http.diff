@@ -1,0 +1,512 @@
+1c1,2
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+> Content-Type: application/json
+29c30
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies
+43,44d43
+<       "description": "",
+<       "headerAction": {},
+53d51
+<       "preview": false,
+58,59d55
+<       "description": "",
+<       "headerAction": {},
+63d58
+<             "62.48.212.0/24",
+65c60,61
+<             "115.128.0.0/9"
+---
+>             "115.128.0.0/9",
+>             "62.48.212.0/24"
+103c99,100
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+133c130,131
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+> Content-Type: application/json
+161,162d158
+<       "description": "",
+<       "headerAction": {},
+167d162
+<             "62.48.212.0/24",
+169c164,165
+<             "115.128.0.0/9"
+---
+>             "115.128.0.0/9",
+>             "62.48.212.0/24"
+179,180d174
+<       "description": "",
+<       "headerAction": {},
+190d183
+<       "preview": false,
+200c193
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}/addRule?alt=json&prettyPrint=false
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+204,214c197,201
+<   "action": "allow",
+<   "description": "",
+<   "headerAction": {},
+<   "match": {
+<     "config": {
+<       "srcIpRanges": [
+<         "63.0.0.0/8",
+<         "61.128.0.0/10"
+<       ]
+<     },
+<     "versionedExpr": "SRC_IPS_V1"
+---
+>   "adaptiveProtectionConfig": {
+>     "layer7DdosDefenseConfig": {
+>       "enable": true,
+>       "ruleVisibility": "STANDARD"
+>     }
+216,260c203,204
+<   "preview": false,
+<   "priority": 555
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "AddRule",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+---
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "fingerprint": "abcdef0123A=",
+262,290c206,220
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "AddRule",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}/addRule?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "action": "deny(403)",
+<   "description": "",
+<   "headerAction": {},
+<   "match": {
+<     "config": {
+<       "srcIpRanges": [
+<         "4.5.4.0/24",
+<         "145.4.56.4/30",
+<         "63.63.63.63/32"
+<       ]
+---
+>   "kind": "compute#securityPolicy",
+>   "labelFingerprint": "abcdef0123A=",
+>   "name": "${securityPolicyID}",
+>   "rules": [
+>     {
+>       "action": "allow",
+>       "match": {
+>         "config": {
+>           "srcIpRanges": [
+>             "*"
+>           ]
+>         },
+>         "versionedExpr": "SRC_IPS_V1"
+>       },
+>       "priority": 2147483647
+292,365c222,232
+<     "versionedExpr": "SRC_IPS_V1"
+<   },
+<   "preview": false
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "AddRule",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "AddRule",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}/addRule?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "action": "deny(502)",
+<   "description": "",
+<   "headerAction": {},
+<   "match": {
+<     "config": {
+<       "srcIpRanges": [
+<         "60.0.0.0/6"
+<       ]
+---
+>     {
+>       "action": "deny(502)",
+>       "match": {
+>         "config": {
+>           "srcIpRanges": [
+>             "60.0.0.0/6"
+>           ]
+>         },
+>         "versionedExpr": "SRC_IPS_V1"
+>       },
+>       "priority": 111111111
+367,441c234,245
+<     "versionedExpr": "SRC_IPS_V1"
+<   },
+<   "preview": false,
+<   "priority": 111111111
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "AddRule",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "AddRule",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}/patchRule?alt=json&prettyPrint=false&priority=2147483647&updateMask=
+< Content-Type: application/json
+< 
+< {
+<   "action": "allow",
+<   "description": "",
+<   "headerAction": {},
+<   "match": {
+<     "config": {
+<       "srcIpRanges": [
+<         "*"
+<       ]
+---
+>     {
+>       "action": "allow",
+>       "match": {
+>         "config": {
+>           "srcIpRanges": [
+>             "63.0.0.0/8",
+>             "61.128.0.0/10"
+>           ]
+>         },
+>         "versionedExpr": "SRC_IPS_V1"
+>       },
+>       "priority": 555
+443,501c247,262
+<     "versionedExpr": "SRC_IPS_V1"
+<   },
+<   "preview": false,
+<   "priority": 2147483647
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "PatchRule",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "PatchRule",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${securityPolicyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+<   "user": "user@example.com"
+---
+>     {
+>       "action": "deny(403)",
+>       "match": {
+>         "config": {
+>           "srcIpRanges": [
+>             "145.4.56.4/30",
+>             "63.63.63.63/32",
+>             "4.5.4.0/24"
+>           ]
+>         },
+>         "versionedExpr": "SRC_IPS_V1"
+>       },
+>       "priority": 0
+>     }
+>   ],
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}"
+504,507d264
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}/removeRule?alt=json&prettyPrint=false&priority=1000000000
+< 
+523c280
+<   "operationType": "RemoveRule",
+---
+>   "operationType": "compute.securityPolicies.patch",
+535c292,293
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+553c311
+<   "operationType": "RemoveRule",
+---
+>   "operationType": "compute.securityPolicies.patch",
+565c323,324
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+> Content-Type: application/json
+592,608d350
+<       "action": "deny(403)",
+<       "description": "",
+<       "headerAction": {},
+<       "kind": "compute#securityPolicyRule",
+<       "match": {
+<         "config": {
+<           "srcIpRanges": [
+<             "4.5.4.0/24",
+<             "145.4.56.4/30",
+<             "63.63.63.63/32"
+<           ]
+<         },
+<         "versionedExpr": "SRC_IPS_V1"
+<       },
+<       "preview": false
+<     },
+<     {
+610,611d351
+<       "description": "",
+<       "headerAction": {},
+616,633c356,358
+<             "63.0.0.0/8",
+<             "61.128.0.0/10"
+<           ]
+<         },
+<         "versionedExpr": "SRC_IPS_V1"
+<       },
+<       "preview": false,
+<       "priority": 555
+<     },
+<     {
+<       "action": "deny(502)",
+<       "description": "",
+<       "headerAction": {},
+<       "kind": "compute#securityPolicyRule",
+<       "match": {
+<         "config": {
+<           "srcIpRanges": [
+<             "60.0.0.0/6"
+---
+>             "16.0.0.0/4",
+>             "115.128.0.0/9",
+>             "62.48.212.0/24"
+638,639c363,364
+<       "preview": false,
+<       "priority": 111111111
+---
+>       "preview": true,
+>       "priority": 1000000000
+642,644c367
+<       "action": "allow",
+<       "description": "",
+<       "headerAction": {},
+---
+>       "action": "deny(403)",
+649d371
+<             "*",
+655d376
+<       "preview": false,
+665c386,387
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}?alt=json&prettyPrint=false
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+> Content-Type: application/json
+694c416,417
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json

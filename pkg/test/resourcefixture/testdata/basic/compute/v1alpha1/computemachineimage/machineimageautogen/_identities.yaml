@@ -1,4 +1,6 @@
 - caisURL: unknown
+  error: 'failed to convert unstructured object to *v1beta1.ComputeInstance: cannot
+    restore struct from: slice'
   group: compute.cnrm.cloud.google.com
   kind: ComputeInstance
   name: computeinstance-${uniqueId}

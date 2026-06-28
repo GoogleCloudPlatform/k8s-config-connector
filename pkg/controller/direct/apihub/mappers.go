@@ -245,3 +245,59 @@ func APIHubAPIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAPI
 	}
 	return out
 }
+
+func Attributes_FromProto(mapCtx *direct.MapContext, in map[string]*pb.AttributeValues) []krm.APIHubExternalAPIAttribute {
+	if in == nil {
+		return nil
+	}
+	out := make([]krm.APIHubExternalAPIAttribute, 0, len(in))
+	for k, v := range in {
+		attr := krm.APIHubExternalAPIAttribute{
+			AttributeRef: &krm.APIHubAttributeRef{External: k},
+			Values:       AttributeValues_FromProto(mapCtx, v),
+		}
+		out = append(out, attr)
+	}
+	return out
+}
+
+func Attributes_ToProto(mapCtx *direct.MapContext, in []krm.APIHubExternalAPIAttribute) map[string]*pb.AttributeValues {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.AttributeValues)
+	for _, attr := range in {
+		if attr.AttributeRef != nil {
+			out[attr.AttributeRef.External] = AttributeValues_ToProto(mapCtx, attr.Values)
+		}
+	}
+	return out
+}
+
+func APIHubExternalAPISpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalApi) *krm.APIHubExternalAPISpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubExternalAPISpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Endpoints = in.Endpoints
+	out.Paths = in.Paths
+	out.Documentation = Documentation_FromProto(mapCtx, in.GetDocumentation())
+	out.AttributeRefs = Attributes_FromProto(mapCtx, in.GetAttributes())
+	return out
+}
+
+func APIHubExternalAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubExternalAPISpec) *pb.ExternalApi {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalApi{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Endpoints = in.Endpoints
+	out.Paths = in.Paths
+	out.Documentation = Documentation_ToProto(mapCtx, in.Documentation)
+	out.Attributes = Attributes_ToProto(mapCtx, in.AttributeRefs)
+	return out
+}

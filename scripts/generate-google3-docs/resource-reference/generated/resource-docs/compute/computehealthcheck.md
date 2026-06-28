@@ -115,6 +115,8 @@ location: string
 logConfig:
   enable: boolean
 resourceID: string
+sourceRegions:
+- string
 sslHealthCheck:
   port: integer
   portName: string
@@ -498,6 +500,42 @@ unhealthyThreshold: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceRegions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The list of cloud regions from which health checks are performed. If
+any regions are specified, then exactly 3 regions should be specified.
+The region names must be valid names of Google Cloud regions. This can
+only be set for global health check. If this list is non-empty, then
+there are restrictions on what other health check fields are supported
+and what other resources can use this health check:
+
+* SSL, HTTP2, and GRPC protocols are not supported.
+
+* The TCP request field is not supported.
+
+* The proxyHeader field for HTTP, HTTPS, and TCP is not supported.
+
+* The checkIntervalSec field must be at least 30.
+
+* The health check cannot be used with BackendService nor with managed
+instance group auto-healing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceRegions[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
     <tr>

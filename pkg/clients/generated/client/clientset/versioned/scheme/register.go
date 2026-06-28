@@ -38,6 +38,8 @@ import (
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appengine/v1alpha1"
 	apphubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1alpha1"
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apphub/v1beta1"
+	appoptimizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/appoptimize/v1alpha1"
+	artifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/asset/v1beta1"
 	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/assuredworkloads/v1alpha1"
@@ -54,6 +56,7 @@ import (
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryconnection/v1beta1"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatapolicy/v1alpha1"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1beta1"
+	bigquerymigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerymigration/v1alpha1"
 	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
 	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1beta1"
 	bigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1alpha1"
@@ -62,6 +65,7 @@ import (
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
 	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1alpha1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
+	blockchainnodeenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/blockchainnodeengine/v1alpha1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
@@ -85,6 +89,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdelivery/v1alpha1"
+	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/connectors/v1alpha1"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1alpha1"
@@ -94,9 +99,11 @@ import (
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
+	dataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1alpha1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	datalabelingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datalabeling/v1alpha1"
+	datalineagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datalineage/v1alpha1"
 	datamigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datamigration/v1alpha1"
 	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1alpha1"
@@ -129,6 +136,7 @@ import (
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasestorage/v1alpha1"
 	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1alpha1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
+	geminidataanalyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/geminidataanalytics/v1alpha1"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
@@ -176,6 +184,7 @@ import (
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
+	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1alpha1"
 	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securesourcemanager/v1beta1"
@@ -196,6 +205,7 @@ import (
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
+	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
@@ -231,6 +241,8 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	appenginev1alpha1.AddToScheme,
 	apphubv1alpha1.AddToScheme,
 	apphubv1beta1.AddToScheme,
+	appoptimizev1alpha1.AddToScheme,
+	artifactregistryv1alpha1.AddToScheme,
 	artifactregistryv1beta1.AddToScheme,
 	assetv1beta1.AddToScheme,
 	assuredworkloadsv1alpha1.AddToScheme,
@@ -247,6 +259,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigqueryconnectionv1beta1.AddToScheme,
 	bigquerydatapolicyv1alpha1.AddToScheme,
 	bigquerydatatransferv1beta1.AddToScheme,
+	bigquerymigrationv1alpha1.AddToScheme,
 	bigqueryreservationv1alpha1.AddToScheme,
 	bigqueryreservationv1beta1.AddToScheme,
 	bigtablev1alpha1.AddToScheme,
@@ -255,6 +268,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	billingbudgetsv1beta1.AddToScheme,
 	binaryauthorizationv1alpha1.AddToScheme,
 	binaryauthorizationv1beta1.AddToScheme,
+	blockchainnodeenginev1alpha1.AddToScheme,
 	certificatemanagerv1alpha1.AddToScheme,
 	certificatemanagerv1beta1.AddToScheme,
 	cloudassetv1alpha1.AddToScheme,
@@ -278,6 +292,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	computev1beta1.AddToScheme,
 	configcontrollerv1beta1.AddToScheme,
 	configdeliveryv1alpha1.AddToScheme,
+	connectorsv1alpha1.AddToScheme,
 	contactcenterinsightsv1alpha1.AddToScheme,
 	containerv1beta1.AddToScheme,
 	containeranalysisv1alpha1.AddToScheme,
@@ -287,9 +302,11 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	datacatalogv1alpha1.AddToScheme,
 	datacatalogv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
+	dataformv1alpha1.AddToScheme,
 	dataformv1beta1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
 	datalabelingv1alpha1.AddToScheme,
+	datalineagev1alpha1.AddToScheme,
 	datamigrationv1alpha1.AddToScheme,
 	dataplexv1alpha1.AddToScheme,
 	dataprocv1alpha1.AddToScheme,
@@ -322,6 +339,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	firebasestoragev1alpha1.AddToScheme,
 	firestorev1alpha1.AddToScheme,
 	firestorev1beta1.AddToScheme,
+	geminidataanalyticsv1alpha1.AddToScheme,
 	gkebackupv1alpha1.AddToScheme,
 	gkehubv1alpha1.AddToScheme,
 	gkehubv1beta1.AddToScheme,
@@ -369,6 +387,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	recaptchaenterprisev1beta1.AddToScheme,
 	redisv1beta1.AddToScheme,
 	resourcemanagerv1beta1.AddToScheme,
+	runv1alpha1.AddToScheme,
 	runv1beta1.AddToScheme,
 	secretmanagerv1beta1.AddToScheme,
 	securesourcemanagerv1beta1.AddToScheme,
@@ -389,6 +408,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	storagetransferv1beta1.AddToScheme,
 	tagsv1beta1.AddToScheme,
 	tpuv1alpha1.AddToScheme,
+	vectorsearchv1alpha1.AddToScheme,
 	vertexaiv1alpha1.AddToScheme,
 	vertexaiv1beta1.AddToScheme,
 	vmwareenginev1alpha1.AddToScheme,

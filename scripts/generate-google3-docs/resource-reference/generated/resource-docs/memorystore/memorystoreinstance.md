@@ -73,6 +73,11 @@ crossInstanceReplicationConfig:
       external: string
       name: string
       namespace: string
+  secondaryInstances:
+  - instanceRef:
+      external: string
+      name: string
+      namespace: string
 deletionProtectionEnabled: boolean
 endpoints:
 - connections:
@@ -301,6 +306,69 @@ zoneDistributionConfig:
     <tr>
         <td>
             <p><code>crossInstanceReplicationConfig.primaryInstance.instanceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a MemorystoreInstance resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.secondaryInstances</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. List of secondary instances that are replicating from this
+ primary instance.
+
+ This field is only set for a primary instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.secondaryInstances[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.secondaryInstances[].instanceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The full resource path of the remote instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.secondaryInstances[].instanceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed MemorystoreInstance resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.secondaryInstances[].instanceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a MemorystoreInstance resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>crossInstanceReplicationConfig.secondaryInstances[].instanceRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -882,6 +950,7 @@ observedState:
     secondaryInstances:
     - instance: string
       uid: string
+    updateTime: string
   effectiveMaintenanceVersion: string
   encryptionInfo:
     encryptionType: string
@@ -1133,6 +1202,13 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. The unique identifier of the remote instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.crossInstanceReplicationConfig.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The last time cross instance replication config was updated.</p>
         </td>
     </tr>
     <tr>

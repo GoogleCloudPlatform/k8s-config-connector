@@ -400,6 +400,7 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED",
@@ -471,6 +472,7 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED",
@@ -508,7 +510,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "accessType": "GLOBAL",
-  "address": "8.8.8.8",
+  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "description": "Maximal Test description",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
@@ -595,7 +597,7 @@ X-Xss-Protection: 0
 
 {
   "accessType": "GLOBAL",
-  "address": "8.8.8.8",
+  "address": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal Test description",
   "ipAddress": "10.1.2.3",
@@ -694,6 +696,7 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED",

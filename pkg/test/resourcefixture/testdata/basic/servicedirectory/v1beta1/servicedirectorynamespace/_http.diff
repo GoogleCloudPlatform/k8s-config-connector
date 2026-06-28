@@ -1,0 +1,29 @@
+1c1
+< GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
+---
+> GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces?alt=json&namespaceId=servicedirectory-namespace-${uniqueId}
+---
+> POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces?%24alt=json%3Benum-encoding%3Dint&namespaceId=servicedirectory-namespace-${uniqueId}
+56c56
+< GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
+---
+> GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+80c80
+< PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json&updateMask=labels
+---
+> PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+88c88,89
+<   }
+---
+>   },
+>   "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}"
+112c113
+< GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
+---
+> GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+136c137
+< DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?alt=json
+---
+> DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

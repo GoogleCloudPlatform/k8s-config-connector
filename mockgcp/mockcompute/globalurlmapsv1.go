@@ -64,6 +64,8 @@ func (s *GlobalURLMapsV1) Insert(ctx context.Context, req *pb.InsertUrlMapReques
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#urlMap")
 
+	s.populateURLMapDefaults(ctx, obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -87,7 +89,21 @@ func (s *GlobalURLMapsV1) Patch(ctx context.Context, req *pb.PatchUrlMapRequest)
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	if len(req.GetUrlMapResource().GetHostRules()) > 0 {
+		obj.HostRules = nil
+	}
+	if len(req.GetUrlMapResource().GetPathMatchers()) > 0 {
+		obj.PathMatchers = nil
+	}
+	if len(req.GetUrlMapResource().GetTests()) > 0 {
+		obj.Tests = nil
+	}
+	if req.GetUrlMapResource().GetDefaultCustomErrorResponsePolicy() != nil {
+		obj.DefaultCustomErrorResponsePolicy = nil
+	}
 	proto.Merge(obj, req.GetUrlMapResource())
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -111,7 +127,13 @@ func (s *GlobalURLMapsV1) Update(ctx context.Context, req *pb.UpdateUrlMapReques
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	obj.HostRules = nil
+	obj.PathMatchers = nil
+	obj.Tests = nil
+	obj.DefaultCustomErrorResponsePolicy = nil
 	proto.Merge(obj, req.GetUrlMapResource())
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

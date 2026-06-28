@@ -189,13 +189,13 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name":
 			obj.DisplayName = req.GetInstance().GetDisplayName()
 		case "labels":
 			obj.Labels = req.GetInstance().GetLabels()
-		case "memorySizeGb":
+		case "memorySizeGb", "memory_size_gb":
 			obj.MemorySizeGb = req.GetInstance().GetMemorySizeGb()
-		case "redisConfig":
+		case "redisConfig", "redisConfigs", "redis_configs":
 			obj.RedisConfigs = req.GetInstance().GetRedisConfigs()
 
 		default:

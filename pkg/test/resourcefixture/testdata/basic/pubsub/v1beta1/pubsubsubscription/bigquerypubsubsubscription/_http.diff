@@ -1,0 +1,105 @@
+1108c1108
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1131c1131
+< PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1137c1137
+<     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+---
+>     "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}"
+1139,1140d1138
+<   "deadLetterPolicy": null,
+<   "expirationPolicy": null,
+1146c1144
+<   "messageRetentionDuration": "604800s",
+---
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+1164,1165c1162,1163
+<     "state": "ACTIVE",
+<     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+---
+>     "state": 1,
+>     "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}"
+1175d1172
+<   "messageRetentionDuration": "604800s",
+1178c1175
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+1184c1181
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1207c1204
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1224,1225c1221,1222
+<     "state": "ACTIVE",
+<     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+---
+>     "state": 1,
+>     "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable1${uniqueId}"
+1235d1231
+<   "messageRetentionDuration": "604800s",
+1238c1234
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+1244c1240
+< PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json&updateMask=labels%2CbigqueryConfig
+---
+> PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1249d1244
+<     "ackDeadlineSeconds": 10,
+1251,1255c1246
+<       "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}"
+<     },
+<     "deadLetterPolicy": null,
+<     "expirationPolicy": {
+<       "ttl": "2678400s"
+---
+>       "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable2${uniqueId}"
+1262,1263c1253,1256
+<     "messageRetentionDuration": "604800s"
+<   }
+---
+>     "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+>     "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+>   },
+>   "updateMask": "bigqueryConfig,labels"
+1279,1280c1272,1273
+<     "state": "ACTIVE",
+<     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}"
+---
+>     "state": 1,
+>     "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable2${uniqueId}"
+1290d1282
+<   "messageRetentionDuration": "604800s",
+1297c1289
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+1303c1295
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1319,1320c1311,1312
+<     "state": "ACTIVE",
+<     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}"
+---
+>     "state": 1,
+>     "table": "projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable2${uniqueId}"
+1330d1321
+<   "messageRetentionDuration": "604800s",
+1333c1324
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+1339c1330
+< DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

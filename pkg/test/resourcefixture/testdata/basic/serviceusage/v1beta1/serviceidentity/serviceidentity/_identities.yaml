@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //serviceusage.googleapis.com/projects/${projectId}/services/pubsub.googleapis.com/identity
   group: serviceusage.cnrm.cloud.google.com
   kind: ServiceIdentity
   name: pubsub.googleapis.com

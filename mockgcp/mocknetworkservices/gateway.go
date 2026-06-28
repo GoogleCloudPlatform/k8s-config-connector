@@ -153,7 +153,16 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 				obj.Labels = req.GetGateway().GetLabels()
 			case "description":
 				obj.Description = req.GetGateway().GetDescription()
-			// Add other updatable fields here
+			case "ports":
+				obj.Ports = req.GetGateway().GetPorts()
+			case "server_tls_policy", "serverTlsPolicy":
+				obj.ServerTlsPolicy = req.GetGateway().GetServerTlsPolicy()
+			case "addresses":
+				obj.Addresses = req.GetGateway().GetAddresses()
+			case "type":
+				obj.Type = req.GetGateway().GetType()
+			case "scope":
+				obj.Scope = req.GetGateway().GetScope()
 			default:
 				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 			}

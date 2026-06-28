@@ -609,6 +609,28 @@ func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Stru
 	return s
 }
 
+func MapStringString_ToProto(mapCtx *MapContext, in map[string]string) map[string]string {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]string, len(in))
+	for k, v := range in {
+		out[k] = v
+	}
+	return out
+}
+
+func MapStringString_FromProto(mapCtx *MapContext, in map[string]string) map[string]string {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]string, len(in))
+	for k, v := range in {
+		out[k] = v
+	}
+	return out
+}
+
 func Status_FromProto(mapCtx *MapContext, in *statuspb.Status) *common.Status {
 	if in == nil {
 		return nil

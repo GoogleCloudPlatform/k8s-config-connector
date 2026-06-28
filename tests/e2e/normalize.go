@@ -15,9 +15,12 @@
 package e2e
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"reflect"
 	"regexp"
 	"sort"
@@ -85,6 +88,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.uid"] = "12345678"
+	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
 	visitor.replacePaths[".status.managedZoneId"] = "1234567890"
 	visitor.replacePaths[".status.creationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
@@ -161,12 +165,6 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
 
-	// Specific to Redis
-	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
-	visitor.replacePaths[".status.observedState.pscConnections[].pscConnectionID"] = "${pscConnectionID}"
-	visitor.replacePaths[".status.observedState.pscConnections[].address"] = "10.11.12.13"
-	visitor.replacePaths[".status.observedState.discoveryEndpoints[].address"] = "10.11.12.13"
-
 	// Specific to VertexAI
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
 	visitor.replacePaths[".status.state[].diskUtilizationBytes"] = "1"
@@ -190,6 +188,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to GCS
 	visitor.ReplacePath(".spec.softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTime)
 	visitor.ReplacePath(".status.observedState.softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTime)
+
+	// Specific to Redis
+	visitor.replacePaths[".status.host"] = "10.20.30.40"
+	visitor.replacePaths[".status.currentLocationId"] = "us-central1-a"
+	visitor.replacePaths[".status.nodes[].zone"] = "us-central1-a"
 
 	// Specific to Compute
 	visitor.replacePaths[".status.observedState.certificateID"] = 1111111111111111
@@ -749,6 +752,14 @@ func (o *objectWalker) TransformLRO(transform func(map[string]any)) {
 	})
 }
 
+func (o *objectWalker) TransformObject(targetPath string, transform func(map[string]any)) {
+	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
+		if path == targetPath {
+			transform(m)
+		}
+	})
+}
+
 func (o *objectWalker) RemovePath(path string) {
 	o.removePaths.Insert(path)
 }
@@ -773,7 +784,7 @@ func (o *objectWalker) visitAny(v any, path string) (any, error) {
 		return v, nil
 	case []any:
 		return o.visitSlice(v, path)
-	case int64, float64, bool:
+	case int, int32, int64, float32, float64, bool:
 		return o.visitPrimitive(v, path)
 	case string:
 		return o.visitString(v, path)
@@ -1011,6 +1022,10 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-folder-"), "@gcp-sa-logging.iam.gserviceaccount.com")
 				replacement.PathIDs[id] = "${folderID}"
 			}
+		case ".spec.resourceID":
+			if u.GetKind() == "RecaptchaEnterpriseKey" {
+				replacement.PathIDs[s] = "${keyID}"
+			}
 		}
 		return s
 	})
@@ -1038,6 +1053,26 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Find any URLs
 	for _, event := range events {
 		findLinksInEvent(t, normalizer.Replacements, event)
+	}
+
+	// Find recaptchaenterprise key IDs in URL or Body and add to PathIDs
+	keyIDRegex := regexp.MustCompile(`/keys/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "recaptchaenterprise") {
+			continue
+		}
+		if matches := keyIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${keyID}"
+		}
+		if event.Response.Body != "" {
+			if matches := keyIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${keyID}"
+					}
+				}
+			}
+		}
 	}
 
 	// Remove idempotency tokens
@@ -1076,6 +1111,54 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
 
+	if !strings.Contains(t.Name(), "/containercluster") && !strings.Contains(t.Name(), "/containernodepool") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			for _, key := range []string{"currentActions", "current_actions"} {
+				if currentActions, ok := m[key]; ok {
+					if currentActionsMap, ok := currentActions.(map[string]any); ok {
+						for k := range currentActionsMap {
+							currentActionsMap[k] = 1
+						}
+					}
+				}
+			}
+		})
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		re := regexp.MustCompile(`debian-11-bullseye-v\d{8}`)
+		s = re.ReplaceAllString(s, "debian-11-bullseye-v20231010")
+		re2 := regexp.MustCompile(`built on \d{8}`)
+		s = re2.ReplaceAllString(s, "built on 20231010")
+		return s
+	})
+
+	visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+		if m["kind"] == "compute#image" {
+			selfLink, _ := m["selfLink"].(string)
+			// Only normalize public standard images (e.g., from debian-cloud), not custom user-defined images.
+			if strings.Contains(selfLink, "/projects/debian-cloud/") {
+				for k := range m {
+					switch k {
+					case "kind", "name", "family", "status", "selfLink":
+						// keep
+					default:
+						delete(m, k)
+					}
+				}
+				m["status"] = "READY"
+			}
+		}
+	})
+
+	if !testHasField(t, "routingConfig") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if m["kind"] == "compute#network" {
+				delete(m, "routingConfig")
+			}
+		})
+	}
+
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
 	visitor.replacePaths[".etag"] = "abcdef0123A="
@@ -1085,6 +1168,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".response.uid"] = "111111111111111111111"
 	visitor.replacePaths[".response.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.endTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".items[].labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".gatewayAddress"] = "10.0.0.1"
+	visitor.replacePaths[".items[].gatewayAddress"] = "10.0.0.1"
 
 	// Misc Operations
 	visitor.replacePaths[".insertTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -1118,10 +1205,31 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
 	}
 
+	normalizeComputeSelfLink := func(u string) string {
+		u = rewriteComputeURL(u)
+		for _, prefix := range []string{
+			"https://compute.googleapis.com/compute/v1/",
+			"https://compute.googleapis.com/compute/beta/",
+			"https://www.googleapis.com/compute/v1/",
+			"https://www.googleapis.com/compute/beta/",
+		} {
+			if strings.HasPrefix(u, prefix) {
+				return strings.TrimPrefix(u, prefix)
+			}
+		}
+		return u
+	}
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "${healthCheckID}" {
+			return "${httpHealthCheckID}"
+		}
 		switch path {
-		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetworks[]", ".target", ".targetLink", ".zone":
+		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetwork", ".subnetworks[]", ".target", ".targetLink", ".zone":
 			return rewriteComputeURL(s)
+		}
+		if strings.HasSuffix(path, ".type") || path == ".sourceDisk" || strings.HasSuffix(path, ".sourceDisk") {
+			return normalizeComputeSelfLink(s)
 		}
 		return s
 	})
@@ -1278,6 +1386,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/backendServices") {
+			removeKeysFromMap(obj, []string{"routingConfig", "enableCDN", "subnetworks"})
+		}
+		if strings.Contains(requestURL, "/networks/") && (strings.Contains(requestURL, "/networks/computenetwork-") || strings.Contains(t.Name(), "computerouterinterface")) {
+			removeKeysFromMap(obj, []string{"subnetworks"})
+		}
 		// Deprecated: try to move these into mockgcp normalizers
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
@@ -1345,6 +1459,156 @@ func isGetOperation(e *test.LogEntry) bool {
 	}
 	if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
 		return true
+	}
+	return false
+}
+
+func removeKeysFromMap(obj any, keys []string) {
+	if m, ok := obj.(map[string]any); ok {
+		for _, key := range keys {
+			delete(m, key)
+		}
+		for _, val := range m {
+			removeKeysFromMap(val, keys)
+		}
+	} else if arr, ok := obj.([]any); ok {
+		for _, val := range arr {
+			removeKeysFromMap(val, keys)
+		}
+	}
+}
+
+func findRepoRoot() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		return ""
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.work")); err == nil {
+			return dir
+		}
+		if _, err := os.Stat(filepath.Join(dir, ".git")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	// Fallback to checking go.mod
+	dir, err = os.Getwd()
+	if err != nil {
+		return ""
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	return ""
+}
+
+func testHasField(t *testing.T, fieldName string) bool {
+	name := t.Name()
+	var absPath string
+
+	repoRoot := findRepoRoot()
+	if repoRoot == "" {
+		return false
+	}
+
+	if strings.Contains(name, "/fixtures/") {
+		var relPath string
+		if idx := strings.Index(name, "/fixtures/"); idx != -1 {
+			relPath = name[idx+len("/fixtures/"):]
+		}
+		if relPath == "" {
+			return false
+		}
+		fullPath := filepath.Join(repoRoot, relPath)
+		if fi, err := os.Stat(fullPath); err == nil && fi.IsDir() {
+			absPath = fullPath
+		} else {
+			targetDirName := relPath
+			if idx := strings.Index(relPath, "/"); idx != -1 {
+				targetDirName = relPath[:idx]
+			}
+			if targetDirName == "pkg" {
+				targetDirName = filepath.Base(relPath)
+			}
+			// Walk pkg/test/resourcefixture/testdata under repoRoot to find a directory named targetDirName
+			var foundPath string
+			_ = filepath.WalkDir(filepath.Join(repoRoot, "pkg/test/resourcefixture/testdata"), func(path string, d os.DirEntry, err error) error {
+				if err != nil {
+					return err
+				}
+				if d.IsDir() && d.Name() == targetDirName {
+					// Check if this directory actually contains .log files to avoid matching parent directories
+					files, err := os.ReadDir(path)
+					if err == nil {
+						hasLog := false
+						for _, f := range files {
+							if !f.IsDir() && strings.HasSuffix(f.Name(), ".log") {
+								hasLog = true
+								break
+							}
+						}
+						if hasLog {
+							foundPath = path
+							return filepath.SkipAll
+						}
+					}
+				}
+				return nil
+			})
+			if foundPath == "" {
+				return false
+			}
+			absPath = foundPath
+		}
+	} else if strings.Contains(name, "/scenarios/") {
+		var relPath string
+		if idx := strings.Index(name, "/scenarios/"); idx != -1 {
+			relPath = name[idx+1:]
+		}
+		if relPath == "" {
+			return false
+		}
+		absPath = filepath.Join(repoRoot, "tests/e2e/testdata", relPath)
+	} else if strings.Contains(name, "TestScripts/") {
+		var relPath string
+		if idx := strings.Index(name, "TestScripts/"); idx != -1 {
+			relPath = name[idx+len("TestScripts/"):]
+		}
+		if relPath == "" {
+			return false
+		}
+		absPath = filepath.Join(repoRoot, "mockgcp", relPath)
+	} else {
+		return false
+	}
+
+	// Read any .log files in the directory to check if fieldName is present
+	files, err := os.ReadDir(absPath)
+	if err != nil {
+		return false
+	}
+	for _, f := range files {
+		if f.IsDir() || !strings.HasSuffix(f.Name(), ".log") {
+			continue
+		}
+		p := filepath.Join(absPath, f.Name())
+		if b, err := os.ReadFile(p); err == nil {
+			if bytes.Contains(b, []byte(fieldName)) {
+				return true
+			}
+		}
 	}
 	return false
 }

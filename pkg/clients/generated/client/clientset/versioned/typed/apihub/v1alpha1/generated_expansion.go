@@ -25,6 +25,10 @@ type APIHubAPIExpansion interface{}
 
 type APIHubDeploymentExpansion interface{}
 
+type APIHubExternalAPIExpansion interface{}
+
+type APIHubInstanceExpansion interface{}
+
 type APIHubPluginExpansion interface{}
 
 type APIHubRuntimeProjectAttachmentExpansion interface{}

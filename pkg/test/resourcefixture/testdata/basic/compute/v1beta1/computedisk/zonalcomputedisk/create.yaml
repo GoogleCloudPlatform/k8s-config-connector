@@ -21,3 +21,4 @@ metadata:
 spec:
   description: an example disk without reference
   location: us-central1-a
+  size: 10

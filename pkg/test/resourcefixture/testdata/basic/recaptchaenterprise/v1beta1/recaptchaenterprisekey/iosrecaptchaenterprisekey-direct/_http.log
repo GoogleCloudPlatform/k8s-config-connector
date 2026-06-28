@@ -1,0 +1,168 @@
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
+
+{
+  "key": {
+    "displayName": "display-name-one",
+    "iosSettings": {
+      "allowAllBundleIds": true
+    },
+    "testingOptions": {
+      "testingScore": 1
+    }
+  },
+  "parent": "projects/kcc-recaptcha-enterprise"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "iosSettings": {
+    "allowAllBundleIds": true
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 1
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "iosSettings": {
+    "allowAllBundleIds": true
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 1
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "iosSettings": {
+    "allowAllBundleIds": true
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 1
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
+
+{
+  "key": {
+    "displayName": "display-name-two",
+    "iosSettings": {
+      "allowedBundleIds": [
+        "com.companyname.appname"
+      ]
+    },
+    "name": "projects/1935411576/keys/${keyID}",
+    "testingOptions": {
+      "testingScore": 1
+    }
+  },
+  "updateMask": "displayName,iosSettings.allowAllBundleIds,iosSettings.allowedBundleIds"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "iosSettings": {
+    "allowedBundleIds": [
+      "com.companyname.appname"
+    ]
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 1
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "iosSettings": {
+    "allowedBundleIds": [
+      "com.companyname.appname"
+    ]
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 1
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "iosSettings": {
+    "allowedBundleIds": [
+      "com.companyname.appname"
+    ]
+  },
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 1
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{}

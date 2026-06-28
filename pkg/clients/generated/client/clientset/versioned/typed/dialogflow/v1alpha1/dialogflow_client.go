@@ -32,11 +32,13 @@ import (
 type DialogflowV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DialogflowAgentsGetter
+	DialogflowConversationDatasetsGetter
 	DialogflowEntityTypesGetter
 	DialogflowFulfillmentsGetter
 	DialogflowGeneratorsGetter
 	DialogflowIntentsGetter
 	DialogflowKnowledgeBasesGetter
+	DialogflowSecuritySettingsesGetter
 }
 
 // DialogflowV1alpha1Client is used to interact with features provided by the dialogflow.cnrm.cloud.google.com group.
@@ -46,6 +48,10 @@ type DialogflowV1alpha1Client struct {
 
 func (c *DialogflowV1alpha1Client) DialogflowAgents(namespace string) DialogflowAgentInterface {
 	return newDialogflowAgents(c, namespace)
+}
+
+func (c *DialogflowV1alpha1Client) DialogflowConversationDatasets(namespace string) DialogflowConversationDatasetInterface {
+	return newDialogflowConversationDatasets(c, namespace)
 }
 
 func (c *DialogflowV1alpha1Client) DialogflowEntityTypes(namespace string) DialogflowEntityTypeInterface {
@@ -66,6 +72,10 @@ func (c *DialogflowV1alpha1Client) DialogflowIntents(namespace string) Dialogflo
 
 func (c *DialogflowV1alpha1Client) DialogflowKnowledgeBases(namespace string) DialogflowKnowledgeBaseInterface {
 	return newDialogflowKnowledgeBases(c, namespace)
+}
+
+func (c *DialogflowV1alpha1Client) DialogflowSecuritySettingses(namespace string) DialogflowSecuritySettingsInterface {
+	return newDialogflowSecuritySettingses(c, namespace)
 }
 
 // NewForConfig creates a new DialogflowV1alpha1Client for the given config.

@@ -1,0 +1,15 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1beta1
+kind: BackupDRBackupVault
+metadata:
+  labels:
+    cnrm-test: "true"
+    custom-label: foo
+    managed-by-cnrm: "true"
+  name: backupdrbackupvault-minimal-${uniqueId}
+spec:
+  backupMinimumEnforcedRetentionDuration: 55h33m20s
+  description: Updated description
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+  resourceID: backupdrbackupvault-minimal-${uniqueId}

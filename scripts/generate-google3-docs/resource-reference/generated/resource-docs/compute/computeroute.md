@@ -110,8 +110,7 @@ tags:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. An optional description of this resource. Provide this property
-when you create the resource.</p>
+            <p>Immutable. An optional description of this resource. Provide this property when you create the resource.</p>
         </td>
     </tr>
     <tr>
@@ -121,8 +120,7 @@ when you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The destination range of outgoing packets that this route applies to.
-Only IPv4 is supported.</p>
+            <p>Immutable. The destination range of outgoing packets that this route applies to. Only IPv4 is supported.</p>
         </td>
     </tr>
     <tr>
@@ -142,7 +140,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -152,7 +150,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -162,7 +160,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -172,13 +170,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. URL to a gateway that should handle matching packets.
-Currently, you can only specify the internet gateway, using a full or
-partial valid URL:
-* 'https://www.googleapis.com/compute/v1/projects/project/global/gateways/default-internet-gateway'
-* 'projects/project/global/gateways/default-internet-gateway'
-* 'global/gateways/default-internet-gateway'
-* The string 'default-internet-gateway'.</p>
+            <p>Immutable. URL to a gateway that should handle matching packets. Currently, you can only specify the internet gateway, using a full or partial valid URL: * 'https://www.googleapis.com/compute/v1/projects/project/global/gateways/default-internet-gateway' * 'projects/project/global/gateways/default-internet-gateway' * 'global/gateways/default-internet-gateway' * The string 'default-internet-gateway'.</p>
         </td>
     </tr>
     <tr>
@@ -188,9 +180,7 @@ partial valid URL:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A forwarding rule of type loadBalancingScheme=INTERNAL that should
-handle matching packets.  Note that this can only be used when the
-destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
+            <p>A forwarding rule of type loadBalancingScheme=INTERNAL that should handle matching packets.  Note that this can only be used when the destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
         </td>
     </tr>
     <tr>
@@ -200,7 +190,7 @@ destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeForwardingRule` resource.</p>
+            <p>A reference to an externally managed ComputeForwardingRule resource. Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}" or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".</p>
         </td>
     </tr>
     <tr>
@@ -210,7 +200,7 @@ destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeForwardingRule resource.</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +210,7 @@ destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeForwardingRule resource.</p>
         </td>
     </tr>
     <tr>
@@ -240,7 +230,7 @@ destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
+            <p>A reference to an externally managed ComputeInstance resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/instances/{{instanceID}}".</p>
         </td>
     </tr>
     <tr>
@@ -250,7 +240,7 @@ destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -260,7 +250,7 @@ destinationRange is a public (non-RFC 1918) IP CIDR range.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeInstance resource.</p>
         </td>
     </tr>
     <tr>
@@ -387,7 +377,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

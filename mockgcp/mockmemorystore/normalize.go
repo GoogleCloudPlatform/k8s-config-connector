@@ -44,6 +44,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".crossInstanceReplicationConfig.membership.secondaryInstances[].uid", PlaceholderUID)
 	replacements.ReplacePath(".response.crossInstanceReplicationConfig.membership.primaryInstance.uid", PlaceholderUID)
 	replacements.ReplacePath(".response.crossInstanceReplicationConfig.membership.secondaryInstances[].uid", PlaceholderUID)
+
+	replacements.ReplacePath(".crossInstanceReplicationConfig.primaryInstance.uid", PlaceholderUID)
+	replacements.ReplacePath(".crossInstanceReplicationConfig.secondaryInstances[].uid", PlaceholderUID)
+	replacements.ReplacePath(".response.crossInstanceReplicationConfig.primaryInstance.uid", PlaceholderUID)
+	replacements.ReplacePath(".response.crossInstanceReplicationConfig.secondaryInstances[].uid", PlaceholderUID)
+
+	replacements.ReplacePath(".status.observedState.crossInstanceReplicationConfig.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.crossInstanceReplicationConfig.membership.primaryInstance.uid", PlaceholderUID)
+	replacements.ReplacePath(".status.observedState.crossInstanceReplicationConfig.primaryInstance.uid", PlaceholderUID)
+	replacements.ReplacePath(".status.observedState.crossInstanceReplicationConfig.membership.secondaryInstances[].uid", PlaceholderUID)
+	replacements.ReplacePath(".status.observedState.crossInstanceReplicationConfig.secondaryInstances[].uid", PlaceholderUID)
 	// Backups
 	replacements.ReplacePath(".backupFiles[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".backupFiles[].fileName", "fakefilename.rdb")

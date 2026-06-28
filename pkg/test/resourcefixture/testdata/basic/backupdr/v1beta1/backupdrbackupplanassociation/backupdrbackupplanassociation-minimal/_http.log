@@ -20,6 +20,10 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
@@ -69,7 +73,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -88,11 +92,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instance \"projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/instances/${instanceID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "instance \"projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/instances/${instanceID}' was not found"
   }
 }
 
@@ -163,11 +167,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "image not found",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "image not found"
+    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
   }
 }
 
@@ -187,12 +191,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20231010",
   "family": "debian-11",
   "kind": "compute#image",
   "name": "debian-11-bullseye-v20231010",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "status": "UP"
+  "status": "READY"
 }
 
 ---
@@ -220,7 +223,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   },
   "machineType": "projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {},
-  "name": "computeinstance-minimal-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "network": "projects/${projectId}/global/networks/${networkID}"
@@ -248,15 +251,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -292,7 +332,7 @@ X-Xss-Protection: 0
   },
   "machineType": "projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {},
-  "name": "computeinstance-minimal-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "network": "projects/${projectId}/global/networks/${networkID}"
@@ -302,7 +342,7 @@ X-Xss-Protection: 0
   "scheduling": {
     "automaticRestart": true
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "status": "RUNNING",
   "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
@@ -591,7 +631,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "backupPlan": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
-  "resource": "projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}",
+  "resource": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "resourceType": "compute.googleapis.com/Instance"
 }
 
@@ -610,7 +650,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "additionalInfo": {
       "backupPlan": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
-      "resource": "projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}",
+      "resource": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
       "resourceType": "compute.googleapis.com/Instance"
     },
     "apiVersion": "v1",
@@ -644,7 +684,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "additionalInfo": {
       "backupPlan": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
-      "resource": "projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}",
+      "resource": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
       "resourceType": "compute.googleapis.com/Instance"
     },
     "apiVersion": "v1",
@@ -660,7 +700,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "dataSource": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupplanassociation-minimal-${uniqueId}/dataSources/${dataSourceID}",
     "name": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-minimal-${uniqueId}",
-    "resource": "projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}",
+    "resource": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
     "resourceType": "compute.googleapis.com/Instance",
     "rulesConfigInfo": [
       {
@@ -695,7 +735,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "dataSource": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupplanassociation-minimal-${uniqueId}/dataSources/${dataSourceID}",
   "name": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-minimal-${uniqueId}",
-  "resource": "projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}",
+  "resource": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "resourceType": "compute.googleapis.com/Instance",
   "rulesConfigInfo": [
     {
@@ -975,7 +1015,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1011,7 +1051,7 @@ X-Xss-Protection: 0
   },
   "machineType": "projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {},
-  "name": "computeinstance-minimal-${uniqueId}",
+  "name": "${instanceID}",
   "networkInterfaces": [
     {
       "network": "projects/${projectId}/global/networks/${networkID}"
@@ -1021,7 +1061,7 @@ X-Xss-Protection: 0
   "scheduling": {
     "automaticRestart": true
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "status": "RUNNING",
   "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
@@ -1029,7 +1069,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/computeinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1047,8 +1087,45 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }

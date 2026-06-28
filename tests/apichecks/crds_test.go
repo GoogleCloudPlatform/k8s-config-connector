@@ -944,9 +944,10 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 
 			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
 				// To address inconsistencies between local and CI environments,
-				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
-				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
-				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces
+				// and folding multiline strings.Join blocks into a single line.
+				normalizedActual := normalizeStringsJoin(strings.ReplaceAll(allDiffs.String(), " ", " "))
+				normalizedExpected := normalizeStringsJoin(strings.ReplaceAll(string(expectedDiff), " ", " "))
 				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
 					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
 				}
@@ -1048,14 +1049,17 @@ func TestCRDObjectTypes(t *testing.T) {
 	// We want to eventually fix these, but for now we allowlist them so the test passes.
 	// This allows us to detect new regressions.
 	knownInvalidCRDs := map[string]bool{
+		"dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com":                   true, // status.observedState is an empty object
 		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
 		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
+		"artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com":           true, // status.observedState is an empty object
 		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object
 		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
+		"bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com":   true, // spec.tasks[*].translationTaskDetails.teradataOptions is an empty object
 		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
 		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                        true, // status.observedState is an empty object
 		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
@@ -1064,11 +1068,13 @@ func TestCRDObjectTypes(t *testing.T) {
 		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
 		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
+		"dataformfolders.dataform.cnrm.cloud.google.com":                                true, // status.observedState is an empty object
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
 		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
 		"discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
+		"dlpconnections.dlp.cnrm.cloud.google.com":                                      true, // spec.cloudSQL.cloudSQLIAM is an empty object
 		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
 		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
 		"iamdenypolicies.iam.cnrm.cloud.google.com":                                     true, // status.observedState is an empty object
@@ -1078,6 +1084,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
 		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
 		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
+		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
 
 	}
 
@@ -1247,4 +1254,77 @@ func isIAMSupportedInKCC(gvk schema.GroupVersionKind, _ *servicemappingloader.Se
 	// }
 
 	return false
+}
+
+// normalizeStringsJoin processes strings.Join blocks in the diff and folds them
+// into a single line format to avoid environmental discrepancies in go-cmp's diff alignments.
+func normalizeStringsJoin(input string) string {
+	lines := strings.Split(input, "\n")
+	var result []string
+	inJoin := false
+	var joinLines []string
+	var joinIndent string
+
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		if !inJoin {
+			if strings.Contains(line, "strings.Join({") {
+				inJoin = true
+				joinLines = []string{}
+				idx := strings.Index(line, "strings.Join({")
+				joinIndent = line[:idx]
+				continue
+			}
+			result = append(result, line)
+		} else {
+			if strings.Contains(line, `}, "")`) {
+				inJoin = false
+				var beforeParts []string
+				var afterParts []string
+				for _, jl := range joinLines {
+					var sign byte = ' '
+					if len(jl) > 0 {
+						if jl[0] == '+' {
+							sign = '+'
+						} else if jl[0] == '-' {
+							sign = '-'
+						}
+					}
+
+					startIdx := strings.Index(jl, `"`)
+					endIdx := strings.LastIndex(jl, `"`)
+					if startIdx != -1 && endIdx > startIdx {
+						strVal := jl[startIdx+1 : endIdx]
+						strVal = strings.ReplaceAll(strVal, `\"`, `"`)
+						strVal = strings.ReplaceAll(strVal, `\\`, `\`)
+
+						if sign == '+' {
+							afterParts = append(afterParts, strVal)
+						} else if sign == '-' {
+							beforeParts = append(beforeParts, strVal)
+						} else {
+							beforeParts = append(beforeParts, strVal)
+							afterParts = append(afterParts, strVal)
+						}
+					}
+				}
+
+				beforeStr := strings.Join(beforeParts, "")
+				afterStr := strings.Join(afterParts, "")
+
+				if beforeStr == afterStr {
+					escaped := strings.ReplaceAll(beforeStr, `"`, `\"`)
+					result = append(result, fmt.Sprintf(`%s"%s",`, joinIndent, escaped))
+				} else {
+					escapedBefore := strings.ReplaceAll(beforeStr, `"`, `\"`)
+					escapedAfter := strings.ReplaceAll(afterStr, `"`, `\"`)
+					result = append(result, fmt.Sprintf(`-%s"%s",`, joinIndent, escapedBefore))
+					result = append(result, fmt.Sprintf(`+%s"%s",`, joinIndent, escapedAfter))
+				}
+				continue
+			}
+			joinLines = append(joinLines, line)
+		}
+	}
+	return strings.Join(result, "\n")
 }

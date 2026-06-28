@@ -4202,8 +4202,8 @@ func resourceComputeRegionBackendServiceEncoder(d *schema.ResourceData, meta int
 	_, ok := obj["subsetting"]
 	if !ok {
 		loadBalancingScheme, ok := obj["loadBalancingScheme"]
-		// External load balancing scheme does not support subsetting
-		if !ok || loadBalancingScheme.(string) != "EXTERNAL" {
+		// External and Traffic Director (INTERNAL_SELF_MANAGED) load balancing schemes do not support subsetting
+		if !ok || (loadBalancingScheme.(string) != "EXTERNAL" && loadBalancingScheme.(string) != "INTERNAL_SELF_MANAGED") {
 			data := map[string]interface{}{}
 			data["policy"] = "NONE"
 			obj["subsetting"] = data

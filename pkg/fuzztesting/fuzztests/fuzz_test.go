@@ -16,6 +16,7 @@ package fuzztesting
 
 import (
 	"math/rand"
+	"os"
 	"reflect"
 	"sort"
 	"strings"
@@ -154,4 +155,51 @@ func getFuzzerSpecType(fuzzer any) reflect.Type {
 		return outType.Elem()
 	}
 	return outType
+}
+
+func TestFocusedMappers(t *testing.T) {
+	focus := os.Getenv("FOCUS")
+	if focus == "" {
+		t.Skip("FOCUS env var not set, skipping focused mapper tests")
+	}
+
+	seed := time.Now().UnixNano()
+	randStream := rand.New(rand.NewSource(seed))
+
+	fuzzers := fuzztesting.GetRegisteredFuzzers()
+	found := false
+	for _, f := range fuzzers {
+		specType := getFuzzerSpecType(f)
+		if specType == nil {
+			continue
+		}
+		name := specType.Name()
+		kind := strings.TrimSuffix(name, "Spec")
+		if strings.Contains(strings.ToLower(kind), strings.ToLower(focus)) {
+			found = true
+			t.Run(kind, func(t *testing.T) {
+				t.Run("Spec", func(t *testing.T) {
+					if fuzz, ok := f.(interface {
+						FuzzSpec(t *testing.T, seed int64)
+					}); ok {
+						for i := 0; i < 20; i++ {
+							fuzz.FuzzSpec(t, randStream.Int63())
+						}
+					}
+				})
+				t.Run("Status", func(t *testing.T) {
+					if fuzz, ok := f.(interface {
+						FuzzStatus(t *testing.T, seed int64)
+					}); ok {
+						for i := 0; i < 20; i++ {
+							fuzz.FuzzStatus(t, randStream.Int63())
+						}
+					}
+				})
+			})
+		}
+	}
+	if !found {
+		t.Fatalf("No registered fuzzer found matching FOCUS=%q", focus)
+	}
 }

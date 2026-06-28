@@ -31,7 +31,13 @@ go run . generate-types \
   --resource ComputeInterconnect:Interconnect \
   --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
   --resource ComputeRegionPerInstanceConfig:PerInstanceConfig \
+  --resource ComputeAutoscaler:Autoscaler \
+  --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
+  --resource ComputeRegionAutoscaler:Autoscaler \
+  --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --include-skipped-output
+
+rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -16,17 +16,18 @@ KCC uses a golden file testing strategy for end-to-end (E2E) validation. The tes
 A complete test fixture directory contains:
 - **`create.yaml`**: The primary KRM resource definition (what gets created first). Ensure the resource has unique labels/names.
 - **`dependencies.yaml` (optional)**: Supporting resources (e.g. IAM policies, networks, service accounts) that the primary resource depends on.
-- **`update.yaml` (optional)**: The KRM resource definition with updates applied after initial creation.
+- **`update.yaml` (strongly recommended)**: The KRM resource definition with updates applied after initial creation. While structurally optional, it is **highly recommended** (and mandatory for new mutable fields) to include an `update.yaml` to ensure the controller can successfully reconcile in-place updates.
 - **`_http.log`**: Golden HTTP/gRPC request/response traffic log generated during E2E reconciliation.
 - **`_generated_object_[testname].golden.yaml`**: Golden file representing the final KRM object status/spec in the Kube API server.
-- **`_generated_export_[testname].golden` (optional)**: Golden exported KRM representation.
+- **`_exported.yaml` (optional)**: Golden exported KRM representation.
 
 ---
 
 ## 2. Setting Up Test Cases
 
 1. **Create Directory**: Create the directory `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
-2. **Define KRM files**: Add `create.yaml`, and optionally `dependencies.yaml` and `update.yaml`.
+2. **Define KRM files**: Add `create.yaml`, and `update.yaml` (highly recommended to verify update reconciliation), and optionally `dependencies.yaml`.
+
 3. **Verify Yaml Validation**: Ensure YAML files are valid Kubernetes manifests. Avoid any hardcoded project IDs or dynamic IDs (use placeholders if necessary, but KCC test runner resolves them).
 
 ---
@@ -232,7 +233,9 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
      ```
 8. **CI/CD & Golden File Traps (Gotchas)**:
    - **Accidental Binary Profile Artifacts (`heap.prof`)**: When running recorder or memory profile footprint tests (e.g., `TestProfileRecorderFootprint`), binary profile outputs like `heap.prof` may be written to the test directory (`cmd/recorder/pprof/.../heap.prof`). Always ensure these binary files are deleted and never committed to git.
-   - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_generated_export_*.golden`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
+   - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_exported.yaml`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
+   - **Accidental Staging of Unrelated Logs**: When E2E fixture tests run locally (via `hack/record-gcp`, `hack/compare-mock`, or direct `go test`), other fixtures in the same compute/service package may produce local differences in their `_http_old_controller.log` or `_http.diff` logs. **Never commit changes or `.diff` files for unrelated fixtures.** Inspect `git diff` before staging and revert them.
+   - **Missing `_identities.yaml`**: Newly created E2E fixtures dynamically generate a `_identities.yaml` identity registry file when run. Ensure this file is staged and committed along with your E2E fixture, or the CI presubmits will fail.
 
 
 

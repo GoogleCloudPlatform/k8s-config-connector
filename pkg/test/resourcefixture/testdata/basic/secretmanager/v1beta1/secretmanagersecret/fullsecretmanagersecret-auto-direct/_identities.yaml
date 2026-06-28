@@ -22,7 +22,7 @@
   name: topic-2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //serviceusage.googleapis.com/projects/${projectId}/services/secretmanager.googleapis.com/identity
   group: serviceusage.cnrm.cloud.google.com
   kind: ServiceIdentity
   name: serviceidentity-${uniqueId}

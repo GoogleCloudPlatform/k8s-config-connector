@@ -7,3 +7,4 @@ metadata:
 spec:
   sizeGb: 10
   type: pd-standard
+  location: us-west1-a

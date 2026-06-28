@@ -31,6 +31,7 @@ import (
 
 type ApigeeregistryV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	ApigeeRegistryAPIsGetter
 	ApigeeRegistryArtifactsGetter
 	ApigeeRegistryInstancesGetter
 }
@@ -38,6 +39,10 @@ type ApigeeregistryV1alpha1Interface interface {
 // ApigeeregistryV1alpha1Client is used to interact with features provided by the apigeeregistry.cnrm.cloud.google.com group.
 type ApigeeregistryV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ApigeeregistryV1alpha1Client) ApigeeRegistryAPIs(namespace string) ApigeeRegistryAPIInterface {
+	return newApigeeRegistryAPIs(c, namespace)
 }
 
 func (c *ApigeeregistryV1alpha1Client) ApigeeRegistryArtifacts(namespace string) ApigeeRegistryArtifactInterface {

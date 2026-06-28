@@ -49,7 +49,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ]
     }
   },
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test test test",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
   "metricDescriptor": {
@@ -58,7 +57,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 

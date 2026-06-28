@@ -152,6 +152,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - appoptimize.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
   resources:
   - '*'
@@ -308,6 +320,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - bigquerymigration.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
@@ -357,6 +381,18 @@ rules:
   - delete
 - apiGroups:
   - binaryauthorization.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - blockchainnodeengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -596,6 +632,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - connectors.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - contactcenterinsights.cnrm.cloud.google.com
   resources:
   - '*'
@@ -705,6 +753,18 @@ rules:
   - delete
 - apiGroups:
   - datalabeling.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - datalineage.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -993,6 +1053,18 @@ rules:
   - delete
 - apiGroups:
   - firestore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - geminidataanalytics.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1557,6 +1629,18 @@ rules:
   - delete
 - apiGroups:
   - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

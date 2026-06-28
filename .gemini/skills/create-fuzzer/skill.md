@@ -21,7 +21,8 @@ This skill guides an automated agent through the process of implementing a round
      ```
 
 2. **Create the Fuzzer File**
-   - Create a new fuzzer file inside the resource's direct controller package: `pkg/controller/direct/<service>/<resource>_fuzzer.go` (or `pkg/controller/direct/<service>/<resource>/<resource>_fuzzer.go`).
+   - Create a new fuzzer file inside the resource's direct controller package. Use the **full kind name** in lowercase for the file, e.g., `pkg/controller/direct/<service>/<kind_in_lowercase>_fuzzer.go` (for example, `computeurlmap_fuzzer.go` is preferable over `urlmap_fuzzer.go`, and `computeinstance_fuzzer.go` is preferred over `instance_fuzzer.go` to keep the name unambiguous and fully descriptive).
+   - **Note on Renaming:** If a fuzzer file already exists under a different name (such as a full name/convention versus an abbreviated one like `computeurlmap_fuzzer.go` vs `urlmap_fuzzer.go`), it is **not** worth renaming the file if renaming is the only change being made, as it can cause unnecessary git noise. The full type name (e.g. `computeurlmap_fuzzer.go`) is always preferable to an abbreviated type name (e.g. `urlmap_fuzzer.go`).
    - Use the appropriate package name matching the surrounding controller files.
    - Annotate the file with the appropriate `+tool:fuzz-gen`, `proto.message`, and `api.group` metadata.
 
@@ -47,7 +48,11 @@ This skill guides an automated agent through the process of implementing a round
 5. **Verify with Fuzzer Tests**
    - Ensure the package is registered centrally by adding an import of the package in `pkg/controller/direct/register/register.go`.
    - **CRITICAL / DO NOT**: Never create a separate test file (e.g. `<resource>_fuzzer_test.go` or any `*_test.go` file inside the direct controller directories) for individual fuzzers. Creating custom, single-fuzzer unit tests is strictly discouraged and will fail reviews. All fuzzers are registered via `init()` and executed centrally under the central fuzz test suite.
-   - Run the central fuzz tests quickly to verify your implementation:
+   - Run the central fuzz tests quickly to verify your implementation. You can target a specific fuzzer by setting the `FOCUS` environment variable:
+     ```bash
+     FOCUS=<ResourceKind> go test -count=1 -v ./pkg/fuzztesting/fuzztests/ -run TestFocusedMappers
+     ```
+     Alternatively, run the entire suite:
      ```bash
      go test -count=1 -v ./pkg/fuzztesting/fuzztests/
      ```

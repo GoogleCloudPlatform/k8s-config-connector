@@ -4,12 +4,22 @@ This skill provides a structured workflow for matching the mock {service}{resour
 
 When the golden tests for K8s Config Connector mock output diverge from real GCP output, we need to inspect the discrepancies and fix either the mock implementation or the normalizers. This ensures that `hack/compare-mock` runs cleanly and accurately represents GCP API contracts.
 
+## Critical Rules
+
+*   **Real GCP Baseline Required**: You must always generate the initial baseline `_http.log` by running `hack/record-gcp` against a real GCP project.
+*   **Do NOT Generate Golden Logs from Mock**: You are strictly forbidden from generating or updating `_http.log` files against the mock in this step. You MUST first establish a baseline against `real` GCP with `E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest` with `WRITE_GOLDEN_OUTPUT=1`.
+
 ## Workflow
 
 ### Align Mockgcp
 
-1.  Run `dev/tools/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
-2.  Run `dev/tools/compare-mock "fixtures/^<testname>$"` to check mock behavior.
+1.  Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.
+    *   **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API is disabled or has not been used in the project before), enable the service using `gcloud` and try again:
+        ```bash
+        gcloud services enable <service-name>.googleapis.com
+        ```
+        *(For example: `gcloud services enable compute.googleapis.com` or `gcloud services enable run.googleapis.com`)*
+2.  Run `hack/compare-mock "fixtures/^<testname>$"` to check mock behavior.
 3.  Iteratively fix discrepancies in the mock implementation or `normalize.go`.
 
 #### Tips for fixing the discrepancies:

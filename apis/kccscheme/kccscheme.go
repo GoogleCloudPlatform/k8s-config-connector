@@ -16,20 +16,82 @@ package kccscheme
 
 import (
 	"fmt"
+	"reflect"
+	"sync"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
+var (
+	registryMu     sync.Mutex
+	objectRegistry = make(map[schema.GroupKind]reflect.Type)
+	gvkRegistry    = make(map[schema.GroupKind]schema.GroupVersionKind)
+	refRegistry    = make(map[schema.GroupKind]reflect.Type)
+)
+
+// RegisterType registers the runtime.Object implementation for a given GroupVersionKind.
+func RegisterType(gvk schema.GroupVersionKind, obj runtime.Object) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	objectRegistry[gvk.GroupKind()] = reflect.TypeOf(obj).Elem()
+	gvkRegistry[gvk.GroupKind()] = gvk
+}
+
+// RegisterRef registers a Ref implementation mapping to its GroupVersionKind.
+func RegisterRef(ref interface{}, gvk schema.GroupVersionKind) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	refRegistry[gvk.GroupKind()] = reflect.TypeOf(ref).Elem()
+}
+
+// NewRef returns a new instance of Ref for the given GroupKind.
+func NewRef(gk schema.GroupKind) (interface{}, error) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	typ, ok := refRegistry[gk]
+	if !ok {
+		return nil, fmt.Errorf("no Ref registered in kccscheme for GroupKind %v", gk)
+	}
+	return reflect.New(typ).Interface(), nil
+}
+
+// NewRefByKind returns a new instance of Ref for the given Kind.
+func NewRefByKind(kind string) (interface{}, error) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	var found reflect.Type
+	for gk, typ := range refRegistry {
+		if gk.Kind == kind {
+			if found != nil {
+				return nil, fmt.Errorf("multiple Refs registered in kccscheme for Kind %q", kind)
+			}
+			found = typ
+		}
+	}
+	if found != nil {
+		return reflect.New(found).Interface(), nil
+	}
+	return nil, fmt.Errorf("no Ref registered in kccscheme for Kind %q", kind)
+}
+
 // NewObject returns a new strongly-typed runtime.Object for the given GroupKind.
 func NewObject(gk schema.GroupKind) (runtime.Object, error) {
-	return refs.NewObject(gk)
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	typ, ok := objectRegistry[gk]
+	if !ok {
+		return nil, fmt.Errorf("no Object registered in kccscheme for GroupKind %v", gk)
+	}
+	return reflect.New(typ).Interface().(runtime.Object), nil
 }
 
 // PreferredGVK returns the preferred GroupVersionKind for the given GroupKind.
 func PreferredGVK(gk schema.GroupKind) (schema.GroupVersionKind, bool) {
-	return refs.PreferredGVK(gk)
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	gvk, ok := gvkRegistry[gk]
+	return gvk, ok
 }
 
 // ObjectKinds is a helper to find the runtime object GVK for an object.

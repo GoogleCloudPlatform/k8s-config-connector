@@ -1,6 +1,5 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -28,9 +27,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "a sample regional disk",
@@ -40,12 +38,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-central1",
   "replicaZones": [
-    "projects/${projectId}/global/zones/us-central1-a",
-    "projects/${projectId}/global/zones/us-central1-f"
-  ],
-  "type": "projects/${projectId}/regions/us-central1/diskTypes/pd-standard"
+    "us-central1-a",
+    "us-central1-f"
+  ]
 }
 
 200 OK
@@ -71,9 +67,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -90,6 +85,7 @@ X-Xss-Protection: 0
   "description": "a sample regional disk",
   "id": "000000000000000000000",
   "kind": "compute#disk",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -99,19 +95,18 @@ X-Xss-Protection: 0
   "physicalBlockSizeBytes": "4096",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "replicaZones": [
-    "projects/${projectId}/global/zones/us-central1-a",
-    "projects/${projectId}/global/zones/us-central1-f"
+    "us-central1-a",
+    "us-central1-f"
   ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}",
   "status": "READY",
-  "type": "projects/${projectId}/regions/us-central1/diskTypes/pd-standard"
+  "type": "projects/${projectId}/regions/us-central1/regiondiskTypes/pd-standard"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -132,4 +127,33 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "disk \"projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "disk \"projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}\" not found"
+  }
 }

@@ -31,6 +31,7 @@ import (
 
 type ApigeeV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	ApigeeAPIProductsGetter
 	ApigeeAddonsConfigsGetter
 	ApigeeNATAddressesGetter
 	ApigeeSyncAuthorizationsGetter
@@ -39,6 +40,10 @@ type ApigeeV1alpha1Interface interface {
 // ApigeeV1alpha1Client is used to interact with features provided by the apigee.cnrm.cloud.google.com group.
 type ApigeeV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ApigeeV1alpha1Client) ApigeeAPIProducts(namespace string) ApigeeAPIProductInterface {
+	return newApigeeAPIProducts(c, namespace)
 }
 
 func (c *ApigeeV1alpha1Client) ApigeeAddonsConfigs(namespace string) ApigeeAddonsConfigInterface {

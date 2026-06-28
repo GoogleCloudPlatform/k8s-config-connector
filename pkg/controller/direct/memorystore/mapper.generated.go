@@ -27,10 +27,117 @@ import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	krmmemorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_FromProto(mapCtx, in.GetInstanceRole())
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx, in.GetPrimaryInstance())
+	out.SecondaryInstances = direct.Slice_FromProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstance_FromProto)
+	// MISSING: UpdateTime
+	// MISSING: Membership
+	return out
+}
+func CrossInstanceReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig) *pb.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_ToProto[pb.CrossInstanceReplicationConfig_InstanceRole](mapCtx, in.InstanceRole)
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx, in.PrimaryInstance)
+	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstance_ToProto)
+	// MISSING: UpdateTime
+	// MISSING: Membership
+	return out
+}
+func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossInstanceReplicationConfigObservedState{}
+	// MISSING: InstanceRole
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx, in.GetPrimaryInstance())
+	out.SecondaryInstances = direct.Slice_FromProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto)
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Membership = CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx, in.GetMembership())
+	return out
+}
+func CrossInstanceReplicationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfigObservedState) *pb.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig{}
+	// MISSING: InstanceRole
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx, in.PrimaryInstance)
+	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Membership = CrossInstanceReplicationConfig_MembershipObservedState_ToProto(mapCtx, in.Membership)
+	return out
+}
+func CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_Membership) *krm.CrossInstanceReplicationConfig_MembershipObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossInstanceReplicationConfig_MembershipObservedState{}
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx, in.GetPrimaryInstance())
+	out.SecondaryInstances = direct.Slice_FromProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto)
+	return out
+}
+func CrossInstanceReplicationConfig_MembershipObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_MembershipObservedState) *pb.CrossInstanceReplicationConfig_Membership {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig_Membership{}
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx, in.PrimaryInstance)
+	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto)
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_RemoteInstance) *krm.CrossInstanceReplicationConfig_RemoteInstance {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossInstanceReplicationConfig_RemoteInstance{}
+	if in.GetInstance() != "" {
+		out.InstanceRef = &refs.MemorystoreInstanceRef{External: in.GetInstance()}
+	}
+	// MISSING: Uid
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_RemoteInstance) *pb.CrossInstanceReplicationConfig_RemoteInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+	if in.InstanceRef != nil {
+		out.Instance = in.InstanceRef.External
+	}
+	// MISSING: Uid
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_RemoteInstance) *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState{}
+	out.Instance = direct.LazyPtr(in.GetInstance())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CrossInstanceReplicationConfig_RemoteInstanceObservedState) *pb.CrossInstanceReplicationConfig_RemoteInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+	out.Instance = direct.ValueOf(in.Instance)
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
 func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpointObservedState {
 	if in == nil {
 		return nil

@@ -204,6 +204,8 @@ func ComputeAddressObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Users
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeAddressSpec_v1beta1_FromProto", skipping
 func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressSpec {
 	if in == nil {
 		return nil
@@ -235,37 +237,43 @@ func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Addr
 	// MISSING: Users
 	return out
 }
-func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeAddressSpec_v1beta1_ToProto", skipping
+
+	func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Address{}
+		out.Address = in.Address
+		out.AddressType = in.AddressType
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: ID
+		out.IpVersion = in.IPVersion
+		out.Ipv6EndpointType = in.IPV6EndpointType
+		// MISSING: Kind
+		// MISSING: LabelFingerprint
+		// MISSING: Labels
+		// MISSING: Name
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		out.NetworkTier = in.NetworkTier
+		out.PrefixLength = in.PrefixLength
+		out.Purpose = in.Purpose
+		// MISSING: Region
+		// MISSING: SelfLink
+		// MISSING: Status
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = &in.SubnetworkRef.External
+		}
+		// MISSING: Users
+		return out
 	}
-	out := &pb.Address{}
-	out.Address = in.Address
-	out.AddressType = in.AddressType
-	// MISSING: CreationTimestamp
-	out.Description = in.Description
-	// MISSING: ID
-	out.IpVersion = in.IPVersion
-	out.Ipv6EndpointType = in.IPV6EndpointType
-	// MISSING: Kind
-	// MISSING: LabelFingerprint
-	// MISSING: Labels
-	// MISSING: Name
-	if in.NetworkRef != nil {
-		out.Network = &in.NetworkRef.External
-	}
-	out.NetworkTier = in.NetworkTier
-	out.PrefixLength = in.PrefixLength
-	out.Purpose = in.Purpose
-	// MISSING: Region
-	// MISSING: SelfLink
-	// MISSING: Status
-	if in.SubnetworkRef != nil {
-		out.Subnetwork = &in.SubnetworkRef.External
-	}
-	// MISSING: Users
-	return out
-}
+*/
 func ComputeAddressStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressStatus {
 	if in == nil {
 		return nil
@@ -320,6 +328,84 @@ func ComputeAddressStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	out.Users = in.Users
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeAutoscalerSpec_v1alpha1_FromProto", skipping
+func ComputeAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeAutoscalerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeAutoscalerSpec{}
+	out.AutoscalingPolicy = AutoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx, in.GetAutoscalingPolicy())
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	// MISSING: Region
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	if in.GetTarget() != "" {
+		out.TargetRef = &krmcomputev1alpha1.AutoscalerTargetRef{External: in.GetTarget()}
+	}
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeAutoscalerSpec_v1alpha1_ToProto", skipping
+func ComputeAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeAutoscalerSpec) *pb.Autoscaler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Autoscaler{}
+	out.AutoscalingPolicy = AutoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	// MISSING: Region
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	if in.TargetRef != nil {
+		out.Target = &in.TargetRef.External
+	}
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeBackendServiceSignedURLKeySpec_v1alpha1_FromProto", skipping
+func ComputeBackendServiceSignedURLKeySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SignedUrlKey) *krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec{}
+	// MISSING: KeyName
+	out.KeyValue = in.KeyValue
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeBackendServiceSignedURLKeySpec_v1alpha1_ToProto", skipping
+
+	func ComputeBackendServiceSignedURLKeySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec) *pb.SignedUrlKey {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SignedUrlKey{}
+		// MISSING: KeyName
+		out.KeyValue = in.KeyValue
+		return out
+	}
+*/
 func ComputeDiskSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.ComputeDiskSpec {
 	if in == nil {
 		return nil
@@ -560,6 +646,52 @@ func ComputeDiskStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	// MISSING: Zone
 	return out
 }
+func ComputeFirewallPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeFirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicy{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ShortName
+	return out
+}
+func ComputeFirewallPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicy) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ShortName
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
@@ -660,6 +792,178 @@ func ComputeFirewallPolicyRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	return out
 }
 */
+
+/* found existing non-generated mapping function "ComputeFirewallPolicySpec_v1beta1_FromProto", skipping
+func ComputeFirewallPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeFirewallPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicySpec{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	out.ShortName = in.ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallPolicySpec_v1beta1_ToProto", skipping
+func ComputeFirewallPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicySpec) *pb.FirewallPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicy{}
+	// MISSING: Associations
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: DisplayName
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PacketMirroringRules
+	// MISSING: Parent
+	// MISSING: Region
+	// MISSING: RuleTupleCount
+	// MISSING: Rules
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	out.ShortName = in.ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_FromProto", skipping
+func ComputeFirewallSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallSpec{}
+	// MISSING: Allowed
+	// MISSING: CreationTimestamp
+	// MISSING: Denied
+	out.Description = in.Description
+	out.DestinationRanges = in.DestinationRanges
+	out.Direction = in.Direction
+	out.Disabled = in.Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	out.LogConfig = FirewallLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: SelfLink
+	out.SourceRanges = in.SourceRanges
+	out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_FromProto(mapCtx, in.SourceServiceAccounts)
+	out.SourceTags = in.SourceTags
+	out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetTags = in.TargetTags
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeFirewallSpec_v1beta1_ToProto", skipping
+
+	func ComputeFirewallSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallSpec) *pb.Firewall {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Firewall{}
+		// MISSING: Allowed
+		// MISSING: CreationTimestamp
+		// MISSING: Denied
+		out.Description = in.Description
+		out.DestinationRanges = in.DestinationRanges
+		out.Direction = in.Direction
+		out.Disabled = in.Disabled
+		// MISSING: ID
+		// MISSING: Kind
+		out.LogConfig = FirewallLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+		// MISSING: Name
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		// MISSING: Params
+		out.Priority = in.Priority
+		// MISSING: SelfLink
+		out.SourceRanges = in.SourceRanges
+		out.SourceServiceAccounts = ComputeFirewallSpec_SourceServiceAccounts_ToProto(mapCtx, in.SourceServiceAccounts)
+		out.SourceTags = in.SourceTags
+		out.TargetServiceAccounts = ComputeFirewallSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
+		out.TargetTags = in.TargetTags
+		return out
+	}
+*/
+func ComputeFirewallStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Firewall) *krm.ComputeFirewallStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallStatus{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: Description
+	// MISSING: DestinationRanges
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: Priority
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRanges
+	// MISSING: SourceServiceAccounts
+	// MISSING: SourceTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TargetTags
+	return out
+}
+func ComputeFirewallStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallStatus) *pb.Firewall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Firewall{}
+	// MISSING: Allowed
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Denied
+	// MISSING: Description
+	// MISSING: DestinationRanges
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: Priority
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceRanges
+	// MISSING: SourceServiceAccounts
+	// MISSING: SourceTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TargetTags
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeForwardingRuleSpec_v1beta1_FromProto", skipping
 func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
@@ -831,57 +1135,57 @@ func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
-
-	func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
-		if in == nil {
-			return nil
-		}
-		out := &pb.ForwardingRule{}
-		// MISSING: IPAddress
-		// MISSING: IPProtocol
-		// MISSING: AllPorts
-		// MISSING: AllowGlobalAccess
-		// MISSING: AllowPSCGlobalAccess
-		// MISSING: BackendService
-		out.BaseForwardingRule = in.BaseForwardingRule
-		out.CreationTimestamp = in.CreationTimestamp
-		// MISSING: Description
-		// MISSING: ExternalManagedBackendBucketMigrationState
-		// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
-		// MISSING: Fingerprint
-		// MISSING: ID
-		// MISSING: IPCollection
-		// MISSING: IPVersion
-		// MISSING: IsMirroringCollector
-		// MISSING: Kind
-		out.LabelFingerprint = in.LabelFingerprint
-		// MISSING: Labels
-		// MISSING: LoadBalancingScheme
-		// MISSING: MetadataFilters
-		// MISSING: Name
-		// MISSING: Network
-		// MISSING: NetworkTier
-		// MISSING: NoAutomateDNSZone
-		// MISSING: PortRange
-		// MISSING: Ports
-		// MISSING: PSCConnectionID
-		// (near miss): "PSCConnectionID" vs "PscConnectionId"
-		// MISSING: PSCConnectionStatus
-		// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
-		// MISSING: Region
-		out.SelfLink = in.SelfLink
-		// MISSING: SelfLinkWithID
-		// MISSING: ServiceDirectoryRegistrations
-		// MISSING: ServiceLabel
-		out.ServiceName = in.ServiceName
-		// MISSING: SourceIPRanges
-		// MISSING: Subnetwork
-		out.Target = in.Target
-		return out
+/* found existing non-generated mapping function "ComputeForwardingRuleStatus_v1beta1_ToProto", skipping
+func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+	if in == nil {
+		return nil
 	}
+	out := &pb.ForwardingRule{}
+	// MISSING: IPAddress
+	// MISSING: IPProtocol
+	// MISSING: AllPorts
+	// MISSING: AllowGlobalAccess
+	// MISSING: AllowPSCGlobalAccess
+	// MISSING: BackendService
+	out.BaseForwardingRule = in.BaseForwardingRule
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ExternalManagedBackendBucketMigrationState
+	// MISSING: ExternalManagedBackendBucketMigrationTestingPercentage
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCollection
+	// MISSING: IPVersion
+	// MISSING: IsMirroringCollector
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LoadBalancingScheme
+	// MISSING: MetadataFilters
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkTier
+	// MISSING: NoAutomateDNSZone
+	// MISSING: PortRange
+	// MISSING: Ports
+	// MISSING: PSCConnectionID
+	// (near miss): "PSCConnectionID" vs "PscConnectionId"
+	// MISSING: PSCConnectionStatus
+	// (near miss): "PSCConnectionStatus" vs "PscConnectionStatus"
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: ServiceDirectoryRegistrations
+	// MISSING: ServiceLabel
+	out.ServiceName = in.ServiceName
+	// MISSING: SourceIPRanges
+	// MISSING: Subnetwork
+	out.Target = in.Target
+	return out
+}
 */
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckSpec {
 	if in == nil {
 		return nil
@@ -909,6 +1213,9 @@ func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_ToProto", skipping
 func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckSpec) *pb.HealthCheck {
 	if in == nil {
 		return nil
@@ -936,6 +1243,9 @@ func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.UnhealthyThreshold = in.UnhealthyThreshold
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckStatus_v1beta1_FromProto", skipping
 func ComputeHTTPHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckStatus {
 	if in == nil {
 		return nil
@@ -963,6 +1273,9 @@ func ComputeHTTPHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: UnhealthyThreshold
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeHTTPHealthCheckStatus_v1beta1_ToProto", skipping
 func ComputeHTTPHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeHTTPHealthCheckStatus) *pb.HealthCheck {
 	if in == nil {
 		return nil
@@ -990,6 +1303,7 @@ func ComputeHTTPHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: UnhealthyThreshold
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ComputeHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHealthCheckSpec {
@@ -1013,7 +1327,7 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Name
 	// MISSING: Region
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
+	out.SourceRegions = in.SourceRegions
 	out.SSLHealthCheck = HealthCheckSSLHealthCheck_v1beta1_FromProto(mapCtx, in.GetSslHealthCheck())
 	out.TCPHealthCheck = HealthCheckTCPHealthCheck_v1beta1_FromProto(mapCtx, in.GetTcpHealthCheck())
 	out.TimeoutSec = in.TimeoutSec
@@ -1045,12 +1359,200 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: Name
 	// MISSING: Region
 	// MISSING: SelfLink
-	// MISSING: SourceRegions
+	out.SourceRegions = in.SourceRegions
 	out.SslHealthCheck = HealthCheckSSLHealthCheck_v1beta1_ToProto(mapCtx, in.SSLHealthCheck)
 	out.TcpHealthCheck = HealthCheckTCPHealthCheck_v1beta1_ToProto(mapCtx, in.TCPHealthCheck)
 	out.TimeoutSec = in.TimeoutSec
 	// MISSING: Type
 	out.UnhealthyThreshold = in.UnhealthyThreshold
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeImageSpec_v1beta1_FromProto", skipping
+func ComputeImageSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krm.ComputeImageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeImageSpec{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
+	// MISSING: CreationTimestamp
+	// MISSING: Deprecated
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: EnableConfidentialCompute
+	out.Family = in.Family
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	out.ImageEncryptionKey = ImageImageEncryptionKey_v1beta1_FromProto(mapCtx, in.GetImageEncryptionKey())
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: Name
+	out.RawDisk = ImageRawDisk_v1beta1_FromProto(mapCtx, in.GetRawDisk())
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	if in.GetSourceImage() != "" {
+		out.SourceImageRef = &krm.ComputeImageRef{External: in.GetSourceImage()}
+	}
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	if in.GetSourceSnapshot() != "" {
+		out.SourceSnapshotRef = &krm.ComputeSnapshotRef{External: in.GetSourceSnapshot()}
+	}
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeImageSpec_v1beta1_ToProto", skipping
+func ComputeImageSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageSpec) *pb.Image {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Image{}
+	// MISSING: Architecture
+	// MISSING: ArchiveSizeBytes
+	// MISSING: CreationTimestamp
+	// MISSING: Deprecated
+	out.Description = in.Description
+	// MISSING: DiskSizeGB
+	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+	// MISSING: EnableConfidentialCompute
+	out.Family = in.Family
+	// MISSING: GuestOSFeatures
+	// (near miss): "GuestOSFeatures" vs "GuestOsFeatures"
+	// MISSING: ID
+	out.ImageEncryptionKey = ImageImageEncryptionKey_v1beta1_ToProto(mapCtx, in.ImageEncryptionKey)
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	out.Licenses = in.Licenses
+	// MISSING: Name
+	out.RawDisk = ImageRawDisk_v1beta1_ToProto(mapCtx, in.RawDisk)
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	if in.SourceImageRef != nil {
+		out.SourceImage = &in.SourceImageRef.External
+	}
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	if in.SourceSnapshotRef != nil {
+		out.SourceSnapshot = &in.SourceSnapshotRef.External
+	}
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeImageStatus_v1beta1_FromProto", skipping
+func ComputeImageStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image) *krm.ComputeImageStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeImageStatus{}
+	// MISSING: Architecture
+	out.ArchiveSizeBytes = in.ArchiveSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Deprecated
+	// MISSING: Description
+	// MISSING: DiskSizeGB
+	// MISSING: EnableConfidentialCompute
+	// MISSING: Family
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: ImageEncryptionKey
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: Name
+	// MISSING: RawDisk
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	// MISSING: StorageLocations
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeImageStatus_v1beta1_ToProto", skipping
+func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageStatus) *pb.Image {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Image{}
+	// MISSING: Architecture
+	out.ArchiveSizeBytes = in.ArchiveSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Deprecated
+	// MISSING: Description
+	// MISSING: DiskSizeGB
+	// MISSING: EnableConfidentialCompute
+	// MISSING: Family
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: ImageEncryptionKey
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: Name
+	// MISSING: RawDisk
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	// MISSING: StorageLocations
 	return out
 }
 */
@@ -1872,6 +2374,110 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto", skipping
+func ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec{}
+	// MISSING: AdaptiveProtectionConfig
+	// MISSING: AdvancedOptionsConfig
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: RecaptchaOptionsConfig
+	// MISSING: Region
+	// MISSING: Rules
+	// MISSING: SelfLink
+	out.Type = in.Type
+	// MISSING: UserDefinedFields
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeOrganizationSecurityPolicySpec_v1alpha1_ToProto", skipping
+func ComputeOrganizationSecurityPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec) *pb.SecurityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicy{}
+	// MISSING: AdaptiveProtectionConfig
+	// MISSING: AdvancedOptionsConfig
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: RecaptchaOptionsConfig
+	// MISSING: Region
+	// MISSING: Rules
+	// MISSING: SelfLink
+	out.Type = in.Type
+	// MISSING: UserDefinedFields
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_FromProto", skipping
+func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRegionAutoscalerSpec{}
+	out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx, in.GetAutoscalingPolicy())
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	out.Region = in.Region
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	out.Target = in.Target
+	// MISSING: Zone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_ToProto", skipping
+
+	func ComputeRegionAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRegionAutoscalerSpec) *pb.Autoscaler {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Autoscaler{}
+		out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+		// MISSING: CreationTimestamp
+		out.Description = in.Description
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		// MISSING: RecommendedSize
+		out.Region = in.Region
+		// MISSING: ScalingScheduleStatus
+		// MISSING: SelfLink
+		// MISSING: Status
+		// MISSING: StatusDetails
+		out.Target = in.Target
+		// MISSING: Zone
+		return out
+	}
+*/
 func ComputeRegionPerInstanceConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PerInstanceConfig) *krmcomputev1alpha1.ComputeRegionPerInstanceConfigSpec {
 	if in == nil {
 		return nil
@@ -2014,25 +2620,349 @@ func ComputeResourcePolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeResourcePolicySpec_v1beta1_ToProto", skipping
+func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicy{}
+	out.Description = in.Description
+	out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
+	out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
+	out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+	// MISSING: Kind
+	// MISSING: Name
+	out.Region = in.Region
+	// MISSING: ResourceStatus
+	// MISSING: SelfLink
+	out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
+	// MISSING: WorkloadPolicy
+	return out
+}
+*/
 
-	func ComputeResourcePolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResourcePolicySpec) *pb.ResourcePolicy {
+/* found existing non-generated mapping function "ComputeRouteSpec_v1beta1_FromProto", skipping
+func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krm.ComputeRouteSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouteSpec{}
+	// MISSING: AsPaths
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DestRange = in.DestRange
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NextHopGateway = in.NextHopGateway
+	// MISSING: NextHopHub
+	// MISSING: NextHopIlb
+	if in.GetNextHopInstance() != "" {
+		out.NextHopInstanceRef = &krm.InstanceRef{External: in.GetNextHopInstance()}
+	}
+	// MISSING: NextHopInterRegionCost
+	out.NextHopIP = in.NextHopIp
+	// MISSING: NextHopMed
+	// MISSING: NextHopNetwork
+	// MISSING: NextHopOrigin
+	// MISSING: NextHopPeering
+	if in.GetNextHopVpnTunnel() != "" {
+		out.NextHopVPNTunnelRef = &krm.ComputeVPNTunnelRef{External: in.GetNextHopVpnTunnel()}
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: RouteStatus
+	// MISSING: RouteType
+	// MISSING: SelfLink
+	out.Tags = in.Tags
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouteSpec_v1beta1_ToProto", skipping
+func ComputeRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouteSpec) *pb.Route {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Route{}
+	// MISSING: AsPaths
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DestRange = in.DestRange
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NextHopGateway = in.NextHopGateway
+	// MISSING: NextHopHub
+	// MISSING: NextHopIlb
+	if in.NextHopInstanceRef != nil {
+		out.NextHopInstance = &in.NextHopInstanceRef.External
+	}
+	// MISSING: NextHopInterRegionCost
+	out.NextHopIp = in.NextHopIP
+	// MISSING: NextHopMed
+	// MISSING: NextHopNetwork
+	// MISSING: NextHopOrigin
+	// MISSING: NextHopPeering
+	if in.NextHopVPNTunnelRef != nil {
+		out.NextHopVpnTunnel = &in.NextHopVPNTunnelRef.External
+	}
+	// MISSING: Params
+	out.Priority = in.Priority
+	// MISSING: RouteStatus
+	// MISSING: RouteType
+	// MISSING: SelfLink
+	out.Tags = in.Tags
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouterInterfaceSpec_v1beta1_FromProto", skipping
+func ComputeRouterInterfaceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterInterface) *krm.ComputeRouterInterfaceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterInterfaceSpec{}
+	out.IPRange = in.IpRange
+	// MISSING: IPVersion
+	// MISSING: LinkedInterconnectAttachment
+	// MISSING: LinkedVPNTunnel
+	// MISSING: ManagementType
+	// MISSING: Name
+	if in.GetPrivateIpAddress() != "" {
+		out.PrivateIPAddressRef = &krm.ComputeAddressRef{External: in.GetPrivateIpAddress()}
+	}
+	if in.GetRedundantInterface() != "" {
+		out.RedundantInterfaceRef = &krm.ComputeRouterInterfaceRef{External: in.GetRedundantInterface()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krm.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouterInterfaceSpec_v1beta1_ToProto", skipping
+func ComputeRouterInterfaceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterInterfaceSpec) *pb.RouterInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterInterface{}
+	out.IpRange = in.IPRange
+	// MISSING: IPVersion
+	// MISSING: LinkedInterconnectAttachment
+	// MISSING: LinkedVPNTunnel
+	// MISSING: ManagementType
+	// MISSING: Name
+	if in.PrivateIPAddressRef != nil {
+		out.PrivateIpAddress = &in.PrivateIPAddressRef.External
+	}
+	if in.RedundantInterfaceRef != nil {
+		out.RedundantInterface = &in.RedundantInterfaceRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRouterSpec_v1beta1_FromProto", skipping
+func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterSpec{}
+	out.BGP = RouterBGP_v1beta1_FromProto(mapCtx, in.GetBgp())
+	// MISSING: BGPPeers
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.EncryptedInterconnectRouter = in.EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.Region = in.Region
+	// MISSING: SelfLink
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRouterSpec_v1beta1_ToProto", skipping
+
+	func ComputeRouterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterSpec) *pb.Router {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicy{}
+		out := &pb.Router{}
+		out.Bgp = RouterBGP_v1beta1_ToProto(mapCtx, in.BGP)
+		// MISSING: BGPPeers
+		// MISSING: CreationTimestamp
 		out.Description = in.Description
-		out.DiskConsistencyGroupPolicy = ResourcePolicyDiskConsistencyGroupPolicy_v1beta1_ToProto(mapCtx, in.DiskConsistencyGroupPolicy)
-		out.GroupPlacementPolicy = ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx, in.GroupPlacementPolicy)
-		out.InstanceSchedulePolicy = ResourcePolicyInstanceSchedulePolicy_v1beta1_ToProto(mapCtx, in.InstanceSchedulePolicy)
+		out.EncryptedInterconnectRouter = in.EncryptedInterconnectRouter
+		// MISSING: ID
+		// MISSING: Interfaces
 		// MISSING: Kind
+		// MISSING: Md5AuthenticationKeys
 		// MISSING: Name
+		// MISSING: Nats
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
 		out.Region = in.Region
-		// MISSING: ResourceStatus
 		// MISSING: SelfLink
-		out.SnapshotSchedulePolicy = ResourcePolicySnapshotSchedulePolicy_v1beta1_ToProto(mapCtx, in.SnapshotSchedulePolicy)
-		// MISSING: WorkloadPolicy
+		return out
+	}
+*/
+func ComputeRouterStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Router) *krm.ComputeRouterStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeRouterStatus{}
+	// MISSING: BGP
+	// MISSING: BGPPeers
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeRouterStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterStatus) *pb.Router {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Router{}
+	// MISSING: BGP
+	// MISSING: BGPPeers
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: EncryptedInterconnectRouter
+	// MISSING: ID
+	// MISSING: Interfaces
+	// MISSING: Kind
+	// MISSING: Md5AuthenticationKeys
+	// MISSING: Name
+	// MISSING: Nats
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+
+/* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_FromProto", skipping
+func ComputeSSLPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicySpec{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_ToProto", skipping
+func ComputeSSLPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicySpec) *pb.SslPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslPolicy{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
+	// MISSING: Name
+	out.Profile = in.Profile
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeSSLPolicyStatus_v1beta1_FromProto", skipping
+func ComputeSSLPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLPolicyStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: CustomFeatures
+	// MISSING: Description
+	out.EnabledFeatures = in.EnabledFeatures
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: MinTLSVersion
+	// MISSING: Name
+	// MISSING: Profile
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeSSLPolicyStatus_v1beta1_ToProto", skipping
+
+	func ComputeSSLPolicyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLPolicyStatus) *pb.SslPolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SslPolicy{}
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: CustomFeatures
+		// MISSING: Description
+		out.EnabledFeatures = in.EnabledFeatures
+		out.Fingerprint = in.Fingerprint
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: MinTLSVersion
+		// MISSING: Name
+		// MISSING: Profile
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: Warnings
 		return out
 	}
 */
@@ -2625,24 +3555,78 @@ func ComputeTargetTCPProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1beta1_ToProto", skipping
+func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetTcpProxy{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: ProxyBind
+	// MISSING: ProxyHeader
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Service
+	return out
+}
+*/
 
-	func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
+/* found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_FromProto", skipping
+func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapSpec{}
+	// MISSING: CreationTimestamp
+	out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
+	out.DefaultRouteAction = UrlmapDefaultRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
+	out.DefaultService = in.DefaultService
+	// MISSING: DefaultURLRedirect
+	// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	out.HeaderAction = UrlmapHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	// MISSING: HostRules
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PathMatchers
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Tests
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_ToProto", skipping
+
+	func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapSpec) *pb.UrlMap {
 		if in == nil {
 			return nil
 		}
-		out := &pb.TargetTcpProxy{}
-		out.CreationTimestamp = in.CreationTimestamp
-		// MISSING: Description
+		out := &pb.UrlMap{}
+		// MISSING: CreationTimestamp
+		out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
+		out.DefaultRouteAction = UrlmapDefaultRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
+		out.DefaultService = in.DefaultService
+		// MISSING: DefaultURLRedirect
+		// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
+		out.Description = in.Description
+		// MISSING: Fingerprint
+		out.HeaderAction = UrlmapHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+		// MISSING: HostRules
 		// MISSING: ID
 		// MISSING: Kind
 		// MISSING: Name
-		// MISSING: ProxyBind
-		// MISSING: ProxyHeader
+		// MISSING: PathMatchers
 		// MISSING: Region
-		out.SelfLink = in.SelfLink
-		// MISSING: Service
+		// MISSING: SelfLink
+		// MISSING: Tests
 		return out
 	}
 */
@@ -2664,6 +3648,80 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+
+/* found existing non-generated mapping function "FirewallAllow_v1beta1_FromProto", skipping
+func FirewallAllow_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Allowed) *krm.FirewallAllow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallAllow{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallAllow_v1beta1_ToProto", skipping
+func FirewallAllow_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallAllow) *pb.Allowed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Allowed{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallDeny_v1beta1_FromProto", skipping
+func FirewallDeny_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Denied) *krm.FirewallDeny {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallDeny{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallDeny_v1beta1_ToProto", skipping
+func FirewallDeny_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallDeny) *pb.Denied {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Denied{}
+	out.IPProtocol = in.IPProtocol
+	out.Ports = in.Ports
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FirewallLogConfig_v1beta1_FromProto", skipping
+func FirewallLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallLogConfig) *krm.FirewallLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallLogConfig{}
+	// MISSING: Enable
+	out.Metadata = in.Metadata
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FirewallLogConfig_v1beta1_ToProto", skipping
+
+	func FirewallLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallLogConfig) *pb.FirewallLogConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FirewallLogConfig{}
+		// MISSING: Enable
+		out.Metadata = in.Metadata
+		return out
+	}
+*/
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
@@ -3256,6 +4314,206 @@ func NodeTemplateServerBinding_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Type = in.Type
 	return out
 }
+
+/* found existing non-generated mapping function "RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto", skipping
+func RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy{}
+	// MISSING: CoolDownPeriodSec
+	// MISSING: CPUUtilization
+	// (near miss): "CPUUtilization" vs "CpuUtilization"
+	// MISSING: CustomMetricUtilizations
+	out.LoadBalancingUtilization = RegionautoscalerLoadBalancingUtilization_v1alpha1_FromProto(mapCtx, in.GetLoadBalancingUtilization())
+	// MISSING: MaxNumReplicas
+	// MISSING: MinNumReplicas
+	out.Mode = in.Mode
+	out.ScaleInControl = RegionautoscalerScaleInControl_v1alpha1_FromProto(mapCtx, in.GetScaleInControl())
+	out.ScalingSchedules = ScalingSchedules_FromProto(mapCtx, in.ScalingSchedules)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto", skipping
+func RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy) *pb.AutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicy{}
+	// MISSING: CoolDownPeriodSec
+	// MISSING: CPUUtilization
+	// (near miss): "CPUUtilization" vs "CpuUtilization"
+	// MISSING: CustomMetricUtilizations
+	out.LoadBalancingUtilization = RegionautoscalerLoadBalancingUtilization_v1alpha1_ToProto(mapCtx, in.LoadBalancingUtilization)
+	// MISSING: MaxNumReplicas
+	// MISSING: MinNumReplicas
+	out.Mode = in.Mode
+	out.ScaleInControl = RegionautoscalerScaleInControl_v1alpha1_ToProto(mapCtx, in.ScaleInControl)
+	out.ScalingSchedules = ScalingSchedules_ToProto(mapCtx, in.ScalingSchedules)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerCpuUtilization_v1alpha1_FromProto", skipping
+func RegionautoscalerCpuUtilization_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyCpuUtilization) *krmcomputev1alpha1.RegionautoscalerCpuUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerCpuUtilization{}
+	out.PredictiveMethod = in.PredictiveMethod
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerCpuUtilization_v1alpha1_ToProto", skipping
+func RegionautoscalerCpuUtilization_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerCpuUtilization) *pb.AutoscalingPolicyCpuUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyCpuUtilization{}
+	out.PredictiveMethod = in.PredictiveMethod
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerFixedOrPercent_v1alpha1_FromProto", skipping
+func RegionautoscalerFixedOrPercent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FixedOrPercent) *krmcomputev1alpha1.RegionautoscalerFixedOrPercent {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerFixedOrPercent{}
+	// MISSING: Calculated
+	out.Fixed = in.Fixed
+	out.Percent = in.Percent
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerFixedOrPercent_v1alpha1_ToProto", skipping
+func RegionautoscalerFixedOrPercent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerFixedOrPercent) *pb.FixedOrPercent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FixedOrPercent{}
+	// MISSING: Calculated
+	out.Fixed = in.Fixed
+	out.Percent = in.Percent
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerLoadBalancingUtilization_v1alpha1_FromProto", skipping
+func RegionautoscalerLoadBalancingUtilization_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyLoadBalancingUtilization) *krmcomputev1alpha1.RegionautoscalerLoadBalancingUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerLoadBalancingUtilization{}
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerLoadBalancingUtilization_v1alpha1_ToProto", skipping
+func RegionautoscalerLoadBalancingUtilization_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerLoadBalancingUtilization) *pb.AutoscalingPolicyLoadBalancingUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyLoadBalancingUtilization{}
+	// MISSING: UtilizationTarget
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerMetric_v1alpha1_FromProto", skipping
+func RegionautoscalerMetric_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyCustomMetricUtilization) *krmcomputev1alpha1.RegionautoscalerMetric {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerMetric{}
+	out.Filter = in.Filter
+	// MISSING: Metric
+	out.SingleInstanceAssignment = in.SingleInstanceAssignment
+	// MISSING: UtilizationTarget
+	// MISSING: UtilizationTargetType
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerMetric_v1alpha1_ToProto", skipping
+func RegionautoscalerMetric_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerMetric) *pb.AutoscalingPolicyCustomMetricUtilization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyCustomMetricUtilization{}
+	out.Filter = in.Filter
+	// MISSING: Metric
+	out.SingleInstanceAssignment = in.SingleInstanceAssignment
+	// MISSING: UtilizationTarget
+	// MISSING: UtilizationTargetType
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerScaleInControl_v1alpha1_FromProto", skipping
+func RegionautoscalerScaleInControl_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyScaleInControl) *krmcomputev1alpha1.RegionautoscalerScaleInControl {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerScaleInControl{}
+	out.MaxScaledInReplicas = RegionautoscalerFixedOrPercent_v1alpha1_FromProto(mapCtx, in.GetMaxScaledInReplicas())
+	out.TimeWindowSec = in.TimeWindowSec
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerScaleInControl_v1alpha1_ToProto", skipping
+func RegionautoscalerScaleInControl_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerScaleInControl) *pb.AutoscalingPolicyScaleInControl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingPolicyScaleInControl{}
+	out.MaxScaledInReplicas = RegionautoscalerFixedOrPercent_v1alpha1_ToProto(mapCtx, in.MaxScaledInReplicas)
+	out.TimeWindowSec = in.TimeWindowSec
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RegionautoscalerScalingSchedules_v1alpha1_FromProto", skipping
+func RegionautoscalerScalingSchedules_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicyScalingSchedule) *krmcomputev1alpha1.RegionautoscalerScalingSchedules {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.RegionautoscalerScalingSchedules{}
+	out.Description = in.Description
+	out.Disabled = in.Disabled
+	out.DurationSec = in.DurationSec
+	out.MinRequiredReplicas = in.MinRequiredReplicas
+	out.Schedule = in.Schedule
+	out.TimeZone = in.TimeZone
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "RegionautoscalerScalingSchedules_v1alpha1_ToProto", skipping
+
+	func RegionautoscalerScalingSchedules_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.RegionautoscalerScalingSchedules) *pb.AutoscalingPolicyScalingSchedule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AutoscalingPolicyScalingSchedule{}
+		out.Description = in.Description
+		out.Disabled = in.Disabled
+		out.DurationSec = in.DurationSec
+		out.MinRequiredReplicas = in.MinRequiredReplicas
+		out.Schedule = in.Schedule
+		out.TimeZone = in.TimeZone
+		return out
+	}
+*/
 func ReservationGuestAccelerators_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.ReservationGuestAccelerators {
 	if in == nil {
 		return nil
@@ -3655,18 +4913,74 @@ func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_FromProto(ma
 }
 */
 
-/*
-found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto", skipping
+func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
+	out.ChainName = in.ChainName
+	out.GuestFlush = in.GuestFlush
+	out.Labels = in.Labels
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+*/
 
-	func ResourcePolicySnapshotSchedulePolicySnapshotProperties_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePolicySnapshotSchedulePolicySnapshotProperties) *pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties {
+/* found existing non-generated mapping function "RouterAdvertisedIPRange_v1beta1_FromProto", skipping
+func RouterAdvertisedIPRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterAdvertisedIpRange) *krm.RouterAdvertisedIPRange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterAdvertisedIPRange{}
+	out.Description = in.Description
+	out.Range = in.Range
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouterAdvertisedIPRange_v1beta1_ToProto", skipping
+func RouterAdvertisedIPRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterAdvertisedIPRange) *pb.RouterAdvertisedIpRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouterAdvertisedIpRange{}
+	out.Description = in.Description
+	out.Range = in.Range
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "RouterBGP_v1beta1_FromProto", skipping
+func RouterBGP_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterBgp) *krm.RouterBGP {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouterBGP{}
+	out.AdvertiseMode = in.AdvertiseMode
+	out.AdvertisedGroups = in.AdvertisedGroups
+	out.AdvertisedIPRanges = direct.Slice_FromProto(mapCtx, in.AdvertisedIpRanges, RouterAdvertisedIPRange_v1beta1_FromProto)
+	out.Asn = in.Asn
+	// MISSING: IdentifierRange
+	out.KeepaliveInterval = in.KeepaliveInterval
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "RouterBGP_v1beta1_ToProto", skipping
+
+	func RouterBGP_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouterBGP) *pb.RouterBgp {
 		if in == nil {
 			return nil
 		}
-		out := &pb.ResourcePolicySnapshotSchedulePolicySnapshotProperties{}
-		out.ChainName = in.ChainName
-		out.GuestFlush = in.GuestFlush
-		out.Labels = in.Labels
-		out.StorageLocations = in.StorageLocations
+		out := &pb.RouterBgp{}
+		out.AdvertiseMode = in.AdvertiseMode
+		out.AdvertisedGroups = in.AdvertisedGroups
+		out.AdvertisedIpRanges = direct.Slice_ToProto(mapCtx, in.AdvertisedIPRanges, RouterAdvertisedIPRange_v1beta1_ToProto)
+		out.Asn = in.Asn
+		// MISSING: IdentifierRange
+		out.KeepaliveInterval = in.KeepaliveInterval
 		return out
 	}
 */
@@ -4152,3 +5466,847 @@ func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: ReservedInternalRange
 	return out
 }
+
+/* found existing non-generated mapping function "UrlmapAbort_v1beta1_FromProto", skipping
+func UrlmapAbort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpFaultAbort) *krm.UrlmapAbort {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapAbort{}
+	// MISSING: HTTPStatus
+	// (near miss): "HTTPStatus" vs "HttpStatus"
+	out.Percentage = in.Percentage
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapAbort_v1beta1_ToProto", skipping
+func UrlmapAbort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapAbort) *pb.HttpFaultAbort {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpFaultAbort{}
+	// MISSING: HTTPStatus
+	// (near miss): "HTTPStatus" vs "HttpStatus"
+	out.Percentage = in.Percentage
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapCorsPolicy_v1beta1_FromProto", skipping
+func UrlmapCorsPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.UrlmapCorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapCorsPolicy{}
+	out.AllowCredentials = in.AllowCredentials
+	out.AllowHeaders = in.AllowHeaders
+	out.AllowMethods = in.AllowMethods
+	out.AllowOriginRegexes = in.AllowOriginRegexes
+	out.AllowOrigins = in.AllowOrigins
+	out.Disabled = in.Disabled
+	out.ExposeHeaders = in.ExposeHeaders
+	out.MaxAge = in.MaxAge
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapCorsPolicy_v1beta1_ToProto", skipping
+func UrlmapCorsPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapCorsPolicy) *pb.CorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CorsPolicy{}
+	out.AllowCredentials = in.AllowCredentials
+	out.AllowHeaders = in.AllowHeaders
+	out.AllowMethods = in.AllowMethods
+	out.AllowOriginRegexes = in.AllowOriginRegexes
+	out.AllowOrigins = in.AllowOrigins
+	out.Disabled = in.Disabled
+	out.ExposeHeaders = in.ExposeHeaders
+	out.MaxAge = in.MaxAge
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDefaultCustomErrorResponsePolicy_v1beta1_FromProto", skipping
+func UrlmapDefaultCustomErrorResponsePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomErrorResponsePolicy) *krm.UrlmapDefaultCustomErrorResponsePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapDefaultCustomErrorResponsePolicy{}
+	// MISSING: ErrorResponseRules
+	if in.GetErrorService() != "" {
+		out.ErrorServiceRef = &krm.UrlmapResourceRef{External: in.GetErrorService()}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto", skipping
+func UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapDefaultCustomErrorResponsePolicy) *pb.CustomErrorResponsePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomErrorResponsePolicy{}
+	// MISSING: ErrorResponseRules
+	if in.ErrorServiceRef != nil {
+		out.ErrorService = &in.ErrorServiceRef.External
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDefaultRouteAction_v1beta1_FromProto", skipping
+func UrlmapDefaultRouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteAction) *krm.UrlmapDefaultRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapDefaultRouteAction{}
+	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
+	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
+	// MISSING: MaxStreamDuration
+	out.RequestMirrorPolicy = UrlmapRequestMirrorPolicy_v1beta1_FromProto(mapCtx, in.GetRequestMirrorPolicy())
+	out.RetryPolicy = UrlmapRetryPolicy_v1beta1_FromProto(mapCtx, in.GetRetryPolicy())
+	out.Timeout = UrlmapTimeout_v1beta1_FromProto(mapCtx, in.GetTimeout())
+	// MISSING: URLRewrite
+	// (near miss): "URLRewrite" vs "UrlRewrite"
+	out.WeightedBackendServices = direct.Slice_FromProto(mapCtx, in.WeightedBackendServices, UrlmapWeightedBackendServices_v1beta1_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDefaultRouteAction_v1beta1_ToProto", skipping
+func UrlmapDefaultRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapDefaultRouteAction) *pb.HttpRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteAction{}
+	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
+	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
+	// MISSING: MaxStreamDuration
+	out.RequestMirrorPolicy = UrlmapRequestMirrorPolicy_v1beta1_ToProto(mapCtx, in.RequestMirrorPolicy)
+	out.RetryPolicy = UrlmapRetryPolicy_v1beta1_ToProto(mapCtx, in.RetryPolicy)
+	out.Timeout = UrlmapTimeout_v1beta1_ToProto(mapCtx, in.Timeout)
+	// MISSING: URLRewrite
+	// (near miss): "URLRewrite" vs "UrlRewrite"
+	out.WeightedBackendServices = direct.Slice_ToProto(mapCtx, in.WeightedBackendServices, UrlmapWeightedBackendServices_v1beta1_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDefaultUrlRedirect_v1beta1_FromProto", skipping
+func UrlmapDefaultUrlRedirect_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRedirectAction) *krm.UrlmapDefaultUrlRedirect {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapDefaultUrlRedirect{}
+	out.HostRedirect = in.HostRedirect
+	// MISSING: HTTPSRedirect
+	// (near miss): "HTTPSRedirect" vs "HttpsRedirect"
+	out.PathRedirect = in.PathRedirect
+	out.PrefixRedirect = in.PrefixRedirect
+	out.RedirectResponseCode = in.RedirectResponseCode
+	out.StripQuery = in.StripQuery
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDefaultUrlRedirect_v1beta1_ToProto", skipping
+func UrlmapDefaultUrlRedirect_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapDefaultUrlRedirect) *pb.HttpRedirectAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRedirectAction{}
+	out.HostRedirect = in.HostRedirect
+	// MISSING: HTTPSRedirect
+	// (near miss): "HTTPSRedirect" vs "HttpsRedirect"
+	out.PathRedirect = in.PathRedirect
+	out.PrefixRedirect = in.PrefixRedirect
+	out.RedirectResponseCode = in.RedirectResponseCode
+	out.StripQuery = in.StripQuery
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDelay_v1beta1_FromProto", skipping
+func UrlmapDelay_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpFaultDelay) *krm.UrlmapDelay {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapDelay{}
+	out.FixedDelay = UrlmapFixedDelay_v1beta1_FromProto(mapCtx, in.GetFixedDelay())
+	out.Percentage = in.Percentage
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapDelay_v1beta1_ToProto", skipping
+func UrlmapDelay_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapDelay) *pb.HttpFaultDelay {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpFaultDelay{}
+	out.FixedDelay = UrlmapFixedDelay_v1beta1_ToProto(mapCtx, in.FixedDelay)
+	out.Percentage = in.Percentage
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapFaultInjectionPolicy_v1beta1_FromProto", skipping
+func UrlmapFaultInjectionPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpFaultInjection) *krm.UrlmapFaultInjectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapFaultInjectionPolicy{}
+	out.Abort = UrlmapAbort_v1beta1_FromProto(mapCtx, in.GetAbort())
+	out.Delay = UrlmapDelay_v1beta1_FromProto(mapCtx, in.GetDelay())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapFaultInjectionPolicy_v1beta1_ToProto", skipping
+func UrlmapFaultInjectionPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapFaultInjectionPolicy) *pb.HttpFaultInjection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpFaultInjection{}
+	out.Abort = UrlmapAbort_v1beta1_ToProto(mapCtx, in.Abort)
+	out.Delay = UrlmapDelay_v1beta1_ToProto(mapCtx, in.Delay)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapFixedDelay_v1beta1_FromProto", skipping
+func UrlmapFixedDelay_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.UrlmapFixedDelay {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapFixedDelay{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "UrlmapFixedDelay_v1beta1_ToProto", skipping
+
+	func UrlmapFixedDelay_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapFixedDelay) *pb.Duration {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Duration{}
+		out.Nanos = in.Nanos
+		out.Seconds = in.Seconds
+		return out
+	}
+*/
+func UrlmapHeaderAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpHeaderAction) *krm.UrlmapHeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapHeaderAction{}
+	out.RequestHeadersToAdd = direct.Slice_FromProto(mapCtx, in.RequestHeadersToAdd, UrlmapRequestHeadersToAdd_v1beta1_FromProto)
+	out.RequestHeadersToRemove = in.RequestHeadersToRemove
+	out.ResponseHeadersToAdd = direct.Slice_FromProto(mapCtx, in.ResponseHeadersToAdd, UrlmapResponseHeadersToAdd_v1beta1_FromProto)
+	out.ResponseHeadersToRemove = in.ResponseHeadersToRemove
+	return out
+}
+func UrlmapHeaderAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapHeaderAction) *pb.HttpHeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpHeaderAction{}
+	out.RequestHeadersToAdd = direct.Slice_ToProto(mapCtx, in.RequestHeadersToAdd, UrlmapRequestHeadersToAdd_v1beta1_ToProto)
+	out.RequestHeadersToRemove = in.RequestHeadersToRemove
+	out.ResponseHeadersToAdd = direct.Slice_ToProto(mapCtx, in.ResponseHeadersToAdd, UrlmapResponseHeadersToAdd_v1beta1_ToProto)
+	out.ResponseHeadersToRemove = in.ResponseHeadersToRemove
+	return out
+}
+
+/* found existing non-generated mapping function "UrlmapHeaderMatches_v1beta1_FromProto", skipping
+func UrlmapHeaderMatches_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpHeaderMatch) *krm.UrlmapHeaderMatches {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapHeaderMatches{}
+	out.ExactMatch = in.ExactMatch
+	out.HeaderName = in.HeaderName
+	out.InvertMatch = in.InvertMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.PresentMatch = in.PresentMatch
+	out.RangeMatch = UrlmapRangeMatch_v1beta1_FromProto(mapCtx, in.GetRangeMatch())
+	out.RegexMatch = in.RegexMatch
+	out.SuffixMatch = in.SuffixMatch
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapHeaderMatches_v1beta1_ToProto", skipping
+func UrlmapHeaderMatches_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapHeaderMatches) *pb.HttpHeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpHeaderMatch{}
+	out.ExactMatch = in.ExactMatch
+	out.HeaderName = in.HeaderName
+	out.InvertMatch = in.InvertMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.PresentMatch = in.PresentMatch
+	out.RangeMatch = UrlmapRangeMatch_v1beta1_ToProto(mapCtx, in.RangeMatch)
+	out.RegexMatch = in.RegexMatch
+	out.SuffixMatch = in.SuffixMatch
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapHostRule_v1beta1_FromProto", skipping
+func UrlmapHostRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HostRule) *krm.UrlmapHostRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapHostRule{}
+	out.Description = in.Description
+	out.Hosts = in.Hosts
+	out.PathMatcher = in.PathMatcher
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "UrlmapHostRule_v1beta1_ToProto", skipping
+
+	func UrlmapHostRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapHostRule) *pb.HostRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HostRule{}
+		out.Description = in.Description
+		out.Hosts = in.Hosts
+		out.PathMatcher = in.PathMatcher
+		return out
+	}
+*/
+func UrlmapMatchRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteRuleMatch) *krm.UrlmapMatchRules {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapMatchRules{}
+	out.FullPathMatch = in.FullPathMatch
+	out.HeaderMatches = direct.Slice_FromProto(mapCtx, in.HeaderMatches, UrlmapHeaderMatches_v1beta1_FromProto)
+	out.IgnoreCase = in.IgnoreCase
+	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, UrlmapMetadataFilters_v1beta1_FromProto)
+	out.PathTemplateMatch = in.PathTemplateMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.QueryParameterMatches = direct.Slice_FromProto(mapCtx, in.QueryParameterMatches, UrlmapQueryParameterMatches_v1beta1_FromProto)
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+func UrlmapMatchRules_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapMatchRules) *pb.HttpRouteRuleMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteRuleMatch{}
+	out.FullPathMatch = in.FullPathMatch
+	out.HeaderMatches = direct.Slice_ToProto(mapCtx, in.HeaderMatches, UrlmapHeaderMatches_v1beta1_ToProto)
+	out.IgnoreCase = in.IgnoreCase
+	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, UrlmapMetadataFilters_v1beta1_ToProto)
+	out.PathTemplateMatch = in.PathTemplateMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.QueryParameterMatches = direct.Slice_ToProto(mapCtx, in.QueryParameterMatches, UrlmapQueryParameterMatches_v1beta1_ToProto)
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+
+/* found existing non-generated mapping function "UrlmapMetadataFilters_v1beta1_FromProto", skipping
+func UrlmapMetadataFilters_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.UrlmapMetadataFilters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapMetadataFilters{}
+	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, UrlmapFilterLabels_v1beta1_FromProto)
+	out.FilterMatchCriteria = in.FilterMatchCriteria
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapMetadataFilters_v1beta1_ToProto", skipping
+func UrlmapMetadataFilters_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapMetadataFilters) *pb.MetadataFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataFilter{}
+	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, UrlmapFilterLabels_v1beta1_ToProto)
+	out.FilterMatchCriteria = in.FilterMatchCriteria
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapPathMatcher_v1beta1_FromProto", skipping
+func UrlmapPathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.UrlmapPathMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapPathMatcher{}
+	out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
+	out.DefaultRouteAction = UrlmapRouteActionPathMatcherDefaultRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
+	out.DefaultService = in.DefaultService
+	// MISSING: DefaultURLRedirect
+	// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
+	out.Description = in.Description
+	out.HeaderAction = UrlmapHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	out.Name = in.Name
+	// MISSING: PathRules
+	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, UrlmapRouteRules_v1beta1_FromProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapPathMatcher_v1beta1_ToProto", skipping
+func UrlmapPathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapPathMatcher) *pb.PathMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PathMatcher{}
+	out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
+	out.DefaultRouteAction = UrlmapRouteActionPathMatcherDefaultRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
+	out.DefaultService = in.DefaultService
+	// MISSING: DefaultURLRedirect
+	// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
+	out.Description = in.Description
+	out.HeaderAction = UrlmapHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	out.Name = in.Name
+	// MISSING: PathRules
+	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, UrlmapRouteRules_v1beta1_ToProto)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapPathRule_v1beta1_FromProto", skipping
+func UrlmapPathRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathRule) *krm.UrlmapPathRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapPathRule{}
+	// MISSING: CustomErrorResponsePolicy
+	out.Paths = in.Paths
+	out.RouteAction = UrlmapRouteActionPathRule_v1beta1_FromProto(mapCtx, in.GetRouteAction())
+	out.Service = in.Service
+	// MISSING: URLRedirect
+	// (near miss): "URLRedirect" vs "UrlRedirect"
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapPathRule_v1beta1_ToProto", skipping
+func UrlmapPathRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapPathRule) *pb.PathRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PathRule{}
+	// MISSING: CustomErrorResponsePolicy
+	out.Paths = in.Paths
+	out.RouteAction = UrlmapRouteActionPathRule_v1beta1_ToProto(mapCtx, in.RouteAction)
+	out.Service = in.Service
+	// MISSING: URLRedirect
+	// (near miss): "URLRedirect" vs "UrlRedirect"
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapPerTryTimeout_v1beta1_FromProto", skipping
+func UrlmapPerTryTimeout_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.UrlmapPerTryTimeout {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapPerTryTimeout{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapPerTryTimeout_v1beta1_ToProto", skipping
+func UrlmapPerTryTimeout_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapPerTryTimeout) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapQueryParameterMatches_v1beta1_FromProto", skipping
+func UrlmapQueryParameterMatches_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpQueryParameterMatch) *krm.UrlmapQueryParameterMatches {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapQueryParameterMatches{}
+	out.ExactMatch = in.ExactMatch
+	out.Name = in.Name
+	out.PresentMatch = in.PresentMatch
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapQueryParameterMatches_v1beta1_ToProto", skipping
+func UrlmapQueryParameterMatches_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapQueryParameterMatches) *pb.HttpQueryParameterMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpQueryParameterMatch{}
+	out.ExactMatch = in.ExactMatch
+	out.Name = in.Name
+	out.PresentMatch = in.PresentMatch
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapRangeMatch_v1beta1_FromProto", skipping
+func UrlmapRangeMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Int64RangeMatch) *krm.UrlmapRangeMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapRangeMatch{}
+	out.RangeEnd = in.RangeEnd
+	out.RangeStart = in.RangeStart
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapRangeMatch_v1beta1_ToProto", skipping
+func UrlmapRangeMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapRangeMatch) *pb.Int64RangeMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Int64RangeMatch{}
+	out.RangeEnd = in.RangeEnd
+	out.RangeStart = in.RangeStart
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapRequestHeadersToAdd_v1beta1_FromProto", skipping
+func UrlmapRequestHeadersToAdd_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpHeaderOption) *krm.UrlmapRequestHeadersToAdd {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapRequestHeadersToAdd{}
+	out.HeaderName = in.HeaderName
+	out.HeaderValue = in.HeaderValue
+	out.Replace = in.Replace
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "UrlmapRequestHeadersToAdd_v1beta1_ToProto", skipping
+
+	func UrlmapRequestHeadersToAdd_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapRequestHeadersToAdd) *pb.HttpHeaderOption {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HttpHeaderOption{}
+		out.HeaderName = in.HeaderName
+		out.HeaderValue = in.HeaderValue
+		out.Replace = in.Replace
+		return out
+	}
+*/
+func UrlmapRequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RequestMirrorPolicy) *krm.UrlmapRequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapRequestMirrorPolicy{}
+	if in.GetBackendService() != "" {
+		out.BackendServiceRef = &krm.UrlmapResourceRef{External: in.GetBackendService()}
+	}
+	return out
+}
+func UrlmapRequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapRequestMirrorPolicy) *pb.RequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RequestMirrorPolicy{}
+	if in.BackendServiceRef != nil {
+		out.BackendService = &in.BackendServiceRef.External
+	}
+	return out
+}
+
+/* found existing non-generated mapping function "UrlmapResponseHeadersToAdd_v1beta1_FromProto", skipping
+func UrlmapResponseHeadersToAdd_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpHeaderOption) *krm.UrlmapResponseHeadersToAdd {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapResponseHeadersToAdd{}
+	out.HeaderName = in.HeaderName
+	out.HeaderValue = in.HeaderValue
+	out.Replace = in.Replace
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapResponseHeadersToAdd_v1beta1_ToProto", skipping
+func UrlmapResponseHeadersToAdd_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapResponseHeadersToAdd) *pb.HttpHeaderOption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpHeaderOption{}
+	out.HeaderName = in.HeaderName
+	out.HeaderValue = in.HeaderValue
+	out.Replace = in.Replace
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapRetryPolicy_v1beta1_FromProto", skipping
+func UrlmapRetryPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRetryPolicy) *krm.UrlmapRetryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapRetryPolicy{}
+	out.NumRetries = in.NumRetries
+	out.PerTryTimeout = UrlmapPerTryTimeout_v1beta1_FromProto(mapCtx, in.GetPerTryTimeout())
+	out.RetryConditions = in.RetryConditions
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "UrlmapRetryPolicy_v1beta1_ToProto", skipping
+
+	func UrlmapRetryPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapRetryPolicy) *pb.HttpRetryPolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HttpRetryPolicy{}
+		out.NumRetries = in.NumRetries
+		out.PerTryTimeout = UrlmapPerTryTimeout_v1beta1_ToProto(mapCtx, in.PerTryTimeout)
+		out.RetryConditions = in.RetryConditions
+		return out
+	}
+*/
+func UrlmapRouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteAction) *krm.UrlmapRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapRouteAction{}
+	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
+	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
+	// MISSING: MaxStreamDuration
+	out.RequestMirrorPolicy = UrlmapRequestMirrorPolicy_v1beta1_FromProto(mapCtx, in.GetRequestMirrorPolicy())
+	out.RetryPolicy = UrlmapRetryPolicy_v1beta1_FromProto(mapCtx, in.GetRetryPolicy())
+	out.Timeout = UrlmapTimeout_v1beta1_FromProto(mapCtx, in.GetTimeout())
+	// MISSING: URLRewrite
+	// (near miss): "URLRewrite" vs "UrlRewrite"
+	out.WeightedBackendServices = direct.Slice_FromProto(mapCtx, in.WeightedBackendServices, UrlmapWeightedBackendServices_v1beta1_FromProto)
+	return out
+}
+func UrlmapRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapRouteAction) *pb.HttpRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteAction{}
+	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
+	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
+	// MISSING: MaxStreamDuration
+	out.RequestMirrorPolicy = UrlmapRequestMirrorPolicy_v1beta1_ToProto(mapCtx, in.RequestMirrorPolicy)
+	out.RetryPolicy = UrlmapRetryPolicy_v1beta1_ToProto(mapCtx, in.RetryPolicy)
+	out.Timeout = UrlmapTimeout_v1beta1_ToProto(mapCtx, in.Timeout)
+	// MISSING: URLRewrite
+	// (near miss): "URLRewrite" vs "UrlRewrite"
+	out.WeightedBackendServices = direct.Slice_ToProto(mapCtx, in.WeightedBackendServices, UrlmapWeightedBackendServices_v1beta1_ToProto)
+	return out
+}
+
+/* found existing non-generated mapping function "UrlmapRouteRules_v1beta1_FromProto", skipping
+func UrlmapRouteRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteRule) *krm.UrlmapRouteRules {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapRouteRules{}
+	// MISSING: CustomErrorResponsePolicy
+	// MISSING: Description
+	out.HeaderAction = UrlmapHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	out.MatchRules = direct.Slice_FromProto(mapCtx, in.MatchRules, UrlmapMatchRules_v1beta1_FromProto)
+	out.Priority = in.Priority
+	out.RouteAction = UrlmapRouteActionRouteRules_v1beta1_FromProto(mapCtx, in.GetRouteAction())
+	out.Service = in.Service
+	// MISSING: URLRedirect
+	// (near miss): "URLRedirect" vs "UrlRedirect"
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapRouteRules_v1beta1_ToProto", skipping
+func UrlmapRouteRules_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapRouteRules) *pb.HttpRouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteRule{}
+	// MISSING: CustomErrorResponsePolicy
+	// MISSING: Description
+	out.HeaderAction = UrlmapHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, UrlmapMatchRules_v1beta1_ToProto)
+	out.Priority = in.Priority
+	out.RouteAction = UrlmapRouteActionRouteRules_v1beta1_ToProto(mapCtx, in.RouteAction)
+	out.Service = in.Service
+	// MISSING: URLRedirect
+	// (near miss): "URLRedirect" vs "UrlRedirect"
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapTest_v1beta1_FromProto", skipping
+func UrlmapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) *krm.UrlmapTest {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapTest{}
+	out.Description = in.Description
+	// MISSING: ExpectedOutputURL
+	// MISSING: ExpectedRedirectResponseCode
+	// MISSING: Headers
+	out.Host = in.Host
+	out.Path = in.Path
+	out.Service = in.Service
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapTest_v1beta1_ToProto", skipping
+func UrlmapTest_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapTest) *pb.UrlMapTest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlMapTest{}
+	out.Description = in.Description
+	// MISSING: ExpectedOutputURL
+	// MISSING: ExpectedRedirectResponseCode
+	// MISSING: Headers
+	out.Host = in.Host
+	out.Path = in.Path
+	out.Service = in.Service
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapTimeout_v1beta1_FromProto", skipping
+func UrlmapTimeout_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.UrlmapTimeout {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapTimeout{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapTimeout_v1beta1_ToProto", skipping
+func UrlmapTimeout_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapTimeout) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapUrlRedirect_v1beta1_FromProto", skipping
+func UrlmapUrlRedirect_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRedirectAction) *krm.UrlmapUrlRedirect {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapUrlRedirect{}
+	out.HostRedirect = in.HostRedirect
+	// MISSING: HTTPSRedirect
+	// (near miss): "HTTPSRedirect" vs "HttpsRedirect"
+	out.PathRedirect = in.PathRedirect
+	out.PrefixRedirect = in.PrefixRedirect
+	out.RedirectResponseCode = in.RedirectResponseCode
+	out.StripQuery = in.StripQuery
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapUrlRedirect_v1beta1_ToProto", skipping
+func UrlmapUrlRedirect_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapUrlRedirect) *pb.HttpRedirectAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRedirectAction{}
+	out.HostRedirect = in.HostRedirect
+	// MISSING: HTTPSRedirect
+	// (near miss): "HTTPSRedirect" vs "HttpsRedirect"
+	out.PathRedirect = in.PathRedirect
+	out.PrefixRedirect = in.PrefixRedirect
+	out.RedirectResponseCode = in.RedirectResponseCode
+	out.StripQuery = in.StripQuery
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapUrlRewrite_v1beta1_FromProto", skipping
+func UrlmapUrlRewrite_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlRewrite) *krm.UrlmapUrlRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapUrlRewrite{}
+	out.HostRewrite = in.HostRewrite
+	out.PathPrefixRewrite = in.PathPrefixRewrite
+	// MISSING: PathTemplateRewrite
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapUrlRewrite_v1beta1_ToProto", skipping
+func UrlmapUrlRewrite_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapUrlRewrite) *pb.UrlRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlRewrite{}
+	out.HostRewrite = in.HostRewrite
+	out.PathPrefixRewrite = in.PathPrefixRewrite
+	// MISSING: PathTemplateRewrite
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapWeightedBackendServices_v1beta1_FromProto", skipping
+func UrlmapWeightedBackendServices_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeightedBackendService) *krm.UrlmapWeightedBackendServices {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UrlmapWeightedBackendServices{}
+	if in.GetBackendService() != "" {
+		out.BackendServiceRef = &krm.UrlmapResourceRef{External: in.GetBackendService()}
+	}
+	out.HeaderAction = UrlmapHeaderActionOptional_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	out.Weight = in.Weight
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "UrlmapWeightedBackendServices_v1beta1_ToProto", skipping
+func UrlmapWeightedBackendServices_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapWeightedBackendServices) *pb.WeightedBackendService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeightedBackendService{}
+	if in.BackendServiceRef != nil {
+		out.BackendService = &in.BackendServiceRef.External
+	}
+	out.HeaderAction = UrlmapHeaderActionOptional_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	out.Weight = in.Weight
+	return out
+}
+*/

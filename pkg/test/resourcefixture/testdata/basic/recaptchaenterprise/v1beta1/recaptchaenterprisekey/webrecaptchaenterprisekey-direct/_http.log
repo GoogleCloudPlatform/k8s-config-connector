@@ -1,0 +1,192 @@
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
+
+{
+  "key": {
+    "displayName": "display-name-one",
+    "testingOptions": {
+      "testingChallenge": "NOCAPTCHA",
+      "testingScore": 0.5
+    },
+    "webSettings": {
+      "allowAllDomains": true,
+      "challengeSecurityPreference": "USABILITY",
+      "integrationType": "CHECKBOX"
+    }
+  },
+  "parent": "projects/kcc-recaptcha-enterprise"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingChallenge": "NOCAPTCHA",
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "challengeSecurityPreference": "USABILITY",
+    "integrationType": "CHECKBOX"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingChallenge": "NOCAPTCHA",
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "challengeSecurityPreference": "USABILITY",
+    "integrationType": "CHECKBOX"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingChallenge": "NOCAPTCHA",
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "challengeSecurityPreference": "USABILITY",
+    "integrationType": "CHECKBOX"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
+
+{
+  "key": {
+    "displayName": "display-name-two",
+    "name": "projects/1935411576/keys/${keyID}",
+    "testingOptions": {
+      "testingChallenge": "NOCAPTCHA",
+      "testingScore": 0.5
+    },
+    "webSettings": {
+      "allowedDomains": [
+        "subdomain.example.com"
+      ],
+      "challengeSecurityPreference": "SECURITY",
+      "integrationType": "CHECKBOX"
+    }
+  },
+  "updateMask": "displayName,webSettings.allowAllDomains,webSettings.allowedDomains,webSettings.challengeSecurityPreference"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingChallenge": "NOCAPTCHA",
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "challengeSecurityPreference": "SECURITY",
+    "integrationType": "CHECKBOX"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingChallenge": "NOCAPTCHA",
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "challengeSecurityPreference": "SECURITY",
+    "integrationType": "CHECKBOX"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingChallenge": "NOCAPTCHA",
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "challengeSecurityPreference": "SECURITY",
+    "integrationType": "CHECKBOX"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{}

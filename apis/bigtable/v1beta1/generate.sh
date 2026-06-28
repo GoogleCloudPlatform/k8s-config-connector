@@ -28,7 +28,8 @@ go run . generate-types \
   --service google.bigtable.admin.v2 \
   --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
   --resource BigtableAppProfile:AppProfile \
-  --resource BigtableTable:Table
+  --resource BigtableTable:Table \
+  --resource BigtableGCPolicy:GcRule
 
 go run . generate-mapper \
   --multiversion \

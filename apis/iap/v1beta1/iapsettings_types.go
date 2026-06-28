@@ -158,3 +158,27 @@ type GcipSettings struct {
 	// +kcc:proto:field=google.cloud.iap.v1.GcipSettings.login_page_uri
 	LoginPageURI *string `json:"loginPageURI,omitempty"`
 }
+
+// +kcc:proto=google.cloud.iap.v1.AccessSettings
+type AccessSettings struct {
+	// Optional. GCIP claims and endpoint configurations for 3p identity
+	//  providers.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.gcip_settings
+	GcipSettings *GcipSettings `json:"gcipSettings,omitempty"`
+
+	// Optional. Configuration to allow cross-origin requests via IAP.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.cors_settings
+	CorsSettings *CorsSettings `json:"corsSettings,omitempty"`
+
+	// Optional. Settings to configure IAP's OAuth behavior.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.oauth_settings
+	OauthSettings *OAuthSettings `json:"oauthSettings,omitempty"`
+
+	// Optional. Settings to configure reauthentication policies in IAP.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.reauth_settings
+	ReauthSettings *ReauthSettings `json:"reauthSettings,omitempty"`
+
+	// Optional. Settings to configure and enable allowed domains.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.allowed_domains_settings
+	AllowedDomainsSettings *AllowedDomainsSettings `json:"allowedDomainsSettings,omitempty"`
+}

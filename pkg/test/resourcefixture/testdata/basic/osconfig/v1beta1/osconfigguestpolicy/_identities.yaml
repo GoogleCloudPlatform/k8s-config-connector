@@ -22,13 +22,13 @@
   name: computeinstancetemplate-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/computeinstance1-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeInstance
   name: computeinstance1-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/computeinstance2-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeInstance
   name: computeinstance2-${uniqueId}

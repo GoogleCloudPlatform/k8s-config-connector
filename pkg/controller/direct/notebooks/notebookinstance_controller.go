@@ -1,0 +1,338 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package notebooks
+
+import (
+	"context"
+	"fmt"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
+	gcp "cloud.google.com/go/notebooks/apiv1"
+
+	notebookspb "cloud.google.com/go/notebooks/apiv1/notebookspb"
+	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
+)
+
+func init() {
+	registry.RegisterModel(krm.NotebookInstanceGVK, NewInstanceModel)
+}
+
+func NewInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelInstance{config: *config}, nil
+}
+
+var _ directbase.Model = &modelInstance{}
+
+type modelInstance struct {
+	config config.ControllerConfig
+}
+
+func (m *modelInstance) client(ctx context.Context) (*gcp.NotebookClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := gcp.NewNotebookClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building Instance client: %w", err)
+	}
+	return gcpClient, err
+}
+
+func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+	obj := &krm.NotebookInstance{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	identityObj, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	id := identityObj.(*krm.NotebookInstanceIdentity)
+
+	// Get notebooks GCP client
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desired := NotebookInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	return &InstanceAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   desired,
+	}, nil
+}
+
+func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// TODO: Support URLs
+	return nil, nil
+}
+
+type InstanceAdapter struct {
+	id        *krm.NotebookInstanceIdentity
+	gcpClient *gcp.NotebookClient
+	desired   *notebookspb.Instance
+	actual    *notebookspb.Instance
+}
+
+var _ directbase.Adapter = &InstanceAdapter{}
+
+// Find retrieves the GCP resource.
+// Return true means the object is found. This triggers Adapter `Update` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return a non-nil error requeues the requests.
+func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting Instance", "name", a.id)
+
+	req := &notebookspb.GetInstanceRequest{Name: a.id.String()}
+	instancepb, err := a.gcpClient.GetInstance(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("getting Instance %q: %w", a.id, err)
+	}
+
+	a.actual = instancepb
+	return true, nil
+}
+
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating Instance", "name", a.id)
+
+	req := &notebookspb.CreateInstanceRequest{
+		Parent:     a.id.ParentString(),
+		InstanceId: a.id.Instance,
+		Instance:   a.desired,
+	}
+	op, err := a.gcpClient.CreateInstance(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating Instance %s: %w", a.id, err)
+	}
+	created, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("instance %s waiting creation: %w", a.id, err)
+	}
+	log.V(2).Info("successfully created Instance", "name", a.id)
+
+	return a.updateStatus(ctx, createOp, created)
+}
+
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating Instance", "name", a.id)
+
+	a.desired.Name = a.id.String()
+
+	diffs, updateMask, err := compareNotebooks(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	if !diffs.HasDiff() {
+		log.V(2).Info("no field needs update", "name", a.id)
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
+	structuredreporting.ReportDiff(ctx, diffs)
+
+	paths := sets.New(updateMask.GetPaths()...)
+
+	var updated *notebookspb.Instance
+	if paths.Has("metadata") {
+		req := &notebookspb.UpdateInstanceMetadataItemsRequest{
+			Name:  a.id.String(),
+			Items: a.desired.Metadata,
+		}
+		_, err = a.gcpClient.UpdateInstanceMetadataItems(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Instance %s: %w", a.id, err)
+		}
+	}
+	if paths.Has("shielded_instance_config") {
+		// stops the instance first before update the shielded instance config
+		stopReq := &notebookspb.StopInstanceRequest{
+			Name: a.id.String(),
+		}
+		stopOp, err := a.gcpClient.StopInstance(ctx, stopReq)
+		if err != nil {
+			return fmt.Errorf("stopping Instance %s: %w", a.id, err)
+		}
+		_, err = stopOp.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("instance %s waiting to stop: %w", a.id, err)
+		}
+		// updates the shielded instance config
+		req := &notebookspb.UpdateShieldedInstanceConfigRequest{
+			Name:                   a.id.String(),
+			ShieldedInstanceConfig: a.desired.ShieldedInstanceConfig,
+		}
+		op, err := a.gcpClient.UpdateShieldedInstanceConfig(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Instance %s: %w", a.id, err)
+		}
+		_, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("instance %s waiting update: %w", a.id, err)
+		}
+
+		// starts the instance first before update the shielded instance config
+		startReq := &notebookspb.StartInstanceRequest{
+			Name: a.id.String(),
+		}
+		startOp, err := a.gcpClient.StartInstance(ctx, startReq)
+		if err != nil {
+			return fmt.Errorf("starting Instance %s: %w", a.id, err)
+		}
+		updated, err = startOp.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("instance %s waiting to start: %w", a.id, err)
+		}
+	}
+
+	log.V(2).Info("successfully updated Instance", "name", a.id)
+
+	latest := a.actual
+	if updated != nil {
+		latest = updated
+	}
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func compareNotebooks(ctx context.Context, actual, desired *notebookspb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, NotebookInstanceSpec_v1beta1_FromProto, NotebookInstanceSpec_v1beta1_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name
+
+	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
+
+	populateDefaults := func(obj *notebookspb.Instance) {
+		if obj.ShieldedInstanceConfig == nil {
+			obj.ShieldedInstanceConfig = &notebookspb.Instance_ShieldedInstanceConfig{
+				EnableSecureBoot:          false,
+				EnableVtpm:                true,
+				EnableIntegrityMonitoring: true,
+			}
+		}
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
+func (a *InstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *notebookspb.Instance) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.NotebookInstanceStatus{}
+	status.ObservedState = NotebookInstanceObservedState_v1beta1_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+// Export maps the GCP object to a Config Connector resource `spec`.
+func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.NotebookInstance{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(NotebookInstanceSpec_v1beta1_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Zone = a.id.Location
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.SetName(a.id.Instance)
+	u.SetGroupVersionKind(krm.NotebookInstanceGVK)
+
+	u.Object = uObj
+	return u, nil
+}
+
+// Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
+func (a *InstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting Instance", "name", a.id)
+
+	req := &notebookspb.DeleteInstanceRequest{Name: a.id.String()}
+	op, err := a.gcpClient.DeleteInstance(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent Instance, assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting Instance %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully deleted Instance", "name", a.id)
+
+	err = op.Wait(ctx)
+	if err != nil {
+		return false, fmt.Errorf("waiting delete Instance %s: %w", a.id, err)
+	}
+	return true, nil
+}

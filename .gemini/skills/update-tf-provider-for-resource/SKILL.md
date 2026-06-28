@@ -120,3 +120,5 @@ Every time you update the vendored provider code, you **MUST** verify that it co
      git add -A
      git commit -m "chore: verify provider changes and ensure clean CI/CD presubmit state"
      ```
+6. **Additional testing**
+   - Refer to .gemini/skills/test-terraform-fields/SKILL.md to set up E2E tests, record golden files, check against MockGCP, and run linters.
