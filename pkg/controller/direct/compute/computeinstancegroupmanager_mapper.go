@@ -26,7 +26,7 @@ func InstancegroupmanagerAutoHealingPolicies_FromProto(in *pb.InstanceGroupManag
 	}
 	out := &krm.InstancegroupmanagerAutoHealingPolicies{}
 	if in.GetHealthCheck() != "" {
-		out.HealthCheckRef = &krm.InstanceGroupManagerResourceRef{External: in.GetHealthCheck()}
+		out.HealthCheckRef = &krm.ComputeHealthCheckRef{External: in.GetHealthCheck()}
 	}
 	if in.InitialDelaySec != nil {
 		val := int64(*in.InitialDelaySec)
@@ -240,7 +240,7 @@ func InstancegroupmanagerVersions_FromProto(in *pb.InstanceGroupManagerVersion) 
 		return out
 	}
 	if in.GetInstanceTemplate() != "" {
-		out.InstanceTemplateRef = &krm.InstanceGroupManagerResourceRef{External: in.GetInstanceTemplate()}
+		out.InstanceTemplateRef = &krm.VersionsInstanceTemplateRef{External: in.GetInstanceTemplate()}
 	}
 	out.Name = in.Name
 	out.TargetSize = InstancegroupmanagerTargetSize_FromProto(in.TargetSize)
@@ -260,15 +260,15 @@ func InstancegroupmanagerVersions_ToProto(in *krm.InstancegroupmanagerVersions) 
 	return out
 }
 
-func ComputeInstanceGroupManagerSpec_TargetPools_FromProto(mapCtx *direct.MapContext, in []string) []krm.InstanceGroupManagerResourceRef {
-	var out []krm.InstanceGroupManagerResourceRef
+func ComputeInstanceGroupManagerSpec_TargetPools_FromProto(mapCtx *direct.MapContext, in []string) []krm.ComputeTargetPoolRef {
+	var out []krm.ComputeTargetPoolRef
 	for _, tp := range in {
-		out = append(out, krm.InstanceGroupManagerResourceRef{External: tp})
+		out = append(out, krm.ComputeTargetPoolRef{External: tp})
 	}
 	return out
 }
 
-func ComputeInstanceGroupManagerSpec_TargetPools_ToProto(mapCtx *direct.MapContext, in []krm.InstanceGroupManagerResourceRef) []string {
+func ComputeInstanceGroupManagerSpec_TargetPools_ToProto(mapCtx *direct.MapContext, in []krm.ComputeTargetPoolRef) []string {
 	var out []string
 	for _, tp := range in {
 		if tp.External != "" {
@@ -354,7 +354,7 @@ func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext
 	out.Description = in.Description
 	out.DistributionPolicy = InstancegroupmanagerDistributionPolicy_FromProto(in.DistributionPolicy)
 	if in.GetInstanceTemplate() != "" {
-		out.InstanceTemplateRef = &krm.InstanceGroupManagerResourceRef{External: in.GetInstanceTemplate()}
+		out.InstanceTemplateRef = &krm.ComputeInstanceTemplateRef{External: in.GetInstanceTemplate()}
 	}
 	for _, val := range in.NamedPorts {
 		out.NamedPorts = append(out.NamedPorts, *InstancegroupmanagerNamedPorts_FromProto(val))

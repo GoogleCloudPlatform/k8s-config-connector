@@ -36,9 +36,87 @@ type InstanceGroupManagerResourceRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+type ComputeHealthCheckRef struct {
+	/* The URL for the health check that signals autohealing.
+
+	Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource. */
+	// +optional
+	External string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeInstanceTemplateRef struct {
+	/* The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`.
+
+	Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource. */
+	// +optional
+	External string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type VersionsInstanceTemplateRef struct {
+	/* The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`; in those cases, existing instances are updated until the `targetSize` for this version is reached.
+
+	Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource. */
+	// +optional
+	External string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeServiceAccountRef struct {
+	/* The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com is used.
+
+	Allowed value: The `email` field of an `IAMServiceAccount` resource. */
+	// +optional
+	External string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeTargetPoolRef struct {
+	/* Allowed value: The `selfLink` field of a `ComputeTargetPool` resource. */
+	// +optional
+	External string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+}
+
 type InstancegroupmanagerAutoHealingPolicies struct {
 	// +optional
-	HealthCheckRef *InstanceGroupManagerResourceRef `json:"healthCheckRef,omitempty"`
+	HealthCheckRef *ComputeHealthCheckRef `json:"healthCheckRef,omitempty"`
 
 	/* The number of seconds that the managed instance group waits before it applies autohealing policies to new instances or recently recreated instances. This initial delay allows instances to initialize and run their startup scripts before the instance group determines that they are UNHEALTHY. This prevents the managed instance group from recreating its instances prematurely. This value must be from range [0, 3600]. */
 	// +optional
@@ -172,7 +250,7 @@ type InstancegroupmanagerUpdatePolicy struct {
 
 type InstancegroupmanagerVersions struct {
 	// +optional
-	InstanceTemplateRef *InstanceGroupManagerResourceRef `json:"instanceTemplateRef,omitempty"`
+	InstanceTemplateRef *VersionsInstanceTemplateRef `json:"instanceTemplateRef,omitempty"`
 
 	/* Name of the version. Unique among all versions in the scope of this managed instance group. */
 	// +optional
@@ -213,7 +291,7 @@ type ComputeInstanceGroupManagerSpec struct {
 	FailoverAction *string `json:"failoverAction,omitempty"`
 
 	// +optional
-	InstanceTemplateRef *InstanceGroupManagerResourceRef `json:"instanceTemplateRef,omitempty"`
+	InstanceTemplateRef *ComputeInstanceTemplateRef `json:"instanceTemplateRef,omitempty"`
 
 	/* Immutable. The location of this resource. */
 	// +optional
@@ -231,14 +309,14 @@ type ComputeInstanceGroupManagerSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ServiceAccountRef *InstanceGroupManagerResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *ComputeServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	/* Stateful configuration for this Instanced Group Manager */
 	// +optional
 	StatefulPolicy *InstancegroupmanagerStatefulPolicy `json:"statefulPolicy,omitempty"`
 
 	// +optional
-	TargetPools []InstanceGroupManagerResourceRef `json:"targetPools,omitempty"`
+	TargetPools []ComputeTargetPoolRef `json:"targetPools,omitempty"`
 
 	/* The target number of running instances for this managed instance group. You can reduce this number by using the instanceGroupManager deleteInstances or abandonInstances methods. Resizing the group also changes this number. */
 	TargetSize int64 `json:"targetSize"`

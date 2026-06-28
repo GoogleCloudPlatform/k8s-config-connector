@@ -1780,7 +1780,7 @@ func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: InstanceGroup
 	// MISSING: InstanceLifecyclePolicy
 	if in.GetInstanceTemplate() != "" {
-		out.InstanceTemplateRef = &krm.InstanceGroupManagerResourceRef{External: in.GetInstanceTemplate()}
+		out.InstanceTemplateRef = &krm.ComputeInstanceTemplateRef{External: in.GetInstanceTemplate()}
 	}
 	// MISSING: Kind
 	// MISSING: ListManagedInstancesResults
