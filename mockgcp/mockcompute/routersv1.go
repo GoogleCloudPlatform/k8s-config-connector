@@ -17,11 +17,14 @@ package mockcompute
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 )
@@ -125,6 +128,20 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 	hasInterfaces := req.GetRouterResource().Interfaces != nil
 	hasBgpPeers := req.GetRouterResource().BgpPeers != nil
 
+	hasNats := false
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		values := md.Get(httpmux.MetadataKeyHttpRequestQuery)
+		if len(values) > 0 {
+			q, _ := url.ParseQuery(values[0])
+			if q.Get("natsSpecified") == "true" {
+				hasNats = true
+			}
+		}
+	}
+	if !hasNats {
+		hasNats = req.GetRouterResource().Nats != nil
+	}
+
 	proto.Merge(obj, req.GetRouterResource())
 
 	if hasInterfaces {
@@ -132,6 +149,9 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 	}
 	if hasBgpPeers {
 		obj.BgpPeers = req.GetRouterResource().BgpPeers
+	}
+	if hasNats {
+		obj.Nats = req.GetRouterResource().Nats
 	}
 
 	s.populateRouter(obj)
