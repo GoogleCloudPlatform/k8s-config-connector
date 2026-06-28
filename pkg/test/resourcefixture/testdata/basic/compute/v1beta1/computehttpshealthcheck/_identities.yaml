@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/httpsHealthChecks/computehttpshealthcheck-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeHTTPSHealthCheck
   name: computehttpshealthcheck-${uniqueId}
