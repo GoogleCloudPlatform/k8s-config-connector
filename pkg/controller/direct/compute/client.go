@@ -369,3 +369,27 @@ func (m *gcpClient) newAutoscalersClient(ctx context.Context) (*compute.Autoscal
 	}
 	return client, err
 }
+
+func (m *gcpClient) newTargetHttpsProxiesClient(ctx context.Context) (*compute.TargetHttpsProxiesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewTargetHttpsProxiesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute TargetHttpsProxies REST client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRegionalTargetHttpsProxiesClient(ctx context.Context) (*compute.RegionTargetHttpsProxiesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionTargetHttpsProxiesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute RegionTargetHttpsProxies REST client: %w", err)
+	}
+	return client, err
+}

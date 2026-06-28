@@ -1,0 +1,13 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 3
+---
+>   generation: 2
+20d18
+<   resourceID: ${targetHttpsProxyID}
+33c31,32
+<   observedGeneration: 3
+---
+>   externalRef: projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}
+>   observedGeneration: 2

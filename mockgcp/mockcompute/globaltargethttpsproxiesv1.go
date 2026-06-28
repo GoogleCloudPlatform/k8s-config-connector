@@ -83,8 +83,9 @@ func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertT
 			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
 			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
 			if strings.Contains(cert, "certificates") {
-				cert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
-				tokens := strings.Split(cert, "/")
+				parsedCert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
+				parsedCert = strings.TrimPrefix(parsedCert, "//certificatemanager.googleapis.com/")
+				tokens := strings.Split(parsedCert, "/")
 				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
 				} else {
 					return nil, status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)

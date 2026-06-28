@@ -83,8 +83,9 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
 			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
 			if strings.Contains(cert, "certificates") {
-				cert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
-				tokens := strings.Split(cert, "/")
+				parsedCert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
+				parsedCert = strings.TrimPrefix(parsedCert, "//certificatemanager.googleapis.com/")
+				tokens := strings.Split(parsedCert, "/")
 				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
 				} else {
 					return nil, status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
@@ -119,6 +120,38 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+// Updates a regional TargetHttpsProxy resource in the specified project using the data included in the request.
+// This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
+func (s *RegionalTargetHTTPSProxiesV1) Patch(ctx context.Context, req *pb.PatchRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/targetHttpsProxies/" + req.GetTargetHttpsProxy()
+	name, err := s.parseRegionalTargetHttpsProxyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.TargetHttpsProxy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	proto.Merge(obj, req.GetTargetHttpsProxyResource())
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {

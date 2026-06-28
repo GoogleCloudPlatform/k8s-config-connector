@@ -11,3 +11,13 @@
 - **Problem**: `ComputeAutoscaler` has a target reference (`TargetRef`) referring to `ComputeInstanceGroupManager`, which is a legacy DCL-reconciled resource. Since MockGCP does not support mocking the DCL-managed `InstanceGroupManagers` API, any `ComputeAutoscaler` E2E tests containing this dependency will be skipped on MockGCP.
 - **Solution**: We implemented the direct controller for `ComputeAutoscaler` and registered `k8s.ReconcilerTypeDirect` in `static_config.go` under `SupportedControllers`. To support resolving the referenced resource, we wrote a helper `resolveComputeAutoscalerRefs` to dynamically fetch the status fields (`status.externalRef` or `status.selfLink`) of the referenced `ComputeInstanceGroupManager`. We verified mappers and fuzzer correctness by running targeted fuzz roundtrip tests with `FOCUS=ComputeAutoscaler`.
 - **Impact**: Dynamic testing ensures the direct controller is automatically vetted, and any mappers or fuzzers are fully verified, even if real API dependencies prevent executing the full E2E test against MockGCP.
+
+### [2026-06-28] Direct Migration of ComputeTargetHTTPSProxy and MockGCP Fixes
+- **Context**: Implementing the direct controller and test fixtures for `ComputeTargetHTTPSProxy` (issue #10925).
+- **Problem**: Ran into two MockGCP bugs:
+  1. `CertificateManagerCertificates` references in the direct controller are mapped with `//certificatemanager.googleapis.com/` prefix, which was not handled by mock compute `globalTargetHttpsProxies` / `regionalTargetHttpsProxies` (they only trimmed `https://certificatemanager.googleapis.com/v1/`).
+  2. `sslCertificates` references parsed by `parseGlobalSslCertificateName` and `parseRegionalSslCertificateName` assumed a relative URL with exactly 5 or 6 tokens, and failed with `sslCertName <nil> is not valid` when absolute compute URLs were passed by the direct controller.
+- **Solution**:
+  1. Updated the mock `globaltargethttpsproxiesv1.go` and `regionaltargethttpsproxiesv1.go` to support both `https://` and `//` prefixes when parsing certificate manager certificate strings.
+  2. Added trimming of standard absolute compute URL prefixes to `parseGlobalSslCertificateName` and `parseRegionalSslCertificateName` inside MockGCP compute SSL certificate services, ensuring relative and absolute URL formats are parsed seamlessly.
+- **Impact**: Ensures complete compatibility and seamless alignment between direct controllers and MockGCP/legacy controllers for SSL certificates and Certificate Manager integrations.

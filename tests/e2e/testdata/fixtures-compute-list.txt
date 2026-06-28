@@ -126,11 +126,17 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetgrpcproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/globaltargethttpproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/regionaltargethttpproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/crossregiontargethttpsproxy
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/crossregiontargethttpsproxy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxy-certmap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxy-certmap-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxycertificatemanagercertificates
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxycertificatemanagercertificates-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxycertificatemap
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxycertificatemap-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxy
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetinstance
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetpool
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetsslproxy
