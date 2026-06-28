@@ -2528,6 +2528,40 @@ found existing non-generated mapping function "ComputeNetworkEndpointGroupStatus
 		return out
 	}
 */
+func ComputeNetworkEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpoint) *krmcomputev1alpha1.ComputeNetworkEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeNetworkEndpointSpec{}
+	// MISSING: Annotations
+	// MISSING: ClientDestinationPort
+	// MISSING: FQDN
+	if in.GetInstance() != "" {
+		out.InstanceRef = &krm.InstanceRef{External: in.GetInstance()}
+	}
+	// MISSING: IPAddress
+	// (near miss): "IPAddress" vs "IpAddress"
+	// MISSING: IPV6Address
+	// MISSING: Port
+	return out
+}
+func ComputeNetworkEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEndpointSpec) *pb.NetworkEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEndpoint{}
+	// MISSING: Annotations
+	// MISSING: ClientDestinationPort
+	// MISSING: FQDN
+	if in.InstanceRef != nil {
+		out.Instance = &in.InstanceRef.External
+	}
+	// MISSING: IPAddress
+	// (near miss): "IPAddress" vs "IpAddress"
+	// MISSING: IPV6Address
+	// MISSING: Port
+	return out
+}
 func ComputeNetworkFirewallPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeNetworkFirewallPolicy {
 	if in == nil {
 		return nil
