@@ -168,7 +168,9 @@ versions:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The external name of the referenced resource</p>
+            <p>The URL for the health check that signals autohealing.
+
+Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.</p>
         </td>
     </tr>
     <tr>
@@ -298,7 +300,9 @@ versions:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The external name of the referenced resource</p>
+            <p>The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`.
+
+Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.</p>
         </td>
     </tr>
     <tr>
@@ -438,7 +442,9 @@ versions:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The external name of the referenced resource</p>
+            <p>The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com is used.
+
+Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -538,7 +544,7 @@ versions:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The external name of the referenced resource</p>
+            <p>Allowed value: The `selfLink` field of a `ComputeTargetPool` resource.</p>
         </td>
     </tr>
     <tr>
@@ -738,7 +744,9 @@ versions:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The external name of the referenced resource</p>
+            <p>The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`; in those cases, existing instances are updated until the `targetSize` for this version is reached.
+
+Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.</p>
         </td>
     </tr>
     <tr>
