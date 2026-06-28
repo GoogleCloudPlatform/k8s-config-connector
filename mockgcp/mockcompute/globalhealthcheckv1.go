@@ -65,6 +65,8 @@ func (s *GlobalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertHealthCh
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#healthCheck")
 
+	s.populateHealthCheckDefaults(obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -99,6 +101,8 @@ func (s *GlobalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchHealthChec
 		obj.SourceRegions = nil
 	}
 	proto.Merge(obj, req.GetHealthCheckResource())
+
+	s.populateHealthCheckDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -139,6 +143,8 @@ func (s *GlobalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateHealthCh
 	updatedObj.SelfLink = selfLink
 	updatedObj.CreationTimestamp = creationTimestamp
 	updatedObj.Kind = kind
+
+	s.populateHealthCheckDefaults(updatedObj)
 
 	if err := s.storage.Update(ctx, fqn, updatedObj); err != nil {
 		return nil, err
