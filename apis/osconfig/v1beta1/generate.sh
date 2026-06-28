@@ -27,7 +27,13 @@ go run . generate-types \
   --resource OSConfigOSPolicyAssignment:OSPolicyAssignment \
   --include-skipped-output
 
+go run . generate-types \
+  --service google.cloud.osconfig.v1beta \
+  --api-version osconfig.cnrm.cloud.google.com/v1beta1 \
+  --resource OSConfigGuestPolicy:GuestPolicy \
+  --include-skipped-output
+
 go run . generate-mapper \
-  --service google.cloud.osconfig.v1 \
+  --service google.cloud.osconfig.v1,google.cloud.osconfig.v1beta \
   --api-version osconfig.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
