@@ -1,0 +1,22 @@
+author:	google-oss-prow
+association:	contributor
+edited:	false
+status:	none
+--
+[APPROVALNOTIFIER] This PR is **NOT APPROVED**
+
+This pull-request has been approved by:
+**Once this PR has been reviewed and has the lgtm label**, please assign [justinsb](https://github.com/justinsb) for approval. For more information see [the Kubernetes Code Review Process](https://git.k8s.io/community/contributors/guide/owners.md#the-code-review-process).
+
+The full list of commands accepted by this bot can be found [here](https://oss.gprow.dev/command-help?repo=GoogleCloudPlatform%2Fk8s-config-connector).
+
+<details open>
+Needs approval from an approver in each of these files:
+
+- **[OWNERS](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/OWNERS)**
+
+Approvers can indicate their approval by writing `/approve` in a comment
+Approvers can cancel approval by writing `/approve cancel` in a comment
+</details>
+<!-- META={"approvers":["justinsb"]} -->
+--

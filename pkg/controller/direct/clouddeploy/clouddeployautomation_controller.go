@@ -247,6 +247,14 @@ func (a *AutomationAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	mapCtx := &direct.MapContext{}
 
 	a.desiredPb.Name = a.id.String()
+
+	// Validate that users are not trying to manage system labels (goog- or go-)
+	for k := range a.labels {
+		if isSystemLabel(k) {
+			return fmt.Errorf("system label %q is not allowed in metadata.labels", k)
+		}
+	}
+
 	a.desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(a.labels)
 
 	// Preserve system labels (goog- or go-)
@@ -255,7 +263,7 @@ func (a *AutomationAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 			a.desiredPb.Labels = make(map[string]string)
 		}
 		for k, v := range a.actual.Labels {
-			if strings.HasPrefix(k, "goog-") || strings.HasPrefix(k, "go-") {
+			if isSystemLabel(k) {
 				a.desiredPb.Labels[k] = v
 			}
 		}
@@ -366,8 +374,26 @@ func (a *AutomationAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	u.SetGroupVersionKind(krm.CloudDeployAutomationGVK)
 
 	u.Object = uObj
-	u.SetLabels(a.actual.Labels)
+
+	// Filter out system labels (goog- or go-)
+	labels := make(map[string]string)
+	for k, v := range a.actual.Labels {
+		if !isSystemLabel(k) {
+			labels[k] = v
+		}
+	}
+	u.SetLabels(labels)
 	return u, nil
+}
+
+func isSystemLabel(k string) bool {
+	if strings.HasPrefix(k, "goog-") || strings.HasPrefix(k, "go-") {
+		return true
+	}
+	if k == label.CnrmManagedKey {
+		return true
+	}
+	return false
 }
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
