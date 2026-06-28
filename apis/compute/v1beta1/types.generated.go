@@ -26,6 +26,7 @@
 // resource: ComputeHealthCheck:HealthCheck
 // resource: ComputeInstance:Instance
 // resource: ComputeInstanceGroup:InstanceGroup
+// resource: ComputeInstanceGroupManager:InstanceGroupManager
 // resource: ComputeNetwork:Network
 // resource: ComputeNetworkFirewallPolicy:FirewallPolicy
 // resource: ComputeNetworkPeering:NetworkPeering
@@ -675,6 +676,29 @@ type DisplayDevice struct {
 }
 */
 
+/* unreachable type DistributionPolicy
+// +kcc:proto=google.cloud.compute.v1.DistributionPolicy
+type DistributionPolicy struct {
+	// The distribution shape to which the group converges either proactively or on resize events (depending on the value set in updatePolicy.instanceRedistributionType).
+	//  Check the TargetShape enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.DistributionPolicy.target_shape
+	TargetShape *string `json:"targetShape,omitempty"`
+
+	// Zones where the regional managed instance group will create and manage its instances.
+	// +kcc:proto:field=google.cloud.compute.v1.DistributionPolicy.zones
+	Zones []DistributionPolicyZoneConfiguration `json:"zones,omitempty"`
+}
+*/
+
+/* unreachable type DistributionPolicyZoneConfiguration
+// +kcc:proto=google.cloud.compute.v1.DistributionPolicyZoneConfiguration
+type DistributionPolicyZoneConfiguration struct {
+	// The URL of the zone. The zone must exist in the region where the managed instance group is located.
+	// +kcc:proto:field=google.cloud.compute.v1.DistributionPolicyZoneConfiguration.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Duration", skipping
 
 // +kcc:proto=google.cloud.compute.v1.Duration
@@ -1090,6 +1114,23 @@ type FirewallPolicyRuleSecureTag struct {
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
+}
+*/
+
+/* unreachable type FixedOrPercent
+// +kcc:proto=google.cloud.compute.v1.FixedOrPercent
+type FixedOrPercent struct {
+	// [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is fixed, then the calculated value is equal to the fixed value. - If the value is a percent, then the calculated value is percent/100 * targetSize. For example, the calculated value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded.
+	// +kcc:proto:field=google.cloud.compute.v1.FixedOrPercent.calculated
+	Calculated *int32 `json:"calculated,omitempty"`
+
+	// Specifies a fixed number of VM instances. This must be a positive integer.
+	// +kcc:proto:field=google.cloud.compute.v1.FixedOrPercent.fixed
+	Fixed *int32 `json:"fixed,omitempty"`
+
+	// Specifies a percentage of instances between 0 to 100%, inclusive. For example, specify 80 for 80%.
+	// +kcc:proto:field=google.cloud.compute.v1.FixedOrPercent.percent
+	Percent *int32 `json:"percent,omitempty"`
 }
 */
 
@@ -2280,6 +2321,404 @@ type InstanceGroup struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.InstanceGroupManager", skipping
+
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManager
+type InstanceGroupManager struct {
+	// Specifies configuration that overrides the instance template configuration for the group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.all_instances_config
+	AllInstancesConfig *InstanceGroupManagerAllInstancesConfig `json:"allInstancesConfig,omitempty"`
+
+	// The autohealing policy for this managed instance group. You can specify only one value.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.auto_healing_policies
+	AutoHealingPolicies []InstanceGroupManagerAutoHealingPolicy `json:"autoHealingPolicies,omitempty"`
+
+	// The base instance name is a prefix that you want to attach to the names of all VMs in a MIG. The maximum character length is 58 and the name must comply with RFC1035 format. When a VM is created in the group, the MIG appends a hyphen and a random four-character string to the base instance name. If you want the MIG to assign sequential numbers instead of a random string, then end the base instance name with a hyphen followed by one or more hash symbols. The hash symbols indicate the number of digits. For example, a base instance name of "vm-###" results in "vm-001" as a VM name. @pattern [a-z](([-a-z0-9]{0,57})|([-a-z0-9]{0,51}-#{1,10}(\\[[0-9]{1,10}\\])?))
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.base_instance_name
+	BaseInstanceName *string `json:"baseInstanceName,omitempty"`
+
+	// [Output Only] The creation timestamp for this managed instance group in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// [Output Only] The list of instance actions and the number of instances in this managed instance group that are scheduled for each of those actions.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.current_actions
+	CurrentActions *InstanceGroupManagerActionsSummary `json:"currentActions,omitempty"`
+
+	// An optional description of this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.description
+	Description *string `json:"description,omitempty"`
+
+	// Policy specifying the intended distribution of managed instances across zones in a regional managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.distribution_policy
+	DistributionPolicy *DistributionPolicy `json:"distributionPolicy,omitempty"`
+
+	// Fingerprint of this resource. This field may be used in optimistic locking. It will be ignored when inserting an InstanceGroupManager. An up-to-date fingerprint must be provided in order to update the InstanceGroupManager, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an InstanceGroupManager.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] A unique identifier for this resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Instance flexibility allowing MIG to create VMs from multiple types of machines. Instance flexibility configuration on MIG overrides instance template configuration.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.instance_flexibility_policy
+	InstanceFlexibilityPolicy *InstanceGroupManagerInstanceFlexibilityPolicy `json:"instanceFlexibilityPolicy,omitempty"`
+
+	// [Output Only] The URL of the Instance Group resource.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.instance_group
+	InstanceGroup *string `json:"instanceGroup,omitempty"`
+
+	// The repair policy for this managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.instance_lifecycle_policy
+	InstanceLifecyclePolicy *InstanceGroupManagerInstanceLifecyclePolicy `json:"instanceLifecyclePolicy,omitempty"`
+
+	// The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.instance_template
+	InstanceTemplate *string `json:"instanceTemplate,omitempty"`
+
+	// [Output Only] The resource type, which is always compute#instanceGroupManager for managed instance groups.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Pagination behavior of the listManagedInstances API method for this managed instance group.
+	//  Check the ListManagedInstancesResults enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.list_managed_instances_results
+	ListManagedInstancesResults *string `json:"listManagedInstancesResults,omitempty"`
+
+	// The name of the managed instance group. The name must be 1-63 characters long, and comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Named ports configured on the Instance Groups complementary to this Instance Group Manager.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.named_ports
+	NamedPorts []NamedPort `json:"namedPorts,omitempty"`
+
+	// [Output Only] The URL of the region where the managed instance group resides (for regional resources).
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.region
+	Region *string `json:"region,omitempty"`
+
+	// Resource policies for this managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.resource_policies
+	ResourcePolicies *InstanceGroupManagerResourcePolicies `json:"resourcePolicies,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// [Output Only] Reserved for future use.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// [Output Only] The URL for this managed instance group. The server defines this URL.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Standby policy for stopped and suspended instances.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.standby_policy
+	StandbyPolicy *InstanceGroupManagerStandbyPolicy `json:"standbyPolicy,omitempty"`
+
+	// Stateful configuration for this Instanced Group Manager
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.stateful_policy
+	StatefulPolicy *StatefulPolicy `json:"statefulPolicy,omitempty"`
+
+	// [Output Only] The status of this managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.status
+	Status *InstanceGroupManagerStatus `json:"status,omitempty"`
+
+	// The URLs for all TargetPool resources to which instances in the instanceGroup field are added. The target pools automatically apply to all of the instances in the managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.target_pools
+	TargetPools []string `json:"targetPools,omitempty"`
+
+	// The target number of running instances for this managed instance group. You can reduce this number by using the instanceGroupManager deleteInstances or abandonInstances methods. Resizing the group also changes this number.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.target_size
+	TargetSize *int32 `json:"targetSize,omitempty"`
+
+	// The target number of stopped instances for this managed instance group. This number changes when you: - Stop instance using the stopInstances method or start instances using the startInstances method. - Manually change the targetStoppedSize using the update method.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.target_stopped_size
+	TargetStoppedSize *int32 `json:"targetStoppedSize,omitempty"`
+
+	// The target number of suspended instances for this managed instance group. This number changes when you: - Suspend instance using the suspendInstances method or resume instances using the resumeInstances method. - Manually change the targetSuspendedSize using the update method.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.target_suspended_size
+	TargetSuspendedSize *int32 `json:"targetSuspendedSize,omitempty"`
+
+	// The update policy for this managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.update_policy
+	UpdatePolicy *InstanceGroupManagerUpdatePolicy `json:"updatePolicy,omitempty"`
+
+	// Specifies the instance templates used by this managed instance group to create instances. Each version is defined by an instanceTemplate and a name. Every version can appear at most once per instance group. This field overrides the top-level instanceTemplate field. Read more about the relationships between these fields. Exactly one version must leave the targetSize field unset. That version will be applied to all remaining instances. For more information, read about canary updates.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.versions
+	Versions []InstanceGroupManagerVersion `json:"versions,omitempty"`
+
+	// [Output Only] The URL of a zone where the managed instance group is located (for zonal resources).
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManager.zone
+	Zone *string `json:"zone,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerActionsSummary
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerActionsSummary
+type InstanceGroupManagerActionsSummary struct {
+	// [Output Only] The total number of instances in the managed instance group that are scheduled to be abandoned. Abandoning an instance removes it from the managed instance group without deleting it.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.abandoning
+	Abandoning *int32 `json:"abandoning,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be created or are currently being created. If the group fails to create any of these instances, it tries again until it creates the instance successfully. If you have disabled creation retries, this field will not be populated; instead, the creatingWithoutRetries field will be populated.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.creating
+	Creating *int32 `json:"creating,omitempty"`
+
+	// [Output Only] The number of instances that the managed instance group will attempt to create. The group attempts to create each instance only once. If the group fails to create any of these instances, it decreases the group's targetSize value accordingly.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.creating_without_retries
+	CreatingWithoutRetries *int32 `json:"creatingWithoutRetries,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be deleted or are currently being deleted.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.deleting
+	Deleting *int32 `json:"deleting,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are running and have no scheduled actions.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.none
+	None *int32 `json:"none,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be recreated or are currently being being recreated. Recreating an instance deletes the existing root persistent disk and creates a new disk from the image that is defined in the instance template.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.recreating
+	Recreating *int32 `json:"recreating,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are being reconfigured with properties that do not require a restart or a recreate action. For example, setting or removing target pools for the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.refreshing
+	Refreshing *int32 `json:"refreshing,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be restarted or are currently being restarted.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.restarting
+	Restarting *int32 `json:"restarting,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be resumed or are currently being resumed.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.resuming
+	Resuming *int32 `json:"resuming,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be started or are currently being started.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.starting
+	Starting *int32 `json:"starting,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be stopped or are currently being stopped.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.stopping
+	Stopping *int32 `json:"stopping,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are scheduled to be suspended or are currently being suspended.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.suspending
+	Suspending *int32 `json:"suspending,omitempty"`
+
+	// [Output Only] The number of instances in the managed instance group that are being verified. See the managedInstances[].currentAction property in the listManagedInstances method documentation.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.verifying
+	Verifying *int32 `json:"verifying,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerAllInstancesConfig
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerAllInstancesConfig
+type InstanceGroupManagerAllInstancesConfig struct {
+	// Properties to set on all instances in the group. You can add or modify properties using the instanceGroupManagers.patch or regionInstanceGroupManagers.patch. After setting allInstancesConfig on the group, you must update the group's instances to apply the configuration. To apply the configuration, set the group's updatePolicy.type field to use proactive updates or use the applyUpdatesToInstances method.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerAllInstancesConfig.properties
+	Properties *InstancePropertiesPatch `json:"properties,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerAutoHealingPolicy
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerAutoHealingPolicy
+type InstanceGroupManagerAutoHealingPolicy struct {
+	// The URL for the health check that signals autohealing.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerAutoHealingPolicy.health_check
+	HealthCheck *string `json:"healthCheck,omitempty"`
+
+	// The initial delay is the number of seconds that a new VM takes to initialize and run its startup script. During a VM's initial delay period, the MIG ignores unsuccessful health checks because the VM might be in the startup process. This prevents the MIG from prematurely recreating a VM. If the health check receives a healthy response during the initial delay, it indicates that the startup process is complete and the VM is ready. The value of initial delay must be between 0 and 3600 seconds. The default value is 0.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerAutoHealingPolicy.initial_delay_sec
+	InitialDelaySec *int32 `json:"initialDelaySec,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerInstanceFlexibilityPolicy
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerInstanceFlexibilityPolicy
+type InstanceGroupManagerInstanceFlexibilityPolicy struct {
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* unreachable type InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection
+type InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection struct {
+	// Full machine-type names, e.g. "n1-standard-16".
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection.machine_types
+	MachineTypes []string `json:"machineTypes,omitempty"`
+
+	// Preference of this instance selection. Lower number means higher preference. MIG will first try to create a VM based on the machine-type with lowest rank and fallback to next rank based on availability. Machine types and instance selections with the same rank have the same preference.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection.rank
+	Rank *int32 `json:"rank,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerInstanceLifecyclePolicy
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerInstanceLifecyclePolicy
+type InstanceGroupManagerInstanceLifecyclePolicy struct {
+	// The action that a MIG performs on a failed or an unhealthy VM. A VM is marked as unhealthy when the application running on that VM fails a health check. Valid values are - REPAIR (default): MIG automatically repairs a failed or an unhealthy VM by recreating it. For more information, see About repairing VMs in a MIG. - DO_NOTHING: MIG does not repair a failed or an unhealthy VM.
+	//  Check the DefaultActionOnFailure enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerInstanceLifecyclePolicy.default_action_on_failure
+	DefaultActionOnFailure *string `json:"defaultActionOnFailure,omitempty"`
+
+	// A bit indicating whether to forcefully apply the group's latest configuration when repairing a VM. Valid options are: - NO (default): If configuration updates are available, they are not forcefully applied during repair. Instead, configuration updates are applied according to the group's update policy. - YES: If configuration updates are available, they are applied during repair.
+	//  Check the ForceUpdateOnRepair enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerInstanceLifecyclePolicy.force_update_on_repair
+	ForceUpdateOnRepair *string `json:"forceUpdateOnRepair,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerResourcePolicies
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerResourcePolicies
+type InstanceGroupManagerResourcePolicies struct {
+	// The URL of the workload policy that is specified for this managed instance group. It can be a full or partial URL. For example, the following are all valid URLs to a workload policy: - https://www.googleapis.com/compute/v1/projects/project/regions/region /resourcePolicies/resourcePolicy - projects/project/regions/region/resourcePolicies/resourcePolicy - regions/region/resourcePolicies/resourcePolicy
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerResourcePolicies.workload_policy
+	WorkloadPolicy *string `json:"workloadPolicy,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerStandbyPolicy
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStandbyPolicy
+type InstanceGroupManagerStandbyPolicy struct {
+	// Specifies the number of seconds that the MIG should wait to suspend or stop a VM after that VM was created. The initial delay gives the initialization script the time to prepare your VM for a quick scale out. The value of initial delay must be between 0 and 3600 seconds. The default value is 0.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStandbyPolicy.initial_delay_sec
+	InitialDelaySec *int32 `json:"initialDelaySec,omitempty"`
+
+	// Defines how a MIG resumes or starts VMs from a standby pool when the group scales out. The default mode is `MANUAL`.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStandbyPolicy.mode
+	Mode *string `json:"mode,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerStatus
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatus
+type InstanceGroupManagerStatus struct {
+	// [Output only] Status of all-instances configuration on the group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatus.all_instances_config
+	AllInstancesConfig *InstanceGroupManagerStatusAllInstancesConfig `json:"allInstancesConfig,omitempty"`
+
+	// [Output Only] The URL of the Autoscaler that targets this instance group manager.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatus.autoscaler
+	Autoscaler *string `json:"autoscaler,omitempty"`
+
+	// [Output Only] A bit indicating whether the managed instance group is in a stable state. A stable state means that: none of the instances in the managed instance group is currently undergoing any type of change (for example, creation, restart, or deletion); no future changes are scheduled for instances in the managed instance group; and the managed instance group itself is not being modified.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatus.is_stable
+	IsStable *bool `json:"isStable,omitempty"`
+
+	// [Output Only] Stateful status of the given Instance Group Manager.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatus.stateful
+	Stateful *InstanceGroupManagerStatusStateful `json:"stateful,omitempty"`
+
+	// [Output Only] A status of consistency of Instances' versions with their target version specified by version field on Instance Group Manager.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatus.version_target
+	VersionTarget *InstanceGroupManagerStatusVersionTarget `json:"versionTarget,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerStatusAllInstancesConfig
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusAllInstancesConfig
+type InstanceGroupManagerStatusAllInstancesConfig struct {
+	// [Output Only] Current all-instances configuration revision. This value is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusAllInstancesConfig.current_revision
+	CurrentRevision *string `json:"currentRevision,omitempty"`
+
+	// [Output Only] A bit indicating whether this configuration has been applied to all managed instances in the group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusAllInstancesConfig.effective
+	Effective *bool `json:"effective,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerStatusStateful
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusStateful
+type InstanceGroupManagerStatusStateful struct {
+	// [Output Only] A bit indicating whether the managed instance group has stateful configuration, that is, if you have configured any items in a stateful policy or in per-instance configs. The group might report that it has no stateful configuration even when there is still some preserved state on a managed instance, for example, if you have deleted all PICs but not yet applied those deletions.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusStateful.has_stateful_config
+	HasStatefulConfig *bool `json:"hasStatefulConfig,omitempty"`
+
+	// [Output Only] Status of per-instance configurations on the instances.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusStateful.per_instance_configs
+	PerInstanceConfigs *InstanceGroupManagerStatusStatefulPerInstanceConfigs `json:"perInstanceConfigs,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerStatusStatefulPerInstanceConfigs
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusStatefulPerInstanceConfigs
+type InstanceGroupManagerStatusStatefulPerInstanceConfigs struct {
+	// A bit indicating if all of the group's per-instance configurations (listed in the output of a listPerInstanceConfigs API call) have status EFFECTIVE or there are no per-instance-configs.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusStatefulPerInstanceConfigs.all_effective
+	AllEffective *bool `json:"allEffective,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerStatusVersionTarget
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusVersionTarget
+type InstanceGroupManagerStatusVersionTarget struct {
+	// [Output Only] A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances' target version are specified by version field on Instance Group Manager.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusVersionTarget.is_reached
+	IsReached *bool `json:"isReached,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerUpdatePolicy
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy
+type InstanceGroupManagerUpdatePolicy struct {
+	// The instance redistribution policy for regional managed instance groups. Valid values are: - PROACTIVE (default): The group attempts to maintain an even distribution of VM instances across zones in the region. - NONE: For non-autoscaled groups, proactive redistribution is disabled.
+	//  Check the InstanceRedistributionType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.instance_redistribution_type
+	InstanceRedistributionType *string `json:"instanceRedistributionType,omitempty"`
+
+	// The maximum number of instances that can be created above the specified targetSize during the update process. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for maxSurge is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either maxSurge or maxUnavailable must be greater than 0. Learn more about maxSurge.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.max_surge
+	MaxSurge *FixedOrPercent `json:"maxSurge,omitempty"`
+
+	// The maximum number of instances that can be unavailable during the update process. An instance is considered available if all of the following conditions are satisfied: - The instance's status is RUNNING. - If there is a health check on the instance group, the instance's health check status must be HEALTHY at least once. If there is no health check on the group, then the instance only needs to have a status of RUNNING to be considered available. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for maxUnavailable is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either maxSurge or maxUnavailable must be greater than 0. Learn more about maxUnavailable.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.max_unavailable
+	MaxUnavailable *FixedOrPercent `json:"maxUnavailable,omitempty"`
+
+	// Minimal action to be taken on an instance. Use this option to minimize disruption as much as possible or to apply a more disruptive action than is necessary. - To limit disruption as much as possible, set the minimal action to REFRESH. If your update requires a more disruptive action, Compute Engine performs the necessary action to execute the update. - To apply a more disruptive action than is strictly necessary, set the minimal action to RESTART or REPLACE. For example, Compute Engine does not need to restart a VM to change its metadata. But if your application reads instance metadata only when a VM is restarted, you can set the minimal action to RESTART in order to pick up metadata changes.
+	//  Check the MinimalAction enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.minimal_action
+	MinimalAction *string `json:"minimalAction,omitempty"`
+
+	// Most disruptive action that is allowed to be taken on an instance. You can specify either NONE to forbid any actions, REFRESH to avoid restarting the VM and to limit disruption as much as possible. RESTART to allow actions that can be applied without instance replacing or REPLACE to allow all possible actions. If the Updater determines that the minimal update action needed is more disruptive than most disruptive allowed action you specify it will not perform the update at all.
+	//  Check the MostDisruptiveAllowedAction enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.most_disruptive_allowed_action
+	MostDisruptiveAllowedAction *string `json:"mostDisruptiveAllowedAction,omitempty"`
+
+	// What action should be used to replace instances. See minimal_action.REPLACE
+	//  Check the ReplacementMethod enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.replacement_method
+	ReplacementMethod *string `json:"replacementMethod,omitempty"`
+
+	// The type of update process. You can specify either PROACTIVE so that the MIG automatically updates VMs to the latest configurations or OPPORTUNISTIC so that you can select the VMs that you want to update.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type InstanceGroupManagerVersion
+// +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerVersion
+type InstanceGroupManagerVersion struct {
+	// The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE; in those cases, existing instances are updated until the `targetSize` for this version is reached.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerVersion.instance_template
+	InstanceTemplate *string `json:"instanceTemplate,omitempty"`
+
+	// Name of the version. Unique among all versions in the scope of this managed instance group.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerVersion.name
+	Name *string `json:"name,omitempty"`
+
+	// Specifies the intended number of instances to be created from the instanceTemplate. The final number of instances created from the template will be equal to: - If expressed as a fixed number, the minimum of either targetSize.fixed or instanceGroupManager.targetSize is used. - if expressed as a percent, the targetSize would be (targetSize.percent/100 * InstanceGroupManager.targetSize) If there is a remainder, the number is rounded. If unset, this version will update any remaining instances not updated by another version. Read Starting a canary update for more information.
+	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerVersion.target_size
+	TargetSize *FixedOrPercent `json:"targetSize,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "InstanceParams", skipping
 
 // +kcc:proto=google.cloud.compute.v1.InstanceParams
@@ -2287,6 +2726,19 @@ type InstanceParams struct {
 	// Resource manager tags to be bound to the instance. Tag keys and values have the same definition as resource manager tags. Keys must be in the format `tagKeys/{tag_key_id}`, and values are in the format `tagValues/456`. The field is ignored (both PUT & PATCH) when empty.
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+*/
+
+/* unreachable type InstancePropertiesPatch
+// +kcc:proto=google.cloud.compute.v1.InstancePropertiesPatch
+type InstancePropertiesPatch struct {
+	// The label key-value pairs that you want to patch onto the instance.
+	// +kcc:proto:field=google.cloud.compute.v1.InstancePropertiesPatch.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The metadata key-value pairs that you want to patch onto the instance. For more information, see Project and instance metadata.
+	// +kcc:proto:field=google.cloud.compute.v1.InstancePropertiesPatch.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
 }
 */
 
@@ -5072,6 +5524,47 @@ type SSLPolicy struct {
 	// [Output Only] If potential misconfigurations are detected for this SSL policy, this field will be populated with warning messages.
 	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.warnings
 	Warnings []Warnings `json:"warnings,omitempty"`
+}
+*/
+
+/* unreachable type StatefulPolicy
+// +kcc:proto=google.cloud.compute.v1.StatefulPolicy
+type StatefulPolicy struct {
+	// +kcc:proto:field=google.cloud.compute.v1.StatefulPolicy.preserved_state
+	PreservedState *StatefulPolicyPreservedState `json:"preservedState,omitempty"`
+}
+*/
+
+/* unreachable type StatefulPolicyPreservedState
+// +kcc:proto=google.cloud.compute.v1.StatefulPolicyPreservedState
+type StatefulPolicyPreservedState struct {
+
+	// TODO: unsupported map type with key string and value message
+
+	// TODO: unsupported map type with key string and value message
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* unreachable type StatefulPolicyPreservedStateDiskDevice
+// +kcc:proto=google.cloud.compute.v1.StatefulPolicyPreservedStateDiskDevice
+type StatefulPolicyPreservedStateDiskDevice struct {
+	// These stateful disks will never be deleted during autohealing, update or VM instance recreate operations. This flag is used to configure if the disk should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Note: disks attached in READ_ONLY mode cannot be auto-deleted.
+	//  Check the AutoDelete enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.StatefulPolicyPreservedStateDiskDevice.auto_delete
+	AutoDelete *string `json:"autoDelete,omitempty"`
+}
+*/
+
+/* unreachable type StatefulPolicyPreservedStateNetworkIP
+// +kcc:proto=google.cloud.compute.v1.StatefulPolicyPreservedStateNetworkIp
+type StatefulPolicyPreservedStateNetworkIP struct {
+	// These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted.
+	//  Check the AutoDelete enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.StatefulPolicyPreservedStateNetworkIp.auto_delete
+	AutoDelete *string `json:"autoDelete,omitempty"`
 }
 */
 
