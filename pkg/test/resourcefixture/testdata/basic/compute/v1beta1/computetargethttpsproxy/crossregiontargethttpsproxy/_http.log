@@ -1,6 +1,5 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +29,6 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "connectionDraining": {
@@ -76,7 +74,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -108,7 +105,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -149,7 +145,6 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -173,7 +168,6 @@ X-Xss-Protection: 0
 
 POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -212,7 +206,6 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -249,7 +242,6 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -278,7 +270,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -308,7 +299,6 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
@@ -363,7 +353,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -409,9 +398,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -439,16 +427,15 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "target https proxy with certificate manager certificate",
   "name": "${targetHttpsProxyID}",
   "quicOverride": "DISABLE",
   "sslCertificates": [
-    "https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+    "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
@@ -480,8 +467,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -511,9 +498,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -538,17 +524,22 @@ X-Xss-Protection: 0
     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
   "tlsEarlyData": "DISABLED",
-  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}/setQuicOverride?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "quicOverride": "ENABLE"
+  "description": "target https proxy with certificate manager certificate",
+  "name": "${targetHttpsProxyID}",
+  "quicOverride": "ENABLE",
+  "sslCertificates": [
+    "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+  ],
+  "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 200 OK
@@ -566,7 +557,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.targetHttpsProxies.setQuicOverride",
+  "operationType": "patch",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -578,8 +569,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -597,7 +588,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.targetHttpsProxies.setQuicOverride",
+  "operationType": "patch",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -609,9 +600,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -633,17 +623,17 @@ X-Xss-Protection: 0
   "quicOverride": "ENABLE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "sslCertificates": [
+    "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
   "tlsEarlyData": "DISABLED",
-  "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -672,8 +662,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -705,7 +695,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -753,7 +742,6 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -780,7 +768,6 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -809,7 +796,6 @@ X-Xss-Protection: 0
 
 DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -836,7 +822,6 @@ X-Xss-Protection: 0
 
 GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -867,7 +852,6 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -908,7 +892,6 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -938,7 +921,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

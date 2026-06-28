@@ -141,6 +141,12 @@ func (n *regionalSSLCertificateName) String() string {
 // parseRegionalSslCertificateName parses a string into a regionalSSLCertificateName.
 // The expected form is `projects/*/regions/*/sslcertificate/*`.
 func (s *MockService) parseRegionalSslCertificateName(name string) (*regionalSSLCertificateName, error) {
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "/")
+
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "sslCertificates" {

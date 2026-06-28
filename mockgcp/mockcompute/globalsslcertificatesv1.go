@@ -138,6 +138,12 @@ func (n *globalSSLCertificateName) String() string {
 // parseGlobalSslCertificateName parses a string into a globalSslCertificateName.
 // The expected form is `projects/*/global/sslcertificate/*`.
 func (s *MockService) parseGlobalSslCertificateName(name string) (*globalSSLCertificateName, error) {
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "/")
+
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "sslCertificates" {
