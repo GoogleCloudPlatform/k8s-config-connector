@@ -67,6 +67,13 @@ type BackupDRBackupPlanSpec struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault
 	// +required
 	BackupVaultRef *BackupVaultRef `json:"backupVaultRef,omitempty"`
+
+	// Optional. Applicable only for CloudSQL resource_type.
+	//  Configures how long logs will be stored. It is defined in “days”. This
+	//  value should be greater than or equal to minimum enforced log retention
+	//  duration of the backup vault.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.log_retention_days
+	LogRetentionDays *int64 `json:"logRetentionDays,omitempty"`
 }
 
 // BackupDRBackupPlanStatus defines the config connector machine state of BackupDRBackupPlan
