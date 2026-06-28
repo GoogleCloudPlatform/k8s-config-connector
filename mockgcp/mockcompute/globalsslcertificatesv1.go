@@ -41,6 +41,9 @@ func (s *GlobalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetSslCertifi
 
 	obj := &pb.SslCertificate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -63,6 +66,22 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#sslCertificate")
+	obj.PrivateKey = nil
+
+	if obj.Type == nil {
+		obj.Type = PtrTo("SELF_MANAGED")
+	}
+	if obj.GetType() == "SELF_MANAGED" {
+		if obj.SelfManaged == nil {
+			obj.SelfManaged = &pb.SslCertificateSelfManagedSslCertificate{}
+		}
+		if obj.SelfManaged.Certificate == nil {
+			obj.SelfManaged.Certificate = obj.Certificate
+		}
+	}
+	if obj.ExpireTime == nil {
+		obj.ExpireTime = obj.CreationTimestamp
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -90,6 +109,9 @@ func (s *GlobalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteSslC
 
 	deleted := &pb.SslCertificate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
