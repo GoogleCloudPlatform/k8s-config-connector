@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityAddressGroup{}).Name(),
 	}
 
+	NetworkSecurityAuthzPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityAuthzPolicy{}).Name(),
+	}
+
 	NetworkSecurityBackendAuthenticationConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
