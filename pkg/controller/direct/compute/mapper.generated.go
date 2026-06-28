@@ -1633,49 +1633,211 @@ func ComputeImageStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Imag
 }
 */
 
-/* found existing non-generated mapping function "ComputeImageStatus_v1beta1_ToProto", skipping
-func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageStatus) *pb.Image {
+/*
+found existing non-generated mapping function "ComputeImageStatus_v1beta1_ToProto", skipping
+
+	func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageStatus) *pb.Image {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Image{}
+		// MISSING: Architecture
+		out.ArchiveSizeBytes = in.ArchiveSizeBytes
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: Deprecated
+		// MISSING: Description
+		// MISSING: DiskSizeGB
+		// MISSING: EnableConfidentialCompute
+		// MISSING: Family
+		// MISSING: GuestOSFeatures
+		// MISSING: ID
+		// MISSING: ImageEncryptionKey
+		// MISSING: Kind
+		out.LabelFingerprint = in.LabelFingerprint
+		// MISSING: Labels
+		// MISSING: LicenseCodes
+		// MISSING: Licenses
+		// MISSING: Name
+		// MISSING: RawDisk
+		// MISSING: SatisfiesPzi
+		// MISSING: SatisfiesPzs
+		out.SelfLink = in.SelfLink
+		// MISSING: ShieldedInstanceInitialState
+		// MISSING: SourceDisk
+		// MISSING: SourceDiskEncryptionKey
+		// MISSING: SourceDiskID
+		// MISSING: SourceImage
+		// MISSING: SourceImageEncryptionKey
+		// MISSING: SourceImageID
+		// MISSING: SourceSnapshot
+		// MISSING: SourceSnapshotEncryptionKey
+		// MISSING: SourceSnapshotID
+		// MISSING: SourceType
+		// MISSING: Status
+		// MISSING: StorageLocations
+		return out
+	}
+*/
+func ComputeInstanceGroupManager_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManager {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Image{}
-	// MISSING: Architecture
-	out.ArchiveSizeBytes = in.ArchiveSizeBytes
-	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Deprecated
+	out := &krm.ComputeInstanceGroupManager{}
+	// MISSING: AllInstancesConfig
+	// MISSING: AutoHealingPolicies
+	// MISSING: BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
 	// MISSING: Description
-	// MISSING: DiskSizeGB
-	// MISSING: EnableConfidentialCompute
-	// MISSING: Family
-	// MISSING: GuestOSFeatures
+	// MISSING: DistributionPolicy
+	// MISSING: Fingerprint
 	// MISSING: ID
-	// MISSING: ImageEncryptionKey
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	// MISSING: InstanceTemplate
 	// MISSING: Kind
-	out.LabelFingerprint = in.LabelFingerprint
-	// MISSING: Labels
-	// MISSING: LicenseCodes
-	// MISSING: Licenses
+	// MISSING: ListManagedInstancesResults
 	// MISSING: Name
-	// MISSING: RawDisk
+	// MISSING: NamedPorts
+	// MISSING: Region
+	// MISSING: ResourcePolicies
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
-	out.SelfLink = in.SelfLink
-	// MISSING: ShieldedInstanceInitialState
-	// MISSING: SourceDisk
-	// MISSING: SourceDiskEncryptionKey
-	// MISSING: SourceDiskID
-	// MISSING: SourceImage
-	// MISSING: SourceImageEncryptionKey
-	// MISSING: SourceImageID
-	// MISSING: SourceSnapshot
-	// MISSING: SourceSnapshotEncryptionKey
-	// MISSING: SourceSnapshotID
-	// MISSING: SourceType
-	// MISSING: Status
-	// MISSING: StorageLocations
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	// MISSING: StatefulPolicy
+	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
+	// MISSING: TargetPools
+	// MISSING: TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	// MISSING: UpdatePolicy
+	// MISSING: Versions
+	// MISSING: Zone
 	return out
 }
-*/
+func ComputeInstanceGroupManager_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManager) *pb.InstanceGroupManager {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManager{}
+	// MISSING: AllInstancesConfig
+	// MISSING: AutoHealingPolicies
+	// MISSING: BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	// MISSING: Description
+	// MISSING: DistributionPolicy
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	// MISSING: InstanceTemplate
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	// MISSING: NamedPorts
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	// MISSING: StatefulPolicy
+	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_ToProto(mapCtx, in.Status)
+	// MISSING: TargetPools
+	// MISSING: TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	// MISSING: UpdatePolicy
+	// MISSING: Versions
+	// MISSING: Zone
+	return out
+}
+func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManagerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceGroupManagerSpec{}
+	// MISSING: AllInstancesConfig
+	out.AutoHealingPolicies = direct.Slice_FromProto(mapCtx, in.AutoHealingPolicies, InstancegroupmanagerAutoHealingPolicies_v1beta1_FromProto)
+	out.BaseInstanceName = in.BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	out.Description = in.Description
+	out.DistributionPolicy = InstancegroupmanagerDistributionPolicy_v1beta1_FromProto(mapCtx, in.GetDistributionPolicy())
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	if in.GetInstanceTemplate() != "" {
+		out.InstanceTemplateRef = &krm.InstanceGroupManagerResourceRef{External: in.GetInstanceTemplate()}
+	}
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	out.NamedPorts = direct.Slice_FromProto(mapCtx, in.NamedPorts, InstancegroupmanagerNamedPorts_v1beta1_FromProto)
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	out.StatefulPolicy = InstancegroupmanagerStatefulPolicy_v1beta1_FromProto(mapCtx, in.GetStatefulPolicy())
+	// MISSING: Status
+	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_FromProto(mapCtx, in.TargetPools)
+	out.TargetSize = in.TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	out.UpdatePolicy = InstancegroupmanagerUpdatePolicy_v1beta1_FromProto(mapCtx, in.GetUpdatePolicy())
+	out.Versions = direct.Slice_FromProto(mapCtx, in.Versions, InstancegroupmanagerVersions_v1beta1_FromProto)
+	// MISSING: Zone
+	return out
+}
+func ComputeInstanceGroupManagerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManagerSpec) *pb.InstanceGroupManager {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManager{}
+	// MISSING: AllInstancesConfig
+	out.AutoHealingPolicies = direct.Slice_ToProto(mapCtx, in.AutoHealingPolicies, InstancegroupmanagerAutoHealingPolicies_v1beta1_ToProto)
+	out.BaseInstanceName = in.BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	out.Description = in.Description
+	out.DistributionPolicy = InstancegroupmanagerDistributionPolicy_v1beta1_ToProto(mapCtx, in.DistributionPolicy)
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	if in.InstanceTemplateRef != nil {
+		out.InstanceTemplate = &in.InstanceTemplateRef.External
+	}
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	out.NamedPorts = direct.Slice_ToProto(mapCtx, in.NamedPorts, InstancegroupmanagerNamedPorts_v1beta1_ToProto)
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	out.StatefulPolicy = InstancegroupmanagerStatefulPolicy_v1beta1_ToProto(mapCtx, in.StatefulPolicy)
+	// MISSING: Status
+	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_ToProto(mapCtx, in.TargetPools)
+	out.TargetSize = in.TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	out.UpdatePolicy = InstancegroupmanagerUpdatePolicy_v1beta1_ToProto(mapCtx, in.UpdatePolicy)
+	out.Versions = direct.Slice_ToProto(mapCtx, in.Versions, InstancegroupmanagerVersions_v1beta1_ToProto)
+	// MISSING: Zone
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_FromProto", skipping
 func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupSpec {
