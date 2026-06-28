@@ -168,9 +168,7 @@ versions:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The URL for the health check that signals autohealing.
-
-Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -300,9 +298,7 @@ Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`.
-
-Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -392,9 +388,7 @@ Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -404,7 +398,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -414,7 +408,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -444,9 +438,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com is used.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -546,7 +538,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeTargetPool` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -746,9 +738,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`; in those cases, existing instances are updated until the `targetSize` for this version is reached.
-
-Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -879,7 +869,7 @@ zone: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeInstanceGroupManager's current state.</p>
         </td>
     </tr>
     <tr>
