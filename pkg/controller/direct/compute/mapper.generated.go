@@ -1513,51 +1513,51 @@ func ComputeImageStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Imag
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeImageStatus_v1beta1_ToProto", skipping
-
-	func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageStatus) *pb.Image {
-		if in == nil {
-			return nil
-		}
-		out := &pb.Image{}
-		// MISSING: Architecture
-		out.ArchiveSizeBytes = in.ArchiveSizeBytes
-		out.CreationTimestamp = in.CreationTimestamp
-		// MISSING: Deprecated
-		// MISSING: Description
-		// MISSING: DiskSizeGB
-		// MISSING: EnableConfidentialCompute
-		// MISSING: Family
-		// MISSING: GuestOSFeatures
-		// MISSING: ID
-		// MISSING: ImageEncryptionKey
-		// MISSING: Kind
-		out.LabelFingerprint = in.LabelFingerprint
-		// MISSING: Labels
-		// MISSING: LicenseCodes
-		// MISSING: Licenses
-		// MISSING: Name
-		// MISSING: RawDisk
-		// MISSING: SatisfiesPzi
-		// MISSING: SatisfiesPzs
-		out.SelfLink = in.SelfLink
-		// MISSING: ShieldedInstanceInitialState
-		// MISSING: SourceDisk
-		// MISSING: SourceDiskEncryptionKey
-		// MISSING: SourceDiskID
-		// MISSING: SourceImage
-		// MISSING: SourceImageEncryptionKey
-		// MISSING: SourceImageID
-		// MISSING: SourceSnapshot
-		// MISSING: SourceSnapshotEncryptionKey
-		// MISSING: SourceSnapshotID
-		// MISSING: SourceType
-		// MISSING: Status
-		// MISSING: StorageLocations
-		return out
+/* found existing non-generated mapping function "ComputeImageStatus_v1beta1_ToProto", skipping
+func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeImageStatus) *pb.Image {
+	if in == nil {
+		return nil
 	}
+	out := &pb.Image{}
+	// MISSING: Architecture
+	out.ArchiveSizeBytes = in.ArchiveSizeBytes
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Deprecated
+	// MISSING: Description
+	// MISSING: DiskSizeGB
+	// MISSING: EnableConfidentialCompute
+	// MISSING: Family
+	// MISSING: GuestOSFeatures
+	// MISSING: ID
+	// MISSING: ImageEncryptionKey
+	// MISSING: Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	// MISSING: Labels
+	// MISSING: LicenseCodes
+	// MISSING: Licenses
+	// MISSING: Name
+	// MISSING: RawDisk
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	// MISSING: ShieldedInstanceInitialState
+	// MISSING: SourceDisk
+	// MISSING: SourceDiskEncryptionKey
+	// MISSING: SourceDiskID
+	// MISSING: SourceImage
+	// MISSING: SourceImageEncryptionKey
+	// MISSING: SourceImageID
+	// MISSING: SourceSnapshot
+	// MISSING: SourceSnapshotEncryptionKey
+	// MISSING: SourceSnapshotID
+	// MISSING: SourceType
+	// MISSING: Status
+	// MISSING: StorageLocations
+	return out
+}
 */
+
+/* found existing non-generated mapping function "ComputeInstanceGroupManager_v1beta1_FromProto", skipping
 func ComputeInstanceGroupManager_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManager {
 	if in == nil {
 		return nil
@@ -1597,6 +1597,9 @@ func ComputeInstanceGroupManager_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Zone
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupManager_v1beta1_ToProto", skipping
 func ComputeInstanceGroupManager_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManager) *pb.InstanceGroupManager {
 	if in == nil {
 		return nil
@@ -1636,6 +1639,9 @@ func ComputeInstanceGroupManager_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Zone
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupManagerSpec_v1beta1_FromProto", skipping
 func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManagerSpec {
 	if in == nil {
 		return nil
@@ -1677,6 +1683,9 @@ func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: Zone
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupManagerSpec_v1beta1_ToProto", skipping
 func ComputeInstanceGroupManagerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManagerSpec) *pb.InstanceGroupManager {
 	if in == nil {
 		return nil
@@ -1718,6 +1727,7 @@ func ComputeInstanceGroupManagerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Zone
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_FromProto", skipping
 func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupSpec {
