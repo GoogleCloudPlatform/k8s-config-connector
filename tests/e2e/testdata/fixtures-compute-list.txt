@@ -43,6 +43,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computedisk/zonalcompute
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeexternalvpngateway
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewall/computefirewall
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicy
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicy/computefirewallpolicy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicyassociation/foldercomputefirewallpolicyassociation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicyassociation/organizationcomputefirewallpolicyassociation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computefirewallpolicyrule/computefirewallpolicyrule-egress-full-direct
