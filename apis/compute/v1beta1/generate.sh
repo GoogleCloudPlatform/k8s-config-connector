@@ -35,6 +35,7 @@ go run . generate-types \
   --resource ComputeHealthCheck:HealthCheck \
   --resource ComputeInstance:Instance \
   --resource ComputeInstanceGroup:InstanceGroup \
+  --resource ComputeInstanceGroupManager:InstanceGroupManager \
   --resource ComputeNetwork:Network \
   --resource ComputeNetworkFirewallPolicy:FirewallPolicy \
   --resource ComputeNetworkPeering:NetworkPeering \

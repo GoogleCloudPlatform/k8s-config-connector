@@ -1677,6 +1677,178 @@ func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 }
 */
 
+/* found existing non-generated mapping function "ComputeInstanceGroupManager_v1beta1_FromProto", skipping
+func ComputeInstanceGroupManager_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManager {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceGroupManager{}
+	// MISSING: AllInstancesConfig
+	// MISSING: AutoHealingPolicies
+	// MISSING: BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	// MISSING: Description
+	// MISSING: DistributionPolicy
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	// MISSING: InstanceTemplate
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	// MISSING: NamedPorts
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	// MISSING: StatefulPolicy
+	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
+	// MISSING: TargetPools
+	// MISSING: TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	// MISSING: UpdatePolicy
+	// MISSING: Versions
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupManager_v1beta1_ToProto", skipping
+func ComputeInstanceGroupManager_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManager) *pb.InstanceGroupManager {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManager{}
+	// MISSING: AllInstancesConfig
+	// MISSING: AutoHealingPolicies
+	// MISSING: BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	// MISSING: Description
+	// MISSING: DistributionPolicy
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	// MISSING: InstanceTemplate
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	// MISSING: NamedPorts
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	// MISSING: StatefulPolicy
+	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_ToProto(mapCtx, in.Status)
+	// MISSING: TargetPools
+	// MISSING: TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	// MISSING: UpdatePolicy
+	// MISSING: Versions
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupManagerSpec_v1beta1_FromProto", skipping
+func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupManager) *krm.ComputeInstanceGroupManagerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInstanceGroupManagerSpec{}
+	// MISSING: AllInstancesConfig
+	out.AutoHealingPolicies = direct.Slice_FromProto(mapCtx, in.AutoHealingPolicies, InstancegroupmanagerAutoHealingPolicies_v1beta1_FromProto)
+	out.BaseInstanceName = in.BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	out.Description = in.Description
+	out.DistributionPolicy = InstancegroupmanagerDistributionPolicy_v1beta1_FromProto(mapCtx, in.GetDistributionPolicy())
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	if in.GetInstanceTemplate() != "" {
+		out.InstanceTemplateRef = &krm.ComputeInstanceTemplateRef{External: in.GetInstanceTemplate()}
+	}
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	out.NamedPorts = direct.Slice_FromProto(mapCtx, in.NamedPorts, InstancegroupmanagerNamedPorts_v1beta1_FromProto)
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	out.StatefulPolicy = InstancegroupmanagerStatefulPolicy_v1beta1_FromProto(mapCtx, in.GetStatefulPolicy())
+	// MISSING: Status
+	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_FromProto(mapCtx, in.TargetPools)
+	out.TargetSize = in.TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	out.UpdatePolicy = InstancegroupmanagerUpdatePolicy_v1beta1_FromProto(mapCtx, in.GetUpdatePolicy())
+	out.Versions = direct.Slice_FromProto(mapCtx, in.Versions, InstancegroupmanagerVersions_v1beta1_FromProto)
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupManagerSpec_v1beta1_ToProto", skipping
+func ComputeInstanceGroupManagerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceGroupManagerSpec) *pb.InstanceGroupManager {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceGroupManager{}
+	// MISSING: AllInstancesConfig
+	out.AutoHealingPolicies = direct.Slice_ToProto(mapCtx, in.AutoHealingPolicies, InstancegroupmanagerAutoHealingPolicies_v1beta1_ToProto)
+	out.BaseInstanceName = in.BaseInstanceName
+	// MISSING: CreationTimestamp
+	// MISSING: CurrentActions
+	out.Description = in.Description
+	out.DistributionPolicy = InstancegroupmanagerDistributionPolicy_v1beta1_ToProto(mapCtx, in.DistributionPolicy)
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: InstanceFlexibilityPolicy
+	// MISSING: InstanceGroup
+	// MISSING: InstanceLifecyclePolicy
+	if in.InstanceTemplateRef != nil {
+		out.InstanceTemplate = &in.InstanceTemplateRef.External
+	}
+	// MISSING: Kind
+	// MISSING: ListManagedInstancesResults
+	// MISSING: Name
+	out.NamedPorts = direct.Slice_ToProto(mapCtx, in.NamedPorts, InstancegroupmanagerNamedPorts_v1beta1_ToProto)
+	// MISSING: Region
+	// MISSING: ResourcePolicies
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StandbyPolicy
+	out.StatefulPolicy = InstancegroupmanagerStatefulPolicy_v1beta1_ToProto(mapCtx, in.StatefulPolicy)
+	// MISSING: Status
+	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_ToProto(mapCtx, in.TargetPools)
+	out.TargetSize = in.TargetSize
+	// MISSING: TargetStoppedSize
+	// MISSING: TargetSuspendedSize
+	out.UpdatePolicy = InstancegroupmanagerUpdatePolicy_v1beta1_ToProto(mapCtx, in.UpdatePolicy)
+	out.Versions = direct.Slice_ToProto(mapCtx, in.Versions, InstancegroupmanagerVersions_v1beta1_ToProto)
+	// MISSING: Zone
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_FromProto", skipping
 func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krm.ComputeInstanceGroupSpec {
 	if in == nil {
