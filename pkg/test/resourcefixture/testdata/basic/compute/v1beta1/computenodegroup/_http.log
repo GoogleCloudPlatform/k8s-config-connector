@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "nodeTemplate \"projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}\" not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "nodeTemplate \"projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}\" not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}' was not found"
   }
 }
 
@@ -34,7 +34,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "cpuOvercommitType": "NONE",
-  "name": "computenodetemplate-${uniqueId}",
+  "name": "${nodeTemplateID}",
   "nodeAffinityLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -61,15 +61,52 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "compute.nodeTemplates.insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${nodeTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.nodeTemplates.insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${nodeTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -87,8 +124,8 @@ X-Xss-Protection: 0
   "cpuOvercommitType": "NONE",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
-  "kind": "compute#nodetemplate",
-  "name": "computenodetemplate-${uniqueId}",
+  "kind": "compute#nodeTemplate",
+  "name": "${nodeTemplateID}",
   "nodeAffinityLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -97,8 +134,12 @@ X-Xss-Protection: 0
     "cpus": "any",
     "memory": "any"
   },
-  "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
+  "serverBinding": {
+    "type": "RESTART_NODE_ON_ANY_SERVER"
+  },
+  "status": "READY"
 }
 
 ---
@@ -141,7 +182,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "A single sole-tenant node in the us-central1-b zone.",
   "maintenancePolicy": "DEFAULT",
   "name": "computenodegroup-${uniqueId}",
-  "nodeTemplate": "projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}",
+  "nodeTemplate": "projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
   "size": 1,
   "zone": "projects/${projectId}/global/zones/us-central1-b"
 }
@@ -190,7 +231,7 @@ X-Xss-Protection: 0
   "kind": "compute#nodegroup",
   "maintenancePolicy": "DEFAULT",
   "name": "computenodegroup-${uniqueId}",
-  "nodeTemplate": "projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}",
+  "nodeTemplate": "projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-b/nodeGroups/computenodegroup-${uniqueId}",
   "size": 1,
   "zone": "projects/${projectId}/global/zones/us-central1-b"
@@ -225,7 +266,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -243,8 +284,8 @@ X-Xss-Protection: 0
   "cpuOvercommitType": "NONE",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
-  "kind": "compute#nodetemplate",
-  "name": "computenodetemplate-${uniqueId}",
+  "kind": "compute#nodeTemplate",
+  "name": "${nodeTemplateID}",
   "nodeAffinityLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -253,13 +294,17 @@ X-Xss-Protection: 0
     "cpus": "any",
     "memory": "any"
   },
-  "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}"
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
+  "serverBinding": {
+    "type": "RESTART_NODE_ON_ANY_SERVER"
+  },
+  "status": "READY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -278,8 +323,45 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "compute.nodeTemplates.delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${nodeTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.nodeTemplates.delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${nodeTemplateID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}",
+  "user": "user@example.com"
 }

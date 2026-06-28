@@ -16,7 +16,7 @@ metadata:
 spec:
   description: A single sole-tenant node in the us-central1-b zone.
   nodeTemplateRef:
-    name: computenodetemplate-${uniqueId}
+    name: ${nodeTemplateID}
   resourceID: computenodegroup-${uniqueId}
   size: 1
   zone: us-central1-b
