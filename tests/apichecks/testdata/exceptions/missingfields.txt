@@ -847,7 +847,6 @@
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].name" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].namespace" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.enableDynamicPortAllocation" is not set in unstructured objects
-[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.icmpIdleTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.enable" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.filter" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.maxPortsPerVm" is not set in unstructured objects

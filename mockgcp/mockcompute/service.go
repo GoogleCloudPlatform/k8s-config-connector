@@ -423,39 +423,69 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			}
 		}
 
-		if isLegacyHealthCheck {
-			captured := &responseCapture{ResponseWriter: w}
-			mux.ServeHTTP(captured, r)
+		if r.Method == http.MethodPatch && strings.Contains(r.URL.Path, "/routers/") {
+			bodyBytes, err := io.ReadAll(r.Body)
+			if err == nil {
+				r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+				r.ContentLength = int64(len(bodyBytes))
 
-			if len(captured.body) > 0 && captured.code < 400 {
-				bodyBytes := captured.body
-				bodyStr := string(bodyBytes)
-				if isHTTPS {
-					bodyStr = strings.ReplaceAll(bodyStr, "healthChecks/", "httpsHealthChecks/")
-				} else {
-					bodyStr = strings.ReplaceAll(bodyStr, "healthChecks/", "httpHealthChecks/")
+				var data map[string]any
+				if err := json.Unmarshal(bodyBytes, &data); err == nil {
+					if _, ok := data["nats"]; ok {
+						u := r.URL
+						u2 := *u
+						q := u2.Query()
+						q.Set("natsSpecified", "true")
+						u2.RawQuery = q.Encode()
+						r = httpmux.RewriteRequest(r, &u2)
+					}
 				}
-				bodyBytes = []byte(bodyStr)
-
-				if transformed, err := transformModernToLegacyResponse(bodyBytes, isHTTPS); err == nil {
-					bodyBytes = transformed
-				}
-
-				w.Header().Set("Content-Length", strconv.Itoa(len(bodyBytes)))
-				if captured.code != 0 {
-					w.WriteHeader(captured.code)
-				}
-				w.Write(bodyBytes)
-			} else {
-				if captured.code != 0 {
-					w.WriteHeader(captured.code)
-				}
-				w.Write(captured.body)
 			}
-			return
+		}
+
+		isRouter := strings.Contains(r.URL.Path, "/routers")
+
+		var captured *responseCapture
+		var originalWriter http.ResponseWriter = w
+		if isLegacyHealthCheck || isRouter {
+			captured = &responseCapture{ResponseWriter: w}
+			w = captured
 		}
 
 		mux.ServeHTTP(w, r)
+
+		if captured != nil {
+			bodyBytes := captured.body
+			if isLegacyHealthCheck {
+				if len(bodyBytes) > 0 && captured.code < 400 {
+					bodyStr := string(bodyBytes)
+					if isHTTPS {
+						bodyStr = strings.ReplaceAll(bodyStr, "healthChecks/", "httpsHealthChecks/")
+					} else {
+						bodyStr = strings.ReplaceAll(bodyStr, "healthChecks/", "httpHealthChecks/")
+					}
+					bodyBytes = []byte(bodyStr)
+
+					if transformed, err := transformModernToLegacyResponse(bodyBytes, isHTTPS); err == nil {
+						bodyBytes = transformed
+					}
+				}
+			}
+
+			if isRouter {
+				if len(bodyBytes) > 0 && captured.code < 400 {
+					if rewritten, err := rewriteRouterResponse(bodyBytes); err == nil {
+						bodyBytes = rewritten
+					}
+				}
+			}
+
+			originalWriter.Header().Set("Content-Length", strconv.Itoa(len(bodyBytes)))
+			if captured.code != 0 {
+				originalWriter.WriteHeader(captured.code)
+			}
+			originalWriter.Write(bodyBytes)
+		}
 	}
 
 	return http.HandlerFunc(rewriteBetaToV1), nil
@@ -537,6 +567,50 @@ func transformModernToLegacyResponse(body []byte, isHTTPS bool) ([]byte, error) 
 				}
 			}
 			delete(data, "type")
+		}
+	}
+
+	return json.Marshal(data)
+}
+
+func rewriteRouterResponse(bodyBytes []byte) ([]byte, error) {
+	var data map[string]any
+	if err := json.Unmarshal(bodyBytes, &data); err != nil {
+		return bodyBytes, nil
+	}
+
+	populateNatFields := func(router map[string]any) {
+		if nats, ok := router["nats"].([]any); ok {
+			for _, natVal := range nats {
+				if nat, ok := natVal.(map[string]any); ok {
+					if _, ok := nat["autoNetworkTier"]; !ok {
+						nat["autoNetworkTier"] = "PREMIUM"
+					}
+					if _, ok := nat["effectiveTcpTimeWaitTimeoutSec"]; !ok {
+						nat["effectiveTcpTimeWaitTimeoutSec"] = float64(120)
+					}
+					if _, ok := nat["endpointTypes"]; !ok {
+						nat["endpointTypes"] = []any{"ENDPOINT_TYPE_VM"}
+					}
+					if _, ok := nat["type"]; !ok {
+						nat["type"] = "PUBLIC"
+					}
+				}
+			}
+		}
+	}
+
+	if kind, ok := data["kind"].(string); ok {
+		if kind == "compute#router" {
+			populateNatFields(data)
+		} else if kind == "compute#routerList" {
+			if items, ok := data["items"].([]any); ok {
+				for _, item := range items {
+					if router, ok := item.(map[string]any); ok {
+						populateNatFields(router)
+					}
+				}
+			}
 		}
 	}
 
