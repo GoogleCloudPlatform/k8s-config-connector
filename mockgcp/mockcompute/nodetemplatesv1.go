@@ -16,9 +16,12 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -37,7 +40,7 @@ func (s *NodeTemplatesV1) Get(ctx context.Context, req *pb.GetNodeTemplateReques
 
 	obj := &pb.NodeTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
 	}
 
 	return obj, nil
@@ -57,13 +60,31 @@ func (s *NodeTemplatesV1) Insert(ctx context.Context, req *pb.InsertNodeTemplate
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.Kind = PtrTo("compute#nodetemplate")
+	obj.Kind = PtrTo("compute#nodeTemplate")
+	obj.Status = PtrTo("READY")
+
+	regionURL := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region)
+	obj.Region = &regionURL
+
+	if obj.ServerBinding == nil {
+		obj.ServerBinding = &pb.ServerBinding{
+			Type: PtrTo("RESTART_NODE_ON_ANY_SERVER"),
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("compute.nodeTemplates.insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *NodeTemplatesV1) Delete(ctx context.Context, req *pb.DeleteNodeTemplateRequest) (*pb.Operation, error) {
@@ -74,12 +95,20 @@ func (s *NodeTemplatesV1) Delete(ctx context.Context, req *pb.DeleteNodeTemplate
 
 	fqn := name.String()
 
-	obj := &pb.NodeTemplate{}
-	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
+	deleted := &pb.NodeTemplate{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("compute.nodeTemplates.delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type nodeTemplateName struct {
