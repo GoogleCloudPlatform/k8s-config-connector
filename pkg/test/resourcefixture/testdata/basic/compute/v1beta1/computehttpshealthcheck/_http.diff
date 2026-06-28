@@ -1,13 +1,13 @@
 1c1
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
 30c30
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks?alt=json
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks
 36a37,40
->   "httpHealthCheck": {
+>   "httpsHealthCheck": {
 >     "port": 80,
 >     "requestPath": "/"
 >   },
@@ -15,9 +15,9 @@
 <   "port": 80,
 <   "requestPath": "/",
 40a43
->   "type": "HTTP",
+>   "type": "HTTPS",
 65c68
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
 ---
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
 71c74,75
@@ -26,34 +26,34 @@
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
 101c105
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
 118a123,127
->   "httpHealthCheck": {
+>   "httpsHealthCheck": {
 >     "port": 80,
 >     "proxyHeader": "NONE",
 >     "requestPath": "/"
 >   },
 120c129
-<   "kind": "compute#httpHealthCheck",
+<   "kind": "compute#httpsHealthCheck",
 ---
 >   "kind": "compute#healthCheck",
 122,125c131
 <   "port": 80,
 <   "proxyHeader": "NONE",
 <   "requestPath": "/",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
 ---
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
 126a133
->   "type": "HTTP",
+>   "type": "HTTPS",
 132c139
-< PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
 138a146,149
->   "httpHealthCheck": {
+>   "httpsHealthCheck": {
 >     "port": 80,
 >     "requestPath": "/"
 >   },
@@ -61,13 +61,13 @@
 <   "port": 80,
 <   "requestPath": "/",
 142a152
->   "type": "HTTP",
+>   "type": "HTTPS",
 161c171
 <   "operationType": "update",
 ---
 >   "operationType": "patch",
 167c177
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
 ---
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
 173c183,184
@@ -80,34 +80,34 @@
 ---
 >   "operationType": "patch",
 203c214
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
 220a232,236
->   "httpHealthCheck": {
+>   "httpsHealthCheck": {
 >     "port": 80,
 >     "proxyHeader": "NONE",
 >     "requestPath": "/"
 >   },
 222c238
-<   "kind": "compute#httpHealthCheck",
+<   "kind": "compute#httpsHealthCheck",
 ---
 >   "kind": "compute#healthCheck",
 224,227c240
 <   "port": 80,
 <   "proxyHeader": "NONE",
 <   "requestPath": "/",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
 ---
 >   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
 228a242
->   "type": "HTTP",
+>   "type": "HTTPS",
 234c248
-< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}?alt=json
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}
 258c272
-<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpHealthChecks/${healthCheckID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/httpsHealthChecks/${healthCheckID}",
 ---
 >   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
 264c278,279

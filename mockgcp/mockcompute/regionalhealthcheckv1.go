@@ -66,6 +66,8 @@ func (s *RegionalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertRegion
 	obj.Kind = PtrTo("compute#healthCheck")
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
 
+	s.populateHealthCheckDefaults(obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -100,6 +102,8 @@ func (s *RegionalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchRegionHe
 		obj.SourceRegions = nil
 	}
 	proto.Merge(obj, req.GetHealthCheckResource())
+
+	s.populateHealthCheckDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -142,6 +146,8 @@ func (s *RegionalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateRegion
 	updatedObj.CreationTimestamp = creationTimestamp
 	updatedObj.Kind = kind
 	updatedObj.Region = region
+
+	s.populateHealthCheckDefaults(updatedObj)
 
 	if err := s.storage.Update(ctx, fqn, updatedObj); err != nil {
 		return nil, err
