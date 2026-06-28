@@ -16,6 +16,8 @@ package osconfig
 
 import (
 	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
+	osconfigpb "cloud.google.com/go/osconfig/apiv1beta/osconfigpb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/osconfig/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -498,5 +500,121 @@ func OSPolicy_Resource_RepositoryResource_ZypperRepository_ToProto(mapCtx *direc
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.BaseUrl = in.BaseURL
 	out.GpgKeys = in.GpgKeys
+	return out
+}
+
+func Assignment_Instances_FromProto(mapCtx *direct.MapContext, in []string) []computev1beta1.InstanceRef {
+	if in == nil {
+		return nil
+	}
+	out := make([]computev1beta1.InstanceRef, len(in))
+	for i, v := range in {
+		out[i] = computev1beta1.InstanceRef{External: v}
+	}
+	return out
+}
+
+func Assignment_Instances_ToProto(mapCtx *direct.MapContext, in []computev1beta1.InstanceRef) []string {
+	if in == nil {
+		return nil
+	}
+	out := make([]string, len(in))
+	for i, v := range in {
+		out[i] = v.External
+	}
+	return out
+}
+
+func int32Slice_FromProto(in []int32) []int64 {
+	if in == nil {
+		return nil
+	}
+	out := make([]int64, len(in))
+	for i, v := range in {
+		out[i] = int64(v)
+	}
+	return out
+}
+
+func int32Slice_ToProto(in []int64) []int32 {
+	if in == nil {
+		return nil
+	}
+	out := make([]int32, len(in))
+	for i, v := range in {
+		out[i] = int32(v)
+	}
+	return out
+}
+
+func SoftwareRecipe_Step_ExecFile_FromProto(mapCtx *direct.MapContext, in *osconfigpb.SoftwareRecipe_Step_ExecFile) *krm.SoftwareRecipe_Step_ExecFile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SoftwareRecipe_Step_ExecFile{}
+	out.ArtifactID = direct.LazyPtr(in.GetArtifactId())
+	out.LocalPath = direct.LazyPtr(in.GetLocalPath())
+	out.Args = in.Args
+	out.AllowedExitCodes = int32Slice_FromProto(in.AllowedExitCodes)
+	return out
+}
+
+func SoftwareRecipe_Step_ExecFile_ToProto(mapCtx *direct.MapContext, in *krm.SoftwareRecipe_Step_ExecFile) *osconfigpb.SoftwareRecipe_Step_ExecFile {
+	if in == nil {
+		return nil
+	}
+	out := &osconfigpb.SoftwareRecipe_Step_ExecFile{}
+	if oneof := SoftwareRecipe_Step_ExecFile_ArtifactId_ToProto(mapCtx, in.ArtifactID); oneof != nil {
+		out.LocationType = oneof
+	}
+	if oneof := SoftwareRecipe_Step_ExecFile_LocalPath_ToProto(mapCtx, in.LocalPath); oneof != nil {
+		out.LocationType = oneof
+	}
+	out.Args = in.Args
+	out.AllowedExitCodes = int32Slice_ToProto(in.AllowedExitCodes)
+	return out
+}
+
+func SoftwareRecipe_Step_InstallMsi_FromProto(mapCtx *direct.MapContext, in *osconfigpb.SoftwareRecipe_Step_InstallMsi) *krm.SoftwareRecipe_Step_InstallMsi {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SoftwareRecipe_Step_InstallMsi{}
+	out.ArtifactID = direct.LazyPtr(in.GetArtifactId())
+	out.Flags = in.Flags
+	out.AllowedExitCodes = int32Slice_FromProto(in.AllowedExitCodes)
+	return out
+}
+
+func SoftwareRecipe_Step_InstallMsi_ToProto(mapCtx *direct.MapContext, in *krm.SoftwareRecipe_Step_InstallMsi) *osconfigpb.SoftwareRecipe_Step_InstallMsi {
+	if in == nil {
+		return nil
+	}
+	out := &osconfigpb.SoftwareRecipe_Step_InstallMsi{}
+	out.ArtifactId = direct.ValueOf(in.ArtifactID)
+	out.Flags = in.Flags
+	out.AllowedExitCodes = int32Slice_ToProto(in.AllowedExitCodes)
+	return out
+}
+
+func SoftwareRecipe_Step_RunScript_FromProto(mapCtx *direct.MapContext, in *osconfigpb.SoftwareRecipe_Step_RunScript) *krm.SoftwareRecipe_Step_RunScript {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SoftwareRecipe_Step_RunScript{}
+	out.Script = direct.LazyPtr(in.GetScript())
+	out.AllowedExitCodes = int32Slice_FromProto(in.AllowedExitCodes)
+	out.Interpreter = direct.Enum_FromProto(mapCtx, in.GetInterpreter())
+	return out
+}
+
+func SoftwareRecipe_Step_RunScript_ToProto(mapCtx *direct.MapContext, in *krm.SoftwareRecipe_Step_RunScript) *osconfigpb.SoftwareRecipe_Step_RunScript {
+	if in == nil {
+		return nil
+	}
+	out := &osconfigpb.SoftwareRecipe_Step_RunScript{}
+	out.Script = direct.ValueOf(in.Script)
+	out.AllowedExitCodes = int32Slice_ToProto(in.AllowedExitCodes)
+	out.Interpreter = direct.Enum_ToProto[osconfigpb.SoftwareRecipe_Step_RunScript_Interpreter](mapCtx, in.Interpreter)
 	return out
 }

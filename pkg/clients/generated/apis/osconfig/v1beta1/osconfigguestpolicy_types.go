@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type GuestpolicyApt struct {
-	/* Type of archive files in this repository. The default behavior is DEB. Possible values: ARCHIVE_TYPE_UNSPECIFIED, DEB, DEB_SRC */
+	/* Type of archive files in this repository. The default behavior is DEB. */
 	// +optional
 	ArchiveType *string `json:"archiveType,omitempty"`
 
@@ -63,17 +63,22 @@ type GuestpolicyArchiveExtraction struct {
 	// +optional
 	ArtifactId *string `json:"artifactId,omitempty"`
 
-	/* Directory to extract archive to. Defaults to `/` on Linux or `C:` on Windows. */
+	/* Directory to extract archive to. Defaults to `/` on Linux or `C:\` on Windows. */
 	// +optional
 	Destination *string `json:"destination,omitempty"`
 
-	/* Required. The type of the archive to extract. Possible values: TYPE_UNSPECIFIED, VALIDATION, DESIRED_STATE_CHECK, DESIRED_STATE_ENFORCEMENT, DESIRED_STATE_CHECK_POST_ENFORCEMENT */
+	/* Required. The type of the archive to extract. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
 
 type GuestpolicyArtifacts struct {
-	/* Defaults to false. When false, recipes are subject to validations based on the artifact type: Remote: A checksum must be specified, and only protocols with transport-layer security are permitted. GCS: An object generation number must be specified. */
+	/* Defaults to false. When false, recipes are subject to validations
+	based on the artifact type:
+
+	Remote: A checksum must be specified, and only protocols with
+	transport-layer security are permitted.
+	GCS: An object generation number must be specified. */
 	// +optional
 	AllowInsecure *bool `json:"allowInsecure,omitempty"`
 
@@ -95,18 +100,39 @@ type GuestpolicyAssignment struct {
 	// +optional
 	GroupLabels []GuestpolicyGroupLabels `json:"groupLabels,omitempty"`
 
-	/* Targets VM instances whose name starts with one of these prefixes. Like labels, this is another way to group VM instances when targeting configs, for example prefix="prod-". Only supported for project-level policies. */
+	/* Targets VM instances whose name starts with one of these prefixes.
+
+	Like labels, this is another way to group VM instances when targeting
+	configs, for example prefix="prod-".
+
+	Only supported for project-level policies. */
 	// +optional
 	InstanceNamePrefixes []string `json:"instanceNamePrefixes,omitempty"`
 
+	/* Targets any of the instances specified. Instances are specified by their
+	URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME]`.
+
+	Instance targeting is uncommon and is supported to facilitate the
+	management of changes by the instance or to target specific VM instances
+	for development and testing.
+
+	Only supported for project-level policies and must reference instances
+	within this project. */
 	// +optional
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 
-	/* Targets VM instances matching at least one of the following OS types. VM instances must match all supplied criteria for a given OsType to be included. */
+	/* Targets VM instances matching at least one of the following OS types.
+
+	VM instances must match all supplied criteria for a given OsType to be
+	included. */
 	// +optional
 	OsTypes []GuestpolicyOsTypes `json:"osTypes,omitempty"`
 
-	/* Targets instances in any of these zones. Leave empty to target instances in any zone. Zonal targeting is uncommon and is supported to facilitate the management of changes by zone. */
+	/* Targets instances in any of these zones. Leave empty to target instances
+	in any zone.
+
+	Zonal targeting is uncommon and is supported to facilitate the management
+	of changes by zone. */
 	// +optional
 	Zones []string `json:"zones,omitempty"`
 }
@@ -130,7 +156,19 @@ type GuestpolicyFileCopy struct {
 	// +optional
 	Overwrite *bool `json:"overwrite,omitempty"`
 
-	/* Consists of three octal digits which represent, in order, the permissions of the owner, group, and other users for the file (similarly to the numeric mode used in the linux chmod utility). Each digit represents a three bit number with the 4 bit corresponding to the read permissions, the 2 bit corresponds to the write bit, and the one bit corresponds to the execute permission. Default behavior is 755. Below are some examples of permissions and their associated values: read, write, and execute: 7 read and execute: 5 read and write: 6 read only: 4 */
+	/* Consists of three octal digits which represent, in
+	order, the permissions of the owner, group, and other users for the
+	file (similarly to the numeric mode used in the linux chmod utility).
+	Each digit represents a three bit number with the 4 bit
+	corresponding to the read permissions, the 2 bit corresponds to the
+	write bit, and the one bit corresponds to the execute permission.
+	Default behavior is 755.
+
+	Below are some examples of permissions and their associated values:
+	read, write, and execute: 7
+	read and execute: 5
+	read and write: 6
+	read only: 4 */
 	// +optional
 	Permissions *string `json:"permissions,omitempty"`
 }
@@ -154,6 +192,7 @@ type GuestpolicyFileExec struct {
 }
 
 type GuestpolicyGcs struct {
+	/* Bucket of the Google Cloud Storage object. Given an example URL: `https://storage.googleapis.com/my-bucket/foo/bar#1234567` this value would be `my-bucket`. */
 	// +optional
 	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
@@ -257,11 +296,19 @@ type GuestpolicyPackageRepositories struct {
 }
 
 type GuestpolicyPackages struct {
-	/* The desired_state the agent should maintain for this package. The default is to ensure the package is installed. Possible values: DESIRED_STATE_UNSPECIFIED, INSTALLED, REMOVED */
+	/* The desired_state the agent should maintain for this package. The default is to ensure the package is installed. */
 	// +optional
 	DesiredState *string `json:"desiredState,omitempty"`
 
-	/* Type of package manager that can be used to install this package. If a system does not have the package manager, the package is not installed or removed no error message is returned. By default, or if you specify `ANY`, the agent attempts to install and remove this package using the default package manager. This is useful when creating a policy that applies to different types of systems. The default behavior is ANY. Possible values: MANAGER_UNSPECIFIED, ANY, APT, YUM, ZYPPER, GOO */
+	/* Type of package manager that can be used to install this package.
+	If a system does not have the package manager, the package is not
+	installed or removed no error message is returned. By default,
+	or if you specify `ANY`,
+	the agent attempts to install and remove this package using the default
+	package manager. This is useful when creating a policy that applies to
+	different types of systems.
+
+	The default behavior is ANY. */
 	// +optional
 	Manager *string `json:"manager,omitempty"`
 
@@ -275,7 +322,16 @@ type GuestpolicyRecipes struct {
 	// +optional
 	Artifacts []GuestpolicyArtifacts `json:"artifacts,omitempty"`
 
-	/* Default is INSTALLED. The desired state the agent should maintain for this recipe. INSTALLED: The software recipe is installed on the instance but won't be updated to new versions. UPDATED: The software recipe is installed on the instance. The recipe is updated to a higher version, if a higher version of the recipe is assigned to this instance. REMOVE: Remove is unsupported for software recipes and attempts to create or update a recipe to the REMOVE state is rejected. Possible values: DESIRED_STATE_UNSPECIFIED, INSTALLED, REMOVED */
+	/* Default is INSTALLED. The desired state the agent should maintain for this
+	recipe.
+
+	INSTALLED: The software recipe is installed on the instance but
+	won't be updated to new versions.
+	UPDATED: The software recipe is installed on the instance. The recipe is
+	updated to a higher version, if a higher version of the recipe is
+	assigned to this instance.
+	REMOVE: Remove is unsupported for software recipes and attempts to
+	create or update a recipe to the REMOVE state is rejected. */
 	// +optional
 	DesiredState *string `json:"desiredState,omitempty"`
 
@@ -283,7 +339,13 @@ type GuestpolicyRecipes struct {
 	// +optional
 	InstallSteps []GuestpolicyInstallSteps `json:"installSteps,omitempty"`
 
-	/* Required. Unique identifier for the recipe. Only one recipe with a given name is installed on an instance. Names are also used to identify resources which helps to determine whether guest policies have conflicts. This means that requests to create multiple recipes with the same name and version are rejected since they could potentially have conflicting assignments. */
+	/* Required. Unique identifier for the recipe. Only one recipe with a given name is
+	installed on an instance.
+
+	Names are also used to identify resources which helps to determine whether
+	guest policies have conflicts. This means that requests to create multiple
+	recipes with the same name and version are rejected since they
+	could potentially have conflicting assignments. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
@@ -301,7 +363,7 @@ type GuestpolicyRemote struct {
 	// +optional
 	Checksum *string `json:"checksum,omitempty"`
 
-	/* URI from which to fetch the object. It should contain both the protocol and path following the format: {protocol}://{location}. */
+	/* URI from which to fetch the object. It should contain both the protocol and path following the format {protocol}://{location}. */
 	// +optional
 	Uri *string `json:"uri,omitempty"`
 }
@@ -317,7 +379,7 @@ type GuestpolicyScriptRun struct {
 	// +optional
 	AllowedExitCodes []int64 `json:"allowedExitCodes,omitempty"`
 
-	/* The script interpreter to use to run the script. If no interpreter is specified the script is executed directly, which likely only succeed for scripts with [shebang lines](https://en.wikipedia.org/wiki/Shebang_(Unix)). Possible values: INTERPRETER_UNSPECIFIED, NONE, SHELL, POWERSHELL */
+	/* The script interpreter to use to run the script. If no interpreter is specified the script is executed directly, which likely only succeed for scripts with [shebang lines](https://en.wikipedia.org/wiki/Shebang_\(Unix\)). */
 	// +optional
 	Interpreter *string `json:"interpreter,omitempty"`
 
@@ -389,23 +451,32 @@ type GuestpolicyZypper struct {
 }
 
 type OSConfigGuestPolicySpec struct {
-	/* Specifies the VMs that are assigned this policy. This allows you to target sets or groups of VMs by different parameters such as labels, names, OS, or zones. Empty assignments will target ALL VMs underneath this policy. Conflict Management Policies that exist higher up in the resource hierarchy (closer to the Org) will override those lower down if there is a conflict. At the same level in the resource hierarchy (ie. within a project), the service will prevent the creation of multiple policies that conflict with each other. If there are multiple policies that specify the same config (eg. package, software recipe, repository, etc.), the service will ensure that no VM could potentially receive instructions from both policies. To create multiple policies that specify different versions of a package or different configs for different Operating Systems, each policy must be mutually exclusive in their targeting according to labels, OS, or other criteria. Different configs are identified for conflicts in different ways. Packages are identified by their name and the package manager(s) they target. Package repositories are identified by their unique id where applicable. Some package managers don't have a unique identifier for repositories and where that's the case, no uniqueness is validated by the service. Note that if OS Inventory is disabled, a VM will not be assigned a policy that targets by OS because the service will see this VM's OS as unknown. */
+	/* Required. Specifies the VM instances that are assigned to this policy. This allows
+	you to target sets or groups of VM instances by different parameters such
+	as labels, names, OS, or zones.
+
+	If left empty, all VM instances underneath this policy are targeted.
+
+	At the same level in the resource hierarchy (that is within a project), the
+	service prevents the creation of multiple policies that conflict with
+	each other. For more information, see how the service [handles assignment
+	conflicts](/compute/docs/os-config-management/create-guest-policy#handle-conflicts). */
 	// +optional
 	Assignment *GuestpolicyAssignment `json:"assignment,omitempty"`
 
-	/* Description of the GuestPolicy. Length of the description is limited to 1024 characters. */
+	/* Description of the guest policy. Length of the description is limited to 1024 characters. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* List of package repository configurations assigned to the VM instance. */
+	/* A list of package repositories to configure on the VM instance. This is done before any other configs are applied so they can use these repos. Package repositories are only configured if the corresponding package manager(s) are available. */
 	// +optional
 	PackageRepositories []GuestpolicyPackageRepositories `json:"packageRepositories,omitempty"`
 
-	/* List of package configurations assigned to the VM instance. */
+	/* The software packages to be managed by this policy. */
 	// +optional
 	Packages []GuestpolicyPackages `json:"packages,omitempty"`
 
-	/* Optional. A list of Recipes to install on the VM. */
+	/* A list of Recipes to install on the VM instance. */
 	// +optional
 	Recipes []GuestpolicyRecipes `json:"recipes,omitempty"`
 
