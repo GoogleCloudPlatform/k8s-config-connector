@@ -954,6 +954,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the ContainerNodePool resource
+                  in GCP.
+                type: string
               instanceGroupUrls:
                 description: The resource URLs of the managed instance groups associated
                   with this node pool.

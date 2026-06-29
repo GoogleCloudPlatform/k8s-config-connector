@@ -112,5 +112,25 @@ func getIdentityFromContainerNodePoolSpec(ctx context.Context, reader client.Rea
 }
 
 func (obj *ContainerNodePool) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	return getIdentityFromContainerNodePoolSpec(ctx, reader, obj)
+	specIdentity, err := getIdentityFromContainerNodePoolSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	if obj.Status.ExternalRef != nil && *obj.Status.ExternalRef != "" {
+		externalRef := *obj.Status.ExternalRef
+		statusIdentity := &ContainerNodePoolIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+		}
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
+}
+
+func (obj *ContainerNodePool) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }
