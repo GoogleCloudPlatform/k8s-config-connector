@@ -1547,6 +1547,66 @@ func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpe
 	out.Metastore = Lake_Metastore_ToProto(mapCtx, in.Metastore)
 	return out
 }
+func DataplexMetadataJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob) *krm.DataplexMetadataJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexMetadataJobObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ImportResult = MetadataJobImportJobResultObservedState_FromProto(mapCtx, in.GetImportResult())
+	out.ExportResult = MetadataJobExportJobResultObservedState_FromProto(mapCtx, in.GetExportResult())
+	out.Status = MetadataJobStatusObservedState_FromProto(mapCtx, in.GetStatus())
+	return out
+}
+func DataplexMetadataJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexMetadataJobObservedState) *pb.MetadataJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if oneof := MetadataJobImportJobResultObservedState_ToProto(mapCtx, in.ImportResult); oneof != nil {
+		out.Result = &pb.MetadataJob_ImportResult{ImportResult: oneof}
+	}
+	if oneof := MetadataJobExportJobResultObservedState_ToProto(mapCtx, in.ExportResult); oneof != nil {
+		out.Result = &pb.MetadataJob_ExportResult{ExportResult: oneof}
+	}
+	out.Status = MetadataJobStatusObservedState_ToProto(mapCtx, in.Status)
+	return out
+}
+func DataplexMetadataJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob) *krm.DataplexMetadataJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexMetadataJobSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.ImportSpec = MetadataJobImportJobSpec_FromProto(mapCtx, in.GetImportSpec())
+	out.ExportSpec = MetadataJobExportJobSpec_FromProto(mapCtx, in.GetExportSpec())
+	return out
+}
+func DataplexMetadataJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexMetadataJobSpec) *pb.MetadataJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Type = direct.Enum_ToProto[pb.MetadataJob_Type](mapCtx, in.Type)
+	if oneof := MetadataJobImportJobSpec_ToProto(mapCtx, in.ImportSpec); oneof != nil {
+		out.Spec = &pb.MetadataJob_ImportSpec{ImportSpec: oneof}
+	}
+	if oneof := MetadataJobExportJobSpec_ToProto(mapCtx, in.ExportSpec); oneof != nil {
+		out.Spec = &pb.MetadataJob_ExportSpec{ExportSpec: oneof}
+	}
+	return out
+}
 func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.DataplexTaskSpec {
 	if in == nil {
 		return nil
@@ -1761,6 +1821,234 @@ func Lake_MetastoreStatus_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metast
 	out.Message = direct.ValueOf(in.Message)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Endpoint = direct.ValueOf(in.Endpoint)
+	return out
+}
+func MetadataJobExportJobResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ExportJobResult) *krm.MetadataJobExportJobResultObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataJobExportJobResultObservedState{}
+	out.ExportedEntries = direct.LazyPtr(in.GetExportedEntries())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	return out
+}
+func MetadataJobExportJobResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobExportJobResultObservedState) *pb.MetadataJob_ExportJobResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob_ExportJobResult{}
+	out.ExportedEntries = direct.ValueOf(in.ExportedEntries)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	return out
+}
+func MetadataJobExportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ExportJobSpec) *krm.MetadataJobExportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataJobExportJobSpec{}
+	out.Scope = MetadataJobExportJobSpecScope_FromProto(mapCtx, in.GetScope())
+	out.OutputPath = direct.LazyPtr(in.GetOutputPath())
+	return out
+}
+func MetadataJobExportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobExportJobSpec) *pb.MetadataJob_ExportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob_ExportJobSpec{}
+	out.Scope = MetadataJobExportJobSpecScope_ToProto(mapCtx, in.Scope)
+	out.OutputPath = direct.ValueOf(in.OutputPath)
+	return out
+}
+func MetadataJobExportJobSpecScope_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ExportJobSpec_ExportJobScope) *krm.MetadataJobExportJobSpecScope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataJobExportJobSpecScope{}
+	out.OrganizationLevel = direct.LazyPtr(in.GetOrganizationLevel())
+
+	if v := in.GetProjects(); len(v) != 0 {
+		for i := range v {
+			out.ProjectRefs = append(out.ProjectRefs, refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetEntryGroups(); len(v) != 0 {
+		for i := range v {
+			out.EntryGroupRefs = append(out.EntryGroupRefs, krm.EntryGroupRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetEntryTypes(); len(v) != 0 {
+		for i := range v {
+			out.EntryTypeRefs = append(out.EntryTypeRefs, krm.EntryTypeRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetAspectTypes(); len(v) != 0 {
+		for i := range v {
+			out.AspectTypeRefs = append(out.AspectTypeRefs, krm.AspectTypeRef{External: v[i]})
+		}
+	}
+
+	return out
+}
+func MetadataJobExportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobExportJobSpecScope) *pb.MetadataJob_ExportJobSpec_ExportJobScope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob_ExportJobSpec_ExportJobScope{}
+	out.OrganizationLevel = direct.ValueOf(in.OrganizationLevel)
+
+	if v := in.ProjectRefs; len(v) != 0 {
+		for i := range v {
+			out.Projects = append(out.Projects, v[i].External)
+		}
+	}
+
+	if v := in.EntryGroupRefs; len(v) != 0 {
+		for i := range v {
+			out.EntryGroups = append(out.EntryGroups, v[i].External)
+		}
+	}
+
+	if v := in.EntryTypeRefs; len(v) != 0 {
+		for i := range v {
+			out.EntryTypes = append(out.EntryTypes, v[i].External)
+		}
+	}
+
+	if v := in.AspectTypeRefs; len(v) != 0 {
+		for i := range v {
+			out.AspectTypes = append(out.AspectTypes, v[i].External)
+		}
+	}
+
+	return out
+}
+func MetadataJobImportJobResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ImportJobResult) *krm.MetadataJobImportJobResultObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataJobImportJobResultObservedState{}
+	out.DeletedEntries = direct.LazyPtr(in.GetDeletedEntries())
+	out.UpdatedEntries = direct.LazyPtr(in.GetUpdatedEntries())
+	out.CreatedEntries = direct.LazyPtr(in.GetCreatedEntries())
+	out.UnchangedEntries = direct.LazyPtr(in.GetUnchangedEntries())
+	out.RecreatedEntries = direct.LazyPtr(in.GetRecreatedEntries())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func MetadataJobImportJobResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobResultObservedState) *pb.MetadataJob_ImportJobResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob_ImportJobResult{}
+	out.DeletedEntries = direct.ValueOf(in.DeletedEntries)
+	out.UpdatedEntries = direct.ValueOf(in.UpdatedEntries)
+	out.CreatedEntries = direct.ValueOf(in.CreatedEntries)
+	out.UnchangedEntries = direct.ValueOf(in.UnchangedEntries)
+	out.RecreatedEntries = direct.ValueOf(in.RecreatedEntries)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func MetadataJobImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ImportJobSpec) *krm.MetadataJobImportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataJobImportJobSpec{}
+	out.SourceStorageURI = direct.LazyPtr(in.GetSourceStorageUri())
+	out.SourceCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSourceCreateTime())
+	out.Scope = MetadataJobImportJobSpecScope_FromProto(mapCtx, in.GetScope())
+	out.EntrySyncMode = direct.Enum_FromProto(mapCtx, in.GetEntrySyncMode())
+	out.AspectSyncMode = direct.Enum_FromProto(mapCtx, in.GetAspectSyncMode())
+	out.LogLevel = direct.Enum_FromProto(mapCtx, in.GetLogLevel())
+	return out
+}
+func MetadataJobImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobSpec) *pb.MetadataJob_ImportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob_ImportJobSpec{}
+	out.SourceStorageUri = direct.ValueOf(in.SourceStorageURI)
+	out.SourceCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.SourceCreateTime)
+	out.Scope = MetadataJobImportJobSpecScope_ToProto(mapCtx, in.Scope)
+	out.EntrySyncMode = direct.Enum_ToProto[pb.MetadataJob_ImportJobSpec_SyncMode](mapCtx, in.EntrySyncMode)
+	out.AspectSyncMode = direct.Enum_ToProto[pb.MetadataJob_ImportJobSpec_SyncMode](mapCtx, in.AspectSyncMode)
+	out.LogLevel = direct.Enum_ToProto[pb.MetadataJob_ImportJobSpec_LogLevel](mapCtx, in.LogLevel)
+	return out
+}
+func MetadataJobImportJobSpecScope_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ImportJobSpec_ImportJobScope) *krm.MetadataJobImportJobSpecScope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataJobImportJobSpecScope{}
+
+	if v := in.GetEntryGroups(); len(v) != 0 {
+		for i := range v {
+			out.EntryGroupRefs = append(out.EntryGroupRefs, krm.EntryGroupRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetEntryTypes(); len(v) != 0 {
+		for i := range v {
+			out.EntryTypeRefs = append(out.EntryTypeRefs, krm.EntryTypeRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetAspectTypes(); len(v) != 0 {
+		for i := range v {
+			out.AspectTypeRefs = append(out.AspectTypeRefs, krm.AspectTypeRef{External: v[i]})
+		}
+	}
+
+	return out
+}
+func MetadataJobImportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobSpecScope) *pb.MetadataJob_ImportJobSpec_ImportJobScope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob_ImportJobSpec_ImportJobScope{}
+
+	if v := in.EntryGroupRefs; len(v) != 0 {
+		for i := range v {
+			out.EntryGroups = append(out.EntryGroups, v[i].External)
+		}
+	}
+
+	if v := in.EntryTypeRefs; len(v) != 0 {
+		for i := range v {
+			out.EntryTypes = append(out.EntryTypes, v[i].External)
+		}
+	}
+
+	if v := in.AspectTypeRefs; len(v) != 0 {
+		for i := range v {
+			out.AspectTypes = append(out.AspectTypes, v[i].External)
+		}
+	}
+
+	return out
+}
+func MetadataJobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_Status) *krm.MetadataJobStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataJobStatusObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.CompletionPercent = direct.LazyPtr(in.GetCompletionPercent())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func MetadataJobStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobStatusObservedState) *pb.MetadataJob_Status {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataJob_Status{}
+	out.State = direct.Enum_ToProto[pb.MetadataJob_Status_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.CompletionPercent = direct.ValueOf(in.CompletionPercent)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func ScannedData_FromProto(mapCtx *direct.MapContext, in *pb.ScannedData) *krm.ScannedData {

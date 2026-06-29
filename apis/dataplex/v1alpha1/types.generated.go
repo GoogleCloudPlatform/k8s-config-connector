@@ -25,6 +25,7 @@
 // resource: DataplexDataTaxonomy:DataTaxonomy
 // resource: DataplexAspectType:AspectType
 // resource: DataplexDataScan:DataScan
+// resource: DataplexMetadataJob:MetadataJob
 
 package v1alpha1
 
