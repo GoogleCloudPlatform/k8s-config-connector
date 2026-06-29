@@ -166,9 +166,6 @@ func ClusterWorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Clus
 	}
 	out := &pb.InstanceGroupConfig{}
 	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_ToProto)
-	if out.Accelerators == nil {
-		out.Accelerators = []*pb.AcceleratorConfig{}
-	}
 	out.DiskConfig = ClusterDiskConfig_v1beta1_ToProto(mapCtx, in.DiskConfig)
 	if in.ImageRef != nil {
 		out.ImageUri = in.ImageRef.External
@@ -207,9 +204,6 @@ func ClusterMasterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Clus
 	}
 	out := &pb.InstanceGroupConfig{}
 	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_ToProto)
-	if out.Accelerators == nil {
-		out.Accelerators = []*pb.AcceleratorConfig{}
-	}
 	out.DiskConfig = ClusterDiskConfig_v1beta1_ToProto(mapCtx, in.DiskConfig)
 	if in.ImageRef != nil {
 		out.ImageUri = in.ImageRef.External
@@ -248,9 +242,6 @@ func ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	}
 	out := &pb.InstanceGroupConfig{}
 	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, ClusterAccelerators_v1beta1_ToProto)
-	if out.Accelerators == nil {
-		out.Accelerators = []*pb.AcceleratorConfig{}
-	}
 	out.DiskConfig = ClusterDiskConfig_v1beta1_ToProto(mapCtx, in.DiskConfig)
 	if in.ImageRef != nil {
 		out.ImageUri = in.ImageRef.External
@@ -752,9 +743,6 @@ func ClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterCon
 	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
 	out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_ToProto(mapCtx, in.SoftwareConfig)
 	out.InitializationActions = direct.Slice_ToProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_ToProto)
-	if out.InitializationActions == nil {
-		out.InitializationActions = []*pb.NodeInitializationAction{}
-	}
 	out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_ToProto(mapCtx, in.EncryptionConfig)
 	out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx, in.AutoscalingConfig)
 	out.SecurityConfig = ClusterSecurityConfig_v1beta1_ToProto(mapCtx, in.SecurityConfig)
@@ -773,9 +761,6 @@ func ClusterSoftwareConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Cl
 	out.ImageVersion = direct.ValueOf(in.ImageVersion)
 	out.Properties = in.Properties
 	out.OptionalComponents = direct.EnumSlice_ToProto[pb.Component](mapCtx, in.OptionalComponents)
-	if out.OptionalComponents == nil {
-		out.OptionalComponents = []pb.Component{}
-	}
 	return out
 }
 
