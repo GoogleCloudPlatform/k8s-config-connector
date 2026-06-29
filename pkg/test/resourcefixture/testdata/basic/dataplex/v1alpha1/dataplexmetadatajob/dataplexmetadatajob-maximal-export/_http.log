@@ -1,0 +1,757 @@
+GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "dataplex-metadatajob-bucket-max-exp-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "dataplex-metadatajob-bucket-max-exp-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "dataplex-metadatajob-bucket-max-exp-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/CreateEntryGroup
+
+{
+  "entryGroup": {
+    "description": "Entry Group for Dataplex Metadata Job Maximal Export Test",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "entryGroupId": "dataplexmetadatajob-eg-max-exp-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.EntryGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Entry Group for Dataplex Metadata Job Maximal Export Test",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/CreateEntryType
+
+{
+  "entryType": {
+    "description": "Entry Type for Dataplex Metadata Job Maximal Export Test",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "entryTypeId": "dataplexmetadatajob-et-max-exp-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.EntryType",
+    "authorization": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Entry Type for Dataplex Metadata Job Maximal Export Test",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetMetadataJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/CreateMetadataJob
+
+{
+  "metadataJob": {
+    "exportSpec": {
+      "outputPath": "gs://dataplex-metadatajob-bucket-max-exp-${uniqueId}/export/",
+      "scope": {
+        "aspectTypes": [
+          "projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type"
+        ],
+        "entryGroups": [
+          "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+        ],
+        "entryTypes": [
+          "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+        ],
+        "projects": [
+          "projects/${projectId}"
+        ]
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "type": "EXPORT"
+  },
+  "metadataJobId": "dataplexmetadatajob-maximal-export-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.MetadataJob",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "exportResult": {
+      "exportedEntries": "15"
+    },
+    "exportSpec": {
+      "outputPath": "gs://dataplex-metadatajob-bucket-max-exp-${uniqueId}/export/",
+      "scope": {
+        "aspectTypes": [
+          "projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type"
+        ],
+        "entryGroups": [
+          "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+        ],
+        "entryTypes": [
+          "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+        ],
+        "projects": [
+          "projects/${projectId}"
+        ]
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}",
+    "status": {
+      "completionPercent": 100,
+      "state": "SUCCEEDED",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "type": "EXPORT",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetMetadataJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "exportResult": {
+    "exportedEntries": "15"
+  },
+  "exportSpec": {
+    "outputPath": "gs://dataplex-metadatajob-bucket-max-exp-${uniqueId}/export/",
+    "scope": {
+      "aspectTypes": [
+        "projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type"
+      ],
+      "entryGroups": [
+        "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+      ],
+      "entryTypes": [
+        "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+      ],
+      "projects": [
+        "projects/${projectId}"
+      ]
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}",
+  "status": {
+    "completionPercent": 100,
+    "state": "SUCCEEDED",
+    "updateTime": "1970-01-01T00:00:00Z"
+  },
+  "type": "EXPORT",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetMetadataJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "exportResult": {
+    "exportedEntries": "15"
+  },
+  "exportSpec": {
+    "outputPath": "gs://dataplex-metadatajob-bucket-max-exp-${uniqueId}/export/",
+    "scope": {
+      "aspectTypes": [
+        "projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type"
+      ],
+      "entryGroups": [
+        "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+      ],
+      "entryTypes": [
+        "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+      ],
+      "projects": [
+        "projects/${projectId}"
+      ]
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}",
+  "status": {
+    "completionPercent": 100,
+    "state": "SUCCEEDED",
+    "updateTime": "1970-01-01T00:00:00Z"
+  },
+  "type": "EXPORT",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Entry Type for Dataplex Metadata Job Maximal Export Test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Entry Type for Dataplex Metadata Job Maximal Export Test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Entry Group for Dataplex Metadata Job Maximal Export Test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Entry Group for Dataplex Metadata Job Maximal Export Test",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryGroup
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "dataplex-metadatajob-bucket-max-exp-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/dataplex-metadatajob-bucket-max-exp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
