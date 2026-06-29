@@ -26,6 +26,7 @@
 // proto.service: google.cloud.compute.v1.Networks
 // proto.service: google.cloud.compute.v1.Routes
 // proto.service: google.cloud.compute.v1.Autoscalers
+// proto.service: google.cloud.compute.v1.NodeTemplates
 
 package compute
 
@@ -390,6 +391,18 @@ func (m *gcpClient) newRegionalTargetHttpsProxiesClient(ctx context.Context) (*c
 	client, err := compute.NewRegionTargetHttpsProxiesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute RegionTargetHttpsProxies REST client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNodeTemplatesClient(ctx context.Context) (*compute.NodeTemplatesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNodeTemplatesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeNodeTemplates client: %w", err)
 	}
 	return client, err
 }
