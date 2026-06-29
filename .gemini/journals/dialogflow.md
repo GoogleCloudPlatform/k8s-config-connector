@@ -29,3 +29,13 @@
   - Ran `generate-types` using `--service google.cloud.dialogflow.cx.v3` to correctly reference `google.cloud.dialogflow.cx.v3.SecuritySettings`.
   - Added `//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}` to `ignoredTemplates` in `pkg/gcpurls/registry_test.go` to explicitly allow registering the Dialogflow security settings URL template without requiring a corresponding CAI entry.
 - **Impact**: Enables smooth scaffolding and test success for Dialogflow CX resources that use direct identity models and are absent from CAI definitions.
+
+### [2026-06-24] DialogflowSipTrunk Initial Types and Identity Scaffolding
+- **Context**: Implementing initial KRM types, CRD, and IdentityV2 for `DialogflowSipTrunk` (Issue #9289).
+- **Problem**:
+  - The issue description requested using service `google.cloud.dialogflow.v1` for the `DialogflowSipTrunk:SipTrunk` resource; however, the `SipTrunk` resource only exists under the beta/v2beta1 version of Dialogflow, i.e., package `google.cloud.dialogflow.v2beta1` in the Google APIs protobuf schema. Attempting to use `google.cloud.dialogflow.v1` fails with "proto: not found".
+- **Solution**:
+  - Configured `generate.sh` to use the service `google.cloud.dialogflow.v2beta1` to correctly generate the schema for `DialogflowSipTrunk:SipTrunk`.
+  - Moved the generated output `types.generated.go` to `siptrunk_types.generated.go` and restored `types.generated.go` for the other Dialogflow v2 resources.
+  - Implemented the identity and external ref logic in `dialogflowsiptrunk_identity.go` with unit tests in `dialogflowsiptrunk_identity_test.go`.
+- **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowSipTrunk, preparing the codebase for the subsequent adapter and reconciliation controller implementation steps.

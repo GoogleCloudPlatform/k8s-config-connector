@@ -40,6 +40,14 @@ go run . generate-types \
 
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
 
+# Generate types for Dialogflow v1 service (SipTrunk)
+go run . generate-types \
+  --service google.cloud.dialogflow.v2beta1 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowSipTrunk:SipTrunk
+
+mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/siptrunk_types.generated.go
+
 # Generate types for Dialogflow v2 service again to restore types.generated.go for Dialogflow v2
 go run . generate-types \
   --service google.cloud.dialogflow.v2 \

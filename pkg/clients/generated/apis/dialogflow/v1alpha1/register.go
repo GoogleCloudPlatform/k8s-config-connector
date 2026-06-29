@@ -101,5 +101,11 @@ var (
 		Kind:    reflect.TypeOf(DialogflowSecuritySettings{}).Name(),
 	}
 
+	DialogflowSipTrunkGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DialogflowSipTrunk{}).Name(),
+	}
+
 	dialogflowAPIVersion = SchemeGroupVersion.String()
 )

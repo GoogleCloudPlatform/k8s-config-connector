@@ -142,6 +142,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Dialogflow
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":       true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}": true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/sipTrunks/{}":        true,
 
 		// Discovery Engine
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":      true,

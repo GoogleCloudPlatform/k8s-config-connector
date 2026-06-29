@@ -36,3 +36,5 @@ type DialogflowIntentExpansion interface{}
 type DialogflowKnowledgeBaseExpansion interface{}
 
 type DialogflowSecuritySettingsExpansion interface{}
+
+type DialogflowSipTrunkExpansion interface{}
