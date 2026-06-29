@@ -313,6 +313,9 @@
       location: us-central1-a
   ResourceConfigId: ComputeNetworkEndpointGroup:zonal
   URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/networkEndpointGroups/computeneg"
+- ExpectedSkeleton: null
+  ResourceConfigId: ComputeNetworkEndpoint
+  URI: ""
 - ExpectedSkeleton:
     apiVersion: compute.cnrm.cloud.google.com/v1beta1
     kind: ComputeNetworkFirewallPolicy
