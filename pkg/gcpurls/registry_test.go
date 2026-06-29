@@ -115,6 +115,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                  true,
 		"//compute.googleapis.com/projects/{}/regions/{}/routers/{}/interfaces/{}":        true,
 		"//compute.googleapis.com/projects/{}/regions/{}/routers/{}/{}":                   true,
+		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}/{}/{}/{}": true,
+		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}//{}/{}":   true,
 
 		// Connectors
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
