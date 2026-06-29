@@ -1,3 +1,173 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "accountId": "usersa1-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "User Service Account 1"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 1",
+  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 1",
+  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "accountId": "usersa2-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "User Service Account 2"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 2",
+  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 2",
+  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
 
@@ -253,7 +423,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -276,29 +446,41 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
 Content-Type: application/json
 
 {
   "clusterName": "dataproccluster-${uniqueId}",
   "config": {
     "gceClusterConfig": {
-      "internalIpOnly": false
+      "zoneUri": "us-central1-a"
     },
     "masterConfig": {
-      "diskConfig": {
-        "bootDiskType": "pd-standard"
-      },
       "machineTypeUri": "n2-standard-2",
       "numInstances": 1
+    },
+    "securityConfig": {
+      "identityConfig": {
+        "userServiceAccountMapping": {
+          "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        }
+      }
+    },
+    "softwareConfig": {
+      "imageVersion": "2.2.81-debian12",
+      "properties": {
+        "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
+      }
+    },
+    "workerConfig": {
+      "machineTypeUri": "n2-standard-2",
+      "numInstances": 2
     }
   },
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
-  },
-  "projectId": "${projectId}"
+  }
 }
 
 200 OK
@@ -320,7 +502,7 @@ X-Xss-Protection: 0
     "operationType": "CREATE",
     "status": {
       "innerState": "PENDING",
-      "state": 1,
+      "state": "PENDING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "warnings": [
@@ -334,7 +516,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -385,7 +567,7 @@ X-Xss-Protection: 0
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
-        "internalIpOnly": false,
+        "internalIpOnly": true,
         "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
         "serviceAccountScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
@@ -395,7 +577,7 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
       },
       "masterConfig": {
         "diskConfig": {
@@ -403,74 +585,22 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
       },
+      "securityConfig": {
+        "identityConfig": {
+          "userServiceAccountMapping": {
+            "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          }
+        }
+      },
       "softwareConfig": {
-        "imageVersion": "2.2.63-debian12",
+        "imageVersion": "2.2.81-debian12",
         "properties": {
-          "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
-          "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
-          "core:fs.gs.block.size": "134217728",
-          "core:fs.gs.metadata.cache.enable": "false",
-          "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
-          "distcp:mapreduce.map.java.opts": "-Xmx768m",
-          "distcp:mapreduce.map.memory.mb": "1024",
-          "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
-          "distcp:mapreduce.reduce.memory.mb": "1024",
-          "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
-          "hdfs:dfs.datanode.address": "0.0.0.0:9866",
-          "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
-          "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
-          "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
-          "hdfs:dfs.namenode.handler.count": "20",
-          "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
-          "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-          "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
-          "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
-          "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
-          "hdfs:dfs.namenode.service.handler.count": "10",
-          "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-          "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
-          "mapred:mapreduce.job.maps": "21",
-          "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
-          "mapred:mapreduce.job.reduces": "7",
-          "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
-          "mapred:mapreduce.map.cpu.vcores": "1",
-          "mapred:mapreduce.map.java.opts": "-Xmx2708m",
-          "mapred:mapreduce.map.memory.mb": "3386",
-          "mapred:mapreduce.reduce.cpu.vcores": "1",
-          "mapred:mapreduce.reduce.java.opts": "-Xmx2708m",
-          "mapred:mapreduce.reduce.memory.mb": "3386",
-          "mapred:mapreduce.task.io.sort.mb": "256",
-          "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
-          "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
-          "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-          "spark-env:SPARK_DAEMON_MEMORY": "2048m",
-          "spark:spark.driver.maxResultSize": "1024m",
-          "spark:spark.driver.memory": "2048m",
-          "spark:spark.executor.cores": "2",
-          "spark:spark.executor.instances": "2",
-          "spark:spark.executor.memory": "6157m",
-          "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
-          "spark:spark.plugins.defaultList": "com.google.cloud.dataproc.DataprocSparkPlugin",
-          "spark:spark.scheduler.mode": "FAIR",
-          "spark:spark.sql.cbo.enabled": "true",
-          "spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
-          "spark:spark.ui.port": "0",
-          "spark:spark.yarn.am.memory": "640m",
-          "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-          "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
-          "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
-          "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
-          "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
-          "yarn:yarn.nodemanager.resource.memory-mb": "13544",
-          "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
-          "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
-          "yarn:yarn.scheduler.maximum-allocation-mb": "13544",
-          "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+          "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
         }
       },
       "tempBucket": "${dataStoreTempBucketPath}",
@@ -480,7 +610,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -493,7 +623,6 @@ X-Xss-Protection: 0
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
       "goog-dataproc-location": "us-central1",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
@@ -502,7 +631,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -522,7 +651,7 @@ X-Xss-Protection: 0
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": false,
+      "internalIpOnly": true,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -532,7 +661,7 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
     },
     "masterConfig": {
       "diskConfig": {
@@ -543,74 +672,22 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
+    },
+    "securityConfig": {
+      "identityConfig": {
+        "userServiceAccountMapping": {
+          "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        }
+      }
     },
     "softwareConfig": {
-      "imageVersion": "2.2.63-debian12",
+      "imageVersion": "2.2.81-debian12",
       "properties": {
-        "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
-        "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
-        "core:fs.gs.block.size": "134217728",
-        "core:fs.gs.metadata.cache.enable": "false",
-        "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
-        "distcp:mapreduce.map.java.opts": "-Xmx768m",
-        "distcp:mapreduce.map.memory.mb": "1024",
-        "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
-        "distcp:mapreduce.reduce.memory.mb": "1024",
-        "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
-        "hdfs:dfs.datanode.address": "0.0.0.0:9866",
-        "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
-        "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
-        "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
-        "hdfs:dfs.namenode.handler.count": "20",
-        "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
-        "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-        "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
-        "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
-        "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
-        "hdfs:dfs.namenode.service.handler.count": "10",
-        "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
-        "mapred:mapreduce.job.maps": "21",
-        "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
-        "mapred:mapreduce.job.reduces": "7",
-        "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
-        "mapred:mapreduce.map.cpu.vcores": "1",
-        "mapred:mapreduce.map.java.opts": "-Xmx2708m",
-        "mapred:mapreduce.map.memory.mb": "3386",
-        "mapred:mapreduce.reduce.cpu.vcores": "1",
-        "mapred:mapreduce.reduce.java.opts": "-Xmx2708m",
-        "mapred:mapreduce.reduce.memory.mb": "3386",
-        "mapred:mapreduce.task.io.sort.mb": "256",
-        "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
-        "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
-        "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-        "spark-env:SPARK_DAEMON_MEMORY": "2048m",
-        "spark:spark.driver.maxResultSize": "1024m",
-        "spark:spark.driver.memory": "2048m",
-        "spark:spark.executor.cores": "2",
-        "spark:spark.executor.instances": "2",
-        "spark:spark.executor.memory": "6157m",
-        "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
-        "spark:spark.plugins.defaultList": "com.google.cloud.dataproc.DataprocSparkPlugin",
-        "spark:spark.scheduler.mode": "FAIR",
-        "spark:spark.sql.cbo.enabled": "true",
-        "spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
-        "spark:spark.ui.port": "0",
-        "spark:spark.yarn.am.memory": "640m",
-        "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
-        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
-        "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
-        "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
-        "yarn:yarn.nodemanager.resource.memory-mb": "13544",
-        "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
-        "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
-        "yarn:yarn.scheduler.maximum-allocation-mb": "13544",
-        "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+        "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
       }
     },
     "tempBucket": "${dataStoreTempBucketPath}",
@@ -624,10 +701,10 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
@@ -637,17 +714,16 @@ X-Xss-Protection: 0
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
-    "state": 2,
+    "state": "RUNNING",
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": 1,
+      "state": "CREATING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -655,136 +731,68 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping
 Content-Type: application/json
 
 {
-  "clusterName": "dataproccluster-${uniqueId}",
-  "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
     "configBucket": "${dataStoreConfigBucketPath}",
     "gceClusterConfig": {
-      "internalIpOnly": false,
+      "internalIpOnly": true,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "shieldedInstanceConfig": {
         "enableIntegrityMonitoring": true,
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+      "zoneUri": "us-central1-a"
     },
+    "initializationActions": [],
     "masterConfig": {
+      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-m"
-      ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
+    },
+    "securityConfig": {
+      "identityConfig": {
+        "userServiceAccountMapping": {
+          "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+          "user2@example.com": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        }
+      }
     },
     "softwareConfig": {
-      "imageVersion": "2.2.63-debian12",
+      "imageVersion": "2.2.81-debian12",
+      "optionalComponents": [],
       "properties": {
-        "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
-        "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
-        "core:fs.gs.block.size": "134217728",
-        "core:fs.gs.metadata.cache.enable": "false",
-        "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
-        "distcp:mapreduce.map.java.opts": "-Xmx768m",
-        "distcp:mapreduce.map.memory.mb": "1024",
-        "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
-        "distcp:mapreduce.reduce.memory.mb": "1024",
-        "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
-        "hdfs:dfs.datanode.address": "0.0.0.0:9866",
-        "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
-        "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
-        "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
-        "hdfs:dfs.namenode.handler.count": "20",
-        "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
-        "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-        "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
-        "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
-        "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
-        "hdfs:dfs.namenode.service.handler.count": "10",
-        "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
-        "mapred:mapreduce.job.maps": "21",
-        "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
-        "mapred:mapreduce.job.reduces": "7",
-        "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
-        "mapred:mapreduce.map.cpu.vcores": "1",
-        "mapred:mapreduce.map.java.opts": "-Xmx2708m",
-        "mapred:mapreduce.map.memory.mb": "3386",
-        "mapred:mapreduce.reduce.cpu.vcores": "1",
-        "mapred:mapreduce.reduce.java.opts": "-Xmx2708m",
-        "mapred:mapreduce.reduce.memory.mb": "3386",
-        "mapred:mapreduce.task.io.sort.mb": "256",
-        "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
-        "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
-        "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-        "spark-env:SPARK_DAEMON_MEMORY": "2048m",
-        "spark:spark.driver.maxResultSize": "1024m",
-        "spark:spark.driver.memory": "2048m",
-        "spark:spark.executor.cores": "2",
-        "spark:spark.executor.instances": "2",
-        "spark:spark.executor.memory": "6157m",
-        "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
-        "spark:spark.plugins.defaultList": "com.google.cloud.dataproc.DataprocSparkPlugin",
-        "spark:spark.scheduler.mode": "FAIR",
-        "spark:spark.sql.cbo.enabled": "true",
-        "spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
-        "spark:spark.ui.port": "0",
-        "spark:spark.yarn.am.memory": "640m",
-        "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
-        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
-        "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
-        "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
-        "yarn:yarn.nodemanager.resource.memory-mb": "13544",
-        "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
-        "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
-        "yarn:yarn.scheduler.maximum-allocation-mb": "13544",
-        "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+        "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
       }
     },
     "tempBucket": "${dataStoreTempBucketPath}",
     "workerConfig": {
+      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-w-0",
-        "dataproccluster-${uniqueId}-w-1"
-      ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+      "machineTypeUri": "n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
     "cnrm-test": "true",
-    "label-one": "new-value",
     "managed-by-cnrm": "true"
-  },
-  "projectId": "${projectId}",
-  "status": {
-    "state": 2,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": 1,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
+  }
 }
 
 200 OK
@@ -805,7 +813,7 @@ X-Xss-Protection: 0
     "operationType": "UPDATE",
     "status": {
       "innerState": "PENDING",
-      "state": 1,
+      "state": "PENDING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
@@ -814,7 +822,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -859,7 +867,7 @@ X-Xss-Protection: 0
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
-        "internalIpOnly": false,
+        "internalIpOnly": true,
         "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
         "serviceAccountScopes": [
           "https://www.googleapis.com/auth/cloud-platform"
@@ -869,7 +877,7 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
       },
       "masterConfig": {
         "diskConfig": {
@@ -877,74 +885,23 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
       },
+      "securityConfig": {
+        "identityConfig": {
+          "userServiceAccountMapping": {
+            "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+            "user2@example.com": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          }
+        }
+      },
       "softwareConfig": {
-        "imageVersion": "2.2.63-debian12",
+        "imageVersion": "2.2.81-debian12",
         "properties": {
-          "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
-          "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
-          "core:fs.gs.block.size": "134217728",
-          "core:fs.gs.metadata.cache.enable": "false",
-          "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
-          "distcp:mapreduce.map.java.opts": "-Xmx768m",
-          "distcp:mapreduce.map.memory.mb": "1024",
-          "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
-          "distcp:mapreduce.reduce.memory.mb": "1024",
-          "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
-          "hdfs:dfs.datanode.address": "0.0.0.0:9866",
-          "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
-          "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
-          "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
-          "hdfs:dfs.namenode.handler.count": "20",
-          "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
-          "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-          "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
-          "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
-          "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
-          "hdfs:dfs.namenode.service.handler.count": "10",
-          "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-          "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
-          "mapred:mapreduce.job.maps": "21",
-          "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
-          "mapred:mapreduce.job.reduces": "7",
-          "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
-          "mapred:mapreduce.map.cpu.vcores": "1",
-          "mapred:mapreduce.map.java.opts": "-Xmx2708m",
-          "mapred:mapreduce.map.memory.mb": "3386",
-          "mapred:mapreduce.reduce.cpu.vcores": "1",
-          "mapred:mapreduce.reduce.java.opts": "-Xmx2708m",
-          "mapred:mapreduce.reduce.memory.mb": "3386",
-          "mapred:mapreduce.task.io.sort.mb": "256",
-          "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
-          "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
-          "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-          "spark-env:SPARK_DAEMON_MEMORY": "2048m",
-          "spark:spark.driver.maxResultSize": "1024m",
-          "spark:spark.driver.memory": "2048m",
-          "spark:spark.executor.cores": "2",
-          "spark:spark.executor.instances": "2",
-          "spark:spark.executor.memory": "6157m",
-          "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
-          "spark:spark.plugins.defaultList": "com.google.cloud.dataproc.DataprocSparkPlugin",
-          "spark:spark.scheduler.mode": "FAIR",
-          "spark:spark.sql.cbo.enabled": "true",
-          "spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
-          "spark:spark.ui.port": "0",
-          "spark:spark.yarn.am.memory": "640m",
-          "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-          "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
-          "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
-          "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
-          "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
-          "yarn:yarn.nodemanager.resource.memory-mb": "13544",
-          "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
-          "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
-          "yarn:yarn.scheduler.maximum-allocation-mb": "13544",
-          "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+          "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
         }
       },
       "tempBucket": "${dataStoreTempBucketPath}",
@@ -954,7 +911,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -967,7 +924,6 @@ X-Xss-Protection: 0
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
       "goog-dataproc-location": "us-central1",
-      "label-one": "new-value",
       "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
@@ -976,7 +932,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -996,7 +952,7 @@ X-Xss-Protection: 0
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
-      "internalIpOnly": false,
+      "internalIpOnly": true,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
       "serviceAccountScopes": [
         "https://www.googleapis.com/auth/cloud-platform"
@@ -1006,7 +962,7 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
     },
     "masterConfig": {
       "diskConfig": {
@@ -1017,74 +973,23 @@ X-Xss-Protection: 0
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
+    },
+    "securityConfig": {
+      "identityConfig": {
+        "userServiceAccountMapping": {
+          "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+          "user2@example.com": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        }
+      }
     },
     "softwareConfig": {
-      "imageVersion": "2.2.63-debian12",
+      "imageVersion": "2.2.81-debian12",
       "properties": {
-        "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
-        "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
-        "core:fs.gs.block.size": "134217728",
-        "core:fs.gs.metadata.cache.enable": "false",
-        "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
-        "distcp:mapreduce.map.java.opts": "-Xmx768m",
-        "distcp:mapreduce.map.memory.mb": "1024",
-        "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
-        "distcp:mapreduce.reduce.memory.mb": "1024",
-        "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
-        "hdfs:dfs.datanode.address": "0.0.0.0:9866",
-        "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
-        "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
-        "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
-        "hdfs:dfs.namenode.handler.count": "20",
-        "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
-        "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-        "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
-        "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
-        "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
-        "hdfs:dfs.namenode.service.handler.count": "10",
-        "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
-        "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
-        "mapred:mapreduce.job.maps": "21",
-        "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
-        "mapred:mapreduce.job.reduces": "7",
-        "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
-        "mapred:mapreduce.map.cpu.vcores": "1",
-        "mapred:mapreduce.map.java.opts": "-Xmx2708m",
-        "mapred:mapreduce.map.memory.mb": "3386",
-        "mapred:mapreduce.reduce.cpu.vcores": "1",
-        "mapred:mapreduce.reduce.java.opts": "-Xmx2708m",
-        "mapred:mapreduce.reduce.memory.mb": "3386",
-        "mapred:mapreduce.task.io.sort.mb": "256",
-        "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2708m",
-        "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
-        "mapred:yarn.app.mapreduce.am.resource.mb": "3386",
-        "spark-env:SPARK_DAEMON_MEMORY": "2048m",
-        "spark:spark.driver.maxResultSize": "1024m",
-        "spark:spark.driver.memory": "2048m",
-        "spark:spark.executor.cores": "2",
-        "spark:spark.executor.instances": "2",
-        "spark:spark.executor.memory": "6157m",
-        "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
-        "spark:spark.plugins.defaultList": "com.google.cloud.dataproc.DataprocSparkPlugin",
-        "spark:spark.scheduler.mode": "FAIR",
-        "spark:spark.sql.cbo.enabled": "true",
-        "spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
-        "spark:spark.ui.port": "0",
-        "spark:spark.yarn.am.memory": "640m",
-        "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1638",
-        "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
-        "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
-        "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
-        "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
-        "yarn:yarn.nodemanager.resource.memory-mb": "13544",
-        "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
-        "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
-        "yarn:yarn.scheduler.maximum-allocation-mb": "13544",
-        "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+        "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
       }
     },
     "tempBucket": "${dataStoreTempBucketPath}",
@@ -1098,10 +1003,10 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
@@ -1111,7 +1016,6 @@ X-Xss-Protection: 0
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
-    "label-one": "new-value",
     "managed-by-cnrm": "true"
   },
   "metrics": {
@@ -1162,20 +1066,20 @@ X-Xss-Protection: 0
   },
   "projectId": "${projectId}",
   "status": {
-    "state": 2,
+    "state": "RUNNING",
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": 1,
+      "state": "CREATING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": 2,
+      "state": "RUNNING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": 5,
+      "state": "UPDATING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -1183,7 +1087,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1205,7 +1109,7 @@ X-Xss-Protection: 0
     "operationType": "DELETE",
     "status": {
       "innerState": "PENDING",
-      "state": 1,
+      "state": "PENDING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
@@ -1214,7 +1118,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1254,6 +1158,29 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -1456,3 +1383,83 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "version": 1
 }
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 2",
+  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 1",
+  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -3,10 +3,12 @@ kind: DataprocCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: new-value
@@ -14,9 +16,6 @@ metadata:
   namespace: ${uniqueId}
 spec:
   config:
-    autoscalingConfig:
-      policyRef:
-        name: dataprocautoscalingpolicy-${uniqueId}
     gceClusterConfig:
       internalIPOnly: false
     masterConfig:
@@ -24,9 +23,13 @@ spec:
         bootDiskType: pd-standard
       machineType: n2-standard-2
       numInstances: 1
+    workerConfig:
+      machineType: n2-standard-4
+      numInstances: 2
   location: us-central1
   projectRef:
     external: projects/${projectId}
+  resourceID: dataproccluster-${uniqueId}
 status:
   clusterUuid: ${clusterUuid}
   conditions:
@@ -36,7 +39,6 @@ status:
     status: "True"
     type: Ready
   config:
-    endpointConfig: {}
     masterConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-m
@@ -44,7 +46,6 @@ status:
       instanceNames:
       - dataproccluster-${uniqueId}-w-0
       - dataproccluster-${uniqueId}-w-1
-  externalRef: projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}
   metrics:
     hdfsMetrics:
       dfs-blocks-corrupt: "0"
@@ -88,7 +89,7 @@ status:
       yarn-vcores-pending: "0"
       yarn-vcores-reserved: "0"
       yarn-vcores-total: "8"
-  observedGeneration: 1
+  observedGeneration: 3
   status:
     state: RUNNING
     stateStartTime: "2024-04-01T12:34:56.123456Z"

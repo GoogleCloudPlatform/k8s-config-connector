@@ -253,7 +253,119 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies?alt=json
+Content-Type: application/json
+
+{
+  "basicAlgorithm": {
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleUpFactor": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -276,12 +388,15 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
 Content-Type: application/json
 
 {
   "clusterName": "dataproccluster-${uniqueId}",
   "config": {
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
     "gceClusterConfig": {
       "internalIpOnly": false
     },
@@ -297,8 +412,7 @@ Content-Type: application/json
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
-  },
-  "projectId": "${projectId}"
+  }
 }
 
 200 OK
@@ -320,7 +434,7 @@ X-Xss-Protection: 0
     "operationType": "CREATE",
     "status": {
       "innerState": "PENDING",
-      "state": 1,
+      "state": "PENDING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "warnings": [
@@ -334,7 +448,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -382,6 +496,9 @@ X-Xss-Protection: 0
     "clusterName": "dataproccluster-${uniqueId}",
     "clusterUuid": "${dataStoreClusterUUID}",
     "config": {
+      "autoscalingConfig": {
+        "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+      },
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
@@ -502,7 +619,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -519,6 +636,9 @@ X-Xss-Protection: 0
   "clusterName": "dataproccluster-${uniqueId}",
   "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
@@ -546,7 +666,7 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
@@ -627,7 +747,7 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
@@ -642,12 +762,12 @@ X-Xss-Protection: 0
   },
   "projectId": "${projectId}",
   "status": {
-    "state": 2,
+    "state": "RUNNING",
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": 1,
+      "state": "CREATING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -655,13 +775,14 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
 Content-Type: application/json
 
 {
-  "clusterName": "dataproccluster-${uniqueId}",
-  "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
     "configBucket": "${dataStoreConfigBucketPath}",
     "gceClusterConfig": {
       "internalIpOnly": false,
@@ -673,22 +794,22 @@ Content-Type: application/json
       },
       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
+    "initializationActions": [],
     "masterConfig": {
+      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-m"
-      ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+      "machineTypeUri": "n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
+      "optionalComponents": [],
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -754,37 +875,23 @@ Content-Type: application/json
     },
     "tempBucket": "${dataStoreTempBucketPath}",
     "workerConfig": {
+      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-w-0",
-        "dataproccluster-${uniqueId}-w-1"
-      ],
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
     "cnrm-test": "true",
     "label-one": "new-value",
     "managed-by-cnrm": "true"
-  },
-  "projectId": "${projectId}",
-  "status": {
-    "state": 2,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": 1,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
+  }
 }
 
 200 OK
@@ -805,7 +912,7 @@ X-Xss-Protection: 0
     "operationType": "UPDATE",
     "status": {
       "innerState": "PENDING",
-      "state": 1,
+      "state": "PENDING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
@@ -814,7 +921,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -856,6 +963,9 @@ X-Xss-Protection: 0
     "clusterName": "dataproccluster-${uniqueId}",
     "clusterUuid": "${dataStoreClusterUUID}",
     "config": {
+      "autoscalingConfig": {
+        "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+      },
       "configBucket": "${dataStoreConfigBucketPath}",
       "endpointConfig": {},
       "gceClusterConfig": {
@@ -976,7 +1086,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -993,6 +1103,9 @@ X-Xss-Protection: 0
   "clusterName": "dataproccluster-${uniqueId}",
   "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
+    "autoscalingConfig": {
+      "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+    },
     "configBucket": "${dataStoreConfigBucketPath}",
     "endpointConfig": {},
     "gceClusterConfig": {
@@ -1020,7 +1133,7 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
@@ -1101,7 +1214,7 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": 1
+      "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
@@ -1162,20 +1275,20 @@ X-Xss-Protection: 0
   },
   "projectId": "${projectId}",
   "status": {
-    "state": 2,
+    "state": "RUNNING",
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": 1,
+      "state": "CREATING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": 2,
+      "state": "RUNNING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": 5,
+      "state": "UPDATING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -1183,7 +1296,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1205,7 +1318,7 @@ X-Xss-Protection: 0
     "operationType": "DELETE",
     "status": {
       "innerState": "PENDING",
-      "state": 1,
+      "state": "PENDING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
@@ -1214,7 +1327,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1254,6 +1367,105 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 

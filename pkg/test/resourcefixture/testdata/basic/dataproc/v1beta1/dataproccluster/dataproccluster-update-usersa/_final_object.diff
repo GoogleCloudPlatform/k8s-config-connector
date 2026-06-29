@@ -1,0 +1,17 @@
+6,7d5
+<     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c9
+<   generation: 3
+---
+>   generation: 2
+38d35
+<   resourceID: dataproccluster-${uniqueId}
+47a45
+>     endpointConfig: {}
+54a53
+>   externalRef: projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}
+98c97
+<   observedGeneration: 3
+---
+>   observedGeneration: 2

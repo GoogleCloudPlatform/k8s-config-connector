@@ -614,3 +614,163 @@ func ClusterGkeClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.NodePoolTarget = direct.Slice_ToProto(mapCtx, in.NodePoolTarget, ClusterNodePoolTarget_v1beta1_ToProto)
 	return out
 }
+
+func ClusterAutoscalingConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingConfig) *krm.ClusterAutoscalingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterAutoscalingConfig{}
+	if in.GetPolicyUri() != "" {
+		out.PolicyRef = &krm.DataprocAutoscalingPolicyRef{External: in.GetPolicyUri()}
+	}
+	return out
+}
+
+func ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscalingConfig) *pb.AutoscalingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingConfig{}
+	if in.PolicyRef != nil {
+		out.PolicyUri = in.PolicyRef.External
+	}
+	return out
+}
+
+func ClusterGceClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GceClusterConfig) *krm.ClusterGceClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterGceClusterConfig{}
+	if in.GetZoneUri() != "" {
+		out.Zone = direct.LazyPtr(in.GetZoneUri())
+	}
+	if in.GetNetworkUri() != "" {
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetworkUri()}
+	}
+	if in.GetSubnetworkUri() != "" {
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetworkUri()}
+	}
+	out.InternalIPOnly = in.InternalIpOnly
+	if in.PrivateIpv6GoogleAccess != pb.GceClusterConfig_PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED {
+		out.PrivateIPv6GoogleAccess = direct.LazyPtr(in.PrivateIpv6GoogleAccess.String())
+	}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.ServiceAccountScopes = in.ServiceAccountScopes
+	out.Tags = in.Tags
+	out.Metadata = in.Metadata
+	out.ReservationAffinity = ClusterReservationAffinity_v1beta1_FromProto(mapCtx, in.GetReservationAffinity())
+	out.NodeGroupAffinity = ClusterNodeGroupAffinity_v1beta1_FromProto(mapCtx, in.GetNodeGroupAffinity())
+	out.ShieldedInstanceConfig = ClusterShieldedInstanceConfig_v1beta1_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	out.ConfidentialInstanceConfig = ClusterConfidentialInstanceConfig_v1beta1_FromProto(mapCtx, in.GetConfidentialInstanceConfig())
+	return out
+}
+
+func ClusterGceClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterGceClusterConfig) *pb.GceClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GceClusterConfig{}
+	out.ZoneUri = direct.ValueOf(in.Zone)
+	if in.NetworkRef != nil {
+		out.NetworkUri = in.NetworkRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.SubnetworkUri = in.SubnetworkRef.External
+	}
+	out.InternalIpOnly = in.InternalIPOnly
+	if in.PrivateIPv6GoogleAccess != nil {
+		if val, ok := pb.GceClusterConfig_PrivateIpv6GoogleAccess_value[*in.PrivateIPv6GoogleAccess]; ok {
+			out.PrivateIpv6GoogleAccess = pb.GceClusterConfig_PrivateIpv6GoogleAccess(val)
+		}
+	}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.ServiceAccountScopes = in.ServiceAccountScopes
+	out.Tags = in.Tags
+	out.Metadata = in.Metadata
+	out.ReservationAffinity = ClusterReservationAffinity_v1beta1_ToProto(mapCtx, in.ReservationAffinity)
+	out.NodeGroupAffinity = ClusterNodeGroupAffinity_v1beta1_ToProto(mapCtx, in.NodeGroupAffinity)
+	out.ShieldedInstanceConfig = ClusterShieldedInstanceConfig_v1beta1_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	out.ConfidentialInstanceConfig = ClusterConfidentialInstanceConfig_v1beta1_ToProto(mapCtx, in.ConfidentialInstanceConfig)
+	return out
+}
+
+func ClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterConfig) *krm.ClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterConfig{}
+	if in.GetConfigBucket() != "" {
+		out.StagingBucketRef = &storagev1beta1.StorageBucketRef{External: in.GetConfigBucket()}
+	}
+	if in.GetTempBucket() != "" {
+		out.TempBucketRef = &storagev1beta1.StorageBucketRef{External: in.GetTempBucket()}
+	}
+	out.GceClusterConfig = ClusterGceClusterConfig_v1beta1_FromProto(mapCtx, in.GetGceClusterConfig())
+	out.MasterConfig = ClusterMasterConfig_v1beta1_FromProto(mapCtx, in.GetMasterConfig())
+	out.WorkerConfig = ClusterWorkerConfig_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
+	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
+	out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_FromProto(mapCtx, in.GetSoftwareConfig())
+	out.InitializationActions = direct.Slice_FromProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_FromProto)
+	out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_FromProto(mapCtx, in.GetEncryptionConfig())
+	out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_FromProto(mapCtx, in.GetAutoscalingConfig())
+	out.SecurityConfig = ClusterSecurityConfig_v1beta1_FromProto(mapCtx, in.GetSecurityConfig())
+	out.LifecycleConfig = ClusterLifecycleConfig_v1beta1_FromProto(mapCtx, in.GetLifecycleConfig())
+	out.EndpointConfig = ClusterEndpointConfig_v1beta1_FromProto(mapCtx, in.GetEndpointConfig())
+	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_FromProto(mapCtx, in.GetMetastoreConfig())
+	out.DataprocMetricConfig = ClusterDataprocMetricConfig_v1beta1_FromProto(mapCtx, in.GetDataprocMetricConfig())
+	return out
+}
+
+func ClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterConfig) *pb.ClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterConfig{}
+	if in.StagingBucketRef != nil {
+		out.ConfigBucket = in.StagingBucketRef.External
+	}
+	if in.TempBucketRef != nil {
+		out.TempBucket = in.TempBucketRef.External
+	}
+	out.GceClusterConfig = ClusterGceClusterConfig_v1beta1_ToProto(mapCtx, in.GceClusterConfig)
+	out.MasterConfig = ClusterMasterConfig_v1beta1_ToProto(mapCtx, in.MasterConfig)
+	out.WorkerConfig = ClusterWorkerConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
+	out.SecondaryWorkerConfig = ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
+	out.SoftwareConfig = ClusterSoftwareConfig_v1beta1_ToProto(mapCtx, in.SoftwareConfig)
+	out.InitializationActions = direct.Slice_ToProto(mapCtx, in.InitializationActions, ClusterInitializationActions_v1beta1_ToProto)
+	out.EncryptionConfig = ClusterEncryptionConfig_v1beta1_ToProto(mapCtx, in.EncryptionConfig)
+	out.AutoscalingConfig = ClusterAutoscalingConfig_v1beta1_ToProto(mapCtx, in.AutoscalingConfig)
+	out.SecurityConfig = ClusterSecurityConfig_v1beta1_ToProto(mapCtx, in.SecurityConfig)
+	out.LifecycleConfig = ClusterLifecycleConfig_v1beta1_ToProto(mapCtx, in.LifecycleConfig)
+	out.EndpointConfig = ClusterEndpointConfig_v1beta1_ToProto(mapCtx, in.EndpointConfig)
+	out.MetastoreConfig = ClusterMetastoreConfig_v1beta1_ToProto(mapCtx, in.MetastoreConfig)
+	out.DataprocMetricConfig = ClusterDataprocMetricConfig_v1beta1_ToProto(mapCtx, in.DataprocMetricConfig)
+	return out
+}
+
+func ClusterSoftwareConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ClusterSoftwareConfig) *pb.SoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SoftwareConfig{}
+	out.ImageVersion = direct.ValueOf(in.ImageVersion)
+	out.Properties = in.Properties
+	out.OptionalComponents = direct.EnumSlice_ToProto[pb.Component](mapCtx, in.OptionalComponents)
+	return out
+}
+
+func ClusterSoftwareConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SoftwareConfig) *krm.ClusterSoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterSoftwareConfig{}
+	out.ImageVersion = direct.LazyPtr(in.GetImageVersion())
+	out.Properties = in.Properties
+	out.OptionalComponents = direct.EnumSlice_FromProto(mapCtx, in.OptionalComponents)
+	return out
+}
