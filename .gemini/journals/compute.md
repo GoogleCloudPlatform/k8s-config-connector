@@ -21,3 +21,9 @@
   1. Updated the mock `globaltargethttpsproxiesv1.go` and `regionaltargethttpsproxiesv1.go` to support both `https://` and `//` prefixes when parsing certificate manager certificate strings.
   2. Added trimming of standard absolute compute URL prefixes to `parseGlobalSslCertificateName` and `parseRegionalSslCertificateName` inside MockGCP compute SSL certificate services, ensuring relative and absolute URL formats are parsed seamlessly.
 - **Impact**: Ensures complete compatibility and seamless alignment between direct controllers and MockGCP/legacy controllers for SSL certificates and Certificate Manager integrations.
+
+### [2026-06-29] Direct Migration of ComputeNodeTemplate
+- **Context**: Implementing the direct controller and test fixtures for `ComputeNodeTemplate` (issue #10951).
+- **Problem**: `ComputeNodeTemplate` is completely immutable in GCP (cannot be updated after creation). In direct reconciliation, if a resource cannot be updated, we must still detect diffs and return an error.
+- **Solution**: Implemented the direct controller under `pkg/controller/direct/compute/` and supported client options using `newNodeTemplatesClient` in `client.go`. In the adapter's `Update` method, we perform standard `compareComputeNodeTemplate` comparison on spec fields. If a diff is found, we surface the diff back to the user via `structuredreporting.ReportDiff` and return a descriptive error stating that the resource is immutable.
+- **Impact**: Ensures strict correctness and immutability compliance while surfacing exact diffs and errors dynamically on the resource status. Tests passed successfully against MockGCP.
