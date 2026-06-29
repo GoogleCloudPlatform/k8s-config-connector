@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //osconfig.googleapis.com/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}
   group: osconfig.cnrm.cloud.google.com
   kind: OSConfigOSPolicyAssignment
   name: osconfigospolicyassignment-${uniqueId}

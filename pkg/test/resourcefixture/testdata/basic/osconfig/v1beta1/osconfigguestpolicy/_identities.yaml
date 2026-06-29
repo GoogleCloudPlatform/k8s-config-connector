@@ -34,7 +34,7 @@
   name: computeinstance2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //osconfig.googleapis.com/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}
   group: osconfig.cnrm.cloud.google.com
   kind: OSConfigGuestPolicy
   name: osconfigguestpolicy-${uniqueId}
