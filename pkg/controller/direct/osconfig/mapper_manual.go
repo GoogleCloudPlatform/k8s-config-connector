@@ -15,11 +15,14 @@
 package osconfig
 
 import (
+	"time"
+
 	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
 	osconfigpb "cloud.google.com/go/osconfig/apiv1beta/osconfigpb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/osconfig/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func FixedOrPercent_Fixed_ToProto(mapCtx *direct.MapContext, in *int64) *pb.FixedOrPercent_Fixed {
@@ -616,5 +619,49 @@ func SoftwareRecipe_Step_RunScript_ToProto(mapCtx *direct.MapContext, in *krm.So
 	out.Script = direct.ValueOf(in.Script)
 	out.AllowedExitCodes = int32Slice_ToProto(in.AllowedExitCodes)
 	out.Interpreter = direct.Enum_ToProto[osconfigpb.SoftwareRecipe_Step_RunScript_Interpreter](mapCtx, in.Interpreter)
+	return out
+}
+
+func OSConfigGuestPolicyStatus_FromProto(mapCtx *direct.MapContext, in *osconfigpb.GuestPolicy) *krm.OSConfigGuestPolicyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OSConfigGuestPolicyStatus{}
+	if in.CreateTime != nil {
+		out.CreateTime = direct.LazyPtr(in.CreateTime.AsTime().Format(time.RFC3339Nano))
+	}
+	if in.UpdateTime != nil {
+		out.UpdateTime = direct.LazyPtr(in.UpdateTime.AsTime().Format(time.RFC3339Nano))
+	}
+	if in.Etag != "" {
+		out.Etag = direct.LazyPtr(in.Etag)
+	}
+	return out
+}
+
+func OSConfigGuestPolicyStatus_ToProto(mapCtx *direct.MapContext, in *krm.OSConfigGuestPolicyStatus) *osconfigpb.GuestPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &osconfigpb.GuestPolicy{}
+	if in.CreateTime != nil {
+		t, err := time.Parse(time.RFC3339Nano, *in.CreateTime)
+		if err == nil {
+			out.CreateTime = timestamppb.New(t)
+		} else {
+			mapCtx.Errorf("parsing createTime: %w", err)
+		}
+	}
+	if in.UpdateTime != nil {
+		t, err := time.Parse(time.RFC3339Nano, *in.UpdateTime)
+		if err == nil {
+			out.UpdateTime = timestamppb.New(t)
+		} else {
+			mapCtx.Errorf("parsing updateTime: %w", err)
+		}
+	}
+	if in.Etag != nil {
+		out.Etag = *in.Etag
+	}
 	return out
 }
