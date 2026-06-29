@@ -2834,9 +2834,9 @@ func (in *VertexAITuningJobSpec) DeepCopyInto(out *VertexAITuningJobSpec) {
 		*out = new(EncryptionSpec)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ServiceAccount != nil {
-		in, out := &in.ServiceAccount, &out.ServiceAccount
-		*out = new(string)
+	if in.ServiceAccountRef != nil {
+		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(v1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
 }

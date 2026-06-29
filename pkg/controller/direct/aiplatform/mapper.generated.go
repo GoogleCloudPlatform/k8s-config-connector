@@ -1448,6 +1448,8 @@ func VertexAITuningJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.TuningDataStats = TuningDataStatsObservedState_ToProto(mapCtx, in.TuningDataStats)
 	return out
 }
+
+/* found existing non-generated mapping function "VertexAITuningJobSpec_FromProto", skipping
 func VertexAITuningJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.TuningJob) *krm.VertexAITuningJobSpec {
 	if in == nil {
 		return nil
@@ -1459,27 +1461,37 @@ func VertexAITuningJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.TuningJob
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	return out
 }
-func VertexAITuningJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITuningJobSpec) *pb.TuningJob {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "VertexAITuningJobSpec_ToProto", skipping
+
+	func VertexAITuningJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITuningJobSpec) *pb.TuningJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TuningJob{}
+		if oneof := VertexAITuningJobSpec_BaseModel_ToProto(mapCtx, in.BaseModel); oneof != nil {
+			out.SourceModel = oneof
+		}
+		if oneof := SupervisedTuningSpec_ToProto(mapCtx, in.SupervisedTuningSpec); oneof != nil {
+			out.TuningSpec = &pb.TuningJob_SupervisedTuningSpec{SupervisedTuningSpec: oneof}
+		}
+		out.TunedModelDisplayName = direct.ValueOf(in.TunedModelDisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.Labels = in.Labels
+		out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		return out
 	}
-	out := &pb.TuningJob{}
-	if oneof := VertexAITuningJobSpec_BaseModel_ToProto(mapCtx, in.BaseModel); oneof != nil {
-		out.SourceModel = oneof
-	}
-	if oneof := SupervisedTuningSpec_ToProto(mapCtx, in.SupervisedTuningSpec); oneof != nil {
-		out.TuningSpec = &pb.TuningJob_SupervisedTuningSpec{SupervisedTuningSpec: oneof}
-	}
-	out.TunedModelDisplayName = direct.ValueOf(in.TunedModelDisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
-	return out
-}
+*/
 func VertexAITuningJobSpec_BaseModel_ToProto(mapCtx *direct.MapContext, in *string) *pb.TuningJob_BaseModel {
 	if in == nil {
 		return nil

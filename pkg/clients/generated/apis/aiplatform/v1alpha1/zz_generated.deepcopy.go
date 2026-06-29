@@ -2261,9 +2261,9 @@ func (in *VertexAITuningJobSpec) DeepCopyInto(out *VertexAITuningJobSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceAccount != nil {
-		in, out := &in.ServiceAccount, &out.ServiceAccount
-		*out = new(string)
+	if in.ServiceAccountRef != nil {
+		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SupervisedTuningSpec != nil {

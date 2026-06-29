@@ -120,7 +120,7 @@ type VertexAITuningJobSpec struct {
 	Users starting the pipeline must have the `iam.serviceAccounts.actAs`
 	permission on this service account. */
 	// +optional
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Tuning Spec for Supervised Fine Tuning. */
 	// +optional

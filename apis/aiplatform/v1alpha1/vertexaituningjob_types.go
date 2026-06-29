@@ -84,7 +84,7 @@ type VertexAITuningJobSpec struct {
 	//  Users starting the pipeline must have the `iam.serviceAccounts.actAs`
 	//  permission on this service account.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TuningJob.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
 
 // VertexAITuningJobStatus defines the config connector machine state of VertexAITuningJob
