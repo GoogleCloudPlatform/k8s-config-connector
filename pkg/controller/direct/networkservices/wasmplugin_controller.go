@@ -209,18 +209,6 @@ func (a *WasmPluginAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	resource := proto.Clone(a.desiredProto).(*networkservicespb.WasmPlugin)
 	resource.Name = a.id.String()
 
-	// Preserve system labels (goog- or go-)
-	if a.actual.Labels != nil {
-		if resource.Labels == nil {
-			resource.Labels = make(map[string]string)
-		}
-		for k, v := range a.actual.Labels {
-			if strings.HasPrefix(k, "goog-") || strings.HasPrefix(k, "go-") {
-				resource.Labels[k] = v
-			}
-		}
-	}
-
 	diff, err := common.CompareProtoMessage(a.actual, resource, common.BasicDiff)
 	if err != nil {
 		return fmt.Errorf("comparing WasmPlugin %s: %w", a.id, err)
