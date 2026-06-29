@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowSipTrunk
+  name: dialogflowsiptrunk-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
