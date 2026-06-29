@@ -34,7 +34,7 @@
   name: pubsubsubscription-${uniqueId}-2
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/gsa-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: gsa-${uniqueId}

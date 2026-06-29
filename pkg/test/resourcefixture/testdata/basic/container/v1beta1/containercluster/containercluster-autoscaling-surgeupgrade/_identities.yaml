@@ -10,13 +10,13 @@
   name: kmscryptokey-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: iamserviceaccount-1-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: iamserviceaccount-2-${uniqueId}

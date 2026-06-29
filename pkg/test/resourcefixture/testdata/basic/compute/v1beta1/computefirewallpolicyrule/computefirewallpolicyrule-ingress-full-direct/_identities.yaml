@@ -16,13 +16,13 @@
   name: network-2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/sa-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: sa-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/sa-2-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: sa-2-${uniqueId}
