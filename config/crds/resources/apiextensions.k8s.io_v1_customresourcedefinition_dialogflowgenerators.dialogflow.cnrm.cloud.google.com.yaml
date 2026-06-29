@@ -202,6 +202,74 @@ spec:
                         output:
                           description: Required. Example output of the model.
                           properties:
+                            agentCoachingSuggestion:
+                              description: Optional. Suggestion to coach the agent.
+                              properties:
+                                agentActionSuggestions:
+                                  description: Optional. Suggested actions for the
+                                    agent to take.
+                                  items:
+                                    properties:
+                                      agentAction:
+                                        description: Optional. The suggested action
+                                          for the agent.
+                                        type: string
+                                    type: object
+                                  type: array
+                                applicableInstructions:
+                                  description: Optional. Instructions applicable based
+                                    on the current context.
+                                  items:
+                                    properties:
+                                      agentAction:
+                                        description: Optional. The action that human
+                                          agent should take. For example, "apologize
+                                          for the slow shipping". If the users only
+                                          want to use agent coaching for intent detection,
+                                          agent_action can be empty
+                                        type: string
+                                      condition:
+                                        description: Optional. The condition of the
+                                          instruction. For example, "the customer
+                                          wants to cancel an order".  If the users
+                                          want the instruction to be triggered unconditionally,
+                                          the condition can be empty.
+                                        type: string
+                                      displayDetails:
+                                        description: Optional. The detailed description
+                                          of this instruction.
+                                        type: string
+                                      displayName:
+                                        description: Optional. Display name for the
+                                          instruction.
+                                        type: string
+                                      systemAction:
+                                        description: Optional. The action that system
+                                          should take. For example, "call GetOrderTime
+                                          with order_number={order number provided
+                                          by the customer}". If the users don't have
+                                          plugins or don't want to trigger plugins,
+                                          the system_action can be empty
+                                        type: string
+                                      triggeringEvent:
+                                        description: Optional. The event that should
+                                          trigger this instruction. If UNSPECIFIED,
+                                          the instruction triggering will be same
+                                          as the generator's trigger_event.
+                                        type: string
+                                    type: object
+                                  type: array
+                                sampleResponses:
+                                  description: Optional. Sample response for the Agent.
+                                  items:
+                                    properties:
+                                      responseText:
+                                        description: Optional. Sample response for
+                                          Agent in text.
+                                        type: string
+                                    type: object
+                                  type: array
+                              type: object
                             freeFormSuggestion:
                               description: Optional. Free form suggestion.
                               properties:
@@ -227,6 +295,99 @@ spec:
                                     type: object
                                   type: array
                               type: object
+                            toolCallInfo:
+                              description: Optional. List of request and response
+                                for tool calls executed.
+                              items:
+                                properties:
+                                  toolCall:
+                                    description: Required. Request for a tool call.
+                                    properties:
+                                      action:
+                                        description: Optional. The name of the tool's
+                                          action associated with this call.
+                                        type: string
+                                      answerRecord:
+                                        description: Optional. The answer record associated
+                                          with this tool call.
+                                        type: string
+                                      cesApp:
+                                        description: 'Optional. CES app name for this
+                                          call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`.'
+                                        type: string
+                                      cesTool:
+                                        description: 'Optional. CES tool name for
+                                          this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`.'
+                                        type: string
+                                      cesToolset:
+                                        description: 'Optional. CES toolset name for
+                                          this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`.'
+                                        type: string
+                                      inputParameters:
+                                        description: Optional. The action's input
+                                          parameters.
+                                        x-kubernetes-preserve-unknown-fields: true
+                                      tool:
+                                        description: 'Optional. The [tool][google.cloud.dialogflow.v2.Tool]
+                                          associated with this call. Format: `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`.'
+                                        type: string
+                                      toolDisplayDetails:
+                                        description: Optional. A human readable description
+                                          of the tool.
+                                        type: string
+                                      toolDisplayName:
+                                        description: Optional. A human readable short
+                                          name of the tool, to be shown on the UI.
+                                        type: string
+                                    type: object
+                                  toolCallResult:
+                                    description: Required. Response for a tool call.
+                                    properties:
+                                      action:
+                                        description: Optional. The name of the tool's
+                                          action associated with this call.
+                                        type: string
+                                      answerRecord:
+                                        description: Optional. The answer record associated
+                                          with this tool call result.
+                                        type: string
+                                      cesApp:
+                                        description: 'Optional. CES app name for this
+                                          call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`.'
+                                        type: string
+                                      cesTool:
+                                        description: 'Optional. CES tool name for
+                                          this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`.'
+                                        type: string
+                                      cesToolset:
+                                        description: 'Optional. CES toolset name for
+                                          this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`.'
+                                        type: string
+                                      content:
+                                        description: Only populated if the response
+                                          content is utf-8 encoded.
+                                        type: string
+                                      error:
+                                        description: The tool call's error.
+                                        properties:
+                                          message:
+                                            description: Optional. The error message
+                                              of the function.
+                                            type: string
+                                        type: object
+                                      rawContent:
+                                        description: Only populated if the response
+                                          content is not utf-8 encoded. (by definition
+                                          byte fields are base64 encoded).
+                                        format: byte
+                                        type: string
+                                      tool:
+                                        description: 'Optional. The [tool][google.cloud.dialogflow.v2.Tool]
+                                          associated with this call. Format: `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`.'
+                                        type: string
+                                    type: object
+                                type: object
+                              type: array
                           type: object
                         summarizationSectionList:
                           description: Summarization sections.

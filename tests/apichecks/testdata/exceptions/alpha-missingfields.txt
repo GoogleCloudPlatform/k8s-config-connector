@@ -2276,9 +2276,35 @@
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].role" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].conversationContext.messageEntries[].text" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].extraInfo" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.agentActionSuggestions[].agentAction" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.applicableInstructions[].agentAction" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.applicableInstructions[].condition" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.applicableInstructions[].displayDetails" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.applicableInstructions[].displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.applicableInstructions[].systemAction" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.applicableInstructions[].triggeringEvent" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.agentCoachingSuggestion.sampleResponses[].responseText" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.freeFormSuggestion.response" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.summarySuggestion.summarySections[].section" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.summarySuggestion.summarySections[].summary" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.action" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.answerRecord" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.cesApp" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.cesTool" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.cesToolset" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.inputParameters" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.tool" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.toolDisplayDetails" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCall.toolDisplayName" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.action" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.answerRecord" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.cesApp" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.cesTool" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.cesToolset" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.content" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.error.message" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.rawContent" is not set in unstructured objects
+[missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].output.toolCallInfo[].toolCallResult.tool" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].summarizationSectionList.summarizationSections[].definition" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].summarizationSectionList.summarizationSections[].key" is not set in unstructured objects
 [missing_field] crd=dialogflowgenerators.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.summarizationContext.fewShotExamples[].summarizationSectionList.summarizationSections[].type" is not set in unstructured objects
@@ -2318,6 +2344,37 @@
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.redactionStrategy" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionStrategy" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionWindowDays" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.actions[].connectionActionID" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.actions[].entityOperation.entityID" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.actions[].entityOperation.operation" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.actions[].inputFields[]" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.actions[].outputFields[]" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.name" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionSpec.extensionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.functionSpec.inputSchema" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.functionSpec.methodType" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.functionSpec.outputSchema" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.apiKeyConfig.apiKey" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.apiKeyConfig.keyName" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.apiKeyConfig.requestLocation" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.apiKeyConfig.secretVersionForAPIKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.bearerTokenConfig.secretVersionForTokenRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.bearerTokenConfig.token" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.oauthConfig.clientID" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.oauthConfig.clientSecret" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.oauthConfig.oauthGrantType" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.oauthConfig.scopes[]" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.oauthConfig.secretVersionForClientSecretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.oauthConfig.tokenEndpoint" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.serviceAgentAuthConfig.serviceAgentAuth" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.serviceDirectoryConfig.service" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.textSchema" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.tlsConfig.caCerts[].cert" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.tlsConfig.caCerts[].displayName" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.boost" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.filter" is not set in unstructured objects

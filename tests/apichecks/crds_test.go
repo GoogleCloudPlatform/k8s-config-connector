@@ -1085,7 +1085,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
 		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
-
+		"dialogflowtools.dialogflow.cnrm.cloud.google.com":                              true, // spec.dataStoreSpec.fallbackPrompt is an empty object
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

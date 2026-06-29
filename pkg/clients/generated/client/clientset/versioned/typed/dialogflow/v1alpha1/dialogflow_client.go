@@ -39,6 +39,7 @@ type DialogflowV1alpha1Interface interface {
 	DialogflowIntentsGetter
 	DialogflowKnowledgeBasesGetter
 	DialogflowSecuritySettingsesGetter
+	DialogflowToolsGetter
 }
 
 // DialogflowV1alpha1Client is used to interact with features provided by the dialogflow.cnrm.cloud.google.com group.
@@ -76,6 +77,10 @@ func (c *DialogflowV1alpha1Client) DialogflowKnowledgeBases(namespace string) Di
 
 func (c *DialogflowV1alpha1Client) DialogflowSecuritySettingses(namespace string) DialogflowSecuritySettingsInterface {
 	return newDialogflowSecuritySettingses(c, namespace)
+}
+
+func (c *DialogflowV1alpha1Client) DialogflowTools(namespace string) DialogflowToolInterface {
+	return newDialogflowTools(c, namespace)
 }
 
 // NewForConfig creates a new DialogflowV1alpha1Client for the given config.

@@ -21,15 +21,21 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+# We need a newer googleapis to get google.cloud.dialogflow.v2.Tool
+# Cache buster to force fresh HEAD commit SHA for GHA
+PROTO_SHA="e9195b36c9896e43fc9fa38793b66b5cf1d59b50"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
-# Generate types for Dialogflow v2 service (KnowledgeBase, Generator)
-go run . generate-types \
-  --service google.cloud.dialogflow.v2 \
-  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
-  --resource DialogflowKnowledgeBase:KnowledgeBase \
-  --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 # Generate types for Dialogflow CX v3 service (SecuritySettings)
 go run . generate-types \
@@ -40,13 +46,18 @@ go run . generate-types \
 
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
 
-# Generate types for Dialogflow v2 service again to restore types.generated.go for Dialogflow v2
+# Generate types for all Dialogflow V2 resources (KnowledgeBase, Generator, and Tool)
 go run . generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
   --resource DialogflowGenerator:Generator \
-  --resource DialogflowConversationDataset:ConversationDataset
+  --resource DialogflowConversationDataset:ConversationDataset \
+  --resource DialogflowTool:Tool
+
+# Inject missing import for apiextensionsv1 into generated types
+sed -i 's/^package v1alpha1/package v1alpha1\n\nimport (\n\tapiextensionsv1 "k8s.io\/apiextensions-apiserver\/pkg\/apis\/apiextensions\/v1"\n)/' "${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go"
 
 # Generate mapper for Dialogflow CX v3 service
 go run . generate-mapper \
