@@ -3,10 +3,11 @@ kind: ComputeInstanceGroupManager
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: ${instanceGroupManagerID}
@@ -22,6 +23,7 @@ spec:
   location: us-central1
   projectRef:
     external: projects/${projectId}
+  resourceID: ${instanceGroupManagerID}
   targetSize: 4
   updatePolicy:
     instanceRedistributionType: PROACTIVE
@@ -40,10 +42,10 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   fingerprint: abcdef0123A=
   id: 1111111111111111
-  instanceGroup: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}
-  observedGeneration: 2
-  region: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+  instanceGroup: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}
+  observedGeneration: 3
+  region: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1
+  selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
   status:
     isStable: true
     versionTarget:

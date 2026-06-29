@@ -80,7 +80,9 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstance/computei
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroup/computeinstancegroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroup/computeinstancegroup-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroupmanager/regionalcomputeinstancegroupmanager
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroupmanager/regionalcomputeinstancegroupmanager-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroupmanager/zonalcomputeinstancegroupmanager
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancegroupmanager/zonalcomputeinstancegroupmanager-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinstancetemplate
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinterconnectattachment
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computemanagedsslcertificate

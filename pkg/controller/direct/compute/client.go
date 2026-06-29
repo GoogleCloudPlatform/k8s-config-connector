@@ -406,3 +406,27 @@ func (m *gcpClient) newNodeTemplatesClient(ctx context.Context) (*compute.NodeTe
 	}
 	return client, err
 }
+
+func (m *gcpClient) newInstanceGroupManagersClient(ctx context.Context) (*compute.InstanceGroupManagersClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewInstanceGroupManagersRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeInstanceGroupManagers client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRegionInstanceGroupManagersClient(ctx context.Context) (*compute.RegionInstanceGroupManagersClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionInstanceGroupManagersRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeRegionInstanceGroupManagers client: %w", err)
+	}
+	return client, err
+}
