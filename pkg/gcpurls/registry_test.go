@@ -192,6 +192,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":   true,
 
+		// OSConfig
+		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
+
 		// Privileged Access Manager
 		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":       true,
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}": true,
