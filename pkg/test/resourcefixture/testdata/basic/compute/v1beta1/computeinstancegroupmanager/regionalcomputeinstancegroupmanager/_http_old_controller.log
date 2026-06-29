@@ -612,7 +612,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -641,16 +641,18 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers
+POST https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers?alt=json
 Content-Type: application/json
 
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
   "baseInstanceName": "app",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "name": "${instanceGroupManagerID}",
   "targetSize": 3,
   "updatePolicy": {
@@ -693,7 +695,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -725,7 +727,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -741,6 +743,7 @@ X-Xss-Protection: 0
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
@@ -748,7 +751,8 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "kind": "compute#instanceGroupManager",
   "name": "${instanceGroupManagerID}",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
@@ -774,17 +778,19 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+PATCH https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
   "baseInstanceName": "app",
-  "name": "${instanceGroupManagerID}",
+  "fingerprint": "abcdef0123A=",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "targetSize": 4,
   "updatePolicy": {
     "instanceRedistributionType": "PROACTIVE",
@@ -826,7 +832,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -858,7 +864,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -874,6 +880,7 @@ X-Xss-Protection: 0
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
@@ -881,7 +888,8 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "kind": "compute#instanceGroupManager",
   "name": "${instanceGroupManagerID}",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
@@ -907,7 +915,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -938,7 +946,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -966,6 +974,35 @@ X-Xss-Protection: 0
   "targetId": "${instanceGroupManagerID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
   "user": "user@example.com"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found"
+  }
 }
 
 ---

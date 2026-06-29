@@ -27,3 +27,13 @@
 - **Problem**: `ComputeNodeTemplate` is completely immutable in GCP (cannot be updated after creation). In direct reconciliation, if a resource cannot be updated, we must still detect diffs and return an error.
 - **Solution**: Implemented the direct controller under `pkg/controller/direct/compute/` and supported client options using `newNodeTemplatesClient` in `client.go`. In the adapter's `Update` method, we perform standard `compareComputeNodeTemplate` comparison on spec fields. If a diff is found, we surface the diff back to the user via `structuredreporting.ReportDiff` and return a descriptive error stating that the resource is immutable.
 - **Impact**: Ensures strict correctness and immutability compliance while surfacing exact diffs and errors dynamically on the resource status. Tests passed successfully against MockGCP.
+
+### [2026-06-29] Direct Migration of ComputeInstanceGroupManager
+- **Context**: Implementing the direct controller and test fixtures for `ComputeInstanceGroupManager` (issue #10958).
+- **Problem**: `ComputeInstanceGroupManager` can be zonal or regional, meaning both `InstanceGroupManagersClient` and `RegionInstanceGroupManagersClient` are required. Furthermore, GCP returns full URLs for references (e.g., `InstanceTemplate`, `HealthCheck`, zones in `DistributionPolicy`), whereas users may specify relative names, causing false diffs.
+- **Solution**:
+  1. Added zonal and regional REST client instantiations under `pkg/controller/direct/compute/client.go`.
+  2. Implemented `ComputeInstanceGroupManagerAdapter` routing requests to zonal/regional clients depending on the location of the resource.
+  3. Pre-normalized all URL fields (e.g., `InstanceTemplate`, `HealthCheck`, `TargetPools`, and zone names) to relative paths using `refs.TrimComputeURIPrefix` and `lastComponent` before diff comparison.
+  4. Duplicated `regionalcomputeinstancegroupmanager` and `zonalcomputeinstancegroupmanager` to `-direct` variants with direct-reconciler annotations, successfully recorded golden files and HTTP traffic against MockGCP, and passed the full presubmit suites.
+- **Impact**: Clean package-isolated direct controller supporting both zonal and regional instance group managers while completely avoiding any drift loops or false diffs.

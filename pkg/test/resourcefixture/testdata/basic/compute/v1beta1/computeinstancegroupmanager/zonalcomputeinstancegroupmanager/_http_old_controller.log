@@ -378,6 +378,106 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "family": "debian-11",
+  "kind": "compute#image",
+  "name": "debian-11-bullseye-v20231010",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "status": "READY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "family": "debian-11",
+  "kind": "compute#image",
+  "name": "debian-11-bullseye-v20231010",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "status": "READY"
+}
+
+---
+
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates?alt=json&prettyPrint=false
 Content-Type: application/json
 
@@ -388,6 +488,28 @@ Content-Type: application/json
       {
         "autoDelete": true,
         "boot": true,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        },
+        "interface": "SCSI",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "disk-a",
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        },
+        "interface": "SCSI",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "disk-b",
         "initializeParams": {
           "diskType": "pd-standard",
           "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
@@ -532,6 +654,32 @@ X-Xss-Protection: 0
         "kind": "compute#attachedDisk",
         "mode": "READ_WRITE",
         "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "disk-a",
+        "index": 0,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "disk-b",
+        "index": 0,
+        "initializeParams": {
+          "diskType": "pd-standard",
+          "sourceImage": "projects/debian-cloud/global/images/family/debian-11"
+        },
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "type": "PERSISTENT"
       }
     ],
     "labels": {
@@ -612,7 +760,107 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "family": "debian-11",
+  "kind": "compute#image",
+  "name": "debian-11-bullseye-v20231010",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "status": "READY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "family": "debian-11",
+  "kind": "compute#image",
+  "name": "debian-11-bullseye-v20231010",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+  "status": "READY"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -631,30 +879,43 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}' was not found"
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers
+POST https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers?alt=json
 Content-Type: application/json
 
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
   "baseInstanceName": "app",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "name": "${instanceGroupManagerID}",
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "disk-a": {
+          "autoDelete": "ON_PERMANENT_INSTANCE_DELETION"
+        },
+        "disk-b": {
+          "autoDelete": "NEVER"
+        }
+      }
+    }
+  },
   "targetSize": 3,
   "updatePolicy": {
-    "instanceRedistributionType": "PROACTIVE",
     "maxSurge": {
       "fixed": 3
     },
@@ -682,18 +943,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceGroupManagerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
-  "user": "user@example.com"
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -714,18 +975,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceGroupManagerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
-  "user": "user@example.com"
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -741,6 +1002,7 @@ X-Xss-Protection: 0
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
@@ -748,11 +1010,23 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "kind": "compute#instanceGroupManager",
   "name": "${instanceGroupManagerID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "disk-a": {
+          "autoDelete": "ON_PERMANENT_INSTANCE_DELETION"
+        },
+        "disk-b": {
+          "autoDelete": "NEVER"
+        }
+      }
+    }
+  },
   "status": {
     "isStable": true,
     "versionTarget": {
@@ -761,7 +1035,6 @@ X-Xss-Protection: 0
   },
   "targetSize": 3,
   "updatePolicy": {
-    "instanceRedistributionType": "PROACTIVE",
     "maxSurge": {
       "fixed": 3
     },
@@ -769,25 +1042,39 @@ X-Xss-Protection: 0
       "fixed": 3
     },
     "minimalAction": "RESTART"
-  }
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+PATCH https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
   "baseInstanceName": "app",
-  "name": "${instanceGroupManagerID}",
+  "fingerprint": "abcdef0123A=",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "disk-a": {
+          "autoDelete": "NEVER"
+        },
+        "disk-b": {
+          "autoDelete": "NEVER"
+        }
+      }
+    }
+  },
   "targetSize": 4,
   "updatePolicy": {
-    "instanceRedistributionType": "PROACTIVE",
     "maxSurge": {
       "fixed": 3
     },
@@ -815,18 +1102,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceGroupManagerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
-  "user": "user@example.com"
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -847,18 +1134,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceGroupManagerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
-  "user": "user@example.com"
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -874,6 +1161,7 @@ X-Xss-Protection: 0
 {
   "autoHealingPolicies": [
     {
+      "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
       "initialDelaySec": 300
     }
   ],
@@ -881,11 +1169,23 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
+  "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "kind": "compute#instanceGroupManager",
   "name": "${instanceGroupManagerID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "disk-a": {
+          "autoDelete": "NEVER"
+        },
+        "disk-b": {
+          "autoDelete": "NEVER"
+        }
+      }
+    }
+  },
   "status": {
     "isStable": true,
     "versionTarget": {
@@ -894,7 +1194,6 @@ X-Xss-Protection: 0
   },
   "targetSize": 4,
   "updatePolicy": {
-    "instanceRedistributionType": "PROACTIVE",
     "maxSurge": {
       "fixed": 3
     },
@@ -902,12 +1201,13 @@ X-Xss-Protection: 0
       "fixed": 3
     },
     "minimalAction": "RESTART"
-  }
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -927,18 +1227,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceGroupManagerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
-  "user": "user@example.com"
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -959,13 +1259,42 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceGroupManagerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/instanceGroupManagers/${instanceGroupManagerID}",
-  "user": "user@example.com"
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}' was not found"
+  }
 }
 
 ---
