@@ -117,6 +117,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionTargetTcpProxiesServer(grpcServer, &RegionalTargetTcpProxyV1{MockService: s})
 
 	pb.RegisterRegionNetworkEndpointGroupsServer(grpcServer, &RegionNetworkEndpointGroupV1{MockService: s})
+	pb.RegisterNetworkEndpointGroupsServer(grpcServer, &NetworkEndpointGroupsV1{MockService: s})
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
 
@@ -317,6 +318,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterRegionNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

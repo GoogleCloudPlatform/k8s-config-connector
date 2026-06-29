@@ -258,6 +258,7 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-south2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-southeast3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/australia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/australia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-central2/subnetworks/${networkID}",
