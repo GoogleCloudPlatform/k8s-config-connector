@@ -2498,36 +2498,36 @@ func ComputeNetworkEndpointGroupStatus_v1beta1_FromProto(mapCtx *direct.MapConte
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeNetworkEndpointGroupStatus_v1beta1_ToProto", skipping
-
-	func ComputeNetworkEndpointGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEndpointGroupStatus) *pb.NetworkEndpointGroup {
-		if in == nil {
-			return nil
-		}
-		out := &pb.NetworkEndpointGroup{}
-		// MISSING: Annotations
-		// MISSING: AppEngine
-		// MISSING: CloudFunction
-		// MISSING: CloudRun
-		// MISSING: CreationTimestamp
-		// MISSING: DefaultPort
-		// MISSING: Description
-		// MISSING: ID
-		// MISSING: Kind
-		// MISSING: Name
-		// MISSING: Network
-		// MISSING: NetworkEndpointType
-		// MISSING: PSCData
-		// MISSING: PSCTargetService
-		// MISSING: Region
-		out.SelfLink = in.SelfLink
-		out.Size = in.Size
-		// MISSING: Subnetwork
-		// MISSING: Zone
-		return out
+/* found existing non-generated mapping function "ComputeNetworkEndpointGroupStatus_v1beta1_ToProto", skipping
+func ComputeNetworkEndpointGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEndpointGroupStatus) *pb.NetworkEndpointGroup {
+	if in == nil {
+		return nil
 	}
+	out := &pb.NetworkEndpointGroup{}
+	// MISSING: Annotations
+	// MISSING: AppEngine
+	// MISSING: CloudFunction
+	// MISSING: CloudRun
+	// MISSING: CreationTimestamp
+	// MISSING: DefaultPort
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: NetworkEndpointType
+	// MISSING: PSCData
+	// MISSING: PSCTargetService
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	out.Size = in.Size
+	// MISSING: Subnetwork
+	// MISSING: Zone
+	return out
+}
 */
+
+/* found existing non-generated mapping function "ComputeNetworkEndpointSpec_v1alpha1_FromProto", skipping
 func ComputeNetworkEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEndpoint) *krmcomputev1alpha1.ComputeNetworkEndpointSpec {
 	if in == nil {
 		return nil
@@ -2545,23 +2545,29 @@ func ComputeNetworkEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Port
 	return out
 }
-func ComputeNetworkEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEndpointSpec) *pb.NetworkEndpoint {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeNetworkEndpointSpec_v1alpha1_ToProto", skipping
+
+	func ComputeNetworkEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeNetworkEndpointSpec) *pb.NetworkEndpoint {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NetworkEndpoint{}
+		// MISSING: Annotations
+		// MISSING: ClientDestinationPort
+		// MISSING: FQDN
+		if in.InstanceRef != nil {
+			out.Instance = &in.InstanceRef.External
+		}
+		// MISSING: IPAddress
+		// (near miss): "IPAddress" vs "IpAddress"
+		// MISSING: IPV6Address
+		// MISSING: Port
+		return out
 	}
-	out := &pb.NetworkEndpoint{}
-	// MISSING: Annotations
-	// MISSING: ClientDestinationPort
-	// MISSING: FQDN
-	if in.InstanceRef != nil {
-		out.Instance = &in.InstanceRef.External
-	}
-	// MISSING: IPAddress
-	// (near miss): "IPAddress" vs "IpAddress"
-	// MISSING: IPV6Address
-	// MISSING: Port
-	return out
-}
+*/
 func ComputeNetworkFirewallPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ComputeNetworkFirewallPolicy {
 	if in == nil {
 		return nil
