@@ -200,6 +200,39 @@ type GoogleCloudApigeeV1OperationGroup struct {
 	OperationConfigs []GoogleCloudApigeeV1OperationConfig `json:"operationConfigs,omitempty"`
 }
 
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperation
+type GoogleCloudApigeeV1PayloadOperation struct {
+	// Required. The operation name extracted from the request payload at runtime by the ParsePayload policy. For example, for MCP protocol requests, this could be `"tools/list"` or `"tools/call/get_weather"`. Wildcards are not supported.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperation.operation
+	Operation *string `json:"operation,omitempty"`
+}
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperationConfig
+type GoogleCloudApigeeV1PayloadOperationConfig struct {
+	// Required. Name of the API proxy with which the payload operations and quota are associated.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperationConfig.api_source
+	APISource *string `json:"apiSource,omitempty"`
+
+	// Optional. Custom attributes associated with the operation.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperationConfig.attributes
+	Attributes []GoogleCloudApigeeV1Attribute `json:"attributes,omitempty"`
+
+	// Required. List of payload operations for the API proxy to which quota will be applied.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperationConfig.operations
+	Operations []GoogleCloudApigeeV1PayloadOperation `json:"operations,omitempty"`
+
+	// Optional. Quota parameters to be enforced for the operations and API source combination. If none are specified, quota enforcement will not be done unless a quota is defined at the API product level.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperationConfig.quota
+	Quota *GoogleCloudApigeeV1Quota `json:"quota,omitempty"`
+}
+
+// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperationGroup
+type GoogleCloudApigeeV1PayloadOperationGroup struct {
+	// Required. List of payload operation configurations for Apigee API proxies that are associated with this API product.
+	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1PayloadOperationGroup.operation_configs
+	OperationConfigs []GoogleCloudApigeeV1PayloadOperationConfig `json:"operationConfigs,omitempty"`
+}
+
 // +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Quota
 type GoogleCloudApigeeV1Quota struct {
 	// Required. Time interval over which the number of request messages is calculated.

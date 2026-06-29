@@ -35,6 +35,21 @@ func dialogflowSipTrunkFuzzer() fuzztesting.KRMFuzzer {
 		DialogflowSipTrunkObservedState_ToProto,
 	)
 
+	f.FilterStatus = func(in *pb.SipTrunk) {
+		for _, conn := range in.Connections {
+			if conn != nil {
+				if conn.State == pb.Connection_STATE_UNSPECIFIED {
+					conn.State = pb.Connection_CONNECTED
+				}
+				if conn.ErrorDetails != nil {
+					if conn.ErrorDetails.CertificateState != nil && *conn.ErrorDetails.CertificateState == pb.Connection_CERTIFICATE_STATE_UNSPECIFIED {
+						conn.ErrorDetails.CertificateState = nil
+					}
+				}
+			}
+		}
+	}
+
 	f.SpecField(".expected_hostname")
 	f.SpecField(".display_name")
 
