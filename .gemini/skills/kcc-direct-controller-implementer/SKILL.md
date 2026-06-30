@@ -41,17 +41,11 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
       }
       gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
       ```
-    - **Diff Comparison & Structured Diff (`CompareProtoMessageStructuredDiff` or `CompareProtoMessage` pattern)**: Always prefer using the standard recursive comparison functions `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` over custom comparison logic (like `compareResource` with `tags.DiffForTopLevelFields`). This standardizes how field differences are calculated and avoids manual diffing bugs.
-      Ensure you sort the resulting fieldmask paths for determinism:
+    - **Diff Comparison & Structured Diff (`tags.DiffForTopLevelFields`)**: Always prefer using top-level field tags-based diff comparison via `tags.DiffForTopLevelFields` over recursive/magical comparison functions (such as `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` which are deprecated/discouraged due to unpredictable behaviors in `BasicDiff`).
       ```go
-      paths, diffs, err := common.CompareProtoMessageStructuredDiff(desired, actual, common.BasicDiff)
+      diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
       if err != nil {
-          return fmt.Errorf("comparing spec: %w", err)
-      }
-      pathsList := paths.UnsortedList()
-      sort.Strings(pathsList)
-      updateMask := &fieldmaskpb.FieldMask{
-          Paths: pathsList,
+          return nil, nil, err
       }
       ```
     - **Reconciling Empty or Incomplete LRO Responses**: Many GCP APIs (such as Dataproc's `UpdateCluster` LRO) return an empty response (`google.protobuf.Empty`), or do not fully populate read-only status fields (such as state, metrics, or instance names) during resource creation. If you map status directly from such incomplete/empty LRO responses, you will inadvertently clear status fields in Kubernetes.
