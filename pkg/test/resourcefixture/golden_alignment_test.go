@@ -192,14 +192,14 @@ func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
 	return false
 }
 
-func isMock404OrEmptyOnDeletedParent(path string, mockEv httpEvent, mockGrouped pathMethodEvents) bool {
+func is404OrEmptyOnDeletedParent(path string, ev httpEvent, mockGrouped pathMethodEvents) bool {
 	if !hasDeletedParent(path, mockGrouped) {
 		return false
 	}
-	if strings.Contains(mockEv.Status, "404") {
+	if strings.Contains(ev.Status, "404") {
 		return true
 	}
-	if strings.Contains(mockEv.ResponseBody, `"code": 404`) || strings.Contains(mockEv.ResponseBody, `"code":404`) {
+	if strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
 		return true
 	}
 	return false
@@ -261,7 +261,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			}
 
 			for i := 0; i < compareCount; i++ {
-				if isMock404OrEmptyOnDeletedParent(path, mockEvs[i], mockGrouped) {
+				if is404OrEmptyOnDeletedParent(path, realEvs[i], mockGrouped) || is404OrEmptyOnDeletedParent(path, mockEvs[i], mockGrouped) {
 					continue
 				}
 				compareJSON(t, fmt.Sprintf("path %s, method %s, call %d request body", path, method, i), realEvs[i].RequestBody, mockEvs[i].RequestBody)
