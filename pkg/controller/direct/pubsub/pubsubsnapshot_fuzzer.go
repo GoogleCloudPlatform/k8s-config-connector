@@ -32,11 +32,11 @@ func pubSubSnapshotFuzzer() fuzztesting.KRMFuzzer {
 		PubSubSnapshotSpec_FromProto, PubSubSnapshotSpec_ToProto,
 		PubSubSnapshotObservedState_FromProto, PubSubSnapshotObservedState_ToProto,
 	)
-	f.SpecFields.Insert(".topic")
-	f.SpecFields.Insert(".labels")
-	f.StatusFields.Insert(".expire_time")
+	f.SpecField(".topic")
+	f.SpecField(".labels")
+	f.StatusField(".expire_time")
 
-	f.Unimplemented_Internal(".name") // special field
+	f.Unimplemented_Identity(".name") // special field
 
 	return f
 }
