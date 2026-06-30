@@ -220,8 +220,11 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
      ```
    - If the test fails, you **MUST** add the reported non-standard casing exceptions in alphabetical order to the exceptions file:
      `tests/apichecks/testdata/exceptions/acronyms.txt`
-7. **Run CI/CD Group Presubmit Tests Locally**:
-   - Locate and run the presubmit script under `dev/ci/presubmits/tests-e2e-fixtures-<service_name>` matching the resource's service name (e.g., `dev/ci/presubmits/tests-e2e-fixtures-container`) to ensure everything reconciles cleanly:
+7. **Run CI/CD Group Presubmit Tests Locally (MANDATORY)**:
+   - > [!WARNING]
+     > Modifying a resource type (e.g., adding fields to a CRD, or registering new fields under `observedFields` in mapping configs) will implicitly affect **ALL** existing test cases for that resource type. The controller will begin populating the new fields in the status or `observedState` of all existing instances, causing their golden object manifests (`_generated_object_*.golden.yaml`) to change.
+   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests.
+   - After the run, check `git status` for any modified golden files, verify they are correct, and commit them:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-<service_name>
      ```

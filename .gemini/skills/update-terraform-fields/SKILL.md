@@ -165,8 +165,10 @@ Once definitions are updated, the agent must verify correctness of the field usi
      // you may not use this file except in compliance with the License.
      ...
      ```
-2. **Proceed to Test Skill**:
+2. **Proceed to Test Skill (CRITICAL)**:
    - Refer to [.gemini/skills/test-terraform-fields/SKILL.md](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.gemini/skills/test-terraform-fields/SKILL.md) to set up E2E tests, record golden files, check against MockGCP, and run linters.
+   - > [!IMPORTANT]
+     > When running E2E verification, do NOT just test your newly created test case. Modifying a resource schema will often affect other existing tests of that resource type (e.g. by adding new fields to their `observedState` or status). You **MUST** run the full group presubmit test suite under `dev/ci/presubmits/` (e.g., `dev/ci/presubmits/tests-e2e-fixtures-<service_name>`) to capture and commit these golden file updates.
 
 3. **Field Ownership Conflicts with `oneOf`**:
    - **Gotcha**: Some legacy resources are exempted from Server-Side Apply (SSA) for object creation in [ratcheting.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/tests/e2e/ratcheting.go). During fixture tests, the object is created using a legacy `Create` call, but updates are always applied via `Apply` (SSA). If your update switches between choices in a `oneOf` field (e.g., from `rrdatas` to `rrdatasRefs`), the legacy field is not owned by the SSA field manager and remains in the live object. This triggers a validation failure: `"spec" must validate one and only one schema (oneOf). Found 2 valid alternatives`.
