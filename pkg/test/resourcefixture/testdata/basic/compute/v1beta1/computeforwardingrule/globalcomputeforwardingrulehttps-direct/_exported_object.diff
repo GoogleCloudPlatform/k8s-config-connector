@@ -1,0 +1,11 @@
+14,15c14
+<     addressRef:
+<       external: projects/${projectId}/global/addresses/${addressID}
+---
+>     ip: projects/${projectId}/global/addresses/${addressID}
+18a18
+>   networkTier: PREMIUM
+22c22
+<     targetHTTPProxyRef:
+---
+>     targetHTTPSProxyRef:

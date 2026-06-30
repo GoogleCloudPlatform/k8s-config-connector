@@ -1,0 +1,379 @@
+108,179d107
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "insert",
+<   "progress": 100,
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${backendServiceID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "affinityCookieTtlSec": 0,
+<   "connectionDraining": {
+<     "drainingTimeoutSec": 0
+<   },
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "",
+<   "fingerprint": "abcdef0123A=",
+<   "iap": {
+<     "enabled": false,
+<     "oauth2ClientId": "",
+<     "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "compute#backendService",
+<   "loadBalancingScheme": "INTERNAL",
+<   "name": "${backendServiceID}",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "sessionAffinity": "NONE",
+<   "subsetting": {
+<     "policy": "NONE"
+<   },
+<   "timeoutSec": 30
+< }
+< 
+< ---
+< 
+232a161,191
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+>   "id": "000000000000000000000",
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "insert",
+>   "progress": 100,
+>   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${backendServiceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+>   "user": "user@example.com"
+> }
+> 
+> ---
+> 
+306c265
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
+309,326d267
+< {
+<   "backends": null,
+<   "connectionDraining": {
+<     "drainingTimeoutSec": 0
+<   },
+<   "iap": {
+<     "enabled": false,
+<     "oauth2ClientId": "",
+<     "oauth2ClientSecret": ""
+<   },
+<   "loadBalancingScheme": "INTERNAL",
+<   "name": "${backendServiceID}",
+<   "region": "projects/${projectId}/global/regions/us-central1",
+<   "subsetting": {
+<     "policy": "NONE"
+<   }
+< }
+< 
+337a279,290
+>   "affinityCookieTtlSec": 0,
+>   "connectionDraining": {
+>     "drainingTimeoutSec": 0
+>   },
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "",
+>   "fingerprint": "abcdef0123A=",
+>   "iap": {
+>     "enabled": false,
+>     "oauth2ClientId": "",
+>     "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+>   },
+339,343c292,294
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "insert",
+<   "progress": 0,
+---
+>   "kind": "compute#backendService",
+>   "loadBalancingScheme": "INTERNAL",
+>   "name": "${backendServiceID}",
+345,350c296,301
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${backendServiceID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "user": "user@example.com"
+---
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+>   "sessionAffinity": "NONE",
+>   "subsetting": {
+>     "policy": "NONE"
+>   },
+>   "timeoutSec": 30
+441a393,441
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices?alt=json
+> Content-Type: application/json
+> 
+> {
+>   "backends": null,
+>   "connectionDraining": {
+>     "drainingTimeoutSec": 0
+>   },
+>   "iap": {
+>     "enabled": false,
+>     "oauth2ClientId": "",
+>     "oauth2ClientSecret": ""
+>   },
+>   "loadBalancingScheme": "INTERNAL",
+>   "name": "${backendServiceID}",
+>   "region": "projects/${projectId}/global/regions/us-central1",
+>   "subsetting": {
+>     "policy": "NONE"
+>   }
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "id": "000000000000000000000",
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "insert",
+>   "progress": 0,
+>   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "RUNNING",
+>   "targetId": "${backendServiceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+>   "user": "user@example.com"
+> }
+> 
+> ---
+> 
+973,1062d972
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "IPAddress": "8.8.8.8",
+<   "IPProtocol": "TCP",
+<   "allPorts": true,
+<   "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "A regional forwarding rule",
+<   "fingerprint": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "ipVersion": "IPV4",
+<   "isMirroringCollector": true,
+<   "kind": "compute#forwardingRule",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-two",
+<     "managed-by-cnrm": "true"
+<   },
+<   "loadBalancingScheme": "INTERNAL",
+<   "name": "${forwardingRuleID}",
+<   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<   "networkTier": "PREMIUM",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "serviceLabel": "label",
+<   "serviceName": "label.${forwardingRuleID}.il4.us-central1.lb.${projectId}.internal",
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "IPAddress": "8.8.8.8",
+<   "IPProtocol": "TCP",
+<   "allPorts": true,
+<   "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "A regional forwarding rule",
+<   "fingerprint": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "ipVersion": "IPV4",
+<   "isMirroringCollector": true,
+<   "kind": "compute#forwardingRule",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-two",
+<     "managed-by-cnrm": "true"
+<   },
+<   "loadBalancingScheme": "INTERNAL",
+<   "name": "${forwardingRuleID}",
+<   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<   "networkTier": "PREMIUM",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "serviceLabel": "label",
+<   "serviceName": "label.${forwardingRuleID}.il4.us-central1.lb.${projectId}.internal",
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+< }
+< 
+< ---
+< 
+1191,1262d1100
+<   "targetId": "${backendServiceID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "affinityCookieTtlSec": 0,
+<   "connectionDraining": {
+<     "drainingTimeoutSec": 0
+<   },
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "",
+<   "fingerprint": "abcdef0123A=",
+<   "iap": {
+<     "enabled": false,
+<     "oauth2ClientId": "",
+<     "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "compute#backendService",
+<   "loadBalancingScheme": "INTERNAL",
+<   "name": "${backendServiceID}",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "sessionAffinity": "NONE",
+<   "subsetting": {
+<     "policy": "NONE"
+<   },
+<   "timeoutSec": 30
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 100,
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
