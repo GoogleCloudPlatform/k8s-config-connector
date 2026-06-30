@@ -3633,3 +3633,18 @@
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.callLogLevel" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQueryDestination.createNewResultsTable" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQueryDestination.destinationDataset" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.customRulesBucket" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.evaluationType" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceFilter.gceInstanceFilter.serviceAccounts[]" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceFilter.inclusionLabels" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceFilter.resourceIDPatterns[]" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceFilter.scopes[]" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.ruleNames[]" is not set in unstructured objects
+[missing_field] crd=workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedule" is not set in unstructured objects
