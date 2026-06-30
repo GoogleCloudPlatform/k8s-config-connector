@@ -110,6 +110,7 @@
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMap                | True         | True        | False  | Terraform  | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificate                   | True         | True        | False  | Terraform  | True        |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerDNSAuthorization              | True         | True        | False  | Direct     | True        |
+| ces.cnrm.cloud.google.com                     | CESApp                                          | True         | False       | False  | Direct     | True        |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetFolderFeed                            | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetOrganizationFeed                      | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  | False       |
