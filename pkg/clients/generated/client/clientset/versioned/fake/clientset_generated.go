@@ -403,6 +403,8 @@ import (
 	fakevmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1/fake"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	fakevpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1/fake"
+	websecurityscannerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/websecurityscanner/v1alpha1"
+	fakewebsecurityscannerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/websecurityscanner/v1alpha1/fake"
 	workflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1"
 	fakeworkflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1/fake"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
@@ -1430,6 +1432,11 @@ func (c *Clientset) VmwareengineV1beta1() vmwareenginev1beta1.VmwareengineV1beta
 // VpcaccessV1beta1 retrieves the VpcaccessV1beta1Client
 func (c *Clientset) VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface {
 	return &fakevpcaccessv1beta1.FakeVpcaccessV1beta1{Fake: &c.Fake}
+}
+
+// WebsecurityscannerV1alpha1 retrieves the WebsecurityscannerV1alpha1Client
+func (c *Clientset) WebsecurityscannerV1alpha1() websecurityscannerv1alpha1.WebsecurityscannerV1alpha1Interface {
+	return &fakewebsecurityscannerv1alpha1.FakeWebsecurityscannerV1alpha1{Fake: &c.Fake}
 }
 
 // WorkflowexecutionsV1alpha1 retrieves the WorkflowexecutionsV1alpha1Client

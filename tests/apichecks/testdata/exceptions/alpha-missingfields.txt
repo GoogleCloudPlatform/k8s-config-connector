@@ -3448,6 +3448,26 @@
 [missing_field] crd=vmwareenginenetworkpolicies.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.internetAccess.enabled" is not set in unstructured objects
 [missing_field] crd=vmwareengineprivateclouds.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.managementCluster.nodeTypeConfigs[].customCoreCount" is not set in unstructured objects
 [missing_field] crd=vmwareengineprivateclouds.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.customAccount.loginURL" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.customAccount.password.value" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.customAccount.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.customAccount.username" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.googleAccount.password.value" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.googleAccount.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.googleAccount.username" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.iapCredential.iapTestServiceAccountInfo.targetAudienceClientID" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.blacklistPatterns[]" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.exportToSecurityCommandCenter" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.ignoreHTTPStatusErrors" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.maxQps" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.riskLevel" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedule.intervalDurationDays" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedule.scheduleTime" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.startingURLs[]" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.staticIPScan" is not set in unstructured objects
+[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.userAgent" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.callLogLevel" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

@@ -215,6 +215,7 @@ import (
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
+	websecurityscannerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/websecurityscanner/v1alpha1"
 	workflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
@@ -415,6 +416,7 @@ type Interface interface {
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
 	VmwareengineV1beta1() vmwareenginev1beta1.VmwareengineV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
+	WebsecurityscannerV1alpha1() websecurityscannerv1alpha1.WebsecurityscannerV1alpha1Interface
 	WorkflowexecutionsV1alpha1() workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Interface
 	WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Interface
 	WorkstationsV1beta1() workstationsv1beta1.WorkstationsV1beta1Interface
@@ -613,6 +615,7 @@ type Clientset struct {
 	vmwareengineV1alpha1            *vmwareenginev1alpha1.VmwareengineV1alpha1Client
 	vmwareengineV1beta1             *vmwareenginev1beta1.VmwareengineV1beta1Client
 	vpcaccessV1beta1                *vpcaccessv1beta1.VpcaccessV1beta1Client
+	websecurityscannerV1alpha1      *websecurityscannerv1alpha1.WebsecurityscannerV1alpha1Client
 	workflowexecutionsV1alpha1      *workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Client
 	workflowsV1alpha1               *workflowsv1alpha1.WorkflowsV1alpha1Client
 	workstationsV1beta1             *workstationsv1beta1.WorkstationsV1beta1Client
@@ -1568,6 +1571,11 @@ func (c *Clientset) VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interfac
 	return c.vpcaccessV1beta1
 }
 
+// WebsecurityscannerV1alpha1 retrieves the WebsecurityscannerV1alpha1Client
+func (c *Clientset) WebsecurityscannerV1alpha1() websecurityscannerv1alpha1.WebsecurityscannerV1alpha1Interface {
+	return c.websecurityscannerV1alpha1
+}
+
 // WorkflowexecutionsV1alpha1 retrieves the WorkflowexecutionsV1alpha1Client
 func (c *Clientset) WorkflowexecutionsV1alpha1() workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Interface {
 	return c.workflowexecutionsV1alpha1
@@ -2387,6 +2395,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.websecurityscannerV1alpha1, err = websecurityscannerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.workflowexecutionsV1alpha1, err = workflowexecutionsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2610,6 +2622,7 @@ func New(c rest.Interface) *Clientset {
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)
 	cs.vmwareengineV1beta1 = vmwareenginev1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)
+	cs.websecurityscannerV1alpha1 = websecurityscannerv1alpha1.New(c)
 	cs.workflowexecutionsV1alpha1 = workflowexecutionsv1alpha1.New(c)
 	cs.workflowsV1alpha1 = workflowsv1alpha1.New(c)
 	cs.workstationsV1beta1 = workstationsv1beta1.New(c)
