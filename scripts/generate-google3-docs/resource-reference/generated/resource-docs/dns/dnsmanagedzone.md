@@ -207,7 +207,7 @@ visibility: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The list of VPC networks that can see this zone.</p>
         </td>
     </tr>
     <tr>

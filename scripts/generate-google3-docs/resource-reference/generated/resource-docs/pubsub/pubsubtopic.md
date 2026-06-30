@@ -140,7 +140,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PubSubSchema resource.</p>
         </td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PubSubSchema resource.</p>
         </td>
     </tr>
     <tr>
@@ -190,7 +190,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>PubSubSchemaRef is a reference to a PubSubSchema.</p>
         </td>
     </tr>
     <tr>

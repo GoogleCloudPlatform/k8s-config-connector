@@ -127,7 +127,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>DatasetRef is a reference to a BigQueryDataset.</p>
         </td>
     </tr>
     <tr>
@@ -157,7 +157,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>PubSubTopicRef is a reference to a PubSubTopic.</p>
         </td>
     </tr>
     <tr>
@@ -357,7 +357,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>StorageBucketRef is a reference to a Google Cloud StorageBucket.</p>
         </td>
     </tr>
     <tr>

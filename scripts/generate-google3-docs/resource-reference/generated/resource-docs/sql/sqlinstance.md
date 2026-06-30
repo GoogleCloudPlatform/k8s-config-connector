@@ -280,7 +280,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>ComputeNetworkRef is a reference to a Google Cloud ComputeNetwork.</p>
         </td>
     </tr>
     <tr>

@@ -290,7 +290,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.name` field of a `AlloyDBCluster` resource.</p>
+            <p>The name of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -300,7 +300,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `metadata.namespace` field of a `AlloyDBCluster` resource.</p>
+            <p>The namespace of an AlloyDBCluster resource.</p>
         </td>
     </tr>
     <tr>
@@ -671,7 +671,7 @@ updateTime: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A unique specifier for the AlloyDBInstance resource in GCP.</p>
+            <p>A unique specifier for the AlloyDBInstance resource in Google Cloud.</p>
         </td>
     </tr>
     <tr>
@@ -699,7 +699,7 @@ updateTime: string
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+            <p>ObservedState is the state of the resource as most recently observed in Google Cloud.</p>
         </td>
     </tr>
     <tr>

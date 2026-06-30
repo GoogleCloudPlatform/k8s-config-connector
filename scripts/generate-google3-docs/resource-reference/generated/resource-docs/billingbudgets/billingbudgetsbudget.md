@@ -144,7 +144,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>MonitoringNotificationChannelRef is a reference to a MonitoringNotificationChannel.</p>
         </td>
     </tr>
     <tr>
@@ -374,7 +374,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>PubSubTopicRef is a reference to a PubSubTopic.</p>
         </td>
     </tr>
     <tr>
@@ -494,7 +494,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>ProjectRef is a reference to a Google Cloud Project.</p>
         </td>
     </tr>
     <tr>
@@ -554,7 +554,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>BillingAccountRef is a reference to a Google Cloud BillingAccount.</p>
         </td>
     </tr>
     <tr>
@@ -564,7 +564,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
+            <p>The 'name' field of a billing account, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>

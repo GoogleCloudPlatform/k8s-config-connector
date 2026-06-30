@@ -218,7 +218,7 @@ selfLink: string
         <td><code>conditions[]</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The self link of the ComputeNetwork.</p>
         </td>
     </tr>
     <tr>

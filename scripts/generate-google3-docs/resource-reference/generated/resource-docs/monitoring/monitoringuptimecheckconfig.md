@@ -126,7 +126,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>String, regex or JSON content to match. Maximum 1024 bytes. An empty `content` string indicates no content matching is to be performed.</p>
         </td>
     </tr>
     <tr>
@@ -356,7 +356,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>Immutable.</p>
+            <p>Immutable. The group resource associated with the configuration.</p>
         </td>
     </tr>
     <tr>
@@ -506,7 +506,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>The password to use when authenticating with the HTTP server.</p>
         </td>
     </tr>
     <tr>
@@ -574,7 +574,7 @@ observedGeneration: integer
         <td><code>conditions[]</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The username to use when authenticating with the HTTP server.</p>
         </td>
     </tr>
     <tr>

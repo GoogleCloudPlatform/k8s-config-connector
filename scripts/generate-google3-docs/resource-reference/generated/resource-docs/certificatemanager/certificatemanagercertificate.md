@@ -160,7 +160,7 @@ selfManaged:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>Immutable. Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specified, but not both.</p>
         </td>
     </tr>
     <tr>
@@ -432,7 +432,7 @@ If unsure, choose this option.
 EDGE_CACHE: Certificates with scope EDGE_CACHE are special-purposed certificates,
 served from non-core Google data centers.
 
-ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all GCP regions (You can only use ALL_REGIONS with global certs).
+ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all Google Cloud regions (You can only use ALL_REGIONS with global certs).
 see https://cloud.google.com/compute/docs/regions-zones.</p>
         </td>
     </tr>
