@@ -90,6 +90,10 @@ type AddonsConfig struct {
 	/* Whether we should enable the network policy addon for the master. This must be enabled in order to enable network policy for the nodes. To enable this, you must also define a network_policy block, otherwise nothing will happen. It can only be disabled if the nodes already do not have network policies enabled. Defaults to disabled; set disabled = false to enable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.network_policy_config
 	NetworkPolicyConfig *NetworkPolicyConfig `json:"networkPolicyConfig,omitempty"`
+
+	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +kcc:proto:field=google.container.v1.AddonsConfig.parallelstore_csi_driver_config
+	ParallelstoreCSIDriverConfig *ParallelstoreCSIDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.AdvancedDatapathObservabilityConfig
@@ -450,6 +454,13 @@ type GCPFilestoreCSIDriverConfig struct {
 type GCSFuseCSIDriverConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.GcsFuseCSIDriverConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ParallelstoreCsiDriverConfig
+type ParallelstoreCSIDriverConfig struct {
+	// +required
+	// +kcc:proto:field=google.container.v1.ParallelstoreCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 

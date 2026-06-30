@@ -199,6 +199,7 @@ func AddonsConfig_FromProto(mapCtx *direct.MapContext, in *pb.AddonsConfig) *krm
 	// (near miss): "GCSFuseCsiDriverConfig" vs "GCSFuseCSIDriverConfig"
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
+	// (near miss): "ParallelstoreCsiDriverConfig" vs "ParallelstoreCSIDriverConfig"
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
@@ -225,6 +226,7 @@ func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.A
 	// (near miss): "GCSFuseCsiDriverConfig" vs "GCSFuseCSIDriverConfig"
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
+	// (near miss): "ParallelstoreCsiDriverConfig" vs "ParallelstoreCSIDriverConfig"
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
@@ -808,7 +810,7 @@ func ContainerNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodePool)
 	out.PlacementPolicy = NodePool_PlacementPolicy_FromProto(mapCtx, in.GetPlacementPolicy())
 	// MISSING: UpdateInfo
 	// MISSING: Etag
-	// MISSING: QueuedProvisioning
+	out.QueuedProvisioning = NodePoolQueuedProvisioning_FromProto(mapCtx, in.GetQueuedProvisioning())
 	// MISSING: BestEffortProvisioning
 	return out
 }
@@ -841,7 +843,7 @@ found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", s
 		out.PlacementPolicy = NodePool_PlacementPolicy_ToProto(mapCtx, in.PlacementPolicy)
 		// MISSING: UpdateInfo
 		// MISSING: Etag
-		// MISSING: QueuedProvisioning
+		out.QueuedProvisioning = NodePoolQueuedProvisioning_ToProto(mapCtx, in.QueuedProvisioning)
 		// MISSING: BestEffortProvisioning
 		return out
 	}
@@ -2165,6 +2167,22 @@ func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeC
 	// MISSING: BootDisk
 	return out
 }
+func NodePoolQueuedProvisioning_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_QueuedProvisioning) *krm.NodePoolQueuedProvisioning {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolQueuedProvisioning{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func NodePoolQueuedProvisioning_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolQueuedProvisioning) *pb.NodePool_QueuedProvisioning {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodePool_QueuedProvisioning{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
 
 /* found existing non-generated mapping function "NodePoolUpgradeSettings_FromProto", skipping
 func NodePoolUpgradeSettings_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_UpgradeSettings) *krm.NodePoolUpgradeSettings {
@@ -2331,6 +2349,22 @@ func NotificationConfig_PubSub_ToProto(mapCtx *direct.MapContext, in *krm.Notifi
 		out.Topic = in.TopicRef.External
 	}
 	// MISSING: Filter
+	return out
+}
+func ParallelstoreCSIDriverConfig_FromProto(mapCtx *direct.MapContext, in *pb.ParallelstoreCsiDriverConfig) *krm.ParallelstoreCSIDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParallelstoreCSIDriverConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func ParallelstoreCSIDriverConfig_ToProto(mapCtx *direct.MapContext, in *krm.ParallelstoreCSIDriverConfig) *pb.ParallelstoreCsiDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParallelstoreCsiDriverConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
 func PodCIDROverprovisionConfig_FromProto(mapCtx *direct.MapContext, in *pb.PodCIDROverprovisionConfig) *krm.PodCIDROverprovisionConfig {

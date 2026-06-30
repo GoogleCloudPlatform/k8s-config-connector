@@ -2901,7 +2901,8 @@ type NodePool_PlacementPolicy struct {
 }
 */
 
-/* unreachable type NodePool_QueuedProvisioning
+/* found existing non-generated go type with proto tag "google.container.v1.NodePool.QueuedProvisioning", skipping
+
 // +kcc:proto=google.container.v1.NodePool.QueuedProvisioning
 type NodePool_QueuedProvisioning struct {
 	// Denotes that this nodepool is QRM specific, meaning nodes can be only
@@ -3120,7 +3121,8 @@ type NotificationConfig_PubSub struct {
 }
 */
 
-/* unreachable type ParallelstoreCsiDriverConfig
+/* found existing non-generated go type with proto tag "google.container.v1.ParallelstoreCsiDriverConfig", skipping
+
 // +kcc:proto=google.container.v1.ParallelstoreCsiDriverConfig
 type ParallelstoreCsiDriverConfig struct {
 	// Whether the Cloud Storage Parallelstore CSI driver is enabled for this

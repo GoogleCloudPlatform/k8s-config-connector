@@ -50,3 +50,5 @@ spec:
       auth: "AUTH_MUTUAL_TLS"
     kalmConfig:
       enabled: false
+    parallelstoreCsiDriverConfig:
+      enabled: false

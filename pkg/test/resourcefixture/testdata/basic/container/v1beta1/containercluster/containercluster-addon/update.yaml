@@ -53,3 +53,5 @@ spec:
       auth: "AUTH_NONE"
     kalmConfig:
       enabled: true
+    parallelstoreCsiDriverConfig:
+      enabled: true
