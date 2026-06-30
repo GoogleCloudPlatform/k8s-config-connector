@@ -145,6 +145,7 @@ import (
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
 	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1"
+	grafeasv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/grafeas/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
@@ -357,6 +358,7 @@ type Interface interface {
 	GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
 	GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface
+	GrafeasV1alpha1() grafeasv1alpha1.GrafeasV1alpha1Interface
 	HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface
 	IamV1alpha1() iamv1alpha1.IamV1alpha1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
@@ -567,6 +569,7 @@ type Clientset struct {
 	gkehubV1alpha1                  *gkehubv1alpha1.GkehubV1alpha1Client
 	gkehubV1beta1                   *gkehubv1beta1.GkehubV1beta1Client
 	gkemulticloudV1alpha1           *gkemulticloudv1alpha1.GkemulticloudV1alpha1Client
+	grafeasV1alpha1                 *grafeasv1alpha1.GrafeasV1alpha1Client
 	healthcareV1alpha1              *healthcarev1alpha1.HealthcareV1alpha1Client
 	iamV1alpha1                     *iamv1alpha1.IamV1alpha1Client
 	iamV1beta1                      *iamv1beta1.IamV1beta1Client
@@ -1252,6 +1255,11 @@ func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
 // GkemulticloudV1alpha1 retrieves the GkemulticloudV1alpha1Client
 func (c *Clientset) GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface {
 	return c.gkemulticloudV1alpha1
+}
+
+// GrafeasV1alpha1 retrieves the GrafeasV1alpha1Client
+func (c *Clientset) GrafeasV1alpha1() grafeasv1alpha1.GrafeasV1alpha1Interface {
+	return c.grafeasV1alpha1
 }
 
 // HealthcareV1alpha1 retrieves the HealthcareV1alpha1Client
@@ -2203,6 +2211,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.grafeasV1alpha1, err = grafeasv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.healthcareV1alpha1, err = healthcarev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2684,6 +2696,7 @@ func New(c rest.Interface) *Clientset {
 	cs.gkehubV1alpha1 = gkehubv1alpha1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
 	cs.gkemulticloudV1alpha1 = gkemulticloudv1alpha1.New(c)
+	cs.grafeasV1alpha1 = grafeasv1alpha1.New(c)
 	cs.healthcareV1alpha1 = healthcarev1alpha1.New(c)
 	cs.iamV1alpha1 = iamv1alpha1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)
