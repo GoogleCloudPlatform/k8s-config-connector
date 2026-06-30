@@ -164,47 +164,90 @@ This file tracks the progress of new "Direct" resource implementations.
 | VertexAITrainingPipeline | aiplatform | [#9337](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9337) | - | - | 1 | OPEN |
 | VertexAITuningJob | aiplatform | [#9310](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9310) | - | - | 1 | OPEN |
 | BackupdrBackup | backupdr | - | - | - | - | PLANNED |
-| BigLakeLock | biglake | [#10355](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10355) | - | - | - | PLANNED |
+| BigLakeLock | biglake | [#10355](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10355) | - | - | 1 | OPEN 
+|
 | EventarcGoogleApiSource | eventarc | [#10274](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10274) | - | - | 1 | OPEN |
-| FilestoreBackup | filestore | [#10323](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10323) | - | - | - | PLANNED |
-| FinancialServicesInstance | financialservices | [#10343](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10343) | - | - | - | PLANNED |
-| GDCHardwareManagementHardware | gdchardwaremanagement | [#10330](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10330) | - | - | - | PLANNED |
-| GeminiDataAnalyticsConversation | geminidataanalytics | - | - | - | - | PLANNED |
-| GKEBackupBackupChannel | gkebackup | [#10326](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10326) | - | - | - | PLANNED |
-| GKEHubFleet | gkehub | [#10347](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10347) | - | - | - | PLANNED |
-| GKEMulticloudAttachedCluster | gkemulticloud | [#10304](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10304) | - | - | - | PLANNED |
-| GrafeasNote | grafeas | [#10289](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10289) | - | - | - | PLANNED |
-| GSuiteAddonsDeployment | gsuiteaddons | [#10349](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10349) | - | - | - | PLANNED |
-| HypercomputeClusterCluster | hypercomputecluster | - | - | [#10333](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10333) | - | PLANNED |
-| IamAccessPolicy | iam | - | - | [#10321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10321) | - | PLANNED |
-| CloudTalentSolutionCompany | cloudtalentsolution | [#10319](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10319) | - | - | - | PLANNED |
-| LicenseManagerConfiguration | licensemanager | [#10338](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10338) | - | - | - | PLANNED |
-| LiveStreamAsset | livestream | [#10344](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10344) | - | - | - | PLANNED |
-| ManagedKafkaConnectCluster | managedkafka | [#10299](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10299) | - | - | - | PLANNED |
-| MapManagementMapConfig | mapmanagement | - | - | [#10337](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10337) | - | PLANNED |
-| MapsPlatformDatasetsDataset | mapsplatformdatasets | [#10296](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10296) | - | - | - | PLANNED |
-| MarketingPlatformAdminAnalyticsAccountLink | marketingplatformadmin | [#10336](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10336) | - | - | - | PLANNED |
-| MigrationCenterGroup | migrationcenter | [#10345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10345) | - | - | - | PLANNED |
-| NetworkConnectivityMulticloudDataTransferConfig | networkconnectivity | [#10301](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10301) | - | - | - | PLANNED |
-| NetworkManagementVpcFlowLogsConfig | networkmanagement | [#10332](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10332) | - | - | - | PLANNED |
-| NetworkServicesAuthzExtension | networkservices | [#10339](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10339) | - | - | - | PLANNED |
-| OracleDatabaseAutonomousDatabase | oracledatabase | [#10346](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10346) | - | - | - | PLANNED |
-| ParallelstoreInstance | parallelstore | [#10334](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10334) | - | - | - | PLANNED |
-| RapidMigrationAssessmentCollector | rapidmigrationassessment | [#10340](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10340) | - | - | - | PLANNED |
-| SaasServiceMgmtRelease | saasservicemgmt | [#10341](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10341) | - | - | - | PLANNED |
-| SQLAdminBackup | sql | [#10315](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10315) | - | - | - | PLANNED |
-| StorageBatchOperationsJob | storage | [#10335](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10335) | - | - | - | PLANNED |
-| StorageInsightsDatasetConfig | storageinsights | [#10316](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10316) | - | - | - | PLANNED |
-| TelcoAutomationEdgeSlm | telcoautomation | [#10348](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10348) | - | - | - | PLANNED |
-| TestingDeviceSession | testing | [#10342](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10342) | - | - | - | PLANNED |
-| TPUQueuedResource | tpu | - | - | - | - | PLANNED |
-| TranscoderJob | transcoder | [#10325](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10325) | - | - | - | PLANNED |
-| TranslateAdaptiveMtDataset | translate | [#10328](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10328) | - | - | - | PLANNED |
-| VectorSearchCollection | vectorsearch | - | - | - | - | PLANNED |
-| VideoStitcherCdnKey | videostitcher | [#10329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10329) | - | - | - | PLANNED |
-| VisionProduct | vision | [#10350](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10350) | - | - | - | PLANNED |
-| VisionAIApplication | visionai | [#10351](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10351) | - | - | - | PLANNED |
-| VMMigrationGroup | vmmigration | [#10327](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10327) | - | - | - | PLANNED |
-| VMwareEnginePrivateConnection | vmwareengine | [#10353](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10353) | - | - | - | PLANNED |
-| WebSecurityScannerScanConfig | websecurityscanner | [#10352](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10352) | - | - | - | PLANNED |
-| WorkloadManagerEvaluation | workloadmanager | [#10356](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10356) | - | - | - | PLANNED |
+| FilestoreBackup | filestore | [#10323](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10323) | - | - | 1 | OPEN 
+|
+| FinancialServicesInstance | financialservices | [#10343](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10343) | - | - | 1 | OPEN 
+|
+| GDCHardwareManagementHardware | gdchardwaremanagement | [#10330](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10330) | - | - | 1 | OPEN 
+|
+| GeminiDataAnalyticsConversation | geminidataanalytics | - | - | - | 1 | MERGED 
+|
+| GKEBackupBackupChannel | gkebackup | [#10326](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10326) | - | - | 1 | OPEN 
+|
+| GKEHubFleet | gkehub | [#10347](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10347) | - | - | 1 | OPEN 
+|
+| GKEMulticloudAttachedCluster | gkemulticloud | [#10304](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10304) | - | - | 1 | OPEN 
+|
+| GrafeasNote | grafeas | [#10289](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10289) | - | - | 1 | OPEN 
+|
+| GSuiteAddonsDeployment | gsuiteaddons | [#10349](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10349) | - | - | 1 | OPEN 
+|
+| HypercomputeClusterCluster | hypercomputecluster | - | - | [#10333](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10333) | 1 | OPEN 
+|
+| IamAccessPolicy | iam | - | - | [#10321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10321) | 1 | OPEN 
+|
+| CloudTalentSolutionCompany | cloudtalentsolution | [#10319](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10319) | - | - | 1 | OPEN 
+|
+| LicenseManagerConfiguration | licensemanager | [#10338](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10338) | - | - | 1 | OPEN 
+|
+| LiveStreamAsset | livestream | [#10344](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10344) | - | - | 1 | OPEN 
+|
+| ManagedKafkaConnectCluster | managedkafka | [#10299](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10299) | - | - | 1 | OPEN 
+|
+| MapManagementMapConfig | mapmanagement | - | - | [#10337](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10337) | 1 | OPEN 
+|
+| MapsPlatformDatasetsDataset | mapsplatformdatasets | [#10296](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10296) | - | - | 1 | OPEN 
+|
+| MarketingPlatformAdminAnalyticsAccountLink | marketingplatformadmin | [#10336](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10336) | - | - | 1 | OPEN 
+|
+| MigrationCenterGroup | migrationcenter | [#10345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10345) | - | - | 1 | OPEN 
+|
+| NetworkConnectivityMulticloudDataTransferConfig | networkconnectivity | [#10301](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10301) | - | - | 1 | OPEN 
+|
+| NetworkManagementVpcFlowLogsConfig | networkmanagement | [#10332](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10332) | - | - | 1 | OPEN 
+|
+| NetworkServicesAuthzExtension | networkservices | [#10339](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10339) | - | - | 1 | OPEN 
+|
+| OracleDatabaseAutonomousDatabase | oracledatabase | [#10346](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10346) | - | - | 1 | OPEN 
+|
+| ParallelstoreInstance | parallelstore | [#10334](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10334) | - | - | 1 | OPEN 
+|
+| RapidMigrationAssessmentCollector | rapidmigrationassessment | [#10340](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10340) | - | - | 1 | OPEN 
+|
+| SaasServiceMgmtRelease | saasservicemgmt | [#10341](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10341) | - | - | 1 | OPEN 
+|
+| SQLAdminBackup | sql | [#10315](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10315) | - | - | 1 | OPEN 
+|
+| StorageBatchOperationsJob | storage | [#10335](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10335) | - | - | 1 | OPEN 
+|
+| StorageInsightsDatasetConfig | storageinsights | [#10316](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10316) | - | - | 1 | OPEN 
+|
+| TelcoAutomationEdgeSlm | telcoautomation | [#10348](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10348) | - | - | 1 | OPEN 
+|
+| TestingDeviceSession | testing | [#10342](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10342) | - | - | 1 | OPEN 
+|
+| TPUQueuedResource | tpu | - | - | - | 1 | OPEN 
+|
+| TranscoderJob | transcoder | [#10325](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10325) | - | - | 1 | OPEN 
+|
+| TranslateAdaptiveMtDataset | translate | [#10328](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10328) | - | - | 1 | OPEN 
+|
+| VectorSearchCollection | vectorsearch | - | - | - | 1 | MERGED 
+|
+| VideoStitcherCdnKey | videostitcher | [#10329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10329) | - | - | 1 | OPEN 
+|
+| VisionProduct | vision | [#10350](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10350) | - | - | 1 | OPEN 
+|
+| VisionAIApplication | visionai | [#10351](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10351) | - | - | 1 | OPEN 
+|
+| VMMigrationGroup | vmmigration | [#10327](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10327) | - | - | 1 | OPEN 
+|
+| VMwareEnginePrivateConnection | vmwareengine | [#10353](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10353) | - | - | 1 | OPEN 
+|
+| WebSecurityScannerScanConfig | websecurityscanner | [#10352](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10352) | - | - | 1 | OPEN 
+|
+| WorkloadManagerEvaluation | workloadmanager | [#10356](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10356) | - | - | 1 | OPEN 
+|
