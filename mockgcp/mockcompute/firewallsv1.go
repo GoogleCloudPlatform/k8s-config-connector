@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"strconv"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -41,7 +42,7 @@ func (s *FirewallsV1) List(ctx context.Context, req *pb.ListFirewallsRequest) (*
 	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
 
 	response := &pb.FirewallList{}
-	response.Id = PtrTo("0123456789")
+	response.Id = PtrTo(strconv.FormatUint(s.generateID(), 10))
 	response.Kind = PtrTo("compute#firewallList")
 	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
 
