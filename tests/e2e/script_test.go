@@ -112,12 +112,13 @@ func TestE2EScript(t *testing.T) {
 				})
 
 				var eventsByStep []*SkippableLogEntries
-				eventsBefore := h.Events.HTTPEvents
+				eventsBeforeCount := len(h.Events.GetHTTPEvents())
 				captureHTTPLogEvents := func(skip bool, deferCapture bool) {
 					var stepEvents []*test.LogEntry
+					allEvents := h.Events.GetHTTPEvents()
 					if !deferCapture {
-						for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
-							stepEvents = append(stepEvents, h.Events.HTTPEvents[i])
+						for i := eventsBeforeCount; i < len(allEvents); i++ {
+							stepEvents = append(stepEvents, allEvents[i])
 						}
 					}
 					eventsByStep = append(eventsByStep, &SkippableLogEntries{
@@ -125,7 +126,7 @@ func TestE2EScript(t *testing.T) {
 						Entries:   stepEvents,
 					})
 					if !deferCapture {
-						eventsBefore = h.Events.HTTPEvents
+						eventsBeforeCount = len(allEvents)
 					}
 				}
 
@@ -318,24 +319,25 @@ func TestE2EScript(t *testing.T) {
 						}
 						sval := val.(string)
 
+						waitCtx, waitCancel := context.WithTimeout(ctx, logCheckTimeout)
+						defer waitCancel()
+
 						ticker := time.NewTicker(1 * time.Second)
-						for {
-							stopWaiting := false
+						defer ticker.Stop()
+
+						found := false
+						for !found {
 							select {
-							case <-time.After(logCheckTimeout):
-								t.Fatalf("timed out looking for value %s in http log", sval)
-								stopWaiting = true
+							case <-waitCtx.Done():
+								t.Fatalf("timed out looking for value %s in http log: %v", sval, waitCtx.Err())
 							case <-ticker.C:
 								// todo(acpana): find better asympotatic approach
-								for _, l := range h.Events.HTTPEvents {
+								for _, l := range h.Events.GetHTTPEvents() {
 									if strings.Contains(l.Response.Body, sval) {
-										stopWaiting = true
+										found = true
 										break
 									}
 								}
-							}
-							if stopWaiting {
-								break
 							}
 						}
 

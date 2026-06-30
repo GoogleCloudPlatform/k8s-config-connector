@@ -618,11 +618,12 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						{
 							services := h.RegisteredServices()
 
-							for _, entry := range h.Events.HTTPEvents {
+							allEvents := h.Events.GetHTTPEvents()
+							for _, entry := range allEvents {
 								services.ConfigureVisitor(entry.Request.URL, serviceReplacements)
 							}
 
-							for _, entry := range h.Events.HTTPEvents {
+							for _, entry := range allEvents {
 								services.Previsit(entry, serviceReplacements)
 							}
 						}
@@ -701,7 +702,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 				if ShouldTestRereconiliation(t, testName, primaryResource) {
 					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
-					eventsBefore := h.Events.HTTPEvents
+					eventsBefore := h.Events.GetHTTPEvents()
 
 					oldGeneration := getGeneration(h, primaryResource)
 					touchObject(h, primaryResource)
@@ -709,9 +710,9 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					// (annotations don't change the generation, so we can't wait for observedGeneration)
 					time.Sleep(2 * time.Second)
 
-					eventsAfter := h.Events.HTTPEvents
+					eventsAfter := h.Events.GetHTTPEvents()
 
-					h.Events.HTTPEvents = eventsBefore
+					h.Events.SetHTTPEvents(eventsBefore)
 
 					for i := len(eventsBefore); i < len(eventsAfter); i++ {
 						event := eventsAfter[i]
@@ -814,7 +815,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-					events := test.LogEntries(h.Events.HTTPEvents)
+					events := test.LogEntries(h.Events.GetHTTPEvents())
 
 					if options.ForceDirectController || options.FallbackToOldController {
 						events.RemoveHTTPRequestHeader("User-Agent")
@@ -865,7 +866,7 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 
 // verifyUserAgent verifies that the user agent is set to the expected KCC user agent for all requests
 func verifyUserAgent(h *create.Harness) {
-	for _, event := range h.Events.HTTPEvents {
+	for _, event := range h.Events.GetHTTPEvents() {
 		userAgent := event.Request.Header.Get("User-Agent")
 
 		// We don't capture the user-agent for GRPC
@@ -901,7 +902,7 @@ func verifyKubeWatches(h *create.Harness) {
 	metadataWatches := sets.NewString()
 	fullWatches := sets.NewString()
 	objectWatches := sets.NewString()
-	for _, event := range h.KubeEvents.HTTPEvents {
+	for _, event := range h.KubeEvents.GetHTTPEvents() {
 		if !strings.Contains(event.Request.URL, "watch=true") {
 			continue
 		}

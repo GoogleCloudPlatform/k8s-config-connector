@@ -193,9 +193,9 @@ func TestScripts(t *testing.T) {
 					}
 
 					if captureEvents {
-						httpEvents = append(httpEvents, h.Events.HTTPEvents...)
+						httpEvents = append(httpEvents, h.Events.GetHTTPEvents()...)
 					}
-					h.Events.HTTPEvents = nil
+					h.Events.Clear()
 				}
 			}
 

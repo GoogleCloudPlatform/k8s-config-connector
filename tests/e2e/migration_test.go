@@ -212,7 +212,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	create.WaitForReady(h, create.DefaultWaitForReadyTimeout, opt.Create...)
 
 	// Record HTTP log for Phase 1
-	eventsPhase1 := h.Events.HTTPEvents
+	eventsPhase1 := h.Events.GetHTTPEvents()
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase1))
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase1.log"), got, normalizers...)
@@ -247,7 +247,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	waitForReconciliationAfterPatch(h, primaryResource, prePatchRV)
 
 	// Verify HTTP events during Phase 2 (Direct take over)
-	eventsPhase2 := h.Events.HTTPEvents[len(eventsPhase1):]
+	eventsPhase2 := h.Events.GetHTTPEvents()[len(eventsPhase1):]
 
 	// The direct controller should not perform any updates (no-op reconciliation)
 	for _, event := range eventsPhase2 {
