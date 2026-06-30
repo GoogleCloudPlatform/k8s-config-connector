@@ -52,6 +52,7 @@ go run . generate-types \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSnapshot:Snapshot \
   --resource ComputeSSLPolicy:SslPolicy \
+  --resource ComputeSSLCertificate:SslCertificate \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetSSLProxy:TargetSslProxy \

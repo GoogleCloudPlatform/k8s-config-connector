@@ -3609,6 +3609,54 @@ func ComputeRouterStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeSSLCertificateSpec_v1beta1_FromProto", skipping
+func ComputeSSLCertificateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krm.ComputeSSLCertificateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSSLCertificateSpec{}
+	out.Certificate = in.Certificate
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ExpireTime
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Managed
+	// MISSING: Name
+	out.PrivateKey = in.PrivateKey
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: SelfManaged
+	// MISSING: SubjectAlternativeNames
+	// MISSING: Type
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeSSLCertificateSpec_v1beta1_ToProto", skipping
+func ComputeSSLCertificateSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSSLCertificateSpec) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	out.Certificate = in.Certificate
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ExpireTime
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Managed
+	// MISSING: Name
+	out.PrivateKey = in.PrivateKey
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: SelfManaged
+	// MISSING: SubjectAlternativeNames
+	// MISSING: Type
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeSSLPolicySpec_v1beta1_FromProto", skipping
 func ComputeSSLPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krm.ComputeSSLPolicySpec {
 	if in == nil {
