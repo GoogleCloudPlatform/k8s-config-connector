@@ -213,6 +213,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Container
 	visitor.replacePaths[".status.endpoint"] = "1.23.456.78"
 	visitor.replacePaths[".status.masterVersion"] = "1.30.5-gke.1014001"
+	visitor.replacePaths[".status.observedState.version"] = "1.30.5-gke.1014001"
 	visitor.replacePaths[".status.observedState.masterAuth.clusterCaCertificate"] = "1234567890abcdefghijklmn"
 	visitor.replacePaths[".status.observedState.privateClusterConfig.privateEndpoint"] = "10.128.0.2"
 	visitor.replacePaths[".status.observedState.privateClusterConfig.publicEndpoint"] = "8.8.8.8"
@@ -228,6 +229,36 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		endpoint = "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
 	}
 	visitor.replacePaths[".status.observedState.controlPlaneEndpointsConfig.dnsEndpointConfig.endpoint"] = endpoint
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		// Replace GKE instance group manager names
+		// format: gke-cluster-sample-<something>-nodepool-sample-<uniqueid>-grp
+		// or gke-cluster-sample-<something>-default-pool-<something>-grp
+		// Normalize to: gke-containercluster-abcdef-<nodepool-suffix>-grp
+		reNodePoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
+		s = reNodePoolIGM.ReplaceAllStringFunc(s, func(match string) string {
+			submatches := reNodePoolIGM.FindStringSubmatch(match)
+			return "instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
+		})
+
+		reNodePoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
+		s = reNodePoolIG.ReplaceAllStringFunc(s, func(match string) string {
+			submatches := reNodePoolIG.FindStringSubmatch(match)
+			return "instanceGroups/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
+		})
+
+		reDefaultPoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-default-pool(-[a-z0-9]+)?-grp`)
+		s = reDefaultPoolIGM.ReplaceAllString(s, "instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp")
+
+		reDefaultPoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-default-pool(-[a-z0-9]+)?-grp`)
+		s = reDefaultPoolIG.ReplaceAllString(s, "instanceGroups/gke-containercluster-abcdef-default-pool-grp")
+
+		// Normalize GKE versions (e.g. 1.35.5-gke.1163012 -> 1.30.5-gke.1014001)
+		reGKEVersion := regexp.MustCompile(`\b\d+\.\d+\.\d+-gke\.\d+\b`)
+		s = reGKEVersion.ReplaceAllString(s, "1.30.5-gke.1014001")
+
+		return s
+	})
 
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"

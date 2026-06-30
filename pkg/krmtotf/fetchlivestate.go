@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
@@ -408,7 +409,18 @@ func withDirectives(imported map[string]interface{}, r *Resource) map[string]int
 
 func withStatusFields(imported map[string]interface{}, r *Resource, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (map[string]interface{}, error) {
 	ret := deepcopy.MapStringInterface(imported)
-	tfStatus, err := KRMObjectToTFObject(r.GetStatusOrObservedState(), r.TFResource)
+	statusMap := r.GetStatusOrObservedState()
+	if !stateintospec.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
+		observedState := getObservedStateFromStatus(r.Status)
+		if len(observedState) > 0 {
+			merged := deepcopy.MapStringInterface(statusMap)
+			for k, v := range observedState {
+				merged[k] = v
+			}
+			statusMap = merged
+		}
+	}
+	tfStatus, err := KRMObjectToTFObject(statusMap, r.TFResource)
 	if err != nil {
 		return nil, fmt.Errorf("error converting status object: %w", err)
 	}

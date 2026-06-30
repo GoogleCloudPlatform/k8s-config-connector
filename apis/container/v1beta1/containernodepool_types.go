@@ -394,7 +394,17 @@ type ContainerNodePoolStatus struct {
 }
 
 type NodepoolObservedStateStatus struct {
+	/* The observed node config of the GKE node pool. */
+	// +optional
+	NodeConfig *NodePoolNodeConfigObservedState `json:"nodeConfig,omitempty"`
+
 	Version *string `json:"version,omitempty"`
+}
+
+type NodePoolNodeConfigObservedState struct {
+	/* List of Kubernetes taints to be applied to each node. */
+	// +optional
+	Taint []NodeTaint `json:"taint,omitempty"`
 }
 
 // +genclient
