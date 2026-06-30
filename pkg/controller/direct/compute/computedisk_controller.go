@@ -506,12 +506,8 @@ func (a *ComputeDiskAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.Disk)
 
 	if obj.Spec.Type != nil {
-		val := *obj.Spec.Type
-		if strings.Contains(val, "/") {
-			parts := strings.Split(val, "/")
-			shortName := parts[len(parts)-1]
-			obj.Spec.Type = &shortName
-		}
+		shortName := trimDiskTypePrefix(*obj.Spec.Type)
+		obj.Spec.Type = &shortName
 	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -603,6 +599,17 @@ func canonicalizeComputeURLs(arr []string) []string {
 		out[i] = refs.TrimComputeURIPrefix(val)
 	}
 	return out
+}
+
+func trimDiskTypePrefix(t string) string {
+	normalized := refs.TrimComputeURIPrefix(t)
+	parts := strings.Split(normalized, "/")
+	if len(parts) == 6 && parts[0] == "projects" && parts[4] == "diskTypes" {
+		if parts[2] == "zones" || parts[2] == "regions" {
+			return parts[5]
+		}
+	}
+	return t
 }
 
 func compareComputeDisk(ctx context.Context, actual, desired *computepb.Disk, id *v1beta1.ComputeDiskIdentity) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
