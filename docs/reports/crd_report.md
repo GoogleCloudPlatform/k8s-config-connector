@@ -9,7 +9,6 @@
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeterResource    | True         | True        | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | AIPlatformModel                                 | True         | False       | False  | Direct     | True        |
-| aistreams.cnrm.cloud.google.com                | AIStreamsCluster                                | True         | False       | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBBackup                                   | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBCluster                                  | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBInstance                                 | True         | True        | False  | Direct     | True        |
@@ -366,6 +365,7 @@
 | gkehub.cnrm.cloud.google.com                   | GKEHubScopeRBACRoleBinding                      | True         | False       | False  | Direct     | True        |
 | gkehub.cnrm.cloud.google.com                   | GKEHubScope                                     | True         | False       | False  | Direct     | True        |
 | gkemulticloud.cnrm.cloud.google.com            | GKEMulticloudAttachedCluster                    | True         | False       | False  | Direct     | True        |
+| gsuiteaddons.cnrm.cloud.google.com             | GSuiteAddonsDeployment                          | True         | False       | False  | Direct     | True        |
 | healthcare.cnrm.cloud.google.com               | HealthcareConsentStore                          | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareDataset                               | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareDICOMStore                            | True         | False       | False  | Terraform  | False       |
@@ -563,6 +563,7 @@
 | tpu.cnrm.cloud.google.com                      | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |
 | translate.cnrm.cloud.google.com                | TranslateAdaptiveMtDataset                      | True         | False       | False  | Direct     | True        |
 | vectorsearch.cnrm.cloud.google.com             | VectorSearchCollection                          | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAICustomJob                               | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDataLabelingJob                         | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDataset                                 | True         | True        | False  | Terraform  | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDeploymentResourcePool                  | True         | False       | False  | Direct     | True        |

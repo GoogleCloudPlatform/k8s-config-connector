@@ -21,22 +21,4 @@
 
 package v1alpha1
 
-type VertexAICustomJobExpansion interface{}
-
-type VertexAIDataLabelingJobExpansion interface{}
-
-type VertexAIDeploymentResourcePoolExpansion interface{}
-
-type VertexAIExampleStoreExpansion interface{}
-
-type VertexAIFeatureGroupExpansion interface{}
-
-type VertexAIFeaturestoreExpansion interface{}
-
-type VertexAIFeaturestoreEntityTypeExpansion interface{}
-
-type VertexAIFeaturestoreEntityTypeFeatureExpansion interface{}
-
-type VertexAIIndexEndpointExpansion interface{}
-
-type VertexAITensorboardExpansion interface{}
+type GSuiteAddonsDeploymentExpansion interface{}
