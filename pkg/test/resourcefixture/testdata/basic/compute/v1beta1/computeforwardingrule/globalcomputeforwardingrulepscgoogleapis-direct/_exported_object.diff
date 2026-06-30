@@ -1,11 +1,6 @@
-14,15c14
-<     addressRef:
-<       external: projects/${projectId}/global/addresses/default
----
->     ip: projects/${projectId}/global/addresses/default
-19a19
+19a20
 >   networkTier: PREMIUM
-21,23c21,23
+21,23c22,24
 <   target:
 <     targetHTTPProxyRef:
 <       external: all-apis

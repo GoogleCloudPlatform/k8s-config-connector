@@ -1,4 +1,4 @@
-818,893d817
+1176,1257d1175
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
 < Content-Type: application/json
 < 
@@ -14,7 +14,7 @@
 < 
 < {
 <   "IPAddress": "8.8.8.8",
-<   "IPProtocol": "ESP",
+<   "IPProtocol": "TCP",
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "description": "A regional forwarding rule",
 <   "fingerprint": "abcdef0123A=",
@@ -26,13 +26,16 @@
 <     "label-one": "value-two",
 <     "managed-by-cnrm": "true"
 <   },
-<   "loadBalancingScheme": "EXTERNAL",
+<   "loadBalancingScheme": "INTERNAL_MANAGED",
 <   "name": "${forwardingRuleID}",
+<   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
 <   "networkTier": "PREMIUM",
+<   "portRange": "90-90",
 <   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
 <   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-<   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}"
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/${targetTcpProxyID}"
 < }
 < 
 < ---
@@ -52,7 +55,7 @@
 < 
 < {
 <   "IPAddress": "8.8.8.8",
-<   "IPProtocol": "ESP",
+<   "IPProtocol": "TCP",
 <   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
 <   "description": "A regional forwarding rule",
 <   "fingerprint": "abcdef0123A=",
@@ -64,13 +67,16 @@
 <     "label-one": "value-two",
 <     "managed-by-cnrm": "true"
 <   },
-<   "loadBalancingScheme": "EXTERNAL",
+<   "loadBalancingScheme": "INTERNAL_MANAGED",
 <   "name": "${forwardingRuleID}",
+<   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
 <   "networkTier": "PREMIUM",
+<   "portRange": "90-90",
 <   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
 <   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-<   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}"
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetTcpProxies/${targetTcpProxyID}"
 < }
 < 
 < ---

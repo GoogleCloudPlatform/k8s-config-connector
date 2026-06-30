@@ -1,0 +1,25 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    label-one: value-two
+    managed-by-cnrm: "true"
+  name: ${forwardingRuleID}
+spec:
+  allowPscGlobalAccess: true
+  description: A VPC private service connect forwarding rule
+  ipAddress:
+    addressRef:
+      external: projects/example-project-01/regions/us-central1/addresses/${addressID}
+  ipProtocol: TCP
+  location: us-central1
+  networkRef:
+    external: https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}
+  networkTier: PREMIUM
+  resourceID: ${forwardingRuleID}
+  target:
+    serviceAttachmentRef:
+      external: https://www.googleapis.com/compute/beta/projects/example-project-01/regions/us-central1/serviceAttachments/${serviceAttachmentID}
