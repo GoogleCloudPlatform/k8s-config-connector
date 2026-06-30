@@ -251,6 +251,10 @@ func TestE2EScript(t *testing.T) {
 						create.WaitForObservedGeneration(h, 5*time.Minute, obj)
 						appliedObjects = append(appliedObjects, obj)
 
+					case "WAIT-FOR-READY":
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
+						appliedObjects = append(appliedObjects, obj)
+
 					case "READ-OBJECT":
 						appliedObjects = append(appliedObjects, obj)
 
@@ -263,7 +267,7 @@ func TestE2EScript(t *testing.T) {
 						if targetStepForReadAndCompare <= 0 {
 							t.Fatalf("value of TARGET_STEP_FOR_READ_AND_COMPARE should be an integer > 0")
 						}
-						create.WaitForObservedGeneration(h, 5*time.Minute, obj)
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-NO-WAIT":
