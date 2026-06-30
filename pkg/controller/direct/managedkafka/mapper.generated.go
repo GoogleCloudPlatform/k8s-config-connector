@@ -116,22 +116,22 @@ func ConnectAccessConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmana
 	out.NetworkConfigs = direct.Slice_ToProto(mapCtx, in.NetworkConfigs, ConnectNetworkConfig_v1alpha1_ToProto)
 	return out
 }
-func ConnectGcpConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectGcpConfig) *krmmanagedkafkav1alpha1.ConnectGcpConfig {
+func ConnectGCPConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectGcpConfig) *krmmanagedkafkav1alpha1.ConnectGCPConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmmanagedkafkav1alpha1.ConnectGcpConfig{}
+	out := &krmmanagedkafkav1alpha1.ConnectGCPConfig{}
 	out.AccessConfig = ConnectAccessConfig_v1alpha1_FromProto(mapCtx, in.GetAccessConfig())
-	out.SecretPaths = ConnectGcpConfig_SecretPaths_FromProto(mapCtx, in.SecretPaths)
+	out.SecretPaths = ConnectGCPConfig_SecretPaths_FromProto(mapCtx, in.SecretPaths)
 	return out
 }
-func ConnectGcpConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ConnectGcpConfig) *pb.ConnectGcpConfig {
+func ConnectGCPConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ConnectGCPConfig) *pb.ConnectGcpConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ConnectGcpConfig{}
 	out.AccessConfig = ConnectAccessConfig_v1alpha1_ToProto(mapCtx, in.AccessConfig)
-	out.SecretPaths = ConnectGcpConfig_SecretPaths_ToProto(mapCtx, in.SecretPaths)
+	out.SecretPaths = ConnectGCPConfig_SecretPaths_ToProto(mapCtx, in.SecretPaths)
 	return out
 }
 func ConnectNetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectNetworkConfig) *krmmanagedkafkav1alpha1.ConnectNetworkConfig {
@@ -347,6 +347,7 @@ func ManagedKafkaConnectClusterObservedState_v1alpha1_FromProto(mapCtx *direct.M
 		return nil
 	}
 	out := &krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterObservedState{}
+	// MISSING: GcpConfig
 	// MISSING: Name
 	// MISSING: KafkaCluster
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -359,6 +360,7 @@ func ManagedKafkaConnectClusterObservedState_v1alpha1_ToProto(mapCtx *direct.Map
 		return nil
 	}
 	out := &pb.ConnectCluster{}
+	// MISSING: GcpConfig
 	// MISSING: Name
 	// MISSING: KafkaCluster
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -371,7 +373,8 @@ func ManagedKafkaConnectClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec{}
-	out.GcpConfig = ConnectGcpConfig_v1alpha1_FromProto(mapCtx, in.GetGcpConfig())
+	// MISSING: GcpConfig
+	// (near miss): "GcpConfig" vs "GCPConfig"
 	// MISSING: Name
 	// MISSING: KafkaCluster
 	out.Labels = in.Labels
@@ -384,9 +387,8 @@ func ManagedKafkaConnectClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.ConnectCluster{}
-	if oneof := ConnectGcpConfig_v1alpha1_ToProto(mapCtx, in.GcpConfig); oneof != nil {
-		out.PlatformConfig = &pb.ConnectCluster_GcpConfig{GcpConfig: oneof}
-	}
+	// MISSING: GcpConfig
+	// (near miss): "GcpConfig" vs "GCPConfig"
 	// MISSING: Name
 	// MISSING: KafkaCluster
 	out.Labels = in.Labels

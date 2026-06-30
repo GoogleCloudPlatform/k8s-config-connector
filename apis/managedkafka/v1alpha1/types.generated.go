@@ -133,7 +133,7 @@ type ConnectCluster struct {
 }
 */
 
-/* found existing non-generated go type "ConnectGcpConfig", skipping
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConnectGcpConfig", skipping
 
 // +kcc:proto=google.cloud.managedkafka.v1.ConnectGcpConfig
 type ConnectGcpConfig struct {

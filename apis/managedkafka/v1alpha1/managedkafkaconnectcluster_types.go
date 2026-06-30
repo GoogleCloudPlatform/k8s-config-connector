@@ -31,7 +31,7 @@ type ManagedKafkaConnectClusterSpec struct {
 
 	// Required. The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// Required. Reference to the Kafka cluster this Kafka Connect cluster is attached to.
 	// +required
@@ -40,7 +40,7 @@ type ManagedKafkaConnectClusterSpec struct {
 	// Required. Configuration properties for a Kafka Connect cluster deployed
 	//  to Google Cloud Platform.
 	// +required
-	GcpConfig *ConnectGcpConfig `json:"gcpConfig"`
+	GCPConfig *ConnectGCPConfig `json:"gcpConfig"`
 
 	// Optional. Labels as key value pairs.
 	// +optional
@@ -62,7 +62,7 @@ type ManagedKafkaConnectClusterSpec struct {
 }
 
 // +kcc:proto=google.cloud.managedkafka.v1.ConnectGcpConfig
-type ConnectGcpConfig struct {
+type ConnectGCPConfig struct {
 	// Required. Access configuration for the Kafka Connect cluster.
 	// +required
 	AccessConfig *ConnectAccessConfig `json:"accessConfig"`

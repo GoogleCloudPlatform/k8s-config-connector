@@ -19,7 +19,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ConnectGcpConfig_SecretPaths_FromProto(mapCtx *direct.MapContext, in []string) []refs.SecretManagerSecretVersionRef {
+func ConnectGCPConfig_SecretPaths_FromProto(mapCtx *direct.MapContext, in []string) []refs.SecretManagerSecretVersionRef {
 	if in == nil {
 		return nil
 	}
@@ -30,7 +30,7 @@ func ConnectGcpConfig_SecretPaths_FromProto(mapCtx *direct.MapContext, in []stri
 	return out
 }
 
-func ConnectGcpConfig_SecretPaths_ToProto(mapCtx *direct.MapContext, in []refs.SecretManagerSecretVersionRef) []string {
+func ConnectGCPConfig_SecretPaths_ToProto(mapCtx *direct.MapContext, in []refs.SecretManagerSecretVersionRef) []string {
 	if in == nil {
 		return nil
 	}
