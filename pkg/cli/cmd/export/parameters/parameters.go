@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
+	"google.golang.org/grpc"
 )
 
 type Parameters struct {
@@ -42,6 +43,9 @@ type Parameters struct {
 
 	// DisableDirectExport can be set to true to bypass direct-reconciliation exporters.
 	DisableDirectExport bool
+
+	// GRPCUnaryClientInterceptor is the GRPC interceptor for use in tests.
+	GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
 }
 
 func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {
@@ -55,8 +59,12 @@ func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.Controlle
 		)
 	}
 
-	if transport_tpg.GRPCUnaryClientInterceptor != nil {
-		c.GRPCUnaryClientInterceptor = transport_tpg.GRPCUnaryClientInterceptor
+	if p.GRPCUnaryClientInterceptor != nil {
+		c.GRPCUnaryClientInterceptor = p.GRPCUnaryClientInterceptor
+	}
+
+	if c.GRPCUnaryClientInterceptor != nil {
+		transport_tpg.GRPCUnaryClientInterceptor = c.GRPCUnaryClientInterceptor
 	}
 
 	if err := c.Init(ctx); err != nil {

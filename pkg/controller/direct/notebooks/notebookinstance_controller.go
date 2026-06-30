@@ -313,10 +313,8 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.Parent = &krm.Parent{
-		ProjectRef: &refs.ProjectRef{External: a.id.Project},
-		Zone:       a.id.Location,
-	}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Zone = a.id.Location
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.Instance)
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
