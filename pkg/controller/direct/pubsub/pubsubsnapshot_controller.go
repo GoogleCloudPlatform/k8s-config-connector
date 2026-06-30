@@ -37,6 +37,7 @@ import (
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -267,6 +268,9 @@ func (a *snapshotAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	}
 
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.Snapshot)
+	obj.Spec.ProjectRef = &refv1beta1.ProjectRef{
+		External: a.id.Project,
+	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -277,7 +281,6 @@ func (a *snapshotAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	u.SetName(a.id.Snapshot)
 	u.SetGroupVersionKind(krm.PubSubSnapshotGVK)
 
-	export.SetProjectID(u, a.id.Project)
 	export.SetLabels(u, a.actual.Labels)
 
 	return u, nil
