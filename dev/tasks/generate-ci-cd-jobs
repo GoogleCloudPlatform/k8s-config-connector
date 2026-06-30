@@ -43,7 +43,7 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
     "analytics") extra_services="analyticsadmin.googleapis.com" ;;
     "bigqueryanalyticshub") extra_services="analyticshub.googleapis.com" ;;
     "bigquerybiglake") extra_services="biglake.googleapis.com" ;;
-    "certificatemanager") extra_services="certificatemanager.googleapis.com servicedirectory.googleapis.com" ;;
+    "certificatemanager") extra_services="certificatemanager.googleapis.com servicedirectory.googleapis.com privateca.googleapis.com" ;;
     "clouddms") extra_services="datamigration.googleapis.com" ;;
     "cloudfunctions2") extra_services="cloudfunctions.googleapis.com" ;;
     "cloudids") extra_services="ids.googleapis.com" ;;
