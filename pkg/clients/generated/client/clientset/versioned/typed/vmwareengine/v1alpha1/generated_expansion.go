@@ -30,3 +30,5 @@ type VMwareEngineNetworkPeeringExpansion interface{}
 type VMwareEngineNetworkPolicyExpansion interface{}
 
 type VMwareEnginePrivateCloudExpansion interface{}
+
+type VMwareEnginePrivateConnectionExpansion interface{}

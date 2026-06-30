@@ -51,6 +51,10 @@ func (c *FakeVmwareengineV1alpha1) VMwareEnginePrivateClouds(namespace string) v
 	return newFakeVMwareEnginePrivateClouds(c, namespace)
 }
 
+func (c *FakeVmwareengineV1alpha1) VMwareEnginePrivateConnections(namespace string) v1alpha1.VMwareEnginePrivateConnectionInterface {
+	return newFakeVMwareEnginePrivateConnections(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeVmwareengineV1alpha1) RESTClient() rest.Interface {

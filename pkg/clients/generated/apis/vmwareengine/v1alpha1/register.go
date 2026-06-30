@@ -83,5 +83,11 @@ var (
 		Kind:    reflect.TypeOf(VMwareEnginePrivateCloud{}).Name(),
 	}
 
+	VMwareEnginePrivateConnectionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VMwareEnginePrivateConnection{}).Name(),
+	}
+
 	vmwareengineAPIVersion = SchemeGroupVersion.String()
 )

@@ -36,6 +36,7 @@ type VmwareengineV1alpha1Interface interface {
 	VMwareEngineNetworkPeeringsGetter
 	VMwareEngineNetworkPoliciesGetter
 	VMwareEnginePrivateCloudsGetter
+	VMwareEnginePrivateConnectionsGetter
 }
 
 // VmwareengineV1alpha1Client is used to interact with features provided by the vmwareengine.cnrm.cloud.google.com group.
@@ -61,6 +62,10 @@ func (c *VmwareengineV1alpha1Client) VMwareEngineNetworkPolicies(namespace strin
 
 func (c *VmwareengineV1alpha1Client) VMwareEnginePrivateClouds(namespace string) VMwareEnginePrivateCloudInterface {
 	return newVMwareEnginePrivateClouds(c, namespace)
+}
+
+func (c *VmwareengineV1alpha1Client) VMwareEnginePrivateConnections(namespace string) VMwareEnginePrivateConnectionInterface {
+	return newVMwareEnginePrivateConnections(c, namespace)
 }
 
 // NewForConfig creates a new VmwareengineV1alpha1Client for the given config.

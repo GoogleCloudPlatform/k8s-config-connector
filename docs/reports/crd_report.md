@@ -555,6 +555,7 @@
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPolicy                       | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetwork                             | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEnginePrivateCloud                        | True         | False       | False  | Direct     | True        |
+| vmwareengine.cnrm.cloud.google.com            | VMwareEnginePrivateConnection                   | True         | False       | False  | Direct     | True        |
 | vpcaccess.cnrm.cloud.google.com               | VPCAccessConnector                              | False        | True        | False  | Terraform  | False       |
 | workflowexecutions.cnrm.cloud.google.com      | WorkflowsExecution                              | True         | False       | False  | Direct     | True        |
 | workflows.cnrm.cloud.google.com               | WorkflowsWorkflow                               | True         | False       | False  | Direct     | True        |
