@@ -3792,6 +3792,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - sqladmin.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - storage.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5207,6 +5219,14 @@ rules:
   - watch
 - apiGroups:
   - sql.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - sqladmin.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
