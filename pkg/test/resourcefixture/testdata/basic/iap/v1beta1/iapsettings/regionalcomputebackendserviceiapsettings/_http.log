@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -107,7 +107,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -142,7 +142,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -258,7 +258,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -273,6 +273,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 10
   },
@@ -291,7 +292,6 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "${backendServiceID}",
-  "protocol": "TCP",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "sessionAffinity": "CLIENT_IP",
@@ -303,10 +303,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+GET https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/${backendServiceID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2Fcomputebackendservice-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2F${backendServiceID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -324,10 +324,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+PATCH https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/${backendServiceID}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2Fcomputebackendservice-${uniqueId}
+X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2F${backendServiceID}
 
 {
   "accessSettings": {
@@ -375,10 +375,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+GET https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/${backendServiceID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2Fcomputebackendservice-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2F${backendServiceID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -409,10 +409,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+PATCH https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/${backendServiceID}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2Fcomputebackendservice-${uniqueId}
+X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2F${backendServiceID}
 
 {
   "accessSettings": {
@@ -460,10 +460,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+GET https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/${backendServiceID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2Fcomputebackendservice-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2F${backendServiceID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -494,10 +494,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/computebackendservice-${uniqueId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+PATCH https://iap.googleapis.com/v1/projects/${projectId}/iap_web/compute-us-central1/services/${backendServiceID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2Fcomputebackendservice-${uniqueId}
+X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}%2Fiap_web%2Fcompute-us-central1%2Fservices%2F${backendServiceID}
 
 {
   "name": "projects/${projectId}/iap_web/compute-us-central1/services/${serviceId}"
@@ -519,7 +519,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -534,6 +534,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 10
   },
@@ -552,7 +553,6 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "${backendServiceID}",
-  "protocol": "TCP",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "sessionAffinity": "CLIENT_IP",
@@ -564,7 +564,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -628,7 +628,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -663,7 +663,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 

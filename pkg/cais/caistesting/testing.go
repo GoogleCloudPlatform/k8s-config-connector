@@ -117,6 +117,12 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:start] + "${folderId}"
 			}
 		}
+		// Normalize IAP Brand URLs since the brand ID is a dynamic project number
+		if idx := strings.Index(line, "/brands/"); idx != -1 {
+			if strings.Contains(line, "caisURL:") {
+				lines[i] = line[:strings.Index(line, "caisURL:")+len("caisURL: ")] + "unknown"
+			}
+		}
 	}
 	return strings.Join(lines, "\n")
 }

@@ -1,0 +1,29 @@
+apiVersion: iap.cnrm.cloud.google.com/v1beta1
+kind: IAPIdentityAwareProxyClient
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: example-project-01
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: iapidentityawareproxyclient-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  brandRef:
+    name: iapbrand-${uniqueId}
+  displayName: Test Client
+  resourceID: ${projectNumber}-mock-client.apps.googleusercontent.com
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
+  secret: mock-client-secret-xyz123abc456

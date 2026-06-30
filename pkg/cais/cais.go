@@ -106,16 +106,10 @@ func GetCAISIdentities(ctx context.Context, scheme *runtime.Scheme, reader clien
 				continue
 			}
 
-			hasIdentity := true
-			if _, ok := id.(identity.ServerGeneratedIdentity); ok {
-				resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
-				if resourceID == "" {
-					hasIdentity = false
-				}
-			}
-
-			if hasIdentity {
-				if idV2, ok := id.(identity.IdentityV2); ok {
+			if idV2, ok := id.(identity.IdentityV2); ok {
+				if serverGen, ok := id.(identity.ServerGeneratedIdentity); ok && !serverGen.HasIdentitySpecified() {
+					res.CAISURL = "unknown"
+				} else {
 					host := idV2.Host()
 					res.CAISURL = fmt.Sprintf("//%s/%s", host, id.String())
 				}
