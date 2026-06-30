@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
@@ -104,8 +105,24 @@ func (m *modelManagementServer) AdapterForObject(ctx context.Context, op *direct
 }
 
 func (m *modelManagementServer) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.ManagementServerIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(ctx, &m.config)
+	if err != nil {
+		return nil, err
+	}
+	backupDRClient, err := gcpClient.newBackupDRClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ManagementServerAdapter{
+		id:        id,
+		gcpClient: backupDRClient,
+	}, nil
 }
 
 type ManagementServerAdapter struct {
@@ -229,15 +246,17 @@ func (a *ManagementServerAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
 	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ManagementServer)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
+	u.Object = uObj
+	u.SetName(a.id.ManagementServer)
 	u.SetGroupVersionKind(krm.BackupDRManagementServerGVK)
 
-	u.Object = uObj
+	export.SetLabels(u, a.actual.Labels)
 	return u, nil
 }
 
