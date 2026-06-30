@@ -34,20 +34,20 @@ func computeTargetTCPProxyFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	// Spec fields
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".proxy_bind")
-	f.SpecFields.Insert(".proxy_header")
-	f.SpecFields.Insert(".region")
-	f.SpecFields.Insert(".service")
+	f.SpecField(".description")
+	f.SpecField(".proxy_bind")
+	f.SpecField(".proxy_header")
+	f.SpecField(".region")
+	f.SpecField(".service")
 
 	// Status fields
-	f.StatusFields.Insert(".creation_timestamp")
-	f.StatusFields.Insert(".id")
-	f.StatusFields.Insert(".self_link")
+	f.StatusField(".creation_timestamp")
+	f.StatusField(".id")
+	f.StatusField(".self_link")
 
 	// Unimplemented fields
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".kind")
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_Internal(".kind")
 
 	return f
 }
