@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: biglakedatabase-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigquerybiglake.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/biglakedatabases/biglakedatabase-${uniqueId}
 spec:
   hiveOptions:
     locationURI: gs://my-bucket/hive-db

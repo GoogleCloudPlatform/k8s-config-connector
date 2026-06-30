@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: apgenv-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/apigee.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apigeeenvironments/apgenv-${uniqueId}
 spec:
   apigeeOrganizationRef:
     name: apigeeorganization-${uniqueId}

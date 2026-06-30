@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: metadatastore${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/vertexai.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/vertexaimetadatastores/metadatastore${uniqueId}
 spec:
   dataplexConfig:
     enabledPipelinesLineage: false

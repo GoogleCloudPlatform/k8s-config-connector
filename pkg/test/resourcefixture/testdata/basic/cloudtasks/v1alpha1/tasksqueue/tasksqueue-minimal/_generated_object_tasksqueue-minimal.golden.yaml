@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: tasksqueue-min-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/cloudtasks.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/tasksqueues/tasksqueue-min-${uniqueId}
 spec:
   location: us-central1
   projectRef:

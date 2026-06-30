@@ -13,6 +13,7 @@ metadata:
     label-one: value-one
   name: dnsmanagedzone-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/dns.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/dnsmanagedzones/dnsmanagedzone-${uniqueId}
 spec:
   description: Example updated DNS zone
   dnsName: cnrm-dns-example-${uniqueId}.com.

@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: bigquerydatasetsample${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigquery.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigquerydatasets/bigquerydatasetsample${uniqueId}
 spec:
   friendlyName: bigquerydataset-sample
   projectRef:

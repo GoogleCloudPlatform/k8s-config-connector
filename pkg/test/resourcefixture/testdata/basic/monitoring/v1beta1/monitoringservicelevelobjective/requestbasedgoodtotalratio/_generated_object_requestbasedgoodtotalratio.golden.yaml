@@ -13,6 +13,7 @@ metadata:
     test1: value2
   name: monitoringservicelevelobjective-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringservicelevelobjectives/monitoringservicelevelobjective-${uniqueId}
 spec:
   displayName: update request - a request based good total ratio filter
   goal: 0.8

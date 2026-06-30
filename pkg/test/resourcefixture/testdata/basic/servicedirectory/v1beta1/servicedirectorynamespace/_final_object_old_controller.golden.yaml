@@ -13,6 +13,7 @@ metadata:
     label-one: value-two
   name: servicedirectory-namespace-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/servicedirectory.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/servicedirectorynamespaces/servicedirectory-namespace-${uniqueId}
 spec:
   location: us-central1
   projectRef:

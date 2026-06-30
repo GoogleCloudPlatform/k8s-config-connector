@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: batchjob-network-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/batch.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/batchjobs/batchjob-network-${uniqueId}
 spec:
   allocationPolicy:
     instances:

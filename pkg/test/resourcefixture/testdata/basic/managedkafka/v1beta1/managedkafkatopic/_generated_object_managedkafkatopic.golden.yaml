@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: managedkafkatopic-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/managedkafka.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/managedkafkatopics/managedkafkatopic-${uniqueId}
 spec:
   clusterRef:
     name: managedkafkacluster-${uniqueId}

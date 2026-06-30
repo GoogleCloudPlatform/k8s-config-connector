@@ -12,6 +12,7 @@ metadata:
     label-one: value-one
   name: computedisk-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computedisks/computedisk-${uniqueId}
 spec:
   description: a sample regional disk
   location: us-central1

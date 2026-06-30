@@ -1,0 +1,4 @@
+7c7
+<     external: project-${uniqueId}
+---
+>     external: projects/project-${uniqueId}

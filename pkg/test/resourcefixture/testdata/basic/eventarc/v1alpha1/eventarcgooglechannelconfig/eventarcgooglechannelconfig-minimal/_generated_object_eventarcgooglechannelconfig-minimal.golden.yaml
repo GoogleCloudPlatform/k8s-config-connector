@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: eventarcgooglechannelconfig-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/eventarc.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/eventarcgooglechannelconfigs/eventarcgooglechannelconfig-minimal-${uniqueId}
 spec:
   location: us-central1
   projectRef:

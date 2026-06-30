@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: orgpolicypolicy-dryrun-list-values${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/orgpolicy.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/orgpolicypolicies/orgpolicypolicy-dryrun-list-values${uniqueId}
 spec:
   dryRunSpec:
     inheritFromParent: false

@@ -10,6 +10,7 @@ metadata:
     label-one: value-one
   name: notebookinstance-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/notebooks.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/notebookinstances/notebookinstance-minimal-${uniqueId}
 spec:
   containerImage:
     repository: gcr.io/deeplearning-platform-release/base-cpu

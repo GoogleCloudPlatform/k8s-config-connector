@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-20d18
+21d19
 <   resourceID: spannerinstance-${uniqueId}
-28c26,30
+29c27,31
 <   observedGeneration: 3
 ---
 >   externalRef: projects/${projectId}/instances/spannerinstance-${uniqueId}

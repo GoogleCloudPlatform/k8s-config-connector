@@ -13,6 +13,7 @@ metadata:
     label-one: value-one
   name: folder-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/resourcemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/folders/folder-${uniqueId}
 spec:
   displayName: KCC-2 ${uniqueId}
   folderRef:

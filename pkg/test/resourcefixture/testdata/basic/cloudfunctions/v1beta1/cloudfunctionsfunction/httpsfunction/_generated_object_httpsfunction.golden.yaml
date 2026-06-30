@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: cloudfunctionsfunction-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/cloudfunctions.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/cloudfunctionsfunctions/cloudfunctionsfunction-${uniqueId}
 spec:
   entryPoint: helloGET
   httpsTrigger:

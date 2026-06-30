@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: bigqueryanalyticshublisting${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigqueryanalyticshub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigqueryanalyticshublistings/bigqueryanalyticshublisting${uniqueId}
 spec:
   categories:
   - CATEGORY_SCIENCE_AND_RESEARCH

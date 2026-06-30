@@ -14,6 +14,7 @@ metadata:
     label-one: new-value
   name: sqlinstance-encryptionkey-direct-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/sql.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/sqlinstances/sqlinstance-encryptionkey-direct-${uniqueId}
 spec:
   databaseVersion: POSTGRES_15
   encryptionKMSCryptoKeyRef:

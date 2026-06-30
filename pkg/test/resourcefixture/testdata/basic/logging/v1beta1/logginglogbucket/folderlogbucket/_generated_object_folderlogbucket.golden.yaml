@@ -11,6 +11,7 @@ metadata:
     cnrm-test: "true"
   name: logginglogbucket-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/logging.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/logginglogbuckets/logginglogbucket-${uniqueId}
 spec:
   folderRef:
     name: folder-${uniqueId}

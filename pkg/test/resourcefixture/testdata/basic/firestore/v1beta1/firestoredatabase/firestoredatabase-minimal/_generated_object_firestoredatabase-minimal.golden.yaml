@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: firestoredatabase-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/firestore.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/firestoredatabases/firestoredatabase-minimal-${uniqueId}
 spec:
   locationID: us-west2
   projectRef:

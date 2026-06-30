@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: firestoredatabase-full-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/firestore.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/firestoredatabases/firestoredatabase-full-${uniqueId}
 spec:
   concurrencyMode: OPTIMISTIC
   deleteProtectionState: DELETE_PROTECTION_DISABLED

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: gkehubfeaturemembership-full-acm-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/gkehub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/gkehubfeaturememberships/gkehubfeaturemembership-full-acm-${uniqueId}
 spec:
   configmanagement:
     configSync:

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: composerenvironment-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/composer.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/composerenvironments/composerenvironment-${uniqueId}
 spec:
   labels:
     test: "true"

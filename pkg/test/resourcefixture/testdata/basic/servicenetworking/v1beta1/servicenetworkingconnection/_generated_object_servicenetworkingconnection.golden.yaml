@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: servicenetworkingconnection-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/servicenetworking.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/servicenetworkingconnections/servicenetworkingconnection-${uniqueId}
 spec:
   networkRef:
     name: ${networkID}

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: cloudidentitymembership-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/cloudidentity.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/cloudidentitymemberships/cloudidentitymembership-${uniqueId}
 spec:
   groupRef:
     name: cloudidentitygroup-${uniqueId}

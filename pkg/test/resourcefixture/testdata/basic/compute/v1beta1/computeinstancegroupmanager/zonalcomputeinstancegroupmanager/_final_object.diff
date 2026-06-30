@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-26d24
+27d25
 <   resourceID: ${instanceGroupManagerID}
-51,53c49,51
+52,54c50,52
 <   instanceGroup: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}
 <   observedGeneration: 3
 <   selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
@@ -14,7 +14,7 @@
 >   instanceGroup: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}
 >   observedGeneration: 2
 >   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
-58c56
+59c57
 <   zone: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a
 ---
 >   zone: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a

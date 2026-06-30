@@ -19,6 +19,7 @@ metadata:
     custom-label: foo
   name: backupdrbackupvault-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/backupdr.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/backupdrbackupvaults/backupdrbackupvault-minimal-${uniqueId}
 spec:
   backupMinimumEnforcedRetentionDuration: 200000s
   description: Updated description

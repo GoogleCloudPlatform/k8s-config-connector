@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: apigeeorganization-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/apigee.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apigeeorganizations/apigeeorganization-${uniqueId}
 spec:
   analyticsRegion: us-west1
   authorizedNetworkRef:

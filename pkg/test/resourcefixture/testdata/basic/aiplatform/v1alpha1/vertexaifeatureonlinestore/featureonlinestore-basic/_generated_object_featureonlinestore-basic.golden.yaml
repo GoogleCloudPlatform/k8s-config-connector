@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: featureonlinestore-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/aiplatform.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/vertexaifeatureonlinestores/featureonlinestore-${uniqueId}
 spec:
   bigtable:
     autoScaling:

@@ -11,6 +11,7 @@ metadata:
     cnrm-test: "true"
   name: memorystore-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/memorystore.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/memorystoreinstances/memorystore-${uniqueId}
 spec:
   authorizationMode: IAM_AUTH
   automatedBackupConfig:
@@ -47,9 +48,12 @@ spec:
         minutes: 0
         nanos: 0
         seconds: 0
+  maintenanceVersion: MEMORYSTORE_20260313_01_02
   mode: CLUSTER
   nodeType: STANDARD_SMALL
   persistenceConfig:
+    aofConfig:
+      appendFsync: EVERY_SEC
     mode: RDB
     rdbConfig:
       rdbSnapshotPeriod: ONE_HOUR

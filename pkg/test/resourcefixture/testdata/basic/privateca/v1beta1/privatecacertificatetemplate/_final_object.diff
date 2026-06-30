@@ -4,9 +4,9 @@
 <   generation: 2
 ---
 >   generation: 1
-76d74
+77d75
 <   resourceID: privatecacertificatetemplate-${uniqueId}
-85c83
+86c84
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1

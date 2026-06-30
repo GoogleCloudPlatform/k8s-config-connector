@@ -13,6 +13,7 @@ metadata:
     key-one: value-two
   name: kmscryptokey-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/kms.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/kmscryptokeys/kmscryptokey-${uniqueId}
 spec:
   importOnly: false
   keyRingRef:

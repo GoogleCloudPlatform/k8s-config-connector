@@ -14,6 +14,7 @@ metadata:
     label-one: value-two
   name: alloydbcluster-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/alloydb.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/alloydbclusters/alloydbcluster-${uniqueId}
 spec:
   automatedBackupPolicy:
     backupWindow: 3600s

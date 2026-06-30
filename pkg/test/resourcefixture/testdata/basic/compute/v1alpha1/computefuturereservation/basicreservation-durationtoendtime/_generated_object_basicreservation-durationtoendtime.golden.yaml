@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: ${futureReservationID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/computefuturereservations/${futureReservationID}
 spec:
   autoDeleteAutoCreatedReservations: false
   location: us-central1-a
@@ -19,6 +20,8 @@ spec:
       machineType: n2-standard-4
     totalCount: 2
   timeWindow:
+    duration:
+      seconds: 86400
     endTime: "2026-10-11T00:00:01Z"
     startTime: "2026-10-10T00:00:00Z"
 status:

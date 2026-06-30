@@ -241,8 +241,7 @@ X-Goog-User-Project: ${projectId}
 
 {
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-minimal-${uniqueId}",
   "subscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}"
@@ -261,8 +260,7 @@ X-Xss-Protection: 0
 {
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-minimal-${uniqueId}",
   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
@@ -289,8 +287,7 @@ X-Xss-Protection: 0
 {
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-minimal-${uniqueId}",
   "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"

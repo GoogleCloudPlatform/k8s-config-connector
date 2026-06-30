@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: storageanywherecache-sample-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/storage.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/storageanywherecaches/storageanywherecache-sample-${uniqueId}
 spec:
   admissionPolicy: admit-on-first-miss
   bucketRef:

@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: pubsublitesubscription-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/pubsublite.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/pubsublitesubscriptions/pubsublitesubscription-${uniqueId}
 spec:
   deliveryConfig:
     deliveryRequirement: DELIVER_AFTER_STORED

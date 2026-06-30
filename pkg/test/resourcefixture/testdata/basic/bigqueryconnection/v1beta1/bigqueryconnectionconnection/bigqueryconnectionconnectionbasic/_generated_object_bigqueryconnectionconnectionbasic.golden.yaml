@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: bigqueryconnectionconnection-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigqueryconnection.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigqueryconnectionconnections/bigqueryconnectionconnection-${uniqueId}
 spec:
   cloudResource: {}
   location: us-central1

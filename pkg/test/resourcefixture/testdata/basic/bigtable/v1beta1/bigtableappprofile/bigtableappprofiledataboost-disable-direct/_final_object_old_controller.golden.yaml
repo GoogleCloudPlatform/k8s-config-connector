@@ -14,7 +14,10 @@ metadata:
     cnrm-test: "true"
   name: bigtableappprofile-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigtable.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigtableappprofiles/bigtableappprofile-${uniqueId}
 spec:
+  dataBoostIsolationReadOnly:
+    computeBillingOwner: HOST_PAYS
   description: Initial description.
   instanceRef:
     name: profiledep${uniqueId}

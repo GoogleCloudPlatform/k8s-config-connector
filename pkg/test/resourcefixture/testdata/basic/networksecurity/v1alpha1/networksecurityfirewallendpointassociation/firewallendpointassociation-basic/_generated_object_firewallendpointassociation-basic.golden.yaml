@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: fwea-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/networksecurity.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networksecurityfirewallendpointassociations/fwea-${uniqueId}
 spec:
   disabled: true
   firewallEndpointRef:

@@ -11,6 +11,7 @@ metadata:
     cnrm-test: "true"
   name: bigquerydatasetaccessfull${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigquery.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigquerydatasets/bigquerydatasetaccessfull${uniqueId}
 spec:
   access:
   - dataset:

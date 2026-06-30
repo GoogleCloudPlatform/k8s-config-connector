@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: essentialcontactscontact-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/essentialcontacts.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/essentialcontactscontacts/essentialcontactscontact-minimal-${uniqueId}
 spec:
   email: all-alerts@test.com
   languageTag: en

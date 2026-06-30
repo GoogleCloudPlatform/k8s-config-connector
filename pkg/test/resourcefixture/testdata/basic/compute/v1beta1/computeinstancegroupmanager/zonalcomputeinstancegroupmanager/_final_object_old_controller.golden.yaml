@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: ${instanceGroupManagerID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeinstancegroupmanagers/${instanceGroupManagerID}
 spec:
   autoHealingPolicies:
   - healthCheckRef:

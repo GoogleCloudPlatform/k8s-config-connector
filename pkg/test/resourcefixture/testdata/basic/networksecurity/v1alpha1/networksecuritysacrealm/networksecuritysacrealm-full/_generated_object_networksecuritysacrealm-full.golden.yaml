@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: sacrealm-full-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/networksecurity.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networksecuritysacrealms/sacrealm-full-${uniqueId}
 spec:
   labels:
     my-key: my-val

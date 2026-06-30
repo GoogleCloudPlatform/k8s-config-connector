@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: billingbudgetsbudget-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/billingbudgets.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/billingbudgetsbudgets/billingbudgetsbudget-${uniqueId}
 spec:
   amount:
     specifiedAmount:

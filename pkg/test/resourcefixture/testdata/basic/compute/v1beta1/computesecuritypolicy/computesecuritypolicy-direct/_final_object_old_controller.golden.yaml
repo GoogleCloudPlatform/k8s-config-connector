@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: ${securityPolicyID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computesecuritypolicies/${securityPolicyID}
 spec:
   adaptiveProtectionConfig:
     layer7DdosDefenseConfig:

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: vmwareenginenetwork-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/vmwareengine.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/vmwareenginenetworks/vmwareenginenetwork-minimal-${uniqueId}
 spec:
   description: Updated description
   location: global

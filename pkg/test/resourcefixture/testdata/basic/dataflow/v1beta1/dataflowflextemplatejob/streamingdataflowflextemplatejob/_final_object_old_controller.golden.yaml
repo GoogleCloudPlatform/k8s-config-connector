@@ -16,6 +16,7 @@ metadata:
     label-one: value-one
   name: dataflowflextemplatejob-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/dataflow.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/dataflowflextemplatejobs/dataflowflextemplatejob-${uniqueId}
 spec:
   containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
   parameters:

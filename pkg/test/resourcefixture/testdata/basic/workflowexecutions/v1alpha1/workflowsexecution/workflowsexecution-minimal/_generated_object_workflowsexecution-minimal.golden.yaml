@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: execution-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/workflowexecutions.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/workflowsexecutions/execution-minimal-${uniqueId}
 spec:
   argument: '{"firstName":"FIRST","lastName":"LAST"}'
   location: us-central1

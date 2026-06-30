@@ -22,6 +22,7 @@ metadata:
     custom-label: bar
   name: runjob-labels
   namespace: ${uniqueId}
+  selfLink: /apis/run.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/runjobs/runjob-labels
 spec:
   location: us-central1
   projectRef:

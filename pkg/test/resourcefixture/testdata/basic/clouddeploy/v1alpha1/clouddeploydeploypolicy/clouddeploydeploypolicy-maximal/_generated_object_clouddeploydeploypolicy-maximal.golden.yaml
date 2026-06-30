@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: clouddeploydeploypolicy-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/clouddeploy.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/clouddeploydeploypolicies/clouddeploydeploypolicy-${uniqueId}
 spec:
   description: Maximal deploy policy
   location: us-central1

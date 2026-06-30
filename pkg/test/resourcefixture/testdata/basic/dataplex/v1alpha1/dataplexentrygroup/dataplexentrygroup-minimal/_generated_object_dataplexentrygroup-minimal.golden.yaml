@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: dataplexentrygroup-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/dataplex.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/dataplexentrygroups/dataplexentrygroup-minimal-${uniqueId}
 spec:
   description: Updated description
   location: us-central1

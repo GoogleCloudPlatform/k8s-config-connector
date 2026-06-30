@@ -5,13 +5,13 @@
 <   generation: 3
 ---
 >   generation: 2
-38d35
+39d36
 <   resourceID: dataproccluster-${uniqueId}
-47a45
+48a46
 >     endpointConfig: {}
-54a53
+55a54
 >   externalRef: projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}
-98c97
+99c98
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2

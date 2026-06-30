@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: secretmanagersecretversion-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/secretmanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/secretmanagersecretversions/secretmanagersecretversion-${uniqueId}
 spec:
   enabled: false
   secretData:

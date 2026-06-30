@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: firestoreindex-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/firestore.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/firestoreindexes/firestoreindex-${uniqueId}
 spec:
   collection: sample-collection-${uniqueId}
   database: firestoredatabase-${uniqueId}

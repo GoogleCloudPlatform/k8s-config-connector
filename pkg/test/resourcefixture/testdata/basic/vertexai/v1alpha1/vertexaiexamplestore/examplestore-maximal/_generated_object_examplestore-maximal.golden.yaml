@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: examplestore-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/vertexai.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/vertexaiexamplestores/examplestore-${uniqueId}
 spec:
   description: An updated description of the maximal example store.
   displayName: Updated Maximal Example Store

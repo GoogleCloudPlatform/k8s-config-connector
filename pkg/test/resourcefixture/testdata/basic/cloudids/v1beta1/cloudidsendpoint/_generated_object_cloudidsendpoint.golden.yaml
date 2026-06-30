@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: cloudidsendpoint-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/cloudids.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/cloudidsendpoints/cloudidsendpoint-${uniqueId}
 spec:
   location: us-west2-a
   networkRef:

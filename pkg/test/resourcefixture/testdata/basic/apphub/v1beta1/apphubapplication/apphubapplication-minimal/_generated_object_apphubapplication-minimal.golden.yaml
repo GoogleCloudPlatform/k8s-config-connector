@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: apphubapplication-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/apphub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apphubapplications/apphubapplication-minimal-${uniqueId}
 spec:
   description: Updated description
   location: us-west2

@@ -13,6 +13,7 @@ metadata:
     label-one: value-one
   name: project-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/resourcemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/projects/project-${uniqueId}
 spec:
   folderRef:
     external: ${folderID}

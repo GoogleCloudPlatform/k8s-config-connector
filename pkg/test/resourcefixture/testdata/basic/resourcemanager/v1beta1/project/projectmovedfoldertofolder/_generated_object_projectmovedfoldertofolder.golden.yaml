@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: project-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/resourcemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/projects/project-${uniqueId}
 spec:
   folderRef:
     external: "123451002"

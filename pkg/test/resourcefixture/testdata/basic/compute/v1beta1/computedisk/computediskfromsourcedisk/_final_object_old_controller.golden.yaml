@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: ${diskID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computedisks/${diskID}
 spec:
   description: an example disk from source disk
   location: us-central1-a

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: speechrecognizer-maximal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/speech.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/speechrecognizers/speechrecognizer-maximal-${uniqueId}
 spec:
   annotations:
     key-one: value-one-updated

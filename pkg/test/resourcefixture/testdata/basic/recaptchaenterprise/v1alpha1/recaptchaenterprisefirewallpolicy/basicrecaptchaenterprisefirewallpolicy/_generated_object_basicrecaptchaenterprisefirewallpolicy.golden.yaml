@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: recaptchaenterprisefirewallpolicy-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/recaptchaenterprise.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/recaptchaenterprisefirewallpolicies/recaptchaenterprisefirewallpolicy-${uniqueId}
 spec:
   description: Updated description
   projectRef:

@@ -12,6 +12,7 @@ metadata:
     key3: value3
   name: assetsavedquery-full-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/asset.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/assetsavedqueries/assetsavedquery-full-${uniqueId}
 spec:
   content:
     iamPolicyAnalysisQuery:

@@ -4,9 +4,9 @@
 <   generation: 2
 ---
 >   generation: 1
-24d22
+25d23
 <   resourceID: ${nodeTemplateID}
-33c31,32
+34c32,33
 <   observedGeneration: 2
 ---
 >   externalRef: projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}

@@ -13,6 +13,7 @@ metadata:
     label-one: value-two
   name: pubsubsubscription-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/pubsub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/pubsubsubscriptions/pubsubsubscription-${uniqueId}
 spec:
   bigqueryConfig:
     dropUnknownFields: false

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: networkmanagementconnectivitytest-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/networkmanagement.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networkmanagementconnectivitytests/networkmanagementconnectivitytest-${uniqueId}
 spec:
   description: Updated description
   destination:

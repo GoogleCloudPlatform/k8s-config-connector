@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: assetfeed-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/asset.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/assetfeeds/assetfeed-minimal-${uniqueId}
 spec:
   assetTypes:
   - storage.googleapis.com/Bucket

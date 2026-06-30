@@ -14,6 +14,7 @@ metadata:
     label-two: value-two
   name: apigatewayapi-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/apigateway.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apigatewayapis/apigatewayapi-${uniqueId}
 spec:
   displayName: My APIGateway API full example
   managedService: apigatewayapi-full-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog

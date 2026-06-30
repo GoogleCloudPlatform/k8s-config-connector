@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: gkehubfeaturemembership-mesh-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/gkehub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/gkehubfeaturememberships/gkehubfeaturemembership-mesh-${uniqueId}
 spec:
   featureRef:
     name: gkehubfeature-mesh-${uniqueId}

@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: ${targetSslProxyID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computetargetsslproxies/${targetSslProxyID}
 spec:
   backendServiceRef:
     name: ${backendServiceID}

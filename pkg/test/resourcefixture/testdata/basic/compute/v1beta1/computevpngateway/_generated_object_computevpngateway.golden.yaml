@@ -14,6 +14,7 @@ metadata:
     label-one: value-one
   name: computevpngateway-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computevpngateways/computevpngateway-${uniqueId}
 spec:
   networkRef:
     name: default

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: biglakecatalog-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigquerybiglake.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/biglakecatalogs/biglakecatalog-${uniqueId}
 spec:
   location: us-central1
   projectRef:

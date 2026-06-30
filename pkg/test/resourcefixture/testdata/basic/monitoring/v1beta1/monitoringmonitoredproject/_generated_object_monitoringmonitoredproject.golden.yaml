@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: mmp-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringmonitoredprojects/mmp-${uniqueId}
 spec:
   metricsScope: location/global/metricsScopes/${projectId}
   resourceID: mmp-${uniqueId}

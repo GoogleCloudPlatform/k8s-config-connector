@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: iamdenypolicy-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/iam.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/iamdenypolicies/iamdenypolicy-${uniqueId}
 spec:
   displayName: My Updated Deny Policy
   projectRef:

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: memorystoreinstanceendpoint-1-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/memorystore.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/memorystoreinstanceendpoints/memorystoreinstanceendpoint-1-${uniqueId}
 spec:
   endpoints:
   - connections:

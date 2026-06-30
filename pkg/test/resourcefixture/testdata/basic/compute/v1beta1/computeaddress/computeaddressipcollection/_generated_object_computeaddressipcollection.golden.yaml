@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: ${addressID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeaddresses/${addressID}
 spec:
   addressType: EXTERNAL
   description: A test address with ipCollection

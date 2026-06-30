@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: vertexaidataset-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/vertexai.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/vertexaidatasets/vertexaidataset-${uniqueId}
 spec:
   displayName: an encrypted vertex AI dataset with updated name
   encryptionSpec:

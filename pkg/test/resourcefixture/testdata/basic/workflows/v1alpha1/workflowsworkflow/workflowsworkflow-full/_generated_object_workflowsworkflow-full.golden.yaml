@@ -11,6 +11,7 @@ metadata:
     cnrm-test: "true"
   name: workflow-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/workflows.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/workflowsworkflows/workflow-${uniqueId}
 spec:
   callLogLevel: LOG_ALL_CALLS
   description: Updated Example workflow

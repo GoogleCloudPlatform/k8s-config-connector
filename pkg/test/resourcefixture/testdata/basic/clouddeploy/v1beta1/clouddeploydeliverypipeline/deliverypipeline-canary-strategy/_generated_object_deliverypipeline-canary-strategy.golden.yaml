@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: clouddeploydeliverypipeline-full-2-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/clouddeploy.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/clouddeploydeliverypipelines/clouddeploydeliverypipeline-full-2-${uniqueId}
 spec:
   location: us-east1
   projectRef:

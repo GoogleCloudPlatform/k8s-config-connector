@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-26d24
+27d25
 <   resourceID: ${instanceGroupManagerID}
-45,48c43,46
+46,49c44,47
 <   instanceGroup: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceGroups/${instanceGroupManagerID}
 <   observedGeneration: 3
 <   region: https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1

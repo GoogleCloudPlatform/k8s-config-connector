@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: vpcac${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/vpcaccess.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/vpcaccessconnectors/vpcac${uniqueId}
 spec:
   location: us-west2
   machineType: e2-micro

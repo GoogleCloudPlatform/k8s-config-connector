@@ -14,6 +14,7 @@ metadata:
     label-one: value-one
   name: storagebucket-sample-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/storage.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/storagebuckets/storagebucket-sample-${uniqueId}
 spec:
   ipFilter:
     allowAllServiceAgentAccess: false

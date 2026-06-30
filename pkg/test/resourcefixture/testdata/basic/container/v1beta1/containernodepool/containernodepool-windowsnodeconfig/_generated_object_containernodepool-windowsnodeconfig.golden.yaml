@@ -14,6 +14,7 @@ metadata:
     label-one: value-one
   name: nodepool-sample-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/container.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containernodepools/nodepool-sample-${uniqueId}
 spec:
   clusterRef:
     name: cluster-sample-${uniqueId}

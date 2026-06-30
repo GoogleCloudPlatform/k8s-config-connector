@@ -16,6 +16,7 @@ metadata:
     env: prod
   name: ${instanceID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeinstances/${instanceID}
 spec:
   bootDisk:
     autoDelete: false

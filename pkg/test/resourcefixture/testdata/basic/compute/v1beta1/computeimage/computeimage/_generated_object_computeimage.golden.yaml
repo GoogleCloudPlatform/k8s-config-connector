@@ -13,6 +13,7 @@ metadata:
     label-one: value-one
   name: ${imageID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeimages/${imageID}
 spec:
   diskRef:
     name: ${diskID}

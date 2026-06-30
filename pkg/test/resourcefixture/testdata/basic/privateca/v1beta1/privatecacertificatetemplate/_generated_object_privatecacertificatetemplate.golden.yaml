@@ -13,6 +13,7 @@ metadata:
     label-two: value-two
   name: privatecacertificatetemplate-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/privateca.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/privatecacertificatetemplates/privatecacertificatetemplate-${uniqueId}
 spec:
   description: An basic sample certificate template
   identityConstraints:

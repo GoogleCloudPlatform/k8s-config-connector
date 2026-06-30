@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: tagstagkey-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/tags.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/tagstagkeys/tagstagkey-${uniqueId}
 spec:
   description: For keyname resources.
   parent: organizations/${organizationID}

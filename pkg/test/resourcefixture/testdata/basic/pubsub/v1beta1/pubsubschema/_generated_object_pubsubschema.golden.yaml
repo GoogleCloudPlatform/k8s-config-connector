@@ -11,6 +11,7 @@ metadata:
     cnrm-test: "true"
   name: pubsubschema-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/pubsub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/pubsubschemas/pubsubschema-${uniqueId}
 spec:
   definition: |-
     syntax = "proto3";

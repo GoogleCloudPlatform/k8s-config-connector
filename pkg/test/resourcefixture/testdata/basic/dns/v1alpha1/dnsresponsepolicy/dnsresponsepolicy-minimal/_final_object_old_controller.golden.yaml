@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: dnsresponsepolicy-test-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/dns.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/dnsresponsepolicies/dnsresponsepolicy-test-${uniqueId}
 spec:
   description: An updated DNS response policy description
   networks:

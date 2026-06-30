@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: gkebackupbackupplan-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/gkebackup.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/gkebackupbackupplans/gkebackupbackupplan-minimal-${uniqueId}
 spec:
   backupConfig:
     allNamespaces: true

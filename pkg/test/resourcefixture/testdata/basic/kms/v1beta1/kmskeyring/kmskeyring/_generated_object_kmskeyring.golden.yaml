@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: key-ring-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/kms.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/kmskeyrings/key-ring-${uniqueId}
 spec:
   location: us-central1
 status:

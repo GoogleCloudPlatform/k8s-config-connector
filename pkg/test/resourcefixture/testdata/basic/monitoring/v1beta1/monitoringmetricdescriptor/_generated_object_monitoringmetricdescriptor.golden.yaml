@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: monitoringmetricdescriptor-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringmetricdescriptors/monitoringmetricdescriptor-${uniqueId}
 spec:
   description: Tracks a combination of estimates of trade volume for a given resource,
     in $USD per hour.

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: orgpolicypolicy-dryrun-list-denyall${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/orgpolicy.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/orgpolicypolicies/orgpolicypolicy-dryrun-list-denyall${uniqueId}
 spec:
   dryRunSpec:
     inheritFromParent: false

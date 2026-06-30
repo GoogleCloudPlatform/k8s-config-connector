@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: spannerbackupschedule-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/spanner.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/spannerbackupschedules/spannerbackupschedule-${uniqueId}
 spec:
   fullBackupSpec: {}
   retentionDuration: 1000000s

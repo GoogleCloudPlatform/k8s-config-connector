@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: bigquerydatatransferconfig-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigquerydatatransfer.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigquerydatatransferconfigs/bigquerydatatransferconfig-${uniqueId}
 spec:
   dataSourceID: salesforce
   datasetRef:

@@ -13,6 +13,7 @@ metadata:
     cnrm-test: "true"
   name: containernodepool-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/container.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containernodepools/containernodepool-${uniqueId}
 spec:
   clusterRef:
     name: containercluster-${uniqueId}

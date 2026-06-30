@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: ssminstance-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/securesourcemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/securesourcemanagerinstances/ssminstance-${uniqueId}
 spec:
   location: us-central1
   projectRef:

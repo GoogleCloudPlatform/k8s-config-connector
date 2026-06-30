@@ -14,6 +14,7 @@ metadata:
     cnrm-test: "true"
   name: sqldatabase-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/sql.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/sqldatabases/sqldatabase-${uniqueId}
 spec:
   charset: utf8mb4
   collation: utf8mb4_bin

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: cloudidentitygroup-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/cloudidentity.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/cloudidentitygroups/cloudidentitygroup-${uniqueId}
 spec:
   description: Nope, this is still a test, just updated.
   displayName: Updated Cloud Identity Group Name

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: tasksqueue-max-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/cloudtasks.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/tasksqueues/tasksqueue-max-${uniqueId}
 spec:
   appEngineRoutingOverride:
     host: host1.example.com

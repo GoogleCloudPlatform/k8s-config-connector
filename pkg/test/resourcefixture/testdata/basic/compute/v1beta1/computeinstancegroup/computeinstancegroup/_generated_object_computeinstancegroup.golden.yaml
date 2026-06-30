@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: ${instanceGroupID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeinstancegroups/${instanceGroupID}
 spec:
   instances:
   - name: ${instanceID}

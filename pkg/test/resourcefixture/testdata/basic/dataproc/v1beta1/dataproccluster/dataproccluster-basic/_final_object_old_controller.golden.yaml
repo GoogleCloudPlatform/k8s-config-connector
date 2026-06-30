@@ -14,6 +14,7 @@ metadata:
     label-one: new-value
   name: dataproccluster-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/dataproc.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/dataprocclusters/dataproccluster-${uniqueId}
 spec:
   config:
     autoscalingConfig:

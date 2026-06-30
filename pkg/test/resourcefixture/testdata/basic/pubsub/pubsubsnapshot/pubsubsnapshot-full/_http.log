@@ -234,8 +234,7 @@ X-Goog-User-Project: ${projectId}
 
 {
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
   "subscription": "projects/${projectId}/subscriptions/pubsubsnapshot-dep-${uniqueId}"
@@ -254,8 +253,74 @@ X-Xss-Protection: 0
 {
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true"
+  },
+  "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
+  "topic": "projects/${projectId}/topics/pubsubsnapshot-dep-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: snapshot=projects%2F${projectId}%2Fsnapshots%2Fpubsubsnapshot-full-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true"
+  },
+  "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
+  "topic": "projects/${projectId}/topics/pubsubsnapshot-dep-${uniqueId}"
+}
+
+---
+
+PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: snapshot.name=projects%2F${projectId}%2Fsnapshots%2Fpubsubsnapshot-full-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "snapshot": {
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "key": "new-value"
+    },
+    "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
+    "topic": "projects/${projectId}/topics/pubsubsnapshot-dep-${uniqueId}"
+  },
+  "updateMask": "labels"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "key": "new-value"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
   "topic": "projects/${projectId}/topics/pubsubsnapshot-dep-${uniqueId}"
@@ -283,7 +348,7 @@ X-Xss-Protection: 0
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "key": "new-value"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
   "topic": "projects/${projectId}/topics/pubsubsnapshot-dep-${uniqueId}"

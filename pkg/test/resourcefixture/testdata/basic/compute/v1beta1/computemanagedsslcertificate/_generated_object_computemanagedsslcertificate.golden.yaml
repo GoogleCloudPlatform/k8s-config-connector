@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: ${sslCertificateID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computemanagedsslcertificates/${sslCertificateID}
 spec:
   managed:
     domains:

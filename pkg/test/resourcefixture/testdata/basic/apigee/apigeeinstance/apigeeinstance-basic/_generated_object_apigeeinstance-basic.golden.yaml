@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: apigeeinstance-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/apigee.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apigeeinstances/apigeeinstance-${uniqueId}
 spec:
   location: us-central1
   organizationRef:

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: dataplexzone-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/dataplex.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/dataplexzones/dataplexzone-minimal-${uniqueId}
 spec:
   description: Updated description
   lakeRef:

@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: ${dashboardID}
   namespace: ${uniqueId}
+  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringdashboards/${dashboardID}
 spec:
   displayName: monitoringdashboard-full
   projectRef:

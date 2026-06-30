@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: bigqueryroutine-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigquery.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigqueryroutines/bigqueryroutine-${uniqueId}
 spec:
   datasetRef:
     name: bigquerydataset${uniqueId}

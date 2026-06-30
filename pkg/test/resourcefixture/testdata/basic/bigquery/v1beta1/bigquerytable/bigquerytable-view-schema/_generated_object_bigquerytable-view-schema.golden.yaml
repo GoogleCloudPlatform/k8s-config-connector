@@ -13,6 +13,7 @@ metadata:
     department_name: marketing
   name: bigquerytablesample${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/bigquery.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigquerytables/bigquerytablesample${uniqueId}
 spec:
   datasetRef:
     name: bigquerydatasetsample${uniqueId}

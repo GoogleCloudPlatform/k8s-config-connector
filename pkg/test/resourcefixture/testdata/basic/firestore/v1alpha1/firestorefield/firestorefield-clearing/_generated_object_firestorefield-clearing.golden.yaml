@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: firestorefield-clearing-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/firestore.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/firestorefields/firestorefield-clearing-${uniqueId}
 spec:
   collectionGroup: my-collection
   databaseRef:

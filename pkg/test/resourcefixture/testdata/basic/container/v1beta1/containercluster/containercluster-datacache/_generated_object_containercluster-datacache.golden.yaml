@@ -16,6 +16,7 @@ metadata:
     label-one: value-one
   name: containercluster-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/container.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containerclusters/containercluster-${uniqueId}
 spec:
   initialNodeCount: 1
   location: us-central1-a

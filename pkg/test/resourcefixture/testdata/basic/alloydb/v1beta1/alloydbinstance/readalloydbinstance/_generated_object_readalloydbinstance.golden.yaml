@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: alloydbreadinstance-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/alloydb.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/alloydbinstances/alloydbreadinstance-${uniqueId}
 spec:
   clusterRef:
     name: alloydbcluster-${uniqueId}

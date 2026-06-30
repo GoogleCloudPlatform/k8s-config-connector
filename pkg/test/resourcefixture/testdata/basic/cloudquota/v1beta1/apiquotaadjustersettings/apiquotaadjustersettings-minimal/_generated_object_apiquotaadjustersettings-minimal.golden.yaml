@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: apiquotaadjustersettings-minimal-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/cloudquota.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apiquotaadjustersettings/apiquotaadjustersettings-minimal-${uniqueId}
 spec:
   enablement: DISABLED
   projectRef:

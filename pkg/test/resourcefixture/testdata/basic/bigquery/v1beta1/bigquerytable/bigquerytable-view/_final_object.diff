@@ -4,11 +4,11 @@
 <   generation: 2
 ---
 >   generation: 1
-29d27
+30d28
 <   resourceID: bigquerytablesample${uniqueId}
-41a40
+42a41
 >   externalRef: projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}
-44c43
+45c44
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1

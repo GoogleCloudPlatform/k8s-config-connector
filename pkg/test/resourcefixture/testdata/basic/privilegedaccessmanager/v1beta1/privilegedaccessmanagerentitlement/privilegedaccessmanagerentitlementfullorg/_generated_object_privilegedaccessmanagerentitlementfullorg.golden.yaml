@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: privilegedaccessmanagerentitlement-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/privilegedaccessmanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/privilegedaccessmanagerentitlements/privilegedaccessmanagerentitlement-${uniqueId}
 spec:
   additionalNotificationTargets:
     adminEmailRecipients:

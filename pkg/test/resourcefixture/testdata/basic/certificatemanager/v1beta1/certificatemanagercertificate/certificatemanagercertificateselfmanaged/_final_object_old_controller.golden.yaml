@@ -14,6 +14,7 @@ metadata:
     label-one: value-two
   name: certificatemanagercertificate-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/certificatemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/certificatemanagercertificates/certificatemanagercertificate-${uniqueId}
 spec:
   description: updated regional self-managed certificate
   location: europe-west1

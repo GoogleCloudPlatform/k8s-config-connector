@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: runservice-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/run.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/runservices/runservice-${uniqueId}
 spec:
   ingress: INGRESS_TRAFFIC_ALL
   launchStage: GA

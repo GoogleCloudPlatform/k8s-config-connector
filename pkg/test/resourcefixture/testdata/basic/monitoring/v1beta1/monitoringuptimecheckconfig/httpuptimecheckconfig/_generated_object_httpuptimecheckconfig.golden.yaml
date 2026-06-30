@@ -14,6 +14,7 @@ metadata:
     cnrm-test: "true"
   name: monitoringuptimecheckconfig-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringuptimecheckconfigs/monitoringuptimecheckconfig-${uniqueId}
 spec:
   contentMatchers:
   - content: .*

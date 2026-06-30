@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: documentaiversion-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/documentai.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/documentaiprocessorversions/documentaiversion-${uniqueId}
 spec:
   displayName: Test Document AI Version Name
   processorRef:

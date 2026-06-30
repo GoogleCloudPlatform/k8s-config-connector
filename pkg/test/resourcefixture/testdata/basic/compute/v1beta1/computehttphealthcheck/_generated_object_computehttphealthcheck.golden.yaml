@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: ${healthCheckID}
   namespace: ${uniqueId}
+  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computehttphealthchecks/${healthCheckID}
 spec:
   checkIntervalSec: 11
   description: example HTTP health check

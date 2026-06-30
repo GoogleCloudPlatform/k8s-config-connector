@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: apgenvga-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/apigee.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apigeeenvgroupattachments/apgenvga-${uniqueId}
 spec:
   envgroupRef:
     name: apgenvg-${uniqueId}

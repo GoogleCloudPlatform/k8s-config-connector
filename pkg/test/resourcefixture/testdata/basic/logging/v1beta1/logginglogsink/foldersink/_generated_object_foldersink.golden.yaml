@@ -11,6 +11,7 @@ metadata:
     cnrm-test: "true"
   name: foldersink-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/logging.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/logginglogsinks/foldersink-${uniqueId}
 spec:
   destination:
     bigQueryDatasetRef:

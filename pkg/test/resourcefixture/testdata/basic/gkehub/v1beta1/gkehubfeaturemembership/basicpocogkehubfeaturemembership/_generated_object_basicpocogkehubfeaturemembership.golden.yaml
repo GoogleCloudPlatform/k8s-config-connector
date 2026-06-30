@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: gkehubfeaturemembership-basic-poco-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/gkehub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/gkehubfeaturememberships/gkehubfeaturemembership-basic-poco-${uniqueId}
 spec:
   featureRef:
     name: gkehubfeature-basic-poco-${uniqueId}

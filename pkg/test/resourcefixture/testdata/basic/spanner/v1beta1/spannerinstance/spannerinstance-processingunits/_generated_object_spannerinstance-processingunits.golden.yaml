@@ -12,6 +12,7 @@ metadata:
     cnrm-test: "true"
   name: spannerinstance-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/spanner.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/spannerinstances/spannerinstance-${uniqueId}
 spec:
   config: regional-us-central1
   displayName: Spanner Instance Updated

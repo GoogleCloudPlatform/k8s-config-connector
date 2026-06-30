@@ -9,6 +9,7 @@ metadata:
     cnrm-test: "true"
   name: workstation-${uniqueId}
   namespace: ${uniqueId}
+  selfLink: /apis/workstations.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/workstations/workstation-${uniqueId}
 spec:
   parentRef:
     name: workstationconfig-${uniqueId}
