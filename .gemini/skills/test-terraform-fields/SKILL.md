@@ -32,12 +32,7 @@ A complete test fixture directory contains:
 
 ---
 
-## 3. Recording Ground Truth against Real GCP (CRITICAL MANDATORY STEP)
-
-> [!IMPORTANT]
-> **YOU MUST NEVER SKIP OR BYPASS THIS STEP.** 
-> Generating mock-only golden logs via `compare-mock` or `go test` without first recording live traffic against real GCP is strictly prohibited.
-> If the environment does not have a pre-configured GCP project ID, or if running `hack/record-gcp` fails due to authentication/project ID errors, you **MUST STOP IMMEDIATELY** and ask the user to provide a valid GCP Project ID. Do not try to bypass this requirement.
+## 3. Recording Ground Truth against Real GCP
 
 To establish a baseline or update golden logs, you must run the tests against a real GCP project. This records actual HTTP/gRPC API interactions into the `_http.log` file.
 
@@ -85,11 +80,10 @@ For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`,
      hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset
      ```
 2. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
-3. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST NOT** skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+3. **If the script fails** (e.g. due to permissions or an invalid default project ID like `foobar`), DO NOT skip this step. Ask the user for a valid GCP project ID to test against, and then run:
    ```bash
    GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
    ```
-
 
 ### D. Running MockGCP Script Test Recordings
 For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use the python recording task:
