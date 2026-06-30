@@ -17,93 +17,76 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// SnapshotIdentity is the identity of a PubSubSnapshot.
-type SnapshotIdentity struct {
-	parent *SnapshotParent
-	id     string
+var (
+	_ identity.IdentityV2 = &PubSubSnapshotIdentity{}
+	_ identity.Resource   = &PubSubSnapshot{}
+)
+
+var PubSubSnapshotIdentityFormat = gcpurls.Template[PubSubSnapshotIdentity]("pubsub.googleapis.com", "projects/{project}/snapshots/{snapshot}")
+
+// +k8s:deepcopy-gen=false
+
+// PubSubSnapshotIdentity is the identity of a GCP PubSubSnapshot resource.
+type PubSubSnapshotIdentity struct {
+	Project  string
+	Snapshot string
 }
 
-func (i *SnapshotIdentity) String() string {
-	return i.parent.String() + "/snapshots/" + i.id
+func (i *PubSubSnapshotIdentity) String() string {
+	return PubSubSnapshotIdentityFormat.ToString(*i)
 }
 
-func (i *SnapshotIdentity) ID() string {
-	return i.id
+func (i *PubSubSnapshotIdentity) FromExternal(ref string) error {
+	parsed, match, err := PubSubSnapshotIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of PubSubSnapshot external=%q was not known (use %s): %w", ref, PubSubSnapshotIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of PubSubSnapshot external=%q was not known (use %s)", ref, PubSubSnapshotIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
-func (i *SnapshotIdentity) Parent() *SnapshotParent {
-	return i.parent
+func (i *PubSubSnapshotIdentity) Host() string {
+	return PubSubSnapshotIdentityFormat.Host()
 }
 
-type SnapshotParent struct {
-	ProjectID string
+func (i *PubSubSnapshotIdentity) ParentString() string {
+	return "projects/" + i.Project
 }
 
-func (p *SnapshotParent) String() string {
-	return "projects/" + p.ProjectID
+func getIdentityFromPubSubSnapshotSpec(ctx context.Context, reader client.Reader, obj *PubSubSnapshot) (*PubSubSnapshotIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &PubSubSnapshotIdentity{
+		Project:  projectID,
+		Snapshot: resourceID,
+	}
+	return identity, nil
 }
 
-// New builds a SnapshotIdentity from the Config Connector Snapshot object.
-func NewSnapshotIdentity(ctx context.Context, reader client.Reader, obj *PubSubSnapshot) (*SnapshotIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (obj *PubSubSnapshot) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromPubSubSnapshotSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseSnapshotExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &SnapshotIdentity{
-		parent: &SnapshotParent{
-			ProjectID: projectID,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseSnapshotExternal(external string) (parent *SnapshotParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "snapshots" {
-		return nil, "", fmt.Errorf("format of PubSubSnapshot external=%q was not known (use projects/{{projectID}}/snapshots/{{snapshotID}})", external)
-	}
-	parent = &SnapshotParent{
-		ProjectID: tokens[1],
-	}
-	resourceID = tokens[3]
-	return parent, resourceID, nil
+	return specIdentity, nil
 }
