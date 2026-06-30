@@ -180,6 +180,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":              true,
 		"//monitoring.googleapis.com/projects/{}/services/{}":                       true,
 
+		// Migration Center
+		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}": true,
+
 		// Network Connectivity
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}": true,
 

@@ -295,6 +295,8 @@ import (
 	fakemetastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1/fake"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
 	fakemetastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1/fake"
+	migrationcenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/migrationcenter/v1alpha1"
+	fakemigrationcenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/migrationcenter/v1alpha1/fake"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
 	fakemlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1/fake"
 	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/modelarmor/v1alpha1"
@@ -1160,6 +1162,11 @@ func (c *Clientset) MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Inter
 // MetastoreV1beta1 retrieves the MetastoreV1beta1Client
 func (c *Clientset) MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface {
 	return &fakemetastorev1beta1.FakeMetastoreV1beta1{Fake: &c.Fake}
+}
+
+// MigrationcenterV1alpha1 retrieves the MigrationcenterV1alpha1Client
+func (c *Clientset) MigrationcenterV1alpha1() migrationcenterv1alpha1.MigrationcenterV1alpha1Interface {
+	return &fakemigrationcenterv1alpha1.FakeMigrationcenterV1alpha1{Fake: &c.Fake}
 }
 
 // MlengineV1alpha1 retrieves the MlengineV1alpha1Client
