@@ -1,4 +1,4 @@
-616,701d615
+573,658d572
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}?alt=json
 < Content-Type: application/json
 < 

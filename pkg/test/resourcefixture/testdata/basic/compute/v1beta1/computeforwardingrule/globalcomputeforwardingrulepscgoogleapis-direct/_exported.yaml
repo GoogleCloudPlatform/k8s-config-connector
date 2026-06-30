@@ -11,7 +11,8 @@ metadata:
 spec:
   description: A global forwarding rule
   ipAddress:
-    ip: projects/${projectId}/global/addresses/default
+    addressRef:
+      external: projects/${projectId}/global/addresses/default
   ipProtocol: TCP
   location: global
   networkRef:
