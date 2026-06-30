@@ -1148,6 +1148,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - gsuiteaddons.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
   resources:
   - '*'

@@ -46,6 +46,8 @@ type MapperGenerator struct {
 	importedPackages map[string]importedPackage
 
 	includeSkippedOutput bool
+
+	notMappedProtoMessages map[string]string
 }
 
 type importedPackage struct {
@@ -60,9 +62,17 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 		generatedFileAnnotation: generatedFileAnnotation,
 		multiversion:            multiversion,
 		importedPackages:        make(map[string]importedPackage),
+		notMappedProtoMessages:  make(map[string]string),
+	}
+	for k, v := range protoMessagesNotMappedToGoStruct {
+		g.notMappedProtoMessages[k] = v
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
+}
+
+func (v *MapperGenerator) AddProtoMessageNotMappedToGoStruct(protoName, goType string) {
+	v.notMappedProtoMessages[protoName] = goType
 }
 
 // WithIncludeSkippedOutput sets whether to output skipped mappers as commented-out code
@@ -365,7 +375,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
 					fromProtoElemFunc = krmElemTypeName + versionSpecifier + "_FromProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					if _, ok := v.notMappedProtoMessages[string(protoField.Message().FullName())]; ok {
 						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
 					}
 				case protoreflect.EnumKind:
@@ -393,7 +403,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmSliceElemType, "*")
 					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					if _, ok := v.notMappedProtoMessages[string(protoField.Message().FullName())]; ok {
 						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 					}
 					fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", protoAccessor)
@@ -522,7 +532,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				// special handling for proto messages that mapped to KRM string
-				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+				if _, ok := v.notMappedProtoMessages[string(protoField.Message().FullName())]; ok {
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
@@ -663,7 +673,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					if _, ok := v.notMappedProtoMessages[string(protoField.Message().FullName())]; ok {
 						functionName = krmToProtoFunctionName(protoField, krmField.Name)
 					}
 					fmt.Fprintf(out, "\t\tout.%s = %s(mapCtx, in.%s[0])\n", protoFieldName, functionName, krmFieldName)
@@ -705,7 +715,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
-					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+					if _, ok := v.notMappedProtoMessages[string(protoField.Message().FullName())]; ok {
 						functionName = krmToProtoFunctionName(protoField, krmField.Name)
 					}
 					toProtoElemFunc = functionName
@@ -827,7 +837,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				// special handling for proto messages that mapped to KRM string
-				if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+				if _, ok := v.notMappedProtoMessages[string(protoField.Message().FullName())]; ok {
 					functionName = krmToProtoFunctionName(protoField, krmField.Name)
 				}
 
