@@ -20,12 +20,17 @@ metadata:
   name: nodepool-sample-${uniqueId}
 spec:
   location: us-central1-a
-  initialNodeCount: 1
+  initialNodeCount: 0
   queuedProvisioning:
     enabled: true
+  autoscaling:
+    minNodeCount: 0
+    maxNodeCount: 3
+
   nodeConfig:
     reservationAffinity:
       consumeReservationType: NO_RESERVATION
   nodeCount: 2
   clusterRef:
     name: cluster-sample-${uniqueId}
+

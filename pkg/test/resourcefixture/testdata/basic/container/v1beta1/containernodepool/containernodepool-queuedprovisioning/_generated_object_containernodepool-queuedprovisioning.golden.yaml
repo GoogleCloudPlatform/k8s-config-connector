@@ -15,9 +15,12 @@ metadata:
   name: nodepool-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  autoscaling:
+    maxNodeCount: 3
+    minNodeCount: 0
   clusterRef:
     name: cluster-sample-${uniqueId}
-  initialNodeCount: 1
+  initialNodeCount: 0
   location: us-central1-a
   nodeConfig:
     reservationAffinity:
@@ -34,9 +37,9 @@ status:
     status: "True"
     type: Ready
   instanceGroupUrls:
-  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-4-nodepool-sample--89b27b21-grp
   managedInstanceGroupUrls:
-  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
+  - https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-4-nodepool-sample--89b27b21-grp
   observedGeneration: 3
   observedState:
-    version: 1.30.5-gke.1014001
+    version: 1.35.5-gke.1163012
