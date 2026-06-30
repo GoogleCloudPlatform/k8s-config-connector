@@ -88,5 +88,19 @@ func (obj *PubSubSnapshot) GetIdentity(ctx context.Context, reader client.Reader
 		return nil, err
 	}
 
+	if obj.Status.ExternalRef != nil && *obj.Status.ExternalRef != "" {
+		actualId := &PubSubSnapshotIdentity{}
+		if err := actualId.FromExternal(*obj.Status.ExternalRef); err != nil {
+			return nil, err
+		}
+		if actualId.Project != specIdentity.Project {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualId.Project, specIdentity.Project)
+		}
+		if actualId.Snapshot != specIdentity.Snapshot {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				specIdentity.Snapshot, actualId.Snapshot)
+		}
+	}
+
 	return specIdentity, nil
 }

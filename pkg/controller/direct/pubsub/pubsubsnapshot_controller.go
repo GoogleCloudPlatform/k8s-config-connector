@@ -33,6 +33,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
@@ -118,6 +119,9 @@ func (m *SnapshotModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 	desired.Name = snapshotId.String()
 	desired.Labels = label.GCPLabels(obj)
 
+	// pubSubSubscriptionRef is required when creating a snapshot, but it is not part
+	// of the standard pb.Snapshot proto structure returned from GET or updated via PATCH.
+	// We track it separately here so that Create() can use it.
 	var pubSubSubscriptionRefExternal string
 	if obj.Spec.PubSubSubscriptionRef != nil {
 		pubSubSubscriptionRefExternal = obj.Spec.PubSubSubscriptionRef.External
@@ -200,9 +204,14 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating pubsub snapshot", "name", a.id)
 
-	diffs, updateMask, err := compareSnapshot(ctx, a.actual, a.desired)
+	paths, diffs, updateMask, err := compareSnapshot(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
+	}
+
+	// Topic is immutable. If there's a diff on "topic", return an error.
+	if paths.Has("topic") {
+		return fmt.Errorf("topic is immutable and cannot be updated")
 	}
 
 	if !diffs.HasDiff() {
@@ -274,22 +283,17 @@ func (a *snapshotAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	return u, nil
 }
 
-func compareSnapshot(ctx context.Context, actual, desired *pb.Snapshot) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func compareSnapshot(ctx context.Context, actual, desired *pb.Snapshot) (sets.Set[string], *structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, PubSubSnapshotSpec_FromProto, PubSubSnapshotSpec_ToProto)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 	maskedActual.Name = actual.Name
 	maskedActual.Labels = actual.Labels
 
 	paths, diffs, err := common.CompareProtoMessageStructuredDiff(desired, maskedActual, common.BasicDiff)
 	if err != nil {
-		return nil, nil, fmt.Errorf("comparing spec: %w", err)
-	}
-
-	// Topic is immutable. If there's a diff on "topic", return an error.
-	if paths.Has("topic") {
-		return nil, nil, fmt.Errorf("topic is immutable and cannot be updated")
+		return nil, nil, nil, fmt.Errorf("comparing spec: %w", err)
 	}
 
 	pathsList := paths.UnsortedList()
@@ -297,7 +301,7 @@ func compareSnapshot(ctx context.Context, actual, desired *pb.Snapshot) (*struct
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: pathsList,
 	}
-	return diffs, updateMask, nil
+	return paths, diffs, updateMask, nil
 }
 
 func (a *snapshotAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Snapshot) error {

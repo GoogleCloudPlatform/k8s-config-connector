@@ -17,10 +17,8 @@ package v1beta1
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -82,22 +80,12 @@ func (r *SnapshotRef) ParseExternalToIdentity() (identity.Identity, error) {
 }
 
 func (r *SnapshotRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	fallback := func(u *unstructured.Unstructured) string {
-		obj, err := common.ToStructuredType[*PubSubSnapshot](u)
-		if err != nil {
-			return ""
-		}
-		identity, err := getIdentityFromPubSubSnapshotSpec(ctx, reader, obj)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
-	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // NormalizedExternal provision the "External" value.
 // Kept for backward compatibility with older callers.
+// Deprecated: use Normalize instead.
 func (r *SnapshotRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
 		return "", err
