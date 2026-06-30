@@ -31,7 +31,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -96,7 +95,6 @@ func (m *firewallModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		gcpClient: firewallsClient,
 		id:        id.(*krm.ComputeFirewallIdentity),
 		desired:   desired,
-		reader:    reader,
 	}, nil
 }
 
@@ -110,7 +108,6 @@ type FirewallAdapter struct {
 	id        *krm.ComputeFirewallIdentity
 	desired   *computepb.Firewall
 	actual    *computepb.Firewall
-	reader    client.Reader
 }
 
 var _ directbase.Adapter = &FirewallAdapter{}
