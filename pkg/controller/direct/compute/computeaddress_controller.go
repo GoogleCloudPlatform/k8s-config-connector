@@ -24,6 +24,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"sort"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
@@ -41,7 +42,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
@@ -449,9 +449,14 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	paths, diffs, err := common.CompareProtoMessageStructuredDiff(clonedDesired, maskedActual, common.BasicDiff)
 	if err != nil {
 		return nil, nil, err
+	}
+	pathsList := paths.UnsortedList()
+	sort.Strings(pathsList)
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: pathsList,
 	}
 	return diffs, updateMask, nil
 }

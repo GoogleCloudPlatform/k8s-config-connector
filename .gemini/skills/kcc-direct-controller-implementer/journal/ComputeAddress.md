@@ -1,0 +1,7 @@
+# ComputeAddress Direct Controller Journal
+
+## Implementation Details
+
+- **Refactoring Diff Comparison**: Aligned `compareAddress` to use the standard recursive comparison function `common.CompareProtoMessageStructuredDiff` instead of `tags.DiffForTopLevelFields`, and sorted the update mask paths list for determinism.
+- **Immutability Behavior**: ComputeAddress is completely immutable in GCP. Reconciling changed spec fields triggers a structured reporting update status explaining that `ComputeAddress is immutable and cannot be updated`.
+- **E2E Testing against MockGCP**: All direct E2E test fixtures (`computeaddressipcollection-direct`, `globalcomputeaddress-direct`, `regionalcomputeaddress-direct`) were fully verified against MockGCP and passed successfully.
