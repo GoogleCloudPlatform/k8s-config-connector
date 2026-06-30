@@ -189,38 +189,204 @@ spec:
                   already existing target_resource or contains config for a target_resource
                   to be created.
                 properties:
-                  existingTargetResource:
-                    description: Optional. CRM node in format organizations/{organization},
-                      folders/{folder}, projects/{project} or projects/{project}/locations/{location}/applications/{application}.
-                    type: string
+                  folderRef:
+                    description: Reference to an existing Folder. Only one of projectRef,
+                      folderRef, organizationRef, or targetResourceCreationConfig
+                      may be set.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The 'name' field of a folder, when not managed
+                          by Config Connector. This field must be set when 'name'
+                          field is not set.
+                        type: string
+                      name:
+                        description: The 'name' field of a 'Folder' resource. This
+                          field must be set when 'external' field is not set.
+                        type: string
+                      namespace:
+                        description: The 'namespace' field of a 'Folder' resource.
+                          If unset, the namespace is defaulted to the namespace of
+                          the referencer resource.
+                        type: string
+                    type: object
+                  organizationRef:
+                    description: Reference to an existing Organization. Only one of
+                      projectRef, folderRef, organizationRef, or targetResourceCreationConfig
+                      may be set.
+                    properties:
+                      external:
+                        description: The 'name' field of an organization, when not
+                          managed by Config Connector.
+                        type: string
+                    required:
+                    - external
+                    type: object
+                  projectRef:
+                    description: Reference to an existing Project. Only one of projectRef,
+                      folderRef, organizationRef, or targetResourceCreationConfig
+                      may be set.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
                   targetResourceCreationConfig:
                     description: Optional. Config to create a new resource and use
-                      that as the target_resource for deployment
+                      that as the target_resource for deployment. Only one of projectRef,
+                      folderRef, organizationRef, or targetResourceCreationConfig
+                      may be set.
                     properties:
                       folderCreationConfig:
-                        description: Optional. Config to create a new folder
+                        description: Optional. Config to create a new folder.
                         properties:
                           folderDisplayName:
                             description: Required. Display name of the folder to be
-                              created
+                              created.
                             type: string
-                          parent:
-                            description: Required. organizations/{org} or folders/{folder}
-                            type: string
+                          folderRef:
+                            description: Reference to the parent Folder that this
+                              Folder should be created under. Only one of folderRef
+                              or organizationRef must be set.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The 'name' field of a folder, when not
+                                  managed by Config Connector. This field must be
+                                  set when 'name' field is not set.
+                                type: string
+                              name:
+                                description: The 'name' field of a 'Folder' resource.
+                                  This field must be set when 'external' field is
+                                  not set.
+                                type: string
+                              namespace:
+                                description: The 'namespace' field of a 'Folder' resource.
+                                  If unset, the namespace is defaulted to the namespace
+                                  of the referencer resource.
+                                type: string
+                            type: object
+                          organizationRef:
+                            description: Reference to the parent Organization that
+                              this Folder should be created under. Only one of folderRef
+                              or organizationRef must be set.
+                            properties:
+                              external:
+                                description: The 'name' field of an organization,
+                                  when not managed by Config Connector.
+                                type: string
+                            required:
+                            - external
+                            type: object
                         type: object
                       projectCreationConfig:
-                        description: Optional. Config to create a new project
+                        description: Optional. Config to create a new project.
                         properties:
                           billingAccountID:
                             description: Required. Billing account id to be used for
-                              the project
+                              the project.
                             type: string
-                          parent:
-                            description: Required. organizations/{org} or folders/{folder}
-                            type: string
+                          folderRef:
+                            description: Reference to the parent Folder that this
+                              Project should be created under. Only one of folderRef
+                              or organizationRef must be set.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The 'name' field of a folder, when not
+                                  managed by Config Connector. This field must be
+                                  set when 'name' field is not set.
+                                type: string
+                              name:
+                                description: The 'name' field of a 'Folder' resource.
+                                  This field must be set when 'external' field is
+                                  not set.
+                                type: string
+                              namespace:
+                                description: The 'namespace' field of a 'Folder' resource.
+                                  If unset, the namespace is defaulted to the namespace
+                                  of the referencer resource.
+                                type: string
+                            type: object
+                          organizationRef:
+                            description: Reference to the parent Organization that
+                              this Project should be created under. Only one of folderRef
+                              or organizationRef must be set.
+                            properties:
+                              external:
+                                description: The 'name' field of an organization,
+                                  when not managed by Config Connector.
+                                type: string
+                            required:
+                            - external
+                            type: object
                           projectDisplayName:
                             description: Required. Display name of the project to
-                              be created
+                              be created.
                             type: string
                         type: object
                     type: object
@@ -290,49 +456,17 @@ spec:
                             cloudControlDetails:
                               description: Required. Cloud control details
                               properties:
-                                cloudControlRef:
-                                  description: 'Required. The name of the CloudControl
-                                    in the format: “organizations/{organization}/locations/{location}/
-                                    cloudControls/{cloud-control}”'
-                                  oneOf:
-                                  - not:
-                                      required:
-                                      - external
-                                    required:
-                                    - name
-                                  - not:
-                                      anyOf:
-                                      - required:
-                                        - name
-                                      - required:
-                                        - namespace
-                                    required:
-                                    - external
-                                  properties:
-                                    external:
-                                      description: A reference to an externally managed
-                                        CloudSecurityComplianceCloudControl resource.
-                                        Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
-                                      type: string
-                                    name:
-                                      description: The name of a CloudSecurityComplianceCloudControl
-                                        resource.
-                                      type: string
-                                    namespace:
-                                      description: The namespace of a CloudSecurityComplianceCloudControl
-                                        resource.
-                                      type: string
-                                  type: object
+                                cloudControl:
+                                  description: The name of the CloudControl (no Ref
+                                    suffix to comply with no_refs_in_status check)
+                                  type: string
                                 majorRevisionID:
                                   description: Required. Major revision of cloudcontrol
                                   format: int64
                                   type: integer
                                 parameters:
-                                  description: 'Optional. Parameters is a key-value
-                                    pair that is required by the CloudControl. The
-                                    specification of these parameters will be present
-                                    in cloudcontrol.Eg: { "name": "location","value":
-                                    "us-west-1"}.'
+                                  description: Optional. Parameters is a key-value
+                                    pair that is required by the CloudControl.
                                   items:
                                     properties:
                                       name:
@@ -365,10 +499,7 @@ spec:
                         etag:
                           description: Optional. To prevent concurrent updates from
                             overwriting each other, always provide the `etag` when
-                            you update a CustomComplianceCloudControl. You can also
-                            provide the `etag` when you delete a CustomComplianceCloudControl,
-                            to help ensure that you're deleting the intended version
-                            of the CustomComplianceCloudControl.
+                            you update a CustomComplianceCloudControl. You can
                           type: string
                         frameworkDeploymentReferences:
                           description: Output only. The references to the framework
@@ -406,8 +537,9 @@ spec:
                             either of the following formats: organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}'
                           type: string
                         parameterSubstitutedCloudControl:
-                          description: Output only. The cloud control after parameter
-                            substitution.
+                          description: Output only. The CloudControl as observed in
+                            GCP, but with parameter substitution applied. Parameters
+                            are substituted based on values provided in cloud_control_metadata.
                           properties:
                             categories:
                               description: Categories of the cloud control.
@@ -846,39 +978,32 @@ spec:
                             config for a target_resource to be created
                           properties:
                             existingTargetResource:
-                              description: Optional. CRM node in format organizations/{organization},
-                                folders/{folder}, projects/{project} or projects/{project}/locations/{location}/applications/{application}.
+                              description: Optional. CRM node
                               type: string
                             targetResourceCreationConfig:
                               description: Optional. Config to create a new resource
-                                and use that as the target_resource for deployment
                               properties:
                                 folderCreationConfig:
                                   description: Optional. Config to create a new folder
                                   properties:
                                     folderDisplayName:
-                                      description: Required. Display name of the folder
-                                        to be created
+                                      description: Required. Display name
                                       type: string
                                     parent:
-                                      description: Required. organizations/{org} or
-                                        folders/{folder}
+                                      description: Required. parent org/folder
                                       type: string
                                   type: object
                                 projectCreationConfig:
                                   description: Optional. Config to create a new project
                                   properties:
                                     billingAccountID:
-                                      description: Required. Billing account id to
-                                        be used for the project
+                                      description: Required. Billing account id
                                       type: string
                                     parent:
-                                      description: Required. organizations/{org} or
-                                        folders/{folder}
+                                      description: Required. parent org/folder
                                       type: string
                                     projectDisplayName:
-                                      description: Required. Display name of the project
-                                        to be created
+                                      description: Required. Display name
                                       type: string
                                   type: object
                               type: object
@@ -899,26 +1024,6 @@ spec:
                       CloudControlGroups.
                     items:
                       properties:
-                        ccDeploymentReferences:
-                          description: 'Output only. The references to the cloud control
-                            deployments in the cloud control group. For example, if
-                            a cloud control group has two cloud controls, `cloud-control-1`
-                            and `cloud-control-2`, and the cloud control deployments
-                            for these cloud controls are `cloud-control-deployment-1`
-                            and `cloud-control-deployment-2` respectively, then the
-                            references are: ``` cloud_control_deployment_reference:
-                            { cloud_control_deployment: "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-1"
-                            }, cloud_control_deployment_reference: { cloud_control_deployment:
-                            "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-2"
-                            } ```'
-                          items:
-                            properties:
-                              cloudControlDeployment:
-                                description: 'Output only. The name of the cloud control
-                                  deployment. The format is: organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}'
-                                type: string
-                            type: object
-                          type: array
                         ccDeployments:
                           description: Required. Cloud control deployments in the
                             group
@@ -931,49 +1036,18 @@ spec:
                                   cloudControlDetails:
                                     description: Required. Cloud control details
                                     properties:
-                                      cloudControlRef:
-                                        description: 'Required. The name of the CloudControl
-                                          in the format: “organizations/{organization}/locations/{location}/
-                                          cloudControls/{cloud-control}”'
-                                        oneOf:
-                                        - not:
-                                            required:
-                                            - external
-                                          required:
-                                          - name
-                                        - not:
-                                            anyOf:
-                                            - required:
-                                              - name
-                                            - required:
-                                              - namespace
-                                          required:
-                                          - external
-                                        properties:
-                                          external:
-                                            description: A reference to an externally
-                                              managed CloudSecurityComplianceCloudControl
-                                              resource. Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
-                                            type: string
-                                          name:
-                                            description: The name of a CloudSecurityComplianceCloudControl
-                                              resource.
-                                            type: string
-                                          namespace:
-                                            description: The namespace of a CloudSecurityComplianceCloudControl
-                                              resource.
-                                            type: string
-                                        type: object
+                                      cloudControl:
+                                        description: The name of the CloudControl
+                                          (no Ref suffix to comply with no_refs_in_status
+                                          check)
+                                        type: string
                                       majorRevisionID:
                                         description: Required. Major revision of cloudcontrol
                                         format: int64
                                         type: integer
                                       parameters:
-                                        description: 'Optional. Parameters is a key-value
+                                        description: Optional. Parameters is a key-value
                                           pair that is required by the CloudControl.
-                                          The specification of these parameters will
-                                          be present in cloudcontrol.Eg: { "name":
-                                          "location","value": "us-west-1"}.'
                                         items:
                                           properties:
                                             name:
@@ -1008,9 +1082,7 @@ spec:
                                 description: Optional. To prevent concurrent updates
                                   from overwriting each other, always provide the
                                   `etag` when you update a CustomComplianceCloudControl.
-                                  You can also provide the `etag` when you delete
-                                  a CustomComplianceCloudControl, to help ensure that
-                                  you're deleting the intended version of the CustomComplianceCloudControl.
+                                  You can
                                 type: string
                               frameworkDeploymentReferences:
                                 description: Output only. The references to the framework
@@ -1049,8 +1121,10 @@ spec:
                                   in either of the following formats: organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}'
                                 type: string
                               parameterSubstitutedCloudControl:
-                                description: Output only. The cloud control after
-                                  parameter substitution.
+                                description: Output only. The CloudControl as observed
+                                  in GCP, but with parameter substitution applied.
+                                  Parameters are substituted based on values provided
+                                  in cloud_control_metadata.
                                 properties:
                                   categories:
                                     description: Categories of the cloud control.
@@ -1513,25 +1587,21 @@ spec:
                                   config for a target_resource to be created
                                 properties:
                                   existingTargetResource:
-                                    description: Optional. CRM node in format organizations/{organization},
-                                      folders/{folder}, projects/{project} or projects/{project}/locations/{location}/applications/{application}.
+                                    description: Optional. CRM node
                                     type: string
                                   targetResourceCreationConfig:
                                     description: Optional. Config to create a new
-                                      resource and use that as the target_resource
-                                      for deployment
+                                      resource
                                     properties:
                                       folderCreationConfig:
                                         description: Optional. Config to create a
                                           new folder
                                         properties:
                                           folderDisplayName:
-                                            description: Required. Display name of
-                                              the folder to be created
+                                            description: Required. Display name
                                             type: string
                                           parent:
-                                            description: Required. organizations/{org}
-                                              or folders/{folder}
+                                            description: Required. parent org/folder
                                             type: string
                                         type: object
                                       projectCreationConfig:
@@ -1540,15 +1610,13 @@ spec:
                                         properties:
                                           billingAccountID:
                                             description: Required. Billing account
-                                              id to be used for the project
+                                              id
                                             type: string
                                           parent:
-                                            description: Required. organizations/{org}
-                                              or folders/{folder}
+                                            description: Required. parent org/folder
                                             type: string
                                           projectDisplayName:
-                                            description: Required. Display name of
-                                              the project to be created
+                                            description: Required. Display name
                                             type: string
                                         type: object
                                     type: object
@@ -1561,6 +1629,17 @@ spec:
                               updateTime:
                                 description: Output only. The time at which the resource
                                   last updated.
+                                type: string
+                            type: object
+                          type: array
+                        cloudControlDeploymentReferences:
+                          description: Output only. The references to the cloud control
+                            deployments in the cloud control group.
+                          items:
+                            properties:
+                              cloudControlDeployment:
+                                description: 'Output only. The name of the cloud control
+                                  deployment. The format is: organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}'
                                 type: string
                             type: object
                           type: array

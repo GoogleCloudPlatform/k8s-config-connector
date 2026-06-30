@@ -117,11 +117,12 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//cloudkms.googleapis.com/projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}/ciphertext/{}": true,
 
 		// Cloud Security Compliance
-		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControls/{}":      true,
-		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControlGroups/{}": true,
-		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/controls/{}":           true,
-		"//cloudsecuritycompliance.googleapis.com/projects/{}/locations/{}/frameworks/{}":              true,
-		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworks/{}":         true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControls/{}":        true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControlGroups/{}":   true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/controls/{}":             true,
+		"//cloudsecuritycompliance.googleapis.com/projects/{}/locations/{}/frameworks/{}":                true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworks/{}":           true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworkDeployments/{}": true,
 
 		// Compute
 		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                      true,

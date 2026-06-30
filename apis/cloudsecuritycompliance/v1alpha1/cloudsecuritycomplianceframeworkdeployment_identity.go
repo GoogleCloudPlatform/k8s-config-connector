@@ -31,7 +31,7 @@ var (
 	_ identity.Resource   = &CloudSecurityComplianceFrameworkDeployment{}
 )
 
-var CloudSecurityComplianceFrameworkDeploymentIdentityFormat = gcpurls.Template[CloudSecurityComplianceFrameworkDeploymentIdentity]("cloudsecuritycompliance.googleapis.com", "organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment}")
+var CloudSecurityComplianceFrameworkDeploymentIdentityFormat = gcpurls.Template[CloudSecurityComplianceFrameworkDeploymentIdentity]("cloudsecuritycompliance.googleapis.com", "organizations/{organization}/locations/{location}/frameworkDeployments/{frameworkdeployment}")
 
 // +k8s:deepcopy-gen=false
 type CloudSecurityComplianceFrameworkDeploymentIdentity struct {
