@@ -184,3 +184,189 @@ type CloudSecurityComplianceFrameworkDeploymentList struct {
 func init() {
 	SchemeBuilder.Register(&CloudSecurityComplianceFrameworkDeployment{}, &CloudSecurityComplianceFrameworkDeploymentList{})
 }
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.TargetResourceConfig
+type TargetResourceConfig struct {
+	// Reference to an existing Project.
+	// Only one of projectRef, folderRef, organizationRef, or targetResourceCreationConfig may be set.
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Reference to an existing Folder.
+	// Only one of projectRef, folderRef, organizationRef, or targetResourceCreationConfig may be set.
+	// +optional
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// Reference to an existing Organization.
+	// Only one of projectRef, folderRef, organizationRef, or targetResourceCreationConfig may be set.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// Optional. Config to create a new resource and use that as the target_resource for deployment.
+	// Only one of projectRef, folderRef, organizationRef, or targetResourceCreationConfig may be set.
+	// +optional
+	TargetResourceCreationConfig *TargetResourceCreationConfig `json:"targetResourceCreationConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.TargetResourceCreationConfig
+type TargetResourceCreationConfig struct {
+	// Optional. Config to create a new folder.
+	// +optional
+	FolderCreationConfig *FolderCreationConfig `json:"folderCreationConfig,omitempty"`
+
+	// Optional. Config to create a new project.
+	// +optional
+	ProjectCreationConfig *ProjectCreationConfig `json:"projectCreationConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.FolderCreationConfig
+type FolderCreationConfig struct {
+	// Reference to the parent Folder that this Folder should be created under.
+	// Only one of folderRef or organizationRef must be set.
+	// +optional
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// Reference to the parent Organization that this Folder should be created under.
+	// Only one of folderRef or organizationRef must be set.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// Required. Display name of the folder to be created.
+	FolderDisplayName *string `json:"folderDisplayName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.ProjectCreationConfig
+type ProjectCreationConfig struct {
+	// Reference to the parent Folder that this Project should be created under.
+	// Only one of folderRef or organizationRef must be set.
+	// +optional
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// Reference to the parent Organization that this Project should be created under.
+	// Only one of folderRef or organizationRef must be set.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// Required. Display name of the project to be created.
+	ProjectDisplayName *string `json:"projectDisplayName,omitempty"`
+
+	// Required. Billing account id to be used for the project.
+	BillingAccountID *string `json:"billingAccountID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment
+type CloudControlDeploymentObservedState struct {
+	// Identifier. CloudControlDeployment name in either of the following formats:
+	//  organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
+	Name *string `json:"name,omitempty"`
+
+	// Required. target_resource_config referencing either an already existing
+	//  target_resource or contains config for a target_resource to be created
+	TargetResourceConfig *TargetResourceConfigObservedState `json:"targetResourceConfig,omitempty"`
+
+	// Output only. The resource on which the CloudControl is deployed based on
+	//  the provided TargetResourceConfig. In format organizations/{organization},
+	//  folders/{folder} or projects/{project}.
+	TargetResource *string `json:"targetResource,omitempty"`
+
+	// Required. CloudControlReference, Deployment mode and parameters for the
+	//  cloud_control
+	CloudControlMetadata *CloudControlMetadataObservedState `json:"cloudControlMetadata,omitempty"`
+
+	// Optional. User provided description of the deployment
+	Description *string `json:"description,omitempty"`
+
+	// Output only. State of the deployment
+	DeploymentState *string `json:"deploymentState,omitempty"`
+
+	// Output only. The time at which the resource was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which the resource last updated.
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. To prevent concurrent updates from overwriting each other, always
+	//  provide the `etag` when you update a CustomComplianceCloudControl. You can
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The CloudControl as observed in GCP, but with parameter substitution
+	//  applied. Parameters are substituted based on values provided in
+	//  cloud_control_metadata.
+	ParameterSubstitutedCloudControl *CloudControlObservedState `json:"parameterSubstitutedCloudControl,omitempty"`
+
+	// Output only. The references to the framework deployments that this cloud
+	//  control deployment is part of.
+	FrameworkDeploymentReferences []FrameworkDeploymentReferenceObservedState `json:"frameworkDeploymentReferences,omitempty"`
+
+	// Output only. The name of the application, project, folder, or organization
+	//  that the cloud control is deployed on.
+	TargetResourceDisplayName *string `json:"targetResourceDisplayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment
+type CloudControlGroupDeploymentObservedState struct {
+	// Required. Cloud control group
+	CloudControlGroup *CloudControlGroupObservedState `json:"cloudControlGroup,omitempty"`
+
+	// Required. Cloud control deployments in the group
+	CcDeployments []CloudControlDeploymentObservedState `json:"ccDeployments,omitempty"`
+
+	// Output only. The references to the cloud control deployments in the cloud
+	//  control group.
+	CloudControlDeploymentReferences []CloudControlDeploymentReferenceObservedState `json:"cloudControlDeploymentReferences,omitempty"`
+}
+
+type CloudControlMetadataObservedState struct {
+	// Required. Cloud control details
+	CloudControlDetails *CloudControlDetailsObservedState `json:"cloudControlDetails,omitempty"`
+
+	// Required. Enforcement mode of the cloud control
+	EnforcementMode *string `json:"enforcementMode,omitempty"`
+}
+
+type CloudControlDetailsObservedState struct {
+	// The name of the CloudControl (no Ref suffix to comply with no_refs_in_status check)
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.name
+	CloudControl *string `json:"cloudControl,omitempty"`
+
+	// Required. Major revision of cloudcontrol
+	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
+
+	// Optional. Parameters is a key-value pair that is required by the CloudControl.
+	Parameters []Parameter `json:"parameters,omitempty"`
+}
+
+type TargetResourceConfigObservedState struct {
+	// Optional. CRM node
+	ExistingTargetResource *string `json:"existingTargetResource,omitempty"`
+
+	// Optional. Config to create a new resource
+	TargetResourceCreationConfig *TargetResourceCreationConfigObservedState `json:"targetResourceCreationConfig,omitempty"`
+}
+
+type TargetResourceCreationConfigObservedState struct {
+	// Optional. Config to create a new folder
+	FolderCreationConfig *FolderCreationConfigObservedState `json:"folderCreationConfig,omitempty"`
+
+	// Optional. Config to create a new project
+	ProjectCreationConfig *ProjectCreationConfigObservedState `json:"projectCreationConfig,omitempty"`
+}
+
+type FolderCreationConfigObservedState struct {
+	// Required. parent org/folder
+	Parent *string `json:"parent,omitempty"`
+
+	// Required. Display name
+	FolderDisplayName *string `json:"folderDisplayName,omitempty"`
+}
+
+type ProjectCreationConfigObservedState struct {
+	// Required. parent org/folder
+	Parent *string `json:"parent,omitempty"`
+
+	// Required. Display name
+	ProjectDisplayName *string `json:"projectDisplayName,omitempty"`
+
+	// Required. Billing account id
+	BillingAccountID *string `json:"billingAccountID,omitempty"`
+}
