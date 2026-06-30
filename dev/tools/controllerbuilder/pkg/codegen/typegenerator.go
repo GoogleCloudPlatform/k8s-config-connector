@@ -51,6 +51,7 @@ type OutputMessageDetails struct {
 }
 
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
+	CurrentGoPackage = goPackage
 	g := &TypeGenerator{
 		goPackage:             goPackage,
 		api:                   api,
@@ -132,7 +133,7 @@ func (g *TypeGenerator) needsObservedState(msg protoreflect.MessageDescriptor, s
 			return true
 		}
 		if f.Kind() == protoreflect.MessageKind && !f.IsMap() {
-			if _, ok := protoMessagesNotMappedToGoStruct[string(f.Message().FullName())]; ok {
+			if _, ok := IsProtoMessageNotMappedToGoStruct(string(f.Message().FullName())); ok {
 				continue
 			}
 			if g.needsObservedState(f.Message(), seen) {
@@ -520,7 +521,7 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
 
 	// Some special-case values that are not obvious how to map in KRM
-	if goType, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
+	if goType, ok := IsProtoMessageNotMappedToGoStruct(fullName); ok {
 		return goType
 	}
 
@@ -546,7 +547,7 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 
 func goNameForOutputProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
-	if _, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
+	if _, ok := IsProtoMessageNotMappedToGoStruct(fullName); ok {
 		return GoNameForProtoMessage(msg)
 	}
 	return GoNameForProtoMessage(msg) + "ObservedState"
@@ -650,7 +651,7 @@ func FindDependenciesForField(field protoreflect.FieldDescriptor, deps map[strin
 	}
 
 	if field.Message() != nil { // no need to find dependencies for proto messages that are not mapped to KRM Go struct
-		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
+		if _, ok := IsProtoMessageNotMappedToGoStruct(string(field.Message().FullName())); ok {
 			return
 		}
 	}
@@ -682,8 +683,10 @@ func FindDependenciesForField(field protoreflect.FieldDescriptor, deps map[strin
 }
 
 func RemoveNotMappedToGoStruct(msgs map[string]protoreflect.MessageDescriptor) {
-	for msg := range protoMessagesNotMappedToGoStruct {
-		delete(msgs, msg)
+	for msg := range msgs {
+		if _, ok := IsProtoMessageNotMappedToGoStruct(msg); ok {
+			delete(msgs, msg)
+		}
 	}
 }
 
@@ -692,7 +695,7 @@ func isPrimitive(field protoreflect.FieldDescriptor) bool {
 		return true
 	}
 	if field.Message() != nil {
-		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
+		if _, ok := IsProtoMessageNotMappedToGoStruct(string(field.Message().FullName())); ok {
 			return true
 		}
 	}
