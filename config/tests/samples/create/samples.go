@@ -38,6 +38,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	"github.com/ghodss/yaml" //nolint:depguard
+	"google.golang.org/api/option"
+	serviceusage "google.golang.org/api/serviceusage/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -127,6 +129,12 @@ type CreateDeleteTestOptions struct { //nolint:revive
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	ctx := t.Ctx
+
+	if t.GCPTarget == GCPTargetModeReal {
+		if err := preflightCheckAPIs(ctx, t, opt.Create); err != nil {
+			t.Fatalf("FAIL: pre-flight check failed: %v", err)
+		}
+	}
 
 	if t.Manager != nil {
 		var gvks []schema.GroupVersionKind
@@ -272,6 +280,11 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 				logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
 				return true, nil
 			}
+			if c.Type == "Ready" && c.Status == "False" {
+				if terminal, category := isTerminalError(c.Reason, c.Message); terminal {
+					return false, fmt.Errorf("terminal error (%s): reason: %s, message: %s", category, c.Reason, c.Message)
+				}
+			}
 		}
 		// This resource is not completely ready. Let's keep polling.
 		logger.Info("resource is not ready", "kind", u.GetKind(), "name", u.GetName(),
@@ -292,6 +305,57 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 	}
 	objectStatus := teststatus.GetObjectStatus(t.T, u)
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
+}
+
+func preflightCheckAPIs(ctx context.Context, h *Harness, resources []*unstructured.Unstructured) error {
+	var services []string
+	for _, u := range resources {
+		// Read declared services from the test manifests. If you want a specific service to be checked add it to dependencies.yaml.
+		if u.GroupVersionKind().Group == "serviceusage.cnrm.cloud.google.com" && u.GroupVersionKind().Kind == "Service" {
+			services = append(services, u.GetName())
+		}
+	}
+
+	if len(services) == 0 {
+		return nil
+	}
+
+	h.Logf("[Pre-flight] Checking if required services can be enabled: %v", services)
+	httpClient := h.GCPHTTPClient()
+	if httpClient == nil {
+		return fmt.Errorf("GCP HTTP client is nil")
+	}
+
+	su, err := serviceusage.NewService(ctx, option.WithHTTPClient(httpClient), option.WithUserAgent("kcc-e2e-preflight"))
+	if err != nil {
+		return fmt.Errorf("failed to create serviceusage client: %w", err)
+	}
+
+	for _, serviceName := range services {
+		name := fmt.Sprintf("projects/%s/services/%s", h.Project.ProjectID, serviceName)
+		svc, err := su.Services.Get(name).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("failed to get service status for %q (is serviceusage.googleapis.com enabled?): %w", serviceName, err)
+		}
+		h.Logf("[Pre-flight] Service %s state is %s", serviceName, svc.State)
+	}
+	return nil
+}
+
+var httpCodeRegex = regexp.MustCompile(`\b(400|401|403)\b`)
+
+func isTerminalError(reason, message string) (bool, string) {
+	match := httpCodeRegex.FindString(message)
+	switch match {
+	case "400":
+		return true, "Bad Request (400)"
+	case "401":
+		return true, "Unauthorized (401)"
+	case "403":
+		return true, "Forbidden (403)"
+	default:
+		return false, ""
+	}
 }
 
 func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
