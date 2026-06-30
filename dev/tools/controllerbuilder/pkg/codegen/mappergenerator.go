@@ -46,6 +46,8 @@ type MapperGenerator struct {
 	importedPackages map[string]importedPackage
 
 	includeSkippedOutput bool
+
+	FileName string
 }
 
 type importedPackage struct {
@@ -62,6 +64,12 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 		importedPackages:        make(map[string]importedPackage),
 	}
 	g.generatorBase.init(outputBaseDir)
+	return g
+}
+
+// WithFileName sets a custom file name for the generated mapper
+func (g *MapperGenerator) WithFileName(fileName string) *MapperGenerator {
+	g.FileName = fileName
 	return g
 }
 
@@ -217,9 +225,14 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 			continue
 		}
 
+		fileName := "mapper.generated.go"
+		if v.FileName != "" {
+			fileName = v.FileName
+		}
+
 		k := generatedFileKey{
 			GoPackage: goPackage,
-			FileName:  "mapper.generated.go",
+			FileName:  fileName,
 		}
 		out := v.getOutputFile(k)
 		out.goPackage = lastGoComponent(goPackage)
