@@ -60,6 +60,65 @@ func (i *NotebooksExecutionIdentity) Host() string {
 	return NotebooksExecutionIdentityFormat.Host()
 }
 
+func (i *NotebooksExecutionIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func (i *NotebooksExecutionIdentity) ID() string {
+	return i.Execution
+}
+
+// NewExecutionIdentity builds a NotebooksExecutionIdentity from the Config Connector NotebooksExecution object.
+func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *NotebooksExecution) (*NotebooksExecutionIdentity, error) {
+	// Get Parent
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	location := obj.Spec.Location
+	if location == nil || *location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	// Get desired ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		actual := &NotebooksExecutionIdentity{}
+		if err := actual.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		if actual.Project != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actual.Project, projectID)
+		}
+		if actual.Location != *location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actual.Location, *location)
+		}
+		if actual.Execution != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actual.Execution)
+		}
+	}
+	return &NotebooksExecutionIdentity{
+		Project:   projectID,
+		Location:  *location,
+		Execution: resourceID,
+	}, nil
+}
+
 func getIdentityFromNotebooksExecutionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NotebooksExecutionIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
