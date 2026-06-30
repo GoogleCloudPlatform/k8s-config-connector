@@ -808,7 +808,7 @@ func ContainerNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodePool)
 	out.PlacementPolicy = NodePool_PlacementPolicy_FromProto(mapCtx, in.GetPlacementPolicy())
 	// MISSING: UpdateInfo
 	// MISSING: Etag
-	// MISSING: QueuedProvisioning
+	out.QueuedProvisioning = NodePoolQueuedProvisioning_FromProto(mapCtx, in.GetQueuedProvisioning())
 	// MISSING: BestEffortProvisioning
 	return out
 }
@@ -841,7 +841,7 @@ found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", s
 		out.PlacementPolicy = NodePool_PlacementPolicy_ToProto(mapCtx, in.PlacementPolicy)
 		// MISSING: UpdateInfo
 		// MISSING: Etag
-		// MISSING: QueuedProvisioning
+		out.QueuedProvisioning = NodePoolQueuedProvisioning_ToProto(mapCtx, in.QueuedProvisioning)
 		// MISSING: BestEffortProvisioning
 		return out
 	}
@@ -2163,6 +2163,22 @@ func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeC
 	// MISSING: EffectiveCgroupMode
 	// MISSING: FlexStart
 	// MISSING: BootDisk
+	return out
+}
+func NodePoolQueuedProvisioning_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_QueuedProvisioning) *krm.NodePoolQueuedProvisioning {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolQueuedProvisioning{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func NodePoolQueuedProvisioning_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolQueuedProvisioning) *pb.NodePool_QueuedProvisioning {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodePool_QueuedProvisioning{}
+	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
 

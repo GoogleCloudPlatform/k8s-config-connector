@@ -2901,7 +2901,8 @@ type NodePool_PlacementPolicy struct {
 }
 */
 
-/* unreachable type NodePool_QueuedProvisioning
+/* found existing non-generated go type with proto tag "google.container.v1.NodePool.QueuedProvisioning", skipping
+
 // +kcc:proto=google.container.v1.NodePool.QueuedProvisioning
 type NodePool_QueuedProvisioning struct {
 	// Denotes that this nodepool is QRM specific, meaning nodes can be only

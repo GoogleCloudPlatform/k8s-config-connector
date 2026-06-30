@@ -865,6 +865,15 @@ spec:
                 required:
                 - type
                 type: object
+              queuedProvisioning:
+                description: Immutable. Specifies the configuration of queued provisioning.
+                properties:
+                  enabled:
+                    description: Immutable. Denotes that this node pool is QRM specific,
+                      meaning nodes can be only obtained through queuing via the Cluster
+                      Autoscaler ProvisioningRequest API.
+                    type: boolean
+                type: object
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
