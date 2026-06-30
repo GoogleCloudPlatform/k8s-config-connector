@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -134,8 +135,36 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 }
 
 func (m *forwardingRuleModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.ComputeForwardingRuleIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	// Get GCP client
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+
+	forwardingRuleAdapter := &forwardingRuleAdapter{
+		id: id,
+	}
+
+	if id.IsGlobal() {
+		globalForwardingRulesClient, err := gcpClient.newGlobalForwardingRuleClient(ctx)
+		if err != nil {
+			return nil, err
+		}
+		forwardingRuleAdapter.globalForwardingRulesClient = globalForwardingRulesClient
+	} else {
+		forwardingRulesClient, err := gcpClient.forwardingRuleClient(ctx)
+		if err != nil {
+			return nil, err
+		}
+		forwardingRuleAdapter.forwardingRulesClient = forwardingRulesClient
+	}
+	return forwardingRuleAdapter, nil
 }
 
 func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
@@ -390,23 +419,29 @@ func (a *forwardingRuleAdapter) Export(ctx context.Context) (*unstructured.Unstr
 		return nil, fmt.Errorf("forwardingrule %q not found", a.id)
 	}
 
+	obj := &krm.ComputeForwardingRule{}
 	mc := &direct.MapContext{}
-	spec := ComputeForwardingRuleSpec_v1beta1_FromProto(mc, a.actual)
-	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
-	if err != nil {
-		return nil, fmt.Errorf("error converting forwardingrule spec to unstructured: %w", err)
+	obj.Spec = direct.ValueOf(ComputeForwardingRuleSpec_v1beta1_FromProto(mc, a.actual))
+	if mc.Err() != nil {
+		return nil, mc.Err()
 	}
 
-	u := &unstructured.Unstructured{
-		Object: make(map[string]interface{}),
+	// ComputeForwardingRule requires location and resourceID
+	obj.Spec.Location = direct.LazyPtr(a.id.Region)
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ForwardingRule)
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
 	}
+
+	u := &unstructured.Unstructured{}
+	u.Object = uObj
 	u.SetName(a.id.ForwardingRule)
 	u.SetGroupVersionKind(krm.ComputeForwardingRuleGVK)
-	u.SetLabels(a.actual.Labels)
 
-	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
-		return nil, fmt.Errorf("setting spec: %w", err)
-	}
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
 
 	return u, nil
 }

@@ -1,0 +1,11 @@
+14,15c14
+<     addressRef:
+<       external: 0.0.0.0
+---
+>     ip: 0.0.0.0
+20a20
+>   networkTier: PREMIUM
+24c24
+<     targetHTTPProxyRef:
+---
+>     targetGRPCProxyRef:
