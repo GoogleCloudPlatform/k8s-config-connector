@@ -224,7 +224,7 @@ func (a *serviceAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 	obj.Spec = krm.ServiceSpec{
 		ProjectRef: &refs.ProjectRef{
-			External: "projects/" + a.id.Project,
+			External: a.id.Project,
 		},
 		ResourceID: &a.id.Service,
 	}
