@@ -39,6 +39,9 @@ func (s *CertificateManagerV1) GetCertificateMap(ctx context.Context, req *pb.Ge
 
 	obj := &pb.CertificateMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -89,6 +92,9 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 	fqn := name.String()
 	obj := &pb.CertificateMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -109,11 +115,13 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 		}
 	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
 	now := timestamppb.Now()
+	obj.UpdateTime = now
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", fqn)
+		}
 		return nil, err
 	}
 	lroMetadata := &pb.OperationMetadata{
@@ -142,6 +150,9 @@ func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb
 
 	oldObj := &pb.CertificateMap{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", fqn)
+		}
 		return nil, err
 	}
 
