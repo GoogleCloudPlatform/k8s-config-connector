@@ -83,6 +83,34 @@ func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { /
 	s.HTTPEvents = append(s.HTTPEvents, entry)
 }
 
+func (s *MemoryEventSink) GetHTTPEvents() []*LogEntry {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	if s.HTTPEvents == nil {
+		return nil
+	}
+	res := make([]*LogEntry, len(s.HTTPEvents))
+	copy(res, s.HTTPEvents)
+	return res
+}
+
+func (s *MemoryEventSink) SetHTTPEvents(events []*LogEntry) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	if events == nil {
+		s.HTTPEvents = nil
+		return
+	}
+	s.HTTPEvents = make([]*LogEntry, len(events))
+	copy(s.HTTPEvents, events)
+}
+
+func (s *MemoryEventSink) Clear() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.HTTPEvents = nil
+}
+
 func (s *MemoryEventSink) Pause() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
