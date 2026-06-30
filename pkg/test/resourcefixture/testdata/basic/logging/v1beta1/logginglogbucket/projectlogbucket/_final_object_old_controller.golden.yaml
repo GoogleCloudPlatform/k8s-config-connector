@@ -12,7 +12,6 @@ metadata:
     cnrm-test: "true"
   name: logginglogbucket-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/logging.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/logginglogbuckets/logginglogbucket-${uniqueId}
 spec:
   description: An updated sample of a log bucket.
   location: global

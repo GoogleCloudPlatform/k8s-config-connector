@@ -15,7 +15,6 @@ metadata:
     label-two: value-two
   name: secretmanagersecret-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/secretmanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/secretmanagersecrets/secretmanagersecret-${uniqueId}
 spec:
   annotations:
     bar: secretmanagersecret-bar

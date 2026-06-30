@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: bigtablegcpolicy-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigtable.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigtablegcpolicies/bigtablegcpolicy-${uniqueId}
 spec:
   columnFamily: family1
   gcRules: |-

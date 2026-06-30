@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: ${routeName}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeroutes/${routeName}
 spec:
   destRange: 0.0.0.0/0
   networkRef:

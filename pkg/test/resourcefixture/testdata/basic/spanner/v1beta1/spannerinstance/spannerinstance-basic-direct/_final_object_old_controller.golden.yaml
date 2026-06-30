@@ -14,7 +14,6 @@ metadata:
     label-one: value-one
   name: spannerinstance-sample-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/spanner.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/spannerinstances/spannerinstance-sample-${uniqueId}
 spec:
   config: regional-us-west1
   displayName: New Spanner Instance Sample

@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: ${sslPolicyID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computesslpolicies/${sslPolicyID}
 spec:
   minTlsVersion: TLS_1_0
   profile: MODERN

@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: ${targetHttpsProxyID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computetargethttpsproxies/${targetHttpsProxyID}
 spec:
   certificateManagerCertificates:
   - name: certificatemanagercertificate-${uniqueId}

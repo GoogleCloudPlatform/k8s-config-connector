@@ -15,7 +15,6 @@ metadata:
     label-two: value-two
   name: ${diskID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computedisks/${diskID}
 spec:
   description: an example disk without reference
   location: us-central1-a

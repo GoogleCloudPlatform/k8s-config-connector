@@ -16,7 +16,6 @@ metadata:
     label-one: value-one
   name: ${forwardingRuleID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeforwardingrules/${forwardingRuleID}
 spec:
   description: A global forwarding rule
   ipAddress:

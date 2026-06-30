@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: certificatemanagercertificate-kompanion-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/certificatemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/certificatemanagercertificates/certificatemanagercertificate-kompanion-${uniqueId}
 spec:
   description: sample managed certificate for kcc
   location: global

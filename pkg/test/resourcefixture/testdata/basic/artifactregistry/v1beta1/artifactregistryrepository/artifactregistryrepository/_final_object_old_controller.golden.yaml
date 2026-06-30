@@ -14,7 +14,6 @@ metadata:
     label-one: value-one
   name: arrepository-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/artifactregistry.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/artifactregistryrepositories/arrepository-${uniqueId}
 spec:
   description: test repository description 2
   format: DOCKER

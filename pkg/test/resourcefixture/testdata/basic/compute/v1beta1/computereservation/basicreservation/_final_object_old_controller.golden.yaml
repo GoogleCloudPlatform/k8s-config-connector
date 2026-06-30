@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: ${reservationID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computereservations/${reservationID}
 spec:
   description: Basic compute reservation
   specificReservation:

@@ -15,7 +15,6 @@ metadata:
     newkey: newval
   name: redisinstances-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/redis.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/redisinstances/redisinstances-${uniqueId}
 spec:
   displayName: newDisplayName
   maintenanceSchedule:

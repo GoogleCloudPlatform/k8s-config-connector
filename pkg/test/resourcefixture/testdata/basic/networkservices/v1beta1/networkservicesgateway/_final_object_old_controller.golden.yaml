@@ -14,7 +14,6 @@ metadata:
     foo1: bar1
   name: networkservicesgateway-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networkservices.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/networkservicesgateways/networkservicesgateway-${uniqueId}
 spec:
   description: An updated test Gateway
   location: global

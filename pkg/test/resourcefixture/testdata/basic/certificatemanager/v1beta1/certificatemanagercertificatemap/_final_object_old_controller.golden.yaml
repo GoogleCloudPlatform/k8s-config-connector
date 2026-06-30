@@ -13,7 +13,6 @@ metadata:
     value: cert-map-2
   name: certificatemanagercertificatemap-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/certificatemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/certificatemanagercertificatemaps/certificatemanagercertificatemap-${uniqueId}
 spec:
   description: updated sample certificate map
   projectRef:
