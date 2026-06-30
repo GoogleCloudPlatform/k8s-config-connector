@@ -45,6 +45,7 @@
 // resource: ComputeSSLPolicy:SslPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
+// resource: ComputeTargetSSLProxy:TargetSslProxy
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 // resource: ComputeURLMap:UrlMap
 
@@ -6035,6 +6036,57 @@ type TargetHTTPSProxy struct {
 	// A fully-qualified or valid partial URL to the UrlMap resource that defines the mapping from URL to the BackendService. For example, the following are all valid URLs for specifying a URL map: - https://www.googleapis.compute/v1/projects/project/global/urlMaps/ url-map - projects/project/global/urlMaps/url-map - global/urlMaps/url-map
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.url_map
 	URLMap *string `json:"urlMap,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.TargetSslProxy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.TargetSslProxy
+type TargetSSLProxy struct {
+	// URL of a certificate map that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. If set, sslCertificates will be ignored. Accepted format is //certificatemanager.googleapis.com/projects/{project }/locations/{location}/certificateMaps/{resourceName}.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.certificate_map
+	CertificateMap *string `json:"certificateMap,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#targetSslProxy for target SSL proxies.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.name
+	Name *string `json:"name,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// URL to the BackendService resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.service
+	Service *string `json:"service,omitempty"`
+
+	// URLs to SslCertificate resources that are used to authenticate connections to Backends. At least one SSL certificate must be specified. Currently, you may specify up to 15 SSL certificates. sslCertificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.ssl_certificates
+	SSLCertificates []string `json:"sslCertificates,omitempty"`
+
+	// URL of SslPolicy resource that will be associated with the TargetSslProxy resource. If not set, the TargetSslProxy resource will not have any SSL policy configured.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetSslProxy.ssl_policy
+	SSLPolicy *string `json:"sslPolicy,omitempty"`
 }
 */
 

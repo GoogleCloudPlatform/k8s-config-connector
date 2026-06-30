@@ -53,6 +53,7 @@ go run . generate-types \
   --resource ComputeSSLPolicy:SslPolicy \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
+  --resource ComputeTargetSSLProxy:TargetSslProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeURLMap:UrlMap \
   --include-skipped-output

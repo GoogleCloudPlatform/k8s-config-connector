@@ -115,7 +115,7 @@ sslPolicyRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeBackendService` resource.</p>
+            <p>The value of an externally managed ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@ sslPolicyRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -135,7 +135,7 @@ sslPolicyRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -145,10 +145,7 @@ sslPolicyRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A reference to the CertificateMap resource uri that identifies a
-certificate map associated with the given target proxy. This
-field can only be set for global target proxies. Accepted format is
-'//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.</p>
+            <p>A reference to the CertificateMap resource uri that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. Accepted format is '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +155,7 @@ field can only be set for global target proxies. Accepted format is
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `CertificateManagerCertificateMap` resource.</p>
+            <p>A reference to an externally managed CertificateManagerCertificateMap resource. Should be in the format "projects/{{projectID}}/locations/global/certificateMaps/{{certificateMapID}}".</p>
         </td>
     </tr>
     <tr>
@@ -168,7 +165,7 @@ field can only be set for global target proxies. Accepted format is
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a CertificateManagerCertificateMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -178,7 +175,7 @@ field can only be set for global target proxies. Accepted format is
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a CertificateManagerCertificateMap resource.</p>
         </td>
     </tr>
     <tr>
@@ -198,8 +195,7 @@ field can only be set for global target proxies. Accepted format is
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the type of proxy header to append before sending data to
-the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
+            <p>Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
     </tr>
     <tr>
@@ -229,9 +225,7 @@ the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A list of ComputeSSLCertificate resources that are used to
-authenticate connections between users and the load balancer.
-Currently, exactly one SSL certificate must be specified.</p>
+            <p>A reference to a ComputeSSLCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -241,7 +235,7 @@ Currently, exactly one SSL certificate must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSSLCertificate` resource.</p>
+            <p>Allowed value: string of the format `projects/{{project}}/global/sslCertificates/{{value}}` or `projects/{{project}}/regions/{{region}}/sslCertificates/{{value}}`, where {{value}} is the `name` field of a `ComputeSSLCertificate` resource.</p>
         </td>
     </tr>
     <tr>
@@ -251,7 +245,7 @@ Currently, exactly one SSL certificate must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSSLCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -261,7 +255,7 @@ Currently, exactly one SSL certificate must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSSLCertificate resource.</p>
         </td>
     </tr>
     <tr>
@@ -271,10 +265,7 @@ Currently, exactly one SSL certificate must be specified.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>A reference to the ComputeSSLPolicy resource that will be
-associated with the TargetSslProxy resource. If not set, the
-ComputeTargetSSLProxy resource will not have any SSL policy
-configured.</p>
+            <p>A reference to the ComputeSSLPolicy resource that will be associated with the TargetSslProxy resource. If not set, the ComputeTargetSSLProxy resource will not have any SSL policy configured.</p>
         </td>
     </tr>
     <tr>
@@ -284,7 +275,7 @@ configured.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSSLPolicy` resource.</p>
+            <p>A reference to an externally managed ComputeSSLPolicy resource. Should be in the format "projects/{{projectID}}/global/sslPolicies/{{sslPolicyID}}" or "projects/{{projectID}}/regions/{{region}}/sslPolicies/{{sslPolicyID}}".</p>
         </td>
     </tr>
     <tr>
@@ -294,7 +285,7 @@ configured.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSSLPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -304,7 +295,7 @@ configured.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSSLPolicy resource.</p>
         </td>
     </tr>
 </tbody>
@@ -336,7 +327,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeTargetSSLProxy's current state.</p>
         </td>
     </tr>
     <tr>

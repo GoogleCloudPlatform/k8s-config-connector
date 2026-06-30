@@ -4129,6 +4129,96 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeTargetSSLProxySpec_v1beta1_FromProto", skipping
+func ComputeTargetSSLProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetSslProxy) *krm.ComputeTargetSSLProxySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetSSLProxySpec{}
+	if in.GetCertificateMap() != "" {
+		out.CertificateMapRef = &krmcertificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: in.GetCertificateMap()}
+	}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.ProxyHeader = in.ProxyHeader
+	// MISSING: SelfLink
+	// MISSING: Service
+	// MISSING: SSLCertificates
+	// (near miss): "SSLCertificates" vs "SslCertificates"
+	// MISSING: SSLPolicy
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetSSLProxySpec_v1beta1_ToProto", skipping
+func ComputeTargetSSLProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetSSLProxySpec) *pb.TargetSslProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSslProxy{}
+	if in.CertificateMapRef != nil {
+		out.CertificateMap = &in.CertificateMapRef.External
+	}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.ProxyHeader = in.ProxyHeader
+	// MISSING: SelfLink
+	// MISSING: Service
+	// MISSING: SSLCertificates
+	// (near miss): "SSLCertificates" vs "SslCertificates"
+	// MISSING: SSLPolicy
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetSSLProxyStatus_v1beta1_FromProto", skipping
+func ComputeTargetSSLProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetSslProxy) *krm.ComputeTargetSSLProxyStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetSSLProxyStatus{}
+	// MISSING: CertificateMap
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: ProxyHeader
+	out.SelfLink = in.SelfLink
+	// MISSING: Service
+	// MISSING: SSLCertificates
+	// MISSING: SSLPolicy
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetSSLProxyStatus_v1beta1_ToProto", skipping
+func ComputeTargetSSLProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetSSLProxyStatus) *pb.TargetSslProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSslProxy{}
+	// MISSING: CertificateMap
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: ProxyHeader
+	out.SelfLink = in.SelfLink
+	// MISSING: Service
+	// MISSING: SSLCertificates
+	// MISSING: SSLPolicy
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeTargetTCPProxySpec_v1beta1_FromProto", skipping
 func ComputeTargetTCPProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxySpec {
 	if in == nil {
