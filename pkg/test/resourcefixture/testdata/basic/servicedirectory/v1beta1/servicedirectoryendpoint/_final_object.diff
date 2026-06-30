@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-24d22
+23d21
 <   resourceID: servicedirectoryendpoint-${uniqueId}
-35c33
+34c32
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2

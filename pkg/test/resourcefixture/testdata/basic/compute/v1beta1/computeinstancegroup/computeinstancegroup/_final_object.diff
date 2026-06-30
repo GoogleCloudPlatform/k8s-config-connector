@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-27d25
+26d24
 <   resourceID: ${instanceGroupID}
-36,37c34,35
+35,36c33,34
 <   observedGeneration: 3
 <   selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
 ---

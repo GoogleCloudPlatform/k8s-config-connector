@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-21d19
+20d18
 <   resourceID: ${targetHttpsProxyID}
-34c32,33
+33c31,32
 <   observedGeneration: 3
 ---
 >   externalRef: projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}

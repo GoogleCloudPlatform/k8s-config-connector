@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-25d23
+24d22
 <   resourceID: dataprocautoscalingpolicy-${uniqueId}
-37c35,36
+36c34,35
 <   observedGeneration: 3
 ---
 >   externalRef: projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}

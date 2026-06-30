@@ -4,9 +4,9 @@
 <   generation: 3
 ---
 >   generation: 2
-21d19
+20d18
 <   resourceID: computerouternat-${uniqueId}
-32c30
+31c29
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2

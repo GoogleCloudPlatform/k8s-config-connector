@@ -4,9 +4,9 @@
 <   generation: 2
 ---
 >   generation: 1
-27d25
+26d24
 <   resourceID: ${addressID}
-31,33c29,32
+30,32c28,31
 <     message: The resource is up to date
 <     reason: UpToDate
 <     status: "True"
@@ -15,7 +15,7 @@
 >       cannot be updated'
 >     reason: UpdateFailed
 >     status: "False"
-37c36
+36c35
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1

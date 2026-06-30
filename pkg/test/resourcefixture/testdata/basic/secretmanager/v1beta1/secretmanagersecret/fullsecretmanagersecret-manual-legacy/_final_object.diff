@@ -4,11 +4,11 @@
 <   generation: 3
 ---
 >   generation: 2
-30d28
+29d27
 <   resourceID: secretmanagersecret-${uniqueId}
-44a43
+43a42
 >   externalRef: projects/${projectId}/secrets/secretmanagersecret-${uniqueId}
-46c45,46
+45c44,45
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2

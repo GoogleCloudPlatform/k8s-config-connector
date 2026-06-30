@@ -5,9 +5,9 @@
 <   generation: 2
 ---
 >   generation: 1
-29d26
+28d25
 <   resourceID: certificatemanagercertificate-kompanion-${uniqueId}
-38c35
+37c34
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1

@@ -4,11 +4,11 @@
 <   generation: 3
 ---
 >   generation: 2
-24d22
+21d19
 <   resourceID: bigtableappprofile-${uniqueId}
-36a35
+33a32
 >   externalRef: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
-38c37
+35c34
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2
