@@ -319,6 +319,8 @@ import (
 	fakenotebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1/fake"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
 	fakenotebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1/fake"
+	oracledatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oracledatabase/v1alpha1"
+	fakeoracledatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oracledatabase/v1alpha1/fake"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
 	fakeorgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1/fake"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
@@ -1218,6 +1220,11 @@ func (c *Clientset) NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Inter
 // NotebooksV1beta1 retrieves the NotebooksV1beta1Client
 func (c *Clientset) NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface {
 	return &fakenotebooksv1beta1.FakeNotebooksV1beta1{Fake: &c.Fake}
+}
+
+// OracledatabaseV1alpha1 retrieves the OracledatabaseV1alpha1Client
+func (c *Clientset) OracledatabaseV1alpha1() oracledatabasev1alpha1.OracledatabaseV1alpha1Interface {
+	return &fakeoracledatabasev1alpha1.FakeOracledatabaseV1alpha1{Fake: &c.Fake}
 }
 
 // OrgpolicyV1beta1 retrieves the OrgpolicyV1beta1Client

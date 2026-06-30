@@ -887,6 +887,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - oracledatabase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - orgpolicy.cnrm.cloud.google.com
   resources:
   - '*'

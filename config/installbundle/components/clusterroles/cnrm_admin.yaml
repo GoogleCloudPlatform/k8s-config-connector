@@ -1328,6 +1328,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - oracledatabase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - orgpolicy.cnrm.cloud.google.com
   resources:
   - '*'
