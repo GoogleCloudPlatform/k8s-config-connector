@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: cloudbuildworkerpool-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/cloudbuild.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/cloudbuildworkerpools/cloudbuildworkerpool-${uniqueId}
 spec:
   displayName: Updated CloudBuild WorkerPool
   location: us-central1

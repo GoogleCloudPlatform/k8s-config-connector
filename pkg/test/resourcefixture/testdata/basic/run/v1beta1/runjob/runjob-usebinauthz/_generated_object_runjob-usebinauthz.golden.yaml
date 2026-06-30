@@ -12,7 +12,6 @@ metadata:
     cnrm-test: "true"
   name: runjob-binauthz-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/run.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/runjobs/runjob-binauthz-${uniqueId}
 spec:
   binaryAuthorization:
     useDefault: true

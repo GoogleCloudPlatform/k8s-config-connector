@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: vmwareengineexternalaccessrule-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/vmwareengine.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/vmwareengineexternalaccessrules/vmwareengineexternalaccessrule-minimal-${uniqueId}
 spec:
   action: DENY
   description: Updated description

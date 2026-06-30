@@ -13,7 +13,6 @@ metadata:
     foo: bar
   name: dataprocworkflowtemplate-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/dataproc.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/dataprocworkflowtemplates/dataprocworkflowtemplate-${uniqueId}
 spec:
   jobs:
   - sparkJob:

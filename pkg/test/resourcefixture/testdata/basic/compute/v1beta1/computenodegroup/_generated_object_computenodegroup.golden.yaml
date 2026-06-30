@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: computenodegroup-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computenodegroups/computenodegroup-${uniqueId}
 spec:
   description: A single sole-tenant node in the us-central1-b zone.
   nodeTemplateRef:

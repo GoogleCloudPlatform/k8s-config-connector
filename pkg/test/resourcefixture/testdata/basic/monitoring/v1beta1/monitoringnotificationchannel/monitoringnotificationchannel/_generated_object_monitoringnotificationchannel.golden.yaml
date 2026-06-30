@@ -18,7 +18,6 @@ metadata:
     key-two: value-three
   name: monitoringnotificationchannel-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringnotificationchannels/monitoringnotificationchannel-${uniqueId}
 spec:
   description: Sends notifications to newly indicated webhook URL using HTTP-standard
     basic authentication. Should be used in conjunction with SSL/TLS to reduce the

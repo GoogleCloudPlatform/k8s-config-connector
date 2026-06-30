@@ -23,7 +23,6 @@ metadata:
     label-key: label-value
   name: backupdrbackupvault-full-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/backupdr.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/backupdrbackupvaults/backupdrbackupvault-full-${uniqueId}
 spec:
   accessRestriction: WITHIN_ORGANIZATION
   backupMinimumEnforcedRetentionDuration: 86500s

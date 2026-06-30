@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: bigtablebackup-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigtable.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/bigtablebackups/bigtablebackup-${uniqueId}
 spec:
   clusterRef:
     external: projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}

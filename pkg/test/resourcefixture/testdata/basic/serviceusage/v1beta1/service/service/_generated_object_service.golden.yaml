@@ -12,7 +12,6 @@ metadata:
     cnrm-test: "true"
   name: runtimeconfig.googleapis.com
   namespace: ${uniqueId}
-  selfLink: /apis/serviceusage.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/services/runtimeconfig.googleapis.com
 spec:
   projectRef:
     name: project-${uniqueId}

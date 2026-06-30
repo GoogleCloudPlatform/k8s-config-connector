@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: containerattachedcluster-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/containerattached.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containerattachedclusters/containerattachedcluster-${uniqueId}
 spec:
   annotations:
     key1: value1a

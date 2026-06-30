@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: dataprocjob-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/dataproc.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/dataprocjobs/dataprocjob-minimal-${uniqueId}
 spec:
   hiveJob:
     continueOnFailure: true

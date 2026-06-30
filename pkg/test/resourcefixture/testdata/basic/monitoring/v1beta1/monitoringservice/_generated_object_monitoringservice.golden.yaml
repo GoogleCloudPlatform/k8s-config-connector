@@ -13,7 +13,6 @@ metadata:
     test1: value2
   name: monitoringservice-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringservices/monitoringservice-${uniqueId}
 spec:
   displayName: update request - a basic monitoring service.
   projectRef:

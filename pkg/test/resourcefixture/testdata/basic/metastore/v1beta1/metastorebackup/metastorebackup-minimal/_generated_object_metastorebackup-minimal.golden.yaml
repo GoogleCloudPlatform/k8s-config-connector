@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: msbackup-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/metastore.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/metastorebackups/msbackup-${uniqueId}
 spec:
   description: A minimal metastore backup
   serviceRef:

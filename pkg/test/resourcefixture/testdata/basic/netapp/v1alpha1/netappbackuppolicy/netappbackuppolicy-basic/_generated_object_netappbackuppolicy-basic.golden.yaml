@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: netappbackuppolicy-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/netapp.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/netappbackuppolicies/netappbackuppolicy-minimal-${uniqueId}
 spec:
   dailyBackupLimit: 3
   location: us-west2

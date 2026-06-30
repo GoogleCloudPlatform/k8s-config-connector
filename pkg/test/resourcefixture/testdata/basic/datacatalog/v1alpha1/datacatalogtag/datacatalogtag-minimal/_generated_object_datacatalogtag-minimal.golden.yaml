@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: datacatalogtag-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/datacatalog.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/datacatalogtags/datacatalogtag-minimal-${uniqueId}
 spec:
   entryRef:
     name: datacatalogentry-minimal-${uniqueId}

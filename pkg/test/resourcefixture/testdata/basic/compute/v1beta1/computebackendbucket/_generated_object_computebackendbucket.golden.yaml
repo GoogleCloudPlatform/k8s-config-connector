@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: ${backendBucketID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computebackendbuckets/${backendBucketID}
 spec:
   bucketRef:
     name: storagebucket-sample-${uniqueId}

@@ -11,7 +11,6 @@ metadata:
     label-two: value-three
   name: parametermanagerparameter-regional-full-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/parametermanager.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/parametermanagerparameters/parametermanagerparameter-regional-full-${uniqueId}
 spec:
   format: JSON
   kmsKeyRef:

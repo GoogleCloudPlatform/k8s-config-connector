@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: ${futureReservationID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/computefuturereservations/${futureReservationID}
 spec:
   autoCreatedReservationsDuration:
     seconds: 86401

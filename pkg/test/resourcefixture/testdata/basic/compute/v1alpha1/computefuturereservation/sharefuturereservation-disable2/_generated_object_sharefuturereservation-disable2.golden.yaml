@@ -9,19 +9,12 @@ metadata:
     cnrm-test: "true"
   name: ${futureReservationID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/computefuturereservations/${futureReservationID}
 spec:
   autoDeleteAutoCreatedReservations: false
   location: us-central1-a
   projectRef:
     external: shared-reservations-project
   shareSettings:
-    projectMap:
-    - keyRef:
-        external: ${projectId}
-      value:
-        projectIDRef:
-          external: ${projectId}
     shareType: LOCAL
   specificSkuProperties:
     instanceProperties:

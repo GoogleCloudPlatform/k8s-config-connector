@@ -13,7 +13,6 @@ metadata:
     test1: value2
   name: monitoringservicelevelobjective-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/monitoring.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/monitoringservicelevelobjectives/monitoringservicelevelobjective-${uniqueId}
 spec:
   calendarPeriod: FORTNIGHT
   displayName: update request - a window based good total ratio distribution cut filter

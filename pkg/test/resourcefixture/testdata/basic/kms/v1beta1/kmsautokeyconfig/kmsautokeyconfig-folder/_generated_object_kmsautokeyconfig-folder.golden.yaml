@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: autokeyconfig-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/kms.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/kmsautokeyconfigs/autokeyconfig-${uniqueId}
 spec:
   folderRef:
     external: folders/${folderID}

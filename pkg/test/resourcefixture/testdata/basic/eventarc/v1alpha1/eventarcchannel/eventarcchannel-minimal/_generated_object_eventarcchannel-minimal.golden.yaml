@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: eventarcchannel-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/eventarc.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/eventarcchannels/eventarcchannel-minimal-${uniqueId}
 spec:
   kmsKeyRef:
     name: eac-key-${uniqueId}

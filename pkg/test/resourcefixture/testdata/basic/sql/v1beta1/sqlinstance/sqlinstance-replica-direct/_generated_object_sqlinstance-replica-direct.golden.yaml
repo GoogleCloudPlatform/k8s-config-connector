@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: sqlinstance-replica-direct-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/sql.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/sqlinstances/sqlinstance-replica-direct-${uniqueId}
 spec:
   databaseVersion: MYSQL_5_7
   instanceType: READ_REPLICA_INSTANCE

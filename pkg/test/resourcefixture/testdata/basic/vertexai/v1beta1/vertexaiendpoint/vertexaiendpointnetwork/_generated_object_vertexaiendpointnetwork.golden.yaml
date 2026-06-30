@@ -13,7 +13,6 @@ metadata:
     label-one: value-one
   name: vertexaiendpoint-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/vertexai.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/vertexaiendpoints/vertexaiendpoint-${uniqueId}
 spec:
   description: example vertex AI endpoint with encryption key
   displayName: vertexai-endpoint-network-updated

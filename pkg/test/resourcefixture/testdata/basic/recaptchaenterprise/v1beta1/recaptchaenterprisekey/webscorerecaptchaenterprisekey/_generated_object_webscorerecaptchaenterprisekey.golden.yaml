@@ -13,7 +13,6 @@ metadata:
     label-two: value-two
   name: recaptchaenterprisekey-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/recaptchaenterprise.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/recaptchaenterprisekeys/recaptchaenterprisekey-${uniqueId}
 spec:
   displayName: display-name-two
   projectRef:

@@ -14,7 +14,6 @@ metadata:
     label-one: value-one
   name: sqlinstance-mysql-direct-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/sql.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/sqlinstances/sqlinstance-mysql-direct-${uniqueId}
 spec:
   databaseVersion: MYSQL_5_7
   instanceType: CLOUD_SQL_INSTANCE

@@ -16,7 +16,6 @@ metadata:
     label-one: value-two
   name: cluster-sample-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/container.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containerclusters/cluster-sample-${uniqueId}
 spec:
   clusterAutoscaling:
     autoProvisioningDefaults:

@@ -13,7 +13,6 @@ metadata:
     label-two: value-two
   name: servicedirectoryendpoint-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/servicedirectory.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/servicedirectoryendpoints/servicedirectoryendpoint-${uniqueId}
 spec:
   addressRef:
     name: ${addressID}

@@ -14,7 +14,6 @@ metadata:
     newkey: newval
   name: pubsubtopic-sample-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/pubsub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/pubsubtopics/pubsubtopic-sample-${uniqueId}
 spec:
   messageRetentionDuration: 3600s
   messageStoragePolicy:

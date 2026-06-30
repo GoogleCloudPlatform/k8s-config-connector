@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: notebookinstance-full-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/notebooks.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/notebookinstances/notebookinstance-full-${uniqueId}
 spec:
   bootDiskSizeGB: 100
   bootDiskType: PD_SSD

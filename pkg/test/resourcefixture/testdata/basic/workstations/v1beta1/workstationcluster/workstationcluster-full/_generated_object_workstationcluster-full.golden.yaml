@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: workstationcluster-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/workstations.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/workstationclusters/workstationcluster-${uniqueId}
 spec:
   annotations:
   - key: a-key1

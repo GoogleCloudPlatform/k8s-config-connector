@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: bqassignment-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigqueryreservation.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigqueryreservationassignments/bqassignment-${uniqueId}
 spec:
   assignee:
     projectRef:

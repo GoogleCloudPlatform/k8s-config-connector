@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: datacatalogtagtemplate-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/datacatalog.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/datacatalogtagtemplates/datacatalogtagtemplate-minimal-${uniqueId}
 spec:
   displayName: UpdatedTagTemplate
   fields:

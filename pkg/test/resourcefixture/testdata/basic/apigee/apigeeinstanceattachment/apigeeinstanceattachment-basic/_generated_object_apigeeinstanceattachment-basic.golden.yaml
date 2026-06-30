@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: apgia-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/apigee.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apigeeinstanceattachments/apgia-${uniqueId}
 spec:
   environmentRef:
     name: apgenv-${uniqueId}

@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: msfed-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/metastore.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/metastorefederations/msfed-${uniqueId}
 spec:
   backendMetastores:
     "1":

@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: av-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigtable.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/bigtableauthorizedviews/av-${uniqueId}
 spec:
   deletionProtection: true
   subsetView:

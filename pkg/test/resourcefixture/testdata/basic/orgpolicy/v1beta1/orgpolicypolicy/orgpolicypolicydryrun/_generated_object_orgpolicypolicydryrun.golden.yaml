@@ -9,16 +9,10 @@ metadata:
     cnrm-test: "true"
   name: custom.orgpolicypolicy${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/orgpolicy.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/orgpolicypolicies/custom.orgpolicypolicy${uniqueId}
 spec:
-  dryRunSpec:
-    reset: false
-    rules:
-    - enforce: true
   projectRef:
     external: ${projectId}
   spec:
-    reset: false
     rules:
     - enforce: false
 status:
@@ -31,7 +25,5 @@ status:
   externalRef: projects/${projectId}/policies/custom.orgpolicypolicy${uniqueId}
   observedGeneration: 2
   observedState:
-    dryRunSpec:
-      updateTime: "2024-04-01T12:34:56.123456Z"
     spec:
       updateTime: "2024-04-01T12:34:56.123456Z"

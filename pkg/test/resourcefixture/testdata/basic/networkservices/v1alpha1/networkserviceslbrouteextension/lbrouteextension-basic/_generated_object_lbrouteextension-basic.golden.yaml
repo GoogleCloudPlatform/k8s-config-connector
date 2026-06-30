@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: lbrouteextension-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networkservices.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networkserviceslbrouteextensions/lbrouteextension-${uniqueId}
 spec:
   description: An updated sample LBRouteExtension
   extensionChains:

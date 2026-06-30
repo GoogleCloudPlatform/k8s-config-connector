@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: assetfeed-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/asset.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/assetfeeds/assetfeed-${uniqueId}
 spec:
   assetNames:
   - //compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/instance1

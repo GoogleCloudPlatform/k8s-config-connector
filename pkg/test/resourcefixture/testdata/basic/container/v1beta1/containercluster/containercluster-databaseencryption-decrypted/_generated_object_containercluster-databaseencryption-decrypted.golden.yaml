@@ -15,7 +15,6 @@ metadata:
     cnrm-test: "true"
   name: cl-dbdec-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/container.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containerclusters/cl-dbdec-${uniqueId}
 spec:
   databaseEncryption:
     keyName: projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}

@@ -12,7 +12,6 @@ metadata:
     cnrm-test: "true"
   name: ${urlMapID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeurlmaps/${urlMapID}
 spec:
   defaultService:
     backendServiceRef:

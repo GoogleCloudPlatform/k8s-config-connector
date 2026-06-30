@@ -10,7 +10,6 @@ metadata:
     label-one: value-one
   name: certificatemanagerdnsauthorization-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/certificatemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/certificatemanagerdnsauthorizations/certificatemanagerdnsauthorization-${uniqueId}
 spec:
   description: Updated sample description
   domain: ${uniqueId}.hashicorptest.com

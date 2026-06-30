@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: mirroringeg-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networksecurity.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networksecuritymirroringendpointgroups/mirroringeg-${uniqueId}
 spec:
   description: Updated description for minimal mirroring endpoint group
   labels:

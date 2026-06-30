@@ -10,7 +10,6 @@ metadata:
     key1: value1
   name: assetsavedquery-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/asset.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/assetsavedqueries/assetsavedquery-minimal-${uniqueId}
 spec:
   content:
     iamPolicyAnalysisQuery:

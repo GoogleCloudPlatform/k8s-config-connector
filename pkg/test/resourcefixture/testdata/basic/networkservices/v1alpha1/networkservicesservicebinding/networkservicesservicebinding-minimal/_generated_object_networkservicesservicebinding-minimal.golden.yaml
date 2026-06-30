@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: networkservicesservicebinding-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networkservices.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networkservicesservicebindings/networkservicesservicebinding-minimal-${uniqueId}
 spec:
   description: Initial description
   location: global

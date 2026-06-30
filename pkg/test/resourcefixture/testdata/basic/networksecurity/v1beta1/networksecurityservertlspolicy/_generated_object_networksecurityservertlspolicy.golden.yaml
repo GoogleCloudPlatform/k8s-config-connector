@@ -13,7 +13,6 @@ metadata:
     key-one: value-two
   name: networksecurityservertlspolicy-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networksecurity.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/networksecurityservertlspolicies/networksecurityservertlspolicy-${uniqueId}
 spec:
   allowOpen: false
   description: Test global server TLS policy

@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: parametermanagerparameterversion-basic-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/parametermanager.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/parametermanagerparameterversions/parametermanagerparameterversion-basic-${uniqueId}
 spec:
   disabled: false
   parameterRef:

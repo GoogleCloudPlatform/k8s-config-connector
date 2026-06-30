@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: certissuanceconfig-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/certificatemanager.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/certificatemanagercertificateissuanceconfigs/certissuanceconfig-${uniqueId}
 spec:
   certificateAuthorityConfig:
     certificateAuthorityServiceConfig:

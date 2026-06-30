@@ -15,7 +15,6 @@ metadata:
     cnrm-test: "true"
   name: ${backendServiceID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computebackendservices/${backendServiceID}
 spec:
   description: Regional backend service for us-central1 updated
   healthChecks:

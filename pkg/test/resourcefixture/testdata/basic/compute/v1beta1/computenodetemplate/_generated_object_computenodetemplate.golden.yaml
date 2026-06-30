@@ -13,7 +13,6 @@ metadata:
     memory_guarantee: "false"
   name: ${nodeTemplateID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computenodetemplates/${nodeTemplateID}
 spec:
   description: Node template for sole tenant nodes running in us-central1, with 96vCPUs
     and any amount of memory on any machine type.

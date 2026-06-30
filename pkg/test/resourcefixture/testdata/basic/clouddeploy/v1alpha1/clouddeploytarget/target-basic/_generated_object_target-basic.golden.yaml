@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: clouddeploytarget-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/clouddeploy.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/clouddeploytargets/clouddeploytarget-${uniqueId}
 spec:
   description: Updated Basic Cloud Run Target
   location: us-central1

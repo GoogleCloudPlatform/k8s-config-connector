@@ -14,7 +14,6 @@ metadata:
     cnrm-test: "true"
   name: bigtableappprofile-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigtable.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigtableappprofiles/bigtableappprofile-${uniqueId}
 spec:
   description: Updated description.
   instanceRef:
@@ -23,9 +22,6 @@ spec:
   - cluster1-${uniqueId}
   - cluster2-${uniqueId}
   multiClusterRoutingUseAny: true
-  singleClusterRouting:
-    allowTransactionalWrites: true
-    clusterId: cluster1-${uniqueId}
   standardIsolation:
     priority: PRIORITY_LOW
 status:

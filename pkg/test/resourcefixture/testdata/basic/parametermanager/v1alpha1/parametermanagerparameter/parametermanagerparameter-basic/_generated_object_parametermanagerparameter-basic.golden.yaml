@@ -10,7 +10,6 @@ metadata:
     label-one: value-one
   name: parametermanagerparameter-basic-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/parametermanager.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/parametermanagerparameters/parametermanagerparameter-basic-${uniqueId}
 spec:
   format: JSON
   kmsKeyRef:

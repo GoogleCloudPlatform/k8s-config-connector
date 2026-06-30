@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: pubsubsnapshot-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/pubsub.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/pubsubsnapshots/pubsubsnapshot-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
@@ -24,3 +23,5 @@ status:
     type: Ready
   externalRef: projects/${projectId}/snapshots/pubsubsnapshot-minimal-${uniqueId}
   observedGeneration: 1
+  observedState:
+    expireTime: "2024-04-01T12:34:56.123456Z"

@@ -12,7 +12,6 @@ metadata:
     cnrm-test: "true"
   name: storagenotification-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/storage.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/storagenotifications/storagenotification-${uniqueId}
 spec:
   bucketRef:
     name: storagebucket-${uniqueId}

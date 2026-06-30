@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: dataprocbatch-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/dataproc.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/dataprocbatches/dataprocbatch-minimal-${uniqueId}
 spec:
   location: us-central1
   projectRef:

@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: datastreamconnectionprofile-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/datastream.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/datastreamconnectionprofiles/datastreamconnectionprofile-minimal-${uniqueId}
 spec:
   displayName: Updated description
   gcsProfile:

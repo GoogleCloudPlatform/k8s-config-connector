@@ -13,7 +13,6 @@ metadata:
     test-label: updated-value
   name: ${addressID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeaddresses/${addressID}
 spec:
   addressType: INTERNAL
   description: a test global address

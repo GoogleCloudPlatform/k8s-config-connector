@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: managedkafkacluster-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/managedkafka.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/managedkafkaclusters/managedkafkacluster-${uniqueId}
 spec:
   capacityConfig:
     memoryBytes: 4294967296

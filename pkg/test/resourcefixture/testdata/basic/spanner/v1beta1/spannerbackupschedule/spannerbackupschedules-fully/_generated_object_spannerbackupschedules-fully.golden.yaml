@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: spannerbackupschedule-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/spanner.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/spannerbackupschedules/spannerbackupschedule-${uniqueId}
 spec:
   encryptionConfig:
     encryptionType: GOOGLE_DEFAULT_ENCRYPTION

@@ -14,7 +14,6 @@ metadata:
     key2: value2
   name: bigquerytable-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigquery.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigquerytables/bigquerytable-${uniqueId}
 spec:
   clustering:
   - name

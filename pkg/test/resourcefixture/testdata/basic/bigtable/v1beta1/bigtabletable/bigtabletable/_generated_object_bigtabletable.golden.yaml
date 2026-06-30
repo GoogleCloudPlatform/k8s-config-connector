@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: bigtabletable-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigtable.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigtabletables/bigtabletable-${uniqueId}
 spec:
   columnFamily:
   - family: family3

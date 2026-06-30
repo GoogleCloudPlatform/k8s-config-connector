@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: pubsubsnapshot-full-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/pubsub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/pubsubsnapshots/pubsubsnapshot-full-${uniqueId}
 spec:
   labels:
     key: new-value

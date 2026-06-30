@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: custom.orgpolicycustomconstraint${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/orgpolicy.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/orgpolicycustomconstraints/custom.orgpolicycustomconstraint${uniqueId}
 spec:
   actionType: ALLOW
   condition: resource.management.autoUpgrade == true

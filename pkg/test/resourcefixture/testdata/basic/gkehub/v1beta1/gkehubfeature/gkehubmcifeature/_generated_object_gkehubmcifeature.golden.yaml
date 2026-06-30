@@ -13,7 +13,6 @@ metadata:
     label-one: two
   name: gkehubfeature-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/gkehub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/gkehubfeatures/gkehubfeature-${uniqueId}
 spec:
   location: global
   projectRef:

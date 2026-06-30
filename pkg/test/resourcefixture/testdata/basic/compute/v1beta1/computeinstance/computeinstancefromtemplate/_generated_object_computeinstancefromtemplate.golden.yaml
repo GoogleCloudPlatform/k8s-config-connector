@@ -14,7 +14,6 @@ metadata:
     label-one: value-one
   name: ${instanceID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeinstances/${instanceID}
 spec:
   instanceTemplateRef:
     name: ${instanceTemplateID}

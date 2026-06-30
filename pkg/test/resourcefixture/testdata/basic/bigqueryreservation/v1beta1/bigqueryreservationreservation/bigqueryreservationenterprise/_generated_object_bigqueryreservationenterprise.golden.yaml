@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: bigqueryreservationreservation-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/bigqueryreservation.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/bigqueryreservationreservations/bigqueryreservationreservation-${uniqueId}
 spec:
   autoscale:
     maxSlots: 100

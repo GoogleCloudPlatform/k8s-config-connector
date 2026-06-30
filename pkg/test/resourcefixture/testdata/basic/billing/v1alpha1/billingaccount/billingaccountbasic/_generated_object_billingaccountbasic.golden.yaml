@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: billingaccount-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/billing.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/billingaccounts/billingaccount-${uniqueId}
 spec:
   currencyCode: USD
   displayName: Updated Billing Account ${uniqueId}

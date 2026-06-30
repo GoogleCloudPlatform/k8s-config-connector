@@ -15,10 +15,8 @@ metadata:
     cnrm-test: "true"
   name: cl-dball-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/container.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containerclusters/cl-dball-${uniqueId}
 spec:
   databaseEncryption:
-    keyName: projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}
     state: ENCRYPTED
   initialNodeCount: 1
   ipAllocationPolicy:

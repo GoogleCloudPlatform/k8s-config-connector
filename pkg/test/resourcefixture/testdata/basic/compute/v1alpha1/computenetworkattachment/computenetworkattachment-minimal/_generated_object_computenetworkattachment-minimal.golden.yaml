@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: ${networkAttachmentID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/computenetworkattachments/${networkAttachmentID}
 spec:
   connectionPreference: ACCEPT_MANUAL
   description: Updated description

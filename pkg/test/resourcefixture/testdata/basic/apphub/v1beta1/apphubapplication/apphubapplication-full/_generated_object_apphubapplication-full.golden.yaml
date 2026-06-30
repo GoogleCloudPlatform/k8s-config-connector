@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: apphubapplication-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/apphub.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apphubapplications/apphubapplication-${uniqueId}
 spec:
   attributes:
     businessOwners:

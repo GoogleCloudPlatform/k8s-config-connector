@@ -16,7 +16,6 @@ metadata:
     size: smallish
   name: memcacheinstance-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/memcache.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/memcacheinstances/memcacheinstance-${uniqueId}
 spec:
   displayName: Sample Memcache Instance
   memcacheParameters:

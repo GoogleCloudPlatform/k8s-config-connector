@@ -12,7 +12,6 @@ metadata:
     cnrm-test: "true"
   name: pubsublitereservation-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/pubsublite.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/pubsublitereservations/pubsublitereservation-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}

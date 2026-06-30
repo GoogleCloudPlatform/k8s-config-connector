@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: dataplexlake-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/dataplex.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/dataplexlakes/dataplexlake-minimal-${uniqueId}
 spec:
   description: Updated description
   location: us-central1

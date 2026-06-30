@@ -10,7 +10,6 @@ metadata:
     label-one: value-one
   name: serviceconnectionpolicy-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networkconnectivity.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networkconnectivityserviceconnectionpolicies/serviceconnectionpolicy-${uniqueId}
 spec:
   description: Service Connection Policy for redis - updated
   location: us-central1

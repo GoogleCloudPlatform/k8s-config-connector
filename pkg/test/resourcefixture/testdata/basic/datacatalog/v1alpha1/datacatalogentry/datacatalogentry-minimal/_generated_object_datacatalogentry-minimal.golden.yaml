@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: datacatalogentry-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/datacatalog.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/datacatalogentries/datacatalogentry-minimal-${uniqueId}
 spec:
   displayName: New Display Name
   entryGroupRef:

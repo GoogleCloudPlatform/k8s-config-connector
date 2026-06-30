@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: regionalendpoint-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networkconnectivity.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/networkconnectivityregionalendpoints/regionalendpoint-${uniqueId}
 spec:
   accessType: GLOBAL
   addressRef:

@@ -22,7 +22,6 @@ metadata:
     custom-label: bar
   name: networksecurityauthorizationpolicy-full-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/networksecurity.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/networksecurityauthorizationpolicies/networksecurityauthorizationpolicy-full-${uniqueId}
 spec:
   action: DENY
   description: A full authorization policy for testing - updated

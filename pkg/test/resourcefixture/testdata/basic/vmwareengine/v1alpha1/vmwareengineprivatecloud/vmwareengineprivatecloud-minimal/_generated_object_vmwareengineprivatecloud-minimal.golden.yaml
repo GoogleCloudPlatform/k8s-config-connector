@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: vmwareengineprivatecloud-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/vmwareengine.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/vmwareengineprivateclouds/vmwareengineprivatecloud-minimal-${uniqueId}
 spec:
   description: Updated description
   location: us-west2-a

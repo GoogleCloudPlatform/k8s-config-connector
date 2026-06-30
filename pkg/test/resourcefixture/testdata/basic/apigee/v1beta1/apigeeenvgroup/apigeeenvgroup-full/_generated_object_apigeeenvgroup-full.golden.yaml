@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: apigeeenvgroup-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/apigee.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/apigeeenvgroups/apigeeenvgroup-${uniqueId}
 spec:
   hostnames:
   - ${uniqueId}.mytesthost.net

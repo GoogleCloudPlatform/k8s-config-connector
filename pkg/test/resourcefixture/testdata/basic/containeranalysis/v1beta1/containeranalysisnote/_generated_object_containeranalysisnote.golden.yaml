@@ -13,7 +13,6 @@ metadata:
     cnrm-test: "true"
   name: containeranalysisnote-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/containeranalysis.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/containeranalysisnotes/containeranalysisnote-${uniqueId}
 spec:
   attestation:
     hint:

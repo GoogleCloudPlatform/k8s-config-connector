@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: datastreamroute-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/datastream.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/datastreamroutes/datastreamroute-minimal-${uniqueId}
 spec:
   destinationAddress: 10.0.0.0/24
   destinationPort: 143

@@ -11,7 +11,6 @@ metadata:
     cnrm-test: "true"
   name: tagstagbinding-runservice-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/tags.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/tagslocationtagbindings/tagstagbinding-runservice-${uniqueId}
 spec:
   location: us-central1
   parentRef:

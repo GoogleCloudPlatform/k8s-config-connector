@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: custom.orgpolicypolicy${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/orgpolicy.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/orgpolicypolicies/custom.orgpolicypolicy${uniqueId}
 spec:
   folderRef:
     external: folders/${folderID}

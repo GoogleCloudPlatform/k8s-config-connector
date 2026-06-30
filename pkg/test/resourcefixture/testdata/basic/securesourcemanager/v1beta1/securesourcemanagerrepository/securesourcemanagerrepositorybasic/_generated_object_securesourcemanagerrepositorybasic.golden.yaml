@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: ssmrepository-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/securesourcemanager.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/securesourcemanagerrepositories/ssmrepository-${uniqueId}
 spec:
   instanceRef:
     name: ssminstance-dep-${uniqueId}

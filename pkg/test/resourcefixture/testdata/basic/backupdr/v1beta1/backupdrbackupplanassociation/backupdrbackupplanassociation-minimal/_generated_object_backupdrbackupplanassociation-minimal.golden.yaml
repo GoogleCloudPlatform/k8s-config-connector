@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: backupdrbackupplanassociation-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/backupdr.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/backupdrbackupplanassociations/backupdrbackupplanassociation-minimal-${uniqueId}
 spec:
   backupPlanRef:
     name: backupdrbackupplan-minimal-${uniqueId}

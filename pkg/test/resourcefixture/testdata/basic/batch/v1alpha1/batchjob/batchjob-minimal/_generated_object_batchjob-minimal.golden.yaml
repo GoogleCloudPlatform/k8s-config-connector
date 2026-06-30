@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: batchjob-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/batch.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/batchjobs/batchjob-${uniqueId}
 spec:
   location: us-west2
   projectRef:

@@ -13,7 +13,6 @@ metadata:
     label-one: value-two
   name: ${forwardingRuleID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computeforwardingrules/${forwardingRuleID}
 spec:
   description: A regional forwarding rule
   ipAddress:

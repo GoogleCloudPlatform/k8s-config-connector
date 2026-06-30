@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: featurestore${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/vertexai.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/vertexaifeaturestores/featurestore${uniqueId}
 spec:
   labels:
     foo: bar

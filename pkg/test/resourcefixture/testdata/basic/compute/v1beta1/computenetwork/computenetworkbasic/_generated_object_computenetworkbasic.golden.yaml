@@ -13,7 +13,6 @@ metadata:
     label-one: value-one
   name: ${networkID}
   namespace: ${uniqueId}
-  selfLink: /apis/compute.cnrm.cloud.google.com/v1beta1/namespaces/${uniqueId}/computenetworks/${networkID}
 spec:
   autoCreateSubnetworks: false
   enableUlaInternalIpv6: true

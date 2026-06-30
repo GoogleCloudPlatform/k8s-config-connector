@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: custom-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/spanner.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/spannerinstanceconfigs/custom-${uniqueId}
 spec:
   baseConfigRef:
     external: projects/${projectId}/instanceConfigs/nam11

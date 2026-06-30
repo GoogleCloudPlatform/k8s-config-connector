@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: gkebackuprestoreplan-minimal-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/gkebackup.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/gkebackuprestoreplans/gkebackuprestoreplan-minimal-${uniqueId}
 spec:
   backupPlanRef:
     name: gkebackupbackupplan-minimal-${uniqueId}

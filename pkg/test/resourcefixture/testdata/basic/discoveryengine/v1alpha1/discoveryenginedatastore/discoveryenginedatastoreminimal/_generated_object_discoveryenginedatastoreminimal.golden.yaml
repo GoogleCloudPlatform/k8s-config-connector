@@ -9,7 +9,6 @@ metadata:
     cnrm-test: "true"
   name: datastore-${uniqueId}
   namespace: ${uniqueId}
-  selfLink: /apis/discoveryengine.cnrm.cloud.google.com/v1alpha1/namespaces/${uniqueId}/discoveryenginedatastores/datastore-${uniqueId}
 spec:
   collection: default_collection
   displayName: Updated display name
