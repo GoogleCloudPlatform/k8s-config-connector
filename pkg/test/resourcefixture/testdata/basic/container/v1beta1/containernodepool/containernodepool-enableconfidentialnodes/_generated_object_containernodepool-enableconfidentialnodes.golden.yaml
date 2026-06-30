@@ -43,4 +43,9 @@ status:
   - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
   observedGeneration: 2
   observedState:
+    nodeConfig:
+      taint:
+      - effect: NO_SCHEDULE
+        key: originalKey
+        value: originalValue
     version: 1.30.5-gke.1014001
