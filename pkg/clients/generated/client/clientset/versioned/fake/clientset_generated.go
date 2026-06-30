@@ -377,6 +377,8 @@ import (
 	fakespeechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/speech/v1beta1/fake"
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sql/v1beta1"
 	fakesqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sql/v1beta1/fake"
+	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sqladmin/v1alpha1"
+	fakesqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sqladmin/v1alpha1/fake"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
 	fakestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1/fake"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
@@ -1363,6 +1365,11 @@ func (c *Clientset) SpeechV1beta1() speechv1beta1.SpeechV1beta1Interface {
 // SqlV1beta1 retrieves the SqlV1beta1Client
 func (c *Clientset) SqlV1beta1() sqlv1beta1.SqlV1beta1Interface {
 	return &fakesqlv1beta1.FakeSqlV1beta1{Fake: &c.Fake}
+}
+
+// SqladminV1alpha1 retrieves the SqladminV1alpha1Client
+func (c *Clientset) SqladminV1alpha1() sqladminv1alpha1.SqladminV1alpha1Interface {
+	return &fakesqladminv1alpha1.FakeSqladminV1alpha1{Fake: &c.Fake}
 }
 
 // StorageV1alpha1 retrieves the StorageV1alpha1Client

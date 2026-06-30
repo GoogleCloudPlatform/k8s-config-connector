@@ -509,6 +509,7 @@
 | speech.cnrm.cloud.google.com                  | SpeechCustomClass                               | True         | True        | False  | Direct     | True        |
 | speech.cnrm.cloud.google.com                  | SpeechPhraseSet                                 | True         | True        | False  | Direct     | True        |
 | speech.cnrm.cloud.google.com                  | SpeechRecognizer                                | True         | True        | False  | Direct     | True        |
+| sqladmin.cnrm.cloud.google.com                | SQLAdminBackup                                  | True         | False       | False  | Direct     | True        |
 | sql.cnrm.cloud.google.com                     | SQLDatabase                                     | False        | True        | False  | Terraform  | False       |
 | sql.cnrm.cloud.google.com                     | SQLInstance                                     | False        | True        | False  | Direct     | True        |
 | sql.cnrm.cloud.google.com                     | SQLSSLCert                                      | False        | True        | False  | Terraform  | False       |

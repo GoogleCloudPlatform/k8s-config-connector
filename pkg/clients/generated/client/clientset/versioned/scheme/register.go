@@ -199,6 +199,7 @@ import (
 	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1beta1"
 	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/speech/v1beta1"
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
+	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sqladmin/v1alpha1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
@@ -402,6 +403,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	spannerv1beta1.AddToScheme,
 	speechv1beta1.AddToScheme,
 	sqlv1beta1.AddToScheme,
+	sqladminv1alpha1.AddToScheme,
 	storagev1alpha1.AddToScheme,
 	storagev1beta1.AddToScheme,
 	storagetransferv1alpha1.AddToScheme,
