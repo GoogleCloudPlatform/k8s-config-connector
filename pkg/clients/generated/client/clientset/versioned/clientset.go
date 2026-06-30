@@ -160,6 +160,7 @@ import (
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
+	migrationcenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/migrationcenter/v1alpha1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
 	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
@@ -359,6 +360,7 @@ type Interface interface {
 	MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface
 	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
+	MigrationcenterV1alpha1() migrationcenterv1alpha1.MigrationcenterV1alpha1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
 	ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
@@ -556,6 +558,7 @@ type Clientset struct {
 	memorystoreV1beta1              *memorystorev1beta1.MemorystoreV1beta1Client
 	metastoreV1alpha1               *metastorev1alpha1.MetastoreV1alpha1Client
 	metastoreV1beta1                *metastorev1beta1.MetastoreV1beta1Client
+	migrationcenterV1alpha1         *migrationcenterv1alpha1.MigrationcenterV1alpha1Client
 	mlengineV1alpha1                *mlenginev1alpha1.MlengineV1alpha1Client
 	modelarmorV1alpha1              *modelarmorv1alpha1.ModelarmorV1alpha1Client
 	monitoringV1beta1               *monitoringv1beta1.MonitoringV1beta1Client
@@ -1288,6 +1291,11 @@ func (c *Clientset) MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Inter
 // MetastoreV1beta1 retrieves the MetastoreV1beta1Client
 func (c *Clientset) MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface {
 	return c.metastoreV1beta1
+}
+
+// MigrationcenterV1alpha1 retrieves the MigrationcenterV1alpha1Client
+func (c *Clientset) MigrationcenterV1alpha1() migrationcenterv1alpha1.MigrationcenterV1alpha1Interface {
+	return c.migrationcenterV1alpha1
 }
 
 // MlengineV1alpha1 retrieves the MlengineV1alpha1Client
@@ -2159,6 +2167,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.migrationcenterV1alpha1, err = migrationcenterv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.mlengineV1alpha1, err = mlenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2543,6 +2555,7 @@ func New(c rest.Interface) *Clientset {
 	cs.memorystoreV1beta1 = memorystorev1beta1.New(c)
 	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)
+	cs.migrationcenterV1alpha1 = migrationcenterv1alpha1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
 	cs.modelarmorV1alpha1 = modelarmorv1alpha1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)

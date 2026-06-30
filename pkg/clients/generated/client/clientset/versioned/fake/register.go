@@ -157,6 +157,7 @@ import (
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1beta1"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1beta1"
+	migrationcenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/migrationcenter/v1alpha1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/mlengine/v1alpha1"
 	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
@@ -360,6 +361,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	memorystorev1beta1.AddToScheme,
 	metastorev1alpha1.AddToScheme,
 	metastorev1beta1.AddToScheme,
+	migrationcenterv1alpha1.AddToScheme,
 	mlenginev1alpha1.AddToScheme,
 	modelarmorv1alpha1.AddToScheme,
 	monitoringv1beta1.AddToScheme,
