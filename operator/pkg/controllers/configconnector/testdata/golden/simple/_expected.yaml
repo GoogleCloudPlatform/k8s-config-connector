@@ -3888,6 +3888,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - workloadmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - workstations.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5247,6 +5259,14 @@ rules:
   - watch
 - apiGroups:
   - workflows.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workloadmanager.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -213,6 +213,7 @@ import (
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vpcaccess/v1beta1"
 	workflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workflowexecutions/v1alpha1"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workflows/v1alpha1"
+	workloadmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workloadmanager/v1alpha1"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -416,6 +417,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	vpcaccessv1beta1.AddToScheme,
 	workflowexecutionsv1alpha1.AddToScheme,
 	workflowsv1alpha1.AddToScheme,
+	workloadmanagerv1alpha1.AddToScheme,
 	workstationsv1beta1.AddToScheme,
 }
 
