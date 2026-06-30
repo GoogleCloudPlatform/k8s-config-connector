@@ -1,10 +1,10 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//	http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,6 +32,22 @@ func notebooksEnvironmentFuzzer() fuzztesting.KRMFuzzer {
 		NotebooksEnvironmentSpec_v1alpha1_FromProto, NotebooksEnvironmentSpec_v1alpha1_ToProto,
 		NotebooksEnvironmentObservedState_v1alpha1_FromProto, NotebooksEnvironmentObservedState_v1alpha1_ToProto,
 	)
+
+	// Field comparison between KRM NotebooksEnvironment and Proto Environment:
+	// - .spec.displayName       <=> .display_name
+	// - .spec.description       <=> .description
+	// - .spec.vmImage           <=> .vm_image
+	// - .spec.containerImage    <=> .container_image
+	// - .spec.postStartupScript <=> .post_startup_script
+	//
+	// Fields ignored because they are not part of KRM Spec:
+	// - .name                   (handled by resource name/identity URI)
+	// - .projectRef             (parent reference handled by KCC framework)
+	// - .location               (region/zone handled by KCC framework)
+	// - .resourceID             (handled by KCC framework)
+	//
+	// Status fields:
+	// - .status.observedState.createTime <=> .create_time
 
 	f.Unimplemented_Identity(".name")
 
