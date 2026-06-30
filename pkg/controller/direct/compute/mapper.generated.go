@@ -4281,6 +4281,56 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeTargetPoolSpec_v1beta1_FromProto", skipping
+func ComputeTargetPoolSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetPool) *krm.ComputeTargetPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetPoolSpec{}
+	// MISSING: BackupPool
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.FailoverRatio = in.FailoverRatio
+	out.HealthChecks = ComputeTargetPoolSpec_HealthChecks_FromProto(mapCtx, in.HealthChecks)
+	// MISSING: ID
+	out.Instances = ComputeTargetPoolSpec_Instances_FromProto(mapCtx, in.Instances)
+	// MISSING: Kind
+	// MISSING: Name
+	out.Region = in.Region
+	if in.GetSecurityPolicy() != "" {
+		out.SecurityPolicyRef = &krm.TargetPoolResourceRef{External: in.GetSecurityPolicy()}
+	}
+	// MISSING: SelfLink
+	out.SessionAffinity = in.SessionAffinity
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetPoolSpec_v1beta1_ToProto", skipping
+func ComputeTargetPoolSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetPoolSpec) *pb.TargetPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetPool{}
+	// MISSING: BackupPool
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.FailoverRatio = in.FailoverRatio
+	out.HealthChecks = ComputeTargetPoolSpec_HealthChecks_ToProto(mapCtx, in.HealthChecks)
+	// MISSING: ID
+	out.Instances = ComputeTargetPoolSpec_Instances_ToProto(mapCtx, in.Instances)
+	// MISSING: Kind
+	// MISSING: Name
+	out.Region = in.Region
+	if in.SecurityPolicyRef != nil {
+		out.SecurityPolicy = &in.SecurityPolicyRef.External
+	}
+	// MISSING: SelfLink
+	out.SessionAffinity = in.SessionAffinity
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeTargetSSLProxySpec_v1beta1_FromProto", skipping
 func ComputeTargetSSLProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetSslProxy) *krm.ComputeTargetSSLProxySpec {
 	if in == nil {

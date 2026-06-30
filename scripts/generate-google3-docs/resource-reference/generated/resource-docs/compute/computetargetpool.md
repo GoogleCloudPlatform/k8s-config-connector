@@ -118,7 +118,7 @@ sessionAffinity: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeTargetPool` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -198,7 +198,7 @@ sessionAffinity: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeHTTPHealthCheck` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@ sessionAffinity: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeInstance` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -308,7 +308,7 @@ sessionAffinity: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSecurityPolicy` resource.</p>
+            <p>The external name of the referenced resource</p>
         </td>
     </tr>
     <tr>
@@ -368,7 +368,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeTargetPool's current state.</p>
         </td>
     </tr>
     <tr>
