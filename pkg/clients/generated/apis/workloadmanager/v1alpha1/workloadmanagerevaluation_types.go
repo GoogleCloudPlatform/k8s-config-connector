@@ -67,9 +67,23 @@ type EvaluationResourceFilter struct {
 	// +optional
 	ResourceIDPatterns []string `json:"resourceIDPatterns,omitempty"`
 
-	/* The scopes of evaluation resource. Format: * `projects/{project_id}` * `folders/{folder_id}` * `organizations/{organization_id}` */
+	/* The scopes of evaluation resource. */
 	// +optional
-	Scopes []string `json:"scopes,omitempty"`
+	ScopeRefs []EvaluationScopeRefs `json:"scopeRefs,omitempty"`
+}
+
+type EvaluationScopeRefs struct {
+	/* A folder to scope the evaluation to. */
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+
+	/* An organization to scope the evaluation to. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
+	/* A project to scope the evaluation to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type WorkloadManagerEvaluationSpec struct {

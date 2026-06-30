@@ -3939,6 +3939,7 @@ jobs:
       - tests-e2e-fixtures-vpcaccess
       - tests-e2e-fixtures-workflowexecutions
       - tests-e2e-fixtures-workflows
+      - tests-e2e-fixtures-workloadmanager
       - tests-e2e-fixtures-workstations
       - tests-e2e-samples-alloydb
       - tests-e2e-samples-apigateway
