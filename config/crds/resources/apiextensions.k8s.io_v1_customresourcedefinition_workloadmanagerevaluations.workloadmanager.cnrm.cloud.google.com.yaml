@@ -182,11 +182,86 @@ spec:
                     items:
                       type: string
                     type: array
-                  scopes:
-                    description: 'The scopes of evaluation resource. Format: * `projects/{project_id}`
-                      * `folders/{folder_id}` * `organizations/{organization_id}`'
+                  scopeRefs:
+                    description: The scopes of evaluation resource.
                     items:
-                      type: string
+                      properties:
+                        folderRef:
+                          description: A folder to scope the evaluation to.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The 'name' field of a folder, when not
+                                managed by Config Connector. This field must be set
+                                when 'name' field is not set.
+                              type: string
+                            name:
+                              description: The 'name' field of a 'Folder' resource.
+                                This field must be set when 'external' field is not
+                                set.
+                              type: string
+                            namespace:
+                              description: The 'namespace' field of a 'Folder' resource.
+                                If unset, the namespace is defaulted to the namespace
+                                of the referencer resource.
+                              type: string
+                          type: object
+                        organizationRef:
+                          description: An organization to scope the evaluation to.
+                          properties:
+                            external:
+                              description: The 'name' field of an organization, when
+                                not managed by Config Connector.
+                              type: string
+                          required:
+                          - external
+                          type: object
+                        projectRef:
+                          description: A project to scope the evaluation to.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `projectID` field of a project, when
+                                not managed by Config Connector.
+                              type: string
+                            kind:
+                              description: The kind of the Project resource; optional
+                                but must be `Project` if provided.
+                              type: string
+                            name:
+                              description: The `name` field of a `Project` resource.
+                              type: string
+                            namespace:
+                              description: The `namespace` field of a `Project` resource.
+                              type: string
+                          type: object
+                      type: object
                     type: array
                 type: object
               resourceID:

@@ -36,13 +36,21 @@ type GCEInstanceFilter struct {
 	ServiceAccounts []string `json:"serviceAccounts,omitempty"`
 }
 
+type Scope struct {
+	// A project to scope the evaluation to.
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// A folder to scope the evaluation to.
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// An organization to scope the evaluation to.
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+}
+
 type ResourceFilter struct {
 	// The scopes of evaluation resource.
-	// Format:
-	// * `projects/{project_id}`
-	// * `folders/{folder_id}`
-	// * `organizations/{organization_id}`
-	Scopes []string `json:"scopes,omitempty"`
+	// +kcc:proto:field=google.cloud.workloadmanager.v1.ResourceFilter.scopes
+	ScopeRefs []Scope `json:"scopeRefs,omitempty"`
 
 	// Pattern to filter resources by their id.
 	ResourceIDPatterns []string `json:"resourceIDPatterns,omitempty"`
@@ -67,7 +75,7 @@ type WorkloadManagerEvaluationSpec struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The WorkloadManagerEvaluation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
