@@ -24,11 +24,43 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type FirewallsV1 struct {
 	*MockService
 	pb.UnimplementedFirewallsServer
+}
+
+func (s *FirewallsV1) List(ctx context.Context, req *pb.ListFirewallsRequest) (*pb.FirewallList, error) {
+	name, err := s.newFirewallName(req.GetProject(), "placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
+
+	response := &pb.FirewallList{}
+	response.Id = PtrTo("0123456789")
+	response.Kind = PtrTo("compute#firewallList")
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+
+	findKind := (&pb.Firewall{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		firewall := obj.(*pb.Firewall)
+		isMatch, err := matchFilter(req.GetFilter(), firewall)
+		if err != nil {
+			return err
+		}
+		if isMatch {
+			response.Items = append(response.Items, firewall)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *FirewallsV1) Get(ctx context.Context, req *pb.GetFirewallRequest) (*pb.Firewall, error) {
