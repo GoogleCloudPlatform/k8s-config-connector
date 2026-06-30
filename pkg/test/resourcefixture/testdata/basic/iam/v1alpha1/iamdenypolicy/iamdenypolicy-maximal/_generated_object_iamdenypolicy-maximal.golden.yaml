@@ -12,7 +12,7 @@ metadata:
 spec:
   displayName: My Updated Deny Policy
   projectRef:
-    external: ${projectId}
+    external: projects/projectiam-${uniqueId}
   rules:
   - denyRule:
       deniedPermissions:
@@ -22,7 +22,7 @@ spec:
       exceptionPermissions:
       - iam.googleapis.com/roles.list
       exceptionPrincipals:
-      - principalSet://goog/cloudIdentityCustomerId/C01Abc35
+      - principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com
     description: Deny roles.get
 status:
   conditions:

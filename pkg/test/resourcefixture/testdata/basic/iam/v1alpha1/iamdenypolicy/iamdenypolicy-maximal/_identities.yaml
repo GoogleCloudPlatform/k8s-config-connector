@@ -1,3 +1,15 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/projectiam-${uniqueId}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: projectiam-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMServiceAccount
+  name: sa-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
 - caisURL: unknown
   group: iam.cnrm.cloud.google.com
   kind: IAMDenyPolicy

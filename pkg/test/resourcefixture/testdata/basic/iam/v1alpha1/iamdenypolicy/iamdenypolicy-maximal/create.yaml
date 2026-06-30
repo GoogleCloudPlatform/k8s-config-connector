@@ -4,7 +4,7 @@ metadata:
   name: iamdenypolicy-${uniqueId}
 spec:
   projectRef:
-    external: ${projectId}
+    external: projects/projectiam-${uniqueId}
   displayName: "My Deny Policy"
   rules:
     - description: "Deny roles.list"
@@ -16,4 +16,4 @@ spec:
         deniedPrincipals:
           - "principalSet://goog/public:all"
         exceptionPrincipals:
-          - "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+          - "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"

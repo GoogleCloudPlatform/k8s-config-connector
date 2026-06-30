@@ -10,8 +10,8 @@ metadata:
   name: iamdenypolicy-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
+  folderRef:
+    name: folder-${uniqueId}
   rules:
   - denyRule:
       deniedPermissions:
