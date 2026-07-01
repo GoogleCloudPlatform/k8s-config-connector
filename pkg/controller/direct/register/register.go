@@ -113,6 +113,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/storage/control"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vectorsearch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/examplestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/featuregroup"
