@@ -60,6 +60,7 @@ go run . generate-types \
   --resource ComputeTargetSSLProxy:TargetSslProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeURLMap:UrlMap \
+  --resource ComputeInterconnectAttachment:InterconnectAttachment \
   --include-skipped-output
 
 go run . generate-mapper \
