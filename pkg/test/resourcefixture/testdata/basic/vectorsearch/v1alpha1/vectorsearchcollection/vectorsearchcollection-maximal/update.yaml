@@ -1,0 +1,27 @@
+apiVersion: vectorsearch.cnrm.cloud.google.com/v1alpha1
+kind: VectorSearchCollection
+metadata:
+  name: collection-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Updated Maximal Collection ${uniqueId}"
+  description: "An updated description of the maximal collection."
+  labels:
+    env: "prod"
+  vectorSchema:
+    text_vector:
+      denseVector:
+        dimensions: 1536
+        vertexEmbeddingConfig:
+          modelID: "publishers/google/models/textembedding-gecko@001"
+          textTemplate: "Movie Title: {title} ---- Movie Plot: {plot}"
+          taskType: "RETRIEVAL_DOCUMENT"
+  dataSchema:
+    type: object
+    properties:
+      title:
+        type: string
+      plot:
+        type: string

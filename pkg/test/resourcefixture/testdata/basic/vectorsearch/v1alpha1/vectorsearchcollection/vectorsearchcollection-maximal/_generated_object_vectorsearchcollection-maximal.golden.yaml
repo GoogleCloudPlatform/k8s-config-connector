@@ -1,0 +1,46 @@
+apiVersion: vectorsearch.cnrm.cloud.google.com/v1alpha1
+kind: VectorSearchCollection
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: collection-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  dataSchema:
+    properties:
+      plot:
+        type: string
+      title:
+        type: string
+    type: object
+  description: An updated description of the maximal collection.
+  displayName: Updated Maximal Collection ${uniqueId}
+  labels:
+    env: prod
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  vectorSchema:
+    text_vector:
+      denseVector:
+        dimensions: 1536
+        vertexEmbeddingConfig:
+          modelID: publishers/google/models/textembedding-gecko@001
+          taskType: RETRIEVAL_DOCUMENT
+          textTemplate: 'Movie Title: {title} ---- Movie Plot: {plot}'
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

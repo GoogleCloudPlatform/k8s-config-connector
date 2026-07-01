@@ -1,0 +1,442 @@
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollections%2Fcollection-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections?%24alt=json%3Benum-encoding%3Dint&collectionId=collection-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "dataSchema": {
+    "properties": {
+      "plot": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "description": "A description of the maximal collection.",
+  "displayName": "Maximal Collection ${uniqueId}",
+  "labels": {
+    "env": "test"
+  },
+  "name": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+  "vectorSchema": {
+    "text_vector": {
+      "denseVector": {
+        "dimensions": 1536,
+        "vertexEmbeddingConfig": {
+          "modelId": "publishers/google/models/textembedding-gecko@001",
+          "taskType": 2,
+          "textTemplate": "Movie Title: {title} ---- Movie Plot: {plot}"
+        }
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.Collection",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "dataSchema": {
+      "properties": {
+        "plot": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "description": "A description of the maximal collection.",
+    "displayName": "Maximal Collection ${uniqueId}",
+    "labels": {
+      "env": "test"
+    },
+    "name": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vectorSchema": {
+      "text_vector": {
+        "denseVector": {
+          "dimensions": 1536,
+          "vertexEmbeddingConfig": {
+            "modelId": "publishers/google/models/textembedding-gecko@001",
+            "taskType": "RETRIEVAL_DOCUMENT",
+            "textTemplate": "Movie Title: {title} ---- Movie Plot: {plot}"
+          }
+        }
+      }
+    }
+  }
+}
+
+---
+
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollections%2Fcollection-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataSchema": {
+    "properties": {
+      "plot": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "description": "A description of the maximal collection.",
+  "displayName": "Maximal Collection ${uniqueId}",
+  "labels": {
+    "env": "test"
+  },
+  "name": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vectorSchema": {
+    "text_vector": {
+      "denseVector": {
+        "dimensions": 1536,
+        "vertexEmbeddingConfig": {
+          "modelId": "publishers/google/models/textembedding-gecko@001",
+          "taskType": 2,
+          "textTemplate": "Movie Title: {title} ---- Movie Plot: {plot}"
+        }
+      }
+    }
+  }
+}
+
+---
+
+PATCH https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: collection.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollections%2Fcollection-${uniqueId}
+
+{
+  "dataSchema": {
+    "properties": {
+      "plot": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "description": "An updated description of the maximal collection.",
+  "displayName": "Updated Maximal Collection ${uniqueId}",
+  "labels": {
+    "env": "prod"
+  },
+  "name": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+  "vectorSchema": {
+    "text_vector": {
+      "denseVector": {
+        "dimensions": 1536,
+        "vertexEmbeddingConfig": {
+          "modelId": "publishers/google/models/textembedding-gecko@001",
+          "taskType": 2,
+          "textTemplate": "Movie Title: {title} ---- Movie Plot: {plot}"
+        }
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.Collection",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "dataSchema": {
+      "properties": {
+        "plot": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "description": "An updated description of the maximal collection.",
+    "displayName": "Updated Maximal Collection ${uniqueId}",
+    "labels": {
+      "env": "prod"
+    },
+    "name": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vectorSchema": {
+      "text_vector": {
+        "denseVector": {
+          "dimensions": 1536,
+          "vertexEmbeddingConfig": {
+            "modelId": "publishers/google/models/textembedding-gecko@001",
+            "taskType": "RETRIEVAL_DOCUMENT",
+            "textTemplate": "Movie Title: {title} ---- Movie Plot: {plot}"
+          }
+        }
+      }
+    }
+  }
+}
+
+---
+
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollections%2Fcollection-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataSchema": {
+    "properties": {
+      "plot": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "description": "An updated description of the maximal collection.",
+  "displayName": "Updated Maximal Collection ${uniqueId}",
+  "labels": {
+    "env": "prod"
+  },
+  "name": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vectorSchema": {
+    "text_vector": {
+      "denseVector": {
+        "dimensions": 1536,
+        "vertexEmbeddingConfig": {
+          "modelId": "publishers/google/models/textembedding-gecko@001",
+          "taskType": 2,
+          "textTemplate": "Movie Title: {title} ---- Movie Plot: {plot}"
+        }
+      }
+    }
+  }
+}
+
+---
+
+DELETE https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollections%2Fcollection-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://vectorsearch.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vectorsearch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collections/collection-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
