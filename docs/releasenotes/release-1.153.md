@@ -96,6 +96,7 @@ We have added support for direct reconciliation to more resources, with opt-in b
 
 ## Bug Fixes:
 
+*   [ComposerEnvironment](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9114): Support resource reference resolution and fix drift on private environment config.
 *   [ComputeBackendService](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10414): Prevent the automatic injection of `subsetting: { policy: "NONE" }` for regional backend services with `INTERNAL_SELF_MANAGED` load balancing scheme.
 *   [`DataprocCluster`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7222): userServiceAccountMapping field in DataprocCluster resources is now mutable.
 *   [DNSPolicy](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9594): Fixes to DNSPolicy for real GCP integration.
