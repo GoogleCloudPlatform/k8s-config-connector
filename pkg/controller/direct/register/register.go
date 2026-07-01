@@ -25,6 +25,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apphub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/artifactregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/asset"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/automl/automldataset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/backupdr"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/beyondcorp/beyondcorpclientgateway"

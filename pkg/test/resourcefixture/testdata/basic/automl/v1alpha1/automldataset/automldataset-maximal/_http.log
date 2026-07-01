@@ -1,0 +1,254 @@
+GET https://automl.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatasets%2F${datasetID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://automl.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Initial description",
+  "displayName": "ds_max_${uniqueId}",
+  "labels": {
+    "env": "dev",
+    "test": "true"
+  },
+  "textClassificationDatasetMetadata": {
+    "classificationType": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.automl.v1.OperationMetadata",
+    "createDatasetDetails": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://automl.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Fdatasets%2F${datasetID}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.automl.v1.OperationMetadata",
+    "createDatasetDetails": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.automl.v1.Dataset",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "displayName": "ds_max_${uniqueId}",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "env": "dev",
+      "test": "true"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}",
+    "textClassificationDatasetMetadata": {
+      "classificationType": "MULTICLASS"
+    }
+  }
+}
+
+---
+
+GET https://automl.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatasets%2F${datasetID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "displayName": "ds_max_${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "env": "dev",
+    "test": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}",
+  "textClassificationDatasetMetadata": {
+    "classificationType": 1
+  }
+}
+
+---
+
+PATCH https://automl.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Cdescription%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dataset.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatasets%2F${datasetID}
+
+{
+  "description": "Updated description",
+  "displayName": "ds_max_upd_${uniqueId}",
+  "labels": {
+    "env": "prod",
+    "newlabel": "val",
+    "test": "false"
+  },
+  "name": "projects/${projectId}/locations/us-central1/datasets/ds-max-${uniqueId}",
+  "textClassificationDatasetMetadata": {
+    "classificationType": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "displayName": "ds_max_upd_${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "env": "prod",
+    "newlabel": "val",
+    "test": "false"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}",
+  "textClassificationDatasetMetadata": {
+    "classificationType": 1
+  }
+}
+
+---
+
+GET https://automl.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatasets%2F${datasetID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "displayName": "ds_max_upd_${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "env": "prod",
+    "newlabel": "val",
+    "test": "false"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/ds-max-${uniqueId}",
+  "textClassificationDatasetMetadata": {
+    "classificationType": 1
+  }
+}
+
+---
+
+DELETE https://automl.googleapis.com/v1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdatasets%2F${datasetID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.automl.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteDetails": {},
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
