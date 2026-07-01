@@ -21,11 +21,11 @@ This skill guides an automated agent through the process of implementing a round
      ```
 
 2. **Create the Fuzzer File**
-   - Create a new fuzzer file inside the resource's direct controller package. Use the **full kind name** in lowercase for the file, e.g., `pkg/controller/direct/<service>/<kind_in_lowercase>_fuzzer.go` (for example, `monitoringgroup_fuzzer.go` is preferred over `group_fuzzer.go`, and `computeinstance_fuzzer.go` is preferred over `instance_fuzzer.go` to keep the name unambiguous and fully descriptive).
+   - Create a new fuzzer file inside the resource's direct controller package. Use the **full kind name** in lowercase for the file, e.g., `pkg/controller/direct/<service>/<kind_in_lowercase>_fuzzer.go` (for example, `monitoringgroup_fuzzer.go` is preferred over `group_fuzzer.go`, `computeinstance_fuzzer.go` is preferred over `instance_fuzzer.go`, and `computeexternalvpngateway_fuzzer.go` is preferred over `externalvpngateway_fuzzer.go` to keep the name unambiguous and fully descriptive).
    - **Note on Naming Conventions & Renaming:**
-     - **File Name:** Use the full lowercase kind name for the fuzzer file (e.g., `monitoringgroup_fuzzer.go`).
-     - **Function Name:** Use a function name matching the full resource kind (e.g., `monitoringGroupFuzzer`).
-     - In both cases, the **full form is highly preferred** over any abbreviated or shortened forms. However, in both cases, it is **not worth changing or renaming** if that is the only thing changing in a PR, as it can cause unnecessary git/review noise.
+     - **File Name:** Use the full lowercase kind name for the fuzzer file (e.g., `monitoringgroup_fuzzer.go`, `computeexternalvpngateway_fuzzer.go`).
+     - **Function Name:** Use a function name matching the full resource kind (e.g., `monitoringGroupFuzzer`, `computeExternalVPNGatewayFuzzer`).
+     - In both cases, the **full form is highly preferred** over any abbreviated or shortened forms (for example, prefer `computeexternalvpngateway_fuzzer.go` over `externalvpngateway_fuzzer.go`). However, if a fuzzer is already merged, it is **not worth changing or renaming** if that is the only thing changing in a PR, as it can cause unnecessary git/review noise.
      - Note that submitting PRs that only add journal notes is perfectly acceptable to help keep track of the work done, even if no other codebase changes were required.
    - Use the appropriate package name matching the surrounding controller files.
    - Annotate the file with the appropriate `+tool:fuzz-gen`, `proto.message`, and `api.group` metadata.
