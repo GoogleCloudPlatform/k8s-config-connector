@@ -54,5 +54,11 @@ func sqlAdminBackupFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".self_link")
 	f.Unimplemented_NotYetTriaged(".max_chargeable_bytes")
 
+	f.FilterSpec = func(in *pb.BackupRun) {
+		if in.DiskEncryptionConfiguration != nil {
+			in.DiskEncryptionConfiguration.Kind = "sql#diskEncryptionConfiguration"
+		}
+	}
+
 	return f
 }

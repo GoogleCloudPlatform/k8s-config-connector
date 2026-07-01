@@ -60,6 +60,10 @@ func FuzzSQLAdminBackupSpec(f *testing.F) {
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
+		if p1.DiskEncryptionConfiguration != nil {
+			p1.DiskEncryptionConfiguration.Kind = "sql#diskEncryptionConfiguration"
+		}
+
 		ctx := &direct.MapContext{}
 
 		k := SQLAdminBackupSpec_FromProto(ctx, p1)
