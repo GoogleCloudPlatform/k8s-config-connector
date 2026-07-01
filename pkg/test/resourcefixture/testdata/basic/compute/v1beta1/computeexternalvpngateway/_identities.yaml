@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/externalVpnGateways/externalvpngateway-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeExternalVPNGateway
   name: externalvpngateway-${uniqueId}
