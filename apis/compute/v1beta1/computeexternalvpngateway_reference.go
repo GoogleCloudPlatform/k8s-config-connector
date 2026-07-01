@@ -19,7 +19,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -96,16 +95,7 @@ func (r *ComputeExternalVPNGatewayRef) Normalize(ctx context.Context, reader cli
 		if selfLink != "" {
 			return apirefs.TrimComputeURIPrefix(selfLink)
 		}
-
-		obj, err := common.ToStructuredType[*ComputeExternalVPNGateway](u)
-		if err != nil {
-			return ""
-		}
-		identity, err := getIdentityFromComputeExternalVPNGatewaySpec(ctx, reader, obj)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
+		return ""
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
