@@ -18,6 +18,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We need a newer googleapis to get google.cloud.vectorsearch.v1
@@ -40,3 +41,14 @@ go run . generate-types \
     --api-version "vectorsearch.cnrm.cloud.google.com/v1alpha1" \
     --resource VectorSearchCollection:Collection \
     --proto-source-path ${PROTO_OUT}
+
+go run . generate-mapper \
+    --service google.cloud.vectorsearch.v1 \
+    --api-version "vectorsearch.cnrm.cloud.google.com/v1alpha1" \
+    --include-skipped-output \
+    --proto-source-path ${PROTO_OUT}
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/vectorsearch/
