@@ -43,10 +43,7 @@ type VpngatewayVpnInterfaces struct {
 	// +optional
 	Id *int64 `json:"id,omitempty"`
 
-	/* Immutable. When this value is present, the VPN Gateway will be used
-	for IPsec-encrypted Cloud Interconnect; all Egress or Ingress
-	traffic for this VPN Gateway interface will go through the specified
-	interconnect attachment resource. Not currently available publicly. */
+	/* Immutable. When this value is present, the VPN Gateway will be used for IPsec-encrypted Cloud Interconnect; all Egress or Ingress traffic for this VPN Gateway interface will go through the specified interconnect attachment resource. Not currently available publicly. */
 	// +optional
 	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
 
@@ -70,8 +67,7 @@ type ComputeVPNGatewaySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The stack type for this VPN gateway to identify the IP protocols that are enabled.
-	If not specified, IPV4_ONLY will be used. Default value: "IPV4_ONLY" Possible values: ["IPV4_ONLY", "IPV4_IPV6"]. */
+	/* Immutable. The stack type for this VPN gateway to identify the IP protocols that are enabled. If not specified, IPV4_ONLY will be used. Default value: "IPV4_ONLY" Possible values: ["IPV4_ONLY", "IPV4_IPV6"]. */
 	// +optional
 	StackType *string `json:"stackType,omitempty"`
 

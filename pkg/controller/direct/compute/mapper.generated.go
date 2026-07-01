@@ -4668,31 +4668,81 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 }
 */
 
-/*
-found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_ToProto", skipping
+/* found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_ToProto", skipping
+func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapSpec) *pb.UrlMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlMap{}
+	// MISSING: CreationTimestamp
+	out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
+	out.DefaultRouteAction = UrlmapDefaultRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
+	out.DefaultService = in.DefaultService
+	// MISSING: DefaultURLRedirect
+	// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	out.HeaderAction = UrlmapHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	// MISSING: HostRules
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PathMatchers
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Tests
+	return out
+}
+*/
 
-	func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapSpec) *pb.UrlMap {
+/* found existing non-generated mapping function "ComputeVPNGatewaySpec_v1beta1_FromProto", skipping
+func ComputeVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGateway) *krm.ComputeVPNGatewaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeVPNGatewaySpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: GatewayIPVersion
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.Region = in.Region
+	// MISSING: SelfLink
+	out.StackType = in.StackType
+	out.VPNInterfaces = direct.Slice_FromProto(mapCtx, in.VpnInterfaces, VPNGatewayInterface_v1beta1_FromProto)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeVPNGatewaySpec_v1beta1_ToProto", skipping
+
+	func ComputeVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeVPNGatewaySpec) *pb.VpnGateway {
 		if in == nil {
 			return nil
 		}
-		out := &pb.UrlMap{}
+		out := &pb.VpnGateway{}
 		// MISSING: CreationTimestamp
-		out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
-		out.DefaultRouteAction = UrlmapDefaultRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
-		out.DefaultService = in.DefaultService
-		// MISSING: DefaultURLRedirect
-		// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
 		out.Description = in.Description
-		// MISSING: Fingerprint
-		out.HeaderAction = UrlmapHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-		// MISSING: HostRules
+		// MISSING: GatewayIPVersion
 		// MISSING: ID
 		// MISSING: Kind
+		// MISSING: LabelFingerprint
+		// MISSING: Labels
 		// MISSING: Name
-		// MISSING: PathMatchers
-		// MISSING: Region
+		if in.NetworkRef != nil {
+			out.Network = &in.NetworkRef.External
+		}
+		out.Region = in.Region
 		// MISSING: SelfLink
-		// MISSING: Tests
+		out.StackType = in.StackType
+		out.VpnInterfaces = direct.Slice_ToProto(mapCtx, in.VPNInterfaces, VPNGatewayInterface_v1beta1_ToProto)
 		return out
 	}
 */
@@ -7373,6 +7423,38 @@ func UrlmapWeightedBackendServices_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	}
 	out.HeaderAction = UrlmapHeaderActionOptional_v1beta1_ToProto(mapCtx, in.HeaderAction)
 	out.Weight = in.Weight
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "VPNGatewayInterface_v1beta1_FromProto", skipping
+func VPNGatewayInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VpnGatewayVpnGatewayInterface) *krm.VPNGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VPNGatewayInterface{}
+	out.ID = in.Id
+	if in.GetInterconnectAttachment() != "" {
+		out.InterconnectAttachmentRef = &krm.ComputeInterconnectAttachmentRef{External: in.GetInterconnectAttachment()}
+	}
+	out.IPAddress = in.IpAddress
+	// MISSING: IPV6Address
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "VPNGatewayInterface_v1beta1_ToProto", skipping
+func VPNGatewayInterface_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VPNGatewayInterface) *pb.VpnGatewayVpnGatewayInterface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpnGatewayVpnGatewayInterface{}
+	out.Id = in.ID
+	if in.InterconnectAttachmentRef != nil {
+		out.InterconnectAttachment = &in.InterconnectAttachmentRef.External
+	}
+	out.IpAddress = in.IPAddress
+	// MISSING: IPV6Address
 	return out
 }
 */
