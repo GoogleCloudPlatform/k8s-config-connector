@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //cloudkms.googleapis.com/projects/${projectId}/locations/us-central1/keyHandles/${keyHandleID}
   group: kms.cnrm.cloud.google.com
   kind: KMSKeyHandle
   name: keyhandle-${uniqueId}

@@ -111,7 +111,21 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.KMSKeyHandleIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Adapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type Adapter struct {
@@ -210,11 +224,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 	obj.Spec.Location = direct.LazyPtr(a.id.Location)
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.KeyHandle)
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 	u.Object = uObj
+	u.SetName(a.id.KeyHandle)
+	u.SetGroupVersionKind(krm.KMSKeyHandleGVK)
 	return u, nil
 }
 

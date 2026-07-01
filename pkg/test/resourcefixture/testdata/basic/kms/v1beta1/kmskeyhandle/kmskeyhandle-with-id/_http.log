@@ -1,7 +1,7 @@
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyHandles/1a1a1a-222b-3cc3-d444-e555ee555555?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyHandles/${keyHandleID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FkeyHandles%2F1a1a1a-222b-3cc3-d444-e555ee555555
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FkeyHandles%2F${keyHandleID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,7 +23,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint&keyHandleId=1a1a1a-222b-3cc3-d444-e555ee555555
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyHandles?%24alt=json%3Benum-encoding%3Dint&keyHandleId=${keyHandleID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
@@ -80,10 +80,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyHandles/1a1a1a-222b-3cc3-d444-e555ee555555?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyHandles/${keyHandleID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FkeyHandles%2F1a1a1a-222b-3cc3-d444-e555ee555555
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FkeyHandles%2F${keyHandleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

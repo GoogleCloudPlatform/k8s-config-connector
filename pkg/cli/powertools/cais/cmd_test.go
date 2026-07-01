@@ -22,8 +22,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cais/caistesting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/objects"
@@ -245,6 +247,26 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 			if annotations["cnrm.cloud.google.com/project-id"] == "" {
 				annotations["cnrm.cloud.google.com/project-id"] = "mock-project"
 				u.SetAnnotations(annotations)
+			}
+
+			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
+			gk := u.GroupVersionKind().GroupKind()
+			if obj, err := kccscheme.NewObject(gk); err == nil {
+				if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err == nil {
+					if resource, ok := obj.(identity.Resource); ok {
+						tempReader := cais.NewInMemoryReader(scheme, []*unstructured.Unstructured{u})
+						if id, err := resource.GetIdentity(ctx, tempReader); err == nil && id != nil {
+							if sgId, ok := id.(identity.ServerGeneratedIdentity); ok {
+								if !sgId.HasIdentitySpecified() && gk.Kind == "KMSKeyHandle" {
+									placeholder := "${keyHandleID}"
+									if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
+										t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
