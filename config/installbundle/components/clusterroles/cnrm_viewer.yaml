@@ -1191,6 +1191,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - visionai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vmwareengine.cnrm.cloud.google.com
   resources:
   - '*'

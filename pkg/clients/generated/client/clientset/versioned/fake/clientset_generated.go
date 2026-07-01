@@ -417,6 +417,8 @@ import (
 	fakevideostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1/fake"
 	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1"
 	fakevisionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1/fake"
+	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1"
+	fakevisionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1/fake"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	fakevmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1/fake"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
@@ -1487,6 +1489,11 @@ func (c *Clientset) VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV
 // VisionV1alpha1 retrieves the VisionV1alpha1Client
 func (c *Clientset) VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface {
 	return &fakevisionv1alpha1.FakeVisionV1alpha1{Fake: &c.Fake}
+}
+
+// VisionaiV1alpha1 retrieves the VisionaiV1alpha1Client
+func (c *Clientset) VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface {
+	return &fakevisionaiv1alpha1.FakeVisionaiV1alpha1{Fake: &c.Fake}
 }
 
 // VmwareengineV1alpha1 retrieves the VmwareengineV1alpha1Client

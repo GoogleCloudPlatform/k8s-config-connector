@@ -219,6 +219,7 @@ import (
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/videostitcher/v1alpha1"
 	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vision/v1alpha1"
+	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/visionai/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vpcaccess/v1beta1"
@@ -434,6 +435,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	vertexaiv1beta1.AddToScheme,
 	videostitcherv1alpha1.AddToScheme,
 	visionv1alpha1.AddToScheme,
+	visionaiv1alpha1.AddToScheme,
 	vmwareenginev1alpha1.AddToScheme,
 	vmwareenginev1beta1.AddToScheme,
 	vpcaccessv1beta1.AddToScheme,
