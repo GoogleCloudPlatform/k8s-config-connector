@@ -27,26 +27,26 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeVideoStitcherCdnKeys implements VideoStitcherCdnKeyInterface
-type fakeVideoStitcherCdnKeys struct {
-	*gentype.FakeClientWithList[*v1alpha1.VideoStitcherCdnKey, *v1alpha1.VideoStitcherCdnKeyList]
+// fakeVideoStitcherCDNKeys implements VideoStitcherCDNKeyInterface
+type fakeVideoStitcherCDNKeys struct {
+	*gentype.FakeClientWithList[*v1alpha1.VideoStitcherCDNKey, *v1alpha1.VideoStitcherCDNKeyList]
 	Fake *FakeVideostitcherV1alpha1
 }
 
-func newFakeVideoStitcherCdnKeys(fake *FakeVideostitcherV1alpha1, namespace string) videostitcherv1alpha1.VideoStitcherCdnKeyInterface {
-	return &fakeVideoStitcherCdnKeys{
-		gentype.NewFakeClientWithList[*v1alpha1.VideoStitcherCdnKey, *v1alpha1.VideoStitcherCdnKeyList](
+func newFakeVideoStitcherCDNKeys(fake *FakeVideostitcherV1alpha1, namespace string) videostitcherv1alpha1.VideoStitcherCDNKeyInterface {
+	return &fakeVideoStitcherCDNKeys{
+		gentype.NewFakeClientWithList[*v1alpha1.VideoStitcherCDNKey, *v1alpha1.VideoStitcherCDNKeyList](
 			fake.Fake,
 			namespace,
 			v1alpha1.SchemeGroupVersion.WithResource("videostitchercdnkeys"),
-			v1alpha1.SchemeGroupVersion.WithKind("VideoStitcherCdnKey"),
-			func() *v1alpha1.VideoStitcherCdnKey { return &v1alpha1.VideoStitcherCdnKey{} },
-			func() *v1alpha1.VideoStitcherCdnKeyList { return &v1alpha1.VideoStitcherCdnKeyList{} },
-			func(dst, src *v1alpha1.VideoStitcherCdnKeyList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.VideoStitcherCdnKeyList) []*v1alpha1.VideoStitcherCdnKey {
+			v1alpha1.SchemeGroupVersion.WithKind("VideoStitcherCDNKey"),
+			func() *v1alpha1.VideoStitcherCDNKey { return &v1alpha1.VideoStitcherCDNKey{} },
+			func() *v1alpha1.VideoStitcherCDNKeyList { return &v1alpha1.VideoStitcherCDNKeyList{} },
+			func(dst, src *v1alpha1.VideoStitcherCDNKeyList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.VideoStitcherCDNKeyList) []*v1alpha1.VideoStitcherCDNKey {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.VideoStitcherCdnKeyList, items []*v1alpha1.VideoStitcherCdnKey) {
+			func(list *v1alpha1.VideoStitcherCDNKeyList, items []*v1alpha1.VideoStitcherCDNKey) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

@@ -16,8 +16,8 @@ spec:
   names:
     categories:
     - gcp
-    kind: VideoStitcherCdnKey
-    listKind: VideoStitcherCdnKeyList
+    kind: VideoStitcherCDNKey
+    listKind: VideoStitcherCDNKeyList
     plural: videostitchercdnkeys
     shortNames:
     - gcpvideostitchercdnkey
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VideoStitcherCdnKey is the Schema for the VideoStitcherCdnKey
+        description: VideoStitcherCDNKey is the Schema for the VideoStitcherCDNKey
           API
         properties:
           apiVersion:
@@ -61,7 +61,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: VideoStitcherCdnKeySpec defines the desired state of VideoStitcherCdnKey
+            description: VideoStitcherCDNKeySpec defines the desired state of VideoStitcherCDNKey
             properties:
               akamaiCDNKey:
                 description: The configuration for an Akamai CDN key.
@@ -150,7 +150,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The VideoStitcherCdnKey name. If
+                description: Immutable. Optional. The VideoStitcherCDNKey name. If
                   not given, the metadata.name will be used.
                 type: string
             required:
@@ -158,8 +158,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: VideoStitcherCdnKeyStatus defines the config connector machine
-              state of VideoStitcherCdnKey
+            description: VideoStitcherCDNKeyStatus defines the config connector machine
+              state of VideoStitcherCDNKey
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -188,7 +188,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the VideoStitcherCdnKey resource
+                description: A unique specifier for the VideoStitcherCDNKey resource
                   in GCP.
                 type: string
               observedGeneration:

@@ -20,18 +20,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var VideoStitcherCdnKeyGVK = GroupVersion.WithKind("VideoStitcherCdnKey")
+var VideoStitcherCDNKeyGVK = GroupVersion.WithKind("VideoStitcherCDNKey")
 
-// VideoStitcherCdnKeySpec defines the desired state of VideoStitcherCdnKey
+// VideoStitcherCDNKeySpec defines the desired state of VideoStitcherCDNKey
 // +kcc:spec:proto=google.cloud.video.stitcher.v1.CdnKey
-type VideoStitcherCdnKeySpec struct {
+type VideoStitcherCDNKeySpec struct {
 	/* Immutable. The project that this resource belongs to. */
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	/* Immutable. The location of this resource. */
 	Location string `json:"location"`
 
-	/* Immutable. Optional. The VideoStitcherCdnKey name. If not given, the metadata.name will be used. */
+	/* Immutable. Optional. The VideoStitcherCDNKey name. If not given, the metadata.name will be used. */
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The hostname this key applies to.
@@ -51,8 +51,8 @@ type VideoStitcherCdnKeySpec struct {
 	MediaCDNKey *MediaCDNKey `json:"mediaCDNKey,omitempty"`
 }
 
-// VideoStitcherCdnKeyStatus defines the config connector machine state of VideoStitcherCdnKey
-type VideoStitcherCdnKeyStatus struct {
+// VideoStitcherCDNKeyStatus defines the config connector machine state of VideoStitcherCDNKey
+type VideoStitcherCDNKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -60,16 +60,16 @@ type VideoStitcherCdnKeyStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VideoStitcherCdnKey resource in GCP.
+	// A unique specifier for the VideoStitcherCDNKey resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *VideoStitcherCdnKeyObservedState `json:"observedState,omitempty"`
+	ObservedState *VideoStitcherCDNKeyObservedState `json:"observedState,omitempty"`
 }
 
-// VideoStitcherCdnKeyObservedState is the state of the VideoStitcherCdnKey resource as most recently observed in GCP.
+// VideoStitcherCDNKeyObservedState is the state of the VideoStitcherCDNKey resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.video.stitcher.v1.CdnKey
-type VideoStitcherCdnKeyObservedState struct {
+type VideoStitcherCDNKeyObservedState struct {
 }
 
 // +genclient
@@ -84,25 +84,25 @@ type VideoStitcherCdnKeyObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VideoStitcherCdnKey is the Schema for the VideoStitcherCdnKey API
+// VideoStitcherCDNKey is the Schema for the VideoStitcherCDNKey API
 // +k8s:openapi-gen=true
-type VideoStitcherCdnKey struct {
+type VideoStitcherCDNKey struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   VideoStitcherCdnKeySpec   `json:"spec,omitempty"`
-	Status VideoStitcherCdnKeyStatus `json:"status,omitempty"`
+	Spec   VideoStitcherCDNKeySpec   `json:"spec,omitempty"`
+	Status VideoStitcherCDNKeyStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// VideoStitcherCdnKeyList contains a list of VideoStitcherCdnKey
-type VideoStitcherCdnKeyList struct {
+// VideoStitcherCDNKeyList contains a list of VideoStitcherCDNKey
+type VideoStitcherCDNKeyList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VideoStitcherCdnKey `json:"items"`
+	Items           []VideoStitcherCDNKey `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VideoStitcherCdnKey{}, &VideoStitcherCdnKeyList{})
+	SchemeBuilder.Register(&VideoStitcherCDNKey{}, &VideoStitcherCDNKeyList{})
 }

@@ -31,8 +31,8 @@ type FakeVideostitcherV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeVideostitcherV1alpha1) VideoStitcherCdnKeys(namespace string) v1alpha1.VideoStitcherCdnKeyInterface {
-	return newFakeVideoStitcherCdnKeys(c, namespace)
+func (c *FakeVideostitcherV1alpha1) VideoStitcherCDNKeys(namespace string) v1alpha1.VideoStitcherCDNKeyInterface {
+	return newFakeVideoStitcherCDNKeys(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -26,68 +26,68 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &VideoStitcherCdnKeyRef{}
+var _ refs.Ref = &VideoStitcherCDNKeyRef{}
 
-// VideoStitcherCdnKeyRef is a reference to a GCP VideoStitcherCdnKey.
-type VideoStitcherCdnKeyRef struct {
-	// A reference to an externally managed VideoStitcherCdnKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/cdnKeys/{{cdnKey}}"
+// VideoStitcherCDNKeyRef is a reference to a GCP VideoStitcherCDNKey.
+type VideoStitcherCDNKeyRef struct {
+	// A reference to an externally managed VideoStitcherCDNKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/cdnKeys/{{cdnKey}}"
 	External string `json:"external,omitempty"`
 
-	// The name of a VideoStitcherCdnKey resource.
+	// The name of a VideoStitcherCDNKey resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a VideoStitcherCdnKey resource.
+	// The namespace of a VideoStitcherCDNKey resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&VideoStitcherCdnKeyRef{}, &VideoStitcherCdnKey{})
+	refs.Register(&VideoStitcherCDNKeyRef{}, &VideoStitcherCDNKey{})
 }
 
-func (r *VideoStitcherCdnKeyRef) GetGVK() schema.GroupVersionKind {
-	return VideoStitcherCdnKeyGVK
+func (r *VideoStitcherCDNKeyRef) GetGVK() schema.GroupVersionKind {
+	return VideoStitcherCDNKeyGVK
 }
 
-func (r *VideoStitcherCdnKeyRef) GetNamespacedName() types.NamespacedName {
+func (r *VideoStitcherCDNKeyRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *VideoStitcherCdnKeyRef) GetExternal() string {
+func (r *VideoStitcherCDNKeyRef) GetExternal() string {
 	return r.External
 }
 
-func (r *VideoStitcherCdnKeyRef) SetExternal(ref string) {
+func (r *VideoStitcherCDNKeyRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *VideoStitcherCdnKeyRef) ValidateExternal(ref string) error {
-	id := &VideoStitcherCdnKeyIdentity{}
+func (r *VideoStitcherCDNKeyRef) ValidateExternal(ref string) error {
+	id := &VideoStitcherCDNKeyIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *VideoStitcherCdnKeyRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &VideoStitcherCdnKeyIdentity{}
+func (r *VideoStitcherCDNKeyRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &VideoStitcherCDNKeyIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *VideoStitcherCdnKeyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *VideoStitcherCDNKeyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		structured, err := common.ToStructuredType[*VideoStitcherCdnKey](u)
+		structured, err := common.ToStructuredType[*VideoStitcherCDNKey](u)
 		if err != nil {
 			return ""
 		}
-		identity, err := getIdentityFromVideoStitcherCdnKeySpec(ctx, reader, structured)
+		identity, err := getIdentityFromVideoStitcherCDNKeySpec(ctx, reader, structured)
 		if err != nil {
 			return ""
 		}

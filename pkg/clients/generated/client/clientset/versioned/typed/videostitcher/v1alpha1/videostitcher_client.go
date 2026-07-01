@@ -31,7 +31,7 @@ import (
 
 type VideostitcherV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	VideoStitcherCdnKeysGetter
+	VideoStitcherCDNKeysGetter
 }
 
 // VideostitcherV1alpha1Client is used to interact with features provided by the videostitcher.cnrm.cloud.google.com group.
@@ -39,8 +39,8 @@ type VideostitcherV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *VideostitcherV1alpha1Client) VideoStitcherCdnKeys(namespace string) VideoStitcherCdnKeyInterface {
-	return newVideoStitcherCdnKeys(c, namespace)
+func (c *VideostitcherV1alpha1Client) VideoStitcherCDNKeys(namespace string) VideoStitcherCDNKeyInterface {
+	return newVideoStitcherCDNKeys(c, namespace)
 }
 
 // NewForConfig creates a new VideostitcherV1alpha1Client for the given config.

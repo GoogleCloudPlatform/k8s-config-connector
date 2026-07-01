@@ -26,46 +26,46 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &VideoStitcherCdnKeyIdentity{}
-	_ identity.Resource   = &VideoStitcherCdnKey{}
+	_ identity.IdentityV2 = &VideoStitcherCDNKeyIdentity{}
+	_ identity.Resource   = &VideoStitcherCDNKey{}
 )
 
-var VideoStitcherCdnKeyIdentityFormat = gcpurls.Template[VideoStitcherCdnKeyIdentity]("videostitcher.googleapis.com", "projects/{project}/locations/{location}/cdnKeys/{cdnKey}")
+var VideoStitcherCDNKeyIdentityFormat = gcpurls.Template[VideoStitcherCDNKeyIdentity]("videostitcher.googleapis.com", "projects/{project}/locations/{location}/cdnKeys/{cdnKey}")
 
-// VideoStitcherCdnKeyIdentity is the identity of a GCP VideoStitcherCdnKey resource.
+// VideoStitcherCDNKeyIdentity is the identity of a GCP VideoStitcherCDNKey resource.
 // +k8s:deepcopy-gen=false
-type VideoStitcherCdnKeyIdentity struct {
+type VideoStitcherCDNKeyIdentity struct {
 	Project  string
 	Location string
 	CdnKey   string
 }
 
-func (i *VideoStitcherCdnKeyIdentity) String() string {
-	return VideoStitcherCdnKeyIdentityFormat.ToString(*i)
+func (i *VideoStitcherCDNKeyIdentity) String() string {
+	return VideoStitcherCDNKeyIdentityFormat.ToString(*i)
 }
 
-func (i *VideoStitcherCdnKeyIdentity) FromExternal(ref string) error {
-	parsed, match, err := VideoStitcherCdnKeyIdentityFormat.Parse(ref)
+func (i *VideoStitcherCDNKeyIdentity) FromExternal(ref string) error {
+	parsed, match, err := VideoStitcherCDNKeyIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of VideoStitcherCdnKey external=%q was not known (use %s): %w", ref, VideoStitcherCdnKeyIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of VideoStitcherCDNKey external=%q was not known (use %s): %w", ref, VideoStitcherCDNKeyIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of VideoStitcherCdnKey external=%q was not known (use %s)", ref, VideoStitcherCdnKeyIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of VideoStitcherCDNKey external=%q was not known (use %s)", ref, VideoStitcherCDNKeyIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *VideoStitcherCdnKeyIdentity) Host() string {
-	return VideoStitcherCdnKeyIdentityFormat.Host()
+func (i *VideoStitcherCDNKeyIdentity) Host() string {
+	return VideoStitcherCDNKeyIdentityFormat.Host()
 }
 
-func (i *VideoStitcherCdnKeyIdentity) ParentString() string {
+func (i *VideoStitcherCDNKeyIdentity) ParentString() string {
 	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
 }
 
-func getIdentityFromVideoStitcherCdnKeySpec(ctx context.Context, reader client.Reader, obj *VideoStitcherCdnKey) (*VideoStitcherCdnKeyIdentity, error) {
+func getIdentityFromVideoStitcherCDNKeySpec(ctx context.Context, reader client.Reader, obj *VideoStitcherCDNKey) (*VideoStitcherCDNKeyIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
@@ -81,7 +81,7 @@ func getIdentityFromVideoStitcherCdnKeySpec(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
-	identity := &VideoStitcherCdnKeyIdentity{
+	identity := &VideoStitcherCDNKeyIdentity{
 		Project:  projectID,
 		Location: location,
 		CdnKey:   resourceID,
@@ -89,8 +89,8 @@ func getIdentityFromVideoStitcherCdnKeySpec(ctx context.Context, reader client.R
 	return identity, nil
 }
 
-func (obj *VideoStitcherCdnKey) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromVideoStitcherCdnKeySpec(ctx, reader, obj)
+func (obj *VideoStitcherCDNKey) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromVideoStitcherCDNKeySpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -99,13 +99,13 @@ func (obj *VideoStitcherCdnKey) GetIdentity(ctx context.Context, reader client.R
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &VideoStitcherCdnKeyIdentity{}
+		statusIdentity := &VideoStitcherCDNKeyIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VideoStitcherCdnKey identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change VideoStitcherCDNKey identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

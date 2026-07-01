@@ -20,17 +20,17 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestVideoStitcherCdnKeyIdentity_FromExternal(t *testing.T) {
+func TestVideoStitcherCDNKeyIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *VideoStitcherCdnKeyIdentity
+		want    *VideoStitcherCDNKeyIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/locations/us-central1/cdnKeys/my-cdn-key",
-			want: &VideoStitcherCdnKeyIdentity{
+			want: &VideoStitcherCDNKeyIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
 				CdnKey:   "my-cdn-key",
@@ -44,7 +44,7 @@ func TestVideoStitcherCdnKeyIdentity_FromExternal(t *testing.T) {
 		{
 			name: "full url",
 			ref:  "https://videostitcher.googleapis.com/projects/my-project/locations/us-central1/cdnKeys/my-cdn-key",
-			want: &VideoStitcherCdnKeyIdentity{
+			want: &VideoStitcherCDNKeyIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
 				CdnKey:   "my-cdn-key",
@@ -54,7 +54,7 @@ func TestVideoStitcherCdnKeyIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &VideoStitcherCdnKeyIdentity{}
+			i := &VideoStitcherCDNKeyIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)

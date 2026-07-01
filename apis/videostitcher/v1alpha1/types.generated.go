@@ -17,7 +17,7 @@
 // krm.group: videostitcher.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.video.stitcher.v1
-// resource: VideoStitcherCdnKey:CdnKey
+// resource: VideoStitcherCDNKey:CdnKey
 
 package v1alpha1
 

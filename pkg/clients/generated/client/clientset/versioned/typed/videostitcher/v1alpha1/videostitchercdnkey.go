@@ -32,43 +32,43 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// VideoStitcherCdnKeysGetter has a method to return a VideoStitcherCdnKeyInterface.
+// VideoStitcherCDNKeysGetter has a method to return a VideoStitcherCDNKeyInterface.
 // A group's client should implement this interface.
-type VideoStitcherCdnKeysGetter interface {
-	VideoStitcherCdnKeys(namespace string) VideoStitcherCdnKeyInterface
+type VideoStitcherCDNKeysGetter interface {
+	VideoStitcherCDNKeys(namespace string) VideoStitcherCDNKeyInterface
 }
 
-// VideoStitcherCdnKeyInterface has methods to work with VideoStitcherCdnKey resources.
-type VideoStitcherCdnKeyInterface interface {
-	Create(ctx context.Context, videoStitcherCdnKey *videostitcherv1alpha1.VideoStitcherCdnKey, opts v1.CreateOptions) (*videostitcherv1alpha1.VideoStitcherCdnKey, error)
-	Update(ctx context.Context, videoStitcherCdnKey *videostitcherv1alpha1.VideoStitcherCdnKey, opts v1.UpdateOptions) (*videostitcherv1alpha1.VideoStitcherCdnKey, error)
+// VideoStitcherCDNKeyInterface has methods to work with VideoStitcherCDNKey resources.
+type VideoStitcherCDNKeyInterface interface {
+	Create(ctx context.Context, videoStitcherCDNKey *videostitcherv1alpha1.VideoStitcherCDNKey, opts v1.CreateOptions) (*videostitcherv1alpha1.VideoStitcherCDNKey, error)
+	Update(ctx context.Context, videoStitcherCDNKey *videostitcherv1alpha1.VideoStitcherCDNKey, opts v1.UpdateOptions) (*videostitcherv1alpha1.VideoStitcherCDNKey, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, videoStitcherCdnKey *videostitcherv1alpha1.VideoStitcherCdnKey, opts v1.UpdateOptions) (*videostitcherv1alpha1.VideoStitcherCdnKey, error)
+	UpdateStatus(ctx context.Context, videoStitcherCDNKey *videostitcherv1alpha1.VideoStitcherCDNKey, opts v1.UpdateOptions) (*videostitcherv1alpha1.VideoStitcherCDNKey, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*videostitcherv1alpha1.VideoStitcherCdnKey, error)
-	List(ctx context.Context, opts v1.ListOptions) (*videostitcherv1alpha1.VideoStitcherCdnKeyList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*videostitcherv1alpha1.VideoStitcherCDNKey, error)
+	List(ctx context.Context, opts v1.ListOptions) (*videostitcherv1alpha1.VideoStitcherCDNKeyList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *videostitcherv1alpha1.VideoStitcherCdnKey, err error)
-	VideoStitcherCdnKeyExpansion
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *videostitcherv1alpha1.VideoStitcherCDNKey, err error)
+	VideoStitcherCDNKeyExpansion
 }
 
-// videoStitcherCdnKeys implements VideoStitcherCdnKeyInterface
-type videoStitcherCdnKeys struct {
-	*gentype.ClientWithList[*videostitcherv1alpha1.VideoStitcherCdnKey, *videostitcherv1alpha1.VideoStitcherCdnKeyList]
+// videoStitcherCDNKeys implements VideoStitcherCDNKeyInterface
+type videoStitcherCDNKeys struct {
+	*gentype.ClientWithList[*videostitcherv1alpha1.VideoStitcherCDNKey, *videostitcherv1alpha1.VideoStitcherCDNKeyList]
 }
 
-// newVideoStitcherCdnKeys returns a VideoStitcherCdnKeys
-func newVideoStitcherCdnKeys(c *VideostitcherV1alpha1Client, namespace string) *videoStitcherCdnKeys {
-	return &videoStitcherCdnKeys{
-		gentype.NewClientWithList[*videostitcherv1alpha1.VideoStitcherCdnKey, *videostitcherv1alpha1.VideoStitcherCdnKeyList](
+// newVideoStitcherCDNKeys returns a VideoStitcherCDNKeys
+func newVideoStitcherCDNKeys(c *VideostitcherV1alpha1Client, namespace string) *videoStitcherCDNKeys {
+	return &videoStitcherCDNKeys{
+		gentype.NewClientWithList[*videostitcherv1alpha1.VideoStitcherCDNKey, *videostitcherv1alpha1.VideoStitcherCDNKeyList](
 			"videostitchercdnkeys",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *videostitcherv1alpha1.VideoStitcherCdnKey { return &videostitcherv1alpha1.VideoStitcherCdnKey{} },
-			func() *videostitcherv1alpha1.VideoStitcherCdnKeyList {
-				return &videostitcherv1alpha1.VideoStitcherCdnKeyList{}
+			func() *videostitcherv1alpha1.VideoStitcherCDNKey { return &videostitcherv1alpha1.VideoStitcherCDNKey{} },
+			func() *videostitcherv1alpha1.VideoStitcherCDNKeyList {
+				return &videostitcherv1alpha1.VideoStitcherCDNKeyList{}
 			},
 		),
 	}

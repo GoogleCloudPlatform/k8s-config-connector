@@ -26,7 +26,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.video.stitcher.v1 \
   --api-version videostitcher.cnrm.cloud.google.com/v1alpha1 \
-  --resource VideoStitcherCdnKey:CdnKey
+  --resource VideoStitcherCDNKey:CdnKey
 
 # Note: We do not run generate-mapper here as this PR is for types/CRD/Identity only.
 
