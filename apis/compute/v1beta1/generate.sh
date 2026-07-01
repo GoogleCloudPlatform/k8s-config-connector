@@ -44,6 +44,7 @@ go run . generate-types \
   --resource ComputeNetworkPeering:NetworkPeering \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeNodeTemplate:NodeTemplate \
+  --resource ComputeProjectMetadata:Metadata \
   --resource ComputeReservation:Reservation \
   --resource ComputeRoute:Route \
   --resource ComputeRouter:Router \
