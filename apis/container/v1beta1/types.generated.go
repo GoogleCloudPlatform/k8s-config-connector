@@ -3120,7 +3120,8 @@ type NotificationConfig_PubSub struct {
 }
 */
 
-/* unreachable type ParallelstoreCsiDriverConfig
+/* found existing non-generated go type with proto tag "google.container.v1.ParallelstoreCsiDriverConfig", skipping
+
 // +kcc:proto=google.container.v1.ParallelstoreCsiDriverConfig
 type ParallelstoreCsiDriverConfig struct {
 	// Whether the Cloud Storage Parallelstore CSI driver is enabled for this

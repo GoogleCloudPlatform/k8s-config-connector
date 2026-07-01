@@ -199,6 +199,7 @@ func AddonsConfig_FromProto(mapCtx *direct.MapContext, in *pb.AddonsConfig) *krm
 	// (near miss): "GCSFuseCsiDriverConfig" vs "GCSFuseCSIDriverConfig"
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
+	// (near miss): "ParallelstoreCsiDriverConfig" vs "ParallelstoreCSIDriverConfig"
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
@@ -225,6 +226,7 @@ func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.A
 	// (near miss): "GCSFuseCsiDriverConfig" vs "GCSFuseCSIDriverConfig"
 	// MISSING: StatefulHaConfig
 	// MISSING: ParallelstoreCsiDriverConfig
+	// (near miss): "ParallelstoreCsiDriverConfig" vs "ParallelstoreCSIDriverConfig"
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
@@ -2331,6 +2333,22 @@ func NotificationConfig_PubSub_ToProto(mapCtx *direct.MapContext, in *krm.Notifi
 		out.Topic = in.TopicRef.External
 	}
 	// MISSING: Filter
+	return out
+}
+func ParallelstoreCSIDriverConfig_FromProto(mapCtx *direct.MapContext, in *pb.ParallelstoreCsiDriverConfig) *krm.ParallelstoreCSIDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParallelstoreCSIDriverConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+func ParallelstoreCSIDriverConfig_ToProto(mapCtx *direct.MapContext, in *krm.ParallelstoreCSIDriverConfig) *pb.ParallelstoreCsiDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParallelstoreCsiDriverConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
 func PodCIDROverprovisionConfig_FromProto(mapCtx *direct.MapContext, in *pb.PodCIDROverprovisionConfig) *krm.PodCIDROverprovisionConfig {

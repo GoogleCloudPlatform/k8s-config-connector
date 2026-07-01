@@ -112,6 +112,8 @@ addonsConfig:
     enabled: boolean
   networkPolicyConfig:
     disabled: boolean
+  parallelstoreCsiDriverConfig:
+    enabled: boolean
 allowNetAdmin: boolean
 authenticatorGroupsConfig:
   securityGroup: string
@@ -711,6 +713,26 @@ workloadIdentityConfig:
     <tr>
         <td>
             <p><code>addonsConfig.networkPolicyConfig.disabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.parallelstoreCsiDriverConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.parallelstoreCsiDriverConfig.enabled</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>

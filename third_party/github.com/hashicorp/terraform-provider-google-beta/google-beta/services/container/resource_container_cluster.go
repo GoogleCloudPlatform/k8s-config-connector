@@ -77,6 +77,7 @@ var (
 		"addons_config.0.gke_backup_agent_config",
 		"addons_config.0.config_connector_config",
 		"addons_config.0.gcs_fuse_csi_driver_config",
+		"addons_config.0.parallelstore_csi_driver_config",
 		"addons_config.0.istio_config",
 		"addons_config.0.kalm_config",
 	}
@@ -412,6 +413,23 @@ func ResourceContainerCluster() *schema.Resource {
 							AtLeastOneOf:  addonsConfigKeys,
 							MaxItems:      1,
 							Description:   `The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable.`,
+							ConflictsWith: []string{"enable_autopilot"},
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enabled": {
+										Type:     schema.TypeBool,
+										Required: true,
+									},
+								},
+							},
+						},
+						"parallelstore_csi_driver_config": {
+							Type:          schema.TypeList,
+							Optional:      true,
+							Computed:      true,
+							AtLeastOneOf:  addonsConfigKeys,
+							MaxItems:      1,
+							Description:   `The status of the Parallelstore CSI driver addon, which allows the usage of parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable.`,
 							ConflictsWith: []string{"enable_autopilot"},
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
@@ -4465,6 +4483,13 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 			ForceSendFields: []string{"Enabled"},
 		}
 	}
+	if v, ok := config["parallelstore_csi_driver_config"]; ok && len(v.([]interface{})) > 0 {
+		addon := v.([]interface{})[0].(map[string]interface{})
+		ac.ParallelstoreCsiDriverConfig = &container.ParallelstoreCsiDriverConfig{
+			Enabled:         addon["enabled"].(bool),
+			ForceSendFields: []string{"Enabled"},
+		}
+	}
 
 	if v, ok := config["istio_config"]; ok && len(v.([]interface{})) > 0 {
 		addon := v.([]interface{})[0].(map[string]interface{})
@@ -5687,6 +5712,13 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 		result["gcs_fuse_csi_driver_config"] = []map[string]interface{}{
 			{
 				"enabled": c.GcsFuseCsiDriverConfig.Enabled,
+			},
+		}
+	}
+	if c.ParallelstoreCsiDriverConfig != nil {
+		result["parallelstore_csi_driver_config"] = []map[string]interface{}{
+			{
+				"enabled": c.ParallelstoreCsiDriverConfig.Enabled,
 			},
 		}
 	}
