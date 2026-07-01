@@ -4,5 +4,5 @@ metadata:
   name: scmuteconfig-min-${uniqueId}
 spec:
   organizationRef:
-    external: ${TEST_ORG_ID}
+    external: organizations/${TEST_ORG_ID}
   filter: category = "VULNERABILITY"

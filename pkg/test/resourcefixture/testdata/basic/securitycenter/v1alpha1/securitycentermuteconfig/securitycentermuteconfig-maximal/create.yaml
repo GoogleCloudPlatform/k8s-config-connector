@@ -4,7 +4,7 @@ metadata:
   name: scmuteconfig-max-${uniqueId}
 spec:
   organizationRef:
-    external: ${TEST_ORG_ID}
+    external: organizations/${TEST_ORG_ID}
   description: "Maximal SecurityCenterMuteConfig description"
   filter: category = "VULNERABILITY" AND severity = "LOW"
   type: STATIC

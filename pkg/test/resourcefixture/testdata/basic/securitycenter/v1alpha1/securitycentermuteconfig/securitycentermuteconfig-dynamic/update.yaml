@@ -4,7 +4,7 @@ metadata:
   name: scmuteconfig-dyn-${uniqueId}
 spec:
   organizationRef:
-    external: ${TEST_ORG_ID}
+    external: organizations/${TEST_ORG_ID}
   description: "Updated Dynamic SecurityCenterMuteConfig description"
   filter: category = "VULNERABILITY" AND severity = "MEDIUM"
   type: DYNAMIC
