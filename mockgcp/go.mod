@@ -96,6 +96,7 @@ require (
 	cloud.google.com/go/osconfig v1.16.0 // indirect
 	cloud.google.com/go/pubsub/v2 v2.3.0 // indirect
 	cloud.google.com/go/resourcemanager v1.10.7 // indirect
+	cloud.google.com/go/securitycenter v1.44.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
