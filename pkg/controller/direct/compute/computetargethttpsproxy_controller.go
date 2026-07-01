@@ -344,7 +344,7 @@ func compareComputeTargetHTTPSProxy(ctx context.Context, actual, desired *comput
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.TargetHttpsProxy)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.TargetHttpsProxy) {
 		// Set any server-side default values here if they cause false diffs

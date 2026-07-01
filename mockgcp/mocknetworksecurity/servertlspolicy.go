@@ -40,7 +40,7 @@ func (s *NetworkSecurityServer) CreateServerTlsPolicy(ctx context.Context, req *
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.ServerTlsPolicy).(*pb.ServerTlsPolicy)
+	obj := proto.CloneOf(req.ServerTlsPolicy)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
@@ -59,7 +59,7 @@ func (s *NetworkSecurityServer) CreateServerTlsPolicy(ctx context.Context, req *
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }
@@ -93,12 +93,12 @@ func (s *NetworkSecurityServer) UpdateServerTlsPolicy(ctx context.Context, req *
 		return nil, err
 	}
 
-	updated := proto.Clone(obj).(*pb.ServerTlsPolicy)
+	updated := proto.CloneOf(obj)
 	updated.UpdateTime = timestamppb.New(time.Now())
 
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
-		updated = proto.Clone(req.GetServerTlsPolicy()).(*pb.ServerTlsPolicy)
+		updated = proto.CloneOf(req.GetServerTlsPolicy())
 		updated.CreateTime = obj.CreateTime
 		updated.UpdateTime = timestamppb.New(time.Now())
 		updated.Name = obj.Name
@@ -135,7 +135,7 @@ func (s *NetworkSecurityServer) UpdateServerTlsPolicy(ctx context.Context, req *
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(updated)
+		result := proto.CloneOf(updated)
 		return result, nil
 	})
 }

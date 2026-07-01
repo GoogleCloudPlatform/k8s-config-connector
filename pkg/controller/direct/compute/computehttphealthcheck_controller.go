@@ -297,7 +297,7 @@ func compareComputeHTTPHealthCheck(ctx context.Context, actual, desired *compute
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.HealthCheck)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.HealthCheck) {
 		if obj.CheckIntervalSec == nil {

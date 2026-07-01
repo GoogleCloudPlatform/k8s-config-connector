@@ -447,7 +447,7 @@ func compareComputeRouterInterface(ctx context.Context, actual, desired *compute
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.RouterInterface)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.RouterInterface) {
 		// Even if empty, it's a good pattern to define and populate GCP/server defaults here

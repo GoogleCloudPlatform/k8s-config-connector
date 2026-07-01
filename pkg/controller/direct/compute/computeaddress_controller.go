@@ -255,8 +255,8 @@ func (a *ComputeAddressAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	// Check if only labels changed by comparing actual vs desired without labels
-	actualNoLabels := proto.Clone(a.actual).(*pb.Address)
-	desiredNoLabels := proto.Clone(a.desired).(*pb.Address)
+	actualNoLabels := proto.CloneOf(a.actual)
+	desiredNoLabels := proto.CloneOf(a.desired)
 	actualNoLabels.Labels = nil
 	desiredNoLabels.Labels = nil
 
@@ -432,7 +432,7 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
 
-	clonedDesired := proto.Clone(desired).(*pb.Address)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.Address) {
 		// Even if empty, it's a good pattern to define and populate GCP/server defaults here

@@ -295,7 +295,7 @@ func compareCryptoKey(ctx context.Context, actual, desired *kmspb.CryptoKey) (*s
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
 
-	clonedDesired := proto.Clone(desired).(*kmspb.CryptoKey)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *kmspb.CryptoKey) {
 		if obj.DestroyScheduledDuration == nil {

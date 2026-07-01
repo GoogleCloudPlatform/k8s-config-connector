@@ -388,7 +388,7 @@ func (s *MockService) convertProjectMap(ctx context.Context, projectMap map[stri
 			return nil, err
 		}
 		projectNumber := strconv.FormatInt(project.Number, 10)
-		newConfig := proto.Clone(config).(*pb.ShareSettingsProjectConfig)
+		newConfig := proto.CloneOf(config)
 		newConfig.ProjectId = &projectNumber
 		newMap[projectNumber] = newConfig
 	}

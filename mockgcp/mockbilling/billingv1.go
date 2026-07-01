@@ -66,7 +66,7 @@ func (s *BillingV1) GetBillingAccount(ctx context.Context, req *pb.GetBillingAcc
 }
 
 func (s *BillingV1) CreateBillingAccount(ctx context.Context, req *pb.CreateBillingAccountRequest) (*pb.BillingAccount, error) {
-	obj := proto.Clone(req.GetBillingAccount()).(*pb.BillingAccount)
+	obj := proto.CloneOf(req.GetBillingAccount())
 
 	// Generate a name if not set
 	if obj.Name == "" {

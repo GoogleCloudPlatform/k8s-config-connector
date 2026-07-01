@@ -45,6 +45,5 @@ func ValueOf[T any](t *T) T {
 }
 
 func CloneProto[T protoreflect.ProtoMessage](t T) T {
-	o := proto.Clone(t)
-	return o.(T)
+	return proto.CloneOf(t)
 }

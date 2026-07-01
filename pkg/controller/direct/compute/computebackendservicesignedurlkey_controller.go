@@ -272,7 +272,7 @@ func compareComputeBackendServiceSignedURLKey(ctx context.Context, actual, desir
 	}
 	maskedActual.KeyName = desired.KeyName
 
-	clonedDesired := proto.Clone(desired).(*pb.SignedUrlKey)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.SignedUrlKey) {
 		// KeyValue is write-only in GCP and not returned in Get.

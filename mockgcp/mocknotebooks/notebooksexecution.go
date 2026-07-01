@@ -61,7 +61,7 @@ func (s *NotebookServiceV1) CreateExecution(ctx context.Context, req *pb.CreateE
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.GetExecution()).(*pb.Execution)
+	obj := proto.CloneOf(req.GetExecution())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())

@@ -245,12 +245,12 @@ func (sc *serverContext) handleDescribeKCCResource(ctx context.Context, request 
 			reason, _ := cond["reason"].(string)
 			message, _ := cond["message"].(string)
 			typeVal, _ := cond["type"].(string)
-			
+
 			statusPrefix := ""
 			if (typeVal == "Ready" || typeVal == "UpToDate" || typeVal == "ManagementFinished") && statusVal == "False" {
 				statusPrefix = "⚠️  "
 			}
-			
+
 			sb.WriteString(fmt.Sprintf("  - %sType: %s, Status: %s, Reason: %s\n", statusPrefix, typeVal, statusVal, reason))
 			if message != "" {
 				sb.WriteString(fmt.Sprintf("    Message: %s\n", message))
@@ -407,7 +407,7 @@ func (sc *serverContext) handleListKCCResources(ctx context.Context, request mcp
 				if projectID == "" {
 					projectID = "n/a"
 				}
-				
+
 				statusStr := sc.getResourceStatusShort(&item)
 				results = append(results, fmt.Sprintf("- Kind: %s, Namespace: %s, Name: %s, ProjectID: %s, Status: %s", item.GetKind(), item.GetNamespace(), item.GetName(), projectID, statusStr))
 				count++

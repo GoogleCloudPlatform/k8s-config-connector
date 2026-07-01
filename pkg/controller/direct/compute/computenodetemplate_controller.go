@@ -252,7 +252,7 @@ func compareComputeNodeTemplate(ctx context.Context, actual, desired *computepb.
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.NodeTemplate)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.NodeTemplate) {
 		if obj.ServerBinding == nil {

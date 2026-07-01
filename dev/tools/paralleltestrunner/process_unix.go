@@ -24,7 +24,7 @@ import (
 // setProcessGroup configures the Cmd to start in a new process group on Unix/Linux systems,
 // and sets a custom Cancel function so that when the Context is cancelled (due to timeout),
 // SIGKILL is sent to the entire process group (-PID) rather than just the parent process PID.
-// This ensures any nested subprocesses spawned during the test are terminated, preventing 
+// This ensures any nested subprocesses spawned during the test are terminated, preventing
 // them from running indefinitely and keeping stdout/stderr pipes open.
 func setProcessGroup(cmd *exec.Cmd) {
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}

@@ -40,7 +40,7 @@ func (s *FirewallActivationServer) CreateFirewallEndpointAssociation(ctx context
 
 	fqn := name
 
-	obj := proto.Clone(req.FirewallEndpointAssociation).(*pbv1.FirewallEndpointAssociation)
+	obj := proto.CloneOf(req.FirewallEndpointAssociation)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
@@ -60,7 +60,7 @@ func (s *FirewallActivationServer) CreateFirewallEndpointAssociation(ctx context
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }
@@ -93,7 +93,7 @@ func (s *FirewallActivationServer) UpdateFirewallEndpointAssociation(ctx context
 		return nil, err
 	}
 
-	updated := proto.Clone(obj).(*pbv1.FirewallEndpointAssociation)
+	updated := proto.CloneOf(obj)
 	updated.UpdateTime = timestamppb.New(time.Now())
 
 	// Apply field mask updates
