@@ -237,7 +237,7 @@ This file tracks the progress of new "Direct" resource implementations.
 |
 | VectorSearchCollection | vectorsearch | - | - | - | 1 | MERGED 
 |
-| VideoStitcherCdnKey | videostitcher | [#10329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10329) | - | - | 1 | OPEN 
+| VideoStitcherCDNKey | videostitcher | [#10329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10329) | - | - | 1 | OPEN 
 |
 | VisionProduct | vision | [#10350](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10350) | - | - | 1 | OPEN 
 |

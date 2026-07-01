@@ -274,7 +274,7 @@ BLOCKED_KINDS=(
     "TranscoderJob"
     "TranslateAdaptiveMtDataset"
     "VectorSearchCollection"
-    "VideoStitcherCdnKey"
+    "VideoStitcherCDNKey"
     "VisionProduct"
     "VisionAIApplication"
     "VMMigrationGroup"
