@@ -73,6 +73,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSecurityPoliciesServer(grpcServer, &SecurityPoliciesV1{MockService: s})
 
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
+	pb.RegisterFirewallsServer(grpcServer, &FirewallsV1{MockService: s})
 	pb.RegisterNetworkAttachmentsServer(grpcServer, &networkAttachmentsV1{MockService: s})
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 	pb.RegisterVpnGatewaysServer(grpcServer, &VPNGatewaysV1{MockService: s})
@@ -193,6 +194,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterNetworksHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterFirewallsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
