@@ -449,6 +449,22 @@ var schemaNodePool = map[string]*schema.Schema{
 			},
 		},
 	},
+	"queued_provisioning": {
+		Type:        schema.TypeList,
+		Optional:    true,
+		MaxItems:    1,
+		ForceNew:    true,
+		Description: `Specifies the configuration of queued provisioning.`,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"enabled": {
+					Type:        schema.TypeBool,
+					Required:    true,
+					Description: `Denotes that this node pool is QRM specific, meaning nodes can be only obtained through queuing via the Cluster Autoscaler ProvisioningRequest API.`,
+				},
+			},
+		},
+	},
 }
 
 type NodePoolInformation struct {
@@ -902,12 +918,13 @@ func expandNodePool(d *schema.ResourceData, prefix string) (*container.NodePool,
 	}
 
 	np := &container.NodePool{
-		Name:             name,
-		InitialNodeCount: int64(nodeCount),
-		Config:           expandNodeConfig(d.Get(prefix + "node_config")),
-		Locations:        locations,
-		Version:          d.Get(prefix + "version").(string),
-		NetworkConfig:    expandNodeNetworkConfig(d.Get(prefix + "network_config")),
+		Name:               name,
+		InitialNodeCount:   int64(nodeCount),
+		Config:             expandNodeConfig(d.Get(prefix + "node_config")),
+		Locations:          locations,
+		Version:            d.Get(prefix + "version").(string),
+		NetworkConfig:      expandNodeNetworkConfig(d.Get(prefix + "network_config")),
+		QueuedProvisioning: expandNodePoolQueuedProvisioning(d.Get(prefix + "queued_provisioning")),
 	}
 
 	if v, ok := d.GetOk(prefix + "autoscaling"); ok {
@@ -1054,6 +1071,28 @@ func flattenNodePoolUpgradeSettings(us *container.UpgradeSettings) []map[string]
 	return []map[string]interface{}{upgradeSettings}
 }
 
+func expandNodePoolQueuedProvisioning(v interface{}) *container.QueuedProvisioning {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	raw := l[0].(map[string]interface{})
+	return &container.QueuedProvisioning{
+		Enabled: raw["enabled"].(bool),
+	}
+}
+
+func flattenNodePoolQueuedProvisioning(qp *container.QueuedProvisioning) []map[string]interface{} {
+	if qp == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"enabled": qp.Enabled,
+		},
+	}
+}
+
 func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *container.NodePool, prefix string) (map[string]interface{}, error) {
 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
@@ -1099,6 +1138,7 @@ func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *c
 		"managed_instance_group_urls": managedIgmUrls,
 		"version":                     np.Version,
 		"network_config":              flattenNodeNetworkConfig(np.NetworkConfig, d, prefix),
+		"queued_provisioning":         flattenNodePoolQueuedProvisioning(np.QueuedProvisioning),
 	}
 
 	if np.Autoscaling != nil {

@@ -220,6 +220,8 @@ placementPolicy:
     namespace: string
   tpuTopology: string
   type: string
+queuedProvisioning:
+  enabled: boolean
 resourceID: string
 upgradeSettings:
   blueGreenSettings:
@@ -1749,6 +1751,26 @@ version: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The type of placement.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queuedProvisioning</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Immutable. Specifies the configuration of queued provisioning.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queuedProvisioning.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Immutable. Denotes that this node pool is QRM specific, meaning nodes can be only obtained through queuing via the Cluster Autoscaler ProvisioningRequest API.</p>
         </td>
     </tr>
     <tr>

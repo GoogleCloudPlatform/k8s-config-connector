@@ -309,6 +309,13 @@ type NodePoolNodeConfig struct {
 	NodeConfig_WorkloadMetadataConfig *NodeConfig_WorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
 }
 
+// +kcc:proto=google.container.v1.NodePool.QueuedProvisioning
+type NodePoolQueuedProvisioning struct {
+	/* Immutable. Denotes that this node pool is QRM specific, meaning nodes can be only obtained through queuing via the Cluster Autoscaler ProvisioningRequest API. */
+	// +kcc:proto:field=google.container.v1.NodePool.QueuedProvisioning.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // ContainerNodePoolSpec defines the desired state of ContainerNodePool
 // +kcc:spec:proto=google.container.v1.NodePool
 type ContainerNodePoolSpec struct {
@@ -355,6 +362,10 @@ type ContainerNodePoolSpec struct {
 	/* Specifies the node placement policy. */
 	// +kcc:proto:field=google.container.v1.NodePool.placement_policy
 	PlacementPolicy *NodePool_PlacementPolicy `json:"placementPolicy,omitempty"`
+
+	/* Immutable. Specifies the configuration of queued provisioning. */
+	// +kcc:proto:field=google.container.v1.NodePool.queued_provisioning
+	QueuedProvisioning *NodePoolQueuedProvisioning `json:"queuedProvisioning,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	ResourceID *string `json:"resourceID,omitempty"`
