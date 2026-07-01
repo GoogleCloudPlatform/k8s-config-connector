@@ -1892,6 +1892,11 @@ managedInstanceGroupUrls:
 - string
 observedGeneration: integer
 observedState:
+  nodeConfig:
+    taint:
+    - effect: string
+      key: string
+      value: string
   version: string
 operation: string
 ```
@@ -1999,6 +2004,48 @@ operation: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>The observed state of the underlying GCP resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The observed node config of the GKE node pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeConfig.taint</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>List of Kubernetes taints to be applied to each node.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeConfig.taint[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeConfig.taint[].effect</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Effect for taint.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeConfig.taint[].key</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Key for taint.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeConfig.taint[].value</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Value for taint.</p>
         </td>
     </tr>
     <tr>

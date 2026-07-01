@@ -147,6 +147,8 @@ spec:
         targetField: name
       observedFields:
         - version
+        - node_config.taint
+
       resourceReferences:
         - key: clusterRef
           tfField: cluster

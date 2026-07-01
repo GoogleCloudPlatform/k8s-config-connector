@@ -8,28 +8,25 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
-  name: containernodepool-${uniqueId}
+    label-one: value-one
+  name: nodepool-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
   autoscaling:
     maxNodeCount: 3
     minNodeCount: 1
   clusterRef:
-    name: containercluster-${uniqueId}
-  location: us-central1
+    name: cluster-sample-${uniqueId}
+  location: us-central1-a
   nodeConfig:
-    confidentialNodes:
-      confidentialInstanceType: SEV_SNP
-      enabled: true
-    machineType: n2d-standard-2
     taint:
     - effect: NO_SCHEDULE
-      key: originalKey
-      value: originalValue
-  resourceID: containernodepool-${uniqueId}
+      key: taintA
+      value: anythingA
+  resourceID: nodepool-sample-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -38,14 +35,14 @@ status:
     status: "True"
     type: Ready
   instanceGroupUrls:
-  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
   managedInstanceGroupUrls:
-  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
-  observedGeneration: 2
+  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
+  observedGeneration: 3
   observedState:
     nodeConfig:
       taint:
       - effect: NO_SCHEDULE
-        key: originalKey
-        value: originalValue
+        key: taintA
+        value: anythingA
     version: 1.30.5-gke.1014001
