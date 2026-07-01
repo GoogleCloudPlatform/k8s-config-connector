@@ -4,9 +4,9 @@
 <   generation: 2
 ---
 >   generation: 1
-19d17
+18d16
 <   resourceID: key-ring-${uniqueId}
-27c25
+26c24
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1
