@@ -69,11 +69,11 @@ func main() {
 				cmd := exec.CommandContext(ctx, flag.Args()[0], flag.Args()[1:]...)
 				cmd.Env = os.Environ()
 				cmd.Env = append(cmd.Env, "RUN_TESTS="+exactRun)
-				
-				// Configure process group setup to ensure that any orphaned subprocesses 
-				// started by the subtest execution (like shell scripts or test binaries) 
-				// are cleanly terminated if the test times out. Without this, orphaned 
-				// children can hold stdout/stderr pipes open, causing cmd.CombinedOutput() 
+
+				// Configure process group setup to ensure that any orphaned subprocesses
+				// started by the subtest execution (like shell scripts or test binaries)
+				// are cleanly terminated if the test times out. Without this, orphaned
+				// children can hold stdout/stderr pipes open, causing cmd.CombinedOutput()
 				// to hang indefinitely and eventually time out the entire CI job.
 				setProcessGroup(cmd)
 

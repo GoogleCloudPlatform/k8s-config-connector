@@ -854,6 +854,7 @@ func (h *Harness) ExportParams() exportparameters.Parameters {
 	var exportParams exportparameters.Parameters
 	exportParams.GCPAccessToken = h.gcpAccessToken
 	exportParams.HTTPClient = h.kccConfig.HTTPClient
+	exportParams.GRPCUnaryClientInterceptor = h.kccConfig.GRPCUnaryClientInterceptor
 	return exportParams
 }
 
@@ -1051,6 +1052,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendServiceSignedURLKey"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendBucket"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDisk"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeFirewall"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeFirewallPolicy"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeFirewallPolicyRule"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeForwardingRule"}:
@@ -1214,6 +1216,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebooksEnvironment"}:
 			case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebookInstance"}:
+			case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebooksExecution"}:
 
 			case schema.GroupKind{Group: "parametermanager.cnrm.cloud.google.com", Kind: "ParameterManagerParameter"}:
 			case schema.GroupKind{Group: "parametermanager.cnrm.cloud.google.com", Kind: "ParameterManagerParameterVersion"}:

@@ -797,6 +797,40 @@ func ComputeFirewallPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeFirewallPolicyAssociationSpec_v1beta1_FromProto", skipping
+func ComputeFirewallPolicyAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyAssociation) *krm.ComputeFirewallPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyAssociationSpec{}
+	if in.GetAttachmentTarget() != "" {
+		out.AttachmentTargetRef = &krm.ComputeFirewallPolicyAssociationAttachmentTargetRef{External: in.GetAttachmentTarget()}
+	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallPolicyAssociationSpec_v1beta1_ToProto", skipping
+func ComputeFirewallPolicyAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyAssociationSpec) *pb.FirewallPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyAssociation{}
+	if in.AttachmentTargetRef != nil {
+		out.AttachmentTarget = &in.AttachmentTargetRef.External
+	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
 	if in == nil {
@@ -2237,6 +2271,112 @@ func ComputeInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	// MISSING: StatusMessage
 	// MISSING: Tags
 	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_FromProto", skipping
+func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectAttachment) *krm.ComputeInterconnectAttachmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeInterconnectAttachmentSpec{}
+	out.AdminEnabled = in.AdminEnabled
+	// MISSING: AttachmentGroup
+	out.Bandwidth = in.Bandwidth
+	// MISSING: CandidateIPV6Subnets
+	out.CandidateSubnets = in.CandidateSubnets
+	// MISSING: CloudRouterIPAddress
+	// MISSING: CloudRouterIPV6Address
+	// MISSING: CloudRouterIPV6InterfaceID
+	// MISSING: ConfigurationConstraints
+	// MISSING: CreationTimestamp
+	// MISSING: CustomerRouterIPAddress
+	// MISSING: CustomerRouterIPV6Address
+	// MISSING: CustomerRouterIPV6InterfaceID
+	// MISSING: DataplaneVersion
+	out.Description = in.Description
+	out.EdgeAvailabilityDomain = in.EdgeAvailabilityDomain
+	out.Encryption = in.Encryption
+	// MISSING: GoogleReferenceID
+	// MISSING: ID
+	out.Interconnect = in.Interconnect
+	out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_FromProto(mapCtx, in.IpsecInternalAddresses)
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	// MISSING: OperationalStatus
+	// MISSING: PairingKey
+	// MISSING: PartnerAsn
+	// MISSING: PartnerMetadata
+	// MISSING: PrivateInterconnectInfo
+	out.Region = in.Region
+	// MISSING: RemoteService
+	if in.GetRouter() != "" {
+		out.RouterRef = &krm.ComputeRouterRef{External: in.GetRouter()}
+	}
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StackType
+	// MISSING: State
+	// MISSING: SubnetLength
+	out.Type = in.Type
+	out.VlanTag8021q = in.VlanTag8021q
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInterconnectAttachmentSpec_v1beta1_ToProto", skipping
+func ComputeInterconnectAttachmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInterconnectAttachmentSpec) *pb.InterconnectAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectAttachment{}
+	out.AdminEnabled = in.AdminEnabled
+	// MISSING: AttachmentGroup
+	out.Bandwidth = in.Bandwidth
+	// MISSING: CandidateIPV6Subnets
+	out.CandidateSubnets = in.CandidateSubnets
+	// MISSING: CloudRouterIPAddress
+	// MISSING: CloudRouterIPV6Address
+	// MISSING: CloudRouterIPV6InterfaceID
+	// MISSING: ConfigurationConstraints
+	// MISSING: CreationTimestamp
+	// MISSING: CustomerRouterIPAddress
+	// MISSING: CustomerRouterIPV6Address
+	// MISSING: CustomerRouterIPV6InterfaceID
+	// MISSING: DataplaneVersion
+	out.Description = in.Description
+	out.EdgeAvailabilityDomain = in.EdgeAvailabilityDomain
+	out.Encryption = in.Encryption
+	// MISSING: GoogleReferenceID
+	// MISSING: ID
+	out.Interconnect = in.Interconnect
+	out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_ToProto(mapCtx, in.IpsecInternalAddresses)
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	// MISSING: OperationalStatus
+	// MISSING: PairingKey
+	// MISSING: PartnerAsn
+	// MISSING: PartnerMetadata
+	// MISSING: PrivateInterconnectInfo
+	out.Region = in.Region
+	// MISSING: RemoteService
+	if in.RouterRef != nil {
+		out.Router = &in.RouterRef.External
+	}
+	// MISSING: SatisfiesPzs
+	// MISSING: SelfLink
+	// MISSING: StackType
+	// MISSING: State
+	// MISSING: SubnetLength
+	out.Type = in.Type
+	out.VlanTag8021q = in.VlanTag8021q
 	return out
 }
 */

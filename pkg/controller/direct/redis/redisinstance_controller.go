@@ -373,7 +373,7 @@ func compareRedisInstance(ctx context.Context, actual, desired *redispb.Instance
 	}
 
 	maskedActual = populateInstanceDefaults(maskedActual, nil)
-	desired = populateInstanceDefaults(proto.Clone(desired).(*redispb.Instance), maskedActual)
+	desired = populateInstanceDefaults(proto.CloneOf(desired), maskedActual)
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

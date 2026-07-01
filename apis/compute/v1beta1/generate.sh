@@ -28,6 +28,7 @@ go run . generate-types \
   --resource ComputeExternalVPNGateway:ExternalVpnGateway \
   --resource ComputeFirewall:Firewall \
   --resource ComputeFirewallPolicy:FirewallPolicy \
+  --resource ComputeFirewallPolicyAssociation:FirewallPolicyAssociation \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
@@ -43,6 +44,7 @@ go run . generate-types \
   --resource ComputeNetworkPeering:NetworkPeering \
   --resource ComputeNodeGroup:NodeGroup \
   --resource ComputeNodeTemplate:NodeTemplate \
+  --resource ComputeProjectMetadata:Metadata \
   --resource ComputeReservation:Reservation \
   --resource ComputeRoute:Route \
   --resource ComputeRouter:Router \
@@ -59,6 +61,7 @@ go run . generate-types \
   --resource ComputeTargetSSLProxy:TargetSslProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeURLMap:UrlMap \
+  --resource ComputeInterconnectAttachment:InterconnectAttachment \
   --include-skipped-output
 
 go run . generate-mapper \

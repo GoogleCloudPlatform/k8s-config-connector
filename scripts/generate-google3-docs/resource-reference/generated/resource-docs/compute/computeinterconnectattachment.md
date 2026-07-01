@@ -107,8 +107,7 @@ vlanTag8021q: integer
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Whether the VLAN attachment is enabled or disabled.  When using
-PARTNER type this will Pre-Activate the interconnect attachment.</p>
+            <p>Whether the VLAN attachment is enabled or disabled.  When using PARTNER type this will Pre-Activate the interconnect attachment.</p>
         </td>
     </tr>
     <tr>
@@ -118,11 +117,7 @@ PARTNER type this will Pre-Activate the interconnect attachment.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Provisioned bandwidth capacity for the interconnect attachment.
-For attachments of type DEDICATED, the user can set the bandwidth.
-For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth.
-Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED,
-Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"].</p>
+            <p>Provisioned bandwidth capacity for the interconnect attachment. For attachments of type DEDICATED, the user can set the bandwidth. For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth. Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED, Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"].</p>
         </td>
     </tr>
     <tr>
@@ -132,13 +127,7 @@ Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_30
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Up to 16 candidate prefixes that can be used to restrict the allocation
-of cloudRouterIpAddress and customerRouterIpAddress for this attachment.
-All prefixes must be within link-local address space (169.254.0.0/16)
-and must be /29 or shorter (/28, /27, etc). Google will attempt to select
-an unused /29 from the supplied candidate prefix(es). The request will
-fail if all possible /29s are in use on Google's edge. If not supplied,
-Google will randomly select an unused /29 from all of link-local space.</p>
+            <p>Immutable. Up to 16 candidate prefixes that can be used to restrict the allocation of cloudRouterIpAddress and customerRouterIpAddress for this attachment. All prefixes must be within link-local address space (169.254.0.0/16) and must be /29 or shorter (/28, /27, etc). Google will attempt to select an unused /29 from the supplied candidate prefix(es). The request will fail if all possible /29s are in use on Google's edge. If not supplied, Google will randomly select an unused /29 from all of link-local space.</p>
         </td>
     </tr>
     <tr>
@@ -168,12 +157,7 @@ Google will randomly select an unused /29 from all of link-local space.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Desired availability domain for the attachment. Only available for type
-PARTNER, at creation time. For improved reliability, customers should
-configure a pair of attachments with one per availability domain. The
-selected availability domain will be provided to the Partner via the
-pairing key so that the provisioned circuit will lie in the specified
-domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY.</p>
+            <p>Immutable. Desired availability domain for the attachment. Only available for type PARTNER, at creation time. For improved reliability, customers should configure a pair of attachments with one per availability domain. The selected availability domain will be provided to the Partner via the pairing key so that the provisioned circuit will lie in the specified domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY.</p>
         </td>
     </tr>
     <tr>
@@ -205,9 +189,7 @@ attachment must be created with this option. Default value: "NONE" Possible valu
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. URL of the underlying Interconnect object that this attachment's
-traffic will traverse through. Required if type is DEDICATED, must not
-be set if type is PARTNER.</p>
+            <p>Immutable. URL of the underlying Interconnect object that this attachment's traffic will traverse through. Required if type is DEDICATED, must not be set if type is PARTNER.</p>
         </td>
     </tr>
     <tr>
@@ -217,16 +199,6 @@ be set if type is PARTNER.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p></p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>ipsecInternalAddresses[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
             <p>Immutable. The addresses that have been reserved for the
 interconnect attachment. Used only for interconnect attachment that
 has the encryption option as IPSEC.
@@ -250,12 +222,22 @@ be allocated from regional external IP address pool.</p>
     </tr>
     <tr>
         <td>
+            <p><code>ipsecInternalAddresses[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>ComputeAddressRef is a reference to a GCP ComputeAddress.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>ipsecInternalAddresses[].external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeAddress` resource.</p>
+            <p>A reference to an externally managed ComputeAddress resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}" or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".</p>
         </td>
     </tr>
     <tr>
@@ -265,7 +247,7 @@ be allocated from regional external IP address pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -275,7 +257,7 @@ be allocated from regional external IP address pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeAddress resource.</p>
         </td>
     </tr>
     <tr>
@@ -285,8 +267,7 @@ be allocated from regional external IP address pool.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Maximum Transmission Unit (MTU), in bytes, of packets passing through
-this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440.</p>
+            <p>Maximum Transmission Unit (MTU), in bytes, of packets passing through this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440.</p>
         </td>
     </tr>
     <tr>
@@ -316,11 +297,7 @@ this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The Cloud Router to be used for dynamic routing. This router must
-be in the same region as this ComputeInterconnectAttachment. The
-ComputeInterconnectAttachment will automatically connect the
-interconnect to the network & region within which the Cloud Router
-is configured.</p>
+            <p>The Cloud Router to be used for dynamic routing. This router must be in the same region as this ComputeInterconnectAttachment. The ComputeInterconnectAttachment will automatically connect the interconnect to the network & region within which the Cloud Router is configured.</p>
         </td>
     </tr>
     <tr>
@@ -330,7 +307,7 @@ is configured.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeRouter` resource.</p>
+            <p>A reference to an externally managed ComputeRouter resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/routers/{{routerID}}".</p>
         </td>
     </tr>
     <tr>
@@ -340,7 +317,7 @@ is configured.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -350,7 +327,7 @@ is configured.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -360,8 +337,7 @@ is configured.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The type of InterconnectAttachment you wish to create. Defaults to
-DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"].</p>
+            <p>Immutable. The type of InterconnectAttachment you wish to create. Defaults to DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"].</p>
         </td>
     </tr>
     <tr>
@@ -371,8 +347,7 @@ DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"].</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. When
-using PARTNER type this will be managed upstream.</p>
+            <p>Immutable. The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. When using PARTNER type this will be managed upstream.</p>
         </td>
     </tr>
 </tbody>
@@ -411,15 +386,14 @@ state: string
         <td><code>cloudRouterIpAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>IPv4 address + prefix length to be configured on Cloud Router
-Interface for this interconnect attachment.</p>
+            <p>IPv4 address + prefix length to be configured on Cloud Router Interface for this interconnect attachment.</p>
         </td>
     </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeInterconnectAttachment's current state.</p>
         </td>
     </tr>
     <tr>
@@ -475,16 +449,14 @@ Interface for this interconnect attachment.</p>
         <td><code>customerRouterIpAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>IPv4 address + prefix length to be configured on the customer
-router subinterface for this interconnect attachment.</p>
+            <p>IPv4 address + prefix length to be configured on the customer router subinterface for this interconnect attachment.</p>
         </td>
     </tr>
     <tr>
         <td><code>googleReferenceId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Google reference ID, to be used when raising support tickets with
-Google or otherwise to debug backend connectivity issues.</p>
+            <p>Google reference ID, to be used when raising support tickets with Google or otherwise to debug backend connectivity issues.</p>
         </td>
     </tr>
     <tr>
@@ -498,34 +470,28 @@ Google or otherwise to debug backend connectivity issues.</p>
         <td><code>pairingKey</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[Output only for type PARTNER. Not present for DEDICATED]. The opaque
-identifier of an PARTNER attachment used to initiate provisioning with
-a selected partner. Of the form "XXXXX/region/domain".</p>
+            <p>[Output only for type PARTNER. Not present for DEDICATED]. The opaque identifier of an PARTNER attachment used to initiate provisioning with a selected partner. Of the form "XXXXX/region/domain".</p>
         </td>
     </tr>
     <tr>
         <td><code>partnerAsn</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>[Output only for type PARTNER. Not present for DEDICATED]. Optional
-BGP ASN for the router that should be supplied by a layer 3 Partner if
-they configured BGP on behalf of the customer.</p>
+            <p>[Output only for type PARTNER. Not present for DEDICATED]. Optional BGP ASN for the router that should be supplied by a layer 3 Partner if they configured BGP on behalf of the customer.</p>
         </td>
     </tr>
     <tr>
         <td><code>privateInterconnectInfo</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Information specific to an InterconnectAttachment. This property
-is populated if the interconnect that this is attached to is of type DEDICATED.</p>
+            <p>Information specific to an InterconnectAttachment. This property is populated if the interconnect that this is attached to is of type DEDICATED.</p>
         </td>
     </tr>
     <tr>
         <td><code>privateInterconnectInfo.tag8021q</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>802.1q encapsulation tag to be used for traffic between
-Google and the customer, going to and from this network and region.</p>
+            <p>802.1q encapsulation tag to be used for traffic between Google and the customer, going to and from this network and region.</p>
         </td>
     </tr>
     <tr>

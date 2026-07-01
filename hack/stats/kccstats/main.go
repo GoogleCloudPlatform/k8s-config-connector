@@ -172,7 +172,7 @@ func main() {
 				// Modified resource
 				oldContent := getBlob(oldSHA, cacheDir)
 				newContent := getBlob(newSHA, cacheDir)
-				
+
 				oldPaths := getFieldPaths(oldContent)
 				newPaths := getFieldPaths(newContent)
 
@@ -220,7 +220,7 @@ func main() {
 	fmt.Printf("\n--- KCC Velocity Report ---\n")
 	fmt.Printf("%-10s | %-12s | %-14s | %-15s\n", "Week", "Merge Commits", "New Resources", "Net New Fields")
 	fmt.Printf("----------------------------------------------------------\n")
-	
+
 	// Sort weeks
 	var weeksKeys []string
 	for k := range statsMap {

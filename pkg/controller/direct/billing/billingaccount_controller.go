@@ -154,7 +154,7 @@ func (a *BillingAccountAdapter) Create(ctx context.Context, createOp *directbase
 	fqn := a.id.String()
 	log.V(2).Info("creating BillingAccount", "id", fqn)
 
-	desired := proto.Clone(a.desired).(*pb.BillingAccount)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = fqn
 
 	req := &pb.CreateBillingAccountRequest{
@@ -183,7 +183,7 @@ func (a *BillingAccountAdapter) Update(ctx context.Context, updateOp *directbase
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
-		desired := proto.Clone(a.desired).(*pb.BillingAccount)
+		desired := proto.CloneOf(a.desired)
 		desired.Name = a.id.String()
 
 		req := &pb.UpdateBillingAccountRequest{

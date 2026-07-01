@@ -1,0 +1,389 @@
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Project '${projectId}' or database 'test-db-min-${uniqueId}' does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://firestore.googleapis.com/v1/projects/${projectId}/databases?%24alt=json%3Benum-encoding%3Dint&databaseId=test-db-min-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "locationId": "us-west2",
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": 2,
+    "concurrencyMode": 2,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseEdition": 1,
+    "deleteProtectionState": 1,
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "freeTier": true,
+    "locationId": "us-west2",
+    "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
+    "pointInTimeRecoveryEnablement": 2,
+    "type": 1,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "3600s"
+  }
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": "DISABLED",
+    "concurrencyMode": "PESSIMISTIC",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseEdition": "STANDARD",
+    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "freeTier": true,
+    "locationId": "us-west2",
+    "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
+    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
+    "type": "FIRESTORE_NATIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "3600s"
+  }
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appEngineIntegrationMode": 2,
+  "concurrencyMode": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseEdition": 1,
+  "deleteProtectionState": 1,
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "freeTier": true,
+  "locationId": "us-west2",
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
+  "pointInTimeRecoveryEnablement": 2,
+  "type": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionRetentionPeriod": "3600s"
+}
+
+---
+
+POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
+
+{
+  "dailyRecurrence": {},
+  "retention": "604800s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dailyRecurrence": {},
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}",
+  "retention": "604800s",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}%2FbackupSchedules%2F${backupScheduleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dailyRecurrence": {},
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}",
+  "retention": "604800s",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appEngineIntegrationMode": 2,
+  "concurrencyMode": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseEdition": 1,
+  "deleteProtectionState": 1,
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "freeTier": true,
+  "locationId": "us-west2",
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
+  "pointInTimeRecoveryEnablement": 2,
+  "type": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionRetentionPeriod": "3600s"
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}%2FbackupSchedules%2F${backupScheduleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dailyRecurrence": {},
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}",
+  "retention": "604800s",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appEngineIntegrationMode": 2,
+  "concurrencyMode": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseEdition": 1,
+  "deleteProtectionState": 1,
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "freeTier": true,
+  "locationId": "us-west2",
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
+  "pointInTimeRecoveryEnablement": 2,
+  "type": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionRetentionPeriod": "3600s"
+}
+
+---
+
+DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}%2FbackupSchedules%2F${backupScheduleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&etag=abcdef0123A
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.DeleteDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": 2,
+    "concurrencyMode": 2,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseEdition": 1,
+    "deleteProtectionState": 1,
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "freeTier": true,
+    "locationId": "us-west2",
+    "name": "projects/${projectId}/databases/${randomDatabaseID}",
+    "pointInTimeRecoveryEnablement": 2,
+    "previousId": "test-db-min-${uniqueId}",
+    "type": 1,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "3600s"
+  }
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.DeleteDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database"
+  }
+}

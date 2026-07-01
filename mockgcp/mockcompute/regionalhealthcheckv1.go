@@ -140,7 +140,7 @@ func (s *RegionalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateRegion
 	kind := obj.Kind
 	region := obj.Region
 
-	updatedObj := proto.Clone(req.GetHealthCheckResource()).(*pb.HealthCheck)
+	updatedObj := proto.CloneOf(req.GetHealthCheckResource())
 	updatedObj.Id = id
 	updatedObj.SelfLink = selfLink
 	updatedObj.CreationTimestamp = creationTimestamp

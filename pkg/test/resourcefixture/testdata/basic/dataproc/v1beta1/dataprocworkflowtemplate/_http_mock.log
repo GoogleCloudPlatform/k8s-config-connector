@@ -1,0 +1,558 @@
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "basicAlgorithm": {
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleUpFactor": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "WorkflowTemplate \"projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}\" not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflowTemplates?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "id": "000000000000000000000",
+  "jobs": [
+    {
+      "sparkJob": {
+        "mainClass": "SomeClass"
+      },
+      "stepId": "someJob"
+    },
+    {
+      "prerequisiteStepIds": [
+        "someJob"
+      ],
+      "prestoJob": {
+        "queryFileUri": "someUri"
+      },
+      "stepId": "otherJob"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "placement": {
+    "managedCluster": {
+      "clusterName": "test-cluster",
+      "config": {
+        "autoscalingConfig": {
+          "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+        },
+        "gceClusterConfig": {
+          "tags": [
+            "foo",
+            "bar"
+          ]
+        },
+        "masterConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "bootDiskType": "pd-standard"
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 1
+        },
+        "softwareConfig": {
+          "imageVersion": "2.0.39-debian10"
+        },
+        "workerConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "numLocalSsds": 1
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 3
+        }
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "jobs": [
+    {
+      "sparkJob": {
+        "mainClass": "SomeClass"
+      },
+      "stepId": "someJob"
+    },
+    {
+      "prerequisiteStepIds": [
+        "someJob"
+      ],
+      "prestoJob": {
+        "queryFileUri": "someUri"
+      },
+      "stepId": "otherJob"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}",
+  "placement": {
+    "managedCluster": {
+      "clusterName": "test-cluster",
+      "config": {
+        "autoscalingConfig": {
+          "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+        },
+        "gceClusterConfig": {
+          "tags": [
+            "foo",
+            "bar"
+          ]
+        },
+        "masterConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "bootDiskType": "pd-standard"
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 1
+        },
+        "softwareConfig": {
+          "imageVersion": "2.0.39-debian10"
+        },
+        "workerConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "numLocalSsds": 1
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 3
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "jobs": [
+    {
+      "sparkJob": {
+        "mainClass": "SomeClass"
+      },
+      "stepId": "someJob"
+    },
+    {
+      "prerequisiteStepIds": [
+        "someJob"
+      ],
+      "prestoJob": {
+        "queryFileUri": "someUri"
+      },
+      "stepId": "otherJob"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}",
+  "placement": {
+    "managedCluster": {
+      "clusterName": "test-cluster",
+      "config": {
+        "autoscalingConfig": {
+          "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+        },
+        "gceClusterConfig": {
+          "tags": [
+            "foo",
+            "bar"
+          ]
+        },
+        "masterConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "bootDiskType": "pd-standard"
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 1
+        },
+        "softwareConfig": {
+          "imageVersion": "2.0.39-debian10"
+        },
+        "workerConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "numLocalSsds": 1
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 3
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "jobs": [
+    {
+      "sparkJob": {
+        "mainClass": "SomeClass"
+      },
+      "stepId": "someJob"
+    },
+    {
+      "prerequisiteStepIds": [
+        "someJob"
+      ],
+      "prestoJob": {
+        "queryFileUri": "someUri"
+      },
+      "stepId": "otherJob"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}",
+  "placement": {
+    "managedCluster": {
+      "clusterName": "test-cluster",
+      "config": {
+        "autoscalingConfig": {
+          "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+        },
+        "gceClusterConfig": {
+          "tags": [
+            "foo",
+            "bar"
+          ]
+        },
+        "masterConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "bootDiskType": "pd-standard"
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 1
+        },
+        "softwareConfig": {
+          "imageVersion": "2.0.39-debian10"
+        },
+        "workerConfig": {
+          "diskConfig": {
+            "bootDiskSizeGb": 30,
+            "numLocalSsds": 1
+          },
+          "machineTypeUri": "n2-standard-8",
+          "numInstances": 3
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "WorkflowTemplate \"projects/${projectId}/locations/us-central1/workflowTemplates/dataprocworkflowtemplate-${uniqueId}\" not found.",
+    "status": "NOT_FOUND"
+  }
+}

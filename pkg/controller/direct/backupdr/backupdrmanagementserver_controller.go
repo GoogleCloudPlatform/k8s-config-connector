@@ -199,7 +199,7 @@ func compareManagementServer(ctx context.Context, actual, desired *pb.Management
 	}
 	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
 
-	clonedDesired := proto.Clone(desired).(*pb.ManagementServer)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.ManagementServer) {
 		// Populate GCP/server defaults here if needed

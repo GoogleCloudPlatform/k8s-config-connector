@@ -71,5 +71,11 @@ var (
 		Kind:    reflect.TypeOf(VertexAISpecialistPool{}).Name(),
 	}
 
+	VertexAITuningJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAITuningJob{}).Name(),
+	}
+
 	aiplatformAPIVersion = SchemeGroupVersion.String()
 )

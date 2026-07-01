@@ -161,6 +161,7 @@ import (
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
+	migrationcenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/migrationcenter/v1alpha1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
 	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
@@ -203,6 +204,7 @@ import (
 	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/spanner/v1beta1"
 	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/speech/v1beta1"
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sql/v1beta1"
+	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sqladmin/v1alpha1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
@@ -361,6 +363,7 @@ type Interface interface {
 	MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface
 	MetastoreV1alpha1() metastorev1alpha1.MetastoreV1alpha1Interface
 	MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface
+	MigrationcenterV1alpha1() migrationcenterv1alpha1.MigrationcenterV1alpha1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
 	ModelarmorV1alpha1() modelarmorv1alpha1.ModelarmorV1alpha1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
@@ -403,6 +406,7 @@ type Interface interface {
 	SpannerV1beta1() spannerv1beta1.SpannerV1beta1Interface
 	SpeechV1beta1() speechv1beta1.SpeechV1beta1Interface
 	SqlV1beta1() sqlv1beta1.SqlV1beta1Interface
+	SqladminV1alpha1() sqladminv1alpha1.SqladminV1alpha1Interface
 	StorageV1alpha1() storagev1alpha1.StorageV1alpha1Interface
 	StorageV1beta1() storagev1beta1.StorageV1beta1Interface
 	StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface
@@ -559,6 +563,7 @@ type Clientset struct {
 	memorystoreV1beta1              *memorystorev1beta1.MemorystoreV1beta1Client
 	metastoreV1alpha1               *metastorev1alpha1.MetastoreV1alpha1Client
 	metastoreV1beta1                *metastorev1beta1.MetastoreV1beta1Client
+	migrationcenterV1alpha1         *migrationcenterv1alpha1.MigrationcenterV1alpha1Client
 	mlengineV1alpha1                *mlenginev1alpha1.MlengineV1alpha1Client
 	modelarmorV1alpha1              *modelarmorv1alpha1.ModelarmorV1alpha1Client
 	monitoringV1beta1               *monitoringv1beta1.MonitoringV1beta1Client
@@ -601,6 +606,7 @@ type Clientset struct {
 	spannerV1beta1                  *spannerv1beta1.SpannerV1beta1Client
 	speechV1beta1                   *speechv1beta1.SpeechV1beta1Client
 	sqlV1beta1                      *sqlv1beta1.SqlV1beta1Client
+	sqladminV1alpha1                *sqladminv1alpha1.SqladminV1alpha1Client
 	storageV1alpha1                 *storagev1alpha1.StorageV1alpha1Client
 	storageV1beta1                  *storagev1beta1.StorageV1beta1Client
 	storagetransferV1alpha1         *storagetransferv1alpha1.StoragetransferV1alpha1Client
@@ -1298,6 +1304,11 @@ func (c *Clientset) MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interfac
 	return c.metastoreV1beta1
 }
 
+// MigrationcenterV1alpha1 retrieves the MigrationcenterV1alpha1Client
+func (c *Clientset) MigrationcenterV1alpha1() migrationcenterv1alpha1.MigrationcenterV1alpha1Interface {
+	return c.migrationcenterV1alpha1
+}
+
 // MlengineV1alpha1 retrieves the MlengineV1alpha1Client
 func (c *Clientset) MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface {
 	return c.mlengineV1alpha1
@@ -1506,6 +1517,11 @@ func (c *Clientset) SpeechV1beta1() speechv1beta1.SpeechV1beta1Interface {
 // SqlV1beta1 retrieves the SqlV1beta1Client
 func (c *Clientset) SqlV1beta1() sqlv1beta1.SqlV1beta1Interface {
 	return c.sqlV1beta1
+}
+
+// SqladminV1alpha1 retrieves the SqladminV1alpha1Client
+func (c *Clientset) SqladminV1alpha1() sqladminv1alpha1.SqladminV1alpha1Interface {
+	return c.sqladminV1alpha1
 }
 
 // StorageV1alpha1 retrieves the StorageV1alpha1Client
@@ -2171,6 +2187,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.migrationcenterV1alpha1, err = migrationcenterv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.mlengineV1alpha1, err = mlenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2336,6 +2356,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.sqlV1beta1, err = sqlv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.sqladminV1alpha1, err = sqladminv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2556,6 +2580,7 @@ func New(c rest.Interface) *Clientset {
 	cs.memorystoreV1beta1 = memorystorev1beta1.New(c)
 	cs.metastoreV1alpha1 = metastorev1alpha1.New(c)
 	cs.metastoreV1beta1 = metastorev1beta1.New(c)
+	cs.migrationcenterV1alpha1 = migrationcenterv1alpha1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
 	cs.modelarmorV1alpha1 = modelarmorv1alpha1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)
@@ -2598,6 +2623,7 @@ func New(c rest.Interface) *Clientset {
 	cs.spannerV1beta1 = spannerv1beta1.New(c)
 	cs.speechV1beta1 = speechv1beta1.New(c)
 	cs.sqlV1beta1 = sqlv1beta1.New(c)
+	cs.sqladminV1alpha1 = sqladminv1alpha1.New(c)
 	cs.storageV1alpha1 = storagev1alpha1.New(c)
 	cs.storageV1beta1 = storagev1beta1.New(c)
 	cs.storagetransferV1alpha1 = storagetransferv1alpha1.New(c)

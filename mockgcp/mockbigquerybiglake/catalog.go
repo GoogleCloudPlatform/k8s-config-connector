@@ -38,7 +38,7 @@ func (s *bigLakeService) CreateCatalog(ctx context.Context, req *pb.CreateCatalo
 
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.GetCatalog()).(*pb.Catalog)
+	obj := proto.CloneOf(req.GetCatalog())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

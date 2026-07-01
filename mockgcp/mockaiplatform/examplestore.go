@@ -67,7 +67,7 @@ func (s *exampleStoreService) CreateExampleStore(ctx context.Context, req *pb.Cr
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.ExampleStore).(*pb.ExampleStore)
+	obj := proto.CloneOf(req.ExampleStore)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)

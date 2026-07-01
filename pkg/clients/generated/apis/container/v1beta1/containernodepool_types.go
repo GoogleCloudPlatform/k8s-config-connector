@@ -590,9 +590,30 @@ type ContainerNodePoolSpec struct {
 	Version *string `json:"version,omitempty"`
 }
 
+type NodepoolNodeConfigStatus struct {
+	/* List of Kubernetes taints to be applied to each node. */
+	// +optional
+	Taint []NodepoolTaintStatus `json:"taint,omitempty"`
+}
+
 type NodepoolObservedStateStatus struct {
+	/* The observed node config of the GKE node pool. */
+	// +optional
+	NodeConfig *NodepoolNodeConfigStatus `json:"nodeConfig,omitempty"`
+
 	// +optional
 	Version *string `json:"version,omitempty"`
+}
+
+type NodepoolTaintStatus struct {
+	/* Effect for taint. */
+	Effect string `json:"effect"`
+
+	/* Key for taint. */
+	Key string `json:"key"`
+
+	/* Value for taint. */
+	Value string `json:"value"`
 }
 
 type ContainerNodePoolStatus struct {

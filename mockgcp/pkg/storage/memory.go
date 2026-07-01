@@ -78,7 +78,7 @@ func (s *typeStorage) Create(ctx context.Context, fqn string, create proto.Messa
 	if found {
 		return status.Errorf(codes.AlreadyExists, "%v %q already exists", s.objectTypeName, fqn)
 	}
-	s.byKey[fqn] = proto.Clone(create)
+	s.byKey[fqn] = proto.CloneOf(create)
 	return nil
 }
 
@@ -115,7 +115,7 @@ func (s *typeStorage) Update(ctx context.Context, fqn string, update proto.Messa
 	if !found {
 		return status.Errorf(codes.NotFound, "%v %q not found", s.objectTypeName, fqn)
 	}
-	s.byKey[fqn] = proto.Clone(update)
+	s.byKey[fqn] = proto.CloneOf(update)
 	return nil
 }
 

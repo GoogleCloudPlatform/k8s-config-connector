@@ -248,7 +248,7 @@ func compareGateway(ctx context.Context, actual, desired *pb.Gateway) (*structur
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
 
-	clonedDesired := proto.Clone(desired).(*pb.Gateway)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.Gateway) {
 		// Add any server-side or GCP defaults if known, or leave empty

@@ -27,10 +27,23 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-    --resource VertexAISpecialistPool:SpecialistPool
+    --resource VertexAISpecialistPool:SpecialistPool \
+    --resource AIPlatformModel:Model \
+    --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
+    --resource VertexAITuningJob:TuningJob
 
-# Revert types.generated.go to avoid deleting types of other resources in the same package
-git checkout HEAD -- "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+# Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
+python3 -c "
+path = '${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go'
+with open(path, 'r') as f:
+    content = f.read()
+content = content.replace(
+    'ListValue *ListValue \`json:\"listValue,omitempty\"\`',
+    '// +kubebuilder:pruning:PreserveUnknownFields\n\t// +kubebuilder:validation:Type=object\n\tListValue *ListValue \`json:\"listValue,omitempty\"\`'
+)
+with open(path, 'w') as f:
+    f.write(content)
+"
 
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1 \

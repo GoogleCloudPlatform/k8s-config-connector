@@ -192,14 +192,6 @@ type NotebookInstanceSpec struct {
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.can_ip_forward
 	CanIPForward *bool `json:"canIPForward,omitempty"`
 
-	// Required. The parent resource name where the Job will be created. Pattern: "projects/{project}/locations/{location}"
-	*Parent `json:",inline"`
-
-	// The NotebookInstance name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type Parent struct {
 	// Immutable. The location where the notebook instance should reside.
 	// +required
 	Zone string `json:"zone,omitempty"`
@@ -207,6 +199,9 @@ type Parent struct {
 	// The project that this resource belongs to.
 	// +required
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The NotebookInstance name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 // NotebookInstanceStatus defines the config connector machine state of NotebookInstance

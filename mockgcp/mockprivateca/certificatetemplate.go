@@ -94,7 +94,7 @@ func (s *PrivateCAV1) CreateCertificateTemplate(ctx context.Context, req *pb.Cre
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.CertificateTemplate).(*pb.CertificateTemplate)
+	obj := proto.CloneOf(req.CertificateTemplate)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -133,14 +133,14 @@ func (s *PrivateCAV1) UpdateCertificateTemplate(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
-	updated := proto.Clone(obj).(*pb.CertificateTemplate)
+	updated := proto.CloneOf(obj)
 
 	if req.UpdateMask != nil && len(req.UpdateMask.Paths) > 0 {
 		if err := fields.UpdateByFieldMask(updated, req.CertificateTemplate, req.UpdateMask.Paths); err != nil {
 			return nil, err
 		}
 	} else {
-		updated = proto.Clone(req.CertificateTemplate).(*pb.CertificateTemplate)
+		updated = proto.CloneOf(req.CertificateTemplate)
 	}
 
 	updated.Name = fqn

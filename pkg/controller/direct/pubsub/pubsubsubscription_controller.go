@@ -302,7 +302,7 @@ func compareSubscription(ctx context.Context, actual, desired *pb.Subscription) 
 	maskedActual.Name = actual.Name
 	maskedActual.Labels = actual.Labels
 
-	clonedDesired := proto.Clone(desired).(*pb.Subscription)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.Subscription) {
 		if obj.AckDeadlineSeconds == 0 {

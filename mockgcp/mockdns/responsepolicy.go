@@ -87,7 +87,7 @@ func (s *responsePoliciesService) CreateResponsePolicy(ctx context.Context, req 
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.ResponsePolicy).(*pb.ResponsePolicy)
+	obj := proto.CloneOf(req.ResponsePolicy)
 
 	obj.Id = PtrTo[int64](int64(time.Now().UnixNano()))
 	obj.Kind = PtrTo("dns#responsePolicy")
@@ -122,7 +122,7 @@ func (s *responsePoliciesService) UpdateResponsePolicy(ctx context.Context, req 
 		return nil, err
 	}
 
-	updated := proto.Clone(req.ResponsePolicy).(*pb.ResponsePolicy)
+	updated := proto.CloneOf(req.ResponsePolicy)
 
 	updated.Id = existing.Id
 	updated.Kind = existing.Kind
@@ -160,7 +160,7 @@ func (s *responsePoliciesService) PatchResponsePolicy(ctx context.Context, req *
 		return nil, err
 	}
 
-	updated := proto.Clone(req.ResponsePolicy).(*pb.ResponsePolicy)
+	updated := proto.CloneOf(req.ResponsePolicy)
 
 	updated.Id = existing.Id
 	updated.Kind = existing.Kind

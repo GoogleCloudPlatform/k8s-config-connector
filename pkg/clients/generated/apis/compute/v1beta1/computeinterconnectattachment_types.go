@@ -39,26 +39,15 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeInterconnectAttachmentSpec struct {
-	/* Whether the VLAN attachment is enabled or disabled.  When using
-	PARTNER type this will Pre-Activate the interconnect attachment. */
+	/* Whether the VLAN attachment is enabled or disabled.  When using PARTNER type this will Pre-Activate the interconnect attachment. */
 	// +optional
 	AdminEnabled *bool `json:"adminEnabled,omitempty"`
 
-	/* Provisioned bandwidth capacity for the interconnect attachment.
-	For attachments of type DEDICATED, the user can set the bandwidth.
-	For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth.
-	Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED,
-	Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"]. */
+	/* Provisioned bandwidth capacity for the interconnect attachment. For attachments of type DEDICATED, the user can set the bandwidth. For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth. Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED, Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"]. */
 	// +optional
 	Bandwidth *string `json:"bandwidth,omitempty"`
 
-	/* Immutable. Up to 16 candidate prefixes that can be used to restrict the allocation
-	of cloudRouterIpAddress and customerRouterIpAddress for this attachment.
-	All prefixes must be within link-local address space (169.254.0.0/16)
-	and must be /29 or shorter (/28, /27, etc). Google will attempt to select
-	an unused /29 from the supplied candidate prefix(es). The request will
-	fail if all possible /29s are in use on Google's edge. If not supplied,
-	Google will randomly select an unused /29 from all of link-local space. */
+	/* Immutable. Up to 16 candidate prefixes that can be used to restrict the allocation of cloudRouterIpAddress and customerRouterIpAddress for this attachment. All prefixes must be within link-local address space (169.254.0.0/16) and must be /29 or shorter (/28, /27, etc). Google will attempt to select an unused /29 from the supplied candidate prefix(es). The request will fail if all possible /29s are in use on Google's edge. If not supplied, Google will randomly select an unused /29 from all of link-local space. */
 	// +optional
 	CandidateSubnets []string `json:"candidateSubnets,omitempty"`
 
@@ -66,12 +55,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Desired availability domain for the attachment. Only available for type
-	PARTNER, at creation time. For improved reliability, customers should
-	configure a pair of attachments with one per availability domain. The
-	selected availability domain will be provided to the Partner via the
-	pairing key so that the provisioned circuit will lie in the specified
-	domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY. */
+	/* Immutable. Desired availability domain for the attachment. Only available for type PARTNER, at creation time. For improved reliability, customers should configure a pair of attachments with one per availability domain. The selected availability domain will be provided to the Partner via the pairing key so that the provisioned circuit will lie in the specified domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY. */
 	// +optional
 	EdgeAvailabilityDomain *string `json:"edgeAvailabilityDomain,omitempty"`
 
@@ -91,17 +75,33 @@ type ComputeInterconnectAttachmentSpec struct {
 	// +optional
 	Encryption *string `json:"encryption,omitempty"`
 
-	/* Immutable. URL of the underlying Interconnect object that this attachment's
-	traffic will traverse through. Required if type is DEDICATED, must not
-	be set if type is PARTNER. */
+	/* Immutable. URL of the underlying Interconnect object that this attachment's traffic will traverse through. Required if type is DEDICATED, must not be set if type is PARTNER. */
 	// +optional
 	Interconnect *string `json:"interconnect,omitempty"`
 
+	/* Immutable. The addresses that have been reserved for the
+	interconnect attachment. Used only for interconnect attachment that
+	has the encryption option as IPSEC.
+
+	The addresses must be RFC 1918 IP address ranges. When creating HA
+	VPN gateway over the interconnect attachment, if the attachment is
+	configured to use an RFC 1918 IP address, then the VPN gateway's IP
+	address will be allocated from the IP address range specified
+	here.
+
+	For example, if the HA VPN gateway's interface 0 is paired to this
+	interconnect attachment, then an RFC 1918 IP address for the VPN
+	gateway interface 0 will be allocated from the IP address specified
+	for this interconnect attachment.
+
+	If this field is not specified for interconnect attachment that has
+	encryption option as IPSEC, later on when creating HA VPN gateway on
+	this interconnect attachment, the HA VPN gateway's IP address will
+	be allocated from regional external IP address pool. */
 	// +optional
 	IpsecInternalAddresses []v1alpha1.ResourceRef `json:"ipsecInternalAddresses,omitempty"`
 
-	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through
-	this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */
+	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */
 	// +optional
 	Mtu *string `json:"mtu,omitempty"`
 
@@ -112,27 +112,20 @@ type ComputeInterconnectAttachmentSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The Cloud Router to be used for dynamic routing. This router must
-	be in the same region as this ComputeInterconnectAttachment. The
-	ComputeInterconnectAttachment will automatically connect the
-	interconnect to the network & region within which the Cloud Router
-	is configured. */
+	/* The Cloud Router to be used for dynamic routing. This router must be in the same region as this ComputeInterconnectAttachment. The ComputeInterconnectAttachment will automatically connect the interconnect to the network & region within which the Cloud Router is configured. */
 	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
 
-	/* Immutable. The type of InterconnectAttachment you wish to create. Defaults to
-	DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"]. */
+	/* Immutable. The type of InterconnectAttachment you wish to create. Defaults to DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"]. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 
-	/* Immutable. The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. When
-	using PARTNER type this will be managed upstream. */
+	/* Immutable. The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. When using PARTNER type this will be managed upstream. */
 	// +optional
 	VlanTag8021q *int64 `json:"vlanTag8021q,omitempty"`
 }
 
 type InterconnectattachmentPrivateInterconnectInfoStatus struct {
-	/* 802.1q encapsulation tag to be used for traffic between
-	Google and the customer, going to and from this network and region. */
+	/* 802.1q encapsulation tag to be used for traffic between Google and the customer, going to and from this network and region. */
 	// +optional
 	Tag8021q *int64 `json:"tag8021q,omitempty"`
 }
@@ -141,8 +134,7 @@ type ComputeInterconnectAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInterconnectAttachment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* IPv4 address + prefix length to be configured on Cloud Router
-	Interface for this interconnect attachment. */
+	/* IPv4 address + prefix length to be configured on Cloud Router Interface for this interconnect attachment. */
 	// +optional
 	CloudRouterIpAddress *string `json:"cloudRouterIpAddress,omitempty"`
 
@@ -150,13 +142,11 @@ type ComputeInterconnectAttachmentStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* IPv4 address + prefix length to be configured on the customer
-	router subinterface for this interconnect attachment. */
+	/* IPv4 address + prefix length to be configured on the customer router subinterface for this interconnect attachment. */
 	// +optional
 	CustomerRouterIpAddress *string `json:"customerRouterIpAddress,omitempty"`
 
-	/* Google reference ID, to be used when raising support tickets with
-	Google or otherwise to debug backend connectivity issues. */
+	/* Google reference ID, to be used when raising support tickets with Google or otherwise to debug backend connectivity issues. */
 	// +optional
 	GoogleReferenceId *string `json:"googleReferenceId,omitempty"`
 
@@ -164,20 +154,15 @@ type ComputeInterconnectAttachmentStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* [Output only for type PARTNER. Not present for DEDICATED]. The opaque
-	identifier of an PARTNER attachment used to initiate provisioning with
-	a selected partner. Of the form "XXXXX/region/domain". */
+	/* [Output only for type PARTNER. Not present for DEDICATED]. The opaque identifier of an PARTNER attachment used to initiate provisioning with a selected partner. Of the form "XXXXX/region/domain". */
 	// +optional
 	PairingKey *string `json:"pairingKey,omitempty"`
 
-	/* [Output only for type PARTNER. Not present for DEDICATED]. Optional
-	BGP ASN for the router that should be supplied by a layer 3 Partner if
-	they configured BGP on behalf of the customer. */
+	/* [Output only for type PARTNER. Not present for DEDICATED]. Optional BGP ASN for the router that should be supplied by a layer 3 Partner if they configured BGP on behalf of the customer. */
 	// +optional
 	PartnerAsn *string `json:"partnerAsn,omitempty"`
 
-	/* Information specific to an InterconnectAttachment. This property
-	is populated if the interconnect that this is attached to is of type DEDICATED. */
+	/* Information specific to an InterconnectAttachment. This property is populated if the interconnect that this is attached to is of type DEDICATED. */
 	// +optional
 	PrivateInterconnectInfo *InterconnectattachmentPrivateInterconnectInfoStatus `json:"privateInterconnectInfo,omitempty"`
 

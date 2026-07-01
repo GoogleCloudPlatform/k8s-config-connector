@@ -95,6 +95,11 @@ func NormalizeDynamicIDs(s string) string {
 		if idx := strings.Index(line, "/connections/"); idx != -1 {
 			lines[i] = line[:idx+len("/connections/")]
 		}
+		// Normalize KMSKeyHandle keyHandles IDs: locations/.../keyHandles/<keyHandleId>
+		if idx := strings.Index(line, "/keyHandles/"); idx != -1 {
+			start := idx + len("/keyHandles/")
+			lines[i] = line[:start] + "${keyHandleID}"
+		}
 		// Normalize Monitoring Notification Channel numeric IDs
 		if idx := strings.Index(line, "/notificationChannels/"); idx != -1 {
 			lines[i] = line[:idx+len("/notificationChannels/")]

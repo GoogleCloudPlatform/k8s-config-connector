@@ -158,6 +158,7 @@ import (
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1beta1"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1alpha1"
 	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/metastore/v1beta1"
+	migrationcenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/migrationcenter/v1alpha1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/mlengine/v1alpha1"
 	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/modelarmor/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
@@ -200,6 +201,7 @@ import (
 	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1beta1"
 	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/speech/v1beta1"
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
+	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sqladmin/v1alpha1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
@@ -362,6 +364,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	memorystorev1beta1.AddToScheme,
 	metastorev1alpha1.AddToScheme,
 	metastorev1beta1.AddToScheme,
+	migrationcenterv1alpha1.AddToScheme,
 	mlenginev1alpha1.AddToScheme,
 	modelarmorv1alpha1.AddToScheme,
 	monitoringv1beta1.AddToScheme,
@@ -404,6 +407,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	spannerv1beta1.AddToScheme,
 	speechv1beta1.AddToScheme,
 	sqlv1beta1.AddToScheme,
+	sqladminv1alpha1.AddToScheme,
 	storagev1alpha1.AddToScheme,
 	storagev1beta1.AddToScheme,
 	storagetransferv1alpha1.AddToScheme,

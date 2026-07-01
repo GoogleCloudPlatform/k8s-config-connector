@@ -1,0 +1,10 @@
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyHandle
+metadata:
+  name: ${keyHandleID}
+spec:
+  location: us-central1
+  projectRef:
+    name: ${projectId}
+  resourceID: ${keyHandleID}
+  resourceTypeSelector: compute.googleapis.com/Disk

@@ -168,7 +168,7 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx)
 	log.Info("updating batch resource allowance", "name", a.id)
 
-	desiredpb := proto.Clone(a.desired).(*pb.ResourceAllowance)
+	desiredpb := proto.CloneOf(a.desired)
 	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err

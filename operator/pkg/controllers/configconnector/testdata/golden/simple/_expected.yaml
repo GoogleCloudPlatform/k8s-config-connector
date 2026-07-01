@@ -3408,6 +3408,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - migrationcenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3769,6 +3781,18 @@ rules:
   - delete
 - apiGroups:
   - sql.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - sqladmin.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4946,6 +4970,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - migrationcenter.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5187,6 +5219,14 @@ rules:
   - watch
 - apiGroups:
   - sql.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - sqladmin.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

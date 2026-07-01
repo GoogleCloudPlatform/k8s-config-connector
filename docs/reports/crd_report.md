@@ -149,7 +149,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeDisk                                     | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeExternalVPNGateway                       | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicy                           | False        | True        | False  | DCL        | True        |
-| compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyAssociation                | False        | True        | False  | DCL        | False       |
+| compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyAssociation                | False        | True        | False  | DCL        | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewallPolicyRule                       | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeFirewall                                 | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeForwardingRule                           | False        | True        | False  | Terraform  | True        |
@@ -165,7 +165,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeInstanceGroup                            | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeInstance                                 | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeInstanceTemplate                         | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeInterconnectAttachment                   | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeInterconnectAttachment                   | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeInterconnect                             | True         | False       | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeMachineImage                             | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeManagedSSLCertificate                    | True         | True        | False  | Terraform  | False       |
@@ -186,7 +186,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyRule           | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputePacketMirroring                          | False        | True        | False  | DCL        | False       |
 | compute.cnrm.cloud.google.com                 | ComputePerInstanceConfig                        | True         | False       | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeProjectMetadata                          | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeProjectMetadata                          | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeRegionAutoscaler                         | True         | False       | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeRegionDiskResourcePolicyAttachment       | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRegionNetworkEndpointGroup               | False        | True        | False  | Terraform  | False       |
@@ -408,6 +408,7 @@
 | metastore.cnrm.cloud.google.com               | MetastoreBackup                                 | True         | True        | False  | Direct     | True        |
 | metastore.cnrm.cloud.google.com               | MetastoreFederation                             | True         | False       | False  | Direct     | True        |
 | metastore.cnrm.cloud.google.com               | MetastoreService                                | True         | False       | False  | Direct     | True        |
+| migrationcenter.cnrm.cloud.google.com         | MigrationCenterGroup                            | True         | False       | False  | Direct     | True        |
 | mlengine.cnrm.cloud.google.com                | MLEngineModel                                   | True         | False       | False  | Terraform  | False       |
 | modelarmor.cnrm.cloud.google.com              | ModelArmorTemplate                              | True         | False       | False  | Direct     | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringAlertPolicy                           | False        | True        | False  | Terraform  | True        |
@@ -510,6 +511,7 @@
 | speech.cnrm.cloud.google.com                  | SpeechCustomClass                               | True         | True        | False  | Direct     | True        |
 | speech.cnrm.cloud.google.com                  | SpeechPhraseSet                                 | True         | True        | False  | Direct     | True        |
 | speech.cnrm.cloud.google.com                  | SpeechRecognizer                                | True         | True        | False  | Direct     | True        |
+| sqladmin.cnrm.cloud.google.com                | SQLAdminBackup                                  | True         | False       | False  | Direct     | True        |
 | sql.cnrm.cloud.google.com                     | SQLDatabase                                     | False        | True        | False  | Terraform  | False       |
 | sql.cnrm.cloud.google.com                     | SQLInstance                                     | False        | True        | False  | Direct     | True        |
 | sql.cnrm.cloud.google.com                     | SQLSSLCert                                      | False        | True        | False  | Terraform  | False       |
@@ -547,12 +549,14 @@
 | vertexai.cnrm.cloud.google.com                | VertexAIMetadataStore                           | True         | True        | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com              | VertexAISpecialistPool                          | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAITensorboard                             | True         | False       | False  | Terraform  | False       |
+| aiplatform.cnrm.cloud.google.com              | VertexAITuningJob                               | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAccessRule                  | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | True        | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPeering                      | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPolicy                       | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetwork                             | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEnginePrivateCloud                        | True         | False       | False  | Direct     | True        |
+| vmwareengine.cnrm.cloud.google.com            | VMwareEnginePrivateConnection                   | True         | False       | False  | Direct     | True        |
 | vpcaccess.cnrm.cloud.google.com               | VPCAccessConnector                              | False        | True        | False  | Terraform  | False       |
 | workflowexecutions.cnrm.cloud.google.com      | WorkflowsExecution                              | True         | False       | False  | Direct     | True        |
 | workflows.cnrm.cloud.google.com               | WorkflowsWorkflow                               | True         | False       | False  | Direct     | True        |

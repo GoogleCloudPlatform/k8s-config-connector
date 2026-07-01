@@ -60,6 +60,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubSnapshot"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAddress"}:
 		exportURI = resolveCAISURI(h, obj)
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDisk"}:
@@ -120,11 +123,17 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKey"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyHandle"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
+
+	case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebookInstance"}:
+		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
 		exportURI = resolveCAISURI(h, obj)
@@ -348,7 +357,11 @@ func resolveCAISURI(h *create.Harness, obj *unstructured.Unstructured) string {
 		return ""
 	}
 	if len(caisResults) == 0 || caisResults[0].CAISURL == "unknown" {
-		h.T.Errorf("failed to get CAIS identity: %v", err)
+		if len(caisResults) > 0 {
+			h.T.Errorf("failed to get CAIS identity: %s (result: %+v)", caisResults[0].Error, caisResults[0])
+		} else {
+			h.T.Errorf("failed to get CAIS identity: no results")
+		}
 		return ""
 	}
 	return caisResults[0].CAISURL

@@ -990,6 +990,30 @@ spec:
               observedState:
                 description: The observed state of the underlying GCP resource.
                 properties:
+                  nodeConfig:
+                    description: The observed node config of the GKE node pool.
+                    properties:
+                      taint:
+                        description: List of Kubernetes taints to be applied to each
+                          node.
+                        items:
+                          properties:
+                            effect:
+                              description: Effect for taint.
+                              type: string
+                            key:
+                              description: Key for taint.
+                              type: string
+                            value:
+                              description: Value for taint.
+                              type: string
+                          required:
+                          - effect
+                          - key
+                          - value
+                          type: object
+                        type: array
+                    type: object
                   version:
                     type: string
                 type: object

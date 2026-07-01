@@ -60,7 +60,7 @@ func (s *configServiceV2) CreateExclusion(ctx context.Context, req *pb.CreateExc
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetExclusion()).(*pb.LogExclusion)
+	obj := proto.CloneOf(req.GetExclusion())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
@@ -83,7 +83,7 @@ func (s *configServiceV2) UpdateExclusion(ctx context.Context, req *pb.UpdateExc
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.LogExclusion)
+	updated := proto.CloneOf(existing)
 
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {

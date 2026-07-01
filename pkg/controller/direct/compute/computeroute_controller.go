@@ -277,7 +277,7 @@ func compareComputeRoute(ctx context.Context, actual, desired *computepb.Route) 
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.Route)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.Route) {
 		if obj.Priority == nil {

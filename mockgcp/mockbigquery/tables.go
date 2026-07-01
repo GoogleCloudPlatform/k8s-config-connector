@@ -51,7 +51,7 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 
 	now := time.Now()
 
-	updated := CloneProto(existing)
+	updated := proto.CloneOf(existing)
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 
 	updated.FriendlyName = req.GetTable().FriendlyName
@@ -353,7 +353,7 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	s.normalizeTable(obj)
 
-	ret := CloneProto(obj)
+	ret := proto.CloneOf(obj)
 
 	// TimePartitioning.RequirePartitionFilter is not returned in the POST response,
 	// but will be returned after the table is created.
@@ -387,7 +387,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 
 	now := time.Now()
 
-	updated := CloneProto(existing)
+	updated := proto.CloneOf(existing)
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 	updated.Description = req.GetTable().Description
 	updated.FriendlyName = req.GetTable().FriendlyName
