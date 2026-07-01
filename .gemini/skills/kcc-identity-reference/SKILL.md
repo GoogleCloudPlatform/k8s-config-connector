@@ -72,7 +72,10 @@ Create or update the file to match the canonical example. Key requirements:
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
 - Implement boilerplate methods: `GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`.
-- Implement `Normalize` delegating to `refs.NormalizeWithFallback`. In the fallback function `func(u *unstructured.Unstructured) string`, simply pass `u` directly to `getIdentityFrom<Kind>Spec` since `*unstructured.Unstructured` implements `client.Object`.
+- Implement `Normalize` delegating to `refs.Normalize` or `refs.NormalizeWithFallback`.
+  - **CRITICAL RULE:** `Normalize` must ONLY look at `status`, NEVER at `spec` (because we want to know if the resource is ready and fully reconciled).
+  - When the resource supports `status.externalRef`, you can use `refs.Normalize`.
+  - When you have to look at a different status field for backward compatibility (e.g., `status.selfLink` or `status.name`), you MUST use `refs.NormalizeWithFallback`, and the fallback function should only extract and parse that alternative `status` field. Do NOT fallback to parsing the spec.
 
 ### Step 5: Verify
 
