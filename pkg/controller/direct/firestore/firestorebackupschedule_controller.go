@@ -144,7 +144,7 @@ func (a *firestoreBackupScheduleAdapter) Create(ctx context.Context, createOp *d
 	parent := fmt.Sprintf("projects/%s/databases/%s", a.id.Project, a.id.Database)
 	log.V(2).Info("creating FirestoreBackupSchedule", "parent", parent)
 
-	resource := proto.Clone(a.desired).(*pb.BackupSchedule)
+	resource := proto.CloneOf(a.desired)
 
 	req := &pb.CreateBackupScheduleRequest{
 		Parent:         parent,
@@ -177,7 +177,7 @@ func (a *firestoreBackupScheduleAdapter) Update(ctx context.Context, updateOp *d
 	fqn := a.id.String()
 	log.V(2).Info("updating FirestoreBackupSchedule", "name", fqn)
 
-	resource := proto.Clone(a.desired).(*pb.BackupSchedule)
+	resource := proto.CloneOf(a.desired)
 	resource.Name = fqn
 
 	paths, report, err := common.CompareProtoMessageStructuredDiff(resource, a.actual, common.BasicDiff)

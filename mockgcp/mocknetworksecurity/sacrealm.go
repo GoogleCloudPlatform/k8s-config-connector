@@ -45,7 +45,7 @@ func (s *SSERealmServer) CreateSACRealm(ctx context.Context, req *pbv1.CreateSAC
 	name := req.Parent + "/sacRealms/" + req.SacRealmId
 	fqn := name
 
-	obj := proto.Clone(req.SacRealm).(*pbv1.SACRealm)
+	obj := proto.CloneOf(req.SacRealm)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
@@ -70,7 +70,7 @@ func (s *SSERealmServer) CreateSACRealm(ctx context.Context, req *pbv1.CreateSAC
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", project.ID, location)
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }

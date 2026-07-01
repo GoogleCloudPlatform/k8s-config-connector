@@ -314,7 +314,7 @@ func compareComputeRouter(ctx context.Context, actual, desired *computepb.Router
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.Router)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.Router) {
 		// Even if empty, it's a good pattern to define and populate GCP/server defaults here

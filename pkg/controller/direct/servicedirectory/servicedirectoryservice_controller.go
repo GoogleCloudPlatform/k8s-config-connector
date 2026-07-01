@@ -179,7 +179,7 @@ func (a *ServiceDirectoryServiceAdapter) Update(ctx context.Context, updateOp *d
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
-		desired := proto.Clone(a.desired).(*pb.Service)
+		desired := proto.CloneOf(a.desired)
 		desired.Name = fqn
 
 		req := &pb.UpdateServiceRequest{

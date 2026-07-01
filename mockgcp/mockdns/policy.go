@@ -87,7 +87,7 @@ func (s *policiesService) CreatePolicy(ctx context.Context, req *pb.CreatePolicy
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Policy).(*pb.Policy)
+	obj := proto.CloneOf(req.Policy)
 
 	obj.Id = PtrTo[uint64](uint64(time.Now().UnixNano()))
 	obj.Kind = PtrTo("dns#policy")
@@ -125,7 +125,7 @@ func (s *policiesService) UpdatePolicy(ctx context.Context, req *pb.UpdatePolicy
 		return nil, err
 	}
 
-	updated := proto.Clone(req.Policy).(*pb.Policy)
+	updated := proto.CloneOf(req.Policy)
 
 	updated.Id = existing.Id
 	updated.Kind = existing.Kind
@@ -166,7 +166,7 @@ func (s *policiesService) PatchPolicy(ctx context.Context, req *pb.PatchPolicyRe
 		return nil, err
 	}
 
-	updated := proto.Clone(req.Policy).(*pb.Policy)
+	updated := proto.CloneOf(req.Policy)
 
 	updated.Id = existing.Id
 	updated.Kind = existing.Kind

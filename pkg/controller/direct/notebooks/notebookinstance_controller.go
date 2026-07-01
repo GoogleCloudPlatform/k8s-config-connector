@@ -268,7 +268,7 @@ func compareNotebooks(ctx context.Context, actual, desired *notebookspb.Instance
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *notebookspb.Instance) {
 		if obj.ShieldedInstanceConfig == nil {

@@ -194,7 +194,7 @@ func (a *ServiceDirectoryNamespaceAdapter) Update(ctx context.Context, updateOp 
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
-		desired := proto.Clone(a.desired).(*pb.Namespace)
+		desired := proto.CloneOf(a.desired)
 		desired.Name = fqn
 
 		req := &pb.UpdateNamespaceRequest{

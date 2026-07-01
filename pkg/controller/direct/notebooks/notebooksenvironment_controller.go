@@ -240,7 +240,7 @@ func compareEnvironment(ctx context.Context, actual, desired *pb.Environment) (*
 	}
 	maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
 
-	clonedDesired := proto.Clone(desired).(*pb.Environment)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.Environment) {
 		// Even if empty, it's a good pattern to define and populate GCP/server defaults here

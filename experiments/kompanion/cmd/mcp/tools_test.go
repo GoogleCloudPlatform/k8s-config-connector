@@ -821,7 +821,7 @@ func TestHandleListKCCKinds(t *testing.T) {
 	if !strings.Contains(text, "ComputeInstance") {
 		t.Errorf("expected output to contain ComputeInstance, got %s", text)
 	}
-	
+
 	// Verify sorting
 	lines := strings.Split(text, "\n")
 	if len(lines) < 3 {

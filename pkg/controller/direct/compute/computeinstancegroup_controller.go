@@ -382,7 +382,7 @@ func compareComputeInstanceGroup(ctx context.Context, actual, desired *pb.Instan
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*pb.InstanceGroup)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.InstanceGroup) {
 		if obj.Network != nil {

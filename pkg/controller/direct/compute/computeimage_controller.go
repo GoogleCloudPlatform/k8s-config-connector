@@ -316,7 +316,7 @@ func compareComputeImage(ctx context.Context, actual, desired *computepb.Image) 
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.Image)
+	clonedDesired := proto.CloneOf(desired)
 
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

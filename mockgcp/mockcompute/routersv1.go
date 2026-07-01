@@ -65,7 +65,7 @@ func (s *RoutersV1) Insert(ctx context.Context, req *pb.InsertRouterRequest) (*p
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetRouterResource()).(*pb.Router)
+	obj := proto.CloneOf(req.GetRouterResource())
 	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id

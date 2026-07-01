@@ -138,7 +138,7 @@ func (s *GlobalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateHealthCh
 	creationTimestamp := obj.CreationTimestamp
 	kind := obj.Kind
 
-	updatedObj := proto.Clone(req.GetHealthCheckResource()).(*pb.HealthCheck)
+	updatedObj := proto.CloneOf(req.GetHealthCheckResource())
 	updatedObj.Id = id
 	updatedObj.SelfLink = selfLink
 	updatedObj.CreationTimestamp = creationTimestamp

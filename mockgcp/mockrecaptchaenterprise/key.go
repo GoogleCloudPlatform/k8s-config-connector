@@ -65,7 +65,7 @@ func (s *recaptchaEnterpriseService) CreateKey(ctx context.Context, req *pb.Crea
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetKey()).(*pb.Key)
+	obj := proto.CloneOf(req.GetKey())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 
@@ -185,7 +185,7 @@ func (s *recaptchaEnterpriseService) ListKeys(ctx context.Context, req *pb.ListK
 		if ok {
 			name, err := s.parseKeyName(keyObj.Name)
 			if err == nil {
-				keyCopy := proto.Clone(keyObj).(*pb.Key)
+				keyCopy := proto.CloneOf(keyObj)
 				keyCopy.Name = strings.ReplaceAll(keyCopy.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number))
 				response.Keys = append(response.Keys, keyCopy)
 			}

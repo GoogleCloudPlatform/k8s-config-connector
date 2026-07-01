@@ -199,7 +199,7 @@ func (s *ImagesV1) SetLabels(ctx context.Context, req *pb.SetLabelsImageRequest)
 	if s.pendingLabels == nil {
 		s.pendingLabels = make(map[string]*pb.Image)
 	}
-	s.pendingLabels[fqn] = proto.Clone(obj).(*pb.Image)
+	s.pendingLabels[fqn] = proto.CloneOf(obj)
 
 	obj.Labels = req.GetGlobalSetLabelsRequestResource().GetLabels()
 	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.GetLabels()))

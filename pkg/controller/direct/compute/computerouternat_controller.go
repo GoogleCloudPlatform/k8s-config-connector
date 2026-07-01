@@ -440,7 +440,7 @@ func compareComputeRouterNAT(ctx context.Context, actual, desired *computepb.Rou
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*computepb.RouterNat)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.RouterNat) {
 		if obj.IcmpIdleTimeoutSec == nil {

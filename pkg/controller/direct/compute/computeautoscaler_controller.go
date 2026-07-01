@@ -312,7 +312,7 @@ func compareComputeAutoscaler(ctx context.Context, actual, desired *pb.Autoscale
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*pb.Autoscaler)
+	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.Autoscaler) {
 		// Populate GCP/server defaults here if needed

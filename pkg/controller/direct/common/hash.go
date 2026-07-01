@@ -34,7 +34,7 @@ import (
 func hashProto(obj proto.Message) (string, error) {
 	// We normalize the proto by clearing output-only fields etc
 	// We do this on a copy
-	obj = proto.Clone(obj)
+	obj = proto.CloneOf(obj)
 	normalizeProto(obj)
 
 	// We use a deterministic proto marshaler.

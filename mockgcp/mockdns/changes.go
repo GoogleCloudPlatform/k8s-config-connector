@@ -75,7 +75,7 @@ func (s *changesServer) CreateChange(ctx context.Context, req *pb.CreateChangeRe
 			return nil, err
 		}
 		fqn := name.String()
-		obj := proto.Clone(rrset).(*pb.ResourceRecordSet)
+		obj := proto.CloneOf(rrset)
 		obj.Kind = PtrTo("dns#resourceRecordSet")
 		if obj.SignatureRrdatas == nil {
 			obj.SignatureRrdatas = []string{}

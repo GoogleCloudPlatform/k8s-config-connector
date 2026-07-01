@@ -375,7 +375,7 @@ func compareComputeInstanceGroupManager(ctx context.Context, actual, desired *pb
 	}
 	maskedActual.Name = actual.Name
 
-	clonedDesired := proto.Clone(desired).(*pb.InstanceGroupManager)
+	clonedDesired := proto.CloneOf(desired)
 	clonedDesired.Name = actual.Name
 
 	populateDefaults := func(obj *pb.InstanceGroupManager) {

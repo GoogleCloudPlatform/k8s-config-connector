@@ -192,7 +192,7 @@ func (a *ServiceDirectoryEndpointAdapter) Update(ctx context.Context, updateOp *
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
-		desired := proto.Clone(a.desired).(*pb.Endpoint)
+		desired := proto.CloneOf(a.desired)
 		desired.Name = fqn
 
 		req := &pb.UpdateEndpointRequest{

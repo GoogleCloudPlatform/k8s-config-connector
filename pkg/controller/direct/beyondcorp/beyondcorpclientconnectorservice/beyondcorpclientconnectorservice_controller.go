@@ -161,7 +161,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ClientConnectorService", "name", a.id)
 
-	updateReq := proto.Clone(a.desired).(*pb.ClientConnectorService)
+	updateReq := proto.CloneOf(a.desired)
 	updateReq.Name = a.actual.Name
 
 	paths, err := common.CompareProtoMessage(updateReq, a.actual, common.BasicDiff)

@@ -66,7 +66,7 @@ func (s *featureOnlineStoreAdminService) CreateFeatureOnlineStore(ctx context.Co
 
 	now := time.Now()
 
-	obj := proto.Clone(req.FeatureOnlineStore).(*pb.FeatureOnlineStore)
+	obj := proto.CloneOf(req.FeatureOnlineStore)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -85,7 +85,7 @@ func (s *featureOnlineStoreAdminService) CreateFeatureOnlineStore(ctx context.Co
 	}
 	opPrefix := fqn
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.FeatureOnlineStore)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }
@@ -130,7 +130,7 @@ func (s *featureOnlineStoreAdminService) UpdateFeatureOnlineStore(ctx context.Co
 	}
 	opPrefix := fqn
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.FeatureOnlineStore)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }
