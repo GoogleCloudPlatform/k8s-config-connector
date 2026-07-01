@@ -247,7 +247,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -523,7 +524,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
