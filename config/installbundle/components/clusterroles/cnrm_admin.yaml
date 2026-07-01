@@ -1712,6 +1712,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - visionai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vmwareengine.cnrm.cloud.google.com
   resources:
   - '*'
