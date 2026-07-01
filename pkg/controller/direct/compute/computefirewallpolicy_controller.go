@@ -63,8 +63,7 @@ type computeFirewallPolicyAdapter struct {
 	desired                *computepb.FirewallPolicy
 	actual                 *computepb.FirewallPolicy
 	reader                 client.Reader
-	folderRef              *refsv1beta1.FolderRef
-	organizationRef        *refs.OrganizationRef
+	parent                 string
 }
 
 var _ directbase.Adapter = &computeFirewallPolicyAdapter{}
@@ -101,11 +100,21 @@ func (m *computeFirewallPolicyModel) AdapterForObject(ctx context.Context, op *d
 		return nil, mapCtx.Err()
 	}
 
+	var parent string
+	if obj.Spec.FolderRef != nil {
+		parent = obj.Spec.FolderRef.External
+	} else if obj.Spec.OrganizationRef != nil {
+		parent = obj.Spec.OrganizationRef.External
+	}
+
+	if parent == "" {
+		return nil, fmt.Errorf("one of FolderRef or OrganizationRef must be specified")
+	}
+
 	adapter := &computeFirewallPolicyAdapter{
-		desired:         desired,
-		reader:          reader,
-		folderRef:       obj.Spec.FolderRef,
-		organizationRef: obj.Spec.OrganizationRef,
+		desired: desired,
+		reader:  reader,
+		parent:  parent,
 	}
 
 	rawID, err := obj.GetIdentity(ctx, reader)
@@ -152,34 +161,8 @@ func (a *computeFirewallPolicyAdapter) Create(ctx context.Context, createOp *dir
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ComputeFirewallPolicy", "name", a.id)
 
-	var parentID string
-	if a.folderRef != nil {
-		folder, err := refsv1beta1.ResolveFolder(ctx, a.reader, createOp.GetUnstructured(), a.folderRef)
-		if err != nil {
-			return err
-		}
-		if folder != nil {
-			parentID = "folders/" + folder.FolderID
-		}
-	} else if a.organizationRef != nil {
-		orgRef := &refsv1beta1.OrganizationRef{
-			External: a.organizationRef.External,
-		}
-		org, err := refsv1beta1.ResolveOrganization(ctx, a.reader, createOp.GetUnstructured(), orgRef)
-		if err != nil {
-			return err
-		}
-		if org != nil {
-			parentID = "organizations/" + org.OrganizationID
-		}
-	}
-
-	if parentID == "" {
-		return fmt.Errorf("one of FolderRef or OrganizationRef must be specified")
-	}
-
 	req := &computepb.InsertFirewallPolicyRequest{
-		ParentId:               parentID,
+		ParentId:               a.parent,
 		FirewallPolicyResource: a.desired,
 	}
 
@@ -350,7 +333,7 @@ func compareFirewallPolicy(ctx context.Context, actual, desired *computepb.Firew
 	maskedActual.Id = desired.Id
 	maskedActual.Parent = desired.Parent
 
-	clonedDesired := proto.Clone(desired).(*computepb.FirewallPolicy)
+	clonedDesired := proto.CloneOf(desired)
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

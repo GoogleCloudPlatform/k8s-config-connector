@@ -28,6 +28,16 @@ import (
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
+func init() {
+	Register(&FolderRef{}, nil)
+}
+
+var FolderGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Folder",
+}
+
 // FolderRef represents the Folder that this resource belongs to.
 type FolderRef struct {
 	// The 'name' field of a folder, when not managed by Config Connector.
@@ -43,6 +53,70 @@ type FolderRef struct {
 	// resource.
 	// +optional
 	Namespace string `json:"namespace,omitempty"`
+}
+
+var _ Ref = &FolderRef{}
+
+func (r *FolderRef) GetGVK() schema.GroupVersionKind {
+	return FolderGVK
+}
+
+func (r *FolderRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Namespace: r.Namespace,
+		Name:      r.Name,
+	}
+}
+
+func (r *FolderRef) GetExternal() string {
+	return r.External
+}
+
+func (r *FolderRef) SetExternal(external string) {
+	r.External = external
+}
+
+func (r *FolderRef) ValidateExternal(external string) error {
+	tokens := strings.Split(external, "/")
+	if len(tokens) == 2 && tokens[0] == "folders" {
+		return nil
+	}
+	return fmt.Errorf("format of folder external=%q was not known (use folders/<folderID>)", external)
+}
+
+func (r *FolderRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" {
+		return r.ValidateExternal(r.External)
+	}
+
+	if r.Name == "" {
+		return fmt.Errorf("must specify either name or external on folderRef")
+	}
+
+	key := types.NamespacedName{
+		Namespace: r.Namespace,
+		Name:      r.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
+
+	folder := &unstructured.Unstructured{}
+	folder.SetGroupVersionKind(FolderGVK)
+	if err := reader.Get(ctx, key, folder); err != nil {
+		if apierrors.IsNotFound(err) {
+			return fmt.Errorf("referenced Folder %v not found", key)
+		}
+		return fmt.Errorf("error reading referenced Folder %v: %w", key, err)
+	}
+
+	folderID, err := GetResourceID(folder)
+	if err != nil {
+		return err
+	}
+
+	r.External = "folders/" + folderID
+	return nil
 }
 
 // AsFolderRef converts a generic ResourceRef into a FolderRef.
