@@ -826,17 +826,11 @@
 [missing_field] crd=cloudbuildconnections.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=cloudbuildconnections.cloudbuild.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.deliveryPipelineRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].advanceRolloutRule.id" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].advanceRolloutRule.sourcePhases[]" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].advanceRolloutRule.wait" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].promoteReleaseRule.destinationPhase" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].promoteReleaseRule.destinationTargetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].promoteReleaseRule.id" is not set in unstructured objects
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].promoteReleaseRule.wait" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].repairRolloutRule.id" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].repairRolloutRule.jobs[]" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].repairRolloutRule.phases[]" is not set in unstructured objects
@@ -851,9 +845,6 @@
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].timedPromoteReleaseRule.schedule" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].timedPromoteReleaseRule.timeZone" is not set in unstructured objects
 [missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.selector.targets[].labels" is not set in unstructured objects
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.selector.targets[].targetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=clouddeployautomations.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.suspended" is not set in unstructured objects
 [missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.deployAction" is not set in unstructured objects
 [missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].configs[]" is not set in unstructured objects
 [missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].git.path" is not set in unstructured objects
