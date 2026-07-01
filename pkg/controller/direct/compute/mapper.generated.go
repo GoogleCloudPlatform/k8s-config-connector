@@ -797,6 +797,40 @@ func ComputeFirewallPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeFirewallPolicyAssociationSpec_v1beta1_FromProto", skipping
+func ComputeFirewallPolicyAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyAssociation) *krm.ComputeFirewallPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyAssociationSpec{}
+	if in.GetAttachmentTarget() != "" {
+		out.AttachmentTargetRef = &krm.ComputeFirewallPolicyAssociationAttachmentTargetRef{External: in.GetAttachmentTarget()}
+	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFirewallPolicyAssociationSpec_v1beta1_ToProto", skipping
+func ComputeFirewallPolicyAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyAssociationSpec) *pb.FirewallPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyAssociation{}
+	if in.AttachmentTargetRef != nil {
+		out.AttachmentTarget = &in.AttachmentTargetRef.External
+	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeFirewallPolicyRuleSpec_v1beta1_FromProto", skipping
 func ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
 	if in == nil {

@@ -28,6 +28,7 @@ go run . generate-types \
   --resource ComputeExternalVPNGateway:ExternalVpnGateway \
   --resource ComputeFirewall:Firewall \
   --resource ComputeFirewallPolicy:FirewallPolicy \
+  --resource ComputeFirewallPolicyAssociation:FirewallPolicyAssociation \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeHTTPHealthCheck:HTTPHealthCheck \
