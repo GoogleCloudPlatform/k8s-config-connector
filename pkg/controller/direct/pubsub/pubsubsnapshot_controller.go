@@ -267,6 +267,9 @@ func (a *snapshotAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 		return nil, mapCtx.Err()
 	}
 
+	// Note: The exported object does not have the subscription reference (pubSubSubscriptionRef)
+	// because the GCP GET/LIST APIs do not return it. Consequently, this exported object
+	// cannot be used directly to create a new snapshot without manually specifying that field.
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.Snapshot)
 	obj.Spec.ProjectRef = &refv1beta1.ProjectRef{
 		External: a.id.Project,
