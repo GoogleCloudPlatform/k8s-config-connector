@@ -20,7 +20,6 @@ import (
 	"fmt"
 
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func computeEtag(obj proto.Message) string {
@@ -42,8 +41,4 @@ func ValueOf[T any](t *T) T {
 		return zeroVal
 	}
 	return *t
-}
-
-func CloneProto[T protoreflect.ProtoMessage](t T) T {
-	return proto.CloneOf(t)
 }
