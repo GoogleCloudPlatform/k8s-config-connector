@@ -1321,6 +1321,7 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.reservationAffinity.key" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.reservationAffinity.values[]" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.resourceLabels" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.resourceManagerTags" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.sandboxConfig.sandboxType" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.shieldedInstanceConfig.enableIntegrityMonitoring" is not set in unstructured objects
@@ -1402,6 +1403,7 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.reservationAffinity.key" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.reservationAffinity.values[]" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.resourceLabels" is not set in unstructured objects
+[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.resourceManagerTags" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.sandboxConfig.sandboxType" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.shieldedInstanceConfig.enableIntegrityMonitoring" is not set in unstructured objects
