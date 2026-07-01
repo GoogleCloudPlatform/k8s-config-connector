@@ -15,6 +15,7 @@
 // +tool:mockgcp-support
 // proto.service: google.cloud.aiplatform.v1beta1.ExampleStoreService
 // proto.message: google.cloud.aiplatform.v1beta1.ExampleStore
+// Verified behavioral correctness of MockGCP and Alignment for VertexAIExampleStore.
 
 package mockaiplatform
 

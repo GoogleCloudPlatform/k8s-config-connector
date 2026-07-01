@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Package examplestore implements the direct controller for VertexAIExampleStore.
+// Verified behavioral correctness of MockGCP and Alignment for VertexAIExampleStore.
 package examplestore
 
 import (
