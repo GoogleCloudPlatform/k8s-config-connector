@@ -1,5 +1,7 @@
-### [2026-06-29] MigrationCenterGroup Types, CRD, and IdentityV2 Scaffolding
-- **Context**: Implementing initial types, CRD, and IdentityV2 for `MigrationCenterGroup` under `apis/migrationcenter/v1alpha1/`.
-- **Problem**: The Migration Center API/resource is missing from `cloudassetinventory_names.jsonl` (not supported by CAIS yet), which causes CAIS URL template matches validation `TestRegisteredTemplatesMatchCAI` in `pkg/gcpurls/registry_test.go` to fail on missing registered templates.
-- **Solution**: Added the URL template `//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}` as an exception under `ignoredTemplates` in `pkg/gcpurls/registry_test.go`.
-- **Impact**: Ensures that `gcpurls` verification tests compile and pass smoothly without requiring support in CAIS metadata yet.
+# Migration Center Journal
+
+### 2026-07-01 Greenfield controller for MigrationCenterGroup
+- **Context**: Implementing Greenfield direct controller and E2E fixtures for `MigrationCenterGroup` under `v1alpha1`.
+- **Problem**: Migration Center is a newly introduced service with no existing mappers, controllers, or MockGCP implementation. 
+- **Solution**: Scaffolded a brand new direct controller in `pkg/controller/direct/migrationcenter/`, generated mappers by updating the `generate.sh` script to include `--generate-mapper` and `goimports` formatting, and registered it in the dynamic static config mapping and `register.go`. Created both minimal and maximal KRM E2E test fixtures, then enabled the `migrationcenter.googleapis.com` API on the real GCP sandbox project to record golden objects and HTTP traffic.
+- **Impact**: Demonstrates standard Greenfield controller patterns with LRO creation/update/deletion, structured reporting, and full E2E validation against real GCP.

@@ -940,6 +940,8 @@ cloud.google.com/go/metastore v1.13.3/go.mod h1:K+wdjXdtkdk7AQg4+sXS8bRrQa9gcOr+
 cloud.google.com/go/metastore v1.13.4/go.mod h1:FMv9bvPInEfX9Ac1cVcRXp8EBBQnBcqH6gz3KvJ9BAE=
 cloud.google.com/go/metastore v1.19.0 h1:oAFi3AkO9YZHoDYXo3cbLXlBS4PUUxe5/9kR+q4ta1g=
 cloud.google.com/go/metastore v1.19.0/go.mod h1:JGTjGdQ627m2ptDo86XsIKqzzZCk+GG41VEFD7ENsqs=
+cloud.google.com/go/migrationcenter v1.6.0 h1:7+BzWJbfj+E+VRfi2dYfNK8qHvonWMwaJpUloxl+V9s=
+cloud.google.com/go/migrationcenter v1.6.0/go.mod h1:SX0CSZzEO8zP/h7ceIYLTjcpLPTq0ZGPsSe4GeJSAM8=
 cloud.google.com/go/modelarmor v1.0.0 h1:vGRxxlBHRDKH9D66vfFeC2nTG4eRMNJ1DMPxa6NG3bE=
 cloud.google.com/go/modelarmor v1.0.0/go.mod h1:nrgM9UlxJvFE5NcE6NN/OJ8vI1LuJih27Hg8wq38mGQ=
 cloud.google.com/go/monitoring v1.7.0/go.mod h1:HpYse6kkGo//7p6sT0wsIC6IBDET0RhIsnmlA53dvEk=
