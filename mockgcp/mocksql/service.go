@@ -63,6 +63,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSqlInstancesServiceServer(grpcServer, &sqlInstancesService{MockService: s})
 	pb.RegisterSqlUsersServiceServer(grpcServer, s.users)
 	pb.RegisterSqlOperationsServiceServer(grpcServer, &sqlOperationsService{MockService: s})
+	pb.RegisterSqlBackupRunsServiceServer(grpcServer, &sqlBackupRunServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -70,7 +71,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterSqlDatabasesServiceHandler,
 		pb.RegisterSqlInstancesServiceHandler,
 		pb.RegisterSqlUsersServiceHandler,
-		pb.RegisterSqlOperationsServiceHandler)
+		pb.RegisterSqlOperationsServiceHandler,
+		pb.RegisterSqlBackupRunsServiceHandler)
 	if err != nil {
 		return nil, err
 	}

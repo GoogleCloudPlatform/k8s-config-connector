@@ -1,0 +1,10 @@
+apiVersion: sqladmin.cnrm.cloud.google.com/v1alpha1
+kind: SQLAdminBackup
+metadata:
+  name: sqladminbackup-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${gcpProject}
+  instanceRef:
+    name: sqlinstance-dep-${uniqueId}
+  location: us-central1
