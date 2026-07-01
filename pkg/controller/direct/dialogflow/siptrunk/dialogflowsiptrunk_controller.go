@@ -171,7 +171,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating DialogflowSipTrunk", "name", a.id.String())
 
 	// Create a copy of desired and set Name and output-only fields from actual to prevent false diffs
-	desired := proto.Clone(a.desired).(*pb.SipTrunk)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = a.id.String()
 	desired.Connections = a.actual.Connections
 

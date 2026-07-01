@@ -53,7 +53,7 @@ func (s *sipTrunksServer) CreateSipTrunk(ctx context.Context, req *pb.CreateSipT
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetSipTrunk()).(*pb.SipTrunk)
+	obj := proto.CloneOf(req.GetSipTrunk())
 	obj.Name = fqn
 
 	// Populate simulated connection
