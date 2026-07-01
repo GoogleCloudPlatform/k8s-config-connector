@@ -40,6 +40,7 @@ mv google/pubsub/ mockgcp/
 mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
+mv google/partner/ mockgcp/
 
 rm -rf mockgcp/cloud/privilegedaccessmanager/
 
@@ -72,6 +73,8 @@ find . -type f -print0 | xargs -0 sed -i \
   -e "s@google\.pubsub@mockgcp.pubsub@g" \
   -e "s@google/monitoring/@mockgcp/monitoring/@g" \
   -e "s@google\.monitoring@mockgcp.monitoring@g" \
+  -e "s@google/partner/@mockgcp/partner/@g" \
+  -e "s@google\.partner@mockgcp.partner@g" \
   -e "s@google/storage/@mockgcp/storage/@g" \
   -e "s@google\.storage@mockgcp.storage@g" \
   -e "s@google/spanner/@mockgcp/spanner/@g" \
