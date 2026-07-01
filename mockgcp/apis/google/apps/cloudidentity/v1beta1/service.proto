@@ -321,7 +321,7 @@ service GroupsMembershipsServer {
     };
   };
 
-  // Searches direct groups of a member.
+  // Searches direct groups of a member. Groups for which the actor does not have the permission to view memberships are silently filtered out.
   rpc SearchDirectGroupsGroupsMembership(SearchDirectGroupsGroupsMembershipRequest) returns (SearchDirectGroupsResponse) {
     option (google.api.http) = {
       get: "/v1beta1/{parent=groups/*}/memberships:searchDirectGroups"
@@ -588,6 +588,16 @@ message AndroidAttributes {
   optional bool verify_apps_enabled = 8 [json_name="verifyAppsEnabled"];
 }
 
+// Resource representing the anti-virus information of a Device.
+message AntivirusInfo {
+  // Output only. The display name of the anti-virus software.
+  optional string display_name = 1 [json_name="displayName"];
+  // Output only. The GUID of the anti-virus product.
+  optional string product_guid = 2 [json_name="productGuid"];
+  // Output only. The state of the anti-virus.
+  optional string product_state = 3 [json_name="productState"];
+}
+
 // Request message for approving the device to access user data.
 message ApproveDeviceUserRequest {
   // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
@@ -818,72 +828,78 @@ message DeleteInboundSsoAssignmentOperationMetadata {
 message Device {
   // Output only. Attributes specific to Android devices.
   optional AndroidAttributes android_specific_attributes = 1 [json_name="androidSpecificAttributes"];
+  // Output only. Anti-virus information for the device.
+  repeated AntivirusInfo antivirus_info = 2 [json_name="antivirusInfo"];
   // Asset tag of the device.
-  optional string asset_tag = 2 [json_name="assetTag"];
+  optional string asset_tag = 3 [json_name="assetTag"];
   // Output only. Baseband version of the device.
-  optional string baseband_version = 3 [json_name="basebandVersion"];
+  optional string baseband_version = 4 [json_name="basebandVersion"];
   // Output only. Device bootloader version. Example: 0.6.7.
-  optional string bootloader_version = 4 [json_name="bootloaderVersion"];
+  optional string bootloader_version = 5 [json_name="bootloaderVersion"];
   // Output only. Device brand. Example: Samsung.
-  optional string brand = 5 [json_name="brand"];
+  optional string brand = 6 [json_name="brand"];
   // Browser profiles on the device. This is a copy of the BrowserAttributes message defined in EndpointVerificationSpecificAttributes. We are replicating it here since EndpointVerification isn't the only client reporting browser profiles.
-  repeated BrowserAttributes browser_profiles = 6 [json_name="browserProfiles"];
+  repeated BrowserAttributes browser_profiles = 7 [json_name="browserProfiles"];
   // Output only. Build number of the device.
-  optional string build_number = 7 [json_name="buildNumber"];
+  optional string build_number = 8 [json_name="buildNumber"];
   // List of the clients the device is reporting to.
-  repeated string client_types = 8 [json_name="clientTypes"];
+  repeated string client_types = 9 [json_name="clientTypes"];
   // Output only. Represents whether the Device is compromised.
-  optional string compromised_state = 9 [json_name="compromisedState"];
+  optional string compromised_state = 10 [json_name="compromisedState"];
   // Output only. When the Company-Owned device was imported. This field is empty for BYOD devices.
-  optional .google.protobuf.Timestamp create_time = 10 [json_name="createTime"];
+  optional .google.protobuf.Timestamp create_time = 11 [json_name="createTime"];
   // Unique identifier for the device.
-  optional string device_id = 11 [json_name="deviceId"];
+  optional string device_id = 12 [json_name="deviceId"];
   // Output only. Type of device.
-  optional string device_type = 12 [json_name="deviceType"];
+  optional string device_type = 13 [json_name="deviceType"];
   // Output only. Whether developer options is enabled on device.
-  optional bool enabled_developer_options = 13 [json_name="enabledDeveloperOptions"];
+  optional bool enabled_developer_options = 14 [json_name="enabledDeveloperOptions"];
   // Output only. Whether USB debugging is enabled on device.
-  optional bool enabled_usb_debugging = 14 [json_name="enabledUsbDebugging"];
+  optional bool enabled_usb_debugging = 15 [json_name="enabledUsbDebugging"];
   // Output only. Device encryption state.
-  optional string encryption_state = 15 [json_name="encryptionState"];
+  optional string encryption_state = 16 [json_name="encryptionState"];
   // Output only. Attributes specific to [Endpoint Verification](https://cloud.google.com/endpoint-verification/docs/overview) devices.
-  optional EndpointVerificationSpecificAttributes endpoint_verification_specific_attributes = 16 [json_name="endpointVerificationSpecificAttributes"];
+  optional EndpointVerificationSpecificAttributes endpoint_verification_specific_attributes = 17 [json_name="endpointVerificationSpecificAttributes"];
   // Host name of the device.
-  optional string hostname = 17 [json_name="hostname"];
+  optional string hostname = 18 [json_name="hostname"];
   // Output only. IMEI number of device if GSM device; empty otherwise.
-  optional string imei = 18 [json_name="imei"];
+  optional string imei = 19 [json_name="imei"];
   // Output only. Kernel version of the device.
-  optional string kernel_version = 19 [json_name="kernelVersion"];
+  optional string kernel_version = 20 [json_name="kernelVersion"];
   // Most recent time when device synced with this service.
-  optional .google.protobuf.Timestamp last_sync_time = 20 [json_name="lastSyncTime"];
+  optional .google.protobuf.Timestamp last_sync_time = 21 [json_name="lastSyncTime"];
   // Output only. Management state of the device
-  optional string management_state = 21 [json_name="managementState"];
+  optional string management_state = 22 [json_name="managementState"];
   // Output only. Device manufacturer. Example: Motorola.
-  optional string manufacturer = 22 [json_name="manufacturer"];
+  optional string manufacturer = 23 [json_name="manufacturer"];
   // Output only. MEID number of device if CDMA device; empty otherwise.
-  optional string meid = 23 [json_name="meid"];
+  optional string meid = 24 [json_name="meid"];
   // Output only. Model name of device. Example: Pixel 3.
-  optional string model = 24 [json_name="model"];
+  optional string model = 25 [json_name="model"];
   // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Device in format: `devices/{device_id}`, where device_id is the unique id assigned to the Device.
-  optional string name = 25 [json_name="name"];
+  optional string name = 26 [json_name="name"];
   // Output only. Mobile or network operator of device, if available.
-  optional string network_operator = 26 [json_name="networkOperator"];
+  optional string network_operator = 27 [json_name="networkOperator"];
+  // Output only. OS firewall status of the device.
+  optional string os_firewall_status = 28 [json_name="osFirewallStatus"];
   // Output only. OS version of the device. Example: Android 8.1.0.
-  optional string os_version = 27 [json_name="osVersion"];
+  optional string os_version = 29 [json_name="osVersion"];
   // Output only. Domain name for Google accounts on device. Type for other accounts on device. On Android, will only be populated if |ownership_privilege| is |PROFILE_OWNER| or |DEVICE_OWNER|. Does not include the account signed in to the device policy app if that account's domain has only one account. Examples: "com.example", "xyz.com".
-  repeated string other_accounts = 28 [json_name="otherAccounts"];
+  repeated string other_accounts = 30 [json_name="otherAccounts"];
   // Output only. Whether the device is owned by the company or an individual
-  optional string owner_type = 29 [json_name="ownerType"];
+  optional string owner_type = 31 [json_name="ownerType"];
   // Output only. OS release version. Example: 6.0.
-  optional string release_version = 30 [json_name="releaseVersion"];
+  optional string release_version = 32 [json_name="releaseVersion"];
   // Output only. OS security patch update time on device.
-  optional .google.protobuf.Timestamp security_patch_time = 31 [json_name="securityPatchTime"];
+  optional .google.protobuf.Timestamp security_patch_time = 33 [json_name="securityPatchTime"];
   // Serial Number of device. Example: HT82V1A01076.
-  optional string serial_number = 32 [json_name="serialNumber"];
+  optional string serial_number = 34 [json_name="serialNumber"];
   // Output only. Unified device id of the device.
-  optional string unified_device_id = 33 [json_name="unifiedDeviceId"];
+  optional string unified_device_id = 35 [json_name="unifiedDeviceId"];
   // WiFi MAC addresses of device.
-  repeated string wifi_mac_addresses = 34 [json_name="wifiMacAddresses"];
+  repeated string wifi_mac_addresses = 36 [json_name="wifiMacAddresses"];
+  // Output only. Attributes specific to Windows devices.
+  optional WindowsSpecificDeviceAttributes windows_specific_device_attributes = 37 [json_name="windowsSpecificDeviceAttributes"];
 }
 
 // Represents a user's use of a Device in the Cloud Identity Devices API. A DeviceUser is a resource representing a user's use of a Device
@@ -1693,7 +1709,7 @@ message PolicyQuery {
   optional string group = 1 [json_name="group"];
   // Required. Immutable. Non-empty default. The OrgUnit the query applies to. This field is only set if there is a single value for org_unit that satisfies all clauses of the query.
   optional string org_unit = 2 [json_name="orgUnit"];
-  // Immutable. The CEL query that defines which entities the Policy applies to (ex. a User entity). For details about CEL see https://opensource.google.com/projects/cel. The OrgUnits the Policy applies to are represented by a clause like so: entity.org_units.exists(org_unit, org_unit.org_unit_id == orgUnitId('{orgUnitId}')) The Group the Policy applies to are represented by a clause like so: entity.groups.exists(group, group.group_id == groupId('{groupId}')) The Licenses the Policy applies to are represented by a clause like so: entity.licenses.exists(license, license in ['/product/{productId}/sku/{skuId}']) The above clauses can be present in any combination, and used in conjunction with the &&, || and ! operators. The org_unit and group fields below are helper fields that contain the corresponding value(s) as the query to make the query easier to use.
+  // Immutable. The CEL query that defines which entities the Policy applies to (ex. a User entity). For details about CEL see https://opensource.google.com/projects/cel. The OrgUnits the Policy applies to are represented by a clause like so: entity.org_units.exists(org_unit, org_unit.org_unit_id == orgUnitId('{orgUnitId}')) The Group the Policy applies to are represented by a clause like so: entity.groups.exists(group, group.group_id == groupId('{groupId}')) The Licenses the Policy applies to are represented by a clause like so: entity.licenses.exists(license, license in ['/product/{productId}/sku/{skuId}']) **Note:** The licenses clause is not supported in mutate endpoints. The above clauses can be present in any combination, and used in conjunction with the &&, || and ! operators. The org_unit and group fields below are helper fields that contain the corresponding value(s) as the query to make the query easier to use.
   optional string query = 3 [json_name="query"];
   // Output only. The decimal sort order of this PolicyQuery. The value is relative to all other policies with the same setting type for the customer. (There are no duplicates within this set).
   optional double sort_order = 4 [json_name="sortOrder"];
@@ -1861,6 +1877,18 @@ message UserInvitation {
   optional string state = 3 [json_name="state"];
   // Time when the `UserInvitation` was last updated.
   optional .google.protobuf.Timestamp update_time = 4 [json_name="updateTime"];
+}
+
+// Represents the Windows specific attributes of a Device.
+message WindowsSpecificDeviceAttributes {
+  // Output only. The hotfixes installed on the device.
+  repeated string hotfixes = 1 [json_name="hotfixes"];
+  // Output only. Secure boot mode of the device.
+  optional string secure_boot_mode = 2 [json_name="secureBootMode"];
+  // Output only. The domain of the machine that the user is logged into. This is different from the windows_user_domain as the user could be logged into a domain different from the machine domain.
+  optional string windows_machine_domain = 3 [json_name="windowsMachineDomain"];
+  // Output only. The domain of the user account that is logged into the machine.
+  optional string windows_user_domain = 4 [json_name="windowsUserDomain"];
 }
 
 // Request message for wiping all data on the device.

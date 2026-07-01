@@ -67,7 +67,7 @@ service AnywhereCachesServer {
     };
   };
 
-  // Updates the config(ttl and admissionPolicy) of an Anywhere Cache instance.
+  // Updates the config of an Anywhere Cache instance.
   rpc UpdateAnywhereCache(UpdateAnywhereCacheRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
       patch: "/storage/v1/b/{bucket}/anywhereCaches/{anywhere_cache_id}"
@@ -592,20 +592,22 @@ message AnywhereCache {
   optional .google.protobuf.Timestamp create_time = 4 [json_name="createTime"];
   // The ID of the resource, including the project number, bucket name and anywhere cache ID.
   optional string id = 5 [json_name="id"];
+  // Specifies whether objects are ingested into the cache upon write.
+  optional bool ingest_on_write = 6 [json_name="ingestOnWrite"];
   // The kind of item this is. For Anywhere Cache, this is always storage#anywhereCache.
-  optional string kind = 6 [json_name="kind"];
+  optional string kind = 7 [json_name="kind"];
   // True if the cache instance has an active Update long-running operation.
-  optional bool pending_update = 7 [json_name="pendingUpdate"];
+  optional bool pending_update = 8 [json_name="pendingUpdate"];
   // The link to this cache instance.
-  optional string self_link = 8 [json_name="selfLink"];
+  optional string self_link = 9 [json_name="selfLink"];
   // The current state of the cache instance.
-  optional string state = 9 [json_name="state"];
+  optional string state = 10 [json_name="state"];
   // The TTL of all cache entries in whole seconds. e.g., "7200s". 
-  optional .google.protobuf.Duration ttl = 10 [json_name="ttl"];
+  optional .google.protobuf.Duration ttl = 11 [json_name="ttl"];
   // The modification time of the cache instance metadata in RFC 3339 format.
-  optional .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
+  optional .google.protobuf.Timestamp update_time = 12 [json_name="updateTime"];
   // The zone in which the cache instance is running. For example, us-central1-a.
-  optional string zone = 12 [json_name="zone"];
+  optional string zone = 13 [json_name="zone"];
 }
 
 // A list of Anywhere Caches.
@@ -717,6 +719,8 @@ message Condition {
   repeated string matches_suffix = 10 [json_name="matchesSuffix"];
   optional string noncurrent_time_before = 11 [json_name="noncurrentTimeBefore"];
   optional int32 num_newer_versions = 12 [json_name="numNewerVersions"];
+  optional int64 size_above_bytes = 13 [json_name="sizeAboveBytes"];
+  optional int64 size_below_bytes = 14 [json_name="sizeBelowBytes"];
 }
 
 message Rule {
