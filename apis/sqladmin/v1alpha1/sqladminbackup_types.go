@@ -23,7 +23,7 @@ import (
 var SQLAdminBackupGVK = GroupVersion.WithKind("SQLAdminBackup")
 
 // SQLAdminBackupSpec defines the desired state of SQLAdminBackup
-// +kcc:spec:proto=google.cloud.sql.v1.BackupRun
+// +kcc:spec:proto=google.cloud.sql.v1beta4.BackupRun
 type SQLAdminBackupSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -52,7 +52,7 @@ type SQLAdminBackupSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.sql.v1.DiskEncryptionConfiguration
+// +kcc:proto=google.cloud.sql.v1beta4.DiskEncryptionConfiguration
 type DiskEncryptionConfiguration struct {
 	// KMS key used to encrypt the backup.
 	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
@@ -75,7 +75,7 @@ type SQLAdminBackupStatus struct {
 }
 
 // SQLAdminBackupObservedState is the state of the SQLAdminBackup resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.sql.v1.BackupRun
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.BackupRun
 type SQLAdminBackupObservedState struct {
 	// The time the run was enqueued in UTC timezone in RFC 3339 format.
 	EnqueuedTime *string `json:"enqueuedTime,omitempty"`
@@ -108,29 +108,29 @@ type SQLAdminBackupObservedState struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
-// +kcc:proto=google.cloud.sql.v1.DiskEncryptionStatus
+// +kcc:proto=google.cloud.sql.v1beta4.DiskEncryptionStatus
 type DiskEncryptionStatus struct {
 	// KMS key version used to encrypt the Cloud SQL instance resource
-	// +kcc:proto:field=google.cloud.sql.v1.DiskEncryptionStatus.kms_key_version_name
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DiskEncryptionStatus.kms_key_version_name
 	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
 
 	// This is always `sql#diskEncryptionStatus`.
-	// +kcc:proto:field=google.cloud.sql.v1.DiskEncryptionStatus.kind
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DiskEncryptionStatus.kind
 	Kind *string `json:"kind,omitempty"`
 }
 
-// +kcc:proto=google.cloud.sql.v1.OperationError
+// +kcc:proto=google.cloud.sql.v1beta4.OperationError
 type OperationError struct {
 	// This is always `sql#operationError`.
-	// +kcc:proto:field=google.cloud.sql.v1.OperationError.kind
+	// +kcc:proto:field=google.cloud.sql.v1beta4.OperationError.kind
 	Kind *string `json:"kind,omitempty"`
 
 	// Identifies the specific error that occurred.
-	// +kcc:proto:field=google.cloud.sql.v1.OperationError.code
+	// +kcc:proto:field=google.cloud.sql.v1beta4.OperationError.code
 	Code *string `json:"code,omitempty"`
 
 	// Additional information about the error encountered.
-	// +kcc:proto:field=google.cloud.sql.v1.OperationError.message
+	// +kcc:proto:field=google.cloud.sql.v1beta4.OperationError.message
 	Message *string `json:"message,omitempty"`
 }
 

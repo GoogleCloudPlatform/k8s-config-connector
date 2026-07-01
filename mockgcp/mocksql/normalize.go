@@ -16,6 +16,7 @@ package mocksql
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"k8s.io/klog/v2"
@@ -26,11 +27,40 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// SQLUser
 	replacements.ReplacePath(".items[].passwordPolicy.status.passwordExpirationTime", "2025-06-19T01:02:03Z")
+
+	// BackupRun
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".enqueuedTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".windowStartTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".items[].startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].enqueuedTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].windowStartTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !isSQLAPI(event) {
 		return
+	}
+
+	u, err := url.Parse(event.URL())
+	if err == nil {
+		path := u.Path
+		idx := strings.LastIndex(path, "/backupRuns/")
+		if idx != -1 {
+			idStr := path[idx+len("/backupRuns/"):]
+			if qIdx := strings.Index(idStr, "?"); qIdx != -1 {
+				idStr = idStr[:qIdx]
+			}
+			if sIdx := strings.Index(idStr, "/"); sIdx != -1 {
+				idStr = idStr[:sIdx]
+			}
+			if idStr != "" {
+				replacements.ReplaceStringValue(idStr, "000000000000000000000")
+			}
+		}
 	}
 
 	var sqlInstance struct {

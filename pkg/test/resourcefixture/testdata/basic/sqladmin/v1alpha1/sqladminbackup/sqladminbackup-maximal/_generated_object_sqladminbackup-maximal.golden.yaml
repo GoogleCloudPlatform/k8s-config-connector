@@ -1,0 +1,35 @@
+apiVersion: sqladmin.cnrm.cloud.google.com/v1alpha1
+kind: SQLAdminBackup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: sqladminbackup-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backupKind: PHYSICAL
+  description: This is a maximal backup taken on demand
+  instanceRef:
+    name: sqlinstance-dep-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${gcpProject}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${gcpProject}/backups/sqladminbackup-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    endTime: "1970-01-01T00:00:00Z"
+    enqueuedTime: "1970-01-01T00:00:00Z"
+    id: 1111111111111111
+    startTime: "1970-01-01T00:00:00Z"
+    status: SUCCESSFUL
+    type: ON_DEMAND

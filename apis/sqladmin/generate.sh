@@ -32,9 +32,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.sql.v1 \
+  --service google.cloud.sql.v1beta4 \
   --api-version sqladmin.cnrm.cloud.google.com/v1alpha1 \
   --resource SQLAdminBackup:BackupRun
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.sql.v1beta4 \
+  --api-version sqladmin.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
