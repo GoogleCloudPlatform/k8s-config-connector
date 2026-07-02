@@ -361,7 +361,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The Project that this resource belongs to.</p>
+            <p>The Project that this resource belongs to. Deprecated: Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef instead to avoid adding the 'kind' field to the CRD.</p>
         </td>
     </tr>
     <tr>
@@ -618,7 +618,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The Project that this resource belongs to.</p>
+            <p>The Project that this resource belongs to. Deprecated: Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef instead to avoid adding the 'kind' field to the CRD.</p>
         </td>
     </tr>
     <tr>
@@ -838,7 +838,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The Project that this resource belongs to.</p>
+            <p>The Project that this resource belongs to. Deprecated: Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef instead to avoid adding the 'kind' field to the CRD.</p>
         </td>
     </tr>
     <tr>
