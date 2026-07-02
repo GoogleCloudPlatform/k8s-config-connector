@@ -21,17 +21,32 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+# Use fixed SHA for NetworkSecurity protos
+PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 go run . generate-types \
     --service google.cloud.networksecurity.v1beta1 \
     --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
     --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy \
-    --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy
+    --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
+    --proto-source-path ${PROTO_OUT}
 
 go run . generate-mapper \
     --service google.cloud.networksecurity.v1beta1 \
-    --api-version networksecurity.cnrm.cloud.google.com/v1beta1
+    --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
+    --proto-source-path ${PROTO_OUT}
 
 
 cd ${REPO_ROOT}
