@@ -214,6 +214,7 @@ import (
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	testingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/testing/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
+	translatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/translate/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
@@ -420,6 +421,7 @@ type Interface interface {
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	TestingV1alpha1() testingv1alpha1.TestingV1alpha1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
+	TranslateV1alpha1() translatev1alpha1.TranslateV1alpha1Interface
 	VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
 	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
@@ -624,6 +626,7 @@ type Clientset struct {
 	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
 	testingV1alpha1                 *testingv1alpha1.TestingV1alpha1Client
 	tpuV1alpha1                     *tpuv1alpha1.TpuV1alpha1Client
+	translateV1alpha1               *translatev1alpha1.TranslateV1alpha1Client
 	vectorsearchV1alpha1            *vectorsearchv1alpha1.VectorsearchV1alpha1Client
 	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
 	vertexaiV1beta1                 *vertexaiv1beta1.VertexaiV1beta1Client
@@ -1581,6 +1584,11 @@ func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return c.tpuV1alpha1
 }
 
+// TranslateV1alpha1 retrieves the TranslateV1alpha1Client
+func (c *Clientset) TranslateV1alpha1() translatev1alpha1.TranslateV1alpha1Interface {
+	return c.translateV1alpha1
+}
+
 // VectorsearchV1alpha1 retrieves the VectorsearchV1alpha1Client
 func (c *Clientset) VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface {
 	return c.vectorsearchV1alpha1
@@ -2431,6 +2439,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.translateV1alpha1, err = translatev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vectorsearchV1alpha1, err = vectorsearchv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2681,6 +2693,7 @@ func New(c rest.Interface) *Clientset {
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.testingV1alpha1 = testingv1alpha1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
+	cs.translateV1alpha1 = translatev1alpha1.New(c)
 	cs.vectorsearchV1alpha1 = vectorsearchv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
 	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)

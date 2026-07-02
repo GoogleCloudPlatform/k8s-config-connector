@@ -3876,6 +3876,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - translate.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vectorsearch.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5311,6 +5323,14 @@ rules:
   - watch
 - apiGroups:
   - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - translate.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

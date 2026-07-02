@@ -211,6 +211,7 @@ import (
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	testingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/testing/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
+	translatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/translate/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
@@ -421,6 +422,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	tagsv1beta1.AddToScheme,
 	testingv1alpha1.AddToScheme,
 	tpuv1alpha1.AddToScheme,
+	translatev1alpha1.AddToScheme,
 	vectorsearchv1alpha1.AddToScheme,
 	vertexaiv1alpha1.AddToScheme,
 	vertexaiv1beta1.AddToScheme,

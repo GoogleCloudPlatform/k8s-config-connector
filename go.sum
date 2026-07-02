@@ -1417,6 +1417,8 @@ cloud.google.com/go/translate v1.9.2/go.mod h1:E3Tc6rUTsQkVrXW6avbUhKJSr7ZE3j7zN
 cloud.google.com/go/translate v1.9.3/go.mod h1:Kbq9RggWsbqZ9W5YpM94Q1Xv4dshw/gr/SHfsl5yCZ0=
 cloud.google.com/go/translate v1.10.0/go.mod h1:Kbq9RggWsbqZ9W5YpM94Q1Xv4dshw/gr/SHfsl5yCZ0=
 cloud.google.com/go/translate v1.10.1/go.mod h1:adGZcQNom/3ogU65N9UXHOnnSvjPwA/jKQUMnsYXOyk=
+cloud.google.com/go/translate v1.17.0 h1:6ecjspRHAOHU+x+e4HOK/2o+bzw7KHwu//eyLVf4TuM=
+cloud.google.com/go/translate v1.17.0/go.mod h1:3mErnHTQBu9yeLiL35K0HBBuaM6Vk2fD/vyWFz790VU=
 cloud.google.com/go/video v1.8.0/go.mod h1:sTzKFc0bUSByE8Yoh8X0mn8bMymItVGPfTuUBUyRgxk=
 cloud.google.com/go/video v1.9.0/go.mod h1:0RhNKFRF5v92f8dQt0yhaHrEuH95m068JYOvLZYnJSw=
 cloud.google.com/go/video v1.12.0/go.mod h1:MLQew95eTuaNDEGriQdcYn0dTwf9oWiA4uYebxM5kdg=
