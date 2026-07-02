@@ -113,6 +113,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworks/{}":         true,
 
 		// Compute
+		"//compute.googleapis.com/locations/global/firewallPolicies/{}/associations/{}":   true,
 		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                      true,
 		"//compute.googleapis.com/projects/{}/global/backendServices/{}/signedUrlKeys/{}": true,
 		"//compute.googleapis.com/projects/{}/global/images/family/{}":                    true,
