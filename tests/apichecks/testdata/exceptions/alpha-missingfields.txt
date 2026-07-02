@@ -2964,6 +2964,18 @@
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.external" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.name" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.namespace" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.aggregationInterval" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterExpr" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.flowSampling" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.interconnectAttachmentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataFields[]" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
+[missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpnTunnelRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacity" is not set in unstructured objects
 [missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.items[]" is not set in unstructured objects
