@@ -552,6 +552,7 @@
 | vertexai.cnrm.cloud.google.com                | VertexAITensorboard                             | True         | False       | False  | Terraform  | False       |
 | aiplatform.cnrm.cloud.google.com              | VertexAITuningJob                               | True         | False       | False  | Direct     | True        |
 | videostitcher.cnrm.cloud.google.com           | VideoStitcherCDNKey                             | True         | False       | False  | Direct     | True        |
+| vmmigration.cnrm.cloud.google.com             | VMMigrationGroup                                | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAccessRule                  | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | True        | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPeering                      | True         | False       | False  | Direct     | True        |

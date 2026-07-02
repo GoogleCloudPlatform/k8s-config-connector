@@ -1456,6 +1456,8 @@ cloud.google.com/go/vmmigration v1.7.2/go.mod h1:iA2hVj22sm2LLYXGPT1pB63mXHhrH1m
 cloud.google.com/go/vmmigration v1.7.3/go.mod h1:ZCQC7cENwmSWlwyTrZcWivchn78YnFniEQYRWQ65tBo=
 cloud.google.com/go/vmmigration v1.7.4/go.mod h1:yBXCmiLaB99hEl/G9ZooNx2GyzgsjKnw5fWcINRgD70=
 cloud.google.com/go/vmmigration v1.7.5/go.mod h1:pkvO6huVnVWzkFioxSghZxIGcsstDvYiVCxQ9ZH3eYI=
+cloud.google.com/go/vmmigration v1.15.0 h1:F2uqT8+JXvSywV381YoQ4To3RnJETRtPkvcbdWXGmgM=
+cloud.google.com/go/vmmigration v1.15.0/go.mod h1:MP6mQ21ru1usBeCbl805Ioz0Fy+yf3qK2kUkhZ69QQY=
 cloud.google.com/go/vmwareengine v0.1.0/go.mod h1:RsdNEf/8UDvKllXhMz5J40XxDrNJNN4sagiox+OI208=
 cloud.google.com/go/vmwareengine v0.2.2/go.mod h1:sKdctNJxb3KLZkE/6Oui94iw/xs9PRNC2wnNLXsHvH8=
 cloud.google.com/go/vmwareengine v0.3.0/go.mod h1:wvoyMvNWdIzxMYSpH/R7y2h5h3WFkx6d+1TIsP39WGY=

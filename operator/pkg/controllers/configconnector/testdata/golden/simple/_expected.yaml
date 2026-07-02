@@ -3900,6 +3900,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - vmmigration.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vmwareengine.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5315,6 +5327,14 @@ rules:
   - watch
 - apiGroups:
   - videostitcher.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vmmigration.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -405,6 +405,8 @@ import (
 	fakevertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1/fake"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1"
 	fakevideostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1/fake"
+	vmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1"
+	fakevmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1/fake"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	fakevmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1/fake"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
@@ -1443,6 +1445,11 @@ func (c *Clientset) VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface {
 // VideostitcherV1alpha1 retrieves the VideostitcherV1alpha1Client
 func (c *Clientset) VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface {
 	return &fakevideostitcherv1alpha1.FakeVideostitcherV1alpha1{Fake: &c.Fake}
+}
+
+// VmmigrationV1alpha1 retrieves the VmmigrationV1alpha1Client
+func (c *Clientset) VmmigrationV1alpha1() vmmigrationv1alpha1.VmmigrationV1alpha1Interface {
+	return &fakevmmigrationv1alpha1.FakeVmmigrationV1alpha1{Fake: &c.Fake}
 }
 
 // VmwareengineV1alpha1 retrieves the VmwareengineV1alpha1Client
