@@ -2175,6 +2175,11 @@ func (in *SQLInstanceSpec) DeepCopyInto(out *SQLInstanceSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IncludeReplicasForMajorVersionUpgrade != nil {
+		in, out := &in.IncludeReplicasForMajorVersionUpgrade, &out.IncludeReplicasForMajorVersionUpgrade
+		*out = new(bool)
+		**out = **in
+	}
 	if in.EncryptionKMSCryptoKeyRef != nil {
 		in, out := &in.EncryptionKMSCryptoKeyRef, &out.EncryptionKMSCryptoKeyRef
 		*out = new(refsv1beta1.KMSCryptoKeyRef)

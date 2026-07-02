@@ -153,6 +153,10 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
+              includeReplicasForMajorVersionUpgrade:
+                description: Specifies if the major version upgrade is applied to
+                  the instance and its replicas.
+                type: boolean
               instanceType:
                 description: The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED',
                   'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.
