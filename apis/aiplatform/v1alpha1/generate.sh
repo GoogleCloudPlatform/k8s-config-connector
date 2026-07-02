@@ -30,7 +30,8 @@ go run . generate-types \
     --resource VertexAISpecialistPool:SpecialistPool \
     --resource AIPlatformModel:Model \
     --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
-    --resource VertexAITuningJob:TuningJob
+    --resource VertexAITuningJob:TuningJob \
+    --resource VertexAINotebookRuntime:NotebookRuntime
 
 # Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
 python3 -c "
