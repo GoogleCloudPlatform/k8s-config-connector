@@ -2124,6 +2124,21 @@ func ResourceContainerCluster() *schema.Resource {
 					},
 				},
 			},
+			"user_managed_keys_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				MaxItems:    1,
+				Description: `The custom keys configuration of the cluster.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"control_plane_disk_encryption_key": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: `The Cloud KMS cryptoKey to use for Confidential Hyperdisk on the control plane nodes.`,
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -2388,6 +2403,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("monitoring_config"); ok {
 		cluster.MonitoringConfig = expandMonitoringConfig(v)
+	}
+
+	if v, ok := d.GetOk("user_managed_keys_config"); ok {
+		cluster.UserManagedKeysConfig = expandUserManagedKeysConfig(v)
 	}
 
 	if err := validateNodePoolAutoConfig(cluster); err != nil {
@@ -2892,6 +2911,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 	if err := d.Set("gateway_api_config", flattenGatewayApiConfig(cluster.NetworkConfig.GatewayApiConfig)); err != nil {
+		return err
+	}
+	if err := d.Set("user_managed_keys_config", flattenUserManagedKeysConfig(cluster.UserManagedKeysConfig)); err != nil {
 		return err
 	}
 	if err := d.Set("enable_k8s_beta_apis", flattenEnableK8sBetaApis(cluster.EnableK8sBetaApis)); err != nil {
@@ -4068,6 +4090,20 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			log.Printf("[INFO] GKE cluster %s Gateway API has been updated", d.Id())
 		}
+	}
+
+	if d.HasChange("user_managed_keys_config") {
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				UserManagedKeysConfig: expandUserManagedKeysConfig(d.Get("user_managed_keys_config")),
+			},
+		}
+		updateF := updateFunc(req, "updating GKE cluster user managed keys config.")
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s user managed key config has been updated to %#v", d.Id(), req.Update.UserManagedKeysConfig)
 	}
 
 	if d.HasChange("enable_k8s_beta_apis") {
@@ -5420,6 +5456,19 @@ func expandGatewayApiConfig(configured interface{}) *container.GatewayAPIConfig 
 	}
 }
 
+func expandUserManagedKeysConfig(configured interface{}) *container.UserManagedKeysConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+
+	config := l[0].(map[string]interface{})
+	umkc := &container.UserManagedKeysConfig{
+		ControlPlaneDiskEncryptionKey: config["control_plane_disk_encryption_key"].(string),
+	}
+	return umkc
+}
+
 func expandEnableK8sBetaApis(configured interface{}, enabledAPIs []string) *container.K8sBetaAPIConfig {
 	l := configured.([]interface{})
 	if len(l) == 0 || l[0] == nil {
@@ -6296,6 +6345,16 @@ func flattenGatewayApiConfig(c *container.GatewayAPIConfig) []map[string]interfa
 			"channel": c.Channel,
 		},
 	}
+}
+
+func flattenUserManagedKeysConfig(c *container.UserManagedKeysConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	f := map[string]interface{}{
+		"control_plane_disk_encryption_key": c.ControlPlaneDiskEncryptionKey,
+	}
+	return []map[string]interface{}{f}
 }
 
 func flattenEnableK8sBetaApis(c *container.K8sBetaAPIConfig) []map[string]interface{} {
