@@ -155,33 +155,91 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 }
 */
 
-/*
-found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_ToProto", skipping
+/* found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_ToProto", skipping
+func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InternalRange{}
+	// MISSING: AllocationOptions
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: ExcludeCIDRRanges
+	// MISSING: Immutable
+	out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
+	out.Labels = in.Labels
+	out.Migration = Migration_ToProto(mapCtx, in.Migration)
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.Overlaps = in.Overlaps
+	out.Peering = direct.ValueOf(in.Peering)
+	out.PrefixLength = direct.ValueOf(in.PrefixLength)
+	out.TargetCidrRange = in.TargetCIDRRange
+	out.Usage = direct.ValueOf(in.Usage)
+	return out
+}
+*/
 
-	func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
+/* found existing non-generated mapping function "NetworkConnectivityMulticloudDataTransferConfigObservedState_FromProto", skipping
+func NetworkConnectivityMulticloudDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityMulticloudDataTransferConfigObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DestinationsActiveCount = direct.LazyPtr(in.GetDestinationsActiveCount())
+	out.DestinationsCount = direct.LazyPtr(in.GetDestinationsCount())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Name
+	out.Services = Services_FromProto(mapCtx, in.Services)
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "NetworkConnectivityMulticloudDataTransferConfigObservedState_ToProto", skipping
+
+	func NetworkConnectivityMulticloudDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState) *pb.MulticloudDataTransferConfig {
 		if in == nil {
 			return nil
 		}
-		out := &pb.InternalRange{}
-		// MISSING: AllocationOptions
-		out.Description = direct.ValueOf(in.Description)
-		// MISSING: ExcludeCIDRRanges
-		// MISSING: Immutable
-		out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
-		out.Labels = in.Labels
-		out.Migration = Migration_ToProto(mapCtx, in.Migration)
+		out := &pb.MulticloudDataTransferConfig{}
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		out.DestinationsActiveCount = direct.ValueOf(in.DestinationsActiveCount)
+		out.DestinationsCount = direct.ValueOf(in.DestinationsCount)
+		out.Etag = direct.ValueOf(in.Etag)
 		// MISSING: Name
-		if in.NetworkRef != nil {
-			out.Network = in.NetworkRef.External
-		}
-		out.Overlaps = in.Overlaps
-		out.Peering = direct.ValueOf(in.Peering)
-		out.PrefixLength = direct.ValueOf(in.PrefixLength)
-		out.TargetCidrRange = in.TargetCIDRRange
-		out.Usage = direct.ValueOf(in.Usage)
+		out.Services = Services_ToProto(mapCtx, in.Services)
+		out.Uid = direct.ValueOf(in.Uid)
+		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 		return out
 	}
 */
+func NetworkConnectivityMulticloudDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityMulticloudDataTransferConfigSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.Services = Services_FromProto(mapCtx, in.Services)
+	return out
+}
+func NetworkConnectivityMulticloudDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigSpec) *pb.MulticloudDataTransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MulticloudDataTransferConfig{}
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.Services = Services_ToProto(mapCtx, in.Services)
+	return out
+}
 func NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointObservedState {
 	if in == nil {
 		return nil
@@ -375,5 +433,37 @@ func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb
 	out.SelectedSubnetwork = direct.ValueOf(in.SelectedSubnetwork)
 	// MISSING: ServiceClass
 	out.State = direct.ValueOf(in.State)
+	return out
+}
+func StateTimeline_FromProto(mapCtx *direct.MapContext, in *pb.StateTimeline) *krm.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StateTimeline{}
+	// MISSING: States
+	return out
+}
+func StateTimeline_ToProto(mapCtx *direct.MapContext, in *krm.StateTimeline) *pb.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StateTimeline{}
+	// MISSING: States
+	return out
+}
+func StateTimelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StateTimeline) *krm.StateTimelineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StateTimelineObservedState{}
+	out.States = direct.Slice_FromProto(mapCtx, in.States, StateMetadataObservedState_FromProto)
+	return out
+}
+func StateTimelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StateTimelineObservedState) *pb.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StateTimeline{}
+	out.States = direct.Slice_ToProto(mapCtx, in.States, StateMetadataObservedState_ToProto)
 	return out
 }
