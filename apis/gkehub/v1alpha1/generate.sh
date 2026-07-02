@@ -18,4 +18,16 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# Hand-written types, no proto generation yet.
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
+./generate-proto.sh
+
+go run . generate-types \
+  --service google.cloud.gkehub.v1 \
+  --api-version gkehub.cnrm.cloud.google.com/v1alpha1 \
+  --resource GKEHubFleet:Fleet
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
