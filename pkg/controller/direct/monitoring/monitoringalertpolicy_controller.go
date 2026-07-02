@@ -23,6 +23,7 @@ import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -34,6 +35,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -84,12 +87,12 @@ func (m *alertPolicyModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := obj.GetIdentity(ctx, kube)
-	if err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+	id, err := obj.GetIdentity(ctx, kube)
+	if err != nil {
 		return nil, err
 	}
 
@@ -98,6 +101,8 @@ func (m *alertPolicyModel) AdapterForObject(ctx context.Context, op *directbase.
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	desiredProto.UserLabels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
 
 	return &alertPolicyAdapter{
 		id:                id.(*krm.MonitoringAlertPolicyIdentity),
@@ -113,7 +118,11 @@ func (m *alertPolicyModel) AdapterForURL(ctx context.Context, url string) (direc
 	}
 
 	id := &krm.MonitoringAlertPolicyIdentity{}
-	if err := id.FromExternal(strings.TrimPrefix(url, "//monitoring.googleapis.com/")); err != nil {
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+
+	if !id.HasIdentitySpecified() {
 		return nil, nil
 	}
 
@@ -135,7 +144,7 @@ func (m *alertPolicyModel) AdapterForURL(ctx context.Context, url string) (direc
 
 // Find implements the Adapter interface.
 func (a *alertPolicyAdapter) Find(ctx context.Context) (bool, error) {
-	if a.id.AlertPolicy == "" {
+	if !a.id.HasIdentitySpecified() {
 		return false, nil
 	}
 
@@ -157,11 +166,7 @@ func (a *alertPolicyAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *alertPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	exists, err := a.Find(ctx)
-	if err != nil {
-		return false, err
-	}
-	if !exists {
+	if !a.id.HasIdentitySpecified() {
 		return false, nil
 	}
 
@@ -181,6 +186,10 @@ func (a *alertPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 
 // Create implements the Adapter interface.
 func (a *alertPolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	if a.id.HasIdentitySpecified() {
+		return fmt.Errorf("cannot create alert policy %q: server-generated identity is already specified", a.id.String())
+	}
+
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
@@ -199,11 +208,6 @@ func (a *alertPolicyAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return fmt.Errorf("creating alert policy: %w", err)
 	}
 	log.V(2).Info("created alert policy", "alertPolicy", created)
-
-	resourceID := lastComponent(created.Name)
-	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
-		return fmt.Errorf("setting spec.resourceID: %w", err)
-	}
 
 	return a.updateStatus(ctx, createOp, created)
 }
@@ -256,6 +260,8 @@ func (a *alertPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		return nil, fmt.Errorf("error converting alertPolicy from API %w", err)
 	}
 
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.AlertPolicy)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -264,6 +270,9 @@ func (a *alertPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	u.Object = uObj
 	u.SetName(a.id.AlertPolicy)
 	u.SetGroupVersionKind(krm.MonitoringAlertPolicyGVK)
+
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.UserLabels)
 
 	return u, nil
 }
@@ -287,12 +296,15 @@ func compareAlertPolicy(ctx context.Context, actual, desired *pb.AlertPolicy) (*
 		return nil, nil, err
 	}
 	maskedActual.Name = actual.Name
+	maskedActual.UserLabels = actual.UserLabels
 
 	populateDefaults := func(obj *pb.AlertPolicy) {
-		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+		if obj.Enabled == nil {
+			obj.Enabled = &wrapperspb.BoolValue{Value: true}
+		}
 	}
 
-	clonedDesired := proto.Clone(desired).(*pb.AlertPolicy)
+	clonedDesired := proto.CloneOf(desired)
 	clonedDesired.Name = actual.Name
 
 	populateDefaults(clonedDesired)

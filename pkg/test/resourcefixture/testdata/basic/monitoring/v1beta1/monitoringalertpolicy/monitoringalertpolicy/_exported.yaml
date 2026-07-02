@@ -1,0 +1,47 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: ${alertPolicyId}
+spec:
+  combiner: OR
+  conditions:
+  - conditionThreshold:
+      aggregations:
+      - alignmentPeriod: 1m0s
+        crossSeriesReducer: REDUCE_MEAN
+        groupByFields:
+        - project
+        - resource.label.instance_id
+        - resource.label.zone
+        perSeriesAligner: ALIGN_MAX
+      comparison: COMPARISON_LT
+      duration: 15m0s
+      filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
+      thresholdValue: 0.1
+      trigger:
+        count: 3
+    displayName: Very low CPU usage
+    name: projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionId}
+  displayName: Updated Test Alert Policy
+  documentation:
+    content: |-
+      “Just the place for a Snark!” the Bellman cried,
+      As he monitored his resources with care;
+      Supporting each metric on the top of the tide
+      By a finger entwined in his hair.
+
+      “Just the place for a Snark! I have measured it twice:
+      That alone should discourage the crew.
+      Just the place for a Snark! I have measured it thrice:
+      What I measure three times is true.”
+  enabled: true
+  notificationChannels:
+  - external: projects/${projectId}/notificationChannels/${notificationChannelID}
+  - external: projects/${projectId}/notificationChannels/${notificationChannelID}
+  resourceID: ${alertPolicyId}
+  severity: ERROR

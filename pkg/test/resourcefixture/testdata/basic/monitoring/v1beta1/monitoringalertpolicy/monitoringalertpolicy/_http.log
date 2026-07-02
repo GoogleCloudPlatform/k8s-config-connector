@@ -259,18 +259,6 @@ X-Xss-Protection: 0
 
 ---
 
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
-
----
-
 GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
 
 {
@@ -311,7 +299,11 @@ GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
       "projects/${projectId}/notificationChannels/${notificationChannelID}",
       "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
-    "severity": "WARNING"
+    "severity": "WARNING",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
   "name": "projects/${projectId}"
 }
@@ -365,20 +357,12 @@ OK
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
   ],
-  "severity": "WARNING"
+  "severity": "WARNING",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
-
----
-
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
 
 ---
 
@@ -422,7 +406,11 @@ GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
       "projects/${projectId}/notificationChannels/${notificationChannelID}",
       "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
-    "severity": "ERROR"
+    "severity": "ERROR",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
   "name": "projects/${projectId}"
 }
@@ -476,7 +464,11 @@ OK
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
   ],
-  "severity": "ERROR"
+  "severity": "ERROR",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
 
 ---
@@ -484,24 +476,64 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
 }
 
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
-
----
-
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+OK
 
 {
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_LT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.1,
+        "trigger": {
+          "count": 3
+        }
+      },
+      "displayName": "Very low CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Updated Test Alert Policy",
+  "documentation": {
+    "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”"
+  },
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ],
+  "severity": "ERROR",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
 
 ---
 

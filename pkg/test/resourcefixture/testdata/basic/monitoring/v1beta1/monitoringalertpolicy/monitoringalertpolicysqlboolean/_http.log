@@ -166,18 +166,6 @@ X-Xss-Protection: 0
 
 ---
 
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
-
----
-
 GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
 
 {
@@ -201,7 +189,11 @@ GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
       }
     ],
     "displayName": "Test SQL Alert Policy Daily Boolean",
-    "enabled": true
+    "enabled": true,
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
   "name": "projects/${projectId}"
 }
@@ -238,20 +230,12 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
-
----
-
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
 
 ---
 
@@ -279,7 +263,11 @@ GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
       }
     ],
     "displayName": "Test SQL Alert Policy Daily Boolean",
-    "enabled": true
+    "enabled": true,
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
   "name": "projects/${projectId}"
 }
@@ -317,32 +305,60 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+
+{
   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
 }
 
----
-
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+OK
 
 {
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 15,
+            "minutes": 30
+          },
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
-
----
-
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
 
 ---
 
