@@ -176,6 +176,7 @@ func ComputeAddressObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.Address = in.Address
 	// MISSING: CreationTimestamp
 	// MISSING: ID
+	// MISSING: IPCollection
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
@@ -194,6 +195,7 @@ func ComputeAddressObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.Address = in.Address
 	// MISSING: CreationTimestamp
 	// MISSING: ID
+	// MISSING: IPCollection
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
@@ -216,6 +218,7 @@ func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Addr
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: ID
+	// MISSING: IPCollection
 	out.IPVersion = in.IpVersion
 	out.IPV6EndpointType = in.Ipv6EndpointType
 	// MISSING: Kind
@@ -252,6 +255,7 @@ found existing non-generated mapping function "ComputeAddressSpec_v1beta1_ToProt
 		// MISSING: CreationTimestamp
 		out.Description = in.Description
 		// MISSING: ID
+		// MISSING: IPCollection
 		out.IpVersion = in.IPVersion
 		out.Ipv6EndpointType = in.IPV6EndpointType
 		// MISSING: Kind
@@ -284,6 +288,7 @@ func ComputeAddressStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ad
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: ID
+	// MISSING: IPCollection
 	// MISSING: IPVersion
 	// MISSING: IPV6EndpointType
 	// MISSING: Kind
@@ -311,6 +316,7 @@ func ComputeAddressStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: ID
+	// MISSING: IPCollection
 	// MISSING: IPVersion
 	// MISSING: IPV6EndpointType
 	// MISSING: Kind
@@ -687,6 +693,7 @@ func ComputeExternalVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	// MISSING: Params
 	out.RedundancyType = in.RedundancyType
 	// MISSING: SelfLink
 	return out
@@ -704,6 +711,7 @@ func ComputeExternalVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	// MISSING: Params
 	out.RedundancyType = in.RedundancyType
 	// MISSING: SelfLink
 	return out
@@ -723,6 +731,7 @@ func ComputeExternalVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext
 	out.LabelFingerprint = in.LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	// MISSING: Params
 	// MISSING: RedundancyType
 	out.SelfLink = in.SelfLink
 	return out
@@ -745,6 +754,7 @@ found existing non-generated mapping function "ComputeExternalVPNGatewayStatus_v
 		out.LabelFingerprint = in.LabelFingerprint
 		// MISSING: Labels
 		// MISSING: Name
+		// MISSING: Params
 		// MISSING: RedundancyType
 		out.SelfLink = in.SelfLink
 		return out
@@ -765,6 +775,7 @@ func ComputeFirewallPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.F
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -788,6 +799,7 @@ func ComputeFirewallPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -947,6 +959,7 @@ func ComputeFirewallPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -973,6 +986,7 @@ func ComputeFirewallPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -1323,6 +1337,108 @@ func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeFutureReservationObservedState_v1alpha1_FromProto", skipping
+func ComputeFutureReservationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmcomputev1alpha1.ComputeFutureReservationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeFutureReservationObservedState{}
+	out.AggregateReservation = AllocationAggregateReservationObservedState_v1alpha1_FromProto(mapCtx, in.GetAggregateReservation())
+	// MISSING: ConfidentialComputeType
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ID = in.Id
+	out.Kind = in.Kind
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Status = FutureReservationStatus_v1alpha1_FromProto(mapCtx, in.GetStatus())
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFutureReservationObservedState_v1alpha1_ToProto", skipping
+func ComputeFutureReservationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeFutureReservationObservedState) *pb.FutureReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservation{}
+	out.AggregateReservation = AllocationAggregateReservationObservedState_v1alpha1_ToProto(mapCtx, in.AggregateReservation)
+	// MISSING: ConfidentialComputeType
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Id = in.ID
+	out.Kind = in.Kind
+	// MISSING: Name
+	// MISSING: Params
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Status = FutureReservationStatus_v1alpha1_ToProto(mapCtx, in.Status)
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFutureReservationSpec_v1alpha1_FromProto", skipping
+func ComputeFutureReservationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmcomputev1alpha1.ComputeFutureReservationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeFutureReservationSpec{}
+	out.AggregateReservation = AllocationAggregateReservation_v1alpha1_FromProto(mapCtx, in.GetAggregateReservation())
+	out.AutoCreatedReservationsDeleteTime = in.AutoCreatedReservationsDeleteTime
+	out.AutoCreatedReservationsDuration = Duration_v1alpha1_FromProto(mapCtx, in.GetAutoCreatedReservationsDuration())
+	out.AutoDeleteAutoCreatedReservations = in.AutoDeleteAutoCreatedReservations
+	out.CommitmentInfo = FutureReservationCommitmentInfo_v1alpha1_FromProto(mapCtx, in.GetCommitmentInfo())
+	// MISSING: ConfidentialComputeType
+	out.DeploymentType = in.DeploymentType
+	out.Description = in.Description
+	out.EnableEmergentMaintenance = in.EnableEmergentMaintenance
+	// MISSING: Name
+	out.NamePrefix = in.NamePrefix
+	// MISSING: Params
+	out.PlanningStatus = in.PlanningStatus
+	out.ReservationMode = in.ReservationMode
+	out.ReservationName = in.ReservationName
+	out.SchedulingType = in.SchedulingType
+	out.ShareSettings = ShareSettings_v1alpha1_FromProto(mapCtx, in.GetShareSettings())
+	out.SpecificReservationRequired = in.SpecificReservationRequired
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_FromProto(mapCtx, in.GetSpecificSkuProperties())
+	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_FromProto(mapCtx, in.GetTimeWindow())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeFutureReservationSpec_v1alpha1_ToProto", skipping
+func ComputeFutureReservationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeFutureReservationSpec) *pb.FutureReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservation{}
+	out.AggregateReservation = AllocationAggregateReservation_v1alpha1_ToProto(mapCtx, in.AggregateReservation)
+	out.AutoCreatedReservationsDeleteTime = in.AutoCreatedReservationsDeleteTime
+	out.AutoCreatedReservationsDuration = Duration_v1alpha1_ToProto(mapCtx, in.AutoCreatedReservationsDuration)
+	out.AutoDeleteAutoCreatedReservations = in.AutoDeleteAutoCreatedReservations
+	out.CommitmentInfo = FutureReservationCommitmentInfo_v1alpha1_ToProto(mapCtx, in.CommitmentInfo)
+	// MISSING: ConfidentialComputeType
+	out.DeploymentType = in.DeploymentType
+	out.Description = in.Description
+	out.EnableEmergentMaintenance = in.EnableEmergentMaintenance
+	// MISSING: Name
+	out.NamePrefix = in.NamePrefix
+	// MISSING: Params
+	out.PlanningStatus = in.PlanningStatus
+	out.ReservationMode = in.ReservationMode
+	out.ReservationName = in.ReservationName
+	out.SchedulingType = in.SchedulingType
+	out.ShareSettings = ShareSettings_v1alpha1_ToProto(mapCtx, in.ShareSettings)
+	out.SpecificReservationRequired = in.SpecificReservationRequired
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_ToProto(mapCtx, in.SpecificSkuProperties)
+	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_ToProto(mapCtx, in.TimeWindow)
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeHTTPHealthCheckSpec_v1beta1_FromProto", skipping
 func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HealthCheck) *krm.ComputeHTTPHealthCheckSpec {
 	if in == nil {
@@ -1333,6 +1449,7 @@ func ComputeHTTPHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	out.HealthyThreshold = in.HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1363,6 +1480,7 @@ func ComputeHTTPHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	out.HealthyThreshold = in.HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1393,6 +1511,7 @@ func ComputeHTTPHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	// MISSING: HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1423,6 +1542,7 @@ func ComputeHTTPHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	// MISSING: HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1453,6 +1573,7 @@ func ComputeHTTPSHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	out.HealthyThreshold = in.HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1483,6 +1604,7 @@ func ComputeHTTPSHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	out.HealthyThreshold = in.HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1513,6 +1635,7 @@ func ComputeHTTPSHealthCheckStatus_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	// MISSING: HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1543,6 +1666,7 @@ func ComputeHTTPSHealthCheckStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: GrpcHealthCheck
+	// MISSING: GrpcTLSHealthCheck
 	// MISSING: HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// MISSING: HTTPHealthCheck
@@ -1574,6 +1698,7 @@ func ComputeHealthCheckSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Description = in.Description
 	// MISSING: GrpcHealthCheck
 	// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
+	// MISSING: GrpcTLSHealthCheck
 	out.HealthyThreshold = in.HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
@@ -1606,6 +1731,7 @@ func ComputeHealthCheckSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.Description = in.Description
 	// MISSING: GrpcHealthCheck
 	// (near miss): "GrpcHealthCheck" vs "GRPCHealthCheck"
+	// MISSING: GrpcTLSHealthCheck
 	out.HealthyThreshold = in.HealthyThreshold
 	// MISSING: Http2HealthCheck
 	// (near miss): "Http2HealthCheck" vs "HTTP2HealthCheck"
@@ -1652,6 +1778,7 @@ func ComputeImageSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Image)
 	// MISSING: LicenseCodes
 	out.Licenses = in.Licenses
 	// MISSING: Name
+	// MISSING: Params
 	out.RawDisk = ImageRawDisk_v1beta1_FromProto(mapCtx, in.GetRawDisk())
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
@@ -1702,6 +1829,7 @@ func ComputeImageSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compute
 	// MISSING: LicenseCodes
 	out.Licenses = in.Licenses
 	// MISSING: Name
+	// MISSING: Params
 	out.RawDisk = ImageRawDisk_v1beta1_ToProto(mapCtx, in.RawDisk)
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
@@ -1750,6 +1878,7 @@ func ComputeImageStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Imag
 	// MISSING: LicenseCodes
 	// MISSING: Licenses
 	// MISSING: Name
+	// MISSING: Params
 	// MISSING: RawDisk
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
@@ -1794,6 +1923,7 @@ func ComputeImageStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 	// MISSING: LicenseCodes
 	// MISSING: Licenses
 	// MISSING: Name
+	// MISSING: Params
 	// MISSING: RawDisk
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
@@ -1848,6 +1978,7 @@ func ComputeInstanceGroupManager_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
 	// MISSING: TargetPools
 	// MISSING: TargetSize
+	// MISSING: TargetSizePolicy
 	// MISSING: TargetStoppedSize
 	// MISSING: TargetSuspendedSize
 	// MISSING: UpdatePolicy
@@ -1890,6 +2021,7 @@ func ComputeInstanceGroupManager_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_ToProto(mapCtx, in.Status)
 	// MISSING: TargetPools
 	// MISSING: TargetSize
+	// MISSING: TargetSizePolicy
 	// MISSING: TargetStoppedSize
 	// MISSING: TargetSuspendedSize
 	// MISSING: UpdatePolicy
@@ -1934,6 +2066,7 @@ func ComputeInstanceGroupManagerSpec_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: Status
 	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_FromProto(mapCtx, in.TargetPools)
 	out.TargetSize = in.TargetSize
+	// MISSING: TargetSizePolicy
 	// MISSING: TargetStoppedSize
 	// MISSING: TargetSuspendedSize
 	out.UpdatePolicy = InstancegroupmanagerUpdatePolicy_v1beta1_FromProto(mapCtx, in.GetUpdatePolicy())
@@ -1978,6 +2111,7 @@ func ComputeInstanceGroupManagerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Status
 	out.TargetPools = ComputeInstanceGroupManagerSpec_TargetPools_ToProto(mapCtx, in.TargetPools)
 	out.TargetSize = in.TargetSize
+	// MISSING: TargetSizePolicy
 	// MISSING: TargetStoppedSize
 	// MISSING: TargetSuspendedSize
 	out.UpdatePolicy = InstancegroupmanagerUpdatePolicy_v1beta1_ToProto(mapCtx, in.UpdatePolicy)
@@ -2094,6 +2228,7 @@ func ComputeInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ins
 	if v := in.GetTags(); v != nil {
 		out.Tags = []krm.string{string_v1beta1_FromProto(mapCtx, v)}
 	}
+	// MISSING: WorkloadIdentityConfig
 	out.Zone = in.Zone
 	return out
 }
@@ -2156,6 +2291,7 @@ func ComputeInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	if len(in.Tags) > 0 && in.Tags[0] != nil {
 		out.Tags = string_v1beta1_ToProto(mapCtx, in.Tags[0])
 	}
+	// MISSING: WorkloadIdentityConfig
 	out.Zone = in.Zone
 	return out
 }
@@ -2213,6 +2349,7 @@ func ComputeInstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.I
 	// MISSING: Status
 	// MISSING: StatusMessage
 	// MISSING: Tags
+	// MISSING: WorkloadIdentityConfig
 	// MISSING: Zone
 	return out
 }
@@ -2270,6 +2407,7 @@ func ComputeInstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	// MISSING: Status
 	// MISSING: StatusMessage
 	// MISSING: Tags
+	// MISSING: WorkloadIdentityConfig
 	// MISSING: Zone
 	return out
 }
@@ -2284,6 +2422,10 @@ func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	out.AdminEnabled = in.AdminEnabled
 	// MISSING: AttachmentGroup
 	out.Bandwidth = in.Bandwidth
+	// MISSING: CandidateCloudRouterIPAddress
+	// MISSING: CandidateCloudRouterIPV6Address
+	// MISSING: CandidateCustomerRouterIPAddress
+	// MISSING: CandidateCustomerRouterIPV6Address
 	// MISSING: CandidateIPV6Subnets
 	out.CandidateSubnets = in.CandidateSubnets
 	// MISSING: CloudRouterIPAddress
@@ -2303,12 +2445,14 @@ func ComputeInterconnectAttachmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	out.Interconnect = in.Interconnect
 	out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_FromProto(mapCtx, in.IpsecInternalAddresses)
 	// MISSING: Kind
+	// MISSING: L2Forwarding
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	out.Mtu = in.Mtu
 	// MISSING: Name
 	// MISSING: OperationalStatus
 	// MISSING: PairingKey
+	// MISSING: Params
 	// MISSING: PartnerAsn
 	// MISSING: PartnerMetadata
 	// MISSING: PrivateInterconnectInfo
@@ -2337,6 +2481,10 @@ func ComputeInterconnectAttachmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext
 	out.AdminEnabled = in.AdminEnabled
 	// MISSING: AttachmentGroup
 	out.Bandwidth = in.Bandwidth
+	// MISSING: CandidateCloudRouterIPAddress
+	// MISSING: CandidateCloudRouterIPV6Address
+	// MISSING: CandidateCustomerRouterIPAddress
+	// MISSING: CandidateCustomerRouterIPV6Address
 	// MISSING: CandidateIPV6Subnets
 	out.CandidateSubnets = in.CandidateSubnets
 	// MISSING: CloudRouterIPAddress
@@ -2356,12 +2504,14 @@ func ComputeInterconnectAttachmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext
 	out.Interconnect = in.Interconnect
 	out.IpsecInternalAddresses = ComputeInterconnectAttachmentSpec_IpsecInternalAddresses_ToProto(mapCtx, in.IpsecInternalAddresses)
 	// MISSING: Kind
+	// MISSING: L2Forwarding
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	out.Mtu = in.Mtu
 	// MISSING: Name
 	// MISSING: OperationalStatus
 	// MISSING: PairingKey
+	// MISSING: Params
 	// MISSING: PartnerAsn
 	// MISSING: PartnerMetadata
 	// MISSING: PrivateInterconnectInfo
@@ -2401,11 +2551,14 @@ func ComputeInterconnectObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	out.Kind = in.Kind
 	// MISSING: Name
 	out.OperationalStatus = in.OperationalStatus
+	// MISSING: Params
 	out.PeerIPAddress = in.PeerIpAddress
 	out.ProvisionedLinkCount = in.ProvisionedLinkCount
 	out.SatisfiesPzs = in.SatisfiesPzs
 	out.SelfLink = in.SelfLink
 	out.State = in.State
+	// MISSING: Subzone
+	// MISSING: WireGroups
 	return out
 }
 */
@@ -2430,11 +2583,14 @@ func ComputeInterconnectObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.Kind = in.Kind
 	// MISSING: Name
 	out.OperationalStatus = in.OperationalStatus
+	// MISSING: Params
 	out.PeerIpAddress = in.PeerIPAddress
 	out.ProvisionedLinkCount = in.ProvisionedLinkCount
 	out.SatisfiesPzs = in.SatisfiesPzs
 	out.SelfLink = in.SelfLink
 	out.State = in.State
+	// MISSING: Subzone
+	// MISSING: WireGroups
 	return out
 }
 */
@@ -2460,9 +2616,12 @@ func ComputeInterconnectSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	out.MacsecEnabled = in.MacsecEnabled
 	// MISSING: Name
 	out.NocContactEmail = in.NocContactEmail
+	// MISSING: Params
 	out.RemoteLocation = in.RemoteLocation
 	out.RequestedFeatures = in.RequestedFeatures
 	out.RequestedLinkCount = in.RequestedLinkCount
+	// MISSING: Subzone
+	// MISSING: WireGroups
 	return out
 }
 */
@@ -2488,9 +2647,12 @@ func ComputeInterconnectSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.MacsecEnabled = in.MacsecEnabled
 	// MISSING: Name
 	out.NocContactEmail = in.NocContactEmail
+	// MISSING: Params
 	out.RemoteLocation = in.RemoteLocation
 	out.RequestedFeatures = in.RequestedFeatures
 	out.RequestedLinkCount = in.RequestedLinkCount
+	// MISSING: Subzone
+	// MISSING: WireGroups
 	return out
 }
 */
@@ -2827,6 +2989,7 @@ func ComputeNetworkFirewallPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -2850,6 +3013,7 @@ func ComputeNetworkFirewallPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -2873,6 +3037,7 @@ func ComputeNetworkFirewallPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -2896,6 +3061,7 @@ func ComputeNetworkFirewallPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	// MISSING: PacketMirroringRules
 	// MISSING: Parent
+	// MISSING: PolicyType
 	// MISSING: Region
 	// MISSING: RuleTupleCount
 	// MISSING: Rules
@@ -3177,6 +3343,7 @@ func ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.Map
 	out := &krmcomputev1alpha1.ComputeOrganizationSecurityPolicySpec{}
 	// MISSING: AdaptiveProtectionConfig
 	// MISSING: AdvancedOptionsConfig
+	// MISSING: Associations
 	// MISSING: CreationTimestamp
 	// MISSING: DdosProtectionConfig
 	out.Description = in.Description
@@ -3186,10 +3353,12 @@ func ComputeOrganizationSecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.Map
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	out.Parent = in.Parent
 	// MISSING: RecaptchaOptionsConfig
 	// MISSING: Region
 	// MISSING: Rules
 	// MISSING: SelfLink
+	// MISSING: ShortName
 	out.Type = in.Type
 	// MISSING: UserDefinedFields
 	return out
@@ -3204,6 +3373,7 @@ func ComputeOrganizationSecurityPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapCo
 	out := &pb.SecurityPolicy{}
 	// MISSING: AdaptiveProtectionConfig
 	// MISSING: AdvancedOptionsConfig
+	// MISSING: Associations
 	// MISSING: CreationTimestamp
 	// MISSING: DdosProtectionConfig
 	out.Description = in.Description
@@ -3213,10 +3383,12 @@ func ComputeOrganizationSecurityPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapCo
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	out.Parent = in.Parent
 	// MISSING: RecaptchaOptionsConfig
 	// MISSING: Region
 	// MISSING: Rules
 	// MISSING: SelfLink
+	// MISSING: ShortName
 	out.Type = in.Type
 	// MISSING: UserDefinedFields
 	return out
@@ -3302,16 +3474,20 @@ func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: AdvancedDeploymentControl
 	// MISSING: AggregateReservation
 	// MISSING: Commitment
+	// MISSING: ConfidentialComputeType
 	// MISSING: CreationTimestamp
 	// MISSING: DeleteAfterDuration
 	// MISSING: DeleteAtTime
 	// MISSING: DeploymentType
 	out.Description = in.Description
+	// MISSING: EarlyAccessMaintenance
 	// MISSING: EnableEmergentMaintenance
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: LinkedCommitments
 	// MISSING: Name
+	// MISSING: Params
+	// MISSING: ProtectionTier
 	// MISSING: ReservationSharingPolicy
 	// MISSING: ResourcePolicies
 	// MISSING: ResourceStatus
@@ -3333,16 +3509,20 @@ func ComputeReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	// MISSING: AdvancedDeploymentControl
 	// MISSING: AggregateReservation
 	// MISSING: Commitment
+	// MISSING: ConfidentialComputeType
 	// MISSING: CreationTimestamp
 	// MISSING: DeleteAfterDuration
 	// MISSING: DeleteAtTime
 	// MISSING: DeploymentType
 	out.Description = in.Description
+	// MISSING: EarlyAccessMaintenance
 	// MISSING: EnableEmergentMaintenance
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: LinkedCommitments
 	// MISSING: Name
+	// MISSING: Params
+	// MISSING: ProtectionTier
 	// MISSING: ReservationSharingPolicy
 	// MISSING: ResourcePolicies
 	// MISSING: ResourceStatus
@@ -3458,6 +3638,7 @@ func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route)
 		out.NextHopInstanceRef = &krm.InstanceRef{External: in.GetNextHopInstance()}
 	}
 	// MISSING: NextHopInterRegionCost
+	// MISSING: NextHopInterconnectAttachment
 	out.NextHopIP = in.NextHopIp
 	// MISSING: NextHopMed
 	// MISSING: NextHopNetwork
@@ -3500,6 +3681,7 @@ func ComputeRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compute
 		out.NextHopInstance = &in.NextHopInstanceRef.External
 	}
 	// MISSING: NextHopInterRegionCost
+	// MISSING: NextHopInterconnectAttachment
 	out.NextHopIp = in.NextHopIP
 	// MISSING: NextHopMed
 	// MISSING: NextHopNetwork
@@ -3673,6 +3855,7 @@ func ComputeRouterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
 	}
+	// MISSING: Params
 	out.Region = in.Region
 	// MISSING: SelfLink
 	return out
@@ -3701,6 +3884,7 @@ found existing non-generated mapping function "ComputeRouterSpec_v1beta1_ToProto
 		if in.NetworkRef != nil {
 			out.Network = &in.NetworkRef.External
 		}
+		// MISSING: Params
 		out.Region = in.Region
 		// MISSING: SelfLink
 		return out
@@ -3723,6 +3907,7 @@ func ComputeRouterStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Rou
 	// MISSING: Name
 	// MISSING: Nats
 	// MISSING: Network
+	// MISSING: Params
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
 	return out
@@ -3744,6 +3929,7 @@ func ComputeRouterStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	// MISSING: Name
 	// MISSING: Nats
 	// MISSING: Network
+	// MISSING: Params
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
 	return out
@@ -3813,6 +3999,7 @@ func ComputeSSLPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ss
 	// MISSING: MinTLSVersion
 	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
 	// MISSING: Name
+	// MISSING: PostQuantumKeyExchange
 	out.Profile = in.Profile
 	// MISSING: Region
 	// MISSING: SelfLink
@@ -3837,6 +4024,7 @@ func ComputeSSLPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	// MISSING: MinTLSVersion
 	// (near miss): "MinTLSVersion" vs "MinTlsVersion"
 	// MISSING: Name
+	// MISSING: PostQuantumKeyExchange
 	out.Profile = in.Profile
 	// MISSING: Region
 	// MISSING: SelfLink
@@ -3860,6 +4048,7 @@ func ComputeSSLPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Kind
 	// MISSING: MinTLSVersion
 	// MISSING: Name
+	// MISSING: PostQuantumKeyExchange
 	// MISSING: Profile
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
@@ -3885,6 +4074,7 @@ found existing non-generated mapping function "ComputeSSLPolicyStatus_v1beta1_To
 		// MISSING: Kind
 		// MISSING: MinTLSVersion
 		// MISSING: Name
+		// MISSING: PostQuantumKeyExchange
 		// MISSING: Profile
 		// MISSING: Region
 		out.SelfLink = in.SelfLink
@@ -3897,6 +4087,7 @@ func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.ComputeSecurityPolicyObservedState{}
+	// MISSING: Associations
 	// MISSING: CreationTimestamp
 	// MISSING: DdosProtectionConfig
 	// MISSING: Fingerprint
@@ -3905,8 +4096,10 @@ func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	// MISSING: Parent
 	// MISSING: Region
 	// MISSING: SelfLink
+	// MISSING: ShortName
 	// MISSING: UserDefinedFields
 	return out
 }
@@ -3915,6 +4108,7 @@ func ComputeSecurityPolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.SecurityPolicy{}
+	// MISSING: Associations
 	// MISSING: CreationTimestamp
 	// MISSING: DdosProtectionConfig
 	// MISSING: Fingerprint
@@ -3923,8 +4117,10 @@ func ComputeSecurityPolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	// MISSING: Parent
 	// MISSING: Region
 	// MISSING: SelfLink
+	// MISSING: ShortName
 	// MISSING: UserDefinedFields
 	return out
 }
@@ -3935,6 +4131,7 @@ func ComputeSecurityPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out := &krm.ComputeSecurityPolicySpec{}
 	out.AdaptiveProtectionConfig = SecurityPolicyAdaptiveProtectionConfig_v1beta1_FromProto(mapCtx, in.GetAdaptiveProtectionConfig())
 	out.AdvancedOptionsConfig = SecurityPolicyAdvancedOptionsConfig_v1beta1_FromProto(mapCtx, in.GetAdvancedOptionsConfig())
+	// MISSING: Associations
 	// MISSING: CreationTimestamp
 	// MISSING: DdosProtectionConfig
 	out.Description = in.Description
@@ -3944,10 +4141,12 @@ func ComputeSecurityPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	// MISSING: Parent
 	out.RecaptchaOptionsConfig = SecurityPolicyRecaptchaOptionsConfig_v1beta1_FromProto(mapCtx, in.GetRecaptchaOptionsConfig())
 	// MISSING: Region
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, SecurityPolicyRule_v1beta1_FromProto)
 	// MISSING: SelfLink
+	// MISSING: ShortName
 	out.Type = in.Type
 	// MISSING: UserDefinedFields
 	return out
@@ -3959,6 +4158,7 @@ func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.SecurityPolicy{}
 	out.AdaptiveProtectionConfig = SecurityPolicyAdaptiveProtectionConfig_v1beta1_ToProto(mapCtx, in.AdaptiveProtectionConfig)
 	out.AdvancedOptionsConfig = SecurityPolicyAdvancedOptionsConfig_v1beta1_ToProto(mapCtx, in.AdvancedOptionsConfig)
+	// MISSING: Associations
 	// MISSING: CreationTimestamp
 	// MISSING: DdosProtectionConfig
 	out.Description = in.Description
@@ -3968,10 +4168,12 @@ func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
+	// MISSING: Parent
 	out.RecaptchaOptionsConfig = SecurityPolicyRecaptchaOptionsConfig_v1beta1_ToProto(mapCtx, in.RecaptchaOptionsConfig)
 	// MISSING: Region
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, SecurityPolicyRule_v1beta1_ToProto)
 	// MISSING: SelfLink
+	// MISSING: ShortName
 	out.Type = in.Type
 	// MISSING: UserDefinedFields
 	return out
@@ -4000,10 +4202,14 @@ func ComputeSnapshotSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Sna
 	// MISSING: Licenses
 	// MISSING: LocationHint
 	// MISSING: Name
+	// MISSING: Params
+	// MISSING: Region
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
 	// MISSING: SelfLink
 	out.SnapshotEncryptionKey = SnapshotSnapshotEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSnapshotEncryptionKey())
+	// MISSING: SnapshotGroupID
+	// MISSING: SnapshotGroupName
 	// MISSING: SnapshotType
 	if in.GetSourceDisk() != "" {
 		out.SourceDiskRef = &krm.ComputeDiskRef{External: in.GetSourceDisk()}
@@ -4046,10 +4252,14 @@ func ComputeSnapshotSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	// MISSING: Licenses
 	// MISSING: LocationHint
 	// MISSING: Name
+	// MISSING: Params
+	// MISSING: Region
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
 	// MISSING: SelfLink
 	out.SnapshotEncryptionKey = SnapshotSnapshotEncryptionKey_v1beta1_ToProto(mapCtx, in.SnapshotEncryptionKey)
+	// MISSING: SnapshotGroupID
+	// MISSING: SnapshotGroupName
 	// MISSING: SnapshotType
 	if in.SourceDiskRef != nil {
 		out.SourceDisk = &in.SourceDiskRef.External
@@ -4093,10 +4303,14 @@ func ComputeSnapshotStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.Licenses = in.Licenses
 	// MISSING: LocationHint
 	// MISSING: Name
+	// MISSING: Params
+	// MISSING: Region
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
 	out.SelfLink = in.SelfLink
 	// MISSING: SnapshotEncryptionKey
+	// MISSING: SnapshotGroupID
+	// MISSING: SnapshotGroupName
 	// MISSING: SnapshotType
 	// MISSING: SourceDisk
 	// MISSING: SourceDiskEncryptionKey
@@ -4138,10 +4352,14 @@ func ComputeSnapshotStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	out.Licenses = in.Licenses
 	// MISSING: LocationHint
 	// MISSING: Name
+	// MISSING: Params
+	// MISSING: Region
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
 	out.SelfLink = in.SelfLink
 	// MISSING: SnapshotEncryptionKey
+	// MISSING: SnapshotGroupID
+	// MISSING: SnapshotGroupName
 	// MISSING: SnapshotType
 	// MISSING: SourceDisk
 	// MISSING: SourceDiskEncryptionKey
@@ -4163,6 +4381,7 @@ func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 		return nil
 	}
 	out := &krm.ComputeSubnetworkSpec{}
+	// MISSING: AllowSubnetCIDRRoutesOverlap
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: EnableFlowLogs
@@ -4188,6 +4407,7 @@ func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.Purpose = in.Purpose
 	out.Region = in.Region
 	// MISSING: ReservedInternalRange
+	// MISSING: ResolveSubnetMask
 	out.Role = in.Role
 	out.SecondaryIPRanges = direct.Slice_FromProto(mapCtx, in.SecondaryIpRanges, SubnetworkSecondaryRange_v1beta1_FromProto)
 	// MISSING: SelfLink
@@ -4195,6 +4415,7 @@ func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 	// MISSING: State
 	// MISSING: SystemReservedExternalIPV6Ranges
 	// MISSING: SystemReservedInternalIPV6Ranges
+	// MISSING: UtilizationDetails
 	return out
 }
 func ComputeSubnetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSubnetworkSpec) *pb.Subnetwork {
@@ -4202,6 +4423,7 @@ func ComputeSubnetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 		return nil
 	}
 	out := &pb.Subnetwork{}
+	// MISSING: AllowSubnetCIDRRoutesOverlap
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: EnableFlowLogs
@@ -4227,6 +4449,7 @@ func ComputeSubnetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	out.Purpose = in.Purpose
 	out.Region = in.Region
 	// MISSING: ReservedInternalRange
+	// MISSING: ResolveSubnetMask
 	out.Role = in.Role
 	out.SecondaryIpRanges = direct.Slice_ToProto(mapCtx, in.SecondaryIPRanges, SubnetworkSecondaryRange_v1beta1_ToProto)
 	// MISSING: SelfLink
@@ -4234,6 +4457,7 @@ func ComputeSubnetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	// MISSING: State
 	// MISSING: SystemReservedExternalIPV6Ranges
 	// MISSING: SystemReservedInternalIPV6Ranges
+	// MISSING: UtilizationDetails
 	return out
 }
 func ComputeSubnetworkStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkStatus {
@@ -4241,6 +4465,7 @@ func ComputeSubnetworkStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.ComputeSubnetworkStatus{}
+	// MISSING: AllowSubnetCIDRRoutesOverlap
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: EnableFlowLogs
@@ -4264,6 +4489,7 @@ func ComputeSubnetworkStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: Purpose
 	// MISSING: Region
 	// MISSING: ReservedInternalRange
+	// MISSING: ResolveSubnetMask
 	// MISSING: Role
 	// MISSING: SecondaryIPRanges
 	out.SelfLink = in.SelfLink
@@ -4271,6 +4497,7 @@ func ComputeSubnetworkStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: State
 	// MISSING: SystemReservedExternalIPV6Ranges
 	// MISSING: SystemReservedInternalIPV6Ranges
+	// MISSING: UtilizationDetails
 	return out
 }
 func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSubnetworkStatus) *pb.Subnetwork {
@@ -4278,6 +4505,7 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.Subnetwork{}
+	// MISSING: AllowSubnetCIDRRoutesOverlap
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: EnableFlowLogs
@@ -4301,6 +4529,7 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: Purpose
 	// MISSING: Region
 	// MISSING: ReservedInternalRange
+	// MISSING: ResolveSubnetMask
 	// MISSING: Role
 	// MISSING: SecondaryIPRanges
 	out.SelfLink = in.SelfLink
@@ -4308,6 +4537,7 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: State
 	// MISSING: SystemReservedExternalIPV6Ranges
 	// MISSING: SystemReservedInternalIPV6Ranges
+	// MISSING: UtilizationDetails
 	return out
 }
 
@@ -4756,6 +4986,7 @@ func ComputeVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.V
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
 	}
+	// MISSING: Params
 	out.Region = in.Region
 	// MISSING: SelfLink
 	out.StackType = in.StackType
@@ -4783,6 +5014,7 @@ found existing non-generated mapping function "ComputeVPNGatewaySpec_v1beta1_ToP
 		if in.NetworkRef != nil {
 			out.Network = &in.NetworkRef.External
 		}
+		// MISSING: Params
 		out.Region = in.Region
 		// MISSING: SelfLink
 		out.StackType = in.StackType
@@ -4890,6 +5122,7 @@ func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.DestAddressGroups = in.DestAddressGroups
 	out.DestFqdns = in.DestFqdns
 	out.DestIPRanges = in.DestIpRanges
+	// MISSING: DestNetworkContext
 	// MISSING: DestNetworkType
 	out.DestRegionCodes = in.DestRegionCodes
 	out.DestThreatIntelligences = in.DestThreatIntelligences
@@ -4897,6 +5130,7 @@ func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.SrcAddressGroups = in.SrcAddressGroups
 	out.SrcFqdns = in.SrcFqdns
 	out.SrcIPRanges = in.SrcIpRanges
+	// MISSING: SrcNetworkContext
 	// MISSING: SrcNetworkType
 	// MISSING: SrcNetworks
 	out.SrcRegionCodes = in.SrcRegionCodes
@@ -4912,6 +5146,7 @@ func FirewallPolicyRuleMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.DestAddressGroups = in.DestAddressGroups
 	out.DestFqdns = in.DestFqdns
 	out.DestIpRanges = in.DestIPRanges
+	// MISSING: DestNetworkContext
 	// MISSING: DestNetworkType
 	out.DestRegionCodes = in.DestRegionCodes
 	out.DestThreatIntelligences = in.DestThreatIntelligences
@@ -4919,6 +5154,7 @@ func FirewallPolicyRuleMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.SrcAddressGroups = in.SrcAddressGroups
 	out.SrcFqdns = in.SrcFqdns
 	out.SrcIpRanges = in.SrcIPRanges
+	// MISSING: SrcNetworkContext
 	// MISSING: SrcNetworkType
 	// MISSING: SrcNetworks
 	out.SrcRegionCodes = in.SrcRegionCodes
@@ -4972,6 +5208,298 @@ func ForwardingruleServiceDirectoryRegistrations_v1beta1_ToProto(mapCtx *direct.
 	// MISSING: ServiceDirectoryRegion
 	return out
 }
+
+/* found existing non-generated mapping function "FutureReservation_v1alpha1_FromProto", skipping
+func FutureReservation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmcomputev1alpha1.FutureReservation {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservation{}
+	out.AggregateReservation = AllocationAggregateReservation_v1alpha1_FromProto(mapCtx, in.GetAggregateReservation())
+	out.AutoCreatedReservationsDeleteTime = in.AutoCreatedReservationsDeleteTime
+	out.AutoCreatedReservationsDuration = Duration_v1alpha1_FromProto(mapCtx, in.GetAutoCreatedReservationsDuration())
+	out.AutoDeleteAutoCreatedReservations = in.AutoDeleteAutoCreatedReservations
+	out.CommitmentInfo = FutureReservationCommitmentInfo_v1alpha1_FromProto(mapCtx, in.GetCommitmentInfo())
+	// MISSING: ConfidentialComputeType
+	out.CreationTimestamp = in.CreationTimestamp
+	out.DeploymentType = in.DeploymentType
+	out.Description = in.Description
+	out.EnableEmergentMaintenance = in.EnableEmergentMaintenance
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.Name = in.Name
+	out.NamePrefix = in.NamePrefix
+	// MISSING: Params
+	out.PlanningStatus = in.PlanningStatus
+	out.ReservationMode = in.ReservationMode
+	out.ReservationName = in.ReservationName
+	out.SchedulingType = in.SchedulingType
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.ShareSettings = ShareSettings_v1alpha1_FromProto(mapCtx, in.GetShareSettings())
+	out.SpecificReservationRequired = in.SpecificReservationRequired
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_FromProto(mapCtx, in.GetSpecificSkuProperties())
+	out.Status = FutureReservationStatus_v1alpha1_FromProto(mapCtx, in.GetStatus())
+	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_FromProto(mapCtx, in.GetTimeWindow())
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservation_v1alpha1_ToProto", skipping
+func FutureReservation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservation) *pb.FutureReservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservation{}
+	out.AggregateReservation = AllocationAggregateReservation_v1alpha1_ToProto(mapCtx, in.AggregateReservation)
+	out.AutoCreatedReservationsDeleteTime = in.AutoCreatedReservationsDeleteTime
+	out.AutoCreatedReservationsDuration = Duration_v1alpha1_ToProto(mapCtx, in.AutoCreatedReservationsDuration)
+	out.AutoDeleteAutoCreatedReservations = in.AutoDeleteAutoCreatedReservations
+	out.CommitmentInfo = FutureReservationCommitmentInfo_v1alpha1_ToProto(mapCtx, in.CommitmentInfo)
+	// MISSING: ConfidentialComputeType
+	out.CreationTimestamp = in.CreationTimestamp
+	out.DeploymentType = in.DeploymentType
+	out.Description = in.Description
+	out.EnableEmergentMaintenance = in.EnableEmergentMaintenance
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.Name = in.Name
+	out.NamePrefix = in.NamePrefix
+	// MISSING: Params
+	out.PlanningStatus = in.PlanningStatus
+	out.ReservationMode = in.ReservationMode
+	out.ReservationName = in.ReservationName
+	out.SchedulingType = in.SchedulingType
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.ShareSettings = ShareSettings_v1alpha1_ToProto(mapCtx, in.ShareSettings)
+	out.SpecificReservationRequired = in.SpecificReservationRequired
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_ToProto(mapCtx, in.SpecificSkuProperties)
+	out.Status = FutureReservationStatus_v1alpha1_ToProto(mapCtx, in.Status)
+	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_ToProto(mapCtx, in.TimeWindow)
+	out.Zone = in.Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationCommitmentInfo_v1alpha1_FromProto", skipping
+func FutureReservationCommitmentInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationCommitmentInfo) *krmcomputev1alpha1.FutureReservationCommitmentInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationCommitmentInfo{}
+	out.CommitmentName = in.CommitmentName
+	out.CommitmentPlan = in.CommitmentPlan
+	out.PreviousCommitmentTerms = in.PreviousCommitmentTerms
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationCommitmentInfo_v1alpha1_ToProto", skipping
+func FutureReservationCommitmentInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationCommitmentInfo) *pb.FutureReservationCommitmentInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationCommitmentInfo{}
+	out.CommitmentName = in.CommitmentName
+	out.CommitmentPlan = in.CommitmentPlan
+	out.PreviousCommitmentTerms = in.PreviousCommitmentTerms
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationSpecificSkuProperties_v1alpha1_FromProto", skipping
+func FutureReservationSpecificSkuProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationSpecificSKUProperties) *krmcomputev1alpha1.FutureReservationSpecificSkuProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationSpecificSkuProperties{}
+	out.InstanceProperties = AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_FromProto(mapCtx, in.GetInstanceProperties())
+	out.SourceInstanceTemplate = in.SourceInstanceTemplate
+	out.TotalCount = in.TotalCount
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationSpecificSkuProperties_v1alpha1_ToProto", skipping
+func FutureReservationSpecificSkuProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationSpecificSkuProperties) *pb.FutureReservationSpecificSKUProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationSpecificSKUProperties{}
+	out.InstanceProperties = AllocationSpecificSkuAllocationReservedInstanceProperties_v1alpha1_ToProto(mapCtx, in.InstanceProperties)
+	out.SourceInstanceTemplate = in.SourceInstanceTemplate
+	out.TotalCount = in.TotalCount
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatus_v1alpha1_FromProto", skipping
+func FutureReservationStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationStatus) *krmcomputev1alpha1.FutureReservationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationStatus{}
+	out.AmendmentStatus = in.AmendmentStatus
+	out.AutoCreatedReservations = in.AutoCreatedReservations
+	out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_FromProto(mapCtx, in.GetExistingMatchingUsageInfo())
+	out.FulfilledCount = in.FulfilledCount
+	out.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_v1alpha1_FromProto(mapCtx, in.GetLastKnownGoodState())
+	out.LockTime = in.LockTime
+	out.ProcurementStatus = in.ProcurementStatus
+	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_v1alpha1_FromProto(mapCtx, in.GetSpecificSkuProperties())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatus_v1alpha1_ToProto", skipping
+func FutureReservationStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationStatus) *pb.FutureReservationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationStatus{}
+	out.AmendmentStatus = in.AmendmentStatus
+	out.AutoCreatedReservations = in.AutoCreatedReservations
+	out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_ToProto(mapCtx, in.ExistingMatchingUsageInfo)
+	out.FulfilledCount = in.FulfilledCount
+	out.LastKnownGoodState = FutureReservationStatusLastKnownGoodState_v1alpha1_ToProto(mapCtx, in.LastKnownGoodState)
+	out.LockTime = in.LockTime
+	out.ProcurementStatus = in.ProcurementStatus
+	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_v1alpha1_ToProto(mapCtx, in.SpecificSkuProperties)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_FromProto", skipping
+func FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationStatusExistingMatchingUsageInfo) *krmcomputev1alpha1.FutureReservationStatusExistingMatchingUsageInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationStatusExistingMatchingUsageInfo{}
+	out.Count = in.Count
+	out.Timestamp = in.Timestamp
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_ToProto", skipping
+func FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationStatusExistingMatchingUsageInfo) *pb.FutureReservationStatusExistingMatchingUsageInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationStatusExistingMatchingUsageInfo{}
+	out.Count = in.Count
+	out.Timestamp = in.Timestamp
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusLastKnownGoodState_v1alpha1_FromProto", skipping
+func FutureReservationStatusLastKnownGoodState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationStatusLastKnownGoodState) *krmcomputev1alpha1.FutureReservationStatusLastKnownGoodState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationStatusLastKnownGoodState{}
+	out.Description = in.Description
+	out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_FromProto(mapCtx, in.GetExistingMatchingUsageInfo())
+	out.FutureReservationSpecs = FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_FromProto(mapCtx, in.GetFutureReservationSpecs())
+	out.LockTime = in.LockTime
+	out.NamePrefix = in.NamePrefix
+	out.ProcurementStatus = in.ProcurementStatus
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusLastKnownGoodState_v1alpha1_ToProto", skipping
+func FutureReservationStatusLastKnownGoodState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationStatusLastKnownGoodState) *pb.FutureReservationStatusLastKnownGoodState {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationStatusLastKnownGoodState{}
+	out.Description = in.Description
+	out.ExistingMatchingUsageInfo = FutureReservationStatusExistingMatchingUsageInfo_v1alpha1_ToProto(mapCtx, in.ExistingMatchingUsageInfo)
+	out.FutureReservationSpecs = FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_ToProto(mapCtx, in.FutureReservationSpecs)
+	out.LockTime = in.LockTime
+	out.NamePrefix = in.NamePrefix
+	out.ProcurementStatus = in.ProcurementStatus
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_FromProto", skipping
+func FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs) *krmcomputev1alpha1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs{}
+	out.ShareSettings = ShareSettingsObservedState_v1alpha1_FromProto(mapCtx, in.GetShareSettings())
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_FromProto(mapCtx, in.GetSpecificSkuProperties())
+	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_FromProto(mapCtx, in.GetTimeWindow())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_ToProto", skipping
+func FutureReservationStatusLastKnownGoodStateFutureReservationSpecs_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs) *pb.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationStatusLastKnownGoodStateFutureReservationSpecs{}
+	out.ShareSettings = ShareSettingsObservedState_v1alpha1_ToProto(mapCtx, in.ShareSettings)
+	out.SpecificSkuProperties = FutureReservationSpecificSkuProperties_v1alpha1_ToProto(mapCtx, in.SpecificSkuProperties)
+	out.TimeWindow = FutureReservationTimeWindow_v1alpha1_ToProto(mapCtx, in.TimeWindow)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusSpecificSkuProperties_v1alpha1_FromProto", skipping
+func FutureReservationStatusSpecificSkuProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationStatusSpecificSKUProperties) *krmcomputev1alpha1.FutureReservationStatusSpecificSkuProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationStatusSpecificSkuProperties{}
+	out.SourceInstanceTemplateID = in.SourceInstanceTemplateId
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationStatusSpecificSkuProperties_v1alpha1_ToProto", skipping
+func FutureReservationStatusSpecificSkuProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationStatusSpecificSkuProperties) *pb.FutureReservationStatusSpecificSKUProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationStatusSpecificSKUProperties{}
+	out.SourceInstanceTemplateId = in.SourceInstanceTemplateID
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationTimeWindow_v1alpha1_FromProto", skipping
+func FutureReservationTimeWindow_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservationTimeWindow) *krmcomputev1alpha1.FutureReservationTimeWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.FutureReservationTimeWindow{}
+	out.Duration = Duration_v1alpha1_FromProto(mapCtx, in.GetDuration())
+	out.EndTime = in.EndTime
+	out.StartTime = in.StartTime
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "FutureReservationTimeWindow_v1alpha1_ToProto", skipping
+func FutureReservationTimeWindow_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.FutureReservationTimeWindow) *pb.FutureReservationTimeWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FutureReservationTimeWindow{}
+	out.Duration = Duration_v1alpha1_ToProto(mapCtx, in.Duration)
+	out.EndTime = in.EndTime
+	out.StartTime = in.StartTime
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "HealthCheckGRPCHealthCheck_v1beta1_FromProto", skipping
 func HealthCheckGRPCHealthCheck_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GRPCHealthCheck) *krm.HealthCheckGRPCHealthCheck {
@@ -5343,6 +5871,7 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_FromProto(mapCtx *direct.MapCon
 	out.IPV6Address = in.Ipv6Address
 	out.ProjectIDOrNum = in.ProjectIdOrNum
 	out.SecondaryIPCIDRRanges = in.SecondaryIpCidrRanges
+	// MISSING: ServiceClassID
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCIDRRange = in.SubnetworkCidrRange
@@ -5357,6 +5886,7 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Ipv6Address = in.IPV6Address
 	out.ProjectIdOrNum = in.ProjectIDOrNum
 	out.SecondaryIpCidrRanges = in.SecondaryIPCIDRRanges
+	// MISSING: ServiceClassID
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
@@ -5491,6 +6021,7 @@ func RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx *direct.MapCont
 	out.Mode = in.Mode
 	out.ScaleInControl = RegionautoscalerScaleInControl_v1alpha1_FromProto(mapCtx, in.GetScaleInControl())
 	out.ScalingSchedules = ScalingSchedules_FromProto(mapCtx, in.ScalingSchedules)
+	// MISSING: StabilizationPeriodSec
 	return out
 }
 */
@@ -5511,6 +6042,7 @@ func RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Mode = in.Mode
 	out.ScaleInControl = RegionautoscalerScaleInControl_v1alpha1_ToProto(mapCtx, in.ScaleInControl)
 	out.ScalingSchedules = ScalingSchedules_ToProto(mapCtx, in.ScalingSchedules)
+	// MISSING: StabilizationPeriodSec
 	return out
 }
 */
@@ -5807,6 +6339,7 @@ func ResourcePolicyGroupPlacementPolicy_v1beta1_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.ResourcePolicyGroupPlacementPolicy{}
+	// MISSING: AcceleratorTopologyMode
 	out.AvailabilityDomainCount = in.AvailabilityDomainCount
 	out.Collocation = in.Collocation
 	// MISSING: GpuTopology
@@ -5822,6 +6355,7 @@ func ResourcePolicyGroupPlacementPolicy_v1beta1_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.ResourcePolicyGroupPlacementPolicy{}
+	// MISSING: AcceleratorTopologyMode
 	out.AvailabilityDomainCount = in.AvailabilityDomainCount
 	out.Collocation = in.Collocation
 	// MISSING: GpuTopology
@@ -6152,6 +6686,7 @@ func SecurityPolicyAdvancedOptionsConfig_v1beta1_FromProto(mapCtx *direct.MapCon
 	out.JsonCustomConfig = SecurityPolicyAdvancedOptionsConfigJsonCustomConfig_v1beta1_FromProto(mapCtx, in.GetJsonCustomConfig())
 	out.JsonParsing = in.JsonParsing
 	out.LogLevel = in.LogLevel
+	// MISSING: RequestBodyInspectionSize
 	out.UserIPRequestHeaders = in.UserIpRequestHeaders
 	return out
 }
@@ -6163,6 +6698,7 @@ func SecurityPolicyAdvancedOptionsConfig_v1beta1_ToProto(mapCtx *direct.MapConte
 	out.JsonCustomConfig = SecurityPolicyAdvancedOptionsConfigJsonCustomConfig_v1beta1_ToProto(mapCtx, in.JsonCustomConfig)
 	out.JsonParsing = in.JsonParsing
 	out.LogLevel = in.LogLevel
+	// MISSING: RequestBodyInspectionSize
 	out.UserIpRequestHeaders = in.UserIPRequestHeaders
 	return out
 }
@@ -6723,6 +7259,7 @@ func UrlmapDefaultRouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krm.UrlmapDefaultRouteAction{}
+	// MISSING: CachePolicy
 	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
 	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
 	// MISSING: MaxStreamDuration
@@ -6742,6 +7279,7 @@ func UrlmapDefaultRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.HttpRouteAction{}
+	// MISSING: CachePolicy
 	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
 	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
 	// MISSING: MaxStreamDuration
@@ -7186,6 +7724,7 @@ func UrlmapRequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	if in.GetBackendService() != "" {
 		out.BackendServiceRef = &krm.UrlmapResourceRef{External: in.GetBackendService()}
 	}
+	// MISSING: MirrorPercent
 	return out
 }
 func UrlmapRequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapRequestMirrorPolicy) *pb.RequestMirrorPolicy {
@@ -7196,6 +7735,7 @@ func UrlmapRequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	if in.BackendServiceRef != nil {
 		out.BackendService = &in.BackendServiceRef.External
 	}
+	// MISSING: MirrorPercent
 	return out
 }
 
@@ -7257,6 +7797,7 @@ func UrlmapRouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpR
 		return nil
 	}
 	out := &krm.UrlmapRouteAction{}
+	// MISSING: CachePolicy
 	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
 	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
 	// MISSING: MaxStreamDuration
@@ -7273,6 +7814,7 @@ func UrlmapRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Urlmap
 		return nil
 	}
 	out := &pb.HttpRouteAction{}
+	// MISSING: CachePolicy
 	out.CorsPolicy = UrlmapCorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
 	out.FaultInjectionPolicy = UrlmapFaultInjectionPolicy_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
 	// MISSING: MaxStreamDuration
