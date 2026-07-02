@@ -334,3 +334,100 @@ func Timestamp_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Times
 	}
 	return timestamppb.New(t)
 }
+
+func Services_FromProto(mapCtx *direct.MapContext, in map[string]*pb.StateTimeline) map[string]krm.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]krm.StateTimeline)
+	for k := range in {
+		out[k] = krm.StateTimeline{}
+	}
+	return out
+}
+
+func Services_ToProto(mapCtx *direct.MapContext, in map[string]krm.StateTimeline) map[string]*pb.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.StateTimeline)
+	for k := range in {
+		out[k] = &pb.StateTimeline{}
+	}
+	return out
+}
+
+func ServicesObservedState_FromProto(mapCtx *direct.MapContext, in map[string]*pb.StateTimeline) map[string]krm.StateTimelineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]krm.StateTimelineObservedState)
+	for k, v := range in {
+		st := StateTimelineObservedState_FromProto(mapCtx, v)
+		if st != nil {
+			out[k] = *st
+		}
+	}
+	return out
+}
+
+func ServicesObservedState_ToProto(mapCtx *direct.MapContext, in map[string]krm.StateTimelineObservedState) map[string]*pb.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.StateTimeline)
+	for k, v := range in {
+		out[k] = StateTimelineObservedState_ToProto(mapCtx, &v)
+	}
+	return out
+}
+
+func StateMetadataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StateMetadata) *krm.StateMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StateMetadataObservedState{}
+	out.EffectiveTime = Timestamp_FromProto(mapCtx, in.GetEffectiveTime())
+	out.State = direct.LazyPtr(in.GetState())
+	return out
+}
+
+func StateMetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StateMetadataObservedState) *pb.StateMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StateMetadata{}
+	out.EffectiveTime = Timestamp_ToProto(mapCtx, in.EffectiveTime)
+	out.State = direct.ValueOf(in.State)
+	return out
+}
+
+func NetworkConnectivityMulticloudDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityMulticloudDataTransferConfigObservedState{}
+	out.CreateTime = Timestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DestinationsActiveCount = direct.LazyPtr(in.GetDestinationsActiveCount())
+	out.DestinationsCount = direct.LazyPtr(in.GetDestinationsCount())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Services = ServicesObservedState_FromProto(mapCtx, in.Services)
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.UpdateTime = Timestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func NetworkConnectivityMulticloudDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState) *pb.MulticloudDataTransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MulticloudDataTransferConfig{}
+	out.CreateTime = Timestamp_ToProto(mapCtx, in.CreateTime)
+	out.DestinationsActiveCount = direct.ValueOf(in.DestinationsActiveCount)
+	out.DestinationsCount = direct.ValueOf(in.DestinationsCount)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Services = ServicesObservedState_ToProto(mapCtx, in.Services)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.UpdateTime = Timestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
