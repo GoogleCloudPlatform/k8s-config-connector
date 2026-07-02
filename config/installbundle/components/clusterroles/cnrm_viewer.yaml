@@ -807,6 +807,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - mapsplatformdatasets.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - memcache.cnrm.cloud.google.com
   resources:
   - '*'
