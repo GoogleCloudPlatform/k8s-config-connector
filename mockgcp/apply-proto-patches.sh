@@ -127,34 +127,222 @@ go run . --file ${API_PROTO} --message "TestIamPermissionsRequest" --mode "repla
   repeated string permissions = 2 [json_name="permissions"];
 EOF
 
-go run . --file ${API_PROTO} --service "FoldersServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=folders/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
-
-go run . --file ${API_PROTO} --service "OrganizationsServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=organizations/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
-
-go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
-  // Returns permissions that a caller has on the specified project.
-  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{resource=projects/*}:testIamPermissions"
-      body: "*"
-    };
-  };
-EOF
-
 sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
+
+# NetworkServices EdgeCacheService patches
+NS_PROTO=${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/networkservices/v1/network_services.proto
+sed -i 's|option go_package = "cloud.google.com/go/networkservices/apiv1/networkservicespb;networkservicespb";|option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkservices/v1;networkservicespb";|' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/networkservices/v1/*.proto
+sed -i 's|import "google/protobuf/empty.proto";|import "google/protobuf/empty.proto";\nimport "google/protobuf/field_mask.proto";\nimport "google/protobuf/struct.proto";|' ${NS_PROTO}
+
+go run . --file ${NS_PROTO} --service "NetworkServices" --mode "append" <<EOF
+  // Lists EdgeCacheServices in a given project and location.
+  rpc ListEdgeCacheServices(ListEdgeCacheServicesRequest)
+      returns (ListEdgeCacheServicesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/global}/edgeCacheServices"
+    };
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Gets details of a single EdgeCacheService.
+  rpc GetEdgeCacheService(GetEdgeCacheServiceRequest) returns (EdgeCacheService) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/global/edgeCacheServices/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Creates a new EdgeCacheService in a given project and location.
+  rpc CreateEdgeCacheService(CreateEdgeCacheServiceRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/global}/edgeCacheServices"
+      body: "edge_cache_service"
+    };
+    option (google.api.method_signature) =
+        "parent,edge_cache_service,edge_cache_service_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "EdgeCacheService"
+      metadata_type: "google.cloud.networkservices.v1.OperationMetadata"
+    };
+  }
+
+  // Updates the parameters of a single EdgeCacheService.
+  rpc UpdateEdgeCacheService(UpdateEdgeCacheServiceRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{edge_cache_service.name=projects/*/locations/global/edgeCacheServices/*}"
+      body: "edge_cache_service"
+    };
+    option (google.api.method_signature) = "edge_cache_service,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "EdgeCacheService"
+      metadata_type: "google.cloud.networkservices.v1.OperationMetadata"
+    };
+  }
+
+  // Deletes a single EdgeCacheService.
+  rpc DeleteEdgeCacheService(DeleteEdgeCacheServiceRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/global/edgeCacheServices/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "google.cloud.networkservices.v1.OperationMetadata"
+    };
+  }
+
+  // Lists EdgeCacheOrigins in a given project and location.
+  rpc ListEdgeCacheOrigins(ListEdgeCacheOriginsRequest)
+      returns (ListEdgeCacheOriginsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/global}/edgeCacheOrigins"
+    };
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Gets details of a single EdgeCacheOrigin.
+  rpc GetEdgeCacheOrigin(GetEdgeCacheOriginRequest) returns (EdgeCacheOrigin) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/global/edgeCacheOrigins/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Creates a new EdgeCacheOrigin in a given project and location.
+  rpc CreateEdgeCacheOrigin(CreateEdgeCacheOriginRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/global}/edgeCacheOrigins"
+      body: "edge_cache_origin"
+    };
+    option (google.api.method_signature) =
+        "parent,edge_cache_origin,edge_cache_origin_id";
+    option (google.longrunning.operation_info) = {
+      response_type: "EdgeCacheOrigin"
+      metadata_type: "google.cloud.networkservices.v1.OperationMetadata"
+    };
+  }
+
+  // Updates the parameters of a single EdgeCacheOrigin.
+  rpc UpdateEdgeCacheOrigin(UpdateEdgeCacheOriginRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{edge_cache_origin.name=projects/*/locations/global/edgeCacheOrigins/*}"
+      body: "edge_cache_origin"
+    };
+    option (google.api.method_signature) = "edge_cache_origin,update_mask";
+    option (google.longrunning.operation_info) = {
+      response_type: "EdgeCacheOrigin"
+      metadata_type: "google.cloud.networkservices.v1.OperationMetadata"
+    };
+  }
+
+  // Deletes a single EdgeCacheOrigin.
+  rpc DeleteEdgeCacheOrigin(DeleteEdgeCacheOriginRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/global/edgeCacheOrigins/*}"
+    };
+    option (google.api.method_signature) = "name";
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "google.cloud.networkservices.v1.OperationMetadata"
+    };
+  }
+EOF
+
+cat <<EOF >> ${NS_PROTO}
+
+message EdgeCacheOrigin {
+  string name = 1;
+  string description = 2;
+  google.protobuf.Struct labels = 3;
+  string origin_address = 4;
+  int32 max_attempts = 5;
+  google.protobuf.Struct timeout = 6;
+  string protocol = 7;
+  string port = 8;
+  google.protobuf.Struct retry_conditions = 9;
+}
+
+message ListEdgeCacheOriginsRequest {
+  string parent = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  string filter = 4;
+  string order_by = 5;
+}
+
+message ListEdgeCacheOriginsResponse {
+  repeated EdgeCacheOrigin edge_cache_origins = 1;
+  string next_page_token = 2;
+}
+
+message GetEdgeCacheOriginRequest {
+  string name = 1;
+}
+
+message CreateEdgeCacheOriginRequest {
+  string parent = 1;
+  string edge_cache_origin_id = 2;
+  EdgeCacheOrigin edge_cache_origin = 3;
+}
+
+message UpdateEdgeCacheOriginRequest {
+  google.protobuf.FieldMask update_mask = 1;
+  EdgeCacheOrigin edge_cache_origin = 2;
+}
+
+message DeleteEdgeCacheOriginRequest {
+  string name = 1;
+}
+
+message EdgeCacheService {
+  string name = 1;
+  string description = 2;
+  google.protobuf.Struct labels = 3;
+  bool disable_http2 = 4;
+  bool disable_quic = 5;
+  string edge_security_policy = 6;
+  repeated string edge_ssl_certificates = 7;
+  google.protobuf.Struct log_config = 8;
+  bool require_tls = 9;
+  google.protobuf.Struct routing = 10;
+  string ssl_policy = 11;
+}
+
+message ListEdgeCacheServicesRequest {
+  string parent = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  string filter = 4;
+  string order_by = 5;
+}
+
+message ListEdgeCacheServicesResponse {
+  repeated EdgeCacheService edge_cache_services = 1;
+  string next_page_token = 2;
+}
+
+message GetEdgeCacheServiceRequest {
+  string name = 1;
+}
+
+message CreateEdgeCacheServiceRequest {
+  string parent = 1;
+  string edge_cache_service_id = 2;
+  EdgeCacheService edge_cache_service = 3;
+}
+
+message UpdateEdgeCacheServiceRequest {
+  google.protobuf.FieldMask update_mask = 1;
+  EdgeCacheService edge_cache_service = 2;
+}
+
+message DeleteEdgeCacheServiceRequest {
+  string name = 1;
+}
+EOF
