@@ -923,6 +923,13 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.ResourceLabels != nil {
+		in, out := &in.ResourceLabels, &out.ResourceLabels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.NodePoolAutoConfig != nil {
 		in, out := &in.NodePoolAutoConfig, &out.NodePoolAutoConfig
 		*out = new(NodePoolAutoConfig)

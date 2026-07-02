@@ -422,6 +422,8 @@ protectConfig:
 releaseChannel:
   channel: string
 resourceID: string
+resourceLabels:
+  string: string
 resourceUsageExportConfig:
   bigqueryDestination:
     datasetId: string
@@ -3870,6 +3872,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>resourceLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>The GCE resource labels (a map of key/value pairs) to be applied to the cluster.</p>
         </td>
     </tr>
     <tr>

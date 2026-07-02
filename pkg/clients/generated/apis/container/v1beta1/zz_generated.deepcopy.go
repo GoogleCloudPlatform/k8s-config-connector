@@ -2948,6 +2948,13 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ResourceLabels != nil {
+		in, out := &in.ResourceLabels, &out.ResourceLabels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.ResourceUsageExportConfig != nil {
 		in, out := &in.ResourceUsageExportConfig, &out.ResourceUsageExportConfig
 		*out = new(ClusterResourceUsageExportConfig)
