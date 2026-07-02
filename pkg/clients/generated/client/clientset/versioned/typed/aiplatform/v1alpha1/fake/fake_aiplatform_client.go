@@ -39,6 +39,10 @@ func (c *FakeAiplatformV1alpha1) VertexAIFeatureOnlineStores(namespace string) v
 	return newFakeVertexAIFeatureOnlineStores(c, namespace)
 }
 
+func (c *FakeAiplatformV1alpha1) VertexAINotebookRuntimes(namespace string) v1alpha1.VertexAINotebookRuntimeInterface {
+	return newFakeVertexAINotebookRuntimes(c, namespace)
+}
+
 func (c *FakeAiplatformV1alpha1) VertexAIPipelineJobs(namespace string) v1alpha1.VertexAIPipelineJobInterface {
 	return newFakeVertexAIPipelineJobs(c, namespace)
 }

@@ -25,6 +25,8 @@ type AIPlatformModelExpansion interface{}
 
 type VertexAIFeatureOnlineStoreExpansion interface{}
 
+type VertexAINotebookRuntimeExpansion interface{}
+
 type VertexAIPipelineJobExpansion interface{}
 
 type VertexAISpecialistPoolExpansion interface{}
