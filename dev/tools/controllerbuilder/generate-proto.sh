@@ -91,6 +91,8 @@ protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
     -I ${THIRD_PARTY}/googleapis/ \
     -I ${REPO_ROOT}/mockgcp/apis \
+    -I ${REPO_ROOT}/third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/python/ \
+    ${REPO_ROOT}/third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/python/proto/identitytoolkit/beta/*.proto \
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
