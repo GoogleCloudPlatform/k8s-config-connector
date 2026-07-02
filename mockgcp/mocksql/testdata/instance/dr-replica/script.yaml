@@ -1,0 +1,34 @@
+- exec: gcloud sql instances create master-${uniqueId} --database-version=MYSQL_8_4 --region=us-central1 --edition="ENTERPRISE_PLUS" --tier=db-perf-optimized-N-2
+
+# Create replica in us-west1, configure the replica
+- exec: gcloud sql instances create replica-west-${uniqueId} --database-version=MYSQL_8_4 --region=us-west1 --master-instance-name=master-${uniqueId} --edition="ENTERPRISE_PLUS" --tier=db-perf-optimized-N-2
+- exec: gcloud sql instances patch master-${uniqueId} --failover-dr-replica-name=replica-west-${uniqueId}
+
+# Switchover to the replica
+- exec: gcloud sql instances switchover replica-west-${uniqueId}
+
+# See the state
+- exec: gcloud sql instances describe master-${uniqueId}
+- exec: gcloud sql instances describe replica-west-${uniqueId}
+
+# Create replica in us-east1, configure the replica.  Note that the leader is now replica-west-${uniqueId}
+- exec: gcloud sql instances create replica-east-${uniqueId} --database-version=MYSQL_8_4 --region=us-east1 --master-instance-name=replica-west-${uniqueId} --edition="ENTERPRISE_PLUS" --tier=db-perf-optimized-N-2
+- exec: gcloud sql instances patch replica-west-${uniqueId} --failover-dr-replica-name=replica-east-${uniqueId}
+
+# See the state
+- exec: gcloud sql instances describe master-${uniqueId}
+- exec: gcloud sql instances describe replica-west-${uniqueId}
+- exec: gcloud sql instances describe replica-east-${uniqueId}
+
+# Clear the replica
+- exec: gcloud sql instances patch replica-west-${uniqueId} --clear-failover-dr-replica-name
+
+# See the state
+- exec: gcloud sql instances describe master-${uniqueId}
+- exec: gcloud sql instances describe replica-west-${uniqueId}
+- exec: gcloud sql instances describe replica-east-${uniqueId}
+
+# Clean up
+- exec: gcloud sql instances delete replica-west-${uniqueId} --quiet
+- exec: gcloud sql instances delete replica-east-${uniqueId} --quiet
+- exec: gcloud sql instances delete master-${uniqueId} --quiet
