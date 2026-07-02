@@ -32,7 +32,6 @@ go run . generate-types \
     --resource VMwareEngineNetworkPolicy:NetworkPolicy \
     --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
     --resource VMwareEnginePrivateCloud:PrivateCloud \
-    --resource VMwareEnginePrivateConnection:PrivateConnection \
 
 go run . generate-mapper \
     --service google.cloud.vmwareengine.v1 \

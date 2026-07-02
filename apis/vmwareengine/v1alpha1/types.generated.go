@@ -22,7 +22,6 @@
 // resource: VMwareEngineNetworkPolicy:NetworkPolicy
 // resource: VMwareEngineExternalAccessRule:ExternalAccessRule
 // resource: VMwareEnginePrivateCloud:PrivateCloud
-// resource: VMwareEnginePrivateConnection:PrivateConnection
 
 package v1alpha1
 
@@ -33,9 +32,11 @@ type NetworkPolicy_NetworkService struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+/* unreachable type VmwareEngineNetwork_VPCNetwork
 // +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
 type VmwareEngineNetwork_VPCNetwork struct {
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
 type NetworkPolicy_NetworkServiceObservedState struct {
