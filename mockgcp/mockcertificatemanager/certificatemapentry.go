@@ -39,6 +39,9 @@ func (s *CertificateManagerV1) GetCertificateMapEntry(ctx context.Context, req *
 
 	obj := &pb.CertificateMapEntry{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMapEntry %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -58,6 +61,7 @@ func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, re
 	obj.Name = fqn
 	now := timestamppb.Now()
 	obj.CreateTime = now
+	obj.UpdateTime = now
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -89,6 +93,9 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 	fqn := name.String()
 	obj := &pb.CertificateMapEntry{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMapEntry %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -108,10 +115,16 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
+
+	now := timestamppb.Now()
+	obj.UpdateTime = now
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMapEntry %q not found", fqn)
+		}
 		return nil, err
 	}
-	now := timestamppb.Now()
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            now,
@@ -138,6 +151,9 @@ func (s *CertificateManagerV1) DeleteCertificateMapEntry(ctx context.Context, re
 
 	deletedObj := &pb.CertificateMapEntry{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateMapEntry %q not found", fqn)
+		}
 		return nil, err
 	}
 

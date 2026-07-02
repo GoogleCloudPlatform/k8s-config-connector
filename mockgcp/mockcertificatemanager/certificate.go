@@ -17,6 +17,7 @@ package mockcertificatemanager
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
@@ -29,6 +30,33 @@ import (
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 )
 
+func (s *CertificateManagerV1) populateCertificateDefaults(obj *pb.Certificate) {
+	if managed := obj.GetManaged(); managed != nil {
+		if managed.State == pb.Certificate_ManagedCertificate_STATE_UNSPECIFIED {
+			managed.State = pb.Certificate_ManagedCertificate_ACTIVE
+		}
+		if len(managed.AuthorizationAttemptInfo) == 0 {
+			for _, domain := range managed.Domains {
+				managed.AuthorizationAttemptInfo = append(managed.AuthorizationAttemptInfo, &pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo{
+					Domain: domain,
+					State:  pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo_AUTHORIZED,
+				})
+			}
+		}
+		for i, dnsAuth := range managed.DnsAuthorizations {
+			dnsAuthName, err := s.parseDNSAuthorizationName(dnsAuth)
+			if err == nil {
+				projectNumberStr := strconv.FormatInt(dnsAuthName.Project.Number, 10)
+				managed.DnsAuthorizations[i] = fmt.Sprintf("projects/%s/locations/%s/dnsAuthorizations/%s",
+					projectNumberStr, dnsAuthName.Location, dnsAuthName.DNSAuthorizationName)
+			}
+		}
+		if len(obj.SanDnsnames) == 0 {
+			obj.SanDnsnames = managed.Domains
+		}
+	}
+}
+
 func (s *CertificateManagerV1) GetCertificate(ctx context.Context, req *pb.GetCertificateRequest) (*pb.Certificate, error) {
 	name, err := s.parseCertificateName(req.Name)
 	if err != nil {
@@ -39,6 +67,9 @@ func (s *CertificateManagerV1) GetCertificate(ctx context.Context, req *pb.GetCe
 
 	obj := &pb.Certificate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificate %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -57,19 +88,11 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	obj := proto.CloneOf(req.Certificate)
 	obj.Name = fqn
 
-	if managed := obj.GetManaged(); managed != nil {
-		if managed.State == pb.Certificate_ManagedCertificate_STATE_UNSPECIFIED {
-			managed.State = pb.Certificate_ManagedCertificate_ACTIVE
-		}
-		for _, domain := range managed.Domains {
-			managed.AuthorizationAttemptInfo = append(managed.AuthorizationAttemptInfo, &pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo{
-				Domain: domain,
-				State:  pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo_AUTHORIZED,
-			})
-		}
-	}
-
 	now := timestamppb.Now()
+	obj.CreateTime = now
+	obj.UpdateTime = now
+
+	s.populateCertificateDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -101,6 +124,9 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 	fqn := name.String()
 	obj := &pb.Certificate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificate %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -121,11 +147,19 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
+
+	now := timestamppb.Now()
+	obj.UpdateTime = now
+
+	s.populateCertificateDefaults(obj)
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificate %q not found", fqn)
+		}
 		return nil, err
 	}
 
-	now := timestamppb.Now()
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            now,
@@ -153,6 +187,9 @@ func (s *CertificateManagerV1) DeleteCertificate(ctx context.Context, req *pb.De
 
 	deletedObj := &pb.Certificate{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificate %q not found", fqn)
+		}
 		return nil, err
 	}
 

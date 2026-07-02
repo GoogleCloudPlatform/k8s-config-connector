@@ -41,6 +41,9 @@ func (s *CertificateManagerV1) GetCertificateIssuanceConfig(ctx context.Context,
 
 	obj := &pb.CertificateIssuanceConfig{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateIssuanceConfig %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -164,6 +167,9 @@ func (s *CertificateManagerV1) DeleteCertificateIssuanceConfig(ctx context.Conte
 
 	deletedObj := &pb.CertificateIssuanceConfig{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "certificateIssuanceConfig %q not found", fqn)
+		}
 		return nil, err
 	}
 

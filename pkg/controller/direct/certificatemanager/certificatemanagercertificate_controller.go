@@ -17,10 +17,12 @@ package certificatemanager
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -76,6 +78,22 @@ func (m *certificateModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	// Normalize dnsAuthorizations to project numbers using ProjectMapper
+	if obj.Spec.Managed != nil {
+		for i, ref := range obj.Spec.Managed.DnsAuthorizationsRefs {
+			if ref.External != "" {
+				tokens := strings.Split(ref.External, "/")
+				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dnsAuthorizations" {
+					projectNumber, err := m.config.ProjectMapper.LookupProjectNumber(ctx, tokens[1])
+					if err == nil {
+						tokens[1] = fmt.Sprintf("%d", projectNumber)
+						obj.Spec.Managed.DnsAuthorizationsRefs[i].External = strings.Join(tokens, "/")
+					}
+				}
+			}
+		}
+	}
+
 	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -95,9 +113,10 @@ func (m *certificateModel) AdapterForObject(ctx context.Context, op *directbase.
 	desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	return &CertificateAdapter{
-		id:        identity.(*krm.CertificateManagerCertificateIdentity),
-		gcpClient: gcpClient,
-		desired:   desiredPb,
+		id:            identity.(*krm.CertificateManagerCertificateIdentity),
+		gcpClient:     gcpClient,
+		desired:       desiredPb,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -114,16 +133,18 @@ func (m *certificateModel) AdapterForURL(ctx context.Context, url string) (direc
 	}
 
 	return &CertificateAdapter{
-		id:        id,
-		gcpClient: gcpClient,
+		id:            id,
+		gcpClient:     gcpClient,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
 type CertificateAdapter struct {
-	id        *krm.CertificateManagerCertificateIdentity
-	gcpClient *gcp.Client
-	desired   *pb.Certificate
-	actual    *pb.Certificate
+	id            *krm.CertificateManagerCertificateIdentity
+	gcpClient     *gcp.Client
+	desired       *pb.Certificate
+	actual        *pb.Certificate
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &CertificateAdapter{}
@@ -265,13 +286,31 @@ func (a *CertificateAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 }
 
 func compareCertificate(ctx context.Context, actual, desired *pb.Certificate) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	desiredCopy := proto.CloneOf(desired)
+
 	maskedActual, err := mappers.OnlySpecFields(actual, CertificateManagerCertificateSpec_v1beta1_FromProto, CertificateManagerCertificateSpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
-	maskedActual.Name = desired.Name
+	maskedActual.Name = desiredCopy.Name
 	maskedActual.Labels = actual.Labels
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+
+	// Normalize project ID/number in dnsAuthorizations to "any-project" to avoid infinite update loops
+	normalizeDnsAuthorizations := func(cert *pb.Certificate) {
+		if cert.GetManaged() != nil {
+			for i, dnsAuth := range cert.GetManaged().DnsAuthorizations {
+				tokens := strings.Split(dnsAuth, "/")
+				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dnsAuthorizations" {
+					tokens[1] = "any-project"
+					cert.GetManaged().DnsAuthorizations[i] = strings.Join(tokens, "/")
+				}
+			}
+		}
+	}
+	normalizeDnsAuthorizations(desiredCopy)
+	normalizeDnsAuthorizations(maskedActual)
+
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desiredCopy.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
