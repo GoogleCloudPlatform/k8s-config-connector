@@ -1,5 +1,4 @@
-- caisURL: unknown
-  error: not yet supported
+- caisURL: //logging.googleapis.com/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}
   group: logging.cnrm.cloud.google.com
   kind: LoggingLogBucket
   name: logginglogbucket-dep-${uniqueId}

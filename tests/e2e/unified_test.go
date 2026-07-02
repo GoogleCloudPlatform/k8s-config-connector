@@ -54,6 +54,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
@@ -610,6 +611,28 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				}
 				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					folderID := h.FolderID()
+
+					// Attempt to find any dynamically created Folder in the namespace
+					if primaryResource.GroupVersionKind().Group != "resourcemanager.cnrm.cloud.google.com" {
+						folderList := &unstructured.UnstructuredList{}
+						folderList.SetGroupVersionKind(schema.GroupVersionKind{
+							Group:   "resourcemanager.cnrm.cloud.google.com",
+							Version: "v1beta1",
+							Kind:    "FolderList",
+						})
+						if err := h.GetClient().List(ctx, folderList, client.InNamespace(primaryResource.GetNamespace())); err == nil {
+							for _, folder := range folderList.Items {
+								fid, _, _ := unstructured.NestedString(folder.Object, "status", "folderId")
+								if fid == "" {
+									fid, _, _ = unstructured.NestedString(folder.Object, "status", "uniqueId")
+								}
+								if fid != "" {
+									folderID = fid
+									break
+								}
+							}
+						}
+					}
 
 					for _, obj := range exportResources {
 						// Check the final state of the object in the kube-apiserver (and compare against golden file)
