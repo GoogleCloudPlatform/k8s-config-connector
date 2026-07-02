@@ -135,7 +135,8 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
-	/* Immutable. The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. */
+	/* The Customer Managed Encryption Key used to encrypt the
+	boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
 
@@ -208,7 +209,7 @@ type ClusterCidrBlocks struct {
 }
 
 type ClusterClientCertificateConfig struct {
-	/* Immutable. Whether client certificate authorization is enabled for this cluster. */
+	/* Whether client certificate authorization is enabled for this cluster. */
 	IssueClientCertificate bool `json:"issueClientCertificate"`
 }
 
@@ -585,7 +586,7 @@ type ClusterMasterAuth struct {
 	// +optional
 	ClientCertificate *string `json:"clientCertificate,omitempty"`
 
-	/* Immutable. Whether client certificate authorization is enabled for this cluster. */
+	/* Whether client certificate authorization is enabled for this cluster. */
 	// +optional
 	ClientCertificateConfig *ClusterClientCertificateConfig `json:"clientCertificateConfig,omitempty"`
 
