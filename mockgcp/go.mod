@@ -9,7 +9,7 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector => ./..
 replace github.com/hashicorp/terraform-provider-google-beta => ../third_party/github.com/hashicorp/terraform-provider-google-beta
 
 require (
-	cloud.google.com/go/accesscontextmanager v1.9.7
+	cloud.google.com/go/accesscontextmanager v1.14.0
 	cloud.google.com/go/aiplatform v1.123.0
 	cloud.google.com/go/alloydb v1.26.0
 	cloud.google.com/go/analytics v0.30.1
