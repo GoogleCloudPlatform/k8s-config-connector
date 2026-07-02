@@ -16,7 +16,7 @@
 // +generated:types
 // krm.group: sqladmin.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.sql.v1
+// proto.service: google.cloud.sql.v1beta4
 // resource: SQLAdminBackup:BackupRun
 
 package v1alpha1
