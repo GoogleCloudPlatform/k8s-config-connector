@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,7 +32,7 @@ type ComputeFirewallPolicySpec struct {
 
 	/* Immutable. The Folder that this resource belongs to. Only one of [folderRef, organizationRef] may be specified. */
 	// +optional
-	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
 
 	/* Immutable. The Organization that this resource belongs to. Only one of [folderRef, organizationRef] may be specified. */
 	// +optional

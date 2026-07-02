@@ -105,7 +105,7 @@ type AssetFeedSpec struct {
 	/* Required. Feed output configuration defining where the asset updates are published to. */
 	FeedOutputConfig FeedFeedOutputConfig `json:"feedOutputConfig"`
 
-	/* FolderRef represents the Folder that this resource belongs to. */
+	/* FolderRefDeprecated represents the Folder that this resource belongs to. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 

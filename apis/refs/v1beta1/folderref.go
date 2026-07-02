@@ -28,8 +28,8 @@ import (
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
-// FolderRef represents the Folder that this resource belongs to.
-type FolderRef struct {
+// FolderRefDeprecated represents the Folder that this resource belongs to.
+type FolderRefDeprecated struct {
 	// The 'name' field of a folder, when not managed by Config Connector.
 	// This field must be set when 'name' field is not set.
 	// +optional
@@ -44,6 +44,8 @@ type FolderRef struct {
 	// +optional
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type FolderRef = FolderRefDeprecated
 
 // AsFolderRef converts a generic ResourceRef into a FolderRef.
 func AsFolderRef(in *deprecatedrefs.ResourceRef) *FolderRef {

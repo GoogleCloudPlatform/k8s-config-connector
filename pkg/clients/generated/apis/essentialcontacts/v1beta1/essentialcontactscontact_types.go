@@ -42,7 +42,7 @@ type EssentialContactsContactSpec struct {
 	/* Required. The email address to send notifications to. The email address does not need to be a Google Account. */
 	Email string `json:"email"`
 
-	/* FolderRef represents the Folder that this resource belongs to. */
+	/* FolderRefDeprecated represents the Folder that this resource belongs to. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 

@@ -178,7 +178,7 @@ retentionDays: integer
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The 'name' field of a folder, when not managed by Config Connector.</p>
+            <p>The 'name' field of a folder, when not managed by Config Connector. The recommended format is "folders/{folderID}".</p>
         </td>
     </tr>
     <tr>

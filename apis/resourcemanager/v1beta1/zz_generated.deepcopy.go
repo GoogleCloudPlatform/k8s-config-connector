@@ -104,7 +104,7 @@ func (in *FolderSpec) DeepCopyInto(out *FolderSpec) {
 	*out = *in
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRef)
+		*out = new(refsv1beta1.FolderRefDeprecated)
 		**out = **in
 	}
 	if in.OrganizationRef != nil {
@@ -273,7 +273,7 @@ func (in *ProjectSpec) DeepCopyInto(out *ProjectSpec) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRef)
+		*out = new(refsv1beta1.FolderRefDeprecated)
 		**out = **in
 	}
 	if in.DisplayName != nil {

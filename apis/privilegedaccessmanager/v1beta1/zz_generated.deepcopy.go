@@ -277,7 +277,7 @@ func (in *PrivilegedAccessManagerEntitlementSpec) DeepCopyInto(out *PrivilegedAc
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRef)
+		*out = new(refsv1beta1.FolderRefDeprecated)
 		**out = **in
 	}
 	if in.OrganizationRef != nil {

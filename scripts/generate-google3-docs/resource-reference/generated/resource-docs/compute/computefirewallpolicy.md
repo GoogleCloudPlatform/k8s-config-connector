@@ -103,7 +103,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The 'name' field of a folder, when not managed by Config Connector. This field must be set when 'name' field is not set.</p>
+            <p>The 'name' field of a folder, when not managed by Config Connector. The recommended format is "folders/{folderID}".</p>
         </td>
     </tr>
     <tr>
@@ -113,7 +113,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The 'name' field of a 'Folder' resource. This field must be set when 'external' field is not set.</p>
+            <p>The 'name' field of a 'Folder' resource.</p>
         </td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@ shortName: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referencer resource.</p>
+            <p>The 'namespace' field of a 'Folder' resource.</p>
         </td>
     </tr>
     <tr>

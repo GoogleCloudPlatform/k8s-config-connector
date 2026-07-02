@@ -68,8 +68,8 @@ spec:
                   The email address does not need to be a Google Account.
                 type: string
               folderRef:
-                description: FolderRef represents the Folder that this resource belongs
-                  to.
+                description: FolderRefDeprecated represents the Folder that this resource
+                  belongs to.
                 oneOf:
                 - not:
                     required:
@@ -272,8 +272,8 @@ spec:
                   The email address does not need to be a Google Account.
                 type: string
               folderRef:
-                description: FolderRef represents the Folder that this resource belongs
-                  to.
+                description: FolderRefDeprecated represents the Folder that this resource
+                  belongs to.
                 oneOf:
                 - not:
                     required:
