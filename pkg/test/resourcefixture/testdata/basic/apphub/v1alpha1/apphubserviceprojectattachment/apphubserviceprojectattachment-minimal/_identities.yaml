@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: apphub.cnrm.cloud.google.com
+  kind: AppHubServiceProjectAttachment
+  name: apphubserviceprojectattachment-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

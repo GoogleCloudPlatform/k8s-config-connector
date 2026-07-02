@@ -69,14 +69,11 @@ func (m *serviceProjectAttachmentModel) AdapterForObject(ctx context.Context, op
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	externalRef := ""
-	if obj.Status.ExternalRef != nil {
-		externalRef = *obj.Status.ExternalRef
-	}
-	id, err := krm.ParseAppHubServiceProjectAttachmentIdentity(externalRef)
+	idBase, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idBase.(*krm.AppHubServiceProjectAttachmentIdentity)
 
 	// Get apphub client
 	gcpClient, err := m.client(ctx)

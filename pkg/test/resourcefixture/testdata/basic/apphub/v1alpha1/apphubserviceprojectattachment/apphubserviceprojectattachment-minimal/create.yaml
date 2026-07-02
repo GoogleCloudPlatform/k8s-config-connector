@@ -1,0 +1,10 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1alpha1
+kind: AppHubServiceProjectAttachment
+metadata:
+  name: apphubserviceprojectattachment-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  serviceProjectRef:
+    external: ${projectId}
