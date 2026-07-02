@@ -21,14 +21,20 @@ package mockstorage
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -194,4 +200,75 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 	}
 
 	return obj, nil
+}
+
+func (s *StorageControlService) GetFolder(ctx context.Context, req *pb.GetFolderRequest) (*pb.Folder, error) {
+	fqn := req.GetName()
+	ret := &pb.Folder{}
+	if err := s.storage.Get(ctx, fqn, ret); err != nil {
+		return nil, err
+	}
+	return ret, nil
+}
+
+func (s *StorageControlService) CreateFolder(ctx context.Context, req *pb.CreateFolderRequest) (*pb.Folder, error) {
+	parent := req.GetParent()
+	folderId := req.GetFolderId()
+	fqn := fmt.Sprintf("%s/folders/%s", parent, strings.TrimSuffix(folderId, "/"))
+
+	now := time.Now()
+	obj := proto.Clone(req.GetFolder()).(*pb.Folder)
+	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *StorageControlService) DeleteFolder(ctx context.Context, req *pb.DeleteFolderRequest) (*emptypb.Empty, error) {
+	fqn := req.GetName()
+	deleted := &pb.Folder{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *StorageControlService) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	fqn := req.GetResource()
+
+	policy := &iampb.Policy{}
+	if err := s.storage.Get(ctx, "iam/"+fqn, policy); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &iampb.Policy{Etag: []byte("ACAB")}, nil
+		}
+		return nil, err
+	}
+	return policy, nil
+}
+
+func (s *StorageControlService) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	fqn := req.GetResource()
+	policy := req.GetPolicy()
+	policy.Etag = []byte("ACAB") // Simple etag
+
+	existing := &iampb.Policy{}
+	err := s.storage.Get(ctx, "iam/"+fqn, existing)
+	if err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, "iam/"+fqn, policy); err != nil {
+				return nil, err
+			}
+			return policy, nil
+		}
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, "iam/"+fqn, policy); err != nil {
+		return nil, err
+	}
+	return policy, nil
 }

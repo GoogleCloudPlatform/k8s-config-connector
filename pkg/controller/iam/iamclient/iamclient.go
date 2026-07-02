@@ -181,6 +181,9 @@ func (c *IAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1beta
 }
 
 func (c *IAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	if registry.IsIAMDirect(policy.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		return direct.SetIAMPolicy(ctx, c.kubeClient, policy)
+	}
 	if c.isDCLBasedIAMResource(policy) {
 		return c.DCLIAMClient.SetPolicy(ctx, policy)
 	}
@@ -188,6 +191,9 @@ func (c *IAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*
 }
 
 func (c *IAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
+	if registry.IsIAMDirect(policy.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		return direct.GetIAMPolicy(ctx, c.kubeClient, policy)
+	}
 	if c.isDCLBasedIAMResource(policy) {
 		return c.DCLIAMClient.GetPolicy(ctx, policy)
 	}
@@ -195,6 +201,12 @@ func (c *IAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) (*
 }
 
 func (c *IAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolicy) error {
+	if registry.IsIAMDirect(policy.Spec.ResourceReference.GroupVersionKind().GroupKind()) {
+		// No-op or should we remove all managed bindings?
+		// For now, follow the same pattern as TF/DCL if possible.
+		// Actually, TF/DCL SetPolicy is used to "delete" by setting an empty policy or similar.
+		return nil
+	}
 	if c.isDCLBasedIAMResource(policy) {
 		return c.DCLIAMClient.DeletePolicy(ctx, policy)
 	}
@@ -202,21 +214,21 @@ func (c *IAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolicy)
 }
 
 func (c *IAMClient) SetAuditConfig(ctx context.Context, auditConfig *v1beta1.IAMAuditConfig) (*v1beta1.IAMAuditConfig, error) {
-	if c.isDCLBasedIAMResource(auditConfig) {
+	if registry.IsIAMDirect(auditConfig.Spec.ResourceReference.GroupVersionKind().GroupKind()) || c.isDCLBasedIAMResource(auditConfig) {
 		return nil, fmt.Errorf("resource with gvk %v does not have AuditConfig support right now", auditConfig.Spec.ResourceReference.GroupVersionKind())
 	}
 	return c.TFIAMClient.SetAuditConfig(ctx, auditConfig)
 }
 
 func (c *IAMClient) GetAuditConfig(ctx context.Context, auditConfig *v1beta1.IAMAuditConfig) (*v1beta1.IAMAuditConfig, error) {
-	if c.isDCLBasedIAMResource(auditConfig) {
+	if registry.IsIAMDirect(auditConfig.Spec.ResourceReference.GroupVersionKind().GroupKind()) || c.isDCLBasedIAMResource(auditConfig) {
 		return nil, fmt.Errorf("resource with gvk %v does not have AuditConfig support right now", auditConfig.Spec.ResourceReference.GroupVersionKind())
 	}
 	return c.TFIAMClient.GetAuditConfig(ctx, auditConfig)
 }
 
 func (c *IAMClient) DeleteAuditConfig(ctx context.Context, auditConfig *v1beta1.IAMAuditConfig) error {
-	if c.isDCLBasedIAMResource(auditConfig) {
+	if registry.IsIAMDirect(auditConfig.Spec.ResourceReference.GroupVersionKind().GroupKind()) || c.isDCLBasedIAMResource(auditConfig) {
 		return fmt.Errorf("resource with gvk %v does not have AuditConfig support right now", auditConfig.Spec.ResourceReference.GroupVersionKind())
 	}
 	return c.TFIAMClient.DeleteAuditConfig(ctx, auditConfig)

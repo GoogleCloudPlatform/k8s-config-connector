@@ -218,6 +218,116 @@ OK
 
 ---
 
+GRPC /google.storage.control.v2.StorageControl/GetIamPolicy
+
+{
+  "resource": "projects/_/buckets/bucket-${uniqueId}/folders/folder-${uniqueId}"
+}
+
+OK
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+GRPC /google.storage.control.v2.StorageControl/GetIamPolicy
+
+{
+  "resource": "projects/_/buckets/bucket-${uniqueId}/folders/folder-${uniqueId}"
+}
+
+OK
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+GRPC /google.storage.control.v2.StorageControl/SetIamPolicy
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:test-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.objectViewer"
+      }
+    ],
+    "etag": "abcdef0123A="
+  },
+  "resource": "projects/_/buckets/bucket-${uniqueId}/folders/folder-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    }
+  ],
+  "etag": "abcdef0123A="
+}
+
+---
+
+GRPC /google.storage.control.v2.StorageControl/GetIamPolicy
+
+{
+  "resource": "projects/_/buckets/bucket-${uniqueId}/folders/folder-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    }
+  ],
+  "etag": "abcdef0123A="
+}
+
+---
+
+GRPC /google.storage.control.v2.StorageControl/SetIamPolicy
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "role": "roles/storage.objectViewer"
+      }
+    ],
+    "etag": "abcdef0123A="
+  },
+  "resource": "projects/_/buckets/bucket-${uniqueId}/folders/folder-${uniqueId}"
+}
+
+OK
+
+{
+  "bindings": [
+    {
+      "role": "roles/storage.objectViewer"
+    }
+  ],
+  "etag": "abcdef0123A="
+}
+
+---
+
 GRPC /google.storage.control.v2.StorageControl/GetFolder
 
 {

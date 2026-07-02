@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,23 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
-function on_error() {
-  echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-preview' to fix.</hint_for_agent>"
-}
-trap on_error ERR
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd "${REPO_ROOT}"
-
-. ${REPO_ROOT}/dev/tasks/install-gcloud
-. ${REPO_ROOT}/dev/tasks/setup-envtest
-
-echo "Running preview CLI tests..."
-# A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
-
-go test -test.timeout=20m -test.count=1 -v ./pkg/cli/preview/...
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: storagefolder-iam-${uniqueId}
+spec:
+  member: serviceAccount:test-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  role: roles/storage.objectViewer
+  resourceRef:
+    apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+    kind: StorageFolder
+    name: folder-${uniqueId}
