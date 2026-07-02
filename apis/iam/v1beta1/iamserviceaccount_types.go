@@ -63,6 +63,10 @@ type IAMServiceAccountStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* A unique specifier for the IAMServiceAccount resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* The unique id of the service account. */
 	// +optional
 	UniqueId *string `json:"uniqueId,omitempty"`

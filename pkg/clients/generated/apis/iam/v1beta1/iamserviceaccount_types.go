@@ -64,6 +64,10 @@ type IAMServiceAccountStatus struct {
 	// +optional
 	Email *string `json:"email,omitempty"`
 
+	/* A unique specifier for the IAMServiceAccount resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* The Identity of the service account in the form 'serviceAccount:{email}'. This value is often used to refer to the service account in order to grant IAM permissions. */
 	// +optional
 	Member *string `json:"member,omitempty"`
