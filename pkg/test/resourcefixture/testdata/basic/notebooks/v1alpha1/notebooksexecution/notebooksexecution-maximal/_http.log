@@ -226,229 +226,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "NotebooksExecution Test SA",
-  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "accountId": "sa-${uniqueId}",
-  "serviceAccount": {
-    "displayName": "NotebooksExecution Test SA"
-  }
-}
-
-409 Conflict
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 409,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
-        "reason": "alreadyExists"
-      }
-    ],
-    "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
-    "status": "ALREADY_EXISTS"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "accountId": "sa-${uniqueId}",
-  "serviceAccount": {
-    "displayName": "NotebooksExecution Test SA"
-  }
-}
-
-409 Conflict
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 409,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
-        "reason": "alreadyExists"
-      }
-    ],
-    "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
-    "status": "ALREADY_EXISTS"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "NotebooksExecution Test SA",
-  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {
   "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}' was not found
+error: rpc error: code = NotFound desc = execution "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}" not found
 
 {}
 
@@ -494,6 +278,7 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
     "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
@@ -516,6 +301,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
@@ -527,7 +313,6 @@ OK
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Execution",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A maximal NotebooksExecution test fixture",
-    "displayName": "notebooksexecution-maximal-${uniqueId}",
     "executionTemplate": {
       "acceleratorConfig": {
         "coreCount": "1",
@@ -552,10 +337,9 @@ OK
         }
       }
     },
-    "jobUri": "projects/${projectNumber}/locations/us-central1/customJobs/6032946642917785600",
     "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
     "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output.ipynb",
-    "state": "PREPARING",
+    "state": "SUCCEEDED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -573,7 +357,6 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A maximal NotebooksExecution test fixture",
-  "displayName": "notebooksexecution-maximal-${uniqueId}",
   "executionTemplate": {
     "acceleratorConfig": {
       "coreCount": "1",
@@ -598,10 +381,9 @@ OK
       }
     }
   },
-  "jobUri": "projects/${projectNumber}/locations/us-central1/customJobs/6032946642917785600",
   "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
   "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output.ipynb",
-  "state": "PREPARING",
+  "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -618,7 +400,6 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A maximal NotebooksExecution test fixture",
-  "displayName": "notebooksexecution-maximal-${uniqueId}",
   "executionTemplate": {
     "acceleratorConfig": {
       "coreCount": "1",
@@ -643,10 +424,9 @@ OK
       }
     }
   },
-  "jobUri": "projects/${projectNumber}/locations/us-central1/customJobs/6032946642917785600",
   "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
   "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output.ipynb",
-  "state": "PREPARING",
+  "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -663,6 +443,7 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
     "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
@@ -685,6 +466,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
@@ -798,7 +580,11 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---
