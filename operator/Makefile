@@ -56,7 +56,7 @@ ensure-channels:
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
 manifests: ensure-channels
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.17.2 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
 	@if [ -f "${CHANNEL_MANIFEST}" ]; then \
 		go run scripts/generate-image-configmap/main.go; \
 	else \
@@ -76,7 +76,7 @@ vet:
 # Generate code
 .PHONY: generate
 generate:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 object paths="./..."
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.17.2 object paths="./..."
 
 # Install CRDs into a cluster
 .PHONY: install
