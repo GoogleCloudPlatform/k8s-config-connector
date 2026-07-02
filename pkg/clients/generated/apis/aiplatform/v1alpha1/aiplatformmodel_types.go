@@ -348,10 +348,6 @@ type ModelEncodedBaselines struct {
 	// +optional
 	BoolValue *bool `json:"boolValue,omitempty"`
 
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
 	/* Represents a null value. */
 	// +optional
 	NullValue *string `json:"nullValue,omitempty"`
@@ -575,10 +571,6 @@ type ModelIndexDisplayNameMapping struct {
 	// +optional
 	BoolValue *bool `json:"boolValue,omitempty"`
 
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
 	/* Represents a null value. */
 	// +optional
 	NullValue *string `json:"nullValue,omitempty"`
@@ -600,10 +592,6 @@ type ModelInputBaselines struct {
 	/* Represents a boolean value. */
 	// +optional
 	BoolValue *bool `json:"boolValue,omitempty"`
-
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
 
 	/* Represents a null value. */
 	// +optional
@@ -730,12 +718,6 @@ type ModelIntegratedGradientsAttribution struct {
 	StepCount *int32 `json:"stepCount,omitempty"`
 }
 
-type ModelListValue struct {
-	/* Repeated field of dynamically typed values. */
-	// +optional
-	Values []ModelValues `json:"values,omitempty"`
-}
-
 type ModelLivenessProbe struct {
 	/* ExecAction probes the health of a container by executing a command. */
 	// +optional
@@ -794,10 +776,6 @@ type ModelMetadata struct {
 	// +optional
 	BoolValue *bool `json:"boolValue,omitempty"`
 
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
 	/* Represents a null value. */
 	// +optional
 	NullValue *string `json:"nullValue,omitempty"`
@@ -834,10 +812,6 @@ type ModelNearestNeighborSearchConfig struct {
 	// +optional
 	BoolValue *bool `json:"boolValue,omitempty"`
 
-	/* Represents a repeated `Value`. */
-	// +optional
-	ListValue *ModelListValue `json:"listValue,omitempty"`
-
 	/* Represents a null value. */
 	// +optional
 	NullValue *string `json:"nullValue,omitempty"`
@@ -863,12 +837,6 @@ type ModelNoiseSigma struct {
 	/* This represents the standard deviation of the Gaussian kernel that will be used to add noise to the feature prior to computing gradients. Similar to [noise_sigma][google.cloud.aiplatform.v1.SmoothGradConfig.noise_sigma] but represents the noise added to the current feature. Defaults to 0.1. */
 	// +optional
 	Sigma *float64 `json:"sigma,omitempty"`
-}
-
-type ModelOutputIndices struct {
-	/* Repeated field of dynamically typed values. */
-	// +optional
-	Values []ModelValues `json:"values,omitempty"`
 }
 
 type ModelOutputs struct {
@@ -913,21 +881,6 @@ type ModelParameters struct {
 	/* An attribution method that computes Aumann-Shapley values taking advantage of the model's fully differentiable structure. Refer to this paper for more details: https://arxiv.org/abs/1703.01365 */
 	// +optional
 	IntegratedGradientsAttribution *ModelIntegratedGradientsAttribution `json:"integratedGradientsAttribution,omitempty"`
-
-	/* If populated, only returns attributions that have
-	[output_index][google.cloud.aiplatform.v1.Attribution.output_index]
-	contained in output_indices. It must be an ndarray of integers, with the
-	same shape of the output it's explaining.
-
-	If not populated, returns attributions for
-	[top_k][google.cloud.aiplatform.v1.ExplanationParameters.top_k] indices of
-	outputs. If neither top_k nor output_indices is populated, returns the
-	argmax index of the outputs.
-
-	Only applicable to Models that predict multiple outputs (e,g, multi-class
-	Models that predict multiple classes). */
-	// +optional
-	OutputIndices *ModelOutputIndices `json:"outputIndices,omitempty"`
 
 	/* An attribution method that approximates Shapley values for features that contribute to the label being predicted. A sampling strategy is used to approximate the value rather than considering all subsets of features. Refer to this paper for model details: https://arxiv.org/abs/1306.4265. */
 	// +optional
@@ -1076,9 +1029,6 @@ type ModelTcpSocket struct {
 	/* Number of the port to access on the container. Number must be in the range 1 to 65535. */
 	// +optional
 	Port *int32 `json:"port,omitempty"`
-}
-
-type ModelValues struct {
 }
 
 type ModelVisualization struct {

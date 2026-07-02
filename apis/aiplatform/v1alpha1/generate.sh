@@ -34,13 +34,25 @@ go run . generate-types \
 
 # Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
 python3 -c "
+import re
 path = '${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go'
 with open(path, 'r') as f:
     content = f.read()
-content = content.replace(
-    'ListValue *ListValue \`json:\"listValue,omitempty\"\`',
-    '// +kubebuilder:pruning:PreserveUnknownFields\n\t// +kubebuilder:validation:Type=object\n\tListValue *ListValue \`json:\"listValue,omitempty\"\`'
+
+# Comment out outputIndices to avoid CRD instability
+content = re.sub(
+    r'(\s+)OutputIndices \*ListValue \`json:\"outputIndices,omitempty\"\`',
+    r'\1// OutputIndices is temporarily disabled due to CRD instability\n\1// OutputIndices *ListValue \`json:\"outputIndices,omitempty\"\`',
+    content
 )
+
+# Comment out listValue in Value
+content = re.sub(
+    r'(\s+)ListValue \*ListValue \`json:\"listValue,omitempty\"\`',
+    r'\1// ListValue is temporarily disabled due to CRD instability\n\1// ListValue *ListValue \`json:\"listValue,omitempty\"\`',
+    content
+)
+
 with open(path, 'w') as f:
     f.write(content)
 "
