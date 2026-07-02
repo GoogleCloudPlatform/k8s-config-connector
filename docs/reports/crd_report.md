@@ -400,6 +400,7 @@
 | logging.cnrm.cloud.google.com                 | LoggingLogSink                                  | False        | True        | False  | Terraform  | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLogView                                  | False        | True        | False  | DCL        | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaCluster                             | True         | True        | False  | Direct     | True        |
+| managedkafka.cnrm.cloud.google.com            | ManagedKafkaConnectCluster                      | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaConsumerGroup                       | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaTopic                               | True         | True        | False  | Direct     | True        |
 | memcache.cnrm.cloud.google.com                | MemcacheInstance                                | False        | True        | False  | Terraform  | False       |

@@ -31,12 +31,17 @@ import (
 
 type ManagedkafkaV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	ManagedKafkaConnectClustersGetter
 	ManagedKafkaConsumerGroupsGetter
 }
 
 // ManagedkafkaV1alpha1Client is used to interact with features provided by the managedkafka.cnrm.cloud.google.com group.
 type ManagedkafkaV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ManagedkafkaV1alpha1Client) ManagedKafkaConnectClusters(namespace string) ManagedKafkaConnectClusterInterface {
+	return newManagedKafkaConnectClusters(c, namespace)
 }
 
 func (c *ManagedkafkaV1alpha1Client) ManagedKafkaConsumerGroups(namespace string) ManagedKafkaConsumerGroupInterface {

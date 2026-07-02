@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.managedkafka.v1
 // resource: ManagedKafkaCluster:Cluster
+// resource: ManagedKafkaConnectCluster:ConnectCluster
 // resource: ManagedKafkaConsumerGroup:ConsumerGroup
 // resource: ManagedKafkaTopic:Topic
 
@@ -80,6 +81,107 @@ type Cluster struct {
 	// Optional. TLS configuration for the Kafka cluster.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.tls_config
 	TLSConfig *TLSConfig `json:"tlsConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ConnectAccessConfig", skipping
+
+// +kcc:proto=google.cloud.managedkafka.v1.ConnectAccessConfig
+type ConnectAccessConfig struct {
+	// Required.
+	//  Virtual Private Cloud (VPC) networks that must be granted direct access to
+	//  the Kafka Connect cluster. Minimum of 1 network is required. Maximum 10
+	//  networks can be specified.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectAccessConfig.network_configs
+	NetworkConfigs []ConnectNetworkConfig `json:"networkConfigs,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConnectCluster", skipping
+
+// +kcc:proto=google.cloud.managedkafka.v1.ConnectCluster
+type ConnectCluster struct {
+	// Required. Configuration properties for a Kafka Connect cluster deployed
+	//  to Google Cloud Platform.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.gcp_config
+	GcpConfig *ConnectGcpConfig `json:"gcpConfig,omitempty"`
+
+	// Identifier. The name of the Kafka Connect cluster. Structured like:
+	//  projects/{project_number}/locations/{location}/connectClusters/{connect_cluster_id}
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. The name of the Kafka cluster this Kafka Connect
+	//  cluster is attached to. Structured like:
+	//  projects/{project}/locations/{location}/clusters/{cluster}
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.kafka_cluster
+	KafkaCluster *string `json:"kafkaCluster,omitempty"`
+
+	// Optional. Labels as key value pairs.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Capacity configuration for the Kafka Connect cluster.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.capacity_config
+	CapacityConfig *CapacityConfig `json:"capacityConfig,omitempty"`
+
+	// Optional. Configurations for the worker that are overridden from the
+	//  defaults. The key of the map is a Kafka Connect worker property name, for
+	//  example: `exactly.once.source.support`.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.config
+	Config map[string]string `json:"config,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConnectGcpConfig", skipping
+
+// +kcc:proto=google.cloud.managedkafka.v1.ConnectGcpConfig
+type ConnectGcpConfig struct {
+	// Required. Access configuration for the Kafka Connect cluster.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectGcpConfig.access_config
+	AccessConfig *ConnectAccessConfig `json:"accessConfig,omitempty"`
+
+	// Optional. Secrets to load into workers. Exact SecretVersions from Secret
+	//  Manager must be provided -- aliases are not supported. Up to 32 secrets may
+	//  be loaded into one cluster. Format:
+	//  projects/<project-id>/secrets/<secret-name>/versions/<version-id>
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectGcpConfig.secret_paths
+	SecretPaths []string `json:"secretPaths,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ConnectNetworkConfig", skipping
+
+// +kcc:proto=google.cloud.managedkafka.v1.ConnectNetworkConfig
+type ConnectNetworkConfig struct {
+	// Required. VPC subnet to make available to the Kafka Connect cluster.
+	//  Structured like:
+	//  projects/{project}/regions/{region}/subnetworks/{subnet_id}
+	//
+	//  It is used to create a Private Service Connect (PSC) interface for the
+	//  Kafka Connect workers. It must be located in the same region as the
+	//  Kafka Connect cluster.
+	//
+	//  The CIDR range of the subnet must be within the IPv4 address ranges for
+	//  private networks, as specified in RFC 1918. The primary subnet CIDR range
+	//  must have a minimum size of /22 (1024 addresses).
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectNetworkConfig.primary_subnet
+	PrimarySubnet *string `json:"primarySubnet,omitempty"`
+
+	// Optional. Additional subnets may be specified. They may be in another
+	//  region, but must be in the same VPC network. The Connect workers can
+	//  communicate with network endpoints in either the primary or additional
+	//  subnets.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectNetworkConfig.additional_subnets
+	AdditionalSubnets []string `json:"additionalSubnets,omitempty"`
+
+	// Optional. Additional DNS domain names from the subnet's network to be made
+	//  visible to the Connect Cluster. When using MirrorMaker2, it's necessary to
+	//  add the bootstrap address's dns domain name of the target cluster to make
+	//  it visible to the connector. For example:
+	//  my-kafka-cluster.us-central1.managedkafka.my-project.cloud.goog
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectNetworkConfig.dns_domain_names
+	DNSDomainNames []string `json:"dnsDomainNames,omitempty"`
 }
 */
 
@@ -266,5 +368,23 @@ type ClusterObservedState struct {
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.satisfies_pzs
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConnectCluster", skipping
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.ConnectCluster
+type ConnectClusterObservedState struct {
+	// Output only. The time when the cluster was created.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the cluster was last updated.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The current state of the cluster.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.state
+	State *string `json:"state,omitempty"`
 }
 */
