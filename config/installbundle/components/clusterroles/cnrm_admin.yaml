@@ -1448,6 +1448,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - rapidmigrationassessment.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - recaptchaenterprise.cnrm.cloud.google.com
   resources:
   - '*'
