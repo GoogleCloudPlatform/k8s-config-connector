@@ -67,6 +67,8 @@ func pubSubSubscriptionFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".cloud_storage_config.avro_config.use_topic_schema")
 
 	f.Unimplemented_NotYetTriaged(".push_config.pubsub_wrapper")
+	f.Unimplemented_NotYetTriaged(".bigtable_config")
+	f.Unimplemented_NotYetTriaged(".bigtable_config.app_profile_id")
 
 	return f
 }

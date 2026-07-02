@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
@@ -73,7 +74,33 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewBigtableTableAdminClient(conn))
 	mux.AddOperationsPath("/v2/{prefix=**}/operations/{name}", conn)
 
-	return mux, nil
+	// Check if the 'view' field has been added upstream yet.
+	// If it has, fail so we know to remove this workaround.
+	{
+		getDesc := (&pb.GetMaterializedViewRequest{}).ProtoReflect().Descriptor()
+		listDesc := (&pb.ListMaterializedViewsRequest{}).ProtoReflect().Descriptor()
+		if getDesc.Fields().ByName("view") != nil {
+			return nil, fmt.Errorf("view field now exists in GetMaterializedViewRequest; please revert the workaround in mockgcp/mockbigtable/service.go")
+		}
+		if listDesc.Fields().ByName("view") != nil {
+			return nil, fmt.Errorf("view field now exists in ListMaterializedViewsRequest; please revert the workaround in mockgcp/mockbigtable/service.go")
+		}
+	}
+
+	// Workaround for https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8299
+	// gcloud sends view=SCHEMA_VIEW for materialized views, but our generated protobuf
+	// GetMaterializedViewRequest and ListMaterializedViewsRequest do not have a view field.
+	// We strip it here so that dynamicgrpcgateway doesn't fail with ErrFieldNotFound.
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.Contains(r.URL.Path, "materializedViews") {
+			q := r.URL.Query()
+			if q.Has("view") {
+				q.Del("view")
+				r.URL.RawQuery = q.Encode()
+			}
+		}
+		mux.ServeHTTP(w, r)
+	}), nil
 }
 
 func (s *MockService) RunTestCommand(ctx context.Context, serviceName string, command string) error {

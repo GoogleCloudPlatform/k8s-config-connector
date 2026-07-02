@@ -87,6 +87,10 @@ func computeURLMapFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".tests[].expected_output_url")
 	f.Unimplemented_NotYetTriaged(".tests[].expected_redirect_response_code")
 	f.Unimplemented_NotYetTriaged(".tests[].headers")
+	f.Unimplemented_NotYetTriaged(".default_route_action.cache_policy")
+	f.Unimplemented_NotYetTriaged(".path_matchers[].default_route_action.cache_policy")
+	f.Unimplemented_NotYetTriaged(".path_matchers[].path_rules[].route_action.cache_policy")
+	f.Unimplemented_NotYetTriaged(".path_matchers[].route_rules[].route_action.cache_policy")
 
 	f.FilterSpec = func(in *pb.UrlMap) {
 		normalizeRedirect := func(r *pb.HttpRedirectAction) {
