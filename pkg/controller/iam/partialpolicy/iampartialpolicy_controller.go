@@ -311,14 +311,13 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 	diff := iamv1beta1.IAMPolicySpecDiffers(&desiredPolicy.Spec, &iamPolicy.Spec)
 	if diff.HasDiff() {
 		structuredreporting.ReportDiff(r.Ctx, diff)
-	}
-
-	if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, desiredPolicy); err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))
-			return r.handleUnresolvableDeps(pp, unwrappedErr)
+		if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, desiredPolicy); err != nil {
+			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))
+				return r.handleUnresolvableDeps(pp, unwrappedErr)
+			}
+			return false, r.handleUpdateFailed(pp, fmt.Errorf("error setting policy: %w", err))
 		}
-		return false, r.handleUpdateFailed(pp, fmt.Errorf("error setting policy: %w", err))
 	}
 	if isAPIServerUpdateRequired(desiredPartialPolicy, pp) {
 		return false, r.handleUpToDate(desiredPartialPolicy)

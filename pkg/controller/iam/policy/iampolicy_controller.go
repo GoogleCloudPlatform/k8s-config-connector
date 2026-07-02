@@ -301,14 +301,13 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 	diff := iamv1beta1.IAMPolicySpecDiffers(&oldIAMPolicy.Spec, &policy.Spec)
 	if diff.HasDiff() {
 		structuredreporting.ReportDiff(r.Ctx, diff)
-	}
-
-	if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, policy); err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))
-			return r.handleUnresolvableDeps(policy, unwrappedErr)
+		if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, policy); err != nil {
+			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))
+				return r.handleUnresolvableDeps(policy, unwrappedErr)
+			}
+			return false, r.handleUpdateFailed(policy, fmt.Errorf("error setting policy: %w", err))
 		}
-		return false, r.handleUpdateFailed(policy, fmt.Errorf("error setting policy: %w", err))
 	}
 	if isAPIServerUpdateRequired(policy) {
 		return false, r.handleUpToDate(policy)
