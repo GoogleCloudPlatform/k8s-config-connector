@@ -32,6 +32,7 @@ var (
 
 var APIHubAPIIdentityFormat = gcpurls.Template[APIHubAPIIdentity]("apihub.googleapis.com", "projects/{project}/locations/{location}/apis/{api}")
 
+// APIHubAPIIdentity is the identity of a GCP APIHubAPI resource.
 // +k8s:deepcopy-gen=false
 type APIHubAPIIdentity struct {
 	Project  string
@@ -60,7 +61,7 @@ func (i *APIHubAPIIdentity) Host() string {
 	return APIHubAPIIdentityFormat.Host()
 }
 
-func getIdentityFromAPIHubAPISpec(ctx context.Context, reader client.Reader, obj client.Object) (*APIHubAPIIdentity, error) {
+func getIdentityFromAPIHubAPISpec(ctx context.Context, reader client.Reader, obj *APIHubAPI) (*APIHubAPIIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -105,4 +106,12 @@ func (obj *APIHubAPI) GetIdentity(ctx context.Context, reader client.Reader) (id
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+func (obj *APIHubAPI) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }
