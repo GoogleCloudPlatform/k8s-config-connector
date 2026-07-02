@@ -3464,6 +3464,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - mapsplatformdatasets.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - memcache.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5219,6 +5231,14 @@ rules:
   - watch
 - apiGroups:
   - mapmanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - mapsplatformdatasets.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
