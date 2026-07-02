@@ -254,12 +254,7 @@ timeoutSec: integer
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Lifetime of cookies in seconds if session_affinity is
-GENERATED_COOKIE. If set to 0, the cookie is non-persistent and lasts
-only until the end of the browser session (or equivalent). The
-maximum allowed value for TTL is one day.
-
-When the load balancing scheme is INTERNAL, this field is not used.</p>
+            <p>Lifetime of cookies in seconds if session_affinity is GENERATED_COOKIE.</p>
         </td>
     </tr>
     <tr>
@@ -289,14 +284,7 @@ When the load balancing scheme is INTERNAL, this field is not used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the balancing mode for this backend.
-
-For global HTTP(S) or TCP/SSL load balancing, the default is
-UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
-and CONNECTION (for TCP/SSL).
-
-See the [Backend Services Overview](https://cloud.google.com/load-balancing/docs/backend-service#balancing-mode)
-for an explanation of load balancing modes. Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"].</p>
+            <p>Specifies the balancing mode for this backend.</p>
         </td>
     </tr>
     <tr>
@@ -306,13 +294,7 @@ for an explanation of load balancing modes. Default value: "UTILIZATION" Possibl
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>A multiplier applied to the group's maximum servicing capacity
-(based on UTILIZATION, RATE or CONNECTION).
-
-Default value is 1, which means the group will serve up to 100%
-of its configured capacity (depending on balancingMode). A
-setting of 0 means the group is completely drained, offering
-0% of its available Capacity. Valid range is [0.0,1.0].</p>
+            <p>A multiplier applied to the group's maximum servicing capacity.</p>
         </td>
     </tr>
     <tr>
@@ -322,8 +304,7 @@ setting of 0 means the group is completely drained, offering
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An optional description of this resource.
-Provide this property when you create the resource.</p>
+            <p>An optional description of this resource.</p>
         </td>
     </tr>
     <tr>
@@ -333,8 +314,7 @@ Provide this property when you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>This field designates whether this is a failover backend. More
-than one failover backend can be configured for a given RegionBackendService.</p>
+            <p>This field designates whether this is a failover backend.</p>
         </td>
     </tr>
     <tr>
@@ -345,21 +325,21 @@ than one failover backend can be configured for a given RegionBackendService.</p
         <td>
             <p><code class="apitype">object</code></p>
             <p>Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
-resource. In case of instance group this defines the list of
-instances that serve traffic. Member virtual machine instances from
-each instance group must live in the same zone as the instance
-group itself. No two backends in a backend service are allowed to
-use same Instance Group resource.
+ resource. In case of instance group this defines the list of
+ instances that serve traffic. Member virtual machine instances from
+ each instance group must live in the same zone as the instance
+ group itself. No two backends in a backend service are allowed to
+ use same Instance Group resource.
 
-For Network Endpoint Groups this defines list of endpoints. All
-endpoints of Network Endpoint Group must be hosted on instances
-located in the same zone as the Network Endpoint Group.
+ For Network Endpoint Groups this defines list of endpoints. All
+ endpoints of Network Endpoint Group must be hosted on instances
+ located in the same zone as the Network Endpoint Group.
 
-Backend services cannot mix Instance Group and Network Endpoint
-Group backends.
+ Backend services cannot mix Instance Group and Network Endpoint
+ Group backends.
 
-When the 'load_balancing_scheme' is INTERNAL, only instance groups
-are supported.</p>
+ When the 'load_balancing_scheme' is INTERNAL, only instance groups
+ are supported.</p>
         </td>
     </tr>
     <tr>
@@ -369,7 +349,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>Reference to a ComputeInstanceGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -379,7 +359,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeInstanceGroup` resource.</p>
+            <p>A reference to an externally managed ComputeInstanceGroup resource. Should be in the format "projects/{{projectID}}/zones/{{zone}}/instanceGroups/{{instanceGroupID}}".</p>
         </td>
     </tr>
     <tr>
@@ -389,7 +369,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeInstanceGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -399,7 +379,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeInstanceGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -409,7 +389,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>Reference to a ComputeNetworkEndpointGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -419,7 +399,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetworkEndpointGroup` resource.</p>
+            <p>A reference to an externally managed ComputeNetworkEndpointGroup resource. Should be in the format "projects/{project}/zones/{zone}/networkEndpointGroups/{networkEndpointGroup}".</p>
         </td>
     </tr>
     <tr>
@@ -429,7 +409,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetworkEndpointGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -439,7 +419,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetworkEndpointGroup resource.</p>
         </td>
     </tr>
     <tr>
@@ -449,12 +429,7 @@ are supported.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The max number of simultaneous connections for the group. Can
-be used with either CONNECTION or UTILIZATION balancing modes.
-
-For CONNECTION mode, either maxConnections or one
-of maxConnectionsPerInstance or maxConnectionsPerEndpoint,
-as appropriate for group type, must be set.</p>
+            <p>The max number of simultaneous connections for the group.</p>
         </td>
     </tr>
     <tr>
@@ -464,13 +439,7 @@ as appropriate for group type, must be set.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The max number of simultaneous connections that a single backend
-network endpoint can handle. This is used to calculate the
-capacity of the group. Can be used in either CONNECTION or
-UTILIZATION balancing modes.
-
-For CONNECTION mode, either
-maxConnections or maxConnectionsPerEndpoint must be set.</p>
+            <p>The max number of simultaneous connections that a single backend network endpoint can handle.</p>
         </td>
     </tr>
     <tr>
@@ -480,13 +449,7 @@ maxConnections or maxConnectionsPerEndpoint must be set.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The max number of simultaneous connections that a single
-backend instance can handle. This is used to calculate the
-capacity of the group. Can be used in either CONNECTION or
-UTILIZATION balancing modes.
-
-For CONNECTION mode, either maxConnections or
-maxConnectionsPerInstance must be set.</p>
+            <p>The max number of simultaneous connections that a single backend instance can handle.</p>
         </td>
     </tr>
     <tr>
@@ -496,12 +459,7 @@ maxConnectionsPerInstance must be set.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The max requests per second (RPS) of the group.
-
-Can be used with either RATE or UTILIZATION balancing modes,
-but required if RATE mode. For RATE mode, either maxRate or one
-of maxRatePerInstance or maxRatePerEndpoint, as appropriate for
-group type, must be set.</p>
+            <p>The max requests per second (RPS) of the group.</p>
         </td>
     </tr>
     <tr>
@@ -511,10 +469,7 @@ group type, must be set.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The max requests per second (RPS) that a single backend network
-endpoint can handle. This is used to calculate the capacity of
-the group. Can be used in either balancing mode. For RATE mode,
-either maxRate or maxRatePerEndpoint must be set.</p>
+            <p>The max requests per second (RPS) that a single backend network endpoint can handle.</p>
         </td>
     </tr>
     <tr>
@@ -524,10 +479,7 @@ either maxRate or maxRatePerEndpoint must be set.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The max requests per second (RPS) that a single backend
-instance can handle. This is used to calculate the capacity of
-the group. Can be used in either balancing mode. For RATE mode,
-either maxRate or maxRatePerInstance must be set.</p>
+            <p>The max requests per second (RPS) that a single backend instance can handle.</p>
         </td>
     </tr>
     <tr>
@@ -537,8 +489,7 @@ either maxRate or maxRatePerInstance must be set.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>Used when balancingMode is UTILIZATION. This ratio defines the
-CPU utilization target for the group. Valid range is [0.0, 1.0].</p>
+            <p>Used when balancingMode is UTILIZATION. This ratio defines the CPU utilization target for the group.</p>
         </td>
     </tr>
     <tr>
@@ -558,8 +509,7 @@ CPU utilization target for the group. Valid range is [0.0, 1.0].</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
-The cache is bypassed for all cdnPolicy.cacheMode settings.</p>
+            <p>Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings.</p>
         </td>
     </tr>
     <tr>
@@ -599,7 +549,7 @@ The cache is bypassed for all cdnPolicy.cacheMode settings.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If true requests to different hosts will be cached separately.</p>
+            <p>If true, requests to different hosts will be cached separately.</p>
         </td>
     </tr>
     <tr>
@@ -609,8 +559,7 @@ The cache is bypassed for all cdnPolicy.cacheMode settings.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Allows HTTP request headers (by name) to be used in the
-cache key.</p>
+            <p>Allows HTTP request headers (by name) to be used in the cache key.</p>
         </td>
     </tr>
     <tr>
@@ -630,7 +579,7 @@ cache key.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Names of cookies to include in cache keys.</p>
+            <p>Allows HTTP cookies (by name) to be used in the cache key. The name=value pair will be used in the cache key Cloud CDN generates.</p>
         </td>
     </tr>
     <tr>
@@ -660,13 +609,7 @@ cache key.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If true, include query string parameters in the cache key
-according to query_string_whitelist and
-query_string_blacklist. If neither is set, the entire query
-string will be included.
-
-If false, the query string will be excluded from the cache
-key entirely.</p>
+            <p>If true, include query string parameters in the cache key according to query_string_whitelist and query_string_blacklist. If neither is set, the entire query string will be included. If false, the query string will be excluded from the cache key entirely.</p>
         </td>
     </tr>
     <tr>
@@ -676,12 +619,7 @@ key entirely.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Names of query string parameters to exclude in cache keys.
-
-All other parameters will be included. Either specify
-query_string_whitelist or query_string_blacklist, not both.
-'&' and '=' will be percent encoded and not treated as
-delimiters.</p>
+            <p>Names of query string parameters to exclude in cache keys. All other parameters will be included. Either specify query_string_whitelist or query_string_blacklist, not both. '&' and '=' will be percent encoded and not treated as delimiters.</p>
         </td>
     </tr>
     <tr>
@@ -701,12 +639,7 @@ delimiters.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Names of query string parameters to include in cache keys.
-
-All other parameters will be excluded. Either specify
-query_string_whitelist or query_string_blacklist, not both.
-'&' and '=' will be percent encoded and not treated as
-delimiters.</p>
+            <p>Names of query string parameters to include in cache keys. All other parameters will be excluded. Either specify query_string_whitelist or query_string_blacklist, not both. '&' and '=' will be percent encoded and not treated as delimiters.</p>
         </td>
     </tr>
     <tr>
@@ -726,8 +659,7 @@ delimiters.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the cache setting for all responses from this backend.
-The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"].</p>
+            <p>Specifies the cache setting for all responses from this backend. The possible values are: USE_ORIGIN_HEADERS Requires the origin to set valid caching headers to cache content. Responses without these headers will not be cached at Google's edge, and will require a full trip to the origin on every request, potentially impacting performance and increasing load on the origin server. FORCE_CACHE_ALL Cache all content, ignoring any "private", "no-store" or "no-cache" directives in Cache-Control response headers. Warning: this may result in Cloud CDN caching private, per-user (user identifiable) content. CACHE_ALL_STATIC Automatically cache static content, including common image formats, media (video and audio), and web assets (JavaScript and CSS). Requests and responses that are marked as uncacheable, as well as dynamic content (including HTML), will not be cached. If no value is provided for cdnPolicy.cacheMode, it defaults to CACHE_ALL_STATIC. Check the CacheMode enum for the list of possible values.</p>
         </td>
     </tr>
     <tr>
@@ -737,7 +669,7 @@ The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATI
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the maximum allowed TTL for cached content served by this origin.</p>
+            <p>Specifies a separate client (e.g. browser client) maximum TTL. This is used to clamp the max-age (or Expires) value sent to the client. With FORCE_CACHE_ALL, the lesser of client_ttl and default_ttl is used for the response max-age directive, along with a "public" directive. For cacheable content in CACHE_ALL_STATIC mode, client_ttl clamps the max-age from the origin (if specified), or else sets the response max-age directive to the lesser of the client_ttl and default_ttl, and also ensures a "public" cache-control directive is present. If a client TTL is not specified, a default value (1 hour) will be used. The maximum allowed value is 31,622,400s (1 year).</p>
         </td>
     </tr>
     <tr>
@@ -747,8 +679,7 @@ The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATI
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the default TTL for cached content served by this origin for responses
-that do not have an existing valid TTL (max-age or s-max-age).</p>
+            <p>Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-maxage). Setting a TTL of "0" means "always revalidate". The value of defaultTTL cannot be set to a value greater than that of maxTTL, but can be equal. When the cacheMode is set to FORCE_CACHE_ALL, the defaultTTL will overwrite the TTL set in all responses. The maximum allowed value is 31,622,400s (1 year), noting that infrequently accessed objects may be evicted from the cache before the defined TTL.</p>
         </td>
     </tr>
     <tr>
@@ -758,7 +689,7 @@ that do not have an existing valid TTL (max-age or s-max-age).</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies the maximum allowed TTL for cached content served by this origin.</p>
+            <p>Specifies the maximum allowed TTL for cached content served by this origin. Cache directives that attempt to set a max-age or s-maxage higher than this, or an Expires header more than maxTTL seconds in the future will be capped at the value of maxTTL, as if it were the value of an s-maxage Cache-Control directive. Headers sent to the client will not be modified. Setting a TTL of "0" means "always revalidate". The maximum allowed value is 31,622,400s (1 year), noting that infrequently accessed objects may be evicted from the cache before the defined TTL.</p>
         </td>
     </tr>
     <tr>
@@ -768,7 +699,7 @@ that do not have an existing valid TTL (max-age or s-max-age).</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects.</p>
+            <p>Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects. This can reduce the load on your origin and improve end-user experience by reducing response latency. When the cache mode is set to CACHE_ALL_STATIC or USE_ORIGIN_HEADERS, negative caching applies to responses with the specified response code that lack any Cache-Control, Expires, or Pragma: no-cache directives. When the cache mode is set to FORCE_CACHE_ALL, negative caching applies to all responses with the specified response code, and override any caching headers. By default, Cloud CDN will apply the following default TTLs to these status codes: HTTP 300 (Multiple Choice), 301, 308 (Permanent Redirects): 10m HTTP 404 (Not Found), 410 (Gone), 451 (Unavailable For Legal Reasons): 120s HTTP 405 (Method Not Found), 421 (Misdirected Request), 501 (Not Implemented): 60s. These defaults can be overridden in negative_caching_policy.</p>
         </td>
     </tr>
     <tr>
@@ -778,8 +709,7 @@ that do not have an existing valid TTL (max-age or s-max-age).</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
-Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs.</p>
+            <p>Sets a cache TTL for the specified HTTP status code. negative_caching must be enabled to configure negative_caching_policy. Omitting the policy and leaving negative_caching enabled will use Cloud CDN's default cache TTLs. Note that when specifying an explicit negative_caching_policy, you should take care to specify a cache TTL for all response codes that you wish to cache. Cloud CDN will not apply any default negative caching when a policy exists.</p>
         </td>
     </tr>
     <tr>
@@ -799,8 +729,7 @@ Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's def
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
-can be specified as values, and you cannot specify a status code more than once.</p>
+            <p>The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 302, 307, 308, 404, 405, 410, 421, 451 and 501 are can be specified as values, and you cannot specify a status code more than once.</p>
         </td>
     </tr>
     <tr>
@@ -810,8 +739,7 @@ can be specified as values, and you cannot specify a status code more than once.
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
-(30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL.</p>
+            <p>The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s (30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL.</p>
         </td>
     </tr>
     <tr>
@@ -821,7 +749,7 @@ can be specified as values, and you cannot specify a status code more than once.
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache.</p>
+            <p>Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. This setting defines the default "max-stale" duration for any cached responses that do not specify a max-stale directive. Stale responses that exceed the TTL configured here will not be served. The default limit (max-stale) is 86400s (1 day), which will allow stale content to be served up to this limit beyond the max-age (or s-maxage) of a cached response. The maximum allowed value is 604800 (1 week). Set this to zero (0) to disable serve-while-stale.</p>
         </td>
     </tr>
     <tr>
@@ -831,16 +759,7 @@ can be specified as values, and you cannot specify a status code more than once.
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Maximum number of seconds the response to a signed URL request
-will be considered fresh, defaults to 1hr (3600s). After this
-time period, the response will be revalidated before
-being served.
-
-When serving responses to signed URL requests, Cloud CDN will
-internally behave as though all responses from this backend had a
-"Cache-Control: public, max-age=[TTL]" header, regardless of any
-existing Cache-Control header. The actual headers served in
-responses will not be altered.</p>
+            <p>Maximum number of seconds the response to a signed URL request will be considered fresh. After this time period, the response will be revalidated before being served. Defaults to 1hr (3600s). When serving responses to signed URL requests, Cloud CDN will internally behave as though all responses from this backend had a "Cache-Control: public, max-age=[TTL]" header, regardless of any existing Cache-Control header. The actual headers served in responses will not be altered.</p>
         </td>
     </tr>
     <tr>
@@ -850,8 +769,7 @@ responses will not be altered.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings controlling the volume of connections to a backend service. This field
-is applicable only when the load_balancing_scheme is set to INTERNAL_SELF_MANAGED.</p>
+            <p>Settings controlling the circuit breaking behavior for this BackendService.</p>
         </td>
     </tr>
     <tr>
@@ -861,7 +779,7 @@ is applicable only when the load_balancing_scheme is set to INTERNAL_SELF_MANAGE
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The timeout for new network connections to hosts.</p>
+            <p>Not supported by proxy. Connect timeout for the backend service. The timeout is the maximum amount of time KCC will wait for the proxy to connect to the backend.</p>
         </td>
     </tr>
     <tr>
@@ -871,10 +789,7 @@ is applicable only when the load_balancing_scheme is set to INTERNAL_SELF_MANAGE
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond
-resolution. Durations less than one second are represented
-with a 0 seconds field and a positive nanos field. Must
-be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -884,8 +799,7 @@ be from 0 to 999,999,999 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time at a resolution of a second.
-Must be from 0 to 315,576,000,000 inclusive.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -895,8 +809,7 @@ Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The maximum number of connections to the backend cluster.
-Defaults to 1024.</p>
+            <p>The maximum number of connections to the backend service. If not specified, there is no limit. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.</p>
         </td>
     </tr>
     <tr>
@@ -906,8 +819,7 @@ Defaults to 1024.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The maximum number of pending requests to the backend cluster.
-Defaults to 1024.</p>
+            <p>The maximum number of pending requests allowed to the backend service. If not specified, there is no limit. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.</p>
         </td>
     </tr>
     <tr>
@@ -917,8 +829,7 @@ Defaults to 1024.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The maximum number of parallel requests to the backend cluster.
-Defaults to 1024.</p>
+            <p>The maximum number of parallel requests that allowed to the backend service. If not specified, there is no limit.</p>
         </td>
     </tr>
     <tr>
@@ -928,10 +839,7 @@ Defaults to 1024.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Maximum requests for a single backend connection. This parameter
-is respected by both the HTTP/1.1 and HTTP/2 implementations. If
-not specified, there is no limit. Setting this parameter to 1
-will effectively disable keep alive.</p>
+            <p>Maximum requests for a single connection to the backend service. This parameter is respected by both the HTTP/1.1 and HTTP/2 implementations. If not specified, there is no limit. Setting this parameter to 1 will effectively disable keep alive. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.</p>
         </td>
     </tr>
     <tr>
@@ -941,8 +849,7 @@ will effectively disable keep alive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The maximum number of parallel retries to the backend cluster.
-Defaults to 3.</p>
+            <p>The maximum number of parallel retries allowed to the backend cluster. If not specified, the default is 1. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.</p>
         </td>
     </tr>
     <tr>
@@ -952,7 +859,7 @@ Defaults to 3.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: ["AUTOMATIC", "DISABLED"].</p>
+            <p>Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header.</p>
         </td>
     </tr>
     <tr>
@@ -962,8 +869,7 @@ Defaults to 3.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Time for which instance will be drained (not accept new
-connections, but still work to finish started).</p>
+            <p>Time for which instance will be drained (not accept new connections, but still work to finish started).</p>
         </td>
     </tr>
     <tr>
@@ -973,9 +879,7 @@ connections, but still work to finish started).</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Connection Tracking configuration for this BackendService.
-This is available only for Layer 4 Internal Load Balancing and
-Network Load Balancing.</p>
+            <p>Connection Tracking configuration for this BackendService. Connection tracking policy settings are only available for external passthrough Network Load Balancers and internal passthrough Network Load Balancers. connectionTrackingPolicy cannot be specified with haPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -985,22 +889,7 @@ Network Load Balancing.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies connection persistence when backends are unhealthy.
-
-If set to 'DEFAULT_FOR_PROTOCOL', the existing connections persist on
-unhealthy backends only for connection-oriented protocols (TCP and SCTP)
-and only if the Tracking Mode is PER_CONNECTION (default tracking mode)
-or the Session Affinity is configured for 5-tuple. They do not persist
-for UDP.
-
-If set to 'NEVER_PERSIST', after a backend becomes unhealthy, the existing
-connections on the unhealthy backend are never persisted on the unhealthy
-backend. They are always diverted to newly selected healthy backends
-(unless all backends are unhealthy).
-
-If set to 'ALWAYS_PERSIST', existing connections always persist on
-unhealthy backends regardless of protocol and session affinity. It is
-generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"].</p>
+            <p>Specifies connection persistence when backends are unhealthy. The default value is DEFAULT_FOR_PROTOCOL. If set to DEFAULT_FOR_PROTOCOL, the existing connections persist on unhealthy backends only for connection-oriented protocols (TCP and SCTP) and only if the Tracking Mode is PER_CONNECTION (default tracking mode) or the Session Affinity is configured for 5-tuple. They do not persist for UDP. If set to NEVER_PERSIST, after a backend becomes unhealthy, the existing connections on the unhealthy backend are never persisted on the unhealthy backend. They are always diverted to newly selected healthy backends (unless all backends are unhealthy). If set to ALWAYS_PERSIST, existing connections always persist on unhealthy backends regardless of protocol and session affinity. It is generally not recommended to use this mode overriding the default. For more details, see [Connection Persistence for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence) and [Connection Persistence for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#connection-persistence). Check the ConnectionPersistenceOnUnhealthyBackends enum for the list of possible values.</p>
         </td>
     </tr>
     <tr>
@@ -1010,7 +899,7 @@ generally not recommended to use this mode overriding the default. Default value
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Enable Strong Session Affinity for Network Load Balancing. This option is not available publicly.</p>
+            <p>Enable Strong Session Affinity for external passthrough Network Load Balancers. This option is not available publicly.</p>
         </td>
     </tr>
     <tr>
@@ -1020,12 +909,7 @@ generally not recommended to use this mode overriding the default. Default value
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Specifies how long to keep a Connection Tracking entry while there is
-no matching traffic (in seconds).
-
-For L4 ILB the minimum(default) is 10 minutes and maximum is 16 hours.
-
-For NLB the minimum(default) is 60 seconds and the maximum is 16 hours.</p>
+            <p>Specifies how long to keep a Connection Tracking entry while there is no matching traffic (in seconds). For internal passthrough Network Load Balancers: - The minimum (default) is 10 minutes and the maximum is 16 hours. - It can be set only if Connection Tracking is less than 5-tuple (i.e. Session Affinity is CLIENT_IP_NO_DESTINATION, CLIENT_IP or CLIENT_IP_PROTO, and Tracking Mode is PER_SESSION). For external passthrough Network Load Balancers the default is 60 seconds. This option is not available publicly.</p>
         </td>
     </tr>
     <tr>
@@ -1035,12 +919,7 @@ For NLB the minimum(default) is 60 seconds and the maximum is 16 hours.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Specifies the key used for connection tracking. There are two options:
-'PER_CONNECTION': The Connection Tracking is performed as per the
-Connection Key (default Hash Method) for the specific protocol.
-
-'PER_SESSION': The Connection Tracking is performed as per the
-configured Session Affinity. It matches the configured Session Affinity. Default value: "PER_CONNECTION" Possible values: ["PER_CONNECTION", "PER_SESSION"].</p>
+            <p>Specifies the key used for connection tracking. There are two options: - PER_CONNECTION: This is the default mode. The Connection Tracking is performed as per the Connection Key (default Hash Method) for the specific protocol. - PER_SESSION: The Connection Tracking is performed as per the configured Session Affinity. It matches the configured Session Affinity. For more details, see [Tracking Mode for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode) and [Tracking Mode for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#tracking-mode). Check the TrackingMode enum for the list of possible values.</p>
         </td>
     </tr>
     <tr>
@@ -1050,14 +929,7 @@ configured Session Affinity. It matches the configured Session Affinity. Default
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Consistent Hash-based load balancing can be used to provide soft session
-affinity based on HTTP headers, cookies or other properties. This load balancing
-policy is applicable only for HTTP connections. The affinity to a particular
-destination host will be lost when one or more hosts are added/removed from the
-destination service. This field specifies parameters that control consistent
-hashing. This field only applies if the load_balancing_scheme is set to
-INTERNAL_SELF_MANAGED. This field is only applicable when locality_lb_policy is
-set to MAGLEV or RING_HASH.</p>
+            <p>Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. This load balancing policy is applicable only for HTTP connections. The affinity to a particular destination host will be lost when one or more hosts are added/removed from the destination service. This field specifies parameters that control consistent hashing. This field is only applicable when localityLbPolicy is set to MAGLEV or RING_HASH. This field is applicable to either: - A regional backend service with the service_protocol set to HTTP, HTTPS, HTTP2 or H2C, and load_balancing_scheme set to INTERNAL_MANAGED. - A global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED.</p>
         </td>
     </tr>
     <tr>
@@ -1067,10 +939,7 @@ set to MAGLEV or RING_HASH.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Hash is based on HTTP Cookie. This field describes a HTTP cookie
-that will be used as the hash key for the consistent hash load
-balancer. If the cookie is not present, it will be generated.
-This field is applicable if the sessionAffinity is set to HTTP_COOKIE.</p>
+            <p>Hash session affinity settings when using STRONG_COOKIE_AFFINITY or STRONG_HEADER_AFFINITY.</p>
         </td>
     </tr>
     <tr>
@@ -1110,10 +979,7 @@ This field is applicable if the sessionAffinity is set to HTTP_COOKIE.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond
-resolution. Durations less than one second are represented
-with a 0 seconds field and a positive nanos field. Must
-be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1123,8 +989,7 @@ be from 0 to 999,999,999 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time at a resolution of a second.
-Must be from 0 to 315,576,000,000 inclusive.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1134,8 +999,7 @@ Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The hash based on the value of the specified header field.
-This field is applicable if the sessionAffinity is set to HEADER_FIELD.</p>
+            <p>The name of the HTTP header field to map onto. Required if the load balancing policy is MAGLEV or RING_HASH and session affinity is STRONG_HEADER_AFFINITY.</p>
         </td>
     </tr>
     <tr>
@@ -1145,12 +1009,7 @@ This field is applicable if the sessionAffinity is set to HEADER_FIELD.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The minimum number of virtual nodes to use for the hash ring.
-Larger ring sizes result in more granular load
-distributions. If the number of hosts in the load balancing pool
-is larger than the ring size, each host will be assigned a single
-virtual node.
-Defaults to 1024.</p>
+            <p>The minimum ring size. Valid values are between 1 and 4096. Required if the load balancing policy is RING_HASH.</p>
         </td>
     </tr>
     <tr>
@@ -1160,8 +1019,7 @@ Defaults to 1024.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Headers that the HTTP/S load balancer should add to proxied
-requests.</p>
+            <p>Headers that the load balancer adds to proxied requests. See [Creating custom headers](https://cloud.google.com/load-balancing/docs/custom-headers).</p>
         </td>
     </tr>
     <tr>
@@ -1181,8 +1039,7 @@ requests.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Headers that the HTTP/S load balancer should add to proxied
-responses.</p>
+            <p>Headers that the load balancer adds to proxied responses. See [Creating custom headers](https://cloud.google.com/load-balancing/docs/custom-headers).</p>
         </td>
     </tr>
     <tr>
@@ -1212,8 +1069,7 @@ responses.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The resource URL for the edge security policy associated with this
-backend service.</p>
+            <p>ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -1223,7 +1079,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSecurityPolicy` resource.</p>
+            <p>A reference to an externally managed ComputeSecurityPolicy resource. Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".</p>
         </td>
     </tr>
     <tr>
@@ -1233,7 +1089,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSecurityPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -1243,7 +1099,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSecurityPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -1253,7 +1109,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>If true, enable Cloud CDN for this BackendService.</p>
+            <p>If true, enables Cloud CDN for the backend service.</p>
         </td>
     </tr>
     <tr>
@@ -1263,7 +1119,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Policy for failovers.</p>
+            <p>Requires at least one backend instance group to be defined as a backup (failover) backend. For load balancers that have configurable failover: [Internal passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview). failoverPolicy cannot be specified with haPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -1273,14 +1129,7 @@ backend service.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>On failover or failback, this field indicates whether connection drain
-will be honored. Setting this to true has the following effect: connections
-to the old active pool are not drained. Connections to the new active pool
-use the timeout of 10 min (currently fixed). Setting to false has the
-following effect: both old and new connections will have a drain timeout
-of 10 min.
-This can be set to true only if the protocol is TCP.
-The default is false.</p>
+            <p>This can be set to true only if the protocol is TCP. The default is false.</p>
         </td>
     </tr>
     <tr>
@@ -1290,10 +1139,7 @@ The default is false.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>This option is used only when no healthy VMs are detected in the primary
-and backup instance groups. When set to true, traffic is dropped. When
-set to false, new connections are sent across all VMs in the primary group.
-The default is false.</p>
+            <p>If set to true, connections to the load balancer are dropped when all primary and all backup backend VMs are unhealthy.If set to false, connections are distributed among all primary VMs when all primary and all backup backend VMs are unhealthy. For load balancers that have configurable failover: [Internal passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview). The default is false.</p>
         </td>
     </tr>
     <tr>
@@ -1303,14 +1149,7 @@ The default is false.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>The value of the field must be in [0, 1]. If the ratio of the healthy
-VMs in the primary backend is at or below this number, traffic arriving
-at the load-balanced IP will be directed to the failover backend.
-In case where 'failoverRatio' is not set or all the VMs in the backup
-backend are unhealthy, the traffic will be directed back to the primary
-backend in the "force" mode, where traffic will be spread to the healthy
-VMs with the best effort, or to all VMs when no VM is healthy.
-This field is only used with l4 load balancing.</p>
+            <p>The value of the field must be in the range [0, 1]. If the value is 0, the load balancer performs a failover when the number of healthy primary VMs equals zero. For all other values, the load balancer performs a failover when the total number of healthy primary VMs is less than this ratio. For load balancers that have configurable failover: [Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview).</p>
         </td>
     </tr>
     <tr>
@@ -1330,9 +1169,7 @@ This field is only used with l4 load balancing.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The health check resources for health checking this
-ComputeBackendService. Currently at most one health check can be
-specified, and a health check is required.</p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -1352,7 +1189,9 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.</p>
+            <p>The URL for the health check that signals autohealing.
+
+Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1382,7 +1221,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>ComputeHTTPHealthCheckRef is a reference to a GCP ComputeHTTPHealthCheck.</p>
         </td>
     </tr>
     <tr>
@@ -1392,7 +1231,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeHTTPHealthCheck` resource.</p>
+            <p>A reference to an externally managed ComputeHTTPHealthCheck resource. Should be in the format "projects/{{projectID}}/global/httpHealthChecks/{{httpHealthCheckID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1402,7 +1241,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeHTTPHealthCheck resource.</p>
         </td>
     </tr>
     <tr>
@@ -1412,7 +1251,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeHTTPHealthCheck resource.</p>
         </td>
     </tr>
     <tr>
@@ -1422,7 +1261,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings for enabling Cloud Identity Aware Proxy.</p>
+            <p>The configurations for Identity-Aware Proxy on this resource.</p>
         </td>
     </tr>
     <tr>
@@ -1432,7 +1271,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.iap.oauth2ClientIdRef` instead.</p>
+            <p>OAuth2 client ID to use for the authentication flow.</p>
         </td>
     </tr>
     <tr>
@@ -1442,7 +1281,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>OAuth2 Client ID for IAP.</p>
+            <p>Reference to a ComputeBackendServiceOauth2ClientId.</p>
         </td>
     </tr>
     <tr>
@@ -1452,7 +1291,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of an `IAPIdentityAwareProxyClient` resource.</p>
+            <p>External is the selfLink of the referent.</p>
         </td>
     </tr>
     <tr>
@@ -1462,7 +1301,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>Name of the referent.</p>
         </td>
     </tr>
     <tr>
@@ -1472,7 +1311,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>Namespace of the referent.</p>
         </td>
     </tr>
     <tr>
@@ -1482,7 +1321,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>OAuth2 Client Secret for IAP.</p>
+            <p>OAuth2 client secret to use for the authentication flow.</p>
         </td>
     </tr>
     <tr>
@@ -1492,7 +1331,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Value of the field. Cannot be used if 'valueFrom' is specified.</p>
+            <p>Value of the field.</p>
         </td>
     </tr>
     <tr>
@@ -1502,7 +1341,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Source for the field's value. Cannot be used if 'value' is specified.</p>
+            <p>Source for the field's value.</p>
         </td>
     </tr>
     <tr>
@@ -1512,7 +1351,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Reference to a value with the given key in the given Secret in the resource's namespace.</p>
+            <p>Reference to a Secret Key.</p>
         </td>
     </tr>
     <tr>
@@ -1522,7 +1361,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Key that identifies the value to be extracted.</p>
+            <p>The key of the Secret to select from.</p>
         </td>
     </tr>
     <tr>
@@ -1532,7 +1371,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the Secret to extract a value from.</p>
+            <p>The name of the Secret to select from.</p>
         </td>
     </tr>
     <tr>
@@ -1542,7 +1381,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>OAuth2 Client Secret SHA-256 for IAP.</p>
+            <p>[Output Only] SHA256 hash value for the field oauth2_client_secret above.</p>
         </td>
     </tr>
     <tr>
@@ -1552,10 +1391,7 @@ specified, and a health check is required.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Indicates whether the backend service will be used with internal or
-external load balancing. A backend service created for one type of
-load balancing cannot be used with the other. For more information, refer to
-[Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "INTERNAL_MANAGED", "EXTERNAL_MANAGED"].</p>
+            <p>Specifies the load balancer type.</p>
         </td>
     </tr>
     <tr>
@@ -1565,13 +1401,7 @@ load balancing cannot be used with the other. For more information, refer to
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>A list of locality load balancing policies to be used in order of
-preference. Either the policy or the customPolicy field should be set.
-Overrides any value set in the localityLbPolicy field.
-
-localityLbPolicies is only supported when the BackendService is referenced
-by a URL Map that is referenced by a target gRPC proxy that has the
-validateForProxyless field set to true.</p>
+            <p>A list of locality load-balancing policies to be used in order of preference. When you use localityLbPolicies, you must set at least one value for either the localityLbPolicies[].policy or the localityLbPolicies[].customPolicy field. localityLbPolicies overrides any value set in the localityLbPolicy field. For an example of how to use this field, see Define a list of preferred policies. Caution: This field and its children are intended for use in a service mesh that includes gRPC clients only. Envoy proxies can't use backend services that have this configuration.</p>
         </td>
     </tr>
     <tr>
@@ -1591,8 +1421,7 @@ validateForProxyless field set to true.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The configuration for a custom policy implemented by the user and
-deployed with the client.</p>
+            <p>The configuration for a custom policy.</p>
         </td>
     </tr>
     <tr>
@@ -1602,8 +1431,7 @@ deployed with the client.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An optional, arbitrary JSON object with configuration data, understood
-by a locally installed custom policy implementation.</p>
+            <p>An optional, arbitrary JSON object with configuration data.</p>
         </td>
     </tr>
     <tr>
@@ -1613,15 +1441,7 @@ by a locally installed custom policy implementation.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Identifies the custom policy.
-
-The value should match the type the custom implementation is registered
-with on the gRPC clients. It should follow protocol buffer
-message naming conventions and include the full path (e.g.
-myorg.CustomLbPolicy). The maximum length is 256 characters.
-
-Note that specifying the same custom policy more than once for a
-backend is not a valid configuration and will be rejected.</p>
+            <p>The name of a custom policy.</p>
         </td>
     </tr>
     <tr>
@@ -1631,7 +1451,7 @@ backend is not a valid configuration and will be rejected.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The configuration for a built-in load balancing policy.</p>
+            <p>The configuration for a predefined policy.</p>
         </td>
     </tr>
     <tr>
@@ -1641,41 +1461,7 @@ backend is not a valid configuration and will be rejected.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of a locality load balancer policy to be used. The value
-should be one of the predefined ones as supported by localityLbPolicy,
-although at the moment only ROUND_ROBIN is supported.
-
-This field should only be populated when the customPolicy field is not
-used.
-
-Note that specifying the same policy more than once for a backend is
-not a valid configuration and will be rejected.
-
-The possible values are:
-
-* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
-                is selected in round robin order.
-
-* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
-                  hosts and picks the host which has fewer active requests.
-
-* 'RING_HASH': The ring/modulo hash load balancer implements consistent
-              hashing to backends. The algorithm has the property that the
-              addition/removal of a host from a set of N hosts only affects
-              1/N of the requests.
-
-* 'RANDOM': The load balancer selects a random healthy host.
-
-* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
-                          connection metadata, i.e., connections are opened
-                          to the same address as the destination address of
-                          the incoming connection before the connection
-                          was redirected to the load balancer.
-
-* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
-            Maglev is not as stable as ring hash but has faster table lookup
-            build times and host selection times. For more information about
-            Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"].</p>
+            <p>The name of a locality load balancing policy.</p>
         </td>
     </tr>
     <tr>
@@ -1685,61 +1471,7 @@ The possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The load balancing algorithm used within the scope of the locality.
-The possible values are:
-
-* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
-                 is selected in round robin order.
-
-* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
-                   hosts and picks the host which has fewer active requests.
-
-* 'RING_HASH': The ring/modulo hash load balancer implements consistent
-               hashing to backends. The algorithm has the property that the
-               addition/removal of a host from a set of N hosts only affects
-               1/N of the requests.
-
-* 'RANDOM': The load balancer selects a random healthy host.
-
-* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
-                          connection metadata, i.e., connections are opened
-                          to the same address as the destination address of
-                          the incoming connection before the connection
-                          was redirected to the load balancer.
-
-* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
-            Maglev is not as stable as ring hash but has faster table lookup
-            build times and host selection times. For more information about
-            Maglev, refer to https://ai.google/research/pubs/pub44824
-
-* 'WEIGHTED_MAGLEV': Per-instance weighted Load Balancing via health check
-                     reported weights. If set, the Backend Service must
-                     configure a non legacy HTTP-based Health Check, and
-                     health check replies are expected to contain
-                     non-standard HTTP response header field
-                     X-Load-Balancing-Endpoint-Weight to specify the
-                     per-instance weights. If set, Load Balancing is weight
-                     based on the per-instance weights reported in the last
-                     processed health check replies, as long as every
-                     instance either reported a valid weight or had
-                     UNAVAILABLE_WEIGHT. Otherwise, Load Balancing remains
-                     equal-weight.
-
-This field is applicable to either:
-
-* A regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2,
-  and loadBalancingScheme set to INTERNAL_MANAGED.
-* A global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED.
-* A regional backend service with loadBalancingScheme set to EXTERNAL (External Network
-  Load Balancing). Only MAGLEV and WEIGHTED_MAGLEV values are possible for External
-  Network Load Balancing. The default is MAGLEV.
-
-If session_affinity is not NONE, and this field is not set to MAGLEV, WEIGHTED_MAGLEV,
-or RING_HASH, session affinity settings will not take effect.
-
-Only ROUND_ROBIN and RING_HASH are supported when the backend service is referenced
-by a URL map that is bound to target gRPC proxy that has validate_for_proxyless
-field set to true. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV", "WEIGHTED_MAGLEV"].</p>
+            <p>The load balancing algorithm used within the scope of the locality.</p>
         </td>
     </tr>
     <tr>
@@ -1749,7 +1481,7 @@ field set to true. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH"
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Location represents the geographical location of the ComputeBackendService. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)</p>
+            <p>Location of the resource.</p>
         </td>
     </tr>
     <tr>
@@ -1759,8 +1491,7 @@ field set to true. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH"
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>This field denotes the logging options for the load balancer traffic served by this backend service.
-If logging is enabled, logs will be exported to Stackdriver.</p>
+            <p>This field denotes the logging options for the load balancer traffic.</p>
         </td>
     </tr>
     <tr>
@@ -1770,7 +1501,7 @@ If logging is enabled, logs will be exported to Stackdriver.</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Whether to enable logging for the load balancer traffic served by this backend service.</p>
+            <p>This field denotes whether to enable logging for the load balancer traffic.</p>
         </td>
     </tr>
     <tr>
@@ -1780,10 +1511,7 @@ If logging is enabled, logs will be exported to Stackdriver.</p>
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>This field can only be specified if logging is enabled for this backend service. The value of
-the field must be in [0, 1]. This configures the sampling rate of requests to the load balancer
-where 1.0 means all logged requests are reported and 0.0 means no logged requests are reported.
-The default value is 1.0.</p>
+            <p>This field defines the log sampling rate.</p>
         </td>
     </tr>
     <tr>
@@ -1793,9 +1521,7 @@ The default value is 1.0.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The network to which this backend service belongs.  This field can
-only be specified when the load balancing scheme is set to
-INTERNAL.</p>
+            <p>ComputeNetworkRef is a reference to a GCP ComputeNetwork.</p>
         </td>
     </tr>
     <tr>
@@ -1805,7 +1531,7 @@ INTERNAL.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -1815,7 +1541,7 @@ INTERNAL.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -1825,7 +1551,7 @@ INTERNAL.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -1835,9 +1561,7 @@ INTERNAL.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Settings controlling eviction of unhealthy hosts from the load balancing pool.
-This field is applicable only when the load_balancing_scheme is set
-to INTERNAL_SELF_MANAGED.</p>
+            <p>Settings controlling the ejection of unhealthy backend endpoints.</p>
         </td>
     </tr>
     <tr>
@@ -1847,9 +1571,7 @@ to INTERNAL_SELF_MANAGED.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The base time that a host is ejected for. The real time is equal to the base
-time multiplied by the number of times the host has been ejected. Defaults to
-30000ms or 30s.</p>
+            <p>The base time that a host is ejected for. The real time is equal to the base ejection time multiplied by the number of times the host has been ejected.</p>
         </td>
     </tr>
     <tr>
@@ -1859,9 +1581,7 @@ time multiplied by the number of times the host has been ejected. Defaults to
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1871,8 +1591,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1882,9 +1601,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Number of errors before a host is ejected from the connection pool. When the
-backend host is accessed over HTTP, a 5xx return code qualifies as an error.
-Defaults to 5.</p>
+            <p>Number of consecutive errors before ejection.</p>
         </td>
     </tr>
     <tr>
@@ -1894,9 +1611,7 @@ Defaults to 5.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The number of consecutive gateway failures (502, 503, 504 status or connection
-errors that are mapped to one of those status codes) before a consecutive
-gateway failure ejection occurs. Defaults to 5.</p>
+            <p>Number of consecutive gateway failures before ejection.</p>
         </td>
     </tr>
     <tr>
@@ -1906,9 +1621,7 @@ gateway failure ejection occurs. Defaults to 5.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The percentage chance that a host will be actually ejected when an outlier
-status is detected through consecutive 5xx. This setting can be used to disable
-ejection or to ramp it up slowly. Defaults to 100.</p>
+            <p>Percentage of consecutive errors to enforce.</p>
         </td>
     </tr>
     <tr>
@@ -1918,9 +1631,7 @@ ejection or to ramp it up slowly. Defaults to 100.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The percentage chance that a host will be actually ejected when an outlier
-status is detected through consecutive gateway failures. This setting can be
-used to disable ejection or to ramp it up slowly. Defaults to 0.</p>
+            <p>Percentage of consecutive gateway failures to enforce.</p>
         </td>
     </tr>
     <tr>
@@ -1930,9 +1641,7 @@ used to disable ejection or to ramp it up slowly. Defaults to 0.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The percentage chance that a host will be actually ejected when an outlier
-status is detected through success rate statistics. This setting can be used to
-disable ejection or to ramp it up slowly. Defaults to 100.</p>
+            <p>Percentage of success rate to enforce.</p>
         </td>
     </tr>
     <tr>
@@ -1942,8 +1651,7 @@ disable ejection or to ramp it up slowly. Defaults to 100.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Time interval between ejection sweep analysis. This can result in both new
-ejections as well as hosts being returned to service. Defaults to 10 seconds.</p>
+            <p>Time interval between ejection sweep analysis.</p>
         </td>
     </tr>
     <tr>
@@ -1953,9 +1661,7 @@ ejections as well as hosts being returned to service. Defaults to 10 seconds.</p
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time that's a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 'seconds' field and a positive
-'nanos' field. Must be from 0 to 999,999,999 inclusive.</p>
+            <p>Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1965,8 +1671,7 @@ less than one second are represented with a 0 'seconds' field and a positive
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-inclusive.</p>
+            <p>Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.</p>
         </td>
     </tr>
     <tr>
@@ -1976,8 +1681,7 @@ inclusive.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Maximum percentage of hosts in the load balancing pool for the backend service
-that can be ejected. Defaults to 10%.</p>
+            <p>Maximum percentage of hosts that can be ejected.</p>
         </td>
     </tr>
     <tr>
@@ -1987,10 +1691,7 @@ that can be ejected. Defaults to 10%.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The number of hosts in a cluster that must have enough request volume to detect
-success rate outliers. If the number of hosts is less than this setting, outlier
-detection via success rate statistics is not performed for any host in the
-cluster. Defaults to 5.</p>
+            <p>Minimum number of hosts for success rate analysis.</p>
         </td>
     </tr>
     <tr>
@@ -2000,11 +1701,7 @@ cluster. Defaults to 5.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The minimum number of total requests that must be collected in one interval (as
-defined by the interval duration above) to include this host in success rate
-based outlier detection. If the volume is lower than this setting, outlier
-detection via success rate statistics is not performed for that host. Defaults
-to 100.</p>
+            <p>Minimum request volume for success rate analysis.</p>
         </td>
     </tr>
     <tr>
@@ -2014,12 +1711,7 @@ to 100.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>This factor is used to determine the ejection threshold for success rate outlier
-ejection. The ejection threshold is the difference between the mean success
-rate, and the product of this factor and the standard deviation of the mean
-success rate: mean - (stdev * success_rate_stdev_factor). This factor is divided
-by a thousand to get a double. That is, if the desired factor is 1.9, the
-runtime value should be 1900. Defaults to 1900.</p>
+            <p>Standard deviation factor for success rate analysis.</p>
         </td>
     </tr>
     <tr>
@@ -2029,9 +1721,7 @@ runtime value should be 1900. Defaults to 1900.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of backend port. The same name should appear in the instance
-groups referenced by this service. Required when the load balancing
-scheme is EXTERNAL.</p>
+            <p>A named port on a backend instance group representing the port for communication to the backend VMs in that group. The named port must be [defined on each backend instance group](https://cloud.google.com/load-balancing/docs/backend-service#named_ports). This parameter has no meaning if the backends are NEGs. For internal passthrough Network Load Balancers and external passthrough Network Load Balancers, omit port_name.</p>
         </td>
     </tr>
     <tr>
@@ -2041,11 +1731,7 @@ scheme is EXTERNAL.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The protocol this BackendService uses to communicate with backends.
-The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-types and may result in errors if used with the GA API. **NOTE**: With protocol “UNSPECIFIED”,
-the backend service can be used by Layer 4 Internal Load Balancing or Network Load Balancing
-with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC", "UNSPECIFIED"].</p>
+            <p>The protocol this BackendService uses to communicate with backends. Possible values are HTTP, HTTPS, HTTP2, H2C, TCP, SSL, UDP or GRPC. depending on the chosen load balancer or Traffic Director configuration. Refer to the documentation for the load balancers or for Traffic Director for more information. Must be set to GRPC when the backend service is referenced by a URL map that is bound to target gRPC proxy.</p>
         </td>
     </tr>
     <tr>
@@ -2055,7 +1741,7 @@ with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTT
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+            <p>The ComputeBackendService name. If not given, the metadata.name will be used.</p>
         </td>
     </tr>
     <tr>
@@ -2065,7 +1751,7 @@ with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTT
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The security policy associated with this backend service.</p>
+            <p>The URL of the security policy associated with this backend service.</p>
         </td>
     </tr>
     <tr>
@@ -2075,7 +1761,7 @@ with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTT
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The security policy associated with this backend service.</p>
+            <p>ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -2085,7 +1771,7 @@ with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTT
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeSecurityPolicy` resource.</p>
+            <p>A reference to an externally managed ComputeSecurityPolicy resource. Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".</p>
         </td>
     </tr>
     <tr>
@@ -2095,7 +1781,7 @@ with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTT
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeSecurityPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -2105,7 +1791,7 @@ with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTT
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeSecurityPolicy resource.</p>
         </td>
     </tr>
     <tr>
@@ -2115,10 +1801,7 @@ with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTT
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The security settings that apply to this backend service. This field is applicable to either
-a regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2, and
-load_balancing_scheme set to INTERNAL_MANAGED; or a global backend service with the
-load_balancing_scheme set to INTERNAL_SELF_MANAGED.</p>
+            <p>This field specifies the security settings that apply to this backend service. This field is applicable to a global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED.</p>
         </td>
     </tr>
     <tr>
@@ -2128,10 +1811,7 @@ load_balancing_scheme set to INTERNAL_SELF_MANAGED.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>ClientTlsPolicy is a resource that specifies how a client should
-authenticate connections to backends of a service. This resource itself
-does not affect configuration unless it is attached to a backend
-service resource.</p>
+            <p>Reference to a ComputeSecuritySettingsClientTLSPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -2141,7 +1821,7 @@ service resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `//networksecurity.googleapis.com/projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityClientTLSPolicy` resource.</p>
+            <p>External is the selfLink of the referent.</p>
         </td>
     </tr>
     <tr>
@@ -2151,7 +1831,7 @@ service resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>Name of the referent.</p>
         </td>
     </tr>
     <tr>
@@ -2161,7 +1841,7 @@ service resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>Namespace of the referent.</p>
         </td>
     </tr>
     <tr>
@@ -2171,9 +1851,7 @@ service resource.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>A list of alternate names to verify the subject identity in the certificate.
-If specified, the client will verify that the server certificate's subject
-alt name matches one of the specified values.</p>
+            <p>Subject Alternative Names.</p>
         </td>
     </tr>
     <tr>
@@ -2193,8 +1871,7 @@ alt name matches one of the specified values.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Type of session affinity to use. The default is NONE. Session affinity is
-not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"].</p>
+            <p>Type of session affinity to use. The default is NONE. Only NONE and HEADER_FIELD are supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. For more details, see: [Session Affinity](https://cloud.google.com/load-balancing/docs/backend-service#session_affinity). sessionAffinity cannot be specified with haPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -2204,7 +1881,7 @@ not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "C
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Subsetting configuration for this BackendService. Currently this is applicable only for Internal TCP/UDP load balancing and Internal HTTP(S) load balancing.</p>
+            <p>subsetting cannot be specified with haPolicy.</p>
         </td>
     </tr>
     <tr>
@@ -2214,7 +1891,7 @@ not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "C
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The algorithm used for subsetting. Possible values: ["CONSISTENT_HASH_SUBSETTING"].</p>
+            <p>The subsetting policy. The only supported policy is CONSISTENT_HASH_SUBSETTING.</p>
         </td>
     </tr>
     <tr>
@@ -2224,8 +1901,7 @@ not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "C
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>How many seconds to wait for the backend before considering it a
-failed request. Default is 30 seconds. Valid range is [1, 86400].</p>
+            <p>The backend service timeout.</p>
         </td>
     </tr>
 </tbody>
@@ -2260,7 +1936,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -2309,22 +1985,21 @@ selfLink: string
         <td><code>creationTimestamp</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Creation timestamp in RFC3339 text format.</p>
+            <p>[Output Only] Creation timestamp in RFC3339 text format.</p>
         </td>
     </tr>
     <tr>
         <td><code>fingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Fingerprint of this resource. A hash of the contents stored in this
-object. This field is used in optimistic locking.</p>
+            <p>Fingerprint of this resource. A hash of the contents stored in this object.</p>
         </td>
     </tr>
     <tr>
         <td><code>generatedId</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The unique identifier for the resource. This identifier is defined by the server.</p>
+            <p>[Output Only] The unique identifier for the resource. This identifier is defined by the server.</p>
         </td>
     </tr>
     <tr>
@@ -2338,7 +2013,7 @@ object. This field is used in optimistic locking.</p>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p></p>
+            <p>[Output Only] Server-defined URL for the resource.</p>
         </td>
     </tr>
 </tbody>

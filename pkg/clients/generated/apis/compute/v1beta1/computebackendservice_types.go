@@ -39,34 +39,19 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type BackendserviceBackend struct {
-	/* Specifies the balancing mode for this backend.
-
-	For global HTTP(S) or TCP/SSL load balancing, the default is
-	UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
-	and CONNECTION (for TCP/SSL).
-
-	See the [Backend Services Overview](https://cloud.google.com/load-balancing/docs/backend-service#balancing-mode)
-	for an explanation of load balancing modes. Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"]. */
+	/* Specifies the balancing mode for this backend. */
 	// +optional
 	BalancingMode *string `json:"balancingMode,omitempty"`
 
-	/* A multiplier applied to the group's maximum servicing capacity
-	(based on UTILIZATION, RATE or CONNECTION).
-
-	Default value is 1, which means the group will serve up to 100%
-	of its configured capacity (depending on balancingMode). A
-	setting of 0 means the group is completely drained, offering
-	0% of its available Capacity. Valid range is [0.0,1.0]. */
+	/* A multiplier applied to the group's maximum servicing capacity. */
 	// +optional
 	CapacityScaler *float64 `json:"capacityScaler,omitempty"`
 
-	/* An optional description of this resource.
-	Provide this property when you create the resource. */
+	/* An optional description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* This field designates whether this is a failover backend. More
-	than one failover backend can be configured for a given RegionBackendService. */
+	/* This field designates whether this is a failover backend. */
 	// +optional
 	Failover *bool `json:"failover,omitempty"`
 
@@ -88,73 +73,41 @@ type BackendserviceBackend struct {
 	are supported. */
 	Group BackendserviceGroup `json:"group"`
 
-	/* The max number of simultaneous connections for the group. Can
-	be used with either CONNECTION or UTILIZATION balancing modes.
-
-	For CONNECTION mode, either maxConnections or one
-	of maxConnectionsPerInstance or maxConnectionsPerEndpoint,
-	as appropriate for group type, must be set. */
+	/* The max number of simultaneous connections for the group. */
 	// +optional
-	MaxConnections *int64 `json:"maxConnections,omitempty"`
+	MaxConnections *int32 `json:"maxConnections,omitempty"`
 
-	/* The max number of simultaneous connections that a single backend
-	network endpoint can handle. This is used to calculate the
-	capacity of the group. Can be used in either CONNECTION or
-	UTILIZATION balancing modes.
-
-	For CONNECTION mode, either
-	maxConnections or maxConnectionsPerEndpoint must be set. */
+	/* The max number of simultaneous connections that a single backend network endpoint can handle. */
 	// +optional
-	MaxConnectionsPerEndpoint *int64 `json:"maxConnectionsPerEndpoint,omitempty"`
+	MaxConnectionsPerEndpoint *int32 `json:"maxConnectionsPerEndpoint,omitempty"`
 
-	/* The max number of simultaneous connections that a single
-	backend instance can handle. This is used to calculate the
-	capacity of the group. Can be used in either CONNECTION or
-	UTILIZATION balancing modes.
-
-	For CONNECTION mode, either maxConnections or
-	maxConnectionsPerInstance must be set. */
+	/* The max number of simultaneous connections that a single backend instance can handle. */
 	// +optional
-	MaxConnectionsPerInstance *int64 `json:"maxConnectionsPerInstance,omitempty"`
+	MaxConnectionsPerInstance *int32 `json:"maxConnectionsPerInstance,omitempty"`
 
-	/* The max requests per second (RPS) of the group.
-
-	Can be used with either RATE or UTILIZATION balancing modes,
-	but required if RATE mode. For RATE mode, either maxRate or one
-	of maxRatePerInstance or maxRatePerEndpoint, as appropriate for
-	group type, must be set. */
+	/* The max requests per second (RPS) of the group. */
 	// +optional
-	MaxRate *int64 `json:"maxRate,omitempty"`
+	MaxRate *int32 `json:"maxRate,omitempty"`
 
-	/* The max requests per second (RPS) that a single backend network
-	endpoint can handle. This is used to calculate the capacity of
-	the group. Can be used in either balancing mode. For RATE mode,
-	either maxRate or maxRatePerEndpoint must be set. */
+	/* The max requests per second (RPS) that a single backend network endpoint can handle. */
 	// +optional
 	MaxRatePerEndpoint *float64 `json:"maxRatePerEndpoint,omitempty"`
 
-	/* The max requests per second (RPS) that a single backend
-	instance can handle. This is used to calculate the capacity of
-	the group. Can be used in either balancing mode. For RATE mode,
-	either maxRate or maxRatePerInstance must be set. */
+	/* The max requests per second (RPS) that a single backend instance can handle. */
 	// +optional
 	MaxRatePerInstance *float64 `json:"maxRatePerInstance,omitempty"`
 
-	/* Used when balancingMode is UTILIZATION. This ratio defines the
-	CPU utilization target for the group. Valid range is [0.0, 1.0]. */
+	/* Used when balancingMode is UTILIZATION. This ratio defines the CPU utilization target for the group. */
 	// +optional
 	MaxUtilization *float64 `json:"maxUtilization,omitempty"`
 }
 
 type BackendserviceBaseEjectionTime struct {
-	/* Span of time that's a fraction of a second at nanosecond resolution. Durations
-	less than one second are represented with a 0 'seconds' field and a positive
-	'nanos' field. Must be from 0 to 999,999,999 inclusive. */
+	/* Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+	Nanos *int32 `json:"nanos,omitempty"`
 
-	/* Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-	inclusive. */
+	/* Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. */
 	Seconds int64 `json:"seconds"`
 }
 
@@ -164,16 +117,15 @@ type BackendserviceBypassCacheOnRequestHeaders struct {
 }
 
 type BackendserviceCacheKeyPolicy struct {
-	/* If true requests to different hosts will be cached separately. */
+	/* If true, requests to different hosts will be cached separately. */
 	// +optional
 	IncludeHost *bool `json:"includeHost,omitempty"`
 
-	/* Allows HTTP request headers (by name) to be used in the
-	cache key. */
+	/* Allows HTTP request headers (by name) to be used in the cache key. */
 	// +optional
 	IncludeHttpHeaders []string `json:"includeHttpHeaders,omitempty"`
 
-	/* Names of cookies to include in cache keys. */
+	/* Allows HTTP cookies (by name) to be used in the cache key. The name=value pair will be used in the cache key Cloud CDN generates. */
 	// +optional
 	IncludeNamedCookies []string `json:"includeNamedCookies,omitempty"`
 
@@ -181,38 +133,21 @@ type BackendserviceCacheKeyPolicy struct {
 	// +optional
 	IncludeProtocol *bool `json:"includeProtocol,omitempty"`
 
-	/* If true, include query string parameters in the cache key
-	according to query_string_whitelist and
-	query_string_blacklist. If neither is set, the entire query
-	string will be included.
-
-	If false, the query string will be excluded from the cache
-	key entirely. */
+	/* If true, include query string parameters in the cache key according to query_string_whitelist and query_string_blacklist. If neither is set, the entire query string will be included. If false, the query string will be excluded from the cache key entirely. */
 	// +optional
 	IncludeQueryString *bool `json:"includeQueryString,omitempty"`
 
-	/* Names of query string parameters to exclude in cache keys.
-
-	All other parameters will be included. Either specify
-	query_string_whitelist or query_string_blacklist, not both.
-	'&' and '=' will be percent encoded and not treated as
-	delimiters. */
+	/* Names of query string parameters to exclude in cache keys. All other parameters will be included. Either specify query_string_whitelist or query_string_blacklist, not both. '&' and '=' will be percent encoded and not treated as delimiters. */
 	// +optional
 	QueryStringBlacklist []string `json:"queryStringBlacklist,omitempty"`
 
-	/* Names of query string parameters to include in cache keys.
-
-	All other parameters will be excluded. Either specify
-	query_string_whitelist or query_string_blacklist, not both.
-	'&' and '=' will be percent encoded and not treated as
-	delimiters. */
+	/* Names of query string parameters to include in cache keys. All other parameters will be excluded. Either specify query_string_whitelist or query_string_blacklist, not both. '&' and '=' will be percent encoded and not treated as delimiters. */
 	// +optional
 	QueryStringWhitelist []string `json:"queryStringWhitelist,omitempty"`
 }
 
 type BackendserviceCdnPolicy struct {
-	/* Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
-	The cache is bypassed for all cdnPolicy.cacheMode settings. */
+	/* Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings. */
 	// +optional
 	BypassCacheOnRequestHeaders []BackendserviceBypassCacheOnRequestHeaders `json:"bypassCacheOnRequestHeaders,omitempty"`
 
@@ -220,216 +155,135 @@ type BackendserviceCdnPolicy struct {
 	// +optional
 	CacheKeyPolicy *BackendserviceCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
 
-	/* Specifies the cache setting for all responses from this backend.
-	The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"]. */
+	/* Specifies the cache setting for all responses from this backend. The possible values are: USE_ORIGIN_HEADERS Requires the origin to set valid caching headers to cache content. Responses without these headers will not be cached at Google's edge, and will require a full trip to the origin on every request, potentially impacting performance and increasing load on the origin server. FORCE_CACHE_ALL Cache all content, ignoring any "private", "no-store" or "no-cache" directives in Cache-Control response headers. Warning: this may result in Cloud CDN caching private, per-user (user identifiable) content. CACHE_ALL_STATIC Automatically cache static content, including common image formats, media (video and audio), and web assets (JavaScript and CSS). Requests and responses that are marked as uncacheable, as well as dynamic content (including HTML), will not be cached. If no value is provided for cdnPolicy.cacheMode, it defaults to CACHE_ALL_STATIC. Check the CacheMode enum for the list of possible values. */
 	// +optional
 	CacheMode *string `json:"cacheMode,omitempty"`
 
-	/* Specifies the maximum allowed TTL for cached content served by this origin. */
+	/* Specifies a separate client (e.g. browser client) maximum TTL. This is used to clamp the max-age (or Expires) value sent to the client. With FORCE_CACHE_ALL, the lesser of client_ttl and default_ttl is used for the response max-age directive, along with a "public" directive. For cacheable content in CACHE_ALL_STATIC mode, client_ttl clamps the max-age from the origin (if specified), or else sets the response max-age directive to the lesser of the client_ttl and default_ttl, and also ensures a "public" cache-control directive is present. If a client TTL is not specified, a default value (1 hour) will be used. The maximum allowed value is 31,622,400s (1 year). */
 	// +optional
-	ClientTtl *int64 `json:"clientTtl,omitempty"`
+	ClientTtl *int32 `json:"clientTtl,omitempty"`
 
-	/* Specifies the default TTL for cached content served by this origin for responses
-	that do not have an existing valid TTL (max-age or s-max-age). */
+	/* Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-maxage). Setting a TTL of "0" means "always revalidate". The value of defaultTTL cannot be set to a value greater than that of maxTTL, but can be equal. When the cacheMode is set to FORCE_CACHE_ALL, the defaultTTL will overwrite the TTL set in all responses. The maximum allowed value is 31,622,400s (1 year), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
 	// +optional
-	DefaultTtl *int64 `json:"defaultTtl,omitempty"`
+	DefaultTtl *int32 `json:"defaultTtl,omitempty"`
 
-	/* Specifies the maximum allowed TTL for cached content served by this origin. */
+	/* Specifies the maximum allowed TTL for cached content served by this origin. Cache directives that attempt to set a max-age or s-maxage higher than this, or an Expires header more than maxTTL seconds in the future will be capped at the value of maxTTL, as if it were the value of an s-maxage Cache-Control directive. Headers sent to the client will not be modified. Setting a TTL of "0" means "always revalidate". The maximum allowed value is 31,622,400s (1 year), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
 	// +optional
-	MaxTtl *int64 `json:"maxTtl,omitempty"`
+	MaxTtl *int32 `json:"maxTtl,omitempty"`
 
-	/* Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects. */
+	/* Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects. This can reduce the load on your origin and improve end-user experience by reducing response latency. When the cache mode is set to CACHE_ALL_STATIC or USE_ORIGIN_HEADERS, negative caching applies to responses with the specified response code that lack any Cache-Control, Expires, or Pragma: no-cache directives. When the cache mode is set to FORCE_CACHE_ALL, negative caching applies to all responses with the specified response code, and override any caching headers. By default, Cloud CDN will apply the following default TTLs to these status codes: HTTP 300 (Multiple Choice), 301, 308 (Permanent Redirects): 10m HTTP 404 (Not Found), 410 (Gone), 451 (Unavailable For Legal Reasons): 120s HTTP 405 (Method Not Found), 421 (Misdirected Request), 501 (Not Implemented): 60s. These defaults can be overridden in negative_caching_policy. */
 	// +optional
 	NegativeCaching *bool `json:"negativeCaching,omitempty"`
 
-	/* Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
-	Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs. */
+	/* Sets a cache TTL for the specified HTTP status code. negative_caching must be enabled to configure negative_caching_policy. Omitting the policy and leaving negative_caching enabled will use Cloud CDN's default cache TTLs. Note that when specifying an explicit negative_caching_policy, you should take care to specify a cache TTL for all response codes that you wish to cache. Cloud CDN will not apply any default negative caching when a policy exists. */
 	// +optional
 	NegativeCachingPolicy []BackendserviceNegativeCachingPolicy `json:"negativeCachingPolicy,omitempty"`
 
-	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. */
+	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. This setting defines the default "max-stale" duration for any cached responses that do not specify a max-stale directive. Stale responses that exceed the TTL configured here will not be served. The default limit (max-stale) is 86400s (1 day), which will allow stale content to be served up to this limit beyond the max-age (or s-maxage) of a cached response. The maximum allowed value is 604800 (1 week). Set this to zero (0) to disable serve-while-stale. */
 	// +optional
-	ServeWhileStale *int64 `json:"serveWhileStale,omitempty"`
+	ServeWhileStale *int32 `json:"serveWhileStale,omitempty"`
 
-	/* Maximum number of seconds the response to a signed URL request
-	will be considered fresh, defaults to 1hr (3600s). After this
-	time period, the response will be revalidated before
-	being served.
-
-	When serving responses to signed URL requests, Cloud CDN will
-	internally behave as though all responses from this backend had a
-	"Cache-Control: public, max-age=[TTL]" header, regardless of any
-	existing Cache-Control header. The actual headers served in
-	responses will not be altered. */
+	/* Maximum number of seconds the response to a signed URL request will be considered fresh. After this time period, the response will be revalidated before being served. Defaults to 1hr (3600s). When serving responses to signed URL requests, Cloud CDN will internally behave as though all responses from this backend had a "Cache-Control: public, max-age=[TTL]" header, regardless of any existing Cache-Control header. The actual headers served in responses will not be altered. */
 	// +optional
 	SignedUrlCacheMaxAgeSec *int64 `json:"signedUrlCacheMaxAgeSec,omitempty"`
 }
 
 type BackendserviceCircuitBreakers struct {
-	/* The timeout for new network connections to hosts. */
+	/* Not supported by proxy. Connect timeout for the backend service. The timeout is the maximum amount of time KCC will wait for the proxy to connect to the backend. */
 	// +optional
 	ConnectTimeout *BackendserviceConnectTimeout `json:"connectTimeout,omitempty"`
 
-	/* The maximum number of connections to the backend cluster.
-	Defaults to 1024. */
+	/* The maximum number of connections to the backend service. If not specified, there is no limit. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. */
 	// +optional
-	MaxConnections *int64 `json:"maxConnections,omitempty"`
+	MaxConnections *int32 `json:"maxConnections,omitempty"`
 
-	/* The maximum number of pending requests to the backend cluster.
-	Defaults to 1024. */
+	/* The maximum number of pending requests allowed to the backend service. If not specified, there is no limit. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. */
 	// +optional
-	MaxPendingRequests *int64 `json:"maxPendingRequests,omitempty"`
+	MaxPendingRequests *int32 `json:"maxPendingRequests,omitempty"`
 
-	/* The maximum number of parallel requests to the backend cluster.
-	Defaults to 1024. */
+	/* The maximum number of parallel requests that allowed to the backend service. If not specified, there is no limit. */
 	// +optional
-	MaxRequests *int64 `json:"maxRequests,omitempty"`
+	MaxRequests *int32 `json:"maxRequests,omitempty"`
 
-	/* Maximum requests for a single backend connection. This parameter
-	is respected by both the HTTP/1.1 and HTTP/2 implementations. If
-	not specified, there is no limit. Setting this parameter to 1
-	will effectively disable keep alive. */
+	/* Maximum requests for a single connection to the backend service. This parameter is respected by both the HTTP/1.1 and HTTP/2 implementations. If not specified, there is no limit. Setting this parameter to 1 will effectively disable keep alive. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. */
 	// +optional
-	MaxRequestsPerConnection *int64 `json:"maxRequestsPerConnection,omitempty"`
+	MaxRequestsPerConnection *int32 `json:"maxRequestsPerConnection,omitempty"`
 
-	/* The maximum number of parallel retries to the backend cluster.
-	Defaults to 3. */
+	/* The maximum number of parallel retries allowed to the backend cluster. If not specified, the default is 1. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. */
 	// +optional
-	MaxRetries *int64 `json:"maxRetries,omitempty"`
+	MaxRetries *int32 `json:"maxRetries,omitempty"`
 }
 
 type BackendserviceConnectTimeout struct {
-	/* Span of time that's a fraction of a second at nanosecond
-	resolution. Durations less than one second are represented
-	with a 0 seconds field and a positive nanos field. Must
-	be from 0 to 999,999,999 inclusive. */
+	/* Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+	Nanos *int32 `json:"nanos,omitempty"`
 
-	/* Span of time at a resolution of a second.
-	Must be from 0 to 315,576,000,000 inclusive. */
+	/* Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. */
 	Seconds int64 `json:"seconds"`
 }
 
 type BackendserviceConnectionTrackingPolicy struct {
-	/* Specifies connection persistence when backends are unhealthy.
-
-	If set to 'DEFAULT_FOR_PROTOCOL', the existing connections persist on
-	unhealthy backends only for connection-oriented protocols (TCP and SCTP)
-	and only if the Tracking Mode is PER_CONNECTION (default tracking mode)
-	or the Session Affinity is configured for 5-tuple. They do not persist
-	for UDP.
-
-	If set to 'NEVER_PERSIST', after a backend becomes unhealthy, the existing
-	connections on the unhealthy backend are never persisted on the unhealthy
-	backend. They are always diverted to newly selected healthy backends
-	(unless all backends are unhealthy).
-
-	If set to 'ALWAYS_PERSIST', existing connections always persist on
-	unhealthy backends regardless of protocol and session affinity. It is
-	generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"]. */
+	/* Specifies connection persistence when backends are unhealthy. The default value is DEFAULT_FOR_PROTOCOL. If set to DEFAULT_FOR_PROTOCOL, the existing connections persist on unhealthy backends only for connection-oriented protocols (TCP and SCTP) and only if the Tracking Mode is PER_CONNECTION (default tracking mode) or the Session Affinity is configured for 5-tuple. They do not persist for UDP. If set to NEVER_PERSIST, after a backend becomes unhealthy, the existing connections on the unhealthy backend are never persisted on the unhealthy backend. They are always diverted to newly selected healthy backends (unless all backends are unhealthy). If set to ALWAYS_PERSIST, existing connections always persist on unhealthy backends regardless of protocol and session affinity. It is generally not recommended to use this mode overriding the default. For more details, see [Connection Persistence for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence) and [Connection Persistence for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#connection-persistence). Check the ConnectionPersistenceOnUnhealthyBackends enum for the list of possible values. */
 	// +optional
 	ConnectionPersistenceOnUnhealthyBackends *string `json:"connectionPersistenceOnUnhealthyBackends,omitempty"`
 
-	/* Enable Strong Session Affinity for Network Load Balancing. This option is not available publicly. */
+	/* Enable Strong Session Affinity for external passthrough Network Load Balancers. This option is not available publicly. */
 	// +optional
 	EnableStrongAffinity *bool `json:"enableStrongAffinity,omitempty"`
 
-	/* Specifies how long to keep a Connection Tracking entry while there is
-	no matching traffic (in seconds).
-
-	For L4 ILB the minimum(default) is 10 minutes and maximum is 16 hours.
-
-	For NLB the minimum(default) is 60 seconds and the maximum is 16 hours. */
+	/* Specifies how long to keep a Connection Tracking entry while there is no matching traffic (in seconds). For internal passthrough Network Load Balancers: - The minimum (default) is 10 minutes and the maximum is 16 hours. - It can be set only if Connection Tracking is less than 5-tuple (i.e. Session Affinity is CLIENT_IP_NO_DESTINATION, CLIENT_IP or CLIENT_IP_PROTO, and Tracking Mode is PER_SESSION). For external passthrough Network Load Balancers the default is 60 seconds. This option is not available publicly. */
 	// +optional
-	IdleTimeoutSec *int64 `json:"idleTimeoutSec,omitempty"`
+	IdleTimeoutSec *int32 `json:"idleTimeoutSec,omitempty"`
 
-	/* Specifies the key used for connection tracking. There are two options:
-	'PER_CONNECTION': The Connection Tracking is performed as per the
-	Connection Key (default Hash Method) for the specific protocol.
-
-	'PER_SESSION': The Connection Tracking is performed as per the
-	configured Session Affinity. It matches the configured Session Affinity. Default value: "PER_CONNECTION" Possible values: ["PER_CONNECTION", "PER_SESSION"]. */
+	/* Specifies the key used for connection tracking. There are two options: - PER_CONNECTION: This is the default mode. The Connection Tracking is performed as per the Connection Key (default Hash Method) for the specific protocol. - PER_SESSION: The Connection Tracking is performed as per the configured Session Affinity. It matches the configured Session Affinity. For more details, see [Tracking Mode for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode) and [Tracking Mode for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#tracking-mode). Check the TrackingMode enum for the list of possible values. */
 	// +optional
 	TrackingMode *string `json:"trackingMode,omitempty"`
 }
 
 type BackendserviceConsistentHash struct {
-	/* Hash is based on HTTP Cookie. This field describes a HTTP cookie
-	that will be used as the hash key for the consistent hash load
-	balancer. If the cookie is not present, it will be generated.
-	This field is applicable if the sessionAffinity is set to HTTP_COOKIE. */
+	/* Hash session affinity settings when using STRONG_COOKIE_AFFINITY or STRONG_HEADER_AFFINITY. */
 	// +optional
 	HttpCookie *BackendserviceHttpCookie `json:"httpCookie,omitempty"`
 
-	/* The hash based on the value of the specified header field.
-	This field is applicable if the sessionAffinity is set to HEADER_FIELD. */
+	/* The name of the HTTP header field to map onto. Required if the load balancing policy is MAGLEV or RING_HASH and session affinity is STRONG_HEADER_AFFINITY. */
 	// +optional
 	HttpHeaderName *string `json:"httpHeaderName,omitempty"`
 
-	/* The minimum number of virtual nodes to use for the hash ring.
-	Larger ring sizes result in more granular load
-	distributions. If the number of hosts in the load balancing pool
-	is larger than the ring size, each host will be assigned a single
-	virtual node.
-	Defaults to 1024. */
+	/* The minimum ring size. Valid values are between 1 and 4096. Required if the load balancing policy is RING_HASH. */
 	// +optional
 	MinimumRingSize *int64 `json:"minimumRingSize,omitempty"`
 }
 
 type BackendserviceCustomPolicy struct {
-	/* An optional, arbitrary JSON object with configuration data, understood
-	by a locally installed custom policy implementation. */
+	/* An optional, arbitrary JSON object with configuration data. */
 	// +optional
 	Data *string `json:"data,omitempty"`
 
-	/* Identifies the custom policy.
-
-	The value should match the type the custom implementation is registered
-	with on the gRPC clients. It should follow protocol buffer
-	message naming conventions and include the full path (e.g.
-	myorg.CustomLbPolicy). The maximum length is 256 characters.
-
-	Note that specifying the same custom policy more than once for a
-	backend is not a valid configuration and will be rejected. */
+	/* The name of a custom policy. */
 	Name string `json:"name"`
 }
 
 type BackendserviceFailoverPolicy struct {
-	/* On failover or failback, this field indicates whether connection drain
-	will be honored. Setting this to true has the following effect: connections
-	to the old active pool are not drained. Connections to the new active pool
-	use the timeout of 10 min (currently fixed). Setting to false has the
-	following effect: both old and new connections will have a drain timeout
-	of 10 min.
-	This can be set to true only if the protocol is TCP.
-	The default is false. */
+	/* This can be set to true only if the protocol is TCP. The default is false. */
 	// +optional
 	DisableConnectionDrainOnFailover *bool `json:"disableConnectionDrainOnFailover,omitempty"`
 
-	/* This option is used only when no healthy VMs are detected in the primary
-	and backup instance groups. When set to true, traffic is dropped. When
-	set to false, new connections are sent across all VMs in the primary group.
-	The default is false. */
+	/* If set to true, connections to the load balancer are dropped when all primary and all backup backend VMs are unhealthy.If set to false, connections are distributed among all primary VMs when all primary and all backup backend VMs are unhealthy. For load balancers that have configurable failover: [Internal passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview). The default is false. */
 	// +optional
 	DropTrafficIfUnhealthy *bool `json:"dropTrafficIfUnhealthy,omitempty"`
 
-	/* The value of the field must be in [0, 1]. If the ratio of the healthy
-	VMs in the primary backend is at or below this number, traffic arriving
-	at the load-balanced IP will be directed to the failover backend.
-	In case where 'failoverRatio' is not set or all the VMs in the backup
-	backend are unhealthy, the traffic will be directed back to the primary
-	backend in the "force" mode, where traffic will be spread to the healthy
-	VMs with the best effort, or to all VMs when no VM is healthy.
-	This field is only used with l4 load balancing. */
+	/* The value of the field must be in the range [0, 1]. If the value is 0, the load balancer performs a failover when the number of healthy primary VMs equals zero. For all other values, the load balancer performs a failover when the total number of healthy primary VMs is less than this ratio. For load balancers that have configurable failover: [Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview). */
 	// +optional
 	FailoverRatio *float64 `json:"failoverRatio,omitempty"`
 }
 
 type BackendserviceGroup struct {
+	/* Reference to a ComputeInstanceGroup resource. */
 	// +optional
 	InstanceGroupRef *v1alpha1.ResourceRef `json:"instanceGroupRef,omitempty"`
 
+	/* Reference to a ComputeNetworkEndpointGroup resource. */
 	// +optional
 	NetworkEndpointGroupRef *v1alpha1.ResourceRef `json:"networkEndpointGroupRef,omitempty"`
 }
@@ -438,6 +292,7 @@ type BackendserviceHealthChecks struct {
 	// +optional
 	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
+	/* ComputeHTTPHealthCheckRef is a reference to a GCP ComputeHTTPHealthCheck. */
 	// +optional
 	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
@@ -457,238 +312,155 @@ type BackendserviceHttpCookie struct {
 }
 
 type BackendserviceIap struct {
-	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.iap.oauth2ClientIdRef` instead. */
+	/* OAuth2 client ID to use for the authentication flow. */
 	// +optional
 	Oauth2ClientId *string `json:"oauth2ClientId,omitempty"`
 
-	/* OAuth2 Client ID for IAP. */
+	/* Reference to a ComputeBackendServiceOauth2ClientId. */
 	// +optional
 	Oauth2ClientIdRef *v1alpha1.ResourceRef `json:"oauth2ClientIdRef,omitempty"`
 
-	/* OAuth2 Client Secret for IAP. */
+	/* OAuth2 client secret to use for the authentication flow. */
 	// +optional
 	Oauth2ClientSecret *BackendserviceOauth2ClientSecret `json:"oauth2ClientSecret,omitempty"`
 
-	/* OAuth2 Client Secret SHA-256 for IAP. */
+	/* [Output Only] SHA256 hash value for the field oauth2_client_secret above. */
 	// +optional
 	Oauth2ClientSecretSha256 *string `json:"oauth2ClientSecretSha256,omitempty"`
 }
 
 type BackendserviceInterval struct {
-	/* Span of time that's a fraction of a second at nanosecond resolution. Durations
-	less than one second are represented with a 0 'seconds' field and a positive
-	'nanos' field. Must be from 0 to 999,999,999 inclusive. */
+	/* Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+	Nanos *int32 `json:"nanos,omitempty"`
 
-	/* Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
-	inclusive. */
+	/* Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. */
 	Seconds int64 `json:"seconds"`
 }
 
 type BackendserviceLocalityLbPolicies struct {
-	/* The configuration for a custom policy implemented by the user and
-	deployed with the client. */
+	/* The configuration for a custom policy. */
 	// +optional
 	CustomPolicy *BackendserviceCustomPolicy `json:"customPolicy,omitempty"`
 
-	/* The configuration for a built-in load balancing policy. */
+	/* The configuration for a predefined policy. */
 	// +optional
 	Policy *BackendservicePolicy `json:"policy,omitempty"`
 }
 
 type BackendserviceLogConfig struct {
-	/* Whether to enable logging for the load balancer traffic served by this backend service. */
+	/* This field denotes whether to enable logging for the load balancer traffic. */
 	// +optional
 	Enable *bool `json:"enable,omitempty"`
 
-	/* This field can only be specified if logging is enabled for this backend service. The value of
-	the field must be in [0, 1]. This configures the sampling rate of requests to the load balancer
-	where 1.0 means all logged requests are reported and 0.0 means no logged requests are reported.
-	The default value is 1.0. */
+	/* This field defines the log sampling rate. */
 	// +optional
 	SampleRate *float64 `json:"sampleRate,omitempty"`
 }
 
 type BackendserviceNegativeCachingPolicy struct {
-	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
-	can be specified as values, and you cannot specify a status code more than once. */
+	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 302, 307, 308, 404, 405, 410, 421, 451 and 501 are can be specified as values, and you cannot specify a status code more than once. */
 	// +optional
-	Code *int64 `json:"code,omitempty"`
+	Code *int32 `json:"code,omitempty"`
 
-	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
-	(30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
+	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s (30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
 	// +optional
 	Ttl *BackendserviceTtl `json:"ttl,omitempty"`
 }
 
 type BackendserviceOauth2ClientSecret struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	/* Value of the field. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	/* Source for the field's value. */
 	// +optional
 	ValueFrom *BackendserviceValueFrom `json:"valueFrom,omitempty"`
 }
 
 type BackendserviceOutlierDetection struct {
-	/* The base time that a host is ejected for. The real time is equal to the base
-	time multiplied by the number of times the host has been ejected. Defaults to
-	30000ms or 30s. */
+	/* The base time that a host is ejected for. The real time is equal to the base ejection time multiplied by the number of times the host has been ejected. */
 	// +optional
 	BaseEjectionTime *BackendserviceBaseEjectionTime `json:"baseEjectionTime,omitempty"`
 
-	/* Number of errors before a host is ejected from the connection pool. When the
-	backend host is accessed over HTTP, a 5xx return code qualifies as an error.
-	Defaults to 5. */
+	/* Number of consecutive errors before ejection. */
 	// +optional
-	ConsecutiveErrors *int64 `json:"consecutiveErrors,omitempty"`
+	ConsecutiveErrors *int32 `json:"consecutiveErrors,omitempty"`
 
-	/* The number of consecutive gateway failures (502, 503, 504 status or connection
-	errors that are mapped to one of those status codes) before a consecutive
-	gateway failure ejection occurs. Defaults to 5. */
+	/* Number of consecutive gateway failures before ejection. */
 	// +optional
-	ConsecutiveGatewayFailure *int64 `json:"consecutiveGatewayFailure,omitempty"`
+	ConsecutiveGatewayFailure *int32 `json:"consecutiveGatewayFailure,omitempty"`
 
-	/* The percentage chance that a host will be actually ejected when an outlier
-	status is detected through consecutive 5xx. This setting can be used to disable
-	ejection or to ramp it up slowly. Defaults to 100. */
+	/* Percentage of consecutive errors to enforce. */
 	// +optional
-	EnforcingConsecutiveErrors *int64 `json:"enforcingConsecutiveErrors,omitempty"`
+	EnforcingConsecutiveErrors *int32 `json:"enforcingConsecutiveErrors,omitempty"`
 
-	/* The percentage chance that a host will be actually ejected when an outlier
-	status is detected through consecutive gateway failures. This setting can be
-	used to disable ejection or to ramp it up slowly. Defaults to 0. */
+	/* Percentage of consecutive gateway failures to enforce. */
 	// +optional
-	EnforcingConsecutiveGatewayFailure *int64 `json:"enforcingConsecutiveGatewayFailure,omitempty"`
+	EnforcingConsecutiveGatewayFailure *int32 `json:"enforcingConsecutiveGatewayFailure,omitempty"`
 
-	/* The percentage chance that a host will be actually ejected when an outlier
-	status is detected through success rate statistics. This setting can be used to
-	disable ejection or to ramp it up slowly. Defaults to 100. */
+	/* Percentage of success rate to enforce. */
 	// +optional
-	EnforcingSuccessRate *int64 `json:"enforcingSuccessRate,omitempty"`
+	EnforcingSuccessRate *int32 `json:"enforcingSuccessRate,omitempty"`
 
-	/* Time interval between ejection sweep analysis. This can result in both new
-	ejections as well as hosts being returned to service. Defaults to 10 seconds. */
+	/* Time interval between ejection sweep analysis. */
 	// +optional
 	Interval *BackendserviceInterval `json:"interval,omitempty"`
 
-	/* Maximum percentage of hosts in the load balancing pool for the backend service
-	that can be ejected. Defaults to 10%. */
+	/* Maximum percentage of hosts that can be ejected. */
 	// +optional
-	MaxEjectionPercent *int64 `json:"maxEjectionPercent,omitempty"`
+	MaxEjectionPercent *int32 `json:"maxEjectionPercent,omitempty"`
 
-	/* The number of hosts in a cluster that must have enough request volume to detect
-	success rate outliers. If the number of hosts is less than this setting, outlier
-	detection via success rate statistics is not performed for any host in the
-	cluster. Defaults to 5. */
+	/* Minimum number of hosts for success rate analysis. */
 	// +optional
-	SuccessRateMinimumHosts *int64 `json:"successRateMinimumHosts,omitempty"`
+	SuccessRateMinimumHosts *int32 `json:"successRateMinimumHosts,omitempty"`
 
-	/* The minimum number of total requests that must be collected in one interval (as
-	defined by the interval duration above) to include this host in success rate
-	based outlier detection. If the volume is lower than this setting, outlier
-	detection via success rate statistics is not performed for that host. Defaults
-	to 100. */
+	/* Minimum request volume for success rate analysis. */
 	// +optional
-	SuccessRateRequestVolume *int64 `json:"successRateRequestVolume,omitempty"`
+	SuccessRateRequestVolume *int32 `json:"successRateRequestVolume,omitempty"`
 
-	/* This factor is used to determine the ejection threshold for success rate outlier
-	ejection. The ejection threshold is the difference between the mean success
-	rate, and the product of this factor and the standard deviation of the mean
-	success rate: mean - (stdev * success_rate_stdev_factor). This factor is divided
-	by a thousand to get a double. That is, if the desired factor is 1.9, the
-	runtime value should be 1900. Defaults to 1900. */
+	/* Standard deviation factor for success rate analysis. */
 	// +optional
-	SuccessRateStdevFactor *int64 `json:"successRateStdevFactor,omitempty"`
+	SuccessRateStdevFactor *int32 `json:"successRateStdevFactor,omitempty"`
 }
 
 type BackendservicePolicy struct {
-	/* The name of a locality load balancer policy to be used. The value
-	should be one of the predefined ones as supported by localityLbPolicy,
-	although at the moment only ROUND_ROBIN is supported.
-
-	This field should only be populated when the customPolicy field is not
-	used.
-
-	Note that specifying the same policy more than once for a backend is
-	not a valid configuration and will be rejected.
-
-	The possible values are:
-
-	* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
-	is selected in round robin order.
-
-	* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
-	hosts and picks the host which has fewer active requests.
-
-	* 'RING_HASH': The ring/modulo hash load balancer implements consistent
-	hashing to backends. The algorithm has the property that the
-	addition/removal of a host from a set of N hosts only affects
-	1/N of the requests.
-
-	* 'RANDOM': The load balancer selects a random healthy host.
-
-	* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
-	connection metadata, i.e., connections are opened
-	to the same address as the destination address of
-	the incoming connection before the connection
-	was redirected to the load balancer.
-
-	* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
-	Maglev is not as stable as ring hash but has faster table lookup
-	build times and host selection times. For more information about
-	Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]. */
+	/* The name of a locality load balancing policy. */
 	Name string `json:"name"`
 }
 
 type BackendserviceSecuritySettings struct {
-	/* ClientTlsPolicy is a resource that specifies how a client should
-	authenticate connections to backends of a service. This resource itself
-	does not affect configuration unless it is attached to a backend
-	service resource. */
+	/* Reference to a ComputeSecuritySettingsClientTLSPolicy. */
 	ClientTLSPolicyRef v1alpha1.ResourceRef `json:"clientTLSPolicyRef"`
 
-	/* A list of alternate names to verify the subject identity in the certificate.
-	If specified, the client will verify that the server certificate's subject
-	alt name matches one of the specified values. */
+	/* Subject Alternative Names. */
 	SubjectAltNames []string `json:"subjectAltNames"`
 }
 
 type BackendserviceSubsetting struct {
-	/* The algorithm used for subsetting. Possible values: ["CONSISTENT_HASH_SUBSETTING"]. */
+	/* The subsetting policy. The only supported policy is CONSISTENT_HASH_SUBSETTING. */
 	Policy string `json:"policy"`
 }
 
 type BackendserviceTtl struct {
-	/* Span of time that's a fraction of a second at nanosecond
-	resolution. Durations less than one second are represented
-	with a 0 seconds field and a positive nanos field. Must
-	be from 0 to 999,999,999 inclusive. */
+	/* Span of time that's a fraction of a second at nanosecond resolution. Must be from 0 to 999,999,999 inclusive. */
 	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+	Nanos *int32 `json:"nanos,omitempty"`
 
-	/* Span of time at a resolution of a second.
-	Must be from 0 to 315,576,000,000 inclusive. */
+	/* Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. */
 	Seconds int64 `json:"seconds"`
 }
 
 type BackendserviceValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	/* Reference to a Secret Key. */
 	// +optional
 	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeBackendServiceSpec struct {
-	/* Lifetime of cookies in seconds if session_affinity is
-	GENERATED_COOKIE. If set to 0, the cookie is non-persistent and lasts
-	only until the end of the browser session (or equivalent). The
-	maximum allowed value for TTL is one day.
-
-	When the load balancing scheme is INTERNAL, this field is not used. */
+	/* Lifetime of cookies in seconds if session_affinity is GENERATED_COOKIE. */
 	// +optional
-	AffinityCookieTtlSec *int64 `json:"affinityCookieTtlSec,omitempty"`
+	AffinityCookieTtlSec *int32 `json:"affinityCookieTtlSec,omitempty"`
 
 	/* The set of backends that serve this BackendService. */
 	// +optional
@@ -698,44 +470,31 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	CdnPolicy *BackendserviceCdnPolicy `json:"cdnPolicy,omitempty"`
 
-	/* Settings controlling the volume of connections to a backend service. This field
-	is applicable only when the load_balancing_scheme is set to INTERNAL_SELF_MANAGED. */
+	/* Settings controlling the circuit breaking behavior for this BackendService. */
 	// +optional
 	CircuitBreakers *BackendserviceCircuitBreakers `json:"circuitBreakers,omitempty"`
 
-	/* Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: ["AUTOMATIC", "DISABLED"]. */
+	/* Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. */
 	// +optional
 	CompressionMode *string `json:"compressionMode,omitempty"`
 
-	/* Time for which instance will be drained (not accept new
-	connections, but still work to finish started). */
+	/* Time for which instance will be drained (not accept new connections, but still work to finish started). */
 	// +optional
-	ConnectionDrainingTimeoutSec *int64 `json:"connectionDrainingTimeoutSec,omitempty"`
+	ConnectionDrainingTimeoutSec *int32 `json:"connectionDrainingTimeoutSec,omitempty"`
 
-	/* Connection Tracking configuration for this BackendService.
-	This is available only for Layer 4 Internal Load Balancing and
-	Network Load Balancing. */
+	/* Connection Tracking configuration for this BackendService. Connection tracking policy settings are only available for external passthrough Network Load Balancers and internal passthrough Network Load Balancers. connectionTrackingPolicy cannot be specified with haPolicy. */
 	// +optional
 	ConnectionTrackingPolicy *BackendserviceConnectionTrackingPolicy `json:"connectionTrackingPolicy,omitempty"`
 
-	/* Consistent Hash-based load balancing can be used to provide soft session
-	affinity based on HTTP headers, cookies or other properties. This load balancing
-	policy is applicable only for HTTP connections. The affinity to a particular
-	destination host will be lost when one or more hosts are added/removed from the
-	destination service. This field specifies parameters that control consistent
-	hashing. This field only applies if the load_balancing_scheme is set to
-	INTERNAL_SELF_MANAGED. This field is only applicable when locality_lb_policy is
-	set to MAGLEV or RING_HASH. */
+	/* Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. This load balancing policy is applicable only for HTTP connections. The affinity to a particular destination host will be lost when one or more hosts are added/removed from the destination service. This field specifies parameters that control consistent hashing. This field is only applicable when localityLbPolicy is set to MAGLEV or RING_HASH. This field is applicable to either: - A regional backend service with the service_protocol set to HTTP, HTTPS, HTTP2 or H2C, and load_balancing_scheme set to INTERNAL_MANAGED. - A global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED. */
 	// +optional
 	ConsistentHash *BackendserviceConsistentHash `json:"consistentHash,omitempty"`
 
-	/* Headers that the HTTP/S load balancer should add to proxied
-	requests. */
+	/* Headers that the load balancer adds to proxied requests. See [Creating custom headers](https://cloud.google.com/load-balancing/docs/custom-headers). */
 	// +optional
 	CustomRequestHeaders []string `json:"customRequestHeaders,omitempty"`
 
-	/* Headers that the HTTP/S load balancer should add to proxied
-	responses. */
+	/* Headers that the load balancer adds to proxied responses. See [Creating custom headers](https://cloud.google.com/load-balancing/docs/custom-headers). */
 	// +optional
 	CustomResponseHeaders []string `json:"customResponseHeaders,omitempty"`
 
@@ -743,185 +502,102 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The resource URL for the edge security policy associated with this
-	backend service. */
+	/* ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy. */
 	// +optional
 	EdgeSecurityPolicyRef *v1alpha1.ResourceRef `json:"edgeSecurityPolicyRef,omitempty"`
 
-	/* If true, enable Cloud CDN for this BackendService. */
+	/* If true, enables Cloud CDN for the backend service. */
 	// +optional
 	EnableCdn *bool `json:"enableCdn,omitempty"`
 
-	/* Policy for failovers. */
+	/* Requires at least one backend instance group to be defined as a backup (failover) backend. For load balancers that have configurable failover: [Internal passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview). failoverPolicy cannot be specified with haPolicy. */
 	// +optional
 	FailoverPolicy *BackendserviceFailoverPolicy `json:"failoverPolicy,omitempty"`
 
 	// +optional
 	HealthChecks []BackendserviceHealthChecks `json:"healthChecks,omitempty"`
 
-	/* Settings for enabling Cloud Identity Aware Proxy. */
+	/* The configurations for Identity-Aware Proxy on this resource. */
 	// +optional
 	Iap *BackendserviceIap `json:"iap,omitempty"`
 
-	/* Immutable. Indicates whether the backend service will be used with internal or
-	external load balancing. A backend service created for one type of
-	load balancing cannot be used with the other. For more information, refer to
-	[Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "INTERNAL_MANAGED", "EXTERNAL_MANAGED"]. */
+	/* Specifies the load balancer type. */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
-	/* A list of locality load balancing policies to be used in order of
-	preference. Either the policy or the customPolicy field should be set.
-	Overrides any value set in the localityLbPolicy field.
-
-	localityLbPolicies is only supported when the BackendService is referenced
-	by a URL Map that is referenced by a target gRPC proxy that has the
-	validateForProxyless field set to true. */
+	/* A list of locality load-balancing policies to be used in order of preference. When you use localityLbPolicies, you must set at least one value for either the localityLbPolicies[].policy or the localityLbPolicies[].customPolicy field. localityLbPolicies overrides any value set in the localityLbPolicy field. For an example of how to use this field, see Define a list of preferred policies. Caution: This field and its children are intended for use in a service mesh that includes gRPC clients only. Envoy proxies can't use backend services that have this configuration. */
 	// +optional
 	LocalityLbPolicies []BackendserviceLocalityLbPolicies `json:"localityLbPolicies,omitempty"`
 
-	/* The load balancing algorithm used within the scope of the locality.
-	The possible values are:
-
-	* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
-	is selected in round robin order.
-
-	* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
-	hosts and picks the host which has fewer active requests.
-
-	* 'RING_HASH': The ring/modulo hash load balancer implements consistent
-	hashing to backends. The algorithm has the property that the
-	addition/removal of a host from a set of N hosts only affects
-	1/N of the requests.
-
-	* 'RANDOM': The load balancer selects a random healthy host.
-
-	* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
-	connection metadata, i.e., connections are opened
-	to the same address as the destination address of
-	the incoming connection before the connection
-	was redirected to the load balancer.
-
-	* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
-	Maglev is not as stable as ring hash but has faster table lookup
-	build times and host selection times. For more information about
-	Maglev, refer to https://ai.google/research/pubs/pub44824
-
-	* 'WEIGHTED_MAGLEV': Per-instance weighted Load Balancing via health check
-	reported weights. If set, the Backend Service must
-	configure a non legacy HTTP-based Health Check, and
-	health check replies are expected to contain
-	non-standard HTTP response header field
-	X-Load-Balancing-Endpoint-Weight to specify the
-	per-instance weights. If set, Load Balancing is weight
-	based on the per-instance weights reported in the last
-	processed health check replies, as long as every
-	instance either reported a valid weight or had
-	UNAVAILABLE_WEIGHT. Otherwise, Load Balancing remains
-	equal-weight.
-
-
-	This field is applicable to either:
-
-	* A regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2,
-	and loadBalancingScheme set to INTERNAL_MANAGED.
-	* A global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED.
-	* A regional backend service with loadBalancingScheme set to EXTERNAL (External Network
-	Load Balancing). Only MAGLEV and WEIGHTED_MAGLEV values are possible for External
-	Network Load Balancing. The default is MAGLEV.
-
-
-	If session_affinity is not NONE, and this field is not set to MAGLEV, WEIGHTED_MAGLEV,
-	or RING_HASH, session affinity settings will not take effect.
-
-	Only ROUND_ROBIN and RING_HASH are supported when the backend service is referenced
-	by a URL map that is bound to target gRPC proxy that has validate_for_proxyless
-	field set to true. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV", "WEIGHTED_MAGLEV"]. */
+	/* The load balancing algorithm used within the scope of the locality. */
 	// +optional
 	LocalityLbPolicy *string `json:"localityLbPolicy,omitempty"`
 
-	/* Location represents the geographical location of the ComputeBackendService. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
+	/* Location of the resource. */
 	Location string `json:"location"`
 
-	/* This field denotes the logging options for the load balancer traffic served by this backend service.
-	If logging is enabled, logs will be exported to Stackdriver. */
+	/* This field denotes the logging options for the load balancer traffic. */
 	// +optional
 	LogConfig *BackendserviceLogConfig `json:"logConfig,omitempty"`
 
-	/* The network to which this backend service belongs.  This field can
-	only be specified when the load balancing scheme is set to
-	INTERNAL. */
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Settings controlling eviction of unhealthy hosts from the load balancing pool.
-	This field is applicable only when the load_balancing_scheme is set
-	to INTERNAL_SELF_MANAGED. */
+	/* Settings controlling the ejection of unhealthy backend endpoints. */
 	// +optional
 	OutlierDetection *BackendserviceOutlierDetection `json:"outlierDetection,omitempty"`
 
-	/* Name of backend port. The same name should appear in the instance
-	groups referenced by this service. Required when the load balancing
-	scheme is EXTERNAL. */
+	/* A named port on a backend instance group representing the port for communication to the backend VMs in that group. The named port must be [defined on each backend instance group](https://cloud.google.com/load-balancing/docs/backend-service#named_ports). This parameter has no meaning if the backends are NEGs. For internal passthrough Network Load Balancers and external passthrough Network Load Balancers, omit port_name. */
 	// +optional
 	PortName *string `json:"portName,omitempty"`
 
-	/* The protocol this BackendService uses to communicate with backends.
-	The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-	types and may result in errors if used with the GA API. **NOTE**: With protocol “UNSPECIFIED”,
-	the backend service can be used by Layer 4 Internal Load Balancing or Network Load Balancing
-	with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC", "UNSPECIFIED"]. */
+	/* The protocol this BackendService uses to communicate with backends. Possible values are HTTP, HTTPS, HTTP2, H2C, TCP, SSL, UDP or GRPC. depending on the chosen load balancer or Traffic Director configuration. Refer to the documentation for the load balancers or for Traffic Director for more information. Must be set to GRPC when the backend service is referenced by a URL map that is bound to target gRPC proxy. */
 	// +optional
 	Protocol *string `json:"protocol,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The ComputeBackendService name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The security policy associated with this backend service. */
+	/* The URL of the security policy associated with this backend service. */
 	// +optional
 	SecurityPolicy *string `json:"securityPolicy,omitempty"`
 
-	/* The security policy associated with this backend service. */
+	/* ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy. */
 	// +optional
 	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
 
-	/* The security settings that apply to this backend service. This field is applicable to either
-	a regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2, and
-	load_balancing_scheme set to INTERNAL_MANAGED; or a global backend service with the
-	load_balancing_scheme set to INTERNAL_SELF_MANAGED. */
+	/* This field specifies the security settings that apply to this backend service. This field is applicable to a global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED. */
 	// +optional
 	SecuritySettings *BackendserviceSecuritySettings `json:"securitySettings,omitempty"`
 
-	/* Type of session affinity to use. The default is NONE. Session affinity is
-	not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"]. */
+	/* Type of session affinity to use. The default is NONE. Only NONE and HEADER_FIELD are supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. For more details, see: [Session Affinity](https://cloud.google.com/load-balancing/docs/backend-service#session_affinity). sessionAffinity cannot be specified with haPolicy. */
 	// +optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty"`
 
-	/* Subsetting configuration for this BackendService. Currently this is applicable only for Internal TCP/UDP load balancing and Internal HTTP(S) load balancing. */
+	/* subsetting cannot be specified with haPolicy. */
 	// +optional
 	Subsetting *BackendserviceSubsetting `json:"subsetting,omitempty"`
 
-	/* How many seconds to wait for the backend before considering it a
-	failed request. Default is 30 seconds. Valid range is [1, 86400]. */
+	/* The backend service timeout. */
 	// +optional
-	TimeoutSec *int64 `json:"timeoutSec,omitempty"`
+	TimeoutSec *int32 `json:"timeoutSec,omitempty"`
 }
 
 type ComputeBackendServiceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeBackendService's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Creation timestamp in RFC3339 text format. */
+	/* [Output Only] Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	/* Fingerprint of this resource. A hash of the contents stored in this
-	object. This field is used in optimistic locking. */
+	/* Fingerprint of this resource. A hash of the contents stored in this object. */
 	// +optional
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
-	/* The unique identifier for the resource. This identifier is defined by the server. */
+	/* [Output Only] The unique identifier for the resource. This identifier is defined by the server. */
 	// +optional
 	GeneratedId *int64 `json:"generatedId,omitempty"`
 
@@ -929,6 +605,7 @@ type ComputeBackendServiceStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* [Output Only] Server-defined URL for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }
