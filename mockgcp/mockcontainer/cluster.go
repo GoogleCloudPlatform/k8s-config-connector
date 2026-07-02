@@ -514,6 +514,7 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	// Populate new fields based on deprecated fields
 	if privateClusterConfig := obj.PrivateClusterConfig; privateClusterConfig != nil {
 		if privateClusterConfig.GetEnablePrivateNodes() {
+			obj.PrivateCluster = true
 			if obj.NetworkConfig == nil {
 				obj.NetworkConfig = &pb.NetworkConfig{}
 			}
@@ -561,13 +562,18 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 			Disabled: true,
 		}
 	}
+	if obj.AddonsConfig.DnsCacheConfig == nil {
+		obj.AddonsConfig.DnsCacheConfig = &pb.DnsCacheConfig{
+			Enabled: true,
+		}
+	}
 
 	// AnonymousAuthenticationConfig
 	if obj.AnonymousAuthenticationConfig == nil {
 		obj.AnonymousAuthenticationConfig = &pb.AnonymousAuthenticationConfig{}
 	}
 	if obj.AnonymousAuthenticationConfig.Mode == pb.AnonymousAuthenticationConfig_MODE_UNSPECIFIED {
-		obj.AnonymousAuthenticationConfig.Mode = pb.AnonymousAuthenticationConfig_ENABLED
+		obj.AnonymousAuthenticationConfig.Mode = pb.AnonymousAuthenticationConfig_LIMITED
 	}
 
 	// Autopilot

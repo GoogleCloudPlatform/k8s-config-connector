@@ -94,6 +94,16 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.Version = cluster.CurrentNodeVersion
 	}
 
+	if len(obj.Locations) == 0 {
+		obj.Locations = cluster.Locations
+	}
+
+	if obj.Autoscaling != nil {
+		if obj.Autoscaling.LocationPolicy == pb.NodePoolAutoscaling_LOCATION_POLICY_UNSPECIFIED {
+			obj.Autoscaling.LocationPolicy = pb.NodePoolAutoscaling_BALANCED
+		}
+	}
+
 	if obj.Config == nil {
 		obj.Config = &pb.NodeConfig{}
 	}
