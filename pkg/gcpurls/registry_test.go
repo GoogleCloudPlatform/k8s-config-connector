@@ -214,6 +214,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}": true,
 
+		// GDC Hardware Management
+		"//gdchardwaremanagement.googleapis.com/projects/{}/locations/{}/hardware/{}": true,
+
 		// Hypercompute Cluster
 		"//hypercomputecluster.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
 
