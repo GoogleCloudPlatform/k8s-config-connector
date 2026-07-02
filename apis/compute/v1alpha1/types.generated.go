@@ -27,6 +27,7 @@
 // resource: ComputeRegionAutoscaler:Autoscaler
 // resource: ComputeOrganizationSecurityPolicy:SecurityPolicy
 // resource: ComputeNetworkEndpoint:NetworkEndpoint
+// resource: ComputeOrganizationSecurityPolicyAssociation:FirewallPolicyAssociation
 
 package v1alpha1
 
@@ -261,6 +262,32 @@ type Expr struct {
 	// Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
 	// +kcc:proto:field=google.cloud.compute.v1.Expr.title
 	Title *string `json:"title,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.FirewallPolicyAssociation", skipping
+
+// +kcc:proto=google.cloud.compute.v1.FirewallPolicyAssociation
+type FirewallPolicyAssociation struct {
+	// The target that the firewall policy is attached to.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyAssociation.attachment_target
+	AttachmentTarget *string `json:"attachmentTarget,omitempty"`
+
+	// [Output Only] Deprecated, please use short name instead. The display name of the firewall policy of the association.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyAssociation.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// [Output Only] The firewall policy ID of the association.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyAssociation.firewall_policy_id
+	FirewallPolicyID *string `json:"firewallPolicyID,omitempty"`
+
+	// The name for an association.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyAssociation.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] The short name of the firewall policy of the association.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyAssociation.short_name
+	ShortName *string `json:"shortName,omitempty"`
 }
 */
 
