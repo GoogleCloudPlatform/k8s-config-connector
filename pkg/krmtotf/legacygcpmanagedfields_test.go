@@ -233,6 +233,63 @@ func TestResolveGCPManagedFields(t *testing.T) {
 		},
 
 		{
+			name: "ContainerNodePool removes nodeConfig.kubeletConfig when not explicitly applied",
+			kind: "ContainerNodePool",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"nodeConfig": map[string]interface{}{
+						"machineType": "e2-medium",
+					},
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "e2-medium",
+					"kubeletConfig": map[string]interface{}{
+						"cpuManagerPolicy": "none",
+					},
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "e2-medium",
+				},
+			},
+		},
+		{
+			name: "ContainerNodePool preserves nodeConfig.kubeletConfig when explicitly applied",
+			kind: "ContainerNodePool",
+			lastAppliedConfig: map[string]interface{}{
+				"spec": map[string]interface{}{
+					"nodeConfig": map[string]interface{}{
+						"machineType": "e2-medium",
+						"kubeletConfig": map[string]interface{}{
+							"cpuManagerPolicy": "none",
+						},
+					},
+				},
+			},
+			resourceExists: true,
+			inputConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "e2-medium",
+					"kubeletConfig": map[string]interface{}{
+						"cpuManagerPolicy": "none",
+					},
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"nodeConfig": map[string]interface{}{
+					"machineType": "e2-medium",
+					"kubeletConfig": map[string]interface{}{
+						"cpuManagerPolicy": "none",
+					},
+				},
+			},
+		},
+
+		{
 			name: "ContainerNodePool uses user-supplied version when explicitly applied",
 			kind: "ContainerNodePool",
 			lastAppliedConfig: map[string]interface{}{

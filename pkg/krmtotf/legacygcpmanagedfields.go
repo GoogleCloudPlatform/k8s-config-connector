@@ -55,6 +55,9 @@ func ResolveLegacyGCPManagedFields(r *Resource, liveState *terraform.InstanceSta
 		if err := resolveContainerNodePoolNodeCount(r, config); err != nil {
 			return err
 		}
+		if err := resolveContainerNodePoolNodeConfig(r, config); err != nil {
+			return err
+		}
 		return nil
 	case "ComputeBackendService":
 		return resolveComputeBackendServiceBackend(r, config)
@@ -324,6 +327,19 @@ func removeFromConfigIfNotApplied(r *Resource, config map[string]interface{}, pa
 		// instead to GCP by removing the field from the config. The live state's
 		// value will be substituted during the diff calculation.
 		unstructured.RemoveNestedField(config, path...)
+	}
+	return nil
+}
+
+func resolveContainerNodePoolNodeConfig(r *Resource, config map[string]interface{}) error {
+	if err := removeFromConfigIfNotApplied(r, config, "nodeConfig", "kubeletConfig"); err != nil {
+		return fmt.Errorf("error resolving kubeletConfig: %w", err)
+	}
+	if err := removeFromConfigIfNotApplied(r, config, "nodeConfig", "linuxNodeConfig"); err != nil {
+		return fmt.Errorf("error resolving linuxNodeConfig: %w", err)
+	}
+	if err := removeFromConfigIfNotApplied(r, config, "nodeConfig", "windowsNodeConfig"); err != nil {
+		return fmt.Errorf("error resolving windowsNodeConfig: %w", err)
 	}
 	return nil
 }
