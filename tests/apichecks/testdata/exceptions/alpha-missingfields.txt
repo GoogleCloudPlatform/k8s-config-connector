@@ -3313,6 +3313,14 @@
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.networkInterfaces[].networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.networkInterfaces[].subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runworkerpools.run.cnrm.cloud.google.com version=v1alpha1: field ".spec.template.vpcAccess.networkInterfaces[].tags[]" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.blueprint.package" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableDefaults[].type" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableDefaults[].value" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputVariableDefaults[].variable" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.releaseRequirements.upgradeableFromReleases[]" is not set in unstructured objects
+[missing_field] crd=saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.unitKind" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
