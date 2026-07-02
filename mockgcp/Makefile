@@ -72,7 +72,6 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
-		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/cluster/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
@@ -94,7 +93,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
-		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
+		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto \
+		./third_party/googleapis/mockgcp/partner/aistreams/v1alpha1/*.proto
 
 
 .PHONY: generate-grpc-for-google-protos
