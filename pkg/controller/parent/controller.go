@@ -140,7 +140,7 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		ccc := &corekccv1alpha1.ConfigConnectorContext{}
 		cccNamespacedName := types.NamespacedName{
 			Namespace: req.Namespace,
-			Name:      "configconnectorcontext",
+			Name:      corekccv1alpha1.ConfigConnectorContextAllowedName,
 		}
 		if err := r.Get(ctx, cccNamespacedName, ccc); err != nil {
 			if !apierrors.IsNotFound(err) {
