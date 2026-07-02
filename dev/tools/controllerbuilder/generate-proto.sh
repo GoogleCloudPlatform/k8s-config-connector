@@ -87,6 +87,11 @@ if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     exit 0
 fi
 
+HYPERCOMPUTE_CLUSTER_PROTOS=""
+if [ ! -f "${THIRD_PARTY}/googleapis/google/cloud/hypercomputecluster/v1/hypercompute_cluster.proto" ]; then
+    HYPERCOMPUTE_CLUSTER_PROTOS="${REPO_ROOT}/mockgcp/apis/google/cloud/hypercomputecluster/v1/*.proto"
+fi
+
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
     -I ${THIRD_PARTY}/googleapis/ \
@@ -96,6 +101,7 @@ protoc --include_imports --include_source_info \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto \
+    ${HYPERCOMPUTE_CLUSTER_PROTOS} \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/partner/aistreams/*/*.proto \
