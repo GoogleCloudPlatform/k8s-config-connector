@@ -261,9 +261,8 @@ spec:
                   be fewer than 255 characters.
                 type: string
               folderRef:
-                description: 'FolderRef represents the Folder that this resource belongs
-                  to. Deprecated: Use FolderRef in github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs
-                  instead.'
+                description: FolderRefDeprecated represents the Folder that this resource
+                  belongs to.
                 oneOf:
                 - not:
                     required:
@@ -654,9 +653,8 @@ spec:
                   be fewer than 255 characters.
                 type: string
               folderRef:
-                description: 'FolderRef represents the Folder that this resource belongs
-                  to. Deprecated: Use FolderRef in github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs
-                  instead.'
+                description: FolderRefDeprecated represents the Folder that this resource
+                  belongs to.
                 oneOf:
                 - not:
                     required:

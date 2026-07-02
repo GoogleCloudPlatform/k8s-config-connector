@@ -429,7 +429,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>FolderRef represents the Folder that this resource belongs to. Deprecated: Use FolderRef in github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs instead.</p>
+            <p>FolderRefDeprecated represents the Folder that this resource belongs to.</p>
         </td>
     </tr>
     <tr>

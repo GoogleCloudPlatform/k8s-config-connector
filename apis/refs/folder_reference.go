@@ -35,7 +35,8 @@ var _ refsv1beta1.Ref = &FolderRef{}
 
 // FolderRef is a reference to a GCP Folder.
 type FolderRef struct {
-	/* The 'name' field of a folder, when not managed by Config Connector. */
+	/* The 'name' field of a folder, when not managed by Config Connector.
+	   The recommended format is "folders/{folderID}". */
 	// +optional
 	External string `json:"external,omitempty"`
 	/* The 'name' field of a 'Folder' resource. */
@@ -89,11 +90,8 @@ func (r *FolderRef) ParseExternalToIdentity() (identity.Identity, error) {
 
 func (r *FolderRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := Folder_IdentityFromSpec(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
+		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
+		return name
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

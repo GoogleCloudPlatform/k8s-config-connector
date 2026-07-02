@@ -15,14 +15,11 @@
 package refs
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
@@ -61,16 +58,4 @@ func (i *FolderIdentity) FromExternal(ref string) error {
 
 func (i *FolderIdentity) Host() string {
 	return FolderIdentityFormat.Host()
-}
-
-func Folder_IdentityFromSpec(ctx context.Context, reader client.Reader, obj client.Object) (*FolderIdentity, error) {
-	resourceID, err := refsv1beta1.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
-	}
-
-	identity := &FolderIdentity{
-		FolderID: resourceID,
-	}
-	return identity, nil
 }
