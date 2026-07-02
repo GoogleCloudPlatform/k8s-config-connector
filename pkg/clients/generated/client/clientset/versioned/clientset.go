@@ -141,6 +141,7 @@ import (
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1"
 	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
+	gdchardwaremanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gdchardwaremanagement/v1alpha1"
 	geminidataanalyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/geminidataanalytics/v1alpha1"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
@@ -357,6 +358,7 @@ type Interface interface {
 	FirebasestorageV1alpha1() firebasestoragev1alpha1.FirebasestorageV1alpha1Interface
 	FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
+	GdchardwaremanagementV1alpha1() gdchardwaremanagementv1alpha1.GdchardwaremanagementV1alpha1Interface
 	GeminidataanalyticsV1alpha1() geminidataanalyticsv1alpha1.GeminidataanalyticsV1alpha1Interface
 	GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Interface
 	GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface
@@ -571,6 +573,7 @@ type Clientset struct {
 	firebasestorageV1alpha1          *firebasestoragev1alpha1.FirebasestorageV1alpha1Client
 	firestoreV1alpha1                *firestorev1alpha1.FirestoreV1alpha1Client
 	firestoreV1beta1                 *firestorev1beta1.FirestoreV1beta1Client
+	gdchardwaremanagementV1alpha1    *gdchardwaremanagementv1alpha1.GdchardwaremanagementV1alpha1Client
 	geminidataanalyticsV1alpha1      *geminidataanalyticsv1alpha1.GeminidataanalyticsV1alpha1Client
 	gkebackupV1alpha1                *gkebackupv1alpha1.GkebackupV1alpha1Client
 	gkehubV1alpha1                   *gkehubv1alpha1.GkehubV1alpha1Client
@@ -1244,6 +1247,11 @@ func (c *Clientset) FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Inter
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client
 func (c *Clientset) FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface {
 	return c.firestoreV1beta1
+}
+
+// GdchardwaremanagementV1alpha1 retrieves the GdchardwaremanagementV1alpha1Client
+func (c *Clientset) GdchardwaremanagementV1alpha1() gdchardwaremanagementv1alpha1.GdchardwaremanagementV1alpha1Interface {
+	return c.gdchardwaremanagementV1alpha1
 }
 
 // GeminidataanalyticsV1alpha1 retrieves the GeminidataanalyticsV1alpha1Client
@@ -2219,6 +2227,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.gdchardwaremanagementV1alpha1, err = gdchardwaremanagementv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.geminidataanalyticsV1alpha1, err = geminidataanalyticsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2728,6 +2740,7 @@ func New(c rest.Interface) *Clientset {
 	cs.firebasestorageV1alpha1 = firebasestoragev1alpha1.New(c)
 	cs.firestoreV1alpha1 = firestorev1alpha1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
+	cs.gdchardwaremanagementV1alpha1 = gdchardwaremanagementv1alpha1.New(c)
 	cs.geminidataanalyticsV1alpha1 = geminidataanalyticsv1alpha1.New(c)
 	cs.gkebackupV1alpha1 = gkebackupv1alpha1.New(c)
 	cs.gkehubV1alpha1 = gkehubv1alpha1.New(c)
