@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-# Copyright 2024 Google LLC
+#!/bin/bash
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,16 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-if [[ -z "${KUBEBUILDER_ASSETS:-}" || ! -d "${KUBEBUILDER_ASSETS:-}" ]]; then
-  echo "Downloading envtest assets..."
-  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
-fi
+./generate-proto.sh
+
+go run . generate-types \
+  --service google.cloud.hypercomputecluster.v1 \
+  --api-version hypercomputecluster.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource HypercomputeClusterCluster:Cluster
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
