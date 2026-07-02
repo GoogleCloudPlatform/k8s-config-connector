@@ -317,6 +317,10 @@
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.secretRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.state" is not set in unstructured objects
 [missing_field] crd=clouddeploydeliverypipelines.clouddeploy.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.assetTag" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.customer" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.deviceType" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.serialNumber" is not set in unstructured objects
 [missing_field] crd=cloudidentitygroups.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.groupKey.namespace" is not set in unstructured objects
 [missing_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.preferredMemberKey.namespace" is not set in unstructured objects
 [missing_field] crd=cloudidsendpoints.cloudids.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
