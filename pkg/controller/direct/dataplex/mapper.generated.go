@@ -375,23 +375,25 @@ func DataDiscoverySpec_StorageConfig_JsonOptions_ToProto(mapCtx *direct.MapConte
 	out.TypeInferenceDisabled = direct.ValueOf(in.TypeInferenceDisabled)
 	return out
 }
+
 /*
-func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions) *krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions {
-	if in == nil {
-		return nil
+	func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions) *krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions {
+		if in == nil {
+			return nil
+		}
+		out := &krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions{}
+		out.SemanticInferenceEnabled = direct.LazyPtr(in.GetSemanticInferenceEnabled())
+		return out
 	}
-	out := &krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions{}
-	out.SemanticInferenceEnabled = direct.LazyPtr(in.GetSemanticInferenceEnabled())
-	return out
-}
-func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions) *pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions {
-	if in == nil {
-		return nil
+
+	func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions) *pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions {
+		if in == nil {
+			return nil
+		}
+		out := &pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions{}
+		out.SemanticInferenceEnabled = direct.ValueOf(in.SemanticInferenceEnabled)
+		return out
 	}
-	out := &pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions{}
-	out.SemanticInferenceEnabled = direct.ValueOf(in.SemanticInferenceEnabled)
-	return out
-}
 */
 func DataProfileResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult) *krm.DataProfileResultObservedState {
 	if in == nil {
@@ -807,7 +809,7 @@ func DataQualityRule_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Suspended = direct.LazyPtr(in.GetSuspended())
-	out.Attributes = in.Attributes
+	// out.Attributes = in.Attributes
 	// MISSING: RuleSource
 	out.DebugQueries = direct.Slice_FromProto(mapCtx, in.DebugQueries, DataQualityRule_DebugQuery_FromProto)
 	return out
@@ -854,7 +856,7 @@ func DataQualityRule_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule)
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
 	out.Suspended = direct.ValueOf(in.Suspended)
-	out.Attributes = in.Attributes
+	// out.Attributes = in.Attributes
 	// MISSING: RuleSource
 	out.DebugQueries = direct.Slice_ToProto(mapCtx, in.DebugQueries, DataQualityRule_DebugQuery_ToProto)
 	return out
@@ -1049,29 +1051,31 @@ func DataQualityRule_TableConditionExpectation_ToProto(mapCtx *direct.MapContext
 	out.SqlExpression = direct.ValueOf(in.SQLExpression)
 	return out
 }
+
 /*
-func DataQualityRule_TemplateReference_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_TemplateReference) *krm.DataQualityRule_TemplateReference {
-	if in == nil {
-		return nil
+	func DataQualityRule_TemplateReference_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_TemplateReference) *krm.DataQualityRule_TemplateReference {
+		if in == nil {
+			return nil
+		}
+		out := &krm.DataQualityRule_TemplateReference{}
+		out.Name = direct.LazyPtr(in.GetName())
+		// MISSING: Values
+		// MISSING: ResolvedSQL
+		// MISSING: RuleTemplate
+		return out
 	}
-	out := &krm.DataQualityRule_TemplateReference{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: Values
-	// MISSING: ResolvedSQL
-	// MISSING: RuleTemplate
-	return out
-}
-func DataQualityRule_TemplateReference_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_TemplateReference) *pb.DataQualityRule_TemplateReference {
-	if in == nil {
-		return nil
+
+	func DataQualityRule_TemplateReference_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule_TemplateReference) *pb.DataQualityRule_TemplateReference {
+		if in == nil {
+			return nil
+		}
+		out := &pb.DataQualityRule_TemplateReference{}
+		out.Name = direct.ValueOf(in.Name)
+		// MISSING: Values
+		// MISSING: ResolvedSQL
+		// MISSING: RuleTemplate
+		return out
 	}
-	out := &pb.DataQualityRule_TemplateReference{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: Values
-	// MISSING: ResolvedSQL
-	// MISSING: RuleTemplate
-	return out
-}
 */
 func DataQualityRule_UniquenessExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_UniquenessExpectation) *krm.DataQualityRule_UniquenessExpectation {
 	if in == nil {
@@ -1097,8 +1101,8 @@ func DataQualitySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec
 	out.RowFilter = direct.LazyPtr(in.GetRowFilter())
 	out.PostScanActions = DataQualitySpec_PostScanActions_FromProto(mapCtx, in.GetPostScanActions())
 	out.CatalogPublishingEnabled = direct.LazyPtr(in.GetCatalogPublishingEnabled())
-	out.EnableCatalogBasedRules = direct.LazyPtr(in.GetEnableCatalogBasedRules())
-	out.Filter = direct.LazyPtr(in.GetFilter())
+	// out.EnableCatalogBasedRules = direct.LazyPtr(in.GetEnableCatalogBasedRules())
+	// out.Filter = direct.LazyPtr(in.GetFilter())
 	return out
 }
 func DataQualitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec) *pb.DataQualitySpec {
@@ -1111,8 +1115,8 @@ func DataQualitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataQualitySpec)
 	out.RowFilter = direct.ValueOf(in.RowFilter)
 	out.PostScanActions = DataQualitySpec_PostScanActions_ToProto(mapCtx, in.PostScanActions)
 	out.CatalogPublishingEnabled = direct.ValueOf(in.CatalogPublishingEnabled)
-	out.EnableCatalogBasedRules = direct.ValueOf(in.EnableCatalogBasedRules)
-	out.Filter = direct.ValueOf(in.Filter)
+	// out.EnableCatalogBasedRules = direct.ValueOf(in.EnableCatalogBasedRules)
+	// out.Filter = direct.ValueOf(in.Filter)
 	return out
 }
 func DataQualitySpec_PostScanActions_FromProto(mapCtx *direct.MapContext, in *pb.DataQualitySpec_PostScanActions) *krm.DataQualitySpec_PostScanActions {
