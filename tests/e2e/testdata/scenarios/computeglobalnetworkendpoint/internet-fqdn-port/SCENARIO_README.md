@@ -1,0 +1,1 @@
+Step1: Create a global INTERNET_FQDN_PORT NetworkEndpointGroup and attach a ComputeGlobalNetworkEndpoint using only an FQDN (no IP address). Verifies fix for issue #4541 where the TF2CRD controller would fail with "unable to resolve missing value: ip_address" when ipAddress is omitted.
