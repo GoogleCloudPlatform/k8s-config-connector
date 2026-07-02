@@ -1585,15 +1585,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "edgecontainer.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "EdgeContainerNodePool",
-	}: {
-		Terraform:   true,
-		DCL:         false,
-		SupportsIAM: false,
-	},
-	{
-		Group:   "edgecontainer.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "EdgeContainerVpnConnection",
 	}: {
 		Terraform:   true,
