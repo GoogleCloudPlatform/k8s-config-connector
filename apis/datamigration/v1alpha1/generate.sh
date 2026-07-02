@@ -27,6 +27,7 @@ go run . generate-types \
     --service google.cloud.clouddms.v1 \
     --api-version datamigration.cnrm.cloud.google.com/v1alpha1 \
     --include-skipped-output \
+    --resource DatabaseMigrationConnectionProfile:ConnectionProfile \
     --resource DatabaseMigrationConversionWorkspace:ConversionWorkspace \
     --resource DatabaseMigrationMigrationJob:MigrationJob \
     --resource DatabaseMigrationPrivateConnection:PrivateConnection
