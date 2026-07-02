@@ -1,0 +1,226 @@
+169,170c169
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+173,187c172,194
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "hourly": {
+<           "minuteOffset": 30,
+<           "periodicity": 1
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": 10
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition Hourly"
+---
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "hourly": {
+>             "minuteOffset": 30,
+>             "periodicity": 1
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+>           "rowCountTest": {
+>             "comparison": "COMPARISON_GT",
+>             "threshold": "10"
+>           }
+>         },
+>         "displayName": "SQL Log Alert Condition Hourly"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy Hourly",
+>     "enabled": true,
+>     "userLabels": {
+>       "cnrm-test": "true",
+>       "managed-by-cnrm": "true"
+189,229d195
+<   ],
+<   "displayName": "Test SQL Alert Policy Hourly",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "hourly": {
+<           "minuteOffset": 30,
+<           "periodicity": 1
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": "10"
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition Hourly",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+<     }
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+231,241c197
+<   "displayName": "Test SQL Alert Policy Hourly",
+<   "enabled": true,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}"
+244,257c200
+< ---
+< 
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+297,298c240
+< PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=conditions
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+301,316c243,265
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "hourly": {
+<           "minuteOffset": 45,
+<           "periodicity": 2
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": 20
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition Hourly",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+---
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "hourly": {
+>             "minuteOffset": 45,
+>             "periodicity": 2
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+>           "rowCountTest": {
+>             "comparison": "COMPARISON_GT",
+>             "threshold": "20"
+>           }
+>         },
+>         "displayName": "SQL Log Alert Condition Hourly"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy Hourly",
+>     "enabled": true,
+>     "userLabels": {
+>       "cnrm-test": "true",
+>       "managed-by-cnrm": "true"
+318,324c267,268
+<   ],
+<   "displayName": "Test SQL Alert Policy Hourly",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   },
+>   "name": "projects/${projectId}"
+327,335c271
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+375,376c311,315
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+> 
+> {
+>   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+> }
+378,386c317
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+423,439d353
+< 
+< ---
+< 
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {}

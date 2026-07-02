@@ -2,22 +2,17 @@ apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringAlertPolicy
 metadata:
   annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-  finalizers:
-  - cnrm.cloud.google.com/finalizer
-  - cnrm.cloud.google.com/deletion-defender
-  generation: 2
   labels:
     cnrm-test: "true"
-  name: monitoringalertpolicy-${uniqueId}
-  namespace: ${uniqueId}
+    managed-by-cnrm: "true"
+  name: ${alertPolicyId}
 spec:
   combiner: OR
   conditions:
   - conditionThreshold:
       aggregations:
-      - alignmentPeriod: 60s
+      - alignmentPeriod: 1m0s
         crossSeriesReducer: REDUCE_MEAN
         groupByFields:
         - project
@@ -25,12 +20,13 @@ spec:
         - resource.label.zone
         perSeriesAligner: ALIGN_MAX
       comparison: COMPARISON_LT
-      duration: 900s
+      duration: 15m0s
       filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
       thresholdValue: 0.1
       trigger:
         count: 3
     displayName: Very low CPU usage
+    name: projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionId}
   displayName: Updated Test Alert Policy
   documentation:
     content: |-
@@ -43,20 +39,9 @@ spec:
       That alone should discourage the crew.
       Just the place for a Snark! I have measured it thrice:
       What I measure three times is true.”
-  enabled: false
+  enabled: true
   notificationChannels:
-  - name: monitoringnotificationchannel3-${uniqueId}
-  - name: monitoringnotificationchannel1-${uniqueId}
+  - external: projects/${projectId}/notificationChannels/${notificationChannelID}
+  - external: projects/${projectId}/notificationChannels/${notificationChannelID}
+  resourceID: ${alertPolicyId}
   severity: ERROR
-status:
-  conditions:
-  - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
-    type: Ready
-  creationRecord:
-  - mutateTime: "1970-01-01T00:00:00Z"
-    mutatedBy: user@google.com
-  name: projects/${projectId}/alertPolicies/${alertPolicyId}
-  observedGeneration: 2

@@ -1,0 +1,221 @@
+169,170c169
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+173,222c172,193
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "minutes": {
+<           "periodicity": 5
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": 10
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition"
+<     }
+<   ],
+<   "displayName": "Test SQL Alert Policy",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "minutes": {
+<           "periodicity": 5
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": "10"
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+---
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "minutes": {
+>             "periodicity": 5
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+>           "rowCountTest": {
+>             "comparison": "COMPARISON_GT",
+>             "threshold": "10"
+>           }
+>         },
+>         "displayName": "SQL Log Alert Condition"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy",
+>     "enabled": true,
+>     "userLabels": {
+>       "cnrm-test": "true",
+>       "managed-by-cnrm": "true"
+224,227d194
+<   ],
+<   "creationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+229,239c196
+<   "displayName": "Test SQL Alert Policy",
+<   "enabled": true,
+<   "mutationRecord": {
+<     "mutateTime": "2024-04-01T12:34:56.123456Z",
+<     "mutatedBy": "user@example.com"
+<   },
+<   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "projects/${projectId}"
+242,255c199
+< ---
+< 
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+294,295c238
+< PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=conditions
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+298,312c241,262
+<   "combiner": "OR",
+<   "conditions": [
+<     {
+<       "conditionSql": {
+<         "minutes": {
+<           "periodicity": 10
+<         },
+<         "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+<         "rowCountTest": {
+<           "comparison": "COMPARISON_GT",
+<           "threshold": 20
+<         }
+<       },
+<       "displayName": "SQL Log Alert Condition",
+<       "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+---
+>   "alertPolicy": {
+>     "combiner": "OR",
+>     "conditions": [
+>       {
+>         "conditionSql": {
+>           "minutes": {
+>             "periodicity": 10
+>           },
+>           "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+>           "rowCountTest": {
+>             "comparison": "COMPARISON_GT",
+>             "threshold": "20"
+>           }
+>         },
+>         "displayName": "SQL Log Alert Condition"
+>       }
+>     ],
+>     "displayName": "Test SQL Alert Policy",
+>     "enabled": true,
+>     "userLabels": {
+>       "cnrm-test": "true",
+>       "managed-by-cnrm": "true"
+314,320c264,265
+<   ],
+<   "displayName": "Test SQL Alert Policy",
+<   "enabled": true,
+<   "userLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   },
+>   "name": "projects/${projectId}"
+323,331c268
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+370,371c307,311
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+> 
+> {
+>   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+> }
+373,381c313
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+417,433d348
+< 
+< ---
+< 
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {}
