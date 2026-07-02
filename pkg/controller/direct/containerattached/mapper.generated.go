@@ -141,7 +141,9 @@ func ContainerAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.At
 	out.PlatformVersion = in.GetPlatformVersion()
 	out.Distribution = in.GetDistribution()
 	// MISSING: ClusterRegion
-	out.Fleet = Fleet_FromProto(mapCtx, in.GetFleet())
+	if val := Fleet_FromProto(mapCtx, in.GetFleet()); val != nil {
+		out.Fleet = *val
+	}
 	// MISSING: State
 	// MISSING: Uid
 	// MISSING: Reconciling
@@ -176,7 +178,7 @@ func ContainerAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Con
 	out.PlatformVersion = ContainerAttachedClusterSpec_PlatformVersion_ToProto(mapCtx, in.PlatformVersion)
 	out.Distribution = ContainerAttachedClusterSpec_Distribution_ToProto(mapCtx, in.Distribution)
 	// MISSING: ClusterRegion
-	out.Fleet = Fleet_ToProto(mapCtx, in.Fleet)
+	out.Fleet = Fleet_ToProto(mapCtx, &in.Fleet)
 	// MISSING: State
 	// MISSING: Uid
 	// MISSING: Reconciling

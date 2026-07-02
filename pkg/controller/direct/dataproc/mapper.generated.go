@@ -1374,7 +1374,9 @@ func ClusterVirtualClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	if in.GetStagingBucket() != "" {
 		out.StagingBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetStagingBucket()}
 	}
-	out.KubernetesClusterConfig = ClusterKubernetesClusterConfig_v1beta1_FromProto(mapCtx, in.GetKubernetesClusterConfig())
+	if val := ClusterKubernetesClusterConfig_v1beta1_FromProto(mapCtx, in.GetKubernetesClusterConfig()); val != nil {
+		out.KubernetesClusterConfig = *val
+	}
 	out.AuxiliaryServicesConfig = ClusterAuxiliaryServicesConfig_v1beta1_FromProto(mapCtx, in.GetAuxiliaryServicesConfig())
 	return out
 }
@@ -1389,7 +1391,7 @@ func ClusterVirtualClusterConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	if in.StagingBucketRef != nil {
 		out.StagingBucket = in.StagingBucketRef.External
 	}
-	if oneof := ClusterKubernetesClusterConfig_v1beta1_ToProto(mapCtx, in.KubernetesClusterConfig); oneof != nil {
+	if oneof := ClusterKubernetesClusterConfig_v1beta1_ToProto(mapCtx, &in.KubernetesClusterConfig); oneof != nil {
 		out.InfrastructureConfig = &pb.VirtualClusterConfig_KubernetesClusterConfig{KubernetesClusterConfig: oneof}
 	}
 	out.AuxiliaryServicesConfig = ClusterAuxiliaryServicesConfig_v1beta1_ToProto(mapCtx, in.AuxiliaryServicesConfig)

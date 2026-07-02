@@ -154,7 +154,9 @@ func AlertpolicyConditionAbsent_FromProto(mapCtx *direct.MapContext, in *pb.Aler
 	out := &krm.AlertpolicyConditionAbsent{}
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	out.Aggregations = direct.Slice_FromProto(mapCtx, in.Aggregations, AlertpolicyAggregations_FromProto)
-	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	if val := direct.StringDuration_FromProto(mapCtx, in.GetDuration()); val != nil {
+		out.Duration = *val
+	}
 	out.Trigger = AlertpolicyTrigger_FromProto(mapCtx, in.GetTrigger())
 	return out
 }
@@ -168,7 +170,7 @@ func AlertpolicyConditionAbsent_ToProto(mapCtx *direct.MapContext, in *krm.Alert
 	out := &pb.AlertPolicy_Condition_MetricAbsence{}
 	out.Filter = direct.ValueOf(in.Filter)
 	out.Aggregations = direct.Slice_ToProto(mapCtx, in.Aggregations, AlertpolicyAggregations_ToProto)
-	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+	out.Duration = direct.StringDuration_ToProto(mapCtx, &in.Duration)
 	out.Trigger = AlertpolicyTrigger_ToProto(mapCtx, in.Trigger)
 	return out
 }
@@ -205,7 +207,9 @@ func AlertpolicyConditionMonitoringQueryLanguage_FromProto(mapCtx *direct.MapCon
 	}
 	out := &krm.AlertpolicyConditionMonitoringQueryLanguage{}
 	out.Query = in.GetQuery()
-	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	if val := direct.StringDuration_FromProto(mapCtx, in.GetDuration()); val != nil {
+		out.Duration = *val
+	}
 	out.Trigger = AlertpolicyTrigger_FromProto(mapCtx, in.GetTrigger())
 	out.EvaluationMissingData = direct.Enum_FromProto(mapCtx, in.GetEvaluationMissingData())
 	return out
@@ -219,7 +223,7 @@ func AlertpolicyConditionMonitoringQueryLanguage_ToProto(mapCtx *direct.MapConte
 	}
 	out := &pb.AlertPolicy_Condition_MonitoringQueryLanguageCondition{}
 	out.Query = AlertpolicyConditionMonitoringQueryLanguage_Query_ToProto(mapCtx, in.Query)
-	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+	out.Duration = direct.StringDuration_ToProto(mapCtx, &in.Duration)
 	out.Trigger = AlertpolicyTrigger_ToProto(mapCtx, in.Trigger)
 	out.EvaluationMissingData = direct.Enum_ToProto[pb.AlertPolicy_Condition_EvaluationMissingData](mapCtx, in.EvaluationMissingData)
 	return out
@@ -311,7 +315,9 @@ func AlertpolicyConditionThreshold_FromProto(mapCtx *direct.MapContext, in *pb.A
 	out.ForecastOptions = AlertpolicyForecastOptions_FromProto(mapCtx, in.GetForecastOptions())
 	out.Comparison = direct.Enum_FromProto(mapCtx, in.GetComparison())
 	out.ThresholdValue = direct.LazyPtr(in.GetThresholdValue())
-	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	if val := direct.StringDuration_FromProto(mapCtx, in.GetDuration()); val != nil {
+		out.Duration = *val
+	}
 	out.Trigger = AlertpolicyTrigger_FromProto(mapCtx, in.GetTrigger())
 	out.EvaluationMissingData = direct.Enum_FromProto(mapCtx, in.GetEvaluationMissingData())
 	return out
@@ -331,7 +337,7 @@ func AlertpolicyConditionThreshold_ToProto(mapCtx *direct.MapContext, in *krm.Al
 	out.ForecastOptions = AlertpolicyForecastOptions_ToProto(mapCtx, in.ForecastOptions)
 	out.Comparison = direct.Enum_ToProto[pb.ComparisonType](mapCtx, in.Comparison)
 	out.ThresholdValue = direct.ValueOf(in.ThresholdValue)
-	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+	out.Duration = direct.StringDuration_ToProto(mapCtx, &in.Duration)
 	out.Trigger = AlertpolicyTrigger_ToProto(mapCtx, in.Trigger)
 	out.EvaluationMissingData = direct.Enum_ToProto[pb.AlertPolicy_Condition_EvaluationMissingData](mapCtx, in.EvaluationMissingData)
 	return out
@@ -482,7 +488,9 @@ func AlertpolicyForecastOptions_FromProto(mapCtx *direct.MapContext, in *pb.Aler
 		return nil
 	}
 	out := &krm.AlertpolicyForecastOptions{}
-	out.ForecastHorizon = direct.StringDuration_FromProto(mapCtx, in.GetForecastHorizon())
+	if val := direct.StringDuration_FromProto(mapCtx, in.GetForecastHorizon()); val != nil {
+		out.ForecastHorizon = *val
+	}
 	return out
 }
 */
@@ -493,7 +501,7 @@ func AlertpolicyForecastOptions_ToProto(mapCtx *direct.MapContext, in *krm.Alert
 		return nil
 	}
 	out := &pb.AlertPolicy_Condition_MetricThreshold_ForecastOptions{}
-	out.ForecastHorizon = direct.StringDuration_ToProto(mapCtx, in.ForecastHorizon)
+	out.ForecastHorizon = direct.StringDuration_ToProto(mapCtx, &in.ForecastHorizon)
 	return out
 }
 */

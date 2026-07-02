@@ -422,14 +422,6 @@ type AIPlatformModelObservedState struct {
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	// +kubebuilder:validation:items:Type=object
-	Values []Value `json:"values,omitempty"`
-}
-
 const (
 	// Null value.
 	NullValue_NULL_VALUE     int = 0

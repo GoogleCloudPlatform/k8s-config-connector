@@ -141,7 +141,9 @@ func AccessLevelCustom_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) 
 		return nil
 	}
 	out := &krm.AccessLevelCustom{}
-	out.Expr = AccessLevelExpr_FromProto(mapCtx, in.GetExpr())
+	if val := AccessLevelExpr_FromProto(mapCtx, in.GetExpr()); val != nil {
+		out.Expr = *val
+	}
 	return out
 }
 func AccessLevelCustom_ToProto(mapCtx *direct.MapContext, in *krm.AccessLevelCustom) *pb.CustomLevel {
@@ -149,7 +151,7 @@ func AccessLevelCustom_ToProto(mapCtx *direct.MapContext, in *krm.AccessLevelCus
 		return nil
 	}
 	out := &pb.CustomLevel{}
-	out.Expr = AccessLevelExpr_ToProto(mapCtx, in.Expr)
+	out.Expr = AccessLevelExpr_ToProto(mapCtx, &in.Expr)
 	return out
 }
 func BasicLevel_FromProto(mapCtx *direct.MapContext, in *pb.BasicLevel) *krm.BasicLevel {

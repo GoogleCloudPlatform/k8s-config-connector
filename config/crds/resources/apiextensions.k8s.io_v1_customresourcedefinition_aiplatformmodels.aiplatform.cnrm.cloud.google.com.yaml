@@ -916,14 +916,6 @@ spec:
                                     type: boolean
                                   listValue:
                                     description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items:
-                                          type: object
-                                        type: array
-                                    type: object
                                     x-kubernetes-preserve-unknown-fields: true
                                   nullValue:
                                     description: Represents a null value.
@@ -1030,14 +1022,6 @@ spec:
                                     type: boolean
                                   listValue:
                                     description: Represents a repeated `Value`.
-                                    properties:
-                                      values:
-                                        description: Repeated field of dynamically
-                                          typed values.
-                                        items:
-                                          type: object
-                                        type: array
-                                    type: object
                                     x-kubernetes-preserve-unknown-fields: true
                                   nullValue:
                                     description: Represents a null value.
@@ -1171,14 +1155,6 @@ spec:
                                   type: boolean
                                 listValue:
                                   description: Represents a repeated `Value`.
-                                  properties:
-                                    values:
-                                      description: Repeated field of dynamically typed
-                                        values.
-                                      items:
-                                        type: object
-                                      type: array
-                                  type: object
                                   x-kubernetes-preserve-unknown-fields: true
                                 nullValue:
                                   description: Represents a null value.
@@ -1250,14 +1226,6 @@ spec:
                                 type: boolean
                               listValue:
                                 description: Represents a repeated `Value`.
-                                properties:
-                                  values:
-                                    description: Repeated field of dynamically typed
-                                      values.
-                                    items:
-                                      type: object
-                                    type: array
-                                type: object
                                 x-kubernetes-preserve-unknown-fields: true
                               nullValue:
                                 description: Represents a null value.
@@ -1409,13 +1377,7 @@ spec:
 
                            Only applicable to Models that predict multiple outputs (e,g, multi-class
                            Models that predict multiple classes).
-                        properties:
-                          values:
-                            description: Repeated field of dynamically typed values.
-                            items:
-                              type: object
-                            type: array
-                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       sampledShapleyAttribution:
                         description: 'An attribution method that approximates Shapley
                           values for features that contribute to the label being predicted.
@@ -1571,13 +1533,6 @@ spec:
                     type: boolean
                   listValue:
                     description: Represents a repeated `Value`.
-                    properties:
-                      values:
-                        description: Repeated field of dynamically typed values.
-                        items:
-                          type: object
-                        type: array
-                    type: object
                     x-kubernetes-preserve-unknown-fields: true
                   nullValue:
                     description: Represents a null value.

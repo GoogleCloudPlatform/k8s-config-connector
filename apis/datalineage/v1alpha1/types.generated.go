@@ -21,15 +21,6 @@
 
 package v1alpha1
 
-/* unreachable type ListValue
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-*/
-
 /* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
@@ -55,6 +46,6 @@ type Value struct {
 
 	// Represents a repeated `Value`.
 	// +kcc:proto:field=google.protobuf.Value.list_value
-	ListValue *ListValue `json:"listValue,omitempty"`
+	ListValue apiextensionsv1.JSON `json:"listValue,omitempty"`
 }
 */

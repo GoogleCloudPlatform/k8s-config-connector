@@ -550,7 +550,9 @@ func InstanceWeeklyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *re
 	}
 	out := &krm.InstanceWeeklyMaintenanceWindow{}
 	out.Day = direct.Enum_FromProto(mapCtx, in.GetDay())
-	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	if val := TimeOfDay_FromProto(mapCtx, in.GetStartTime()); val != nil {
+		out.StartTime = *val
+	}
 	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
 	return out
 }
@@ -565,7 +567,7 @@ found existing non-generated mapping function "InstanceWeeklyMaintenanceWindow_T
 		}
 		out := &redispb.WeeklyMaintenanceWindow{}
 		out.Day = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.Day)
-		out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+		out.StartTime = TimeOfDay_ToProto(mapCtx, &in.StartTime)
 		out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
 		return out
 	}

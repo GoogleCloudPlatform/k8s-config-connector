@@ -345,7 +345,9 @@ func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.Explanati
 	out.XraiAttribution = XraiAttribution_FromProto(mapCtx, in.GetXraiAttribution())
 	out.Examples = Examples_FromProto(mapCtx, in.GetExamples())
 	out.TopK = direct.LazyPtr(in.GetTopK())
-	out.OutputIndices = ListValue_FromProto(mapCtx, in.GetOutputIndices())
+	if val := direct.ListValue_FromProto(mapCtx, in.GetOutputIndices()); val != nil {
+		out.OutputIndices = *val
+	}
 	return out
 }
 func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParameters) *pb.ExplanationParameters {
@@ -366,7 +368,7 @@ func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.Explanatio
 		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
 	}
 	out.TopK = direct.ValueOf(in.TopK)
-	out.OutputIndices = ListValue_ToProto(mapCtx, in.OutputIndices)
+	out.OutputIndices = direct.ListValue_ToProto(mapCtx, &in.OutputIndices)
 	return out
 }
 func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
@@ -517,7 +519,9 @@ func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm
 	}
 	out := &krm.FunctionCall{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Args = direct.Struct_FromProto(mapCtx, in.GetArgs())
+	if val := direct.Struct_FromProto(mapCtx, in.GetArgs()); val != nil {
+		out.Args = *val
+	}
 	return out
 }
 */
@@ -529,7 +533,7 @@ func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.F
 	}
 	out := &pb.FunctionCall{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Args = direct.Struct_ToProto(mapCtx, in.Args)
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
 	return out
 }
 */
@@ -541,7 +545,9 @@ func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionRespon
 	}
 	out := &krm.FunctionResponse{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Response = direct.Struct_FromProto(mapCtx, in.GetResponse())
+	if val := direct.Struct_FromProto(mapCtx, in.GetResponse()); val != nil {
+		out.Response = *val
+	}
 	return out
 }
 */
@@ -555,7 +561,7 @@ found existing non-generated mapping function "FunctionResponse_ToProto", skippi
 		}
 		out := &pb.FunctionResponse{}
 		out.Name = direct.ValueOf(in.Name)
-		out.Response = direct.Struct_ToProto(mapCtx, in.Response)
+		out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
 		return out
 	}
 */

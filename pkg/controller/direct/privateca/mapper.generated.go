@@ -236,8 +236,12 @@ func CertificateConfig_FromProto(mapCtx *direct.MapContext, in *pb.CertificateCo
 		return nil
 	}
 	out := &krm.CertificateConfig{}
-	out.SubjectConfig = CertificateConfig_SubjectConfig_FromProto(mapCtx, in.GetSubjectConfig())
-	out.X509Config = CertificateConfig_X509Config_FromProto(mapCtx, in.GetX509Config())
+	if val := CertificateConfig_SubjectConfig_FromProto(mapCtx, in.GetSubjectConfig()); val != nil {
+		out.SubjectConfig = *val
+	}
+	if val := CertificateConfig_X509Config_FromProto(mapCtx, in.GetX509Config()); val != nil {
+		out.X509Config = *val
+	}
 	// MISSING: PublicKey
 	// MISSING: SubjectKeyID
 	return out
@@ -250,8 +254,8 @@ func CertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateCon
 		return nil
 	}
 	out := &pb.CertificateConfig{}
-	out.SubjectConfig = CertificateConfig_SubjectConfig_ToProto(mapCtx, in.SubjectConfig)
-	out.X509Config = CertificateConfig_X509Config_ToProto(mapCtx, in.X509Config)
+	out.SubjectConfig = CertificateConfig_SubjectConfig_ToProto(mapCtx, &in.SubjectConfig)
+	out.X509Config = CertificateConfig_X509Config_ToProto(mapCtx, &in.X509Config)
 	// MISSING: PublicKey
 	// MISSING: SubjectKeyID
 	return out
@@ -264,7 +268,9 @@ func CertificateConfig_SubjectConfig_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.CertificateConfig_SubjectConfig{}
-	out.Subject = Subject_FromProto(mapCtx, in.GetSubject())
+	if val := Subject_FromProto(mapCtx, in.GetSubject()); val != nil {
+		out.Subject = *val
+	}
 	out.SubjectAltName = SubjectAltNames_FromProto(mapCtx, in.GetSubjectAltName())
 	return out
 }
@@ -278,7 +284,7 @@ found existing non-generated mapping function "CertificateConfig_SubjectConfig_T
 			return nil
 		}
 		out := &pb.CertificateConfig_SubjectConfig{}
-		out.Subject = Subject_ToProto(mapCtx, in.Subject)
+		out.Subject = Subject_ToProto(mapCtx, &in.Subject)
 		out.SubjectAltName = SubjectAltNames_ToProto(mapCtx, in.SubjectAltName)
 		return out
 	}
@@ -562,9 +568,15 @@ func PrivateCACertificateAuthoritySpec_FromProto(mapCtx *direct.MapContext, in *
 	out := &krm.PrivateCACertificateAuthoritySpec{}
 	// MISSING: Name
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Config = CertificateConfig_FromProto(mapCtx, in.GetConfig())
-	out.Lifetime = direct.StringDuration_FromProto(mapCtx, in.GetLifetime())
-	out.KeySpec = CertificateAuthority_KeyVersionSpec_FromProto(mapCtx, in.GetKeySpec())
+	if val := CertificateConfig_FromProto(mapCtx, in.GetConfig()); val != nil {
+		out.Config = *val
+	}
+	if val := direct.StringDuration_FromProto(mapCtx, in.GetLifetime()); val != nil {
+		out.Lifetime = *val
+	}
+	if val := CertificateAuthority_KeyVersionSpec_FromProto(mapCtx, in.GetKeySpec()); val != nil {
+		out.KeySpec = *val
+	}
 	// MISSING: SubordinateConfig
 	// MISSING: Tier
 	// MISSING: State
@@ -592,9 +604,9 @@ func PrivateCACertificateAuthoritySpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.CertificateAuthority{}
 	// MISSING: Name
 	out.Type = direct.Enum_ToProto[pb.CertificateAuthority_Type](mapCtx, in.Type)
-	out.Config = CertificateConfig_ToProto(mapCtx, in.Config)
-	out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
-	out.KeySpec = CertificateAuthority_KeyVersionSpec_ToProto(mapCtx, in.KeySpec)
+	out.Config = CertificateConfig_ToProto(mapCtx, &in.Config)
+	out.Lifetime = direct.StringDuration_ToProto(mapCtx, &in.Lifetime)
+	out.KeySpec = CertificateAuthority_KeyVersionSpec_ToProto(mapCtx, &in.KeySpec)
 	// MISSING: SubordinateConfig
 	// MISSING: Tier
 	// MISSING: State

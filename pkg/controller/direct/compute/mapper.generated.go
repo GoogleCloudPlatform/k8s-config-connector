@@ -1845,7 +1845,9 @@ func ComputeInstanceGroupManager_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: SelfLink
 	// MISSING: StandbyPolicy
 	// MISSING: StatefulPolicy
-	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
+	if val := ComputeInstanceGroupManagerStatus_v1beta1_FromProto(mapCtx, in.GetStatus()); val != nil {
+		out.Status = *val
+	}
 	// MISSING: TargetPools
 	// MISSING: TargetSize
 	// MISSING: TargetStoppedSize
@@ -1887,7 +1889,7 @@ func ComputeInstanceGroupManager_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: SelfLink
 	// MISSING: StandbyPolicy
 	// MISSING: StatefulPolicy
-	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_ToProto(mapCtx, in.Status)
+	out.Status = ComputeInstanceGroupManagerStatus_v1beta1_ToProto(mapCtx, &in.Status)
 	// MISSING: TargetPools
 	// MISSING: TargetSize
 	// MISSING: TargetStoppedSize
@@ -3229,7 +3231,9 @@ func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krmcomputev1alpha1.ComputeRegionAutoscalerSpec{}
-	out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx, in.GetAutoscalingPolicy())
+	if val := RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx, in.GetAutoscalingPolicy()); val != nil {
+		out.AutoscalingPolicy = *val
+	}
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: ID
@@ -3255,7 +3259,7 @@ found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alp
 			return nil
 		}
 		out := &pb.Autoscaler{}
-		out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+		out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, &in.AutoscalingPolicy)
 		// MISSING: CreationTimestamp
 		out.Description = in.Description
 		// MISSING: ID
