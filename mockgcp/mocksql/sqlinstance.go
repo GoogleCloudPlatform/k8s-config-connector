@@ -410,10 +410,10 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "MYSQL_5_7_44.R20231105.01_03", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
-		return "MYSQL_8_0_41.R20251004.01_07", nil
+		return "MYSQL_8_0_44.R20260320.00_04", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
-		return "MYSQL_8_4_7.R20251004.01_24", nil
+		return "MYSQL_8_4_7.R20260320.00_00", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		return "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02", nil
@@ -428,10 +428,10 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "POSTGRES_9_6_24.R20250302.00_31", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_15:
-		return "POSTGRES_15_7.R20240514.00_12", nil
+		return "POSTGRES_15_13.R20260319.00_02", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
-		return "POSTGRES_16_3.R20240527.01_10", nil
+		return "POSTGRES_16_13.R20260319.00_02", nil
 	default:
 		return "", fmt.Errorf("database version %s not yet supported by mock", databaseVersion)
 	}
@@ -516,7 +516,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
-		obj.DatabaseInstalledVersion = "MYSQL_8_0_41"
+		obj.DatabaseInstalledVersion = "MYSQL_8_0_44"
 		for _, version := range availableDatabaseVersions {
 			if !strings.HasPrefix(version.Version, "8.0.") {
 				continue
@@ -620,7 +620,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
 
 	case pb.SqlDatabaseVersion_POSTGRES_15:
-		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
+		obj.DatabaseInstalledVersion = "POSTGRES_15_13"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("POSTGRES_16"),
@@ -630,7 +630,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
-		obj.DatabaseInstalledVersion = "POSTGRES_16_3"
+		obj.DatabaseInstalledVersion = "POSTGRES_16_13"
 		obj.UpgradableDatabaseVersions = nil
 
 	default:
@@ -1244,4 +1244,6 @@ var availableDatabaseVersions = []availableDatabaseVersion{
 	{Version: "8.0.41"},
 	{Version: "8.0.42"},
 	{Version: "8.0.43"},
+	{Version: "8.0.44"},
+	{Version: "8.0.45"},
 }

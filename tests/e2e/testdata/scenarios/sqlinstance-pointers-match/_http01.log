@@ -15,7 +15,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-minimal-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_8_0_41",
+  "databaseInstalledVersion": "MYSQL_8_0_44",
   "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -33,7 +33,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_0_41.R20251004.01_07",
+  "maintenanceVersion": "MYSQL_8_0_44.R20260320.00_04",
   "name": "sqlinstance-minimal-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -168,6 +168,11 @@ X-Xss-Protection: 0
       "name": "MYSQL_8_0_40"
     },
     {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
       "displayName": "MySQL 8.0.42",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_42"
@@ -176,6 +181,11 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.43",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
     },
     {
       "displayName": "MySQL 8.4",
