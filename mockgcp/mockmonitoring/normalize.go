@@ -28,6 +28,9 @@ const (
 )
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "monitoring.googleapis.com") {
+		return
+	}
 	replacements.ReplacePath(".creationRecord.mutateTime", timePlaceholder)
 	replacements.ReplacePath(".notificationChannels[].creationRecord.mutateTime", timePlaceholder)
 	replacements.ReplacePath(".alertPolicies[].creationRecord.mutateTime", timePlaceholder)
@@ -49,6 +52,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "monitoring.googleapis.com") {
+		return
+	}
 	visitLink := func(name string) {
 		tokens := strings.Split(name, "/")
 		n := len(tokens)
