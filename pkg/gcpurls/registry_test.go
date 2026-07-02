@@ -79,6 +79,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Apigee Registry
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
 
+		// API Hub
+		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}": true,
+
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
 
