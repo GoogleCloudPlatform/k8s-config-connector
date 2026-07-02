@@ -1,7 +1,6 @@
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -16,9 +15,112 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
   }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoCreateSubnetworks": false,
+  "description": "Test network for the project",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -136,74 +238,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
-  }
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "autoCreateSubnetworks": false,
-  "description": "Test network for the project",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "insert",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -309,65 +343,6 @@ X-Xss-Protection: 0
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
   }
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "insert",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Test network for the project",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -529,6 +504,67 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -567,42 +603,6 @@ X-Xss-Protection: 0
       "type": 3
     }
   ]
-}
-
----
-
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "exchangeSubnetRoutes": true,
-  "exportCustomRoutes": true,
-  "exportCustomRoutesWithPublicIp": true,
-  "importCustomRoutes": true,
-  "importCustomRoutesWithPublicIp": true,
-  "name": "projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}",
-  "peerMtu": 1500,
-  "peerNetwork": "projects/${projectId}/global/networks/${networkID}",
-  "peerNetworkType": 1,
-  "state": 2,
-  "stateDetails": "[2025-01-02T03:04:05.678-09:00]: Connected.",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
 }
 
 ---
@@ -658,67 +658,6 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
-}
-
----
-
-GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",

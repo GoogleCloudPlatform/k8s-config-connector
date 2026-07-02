@@ -1,3 +1,82 @@
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=kcc-assetfeed-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+}
+
+---
+
 GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -90,85 +169,6 @@ X-Xss-Protection: 0
   "relationshipTypes": [
     "INSTANCE_TO_INSTANCEGROUP"
   ]
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=kcc-assetfeed-${uniqueId}).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
 }
 
 ---

@@ -196,6 +196,54 @@ OK
 
 ---
 
+GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
+
+{
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789"
+}
+
+OK
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789",
+  "result": "us-central1",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {},
+  "workflowRevisionId": "000001-609"
+}
+
+---
+
+GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
+
+{
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789"
+}
+
+OK
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789",
+  "result": "us-central1",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {},
+  "workflowRevisionId": "000001-609"
+}
+
+---
+
 GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -285,52 +333,4 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
-
-{
-  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789"
-}
-
-OK
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789",
-  "result": "us-central1",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "SUCCEEDED",
-  "status": {},
-  "workflowRevisionId": "000001-609"
-}
-
----
-
-GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
-
-{
-  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789"
-}
-
-OK
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789",
-  "result": "us-central1",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "SUCCEEDED",
-  "status": {},
-  "workflowRevisionId": "000001-609"
 }
