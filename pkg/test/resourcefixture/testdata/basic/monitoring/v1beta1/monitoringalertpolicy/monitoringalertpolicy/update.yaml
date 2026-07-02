@@ -42,6 +42,7 @@ spec:
               - resource.label.instance_id
               - resource.label.zone
   documentation:
+    subject: "Alert: Very low CPU usage"
     content: |-
       “Just the place for a Snark!” the Bellman cried,
       As he monitored his resources with care;
