@@ -348,7 +348,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				if forceDirect {
 					// Acquisition tests are designed for the Direct controller and will fail with Terraform
 					if testName == "tagkeyacquire" || testName == "tagvalueacquire" {
-						t.Logf("skipping scenario with fallback to old controller for acquisition test %q", fixture.TestKey)
+						t.Logf("skipping scenario with fallback to old controller for %q", fixture.TestKey)
 					} else {
 						t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.TestKey)
 						scenarioOptionsWithFallback := scenarioOptions

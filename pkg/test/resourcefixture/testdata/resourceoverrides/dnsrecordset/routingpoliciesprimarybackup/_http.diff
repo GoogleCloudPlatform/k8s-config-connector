@@ -1,0 +1,397 @@
+1679,1719d1678
+< GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/rrsets?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "kind": "dns#resourceRecordSetsListResponse",
+<   "rrsets": [
+<     {
+<       "kind": "dns#resourceRecordSet",
+<       "name": "cnrm-dns-example-${uniqueId}.com.",
+<       "rrdatas": [
+<         "ns-cloud-c1.googledomains.com.",
+<         "ns-cloud-c2.googledomains.com.",
+<         "ns-cloud-c3.googledomains.com.",
+<         "ns-cloud-c4.googledomains.com."
+<       ],
+<       "ttl": 21600,
+<       "type": "NS"
+<     },
+<     {
+<       "kind": "dns#resourceRecordSet",
+<       "name": "cnrm-dns-example-${uniqueId}.com.",
+<       "rrdatas": [
+<         "ns-cloud-c1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+<       ],
+<       "ttl": 21600,
+<       "type": "SOA"
+<     }
+<   ]
+< }
+< 
+< ---
+< 
+1750c1709
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+1753c1712
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+1755c1714
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+1804c1763
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+1807c1766
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+1809,1871c1768
+<                 "project": "${projectId}"
+<               }
+<             ]
+<           }
+<         }
+<       },
+<       "ttl": 300,
+<       "type": "A"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "dns#change",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "done"
+< }
+< 
+< ---
+< 
+< GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/${changeId}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "additions": [
+<     {
+<       "name": "cnrm-dns-example-${uniqueId}.com.",
+<       "routingPolicy": {
+<         "primaryBackup": {
+<           "backupGeoTargets": {
+<             "items": [
+<               {
+<                 "location": "us-central1",
+<                 "rrdatas": [
+<                   "1.2.3.4",
+<                   "1.2.3.5"
+<                 ]
+<               },
+<               {
+<                 "location": "us-west1",
+<                 "rrdatas": [
+<                   "2.3.4.5",
+<                   "2.3.4.6"
+<                 ]
+<               }
+<             ]
+<           },
+<           "primaryTargets": {
+<             "internalLoadBalancers": [
+<               {
+<                 "ipAddress": "8.8.8.8",
+<                 "ipProtocol": "tcp",
+<                 "loadBalancerType": "globalL7ilb",
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<                 "port": "80",
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+1930c1827
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+1933c1830
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+1935c1832
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+1979c1876
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+1982c1879
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+1984c1881
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+1995a1893
+>       "kind": "dns#resourceRecordSet",
+2020c1918
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+2023c1921
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+2025c1923
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+2074,2177c1972
+<                 "ipAddress": "8.8.8.8",
+<                 "ipProtocol": "tcp",
+<                 "loadBalancerType": "globalL7ilb",
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<                 "port": "80",
+<                 "project": "${projectId}"
+<               }
+<             ]
+<           }
+<         }
+<       },
+<       "ttl": 300,
+<       "type": "A"
+<     }
+<   ],
+<   "deletions": [
+<     {
+<       "name": "cnrm-dns-example-${uniqueId}.com.",
+<       "routingPolicy": {
+<         "primaryBackup": {
+<           "backupGeoTargets": {
+<             "items": [
+<               {
+<                 "location": "us-central1",
+<                 "rrdatas": [
+<                   "1.2.3.4",
+<                   "1.2.3.5"
+<                 ]
+<               },
+<               {
+<                 "location": "us-west1",
+<                 "rrdatas": [
+<                   "2.3.4.5",
+<                   "2.3.4.6"
+<                 ]
+<               }
+<             ]
+<           },
+<           "primaryTargets": {
+<             "internalLoadBalancers": [
+<               {
+<                 "ipAddress": "8.8.8.8",
+<                 "ipProtocol": "tcp",
+<                 "loadBalancerType": "globalL7ilb",
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<                 "port": "80",
+<                 "project": "${projectId}"
+<               }
+<             ]
+<           }
+<         }
+<       },
+<       "ttl": 300,
+<       "type": "A"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "dns#change",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "done"
+< }
+< 
+< ---
+< 
+< GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/${changeId}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "additions": [
+<     {
+<       "name": "cnrm-dns-example-${uniqueId}.com.",
+<       "routingPolicy": {
+<         "primaryBackup": {
+<           "backupGeoTargets": {
+<             "items": [
+<               {
+<                 "location": "us-central1",
+<                 "rrdatas": [
+<                   "1.2.3.6",
+<                   "1.2.3.7"
+<                 ]
+<               },
+<               {
+<                 "location": "us-west1",
+<                 "rrdatas": [
+<                   "2.3.4.7",
+<                   "2.3.4.8"
+<                 ]
+<               }
+<             ]
+<           },
+<           "primaryTargets": {
+<             "internalLoadBalancers": [
+<               {
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+2180c1975
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+2182c1977
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+2193a1989
+>       "kind": "dns#resourceRecordSet",
+2218c2014
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+2221c2017
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+2223c2019
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+2282c2078
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+2285c2081
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+2287c2083
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+2306a2103
+>       "kind": "dns#resourceRecordSet",
+2331c2128
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+2334c2131
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+2336c2133
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
+2360a2158
+>       "kind": "dns#resourceRecordSet",
+2385,2447c2183
+<                 "ipAddress": "8.8.8.8",
+<                 "ipProtocol": "tcp",
+<                 "loadBalancerType": "globalL7ilb",
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<                 "port": "80",
+<                 "project": "${projectId}"
+<               }
+<             ]
+<           }
+<         }
+<       },
+<       "ttl": 300,
+<       "type": "A"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "dns#change",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "done"
+< }
+< 
+< ---
+< 
+< GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}/changes/${changeId}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "deletions": [
+<     {
+<       "name": "cnrm-dns-example-${uniqueId}.com.",
+<       "routingPolicy": {
+<         "primaryBackup": {
+<           "backupGeoTargets": {
+<             "items": [
+<               {
+<                 "location": "us-central1",
+<                 "rrdatas": [
+<                   "1.2.3.6",
+<                   "1.2.3.7"
+<                 ]
+<               },
+<               {
+<                 "location": "us-west1",
+<                 "rrdatas": [
+<                   "2.3.4.7",
+<                   "2.3.4.8"
+<                 ]
+<               }
+<             ]
+<           },
+<           "primaryTargets": {
+<             "internalLoadBalancers": [
+<               {
+<                 "ipAddress": "8.8.8.8",
+---
+>                 "ipAddress": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+2450c2186
+<                 "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+---
+>                 "networkUrl": "projects/${projectId}/global/networks/${networkID}",
+2452c2188
+<                 "project": "${projectId}"
+---
+>                 "project": "projects/${projectId}"
