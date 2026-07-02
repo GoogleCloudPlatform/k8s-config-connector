@@ -32,6 +32,7 @@ go run . generate-types \
   --resource CCInsightsPhraseMatcher:PhraseMatcher \
   --resource CCInsightsIssueModel:IssueModel \
   --resource CCInsightsConversation:Conversation \
+  --resource CCInsightsAnalysisRule:AnalysisRule \
   --prune-unused-types=false
 
 cd ${REPO_ROOT}
