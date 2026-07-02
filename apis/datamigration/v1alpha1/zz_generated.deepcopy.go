@@ -82,7 +82,7 @@ func (in *AlloyDbSettings) DeepCopyInto(out *AlloyDbSettings) {
 	}
 	if in.VpcNetworkRef != nil {
 		in, out := &in.VpcNetworkRef, &out.VpcNetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Labels != nil {
