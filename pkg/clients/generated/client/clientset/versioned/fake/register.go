@@ -204,6 +204,7 @@ import (
 	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sqladmin/v1alpha1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
+	storagebatchoperationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagebatchoperations/v1alpha1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
@@ -411,6 +412,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	sqladminv1alpha1.AddToScheme,
 	storagev1alpha1.AddToScheme,
 	storagev1beta1.AddToScheme,
+	storagebatchoperationsv1alpha1.AddToScheme,
 	storagetransferv1alpha1.AddToScheme,
 	storagetransferv1beta1.AddToScheme,
 	tagsv1beta1.AddToScheme,

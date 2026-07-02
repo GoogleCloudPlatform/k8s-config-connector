@@ -207,6 +207,7 @@ import (
 	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sqladmin/v1alpha1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
+	storagebatchoperationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagebatchoperations/v1alpha1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
@@ -410,6 +411,7 @@ type Interface interface {
 	SqladminV1alpha1() sqladminv1alpha1.SqladminV1alpha1Interface
 	StorageV1alpha1() storagev1alpha1.StorageV1alpha1Interface
 	StorageV1beta1() storagev1beta1.StorageV1beta1Interface
+	StoragebatchoperationsV1alpha1() storagebatchoperationsv1alpha1.StoragebatchoperationsV1alpha1Interface
 	StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
@@ -611,6 +613,7 @@ type Clientset struct {
 	sqladminV1alpha1                *sqladminv1alpha1.SqladminV1alpha1Client
 	storageV1alpha1                 *storagev1alpha1.StorageV1alpha1Client
 	storageV1beta1                  *storagev1beta1.StorageV1beta1Client
+	storagebatchoperationsV1alpha1  *storagebatchoperationsv1alpha1.StoragebatchoperationsV1alpha1Client
 	storagetransferV1alpha1         *storagetransferv1alpha1.StoragetransferV1alpha1Client
 	storagetransferV1beta1          *storagetransferv1beta1.StoragetransferV1beta1Client
 	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
@@ -1537,6 +1540,11 @@ func (c *Clientset) StorageV1beta1() storagev1beta1.StorageV1beta1Interface {
 	return c.storageV1beta1
 }
 
+// StoragebatchoperationsV1alpha1 retrieves the StoragebatchoperationsV1alpha1Client
+func (c *Clientset) StoragebatchoperationsV1alpha1() storagebatchoperationsv1alpha1.StoragebatchoperationsV1alpha1Interface {
+	return c.storagebatchoperationsV1alpha1
+}
+
 // StoragetransferV1alpha1 retrieves the StoragetransferV1alpha1Client
 func (c *Clientset) StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface {
 	return c.storagetransferV1alpha1
@@ -2379,6 +2387,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.storagebatchoperationsV1alpha1, err = storagebatchoperationsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.storagetransferV1alpha1, err = storagetransferv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2638,6 +2650,7 @@ func New(c rest.Interface) *Clientset {
 	cs.sqladminV1alpha1 = sqladminv1alpha1.New(c)
 	cs.storageV1alpha1 = storagev1alpha1.New(c)
 	cs.storageV1beta1 = storagev1beta1.New(c)
+	cs.storagebatchoperationsV1alpha1 = storagebatchoperationsv1alpha1.New(c)
 	cs.storagetransferV1alpha1 = storagetransferv1alpha1.New(c)
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
