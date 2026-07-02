@@ -56,4 +56,4 @@ cd ${REPO_ROOT}/operator
 make docker-build
 
 # Remove images that are not artifacts we would want to promote / keep
-docker image rm ${BUILDER_IMG}
+docker image rm ${BUILDER_IMG} || true
