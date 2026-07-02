@@ -121,7 +121,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -141,7 +141,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -171,8 +171,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The stack type for this VPN gateway to identify the IP protocols that are enabled.
-If not specified, IPV4_ONLY will be used. Default value: "IPV4_ONLY" Possible values: ["IPV4_ONLY", "IPV4_IPV6"].</p>
+            <p>Immutable. The stack type for this VPN gateway to identify the IP protocols that are enabled. If not specified, IPV4_ONLY will be used. Default value: "IPV4_ONLY" Possible values: ["IPV4_ONLY", "IPV4_IPV6"].</p>
         </td>
     </tr>
     <tr>
@@ -212,10 +211,7 @@ If not specified, IPV4_ONLY will be used. Default value: "IPV4_ONLY" Possible va
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. When this value is present, the VPN Gateway will be used
-for IPsec-encrypted Cloud Interconnect; all Egress or Ingress
-traffic for this VPN Gateway interface will go through the specified
-interconnect attachment resource. Not currently available publicly.</p>
+            <p>Immutable. When this value is present, the VPN Gateway will be used for IPsec-encrypted Cloud Interconnect; all Egress or Ingress traffic for this VPN Gateway interface will go through the specified interconnect attachment resource. Not currently available publicly.</p>
         </td>
     </tr>
     <tr>
@@ -225,7 +221,7 @@ interconnect attachment resource. Not currently available publicly.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeInterconnectAttachment` resource.</p>
+            <p>Allowed value: The `name` field of a `ComputeInterconnectAttachment` resource.</p>
         </td>
     </tr>
     <tr>
