@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,18 +23,16 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	// TODO(contributor): Update the import with the google cloud client
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
 	api "google.golang.org/api/binaryauthorization/v1"
 	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -81,8 +79,16 @@ func (m *modelPlatformPolicy) AdapterForObject(ctx context.Context, op *directba
 	if !ok {
 		return nil, fmt.Errorf("unexpected identity type: %T", idVal)
 	}
-	if err != nil {
-		return nil, err
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	mapCtx := &direct.MapContext{}
+	desiredPb := BinaryAuthorizationPlatformPolicySpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
 	}
 
 	// Get binaryauthorization GCP client
@@ -93,7 +99,7 @@ func (m *modelPlatformPolicy) AdapterForObject(ctx context.Context, op *directba
 	return &PlatformPolicyAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desiredPb,
 	}, nil
 }
 
@@ -105,7 +111,7 @@ func (m *modelPlatformPolicy) AdapterForURL(ctx context.Context, url string) (di
 type PlatformPolicyAdapter struct {
 	id        *krm.BinaryAuthorizationPlatformPolicyIdentity
 	gcpClient *api.Service
-	desired   *krm.BinaryAuthorizationPlatformPolicy
+	desired   *api.PlatformPolicy
 	actual    *api.PlatformPolicy
 }
 
@@ -135,70 +141,56 @@ func (a *PlatformPolicyAdapter) Find(ctx context.Context) (bool, error) {
 func (a *PlatformPolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating PlatformPolicy", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := BinaryAuthorizationPlatformPolicySpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	created, err := a.gcpClient.Projects.Platforms.Policies.Create(fmt.Sprintf("projects/%s/platforms/%s", a.id.Project, a.id.Platform), resource).Context(ctx).Do()
+	created, err := a.gcpClient.Projects.Platforms.Policies.Create(fmt.Sprintf("projects/%s/platforms/%s", a.id.Project, a.id.Platform), a.desired).PolicyId(a.id.Policy).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("PlatformPolicy %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created PlatformPolicy", "name", a.id)
 
-	status := &krm.BinaryAuthorizationPlatformPolicyStatus{}
-	status.ObservedState = BinaryAuthorizationPlatformPolicyObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *PlatformPolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating PlatformPolicy", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := BinaryAuthorizationPlatformPolicySpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
+		report.AddField("spec.description", a.actual.Description, a.desired.Description)
 	}
-
-	paths := make(sets.Set[string])
-	// Option 2: manually add all mutable fields.
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	{
-		// manually check fields
-		if !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
-			paths.Insert("description")
-		}
+	if !reflect.DeepEqual(a.desired.GkePolicy, a.actual.GkePolicy) {
+		report.AddField("spec.gkePolicy", a.actual.GkePolicy, a.desired.GkePolicy)
 	}
 
 	updated := a.actual
-	if len(paths) == 0 {
+	if len(report.Fields) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
-		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
+		log.V(2).Info("fields need update", "name", a.id, "report", report.Fields)
+		structuredreporting.ReportDiff(ctx, report)
 
 		var err error
-		updated, err = a.gcpClient.Projects.Platforms.Policies.ReplacePlatformPolicy(a.id.String(), desiredPb).Context(ctx).Do()
+		updated, err = a.gcpClient.Projects.Platforms.Policies.ReplacePlatformPolicy(a.id.String(), a.desired).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("PlatformPolicy %s waiting update: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated PlatformPolicy", "name", a.id)
 	}
 
+	return a.updateStatus(ctx, updateOp, updated)
+}
+
+func (a *PlatformPolicyAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *api.PlatformPolicy) error {
+	mapCtx := &direct.MapContext{}
 	status := &krm.BinaryAuthorizationPlatformPolicyStatus{}
-	status.ObservedState = BinaryAuthorizationPlatformPolicyObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BinaryAuthorizationPlatformPolicyObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
