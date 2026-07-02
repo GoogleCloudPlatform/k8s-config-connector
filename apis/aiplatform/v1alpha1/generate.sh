@@ -32,30 +32,7 @@ go run . generate-types \
     --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
     --resource VertexAITuningJob:TuningJob
 
-# Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
-python3 -c "
-import re
-path = '${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go'
-with open(path, 'r') as f:
-    content = f.read()
-
-# Comment out outputIndices to avoid CRD instability
-content = re.sub(
-    r'(\s+)OutputIndices \*ListValue \`json:\"outputIndices,omitempty\"\`',
-    r'\1// OutputIndices is temporarily disabled due to CRD instability\n\1// OutputIndices *ListValue \`json:\"outputIndices,omitempty\"\`',
-    content
-)
-
-# Comment out listValue in Value
-content = re.sub(
-    r'(\s+)ListValue \*ListValue \`json:\"listValue,omitempty\"\`',
-    r'\1// ListValue is temporarily disabled due to CRD instability\n\1// ListValue *ListValue \`json:\"listValue,omitempty\"\`',
-    content
-)
-
-with open(path, 'w') as f:
-    f.write(content)
-"
+# Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1 \
