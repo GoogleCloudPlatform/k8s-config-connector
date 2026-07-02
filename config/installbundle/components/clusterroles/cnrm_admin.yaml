@@ -1664,6 +1664,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - testing.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - tpu.cnrm.cloud.google.com
   resources:
   - '*'

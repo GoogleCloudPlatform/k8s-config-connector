@@ -119,6 +119,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/monitoring/dashboard/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/cloudbuild/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/artifactregistry/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/devtools/testing/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/instance/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
