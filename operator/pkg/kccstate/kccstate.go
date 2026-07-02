@@ -45,16 +45,20 @@ func FetchLiveKCCState(ctx context.Context, c client.Client, resourceNN types.Na
 	// Namespaced mode is the default mode for the ConfigConnector object.
 	if cc.Spec.Mode == "" || cc.Spec.Mode == k8s.NamespacedMode {
 		var ccc v1beta1.ConfigConnectorContext
-		if err := c.Get(ctx, types.NamespacedName{
-			Name:      v1beta1.ConfigConnectorContextAllowedName,
+		cccNamespacedName := types.NamespacedName{
 			Namespace: resourceNN.Namespace,
-		}, &ccc); err != nil {
-
-			// this should not happen but if we attempt to actuate a resource
-			// AND we are running in namespaced mode, not finding a CCC in that namespace
-			// is an error in the assumptions that KCC has (i.e. that there is a CCC defined
-			// that actively manages resources in that namespace).
-			return cc, v1beta1.ConfigConnectorContext{}, err
+			Name:      v1beta1.ConfigConnectorContextAllowedName,
+		}
+		if err := c.Get(ctx, cccNamespacedName, &ccc); err != nil {
+			if errors.IsNotFound(err) {
+				// Fallback to legacy name
+				cccNamespacedName.Name = "configconnectorcontext"
+				if err := c.Get(ctx, cccNamespacedName, &ccc); err != nil {
+					return cc, v1beta1.ConfigConnectorContext{}, err
+				}
+			} else {
+				return cc, v1beta1.ConfigConnectorContext{}, err
+			}
 		}
 		return cc, ccc, nil
 	}
