@@ -101,6 +101,7 @@ func computeSubnetworkFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".utilization_details")
 	f.Unimplemented_NotYetTriaged(".log_config.enable")
 	f.Unimplemented_NotYetTriaged(".secondary_ip_ranges[].reserved_internal_range")
+	f.Unimplemented_NotYetTriaged(".resolve_subnet_mask")
 
 	f.FilterSpec = func(in *pb.Subnetwork) {
 		if in.LogConfig != nil && in.LogConfig.AggregationInterval == nil && in.LogConfig.FilterExpr == nil && in.LogConfig.FlowSampling == nil && in.LogConfig.Metadata == nil && len(in.LogConfig.MetadataFields) == 0 {

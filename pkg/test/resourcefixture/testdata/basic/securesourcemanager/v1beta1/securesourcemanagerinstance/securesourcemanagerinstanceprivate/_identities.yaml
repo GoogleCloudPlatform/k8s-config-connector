@@ -4,7 +4,7 @@
   name: privatecacapool-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}
   group: privateca.cnrm.cloud.google.com
   kind: PrivateCACertificateAuthority
   name: privatecacertificateauthority-${uniqueId}

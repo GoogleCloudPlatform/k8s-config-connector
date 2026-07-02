@@ -56,6 +56,7 @@ func computeVPNGatewayFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".labels")
 	f.Unimplemented_NotYetTriaged(".self_link")
 	f.Unimplemented_NotYetTriaged(".vpn_interfaces[].ipv6_address")
+	f.Unimplemented_NotYetTriaged(".params")
 
 	return f
 }

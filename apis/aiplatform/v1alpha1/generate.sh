@@ -32,18 +32,7 @@ go run . generate-types \
     --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
     --resource VertexAITuningJob:TuningJob
 
-# Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
-python3 -c "
-path = '${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go'
-with open(path, 'r') as f:
-    content = f.read()
-content = content.replace(
-    'ListValue *ListValue \`json:\"listValue,omitempty\"\`',
-    '// +kubebuilder:pruning:PreserveUnknownFields\n\t// +kubebuilder:validation:Type=object\n\tListValue *ListValue \`json:\"listValue,omitempty\"\`'
-)
-with open(path, 'w') as f:
-    f.write(content)
-"
+# Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
 go run . generate-mapper \
     --service google.cloud.aiplatform.v1 \

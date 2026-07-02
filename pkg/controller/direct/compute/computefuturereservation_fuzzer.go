@@ -67,5 +67,9 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	// Identity field
 	f.Unimplemented_Identity(".name")
 
+	// Unimplemented / Not Yet Triaged fields
+	f.Unimplemented_NotYetTriaged(".confidential_compute_type")
+	f.Unimplemented_NotYetTriaged(".params")
+
 	return f
 }

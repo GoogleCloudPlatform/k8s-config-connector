@@ -99,6 +99,7 @@ func computeInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".source_machine_image_encryption_key")
 	f.Unimplemented_NotYetTriaged(".start_restricted")
 	f.Unimplemented_NotYetTriaged(".status_message")
+	f.Unimplemented_NotYetTriaged(".workload_identity_config")
 
 	return f
 }

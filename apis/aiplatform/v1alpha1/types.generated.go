@@ -383,61 +383,6 @@ type ExplanationMetadata_OutputMetadata struct {
 	OutputTensorName *string `json:"outputTensorName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.ExplanationParameters
-type ExplanationParameters struct {
-	// An attribution method that approximates Shapley values for features that
-	//  contribute to the label being predicted. A sampling strategy is used to
-	//  approximate the value rather than considering all subsets of features.
-	//  Refer to this paper for model details: https://arxiv.org/abs/1306.4265.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.sampled_shapley_attribution
-	SampledShapleyAttribution *SampledShapleyAttribution `json:"sampledShapleyAttribution,omitempty"`
-
-	// An attribution method that computes Aumann-Shapley values taking
-	//  advantage of the model's fully differentiable structure. Refer to this
-	//  paper for more details: https://arxiv.org/abs/1703.01365
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.integrated_gradients_attribution
-	IntegratedGradientsAttribution *IntegratedGradientsAttribution `json:"integratedGradientsAttribution,omitempty"`
-
-	// An attribution method that redistributes Integrated Gradients
-	//  attribution to segmented regions, taking advantage of the model's fully
-	//  differentiable structure. Refer to this paper for
-	//  more details: https://arxiv.org/abs/1906.02825
-	//
-	//  XRAI currently performs better on natural images, like a picture of a
-	//  house or an animal. If the images are taken in artificial environments,
-	//  like a lab or manufacturing line, or from diagnostic equipment, like
-	//  x-rays or quality-control cameras, use Integrated Gradients instead.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.xrai_attribution
-	XraiAttribution *XraiAttribution `json:"xraiAttribution,omitempty"`
-
-	// Example-based explanations that returns the nearest neighbors from the
-	//  provided dataset.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.examples
-	Examples *Examples `json:"examples,omitempty"`
-
-	// If populated, returns attributions for top K indices of outputs
-	//  (defaults to 1). Only applies to Models that predicts more than one outputs
-	//  (e,g, multi-class Models). When set to -1, returns explanations for all
-	//  outputs.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.top_k
-	TopK *int32 `json:"topK,omitempty"`
-
-	// If populated, only returns attributions that have
-	//  [output_index][google.cloud.aiplatform.v1.Attribution.output_index]
-	//  contained in output_indices. It must be an ndarray of integers, with the
-	//  same shape of the output it's explaining.
-	//
-	//  If not populated, returns attributions for
-	//  [top_k][google.cloud.aiplatform.v1.ExplanationParameters.top_k] indices of
-	//  outputs. If neither top_k nor output_indices is populated, returns the
-	//  argmax index of the outputs.
-	//
-	//  Only applicable to Models that predict multiple outputs (e,g, multi-class
-	//  Models that predict multiple classes).
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.output_indices
-	OutputIndices *ListValue `json:"outputIndices,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.ExplanationSpec
 type ExplanationSpec struct {
 	// Required. Parameters that configure explaining of the Model's predictions.
@@ -1340,35 +1285,6 @@ type XraiAttribution struct {
 	//  https://arxiv.org/abs/2004.03383
 	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.Value
-type Value struct {
-	// Represents a null value.
-	// +kcc:proto:field=google.protobuf.Value.null_value
-	NullValue *string `json:"nullValue,omitempty"`
-
-	// Represents a double value.
-	// +kcc:proto:field=google.protobuf.Value.number_value
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	// Represents a string value.
-	// +kcc:proto:field=google.protobuf.Value.string_value
-	StringValue *string `json:"stringValue,omitempty"`
-
-	// Represents a boolean value.
-	// +kcc:proto:field=google.protobuf.Value.bool_value
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	// Represents a structured value.
-	// +kcc:proto:field=google.protobuf.Value.struct_value
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-
-	// Represents a repeated `Value`.
-	// +kcc:proto:field=google.protobuf.Value.list_value
-	// +kubebuilder:pruning:PreserveUnknownFields
-	// +kubebuilder:validation:Type=object
-	ListValue *ListValue `json:"listValue,omitempty"`
 }
 
 /* unreachable type Model_ExportFormatObservedState

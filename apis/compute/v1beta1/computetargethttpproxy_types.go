@@ -1,0 +1,117 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var ComputeTargetHTTPProxyGVK = GroupVersion.WithKind("ComputeTargetHTTPProxy")
+
+// +kcc:spec:proto=google.cloud.compute.v1.TargetHttpProxy
+type ComputeTargetHTTPProxySpec struct {
+	// Immutable. An optional description of this resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpProxy.description
+	Description *string `json:"description,omitempty"`
+
+	// Immutable. Specifies how long to keep a connection open, after completing a response,
+	// while there is no matching traffic (in seconds). If an HTTP keepalive is
+	// not specified, a default value (610 seconds) will be used. For Global
+	// external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
+	// the maximum allowed value is 1200 seconds. For Global external HTTP(S)
+	// load balancer (classic), this option is not available publicly.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpProxy.http_keep_alive_timeout_sec
+	HttpKeepAliveTimeoutSec *int `json:"httpKeepAliveTimeoutSec,omitempty"`
+
+	// Location represents the geographical location of the
+	// ComputeTargetHTTPProxy. Specify a region name or "global" for global
+	// resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
+	// +required
+	Location string `json:"location"`
+
+	// Immutable. This field only applies when the forwarding rule that references
+	// this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpProxy.proxy_bind
+	ProxyBind *bool `json:"proxyBind,omitempty"`
+
+	// Immutable. Optional. The name of the resource. Used for
+	// creation and acquisition. When unset, the value of `metadata.name`
+	// is used as the default.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// A reference to the ComputeURLMap resource that defines the mapping
+	// from URL to the BackendService.
+	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpProxy.url_map
+	UrlMapRef *ComputeURLMapRef `json:"urlMapRef"`
+}
+
+// ComputeTargetHTTPProxyStatus defines the config connector machine state of ComputeTargetHTTPProxy
+type ComputeTargetHTTPProxyStatus struct {
+	// Conditions represent the latest available observations of the object's current state.
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpProxy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// The unique identifier for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpProxy.id
+	ProxyId *int64 `json:"proxyId,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpProxy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputetargethttpproxy;gcpcomputetargethttpproxies
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// ComputeTargetHTTPProxy is the Schema for the ComputeTargetHTTPProxy API
+// +k8s:openapi-gen=true
+type ComputeTargetHTTPProxy struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   ComputeTargetHTTPProxySpec   `json:"spec,omitempty"`
+	Status ComputeTargetHTTPProxyStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// ComputeTargetHTTPProxyList contains a list of ComputeTargetHTTPProxy
+type ComputeTargetHTTPProxyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeTargetHTTPProxy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeTargetHTTPProxy{}, &ComputeTargetHTTPProxyList{})
+}

@@ -87,6 +87,11 @@ func (r *PrivateCACertificateTemplateRef) ParseExternalToIdentity() (identity.Id
 
 func (r *PrivateCACertificateTemplateRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
+		ready, err := isResourceReady(u)
+		if err != nil || !ready {
+			return ""
+		}
+
 		obj, err := common.ToStructuredType[*PrivateCACertificateTemplate](u)
 		if err != nil {
 			return ""
