@@ -29,6 +29,9 @@ on:
     paths:
       - 'config/crds/resources/**'
 
+permissions:
+  contents: read
+
 jobs:
   crd-equivalence-check:
     runs-on: ubuntu-latest
