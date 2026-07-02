@@ -52,3 +52,6 @@ RUN go install sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 \
 # (Optional) Export KUBEBUILDER_ASSETS so it's available for 'go test' automatically.
 # The path below is the default location setup-envtest extracts the binaries to.
 ENV KUBEBUILDER_ASSETS=/root/.local/share/kubebuilder-envtest/k8s/1.35.0-linux-amd64
+
+# Ensure GITHUB_API_URL has a trailing slash (fix for overseer-cli)
+RUN echo 'if [ -n "$GITHUB_API_URL" ] && [ "${GITHUB_API_URL: -1}" != "/" ]; then export GITHUB_API_URL="$GITHUB_API_URL/"; fi' > /etc/profile.d/fix-github-api-url.sh
