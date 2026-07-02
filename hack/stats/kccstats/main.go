@@ -61,6 +61,7 @@ type TreeResponse struct {
 
 var (
 	weeks            = flag.Int("w", 1, "Number of weeks to go back in time for")
+	currentWeek      = flag.Bool("current-week", false, "Generate stats for this week so far (equivalent to -w 0)")
 	verbose          = flag.Bool("verbose", false, "Tell you about the commits being fetched and processed")
 	showDetails      = flag.Bool("show-details", false, "Name the resources/kinds added and the fields added as a json path like spec.a.b.c")
 	showContributors = flag.Bool("show-contributors", false, "Break down metrics by contributor")
@@ -79,11 +80,26 @@ const crdPath = "config/crds/resources"
 func main() {
 	flag.Parse()
 
-	now := time.Now()
-	since := now.AddDate(0, 0, -7*(*weeks))
+	if *currentWeek {
+		*weeks = 0
+	}
+
+	now := time.Now().UTC()
+	// Calculate the start of the current ISO week (Monday, 00:00:00 UTC)
+	weekday := int(now.Weekday())
+	if weekday == 0 {
+		weekday = 7 // Sunday is 7
+	}
+	startOfCurrentWeek := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC).AddDate(0, 0, -weekday+1)
+
+	since := startOfCurrentWeek.AddDate(0, 0, -7*(*weeks))
 	sinceStr := since.Format(time.RFC3339)
 
-	fmt.Printf("Analyzing velocity for the last %d weeks (since %s)...\n", *weeks, sinceStr)
+	if *weeks == 0 {
+		fmt.Printf("Analyzing velocity for the current week so far (since %s)...\n", sinceStr)
+	} else {
+		fmt.Printf("Analyzing velocity for the last %d weeks (since %s)...\n", *weeks, sinceStr)
+	}
 
 	if *verbose {
 		fmt.Println("Fetching commits via gh api...")
