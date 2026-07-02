@@ -144,7 +144,7 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
   "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}' was not found
+error: rpc error: code = NotFound desc = execution "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}" not found
 
 {}
 
@@ -171,6 +171,7 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
     "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
@@ -193,6 +194,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
@@ -203,20 +205,15 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Execution",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "notebooksexecution-minimal-${uniqueId}",
     "executionTemplate": {
       "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
       "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
-      "jobType": "VERTEX_AI",
       "masterType": "n1-standard-4",
       "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-      "scaleTier": "CUSTOM",
-      "vertexAiParameters": {}
+      "scaleTier": "CUSTOM"
     },
-    "jobUri": "projects/${projectNumber}/locations/us-central1/customJobs/1253501538370846720",
     "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
-    "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output/notebook_at_2026_07_01_18_54_34.ipynb",
-    "state": "PREPARING",
+    "state": "SUCCEEDED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -233,20 +230,15 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "notebooksexecution-minimal-${uniqueId}",
   "executionTemplate": {
     "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
     "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
-    "jobType": "VERTEX_AI",
     "masterType": "n1-standard-4",
     "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-    "scaleTier": "CUSTOM",
-    "vertexAiParameters": {}
+    "scaleTier": "CUSTOM"
   },
-  "jobUri": "projects/${projectNumber}/locations/us-central1/customJobs/1253501538370846720",
   "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
-  "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output/notebook_at_2026_07_01_18_54_34.ipynb",
-  "state": "PREPARING",
+  "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -262,20 +254,15 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "notebooksexecution-minimal-${uniqueId}",
   "executionTemplate": {
     "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
     "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
-    "jobType": "VERTEX_AI",
     "masterType": "n1-standard-4",
     "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-    "scaleTier": "CUSTOM",
-    "vertexAiParameters": {}
+    "scaleTier": "CUSTOM"
   },
-  "jobUri": "projects/${projectNumber}/locations/us-central1/customJobs/1253501538370846720",
   "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
-  "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output/notebook_at_2026_07_01_18_54_34.ipynb",
-  "state": "PREPARING",
+  "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -292,6 +279,7 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
     "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
@@ -314,6 +302,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
@@ -385,7 +374,11 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---

@@ -46,7 +46,5 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    displayName: notebooksexecution-maximal-${uniqueId}
-    jobURI: projects/${projectNumber}/locations/us-central1/customJobs/6032946642917785600
-    state: PREPARING
+    state: SUCCEEDED
     updateTime: "1970-01-01T00:00:00Z"

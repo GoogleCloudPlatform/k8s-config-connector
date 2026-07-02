@@ -30,7 +30,5 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    displayName: notebooksexecution-minimal-${uniqueId}
-    jobURI: projects/${projectNumber}/locations/us-central1/customJobs/1253501538370846720
-    state: PREPARING
+    state: SUCCEEDED
     updateTime: "1970-01-01T00:00:00Z"
