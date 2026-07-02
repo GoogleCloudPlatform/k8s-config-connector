@@ -393,6 +393,8 @@ import (
 	fakestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1/fake"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
 	fakestoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1/fake"
+	storagebatchoperationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagebatchoperations/v1alpha1"
+	fakestoragebatchoperationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagebatchoperations/v1alpha1/fake"
 	storageinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storageinsights/v1alpha1"
 	fakestorageinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storageinsights/v1alpha1/fake"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
@@ -1425,6 +1427,11 @@ func (c *Clientset) StorageV1alpha1() storagev1alpha1.StorageV1alpha1Interface {
 // StorageV1beta1 retrieves the StorageV1beta1Client
 func (c *Clientset) StorageV1beta1() storagev1beta1.StorageV1beta1Interface {
 	return &fakestoragev1beta1.FakeStorageV1beta1{Fake: &c.Fake}
+}
+
+// StoragebatchoperationsV1alpha1 retrieves the StoragebatchoperationsV1alpha1Client
+func (c *Clientset) StoragebatchoperationsV1alpha1() storagebatchoperationsv1alpha1.StoragebatchoperationsV1alpha1Interface {
+	return &fakestoragebatchoperationsv1alpha1.FakeStoragebatchoperationsV1alpha1{Fake: &c.Fake}
 }
 
 // StorageinsightsV1alpha1 retrieves the StorageinsightsV1alpha1Client
