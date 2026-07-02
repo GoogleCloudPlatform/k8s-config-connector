@@ -1115,6 +1115,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-cloudsecuritycompliance:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudsecuritycompliance"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-cloudsecuritycompliance
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-cloudsecuritycompliance
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-cloudtasks:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -3821,6 +3841,7 @@ jobs:
       - tests-e2e-fixtures-cloudiot
       - tests-e2e-fixtures-cloudquota
       - tests-e2e-fixtures-cloudscheduler
+      - tests-e2e-fixtures-cloudsecuritycompliance
       - tests-e2e-fixtures-cloudtasks
       - tests-e2e-fixtures-colab
       - tests-e2e-fixtures-composer
