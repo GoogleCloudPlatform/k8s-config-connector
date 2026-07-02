@@ -14,6 +14,8 @@
 
 package v1alpha1
 
+// NetworkSecurityTLSInspectionPolicy represents a TLS inspection policy resource.
+
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
