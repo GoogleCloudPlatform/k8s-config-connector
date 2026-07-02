@@ -28,7 +28,11 @@ go run . generate-types \
   --api-version videostitcher.cnrm.cloud.google.com/v1alpha1 \
   --resource VideoStitcherCDNKey:CdnKey
 
-# Note: We do not run generate-mapper here as this PR is for types/CRD/Identity only.
+go run . generate-mapper \
+  --service google.cloud.video.stitcher.v1 \
+  --api-version videostitcher.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/videostitcher/
