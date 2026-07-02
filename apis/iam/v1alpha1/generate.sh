@@ -25,13 +25,19 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
+  --service google.identity.accesscontextmanager.v1 \
+  --api-version iam.cnrm.cloud.google.com/v1alpha1 \
+  --resource IamAccessPolicy:AccessPolicy
+
+go run . generate-types \
   --service google.iam.v2 \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --resource IAMDenyPolicy:Policy
 
 go run . generate-mapper \
   --service google.iam.v2 \
-  --api-version iam.cnrm.cloud.google.com/v1alpha1
+  --api-version iam.cnrm.cloud.google.com/v1alpha1 \
+  --output-file v1alpha1_mapper.generated.go
 
 
 cd ${REPO_ROOT}

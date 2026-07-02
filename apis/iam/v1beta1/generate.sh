@@ -32,7 +32,8 @@ go run . generate-types \
 go run . generate-mapper \
     --service google.iam.admin.v1 \
     --api-version iam.cnrm.cloud.google.com/v1beta1 \
-    --include-skipped-output
+    --include-skipped-output \
+    --output-file v1beta1_mapper.generated.go
 
 
 cd ${REPO_ROOT}

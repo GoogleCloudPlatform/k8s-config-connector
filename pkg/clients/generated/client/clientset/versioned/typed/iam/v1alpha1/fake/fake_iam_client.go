@@ -35,6 +35,10 @@ func (c *FakeIamV1alpha1) IAMDenyPolicies(namespace string) v1alpha1.IAMDenyPoli
 	return newFakeIAMDenyPolicies(c, namespace)
 }
 
+func (c *FakeIamV1alpha1) IamAccessPolicies(namespace string) v1alpha1.IamAccessPolicyInterface {
+	return newFakeIamAccessPolicies(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeIamV1alpha1) RESTClient() rest.Interface {
