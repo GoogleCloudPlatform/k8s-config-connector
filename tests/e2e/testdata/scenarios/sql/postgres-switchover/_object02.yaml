@@ -1,0 +1,49 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  name: original-primary-${uniqueId}
+  namespace: ${projectId}
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-east1
+  replicationCluster:
+    failoverDrReplicaRef:
+      name: original-replica-${uniqueId}
+  settings:
+    backupConfiguration:
+      enabled: true
+      pointInTimeRecoveryEnabled: true
+    edition: ENTERPRISE_PLUS
+    tier: db-perf-optimized-N-2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  connectionName: ${projectId}:us-east1:original-primary-${uniqueId}
+  firstIpAddress: 10.1.2.3
+  instanceType: CLOUD_SQL_INSTANCE
+  ipAddress: 10.1.2.3
+  observedGeneration: 2
+  observedState:
+    replicationCluster: {}
+  publicIpAddress: 10.1.2.3
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/original-primary-${uniqueId}
+  serverCaCert:
+    cert: |
+      -----BEGIN CERTIFICATE-----
+      -----END CERTIFICATE-----
+    commonName: common-name
+    createTime: "1970-01-01T00:00:00Z"
+    expirationTime: "1970-01-01T00:00:00Z"
+    sha1Fingerprint: "12345678"
+  serviceAccountEmailAddress: p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com
