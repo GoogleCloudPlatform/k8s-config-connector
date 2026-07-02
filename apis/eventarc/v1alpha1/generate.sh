@@ -33,6 +33,11 @@ go run . generate-types \
   --resource EventarcChannelConnection:ChannelConnection \
   --resource EventarcGoogleAPISource:GoogleApiSource
 
+go run . generate-mapper \
+  --service google.cloud.eventarc.v1 \
+  --api-version eventarc.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
