@@ -158,6 +158,14 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 
 	obj.Generation = PtrTo(time.Now().UnixNano())
 
+	if obj.Autoclass != nil && obj.Autoclass.GetEnabled() {
+		if obj.Autoclass.TerminalStorageClass == nil {
+			obj.Autoclass.TerminalStorageClass = PtrTo("NEARLINE")
+		}
+		obj.Autoclass.TerminalStorageClassUpdateTime = now
+		obj.Autoclass.ToggleTime = now
+	}
+
 	obj.Etag = PtrTo(computeEtag(obj))
 	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
 		obj.Lifecycle = nil
@@ -285,6 +293,7 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 	if err != nil {
 		return nil, err
 	}
+	now := timestamppb.Now()
 
 	if patch := req.Bucket; patch != nil {
 		if patch.Labels != nil {
@@ -313,11 +322,40 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 				}
 			}
 		}
+		if patch.Autoclass != nil {
+			if obj.Autoclass == nil {
+				obj.Autoclass = &pb.BucketAutoclass{}
+			}
+			if patch.Autoclass.Enabled != nil {
+				if obj.Autoclass.GetEnabled() != patch.Autoclass.GetEnabled() {
+					obj.Autoclass.Enabled = patch.Autoclass.Enabled
+					obj.Autoclass.ToggleTime = now
+				}
+			}
+			if patch.Autoclass.TerminalStorageClass != nil {
+				if obj.Autoclass.GetTerminalStorageClass() != patch.Autoclass.GetTerminalStorageClass() {
+					obj.Autoclass.TerminalStorageClass = patch.Autoclass.TerminalStorageClass
+					obj.Autoclass.TerminalStorageClassUpdateTime = now
+				}
+			}
+		}
 	}
 
 	// Remove empty lifecycle (no rules)
 	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
 		obj.Lifecycle = nil
+	}
+
+	if obj.Autoclass != nil && obj.Autoclass.GetEnabled() {
+		if obj.Autoclass.TerminalStorageClass == nil {
+			obj.Autoclass.TerminalStorageClass = PtrTo("NEARLINE")
+		}
+		if obj.Autoclass.TerminalStorageClassUpdateTime == nil {
+			obj.Autoclass.TerminalStorageClassUpdateTime = now
+		}
+		if obj.Autoclass.ToggleTime == nil {
+			obj.Autoclass.ToggleTime = now
+		}
 	}
 
 	obj.Metageneration = PtrTo(int64(obj.GetMetageneration() + 1))
