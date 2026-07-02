@@ -39,6 +39,9 @@ A complete test fixture directory contains:
 > Generating mock-only golden logs via `compare-mock` or `go test` without first recording live traffic against real GCP is strictly prohibited.
 > If the environment does not have a pre-configured GCP project ID, or if running `hack/record-gcp` fails due to authentication/project ID errors, you **MUST STOP IMMEDIATELY** and ask the user to provide a valid GCP Project ID. Do not try to bypass this requirement.
 
+> [!WARNING]
+> **Do not run `go test` directly**: When running or recording E2E tests, always prefer using `./dev/tasks/run-e2e` (or scripts like `hack/record-gcp` and `hack/compare-mock` that wrap it) instead of running `go test` directly in the shell or IDE. Running `go test` directly may bypass `KUBEBUILDER_ASSETS` configuration and fall back to an older global version of `kube-apiserver` (such as a legacy `/usr/local/kubebuilder/bin/` copy), leading to incorrect fields like `metadata.selfLink` being generated in the golden files.
+
 To establish a baseline or update golden logs, you must run the tests against a real GCP project. This records actual HTTP/gRPC API interactions into the `_http.log` file.
 
 ### A. Authentication and Credentials
@@ -111,6 +114,9 @@ To prevent `_http.log` and golden files from introducing undue/mixed changes bet
 ---
 
 ## 4. Running against MockGCP and Checking Diffs
+
+> [!WARNING]
+> **Do not run `go test` directly**: Ensure you run tests via `hack/compare-mock` or `./dev/tasks/run-e2e` to guarantee the test uses the correct modern `envtest` control plane version (v1.36+). Direct execution of `go test` can result in false test failures due to `selfLink` or other deprecated metadata field mismatches.
 
 To verify the mock implementation matches real GCP behavior:
 
