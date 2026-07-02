@@ -24,3 +24,5 @@ package v1alpha1
 type CloudSecurityComplianceCloudControlExpansion interface{}
 
 type CloudSecurityComplianceFrameworkExpansion interface{}
+
+type CloudSecurityFrameworkExpansion interface{}

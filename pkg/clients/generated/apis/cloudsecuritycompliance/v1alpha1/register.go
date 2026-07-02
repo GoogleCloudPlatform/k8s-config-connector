@@ -65,5 +65,11 @@ var (
 		Kind:    reflect.TypeOf(CloudSecurityComplianceFramework{}).Name(),
 	}
 
+	CloudSecurityFrameworkGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudSecurityFramework{}).Name(),
+	}
+
 	cloudsecuritycomplianceAPIVersion = SchemeGroupVersion.String()
 )
