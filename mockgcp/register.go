@@ -23,6 +23,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockautoml"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryreservation"

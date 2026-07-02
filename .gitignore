@@ -160,6 +160,7 @@ go.work.sum
 e2e.log
 testlogs/
 log
+run-*.log
 
 # failing fuzz output
 pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
