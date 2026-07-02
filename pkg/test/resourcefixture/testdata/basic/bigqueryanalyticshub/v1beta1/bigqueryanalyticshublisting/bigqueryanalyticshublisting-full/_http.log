@@ -180,7 +180,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 
 {
-  "discoveryType": 0,
   "displayName": "my_data_exchange"
 }
 
@@ -383,7 +382,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}?updateMask=displayName%2Cdescription%2CprimaryContact%2Cdocumentation%2CdiscoveryType%2CdataProvider%2Cpublisher%2Ccategories
+PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}?updateMask=bigqueryDataset%2Ccategories%2CdataProvider%2Cdescription%2CdiscoveryType%2CdisplayName%2Cdocumentation%2CprimaryContact%2Cpublisher%2CrequestAccess
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: listing.name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
@@ -431,14 +430,7 @@ X-Xss-Protection: 0
 {
   "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
-    "effectiveReplicas": [
-      {
-        "location": "us",
-        "primaryState": "PRIMARY_REPLICA",
-        "replicaState": "READY_TO_USE"
-      }
-    ],
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
     "restrictedExportPolicy": {
       "enabled": true,
       "restrictDirectTableAccess": true,
@@ -464,7 +456,7 @@ X-Xss-Protection: 0
     "name": "updated",
     "primaryContact": "updated@updated.com"
   },
-  "requestAccess": "someone@something.com",
+  "requestAccess": "req@req.com",
   "resourceType": "BIGQUERY_DATASET",
   "restrictedExportConfig": {
     "enabled": true,
@@ -493,14 +485,7 @@ X-Xss-Protection: 0
 {
   "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
-    "effectiveReplicas": [
-      {
-        "location": "us",
-        "primaryState": "PRIMARY_REPLICA",
-        "replicaState": "READY_TO_USE"
-      }
-    ],
+    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
     "restrictedExportPolicy": {
       "enabled": true,
       "restrictDirectTableAccess": true,
@@ -526,7 +511,7 @@ X-Xss-Protection: 0
     "name": "updated",
     "primaryContact": "updated@updated.com"
   },
-  "requestAccess": "someone@something.com",
+  "requestAccess": "req@req.com",
   "resourceType": "BIGQUERY_DATASET",
   "restrictedExportConfig": {
     "enabled": true,

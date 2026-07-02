@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+        "message": "Not found: Dataset ${projectId}:${datasetID}",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+    "message": "Not found: Dataset ${projectId}:${datasetID}",
     "status": "NOT_FOUND"
   }
 }
@@ -35,14 +35,14 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}"
+    "datasetId": "${datasetID}"
   },
   "friendlyName": "my-bigquerydataset",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "US"
+  "location": "us-central1"
 }
 
 200 OK
@@ -76,7 +76,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "${datasetID}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -88,8 +88,8 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "US",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "location": "us-central1",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}",
   "type": "DEFAULT"
 }
 
@@ -130,7 +130,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "${datasetID}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -142,18 +142,18 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "US",
+  "location": "us-central1",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}",
   "type": "DEFAULT"
 }
 
 ---
 
-GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -167,17 +167,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Failed to find data exchange in projects/${projectNumber}: dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+    "message": "Failed to find data exchange in projects/${projectNumber}: dataExchanges/${datasetID}",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges?dataExchangeId=bigqueryanalyticshubdataexchange${uniqueId}
+POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges?dataExchangeId=${datasetID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "displayName": "my_data_exchange"
@@ -196,7 +196,7 @@ X-Xss-Protection: 0
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "logLinkedDatasetQueryUserEmail": false,
-  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/dataExchanges/${datasetID}",
   "sharingEnvironmentConfig": {
     "defaultExchangeConfig": {}
   }
@@ -204,10 +204,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}%2Flistings%2Fbqahlisting-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 404 Not Found
@@ -222,24 +222,24 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Failed to find listing: projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+    "message": "Failed to find listing: projects/${projectNumber}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings?listingId=bigqueryanalyticshublisting${uniqueId}
+POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}/listings?listingId=bqahlisting-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}
 X-Goog-User-Project: ${projectId}
 
 {
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}"
+    "dataset": "projects/${projectId}/datasets/${datasetID}"
   },
-  "displayName": "my_data_exchange"
+  "displayName": "Basic Listing"
 }
 
 200 OK
@@ -254,7 +254,7 @@ X-Xss-Protection: 0
 {
   "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
+    "dataset": "projects/${projectNumber}/datasets/${datasetID}",
     "effectiveReplicas": [
       {
         "location": "us",
@@ -270,9 +270,9 @@ X-Xss-Protection: 0
   },
   "dataProvider": {},
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
-  "displayName": "my_data_exchange",
+  "displayName": "Basic Listing",
   "logLinkedDatasetQueryUserEmail": false,
-  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}",
   "publisher": {},
   "resourceType": "BIGQUERY_DATASET",
   "restrictedExportConfig": {},
@@ -281,10 +281,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}%2Flistings%2Fbqahlisting-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -299,7 +299,7 @@ X-Xss-Protection: 0
 {
   "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
+    "dataset": "projects/${projectNumber}/datasets/${datasetID}",
     "effectiveReplicas": [
       {
         "location": "us",
@@ -315,9 +315,9 @@ X-Xss-Protection: 0
   },
   "dataProvider": {},
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
-  "displayName": "my_data_exchange",
+  "displayName": "Basic Listing",
   "logLinkedDatasetQueryUserEmail": false,
-  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}",
   "publisher": {},
   "resourceType": "BIGQUERY_DATASET",
   "restrictedExportConfig": {},
@@ -326,18 +326,19 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}?updateMask=bigqueryDataset%2CdiscoveryType%2CdisplayName
+PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}?updateMask=bigqueryDataset%2Cdescription%2CdiscoveryType%2CdisplayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: listing.name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-Request-Params: listing.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}%2Flistings%2Fbqahlisting-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 {
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}"
+    "dataset": "projects/${projectId}/datasets/${datasetID}"
   },
-  "displayName": "updated_name",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}"
+  "description": "An updated description",
+  "displayName": "Updated Basic Listing",
+  "name": "projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}"
 }
 
 200 OK
@@ -352,13 +353,14 @@ X-Xss-Protection: 0
 {
   "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}"
+    "dataset": "projects/${projectId}/datasets/${datasetID}"
   },
   "dataProvider": {},
+  "description": "An updated description",
   "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
-  "displayName": "updated_name",
+  "displayName": "Updated Basic Listing",
   "logLinkedDatasetQueryUserEmail": false,
-  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}",
   "publisher": {},
   "resourceType": "BIGQUERY_DATASET",
   "restrictedExportConfig": {},
@@ -367,10 +369,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}%2Flistings%2Fbqahlisting-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -385,13 +387,14 @@ X-Xss-Protection: 0
 {
   "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}"
+    "dataset": "projects/${projectId}/datasets/${datasetID}"
   },
   "dataProvider": {},
+  "description": "An updated description",
   "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
-  "displayName": "updated_name",
+  "displayName": "Updated Basic Listing",
   "logLinkedDatasetQueryUserEmail": false,
-  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}",
   "publisher": {},
   "resourceType": "BIGQUERY_DATASET",
   "restrictedExportConfig": {},
@@ -400,10 +403,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
+DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}/listings/bqahlisting-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}%2Flistings%2Fbqahlisting-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -419,10 +422,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -437,7 +440,7 @@ X-Xss-Protection: 0
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "logLinkedDatasetQueryUserEmail": false,
-  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/dataExchanges/${datasetID}",
   "sharingEnvironmentConfig": {
     "defaultExchangeConfig": {}
   }
@@ -445,10 +448,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
+DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dataExchanges/${datasetID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdataExchanges%2F${datasetID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -498,7 +501,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "${datasetID}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -510,9 +513,9 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "US",
+  "location": "us-central1",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}",
   "type": "DEFAULT"
 }
 

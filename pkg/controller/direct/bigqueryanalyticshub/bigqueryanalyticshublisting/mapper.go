@@ -1,6 +1,6 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
+// Licensed under the Apache License, Version-2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package bigqueryanalyticshub
+package bigqueryanalyticshublisting
 
 import (
 	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
@@ -21,51 +21,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
-
-func BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.BigQueryAnalyticsHubDataExchangeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigQueryAnalyticsHubDataExchangeObservedState{}
-	out.ListingCount = direct.LazyPtr(int64(in.GetListingCount()))
-	// MISSING: SharingEnvironmentConfig // not yet
-	return out
-}
-
-func BigQueryAnalyticsHubDataExchangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataExchange) *krm.BigQueryAnalyticsHubDataExchangeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigQueryAnalyticsHubDataExchangeSpec{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.PrimaryContact = direct.LazyPtr(in.GetPrimaryContact())
-	out.Documentation = direct.LazyPtr(in.GetDocumentation())
-	// s := string(in.GetIcon())
-	// out.Icon = &s // not yet
-	// MISSING: SharingEnvironmentConfig // not yet
-	out.DiscoveryType = direct.Enum_FromProto(mapCtx, in.GetDiscoveryType())
-	return out
-}
-func BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryAnalyticsHubDataExchangeSpec) *pb.DataExchange {
-	if in == nil {
-		return nil
-	}
-
-	out := &pb.DataExchange{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.PrimaryContact = direct.ValueOf(in.PrimaryContact)
-	out.Documentation = direct.ValueOf(in.Documentation)
-	// out.Icon = []byte(direct.ValueOf(in.Icon)) // not yet
-	// MISSING: SharingEnvironmentConfig // not yet
-	if in.DiscoveryType != nil {
-		dtype := direct.Enum_ToProto[pb.DiscoveryType](mapCtx, in.DiscoveryType)
-		out.DiscoveryType = &dtype
-	}
-
-	return out
-}
 
 func Categories_FromProto(mapCtx *direct.MapContext, in []pb.Listing_Category) []string {
 	if in == nil {
@@ -112,7 +67,7 @@ func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.L
 		return nil
 	}
 	out := &krm.BigQueryDatasetSource{}
-	if out.DatasetRef != nil {
+	if in.Dataset != "" {
 		out.DatasetRef = &bigqueryv1beta1.DatasetRef{
 			External: in.Dataset,
 		}
@@ -136,6 +91,7 @@ func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.Map
 
 	return out
 }
+
 func Listing_BigQueryDatasetSource_SelectedResource_ToProto(mapCtx *direct.MapContext, in *krm.SelectedResource) *pb.Listing_BigQueryDatasetSource_SelectedResource {
 	if in == nil {
 		return nil
@@ -167,6 +123,7 @@ func Listing_BigQueryDatasetSource_RestrictedExportPolicy_FromProto(mapCtx *dire
 
 	return out
 }
+
 func Listing_BigQueryDatasetSource_RestrictedExportPolicy_ToProto(mapCtx *direct.MapContext, in *krm.RestrictedExportPolicy) *pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy {
 	if in == nil {
 		return nil
@@ -256,28 +213,35 @@ func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krm.Bi
 		return nil
 	}
 	out := &pb.Listing_BigqueryDataset{}
+	out.BigqueryDataset = &pb.Listing_BigQueryDatasetSource{}
 
 	if in.DatasetRef != nil {
-		out.BigqueryDataset = &pb.Listing_BigQueryDatasetSource{
-			Dataset: in.DatasetRef.External,
-		}
+		out.BigqueryDataset.Dataset = in.DatasetRef.External
 	}
 
 	if in.RestrictedExportPolicy != nil {
 		out.BigqueryDataset.RestrictedExportPolicy = &pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy{}
-		out.BigqueryDataset.RestrictedExportPolicy.Enabled = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.Enabled}
-		out.BigqueryDataset.RestrictedExportPolicy.RestrictDirectTableAccess = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.RestrictDirectTableAccess}
-		out.BigqueryDataset.RestrictedExportPolicy.RestrictQueryResult = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.RestrictQueryResult}
+		if in.RestrictedExportPolicy.Enabled != nil {
+			out.BigqueryDataset.RestrictedExportPolicy.Enabled = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.Enabled}
+		}
+		if in.RestrictedExportPolicy.RestrictDirectTableAccess != nil {
+			out.BigqueryDataset.RestrictedExportPolicy.RestrictDirectTableAccess = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.RestrictDirectTableAccess}
+		}
+		if in.RestrictedExportPolicy.RestrictQueryResult != nil {
+			out.BigqueryDataset.RestrictedExportPolicy.RestrictQueryResult = &wrapperspb.BoolValue{Value: *in.RestrictedExportPolicy.RestrictQueryResult}
+		}
 	}
 
 	if in.SelectedResources != nil {
 		out.BigqueryDataset.SelectedResources = []*pb.Listing_BigQueryDatasetSource_SelectedResource{}
 		for _, tableRef := range in.SelectedResources {
-			out.BigqueryDataset.SelectedResources = append(out.BigqueryDataset.SelectedResources, &pb.Listing_BigQueryDatasetSource_SelectedResource{
-				Resource: &pb.Listing_BigQueryDatasetSource_SelectedResource_Table{
-					Table: tableRef.TableRef.External,
-				},
-			})
+			if tableRef.TableRef != nil {
+				out.BigqueryDataset.SelectedResources = append(out.BigqueryDataset.SelectedResources, &pb.Listing_BigQueryDatasetSource_SelectedResource{
+					Resource: &pb.Listing_BigQueryDatasetSource_SelectedResource_Table{
+						Table: tableRef.TableRef.External,
+					},
+				})
+			}
 		}
 	}
 
