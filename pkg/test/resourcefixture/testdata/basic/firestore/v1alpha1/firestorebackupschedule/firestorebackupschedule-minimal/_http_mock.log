@@ -204,101 +204,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "appEngineIntegrationMode": 2,
-  "concurrencyMode": 2,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseEdition": 1,
-  "deleteProtectionState": 1,
-  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "freeTier": true,
-  "locationId": "us-west2",
-  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
-  "pointInTimeRecoveryEnablement": 2,
-  "type": 1,
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "versionRetentionPeriod": "3600s"
-}
-
----
-
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}%2FbackupSchedules%2F${backupScheduleID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "dailyRecurrence": {},
-  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}",
-  "retention": "604800s",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "appEngineIntegrationMode": 2,
-  "concurrencyMode": 2,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseEdition": 1,
-  "deleteProtectionState": 1,
-  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "freeTier": true,
-  "locationId": "us-west2",
-  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
-  "pointInTimeRecoveryEnablement": 2,
-  "type": 1,
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "versionRetentionPeriod": "3600s"
-}
-
----
-
 DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}/backupSchedules/${backupScheduleID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -315,6 +220,41 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ftest-db-min-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appEngineIntegrationMode": 2,
+  "concurrencyMode": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseEdition": 1,
+  "deleteProtectionState": 1,
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "freeTier": true,
+  "locationId": "us-west2",
+  "name": "projects/${projectId}/databases/test-db-min-${uniqueId}",
+  "pointInTimeRecoveryEnablement": 2,
+  "type": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionRetentionPeriod": "3600s"
+}
 
 ---
 
