@@ -1,0 +1,14 @@
+6,8d5
+<     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"httpCheck":{"authInfo":{"password":{"valueFrom":{"secretKeyRef":{"key":"password","name":"secret-2-${uniqueId}"}}}},"headers":{"header-one":"value-one","header-two":"value-two"}}}}'
+<     cnrm.cloud.google.com/observed-secret-versions: (removed)
+<     cnrm.cloud.google.com/state-into-spec: absent
+12c9
+<   generation: 3
+---
+>   generation: 2
+49d45
+<   resourceID: ${uptimeCheckConfigId}
+62c58
+<   observedGeneration: 3
+---
+>   observedGeneration: 2

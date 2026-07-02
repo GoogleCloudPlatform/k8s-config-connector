@@ -1,0 +1,377 @@
+1,2c1
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+5,40c4
+<   "contentMatchers": [
+<     {
+<       "content": ".*",
+<       "matcher": "MATCHES_REGEX"
+<     }
+<   ],
+<   "displayName": "http-uptime-check",
+<   "httpCheck": {
+<     "authInfo": {
+<       "password": "testABC",
+<       "username": "name"
+<     },
+<     "body": "c3RyaW5nCg==",
+<     "contentType": "URL_ENCODED",
+<     "headers": {
+<       "header-one": "value-one"
+<     },
+<     "maskHeaders": true,
+<     "path": "/main",
+<     "port": 80,
+<     "requestMethod": "POST",
+<     "useSsl": true,
+<     "validateSsl": false
+<   },
+<   "monitoredResource": {
+<     "labels": {
+<       "host": "192.168.1.1",
+<       "project_id": "${projectId}"
+<     },
+<     "type": "uptime_url"
+<   },
+<   "period": "60s",
+<   "selectedRegions": [
+<     "USA"
+<   ],
+<   "timeout": "30s"
+---
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+43,51c7
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+53,92c9
+< {
+<   "checkerType": "STATIC_IP_CHECKERS",
+<   "contentMatchers": [
+<     {
+<       "content": ".*",
+<       "matcher": "MATCHES_REGEX"
+<     }
+<   ],
+<   "displayName": "http-uptime-check",
+<   "httpCheck": {
+<     "authInfo": {
+<       "password": "******",
+<       "username": "name"
+<     },
+<     "body": "c3RyaW5nCg==",
+<     "contentType": "URL_ENCODED",
+<     "headers": {
+<       "Content-Length": "******",
+<       "header-one": "******"
+<     },
+<     "maskHeaders": true,
+<     "path": "/main",
+<     "port": 80,
+<     "requestMethod": "POST",
+<     "useSsl": true
+<   },
+<   "monitoredResource": {
+<     "labels": {
+<       "host": "192.168.1.1",
+<       "project_id": "${projectId}"
+<     },
+<     "type": "uptime_url"
+<   },
+<   "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+<   "period": "60s",
+<   "selectedRegions": [
+<     "USA"
+<   ],
+<   "timeout": "30s"
+< }
+---
+> {}
+96,97c13,53
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/CreateUptimeCheckConfig
+> 
+> {
+>   "parent": "projects/${projectId}",
+>   "uptimeCheckConfig": {
+>     "contentMatchers": [
+>       {
+>         "content": ".*",
+>         "matcher": "MATCHES_REGEX"
+>       }
+>     ],
+>     "displayName": "http-uptime-check",
+>     "httpCheck": {
+>       "authInfo": {
+>         "username": "name"
+>       },
+>       "body": "YzNSeWFXNW5DZz09",
+>       "contentType": "URL_ENCODED",
+>       "headers": {
+>         "header-one": "value-one"
+>       },
+>       "maskHeaders": true,
+>       "path": "/main",
+>       "port": 80,
+>       "requestMethod": "POST",
+>       "useSsl": true
+>     },
+>     "monitoredResource": {
+>       "labels": {
+>         "host": "192.168.1.1",
+>         "project_id": "${projectId}"
+>       },
+>       "type": "uptime_url"
+>     },
+>     "period": "60s",
+>     "selectedRegions": [
+>       "USA"
+>     ],
+>     "timeout": "30s"
+>   }
+> }
+99,107c55
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+123c71
+<     "body": "c3RyaW5nCg==",
+---
+>     "body": "YzNSeWFXNW5DZz09",
+152,153c100
+< PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName%2ChttpCheck.authInfo.password%2ChttpCheck.authInfo.username%2ChttpCheck.body%2ChttpCheck.headers%2ChttpCheck.path%2ChttpCheck.port%2ChttpCheck.validateSsl%2Cperiod%2CselectedRegions
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+156,188c103
+<   "contentMatchers": [
+<     {
+<       "content": ".*",
+<       "matcher": "MATCHES_REGEX"
+<     }
+<   ],
+<   "displayName": "updated-http-uptime-check",
+<   "httpCheck": {
+<     "authInfo": {
+<       "password": "testXYZ",
+<       "username": "new-name"
+<     },
+<     "body": "bmV3LXN0cmluZwo=",
+<     "contentType": "URL_ENCODED",
+<     "headers": {
+<       "header-one": "value-one",
+<       "header-two": "value-two"
+<     },
+<     "maskHeaders": true,
+<     "path": "/other",
+<     "port": 81,
+<     "requestMethod": "POST",
+<     "useSsl": true,
+<     "validateSsl": true
+<   },
+<   "name": "projects/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+<   "period": "300s",
+<   "selectedRegions": [
+<     "EUROPE",
+<     "SOUTH_AMERICA",
+<     "ASIA_PACIFIC"
+<   ],
+<   "timeout": "30s"
+---
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+191,199c106
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+201,244c108
+< {
+<   "checkerType": "STATIC_IP_CHECKERS",
+<   "contentMatchers": [
+<     {
+<       "content": ".*",
+<       "matcher": "MATCHES_REGEX"
+<     }
+<   ],
+<   "displayName": "updated-http-uptime-check",
+<   "httpCheck": {
+<     "authInfo": {
+<       "password": "******",
+<       "username": "new-name"
+<     },
+<     "body": "bmV3LXN0cmluZwo=",
+<     "contentType": "URL_ENCODED",
+<     "headers": {
+<       "Content-Length": "******",
+<       "header-one": "******",
+<       "header-two": "******"
+<     },
+<     "maskHeaders": true,
+<     "path": "/other",
+<     "port": 81,
+<     "requestMethod": "POST",
+<     "useSsl": true,
+<     "validateSsl": true
+<   },
+<   "monitoredResource": {
+<     "labels": {
+<       "host": "192.168.1.1",
+<       "project_id": "${projectId}"
+<     },
+<     "type": "uptime_url"
+<   },
+<   "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+<   "period": "300s",
+<   "selectedRegions": [
+<     "EUROPE",
+<     "SOUTH_AMERICA",
+<     "ASIA_PACIFIC"
+<   ],
+<   "timeout": "30s"
+< }
+---
+> {}
+248,249c112,156
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/CreateUptimeCheckConfig
+> 
+> {
+>   "parent": "projects/${projectId}",
+>   "uptimeCheckConfig": {
+>     "contentMatchers": [
+>       {
+>         "content": ".*",
+>         "matcher": "MATCHES_REGEX"
+>       }
+>     ],
+>     "displayName": "updated-http-uptime-check",
+>     "httpCheck": {
+>       "authInfo": {
+>         "username": "new-name"
+>       },
+>       "body": "Ym1WM0xYTjBjbWx1WndvPQ==",
+>       "contentType": "URL_ENCODED",
+>       "headers": {
+>         "header-one": "value-one",
+>         "header-two": "value-two"
+>       },
+>       "maskHeaders": true,
+>       "path": "/other",
+>       "port": 81,
+>       "requestMethod": "POST",
+>       "useSsl": true,
+>       "validateSsl": true
+>     },
+>     "monitoredResource": {
+>       "labels": {
+>         "host": "192.168.1.1",
+>         "project_id": "${projectId}"
+>       },
+>       "type": "uptime_url"
+>     },
+>     "period": "300s",
+>     "selectedRegions": [
+>       "EUROPE",
+>       "SOUTH_AMERICA",
+>       "ASIA_PACIFIC"
+>     ],
+>     "timeout": "30s"
+>   }
+> }
+251,259c158
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> OK
+275c174
+<     "body": "bmV3LXN0cmluZwo=",
+---
+>     "body": "Ym1WM0xYTjBjbWx1WndvPQ==",
+308,309c207,211
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+> 
+> {
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+> }
+311,319c213
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+325,336c219
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+339,344c222,227
+<   "error": {
+<     "code": 404,
+<     "message": "Config not found for check ${uptimeCheckConfigID} in project ${projectId}",
+<     "status": "NOT_FOUND"
+<   }
+< }
+\ No newline at end of file
+---
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+> 
+> {}
+\ No newline at end of file
