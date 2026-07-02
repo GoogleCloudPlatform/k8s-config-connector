@@ -23,7 +23,10 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-# Hand-written types, no proto generation yet.
+go run . generate-types \
+  --service google.cloud.gkehub.v1 \
+  --api-version gkehub.cnrm.cloud.google.com/v1alpha1 \
+  --resource GKEHubFleet:Fleet
 
 # --- v1beta1 ---
 go run . generate-types \
