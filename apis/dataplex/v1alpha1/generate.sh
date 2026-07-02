@@ -37,26 +37,7 @@ go run . generate-types \
     --resource DataplexDataScan:DataScan \
     --resource DataplexMetadataJob:MetadataJob
 
-# Post-process types.generated.go to inject kubebuilder validation annotations for recursive self-referential fields
-python3 -c "
-path = '${REPO_ROOT}/apis/dataplex/v1alpha1/types.generated.go'
-with open(path, 'r') as f:
-    content = f.read()
-content = content.replace(
-    'RecordFields []AspectType_MetadataTemplate \`json:\"recordFields,omitempty\"\`',
-    '// +kubebuilder:validation:items:XPreserveUnknownFields\n\t// +kubebuilder:validation:items:Type=object\n\tRecordFields []AspectType_MetadataTemplate \`json:\"recordFields,omitempty\"\`'
-)
-content = content.replace(
-    'MapItems *AspectType_MetadataTemplate \`json:\"mapItems,omitempty\"\`',
-    '// +kubebuilder:validation:XPreserveUnknownFields\n\t// +kubebuilder:validation:Type=object\n\tMapItems *AspectType_MetadataTemplate \`json:\"mapItems,omitempty\"\`'
-)
-content = content.replace(
-    'ArrayItems *AspectType_MetadataTemplate \`json:\"arrayItems,omitempty\"\`',
-    '// +kubebuilder:validation:XPreserveUnknownFields\n\t// +kubebuilder:validation:Type=object\n\tArrayItems *AspectType_MetadataTemplate \`json:\"arrayItems,omitempty\"\`'
-)
-with open(path, 'w') as f:
-    f.write(content)
-"
+# Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 
 go run . generate-mapper \
     --service google.cloud.dataplex.v1 \
