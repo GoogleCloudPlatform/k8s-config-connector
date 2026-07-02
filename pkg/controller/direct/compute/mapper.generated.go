@@ -4311,6 +4311,50 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	return out
 }
 
+/* found existing non-generated mapping function "ComputeTargetHTTPProxySpec_v1beta1_FromProto", skipping
+func ComputeTargetHTTPProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetHttpProxy) *krm.ComputeTargetHTTPProxySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetHTTPProxySpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: HTTPKeepAliveTimeoutSec
+	// (near miss): "HTTPKeepAliveTimeoutSec" vs "HttpKeepAliveTimeoutSec"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.ProxyBind = in.ProxyBind
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: URLMap
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetHTTPProxySpec_v1beta1_ToProto", skipping
+func ComputeTargetHTTPProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetHTTPProxySpec) *pb.TargetHttpProxy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetHttpProxy{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: HTTPKeepAliveTimeoutSec
+	// (near miss): "HTTPKeepAliveTimeoutSec" vs "HttpKeepAliveTimeoutSec"
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	out.ProxyBind = in.ProxyBind
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: URLMap
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeTargetHTTPSProxyObservedState_v1beta1_FromProto", skipping
 func ComputeTargetHTTPSProxyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetHttpsProxy) *krm.ComputeTargetHTTPSProxyObservedState {
 	if in == nil {
