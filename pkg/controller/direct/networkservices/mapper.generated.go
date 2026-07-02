@@ -69,7 +69,11 @@ func ExtensionChain_Extension_FromProto(mapCtx *direct.MapContext, in *pb.Extens
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
 	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
 	out.ForwardHeaders = in.ForwardHeaders
+	// MISSING: ForwardAttributes
 	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
+	// MISSING: RequestBodySendMode
+	// MISSING: ResponseBodySendMode
+	// MISSING: ObservabilityMode
 	return out
 }
 */
@@ -87,7 +91,11 @@ func ExtensionChain_Extension_ToProto(mapCtx *direct.MapContext, in *krmnetworks
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
 	out.FailOpen = direct.ValueOf(in.FailOpen)
 	out.ForwardHeaders = in.ForwardHeaders
+	// MISSING: ForwardAttributes
 	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+	// MISSING: RequestBodySendMode
+	// MISSING: ResponseBodySendMode
+	// MISSING: ObservabilityMode
 	return out
 }
 */
@@ -129,6 +137,7 @@ func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gate
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Addresses = in.Addresses
 	out.Ports = in.Ports
+	// MISSING: AllPorts
 	out.Scope = in.GetScope()
 	// MISSING: ServerTLSPolicy
 	// MISSING: CertificateUrls
@@ -138,6 +147,7 @@ func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gate
 	// MISSING: IPVersion
 	// MISSING: EnvoyHeaders
 	// MISSING: RoutingMode
+	// MISSING: AllowGlobalAccess
 	return out
 }
 */
@@ -157,6 +167,7 @@ func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.Netwo
 	out.Type = direct.Enum_ToProto[pb.Gateway_Type](mapCtx, in.Type)
 	out.Addresses = in.Addresses
 	out.Ports = in.Ports
+	// MISSING: AllPorts
 	out.Scope = NetworkServicesGatewaySpec_Scope_ToProto(mapCtx, in.Scope)
 	// MISSING: ServerTLSPolicy
 	// MISSING: CertificateUrls
@@ -166,6 +177,7 @@ func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.Netwo
 	// MISSING: IPVersion
 	// MISSING: EnvoyHeaders
 	// MISSING: RoutingMode
+	// MISSING: AllowGlobalAccess
 	return out
 }
 */

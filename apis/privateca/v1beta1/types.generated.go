@@ -72,6 +72,14 @@ type CAPool struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.publishing_options
 	PublishingOptions *CAPool_PublishingOptions `json:"publishingOptions,omitempty"`
 
+	// Optional. When
+	//  [EncryptionSpec][google.cloud.security.privateca.v1.EncryptionSpec] is
+	//  provided, the [Subject][google.cloud.security.privateca.v1.Subject],
+	//  [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames], and
+	//  the PEM-encoded certificate fields will be encrypted at rest.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+
 	// Optional. Labels with user-defined metadata.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.labels
 	Labels map[string]string `json:"labels,omitempty"`
@@ -89,15 +97,32 @@ type CAPool_IssuancePolicy struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allowed_key_types
 	AllowedKeyTypes []CAPool_IssuancePolicy_AllowedKeyType `json:"allowedKeyTypes,omitempty"`
 
-	// Optional. The duration to backdate all certificates issued from this
-	//  [CaPool][google.cloud.security.privateca.v1.CaPool]. If not set, the
-	//  certificates will be issued with a not_before_time of the issuance time
-	//  (i.e. the current time). If set, the certificates will be issued with a
-	//  not_before_time of the issuance time minus the backdate_duration. The
-	//  not_after_time will be adjusted to preserve the requested lifetime. The
-	//  backdate_duration must be less than or equal to 48 hours.
+	// Optional. If set, all certificates issued from this
+	//  [CaPool][google.cloud.security.privateca.v1.CaPool] will be backdated by
+	//  this duration. The 'not_before_time' will be the issuance time minus this
+	//  [backdate_duration][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration],
+	//  and the 'not_after_time' will be adjusted to preserve the requested
+	//  lifetime. The maximum duration that a certificate can be backdated with
+	//  these options is 48 hours in the past.
+	//  This option cannot be set if
+	//  [allow_requester_specified_not_before_time][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allow_requester_specified_not_before_time]
+	//  is set.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration
 	BackdateDuration *string `json:"backdateDuration,omitempty"`
+
+	// Optional. If set to true, allows requesters to specify the
+	//  [requested_not_before_time][google.cloud.security.privateca.v1.Certificate.requested_not_before_time]
+	//  field when creating a
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate].
+	//  Certificates requested with this option enabled will have a
+	//  'not_before_time' equal to the value specified in the request. The
+	//  'not_after_time' will be adjusted to preserve the requested lifetime. The
+	//  maximum time that a certificate can be backdated with these options is 48
+	//  hours in the past. This option cannot be set if
+	//  [backdate_duration][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration]
+	//  is set.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allow_requester_specified_not_before_time
+	AllowRequesterSpecifiedNotBeforeTime *bool `json:"allowRequesterSpecifiedNotBeforeTime,omitempty"`
 
 	// Optional. The maximum lifetime allowed for issued
 	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. Note that
@@ -586,6 +611,16 @@ type CertificateIdentityConstraints struct {
 	//  be discarded.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateIdentityConstraints.allow_subject_alt_names_passthrough
 	AllowSubjectAltNamesPassthrough *bool `json:"allowSubjectAltNamesPassthrough,omitempty"`
+}
+*/
+
+/* unreachable type EncryptionSpec
+// +kcc:proto=google.cloud.security.privateca.v1.EncryptionSpec
+type EncryptionSpec struct {
+	// The resource name for a Cloud KMS key in the format
+	//  `projects/-*-/locations/-*-/keyRings/-*-/cryptoKeys/-*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.EncryptionSpec.cloud_kms_key
+	CloudKMSKey *string `json:"cloudKMSKey,omitempty"`
 }
 */
 

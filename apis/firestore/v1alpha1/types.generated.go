@@ -30,6 +30,17 @@ type DailyRecurrence struct {
 /* unreachable type Field_TTLConfig
 // +kcc:proto=google.firestore.admin.v1.Field.TtlConfig
 type Field_TTLConfig struct {
+
+	// Optional. The offset, relative to the timestamp value from the
+	//  TTL-enabled field, used to determine the document's expiration time.
+	//
+	//  `expiration_offset.seconds` must be between 0 and 2,147,483,647
+	//  inclusive. Values more precise than seconds are rejected.
+	//
+	//  If unset, defaults to 0, in which case the expiration time is the same
+	//  as the timestamp value from the TTL-enabled field.
+	// +kcc:proto:field=google.firestore.admin.v1.Field.TtlConfig.expiration_offset
+	ExpirationOffset *string `json:"expirationOffset,omitempty"`
 }
 */
 
@@ -54,6 +65,52 @@ type Index_IndexField struct {
 	//  operations on vector.
 	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.vector_config
 	VectorConfig *Index_IndexField_VectorConfig `json:"vectorConfig,omitempty"`
+
+	// Indicates that this field supports search operations. This field
+	//  is only currently supported for indexes with MONGODB_COMPATIBLE_API
+	//  ApiScope.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.search_config
+	SearchConfig *Index_IndexField_SearchConfig `json:"searchConfig,omitempty"`
+}
+
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig
+type Index_IndexField_SearchConfig struct {
+	// Optional. The specification for building a text search index for a
+	//  field.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.text_spec
+	TextSpec *Index_IndexField_SearchConfig_SearchTextSpec `json:"textSpec,omitempty"`
+
+	// Optional. The specification for building a geo search index for a
+	//  field.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.geo_spec
+	GeoSpec *Index_IndexField_SearchConfig_SearchGeoSpec `json:"geoSpec,omitempty"`
+}
+
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchGeoSpec
+type Index_IndexField_SearchConfig_SearchGeoSpec struct {
+	// Optional. Disables geoJSON indexing for the field. By default,
+	//  geoJSON points are indexed.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchGeoSpec.geo_json_indexing_disabled
+	GeoJsonIndexingDisabled *bool `json:"geoJsonIndexingDisabled,omitempty"`
+}
+
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec
+type Index_IndexField_SearchConfig_SearchTextIndexSpec struct {
+	// Required. How to index the text field value.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec.index_type
+	IndexType *string `json:"indexType,omitempty"`
+
+	// Required. How to match the text field value.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextIndexSpec.match_type
+	MatchType *string `json:"matchType,omitempty"`
+}
+
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextSpec
+type Index_IndexField_SearchConfig_SearchTextSpec struct {
+	// Required. Specifications for how the field should be indexed.
+	//  Repeated so that the field can be indexed in multiple ways.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.SearchConfig.SearchTextSpec.index_specs
+	IndexSpecs []Index_IndexField_SearchConfig_SearchTextIndexSpec `json:"indexSpecs,omitempty"`
 }
 
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig
@@ -74,6 +131,29 @@ type Index_IndexField_VectorConfig struct {
 type Index_IndexField_VectorConfig_FlatIndex struct {
 }
 
+/* unreachable type Index_SearchIndexOptions
+// +kcc:proto=google.firestore.admin.v1.Index.SearchIndexOptions
+type Index_SearchIndexOptions struct {
+	// Optional. The language to use for text search indexes. Used as the
+	//  default language if not overridden at the document level by specifying
+	//  the `text_language_override_field`. The language is specified as a BCP 47
+	//  language code.
+	//  For indexes with MONGODB_COMPATIBLE_API ApiScope: If unspecified, the
+	//  default language is English.
+	//  For indexes with `ANY_API` ApiScope: If unspecified, the default behavior
+	//  is autodetect.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.SearchIndexOptions.text_language
+	TextLanguage *string `json:"textLanguage,omitempty"`
+
+	// Optional. The field in the document that specifies which language to use
+	//  for that specific document. For indexes with MONGODB_COMPATIBLE_API
+	//  ApiScope: if unspecified, the language is taken from the "language" field
+	//  if it exists or from `text_language` if it does not.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.SearchIndexOptions.text_language_override_field_path
+	TextLanguageOverrideFieldPath *string `json:"textLanguageOverrideFieldPath,omitempty"`
+}
+*/
+
 // +kcc:proto=google.firestore.admin.v1.WeeklyRecurrence
 type WeeklyRecurrence struct {
 	// The day of week to run.
@@ -92,9 +172,58 @@ type ArrayValue struct {
 }
 */
 
+/* unreachable type Function
+// +kcc:proto=google.firestore.v1.Function
+type Function struct {
+	// Required. The name of the function to evaluate.
+	//
+	//  **Requires:**
+	//
+	//  * must be in snake case (lower case with underscore separator).
+	// +kcc:proto:field=google.firestore.v1.Function.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Ordered list of arguments the given function expects.
+	// +kcc:proto:field=google.firestore.v1.Function.args
+	Args []Value `json:"args,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
 /* unreachable type MapValue
 // +kcc:proto=google.firestore.v1.MapValue
 type MapValue struct {
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* unreachable type Pipeline
+// +kcc:proto=google.firestore.v1.Pipeline
+type Pipeline struct {
+	// Required. Ordered list of stages to evaluate.
+	// +kcc:proto:field=google.firestore.v1.Pipeline.stages
+	Stages []Pipeline_Stage `json:"stages,omitempty"`
+}
+*/
+
+/* unreachable type Pipeline_Stage
+// +kcc:proto=google.firestore.v1.Pipeline.Stage
+type Pipeline_Stage struct {
+	// Required. The name of the stage to evaluate.
+	//
+	//  **Requires:**
+	//
+	//  * must be in snake case (lower case with underscore separator).
+	// +kcc:proto:field=google.firestore.v1.Pipeline.Stage.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Ordered list of arguments the given stage expects.
+	// +kcc:proto:field=google.firestore.v1.Pipeline.Stage.args
+	Args []Value `json:"args,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
 
@@ -161,6 +290,43 @@ type Value struct {
 	// A map value.
 	// +kcc:proto:field=google.firestore.v1.Value.map_value
 	MapValue *MapValue `json:"mapValue,omitempty"`
+
+	// Value which references a field.
+	//
+	//  This is considered relative (vs absolute) since it only refers to a field
+	//  and not a field within a particular document.
+	//
+	//  **Requires:**
+	//
+	//  * Must follow [field reference][FieldReference.field_path] limitations.
+	//
+	//  * Not allowed to be used when writing documents.
+	// +kcc:proto:field=google.firestore.v1.Value.field_reference_value
+	FieldReferenceValue *string `json:"fieldReferenceValue,omitempty"`
+
+	// Pointer to a variable defined elsewhere in a pipeline.
+	//
+	//  Unlike `field_reference_value` which references a field within a
+	//  document, this refers to a variable, defined in a separate namespace than
+	//  the fields of a document.
+	// +kcc:proto:field=google.firestore.v1.Value.variable_reference_value
+	VariableReferenceValue *string `json:"variableReferenceValue,omitempty"`
+
+	// A value that represents an unevaluated expression.
+	//
+	//  **Requires:**
+	//
+	//  * Not allowed to be used when writing documents.
+	// +kcc:proto:field=google.firestore.v1.Value.function_value
+	FunctionValue *Function `json:"functionValue,omitempty"`
+
+	// A value that represents an unevaluated pipeline.
+	//
+	//  **Requires:**
+	//
+	//  * Not allowed to be used when writing documents.
+	// +kcc:proto:field=google.firestore.v1.Value.pipeline_value
+	PipelineValue *Pipeline `json:"pipelineValue,omitempty"`
 }
 */
 

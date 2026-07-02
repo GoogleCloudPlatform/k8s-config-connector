@@ -104,6 +104,7 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 						line = strings.TrimSpace(line)
 						if proto, ok := GetProtoMessageFromAnnotation(line); ok {
 							protoName := protoreflect.FullName(proto)
+							klog.Infof("PrecomputedMapping: key: %s -> struct: %s", protoName, s.Name)
 							v.precomputedMappings[protoName] = append(v.precomputedMappings[protoName], s)
 						}
 					}
@@ -524,11 +525,19 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
+				if !strings.HasPrefix(krmField.Type, "*") && functionName == "direct.Struct_FromProto" {
+					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(%s(mapCtx, in.%s))\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				}
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
 				// Not needed if we use the accessor:
@@ -840,20 +849,28 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					protoFieldName,
-					functionName,
-					krmFieldName,
-				)
+				if !strings.HasPrefix(krmField.Type, "*") && functionName == "direct.Struct_ToProto" {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, &in.%s)\n",
+						protoFieldName,
+						functionName,
+						krmFieldName,
+					)
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						protoFieldName,
+						functionName,
+						krmFieldName,
+					)
+				}
 			case protoreflect.EnumKind:
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
 				if protoIsPointerInGo(protoField) {
-					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
+					functionName = "direct.EnumPtr_ToProto"
 				}
 
 				oneof := protoField.ContainingOneof()
-				if oneof != nil {
+				if oneof != nil && !protoField.HasOptionalKeyword() {
 					// These are very rare and irregular; just require a custom method
 					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 

@@ -415,9 +415,7 @@ func CleanupPolicyCondition_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPo
 		return nil
 	}
 	out := &pb.CleanupPolicyCondition{}
-	if oneof := CleanupPolicyCondition_TagState_ToProto(mapCtx, in.TagState); oneof != nil {
-		out.TagState = oneof
-	}
+	out.TagState = direct.EnumPtr_ToProto[pb.CleanupPolicyCondition_TagState](mapCtx, in.TagState)
 	out.TagPrefixes = in.TagPrefixes
 	out.VersionNamePrefixes = in.VersionNamePrefixes
 	out.PackageNamePrefixes = in.PackageNamePrefixes

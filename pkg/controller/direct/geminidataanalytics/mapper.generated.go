@@ -38,6 +38,8 @@ func GeminiDataAnalyticsConversationObservedState_FromProto(mapCtx *direct.MapCo
 	// MISSING: Agents
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.LastUsedTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUsedTime())
+	// MISSING: KMSKey
+	// MISSING: MemoryPaused
 	return out
 }
 func GeminiDataAnalyticsConversationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GeminiDataAnalyticsConversationObservedState) *pb.Conversation {
@@ -49,6 +51,8 @@ func GeminiDataAnalyticsConversationObservedState_ToProto(mapCtx *direct.MapCont
 	// MISSING: Agents
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.LastUsedTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUsedTime)
+	// MISSING: KMSKey
+	// MISSING: MemoryPaused
 	return out
 }
 func GeminiDataAnalyticsConversationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Conversation) *krm.GeminiDataAnalyticsConversationSpec {
@@ -65,6 +69,8 @@ func GeminiDataAnalyticsConversationSpec_FromProto(mapCtx *direct.MapContext, in
 	}
 
 	out.Labels = in.Labels
+	// MISSING: KMSKey
+	// MISSING: MemoryPaused
 	return out
 }
 func GeminiDataAnalyticsConversationSpec_ToProto(mapCtx *direct.MapContext, in *krm.GeminiDataAnalyticsConversationSpec) *pb.Conversation {
@@ -81,5 +87,7 @@ func GeminiDataAnalyticsConversationSpec_ToProto(mapCtx *direct.MapContext, in *
 	}
 
 	out.Labels = in.Labels
+	// MISSING: KMSKey
+	// MISSING: MemoryPaused
 	return out
 }

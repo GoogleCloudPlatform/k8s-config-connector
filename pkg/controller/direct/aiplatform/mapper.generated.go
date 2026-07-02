@@ -28,6 +28,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 /* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
@@ -149,6 +150,44 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		return out
 	}
 */
+func AutoraterConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutoraterConfig) *krm.AutoraterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutoraterConfig{}
+	out.SamplingCount = in.SamplingCount
+	out.FlipEnabled = in.FlipEnabled
+	out.AutoraterModel = direct.LazyPtr(in.GetAutoraterModel())
+	out.GenerationConfig = GenerationConfig_FromProto(mapCtx, in.GetGenerationConfig())
+	return out
+}
+func AutoraterConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoraterConfig) *pb.AutoraterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoraterConfig{}
+	out.SamplingCount = in.SamplingCount
+	out.FlipEnabled = in.FlipEnabled
+	out.AutoraterModel = direct.ValueOf(in.AutoraterModel)
+	out.GenerationConfig = GenerationConfig_ToProto(mapCtx, in.GenerationConfig)
+	return out
+}
+func BleuSpec_FromProto(mapCtx *direct.MapContext, in *pb.BleuSpec) *krm.BleuSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BleuSpec{}
+	out.UseEffectiveOrder = direct.LazyPtr(in.GetUseEffectiveOrder())
+	return out
+}
+func BleuSpec_ToProto(mapCtx *direct.MapContext, in *krm.BleuSpec) *pb.BleuSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BleuSpec{}
+	out.UseEffectiveOrder = direct.ValueOf(in.UseEffectiveOrder)
+	return out
+}
 func Blob_FromProto(mapCtx *direct.MapContext, in *pb.Blob) *krm.Blob {
 	if in == nil {
 		return nil
@@ -201,6 +240,24 @@ func CodeExecutionResult_ToProto(mapCtx *direct.MapContext, in *krm.CodeExecutio
 	out.Output = direct.ValueOf(in.Output)
 	return out
 }
+func ComputationBasedMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.ComputationBasedMetricSpec) *krm.ComputationBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputationBasedMetricSpec{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Parameters = direct.ValueOf(direct.Struct_FromProto(mapCtx, in.GetParameters()))
+	return out
+}
+func ComputationBasedMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputationBasedMetricSpec) *pb.ComputationBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComputationBasedMetricSpec{}
+	out.Type = direct.EnumPtr_ToProto[pb.ComputationBasedMetricSpec_ComputationBasedMetricType](mapCtx, in.Type)
+	out.Parameters = direct.Struct_ToProto(mapCtx, &in.Parameters)
+	return out
+}
 func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.Content {
 	if in == nil {
 		return nil
@@ -218,6 +275,30 @@ func Content_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
 	out.Role = direct.ValueOf(in.Role)
 	out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, Part_ToProto)
 	return out
+}
+func CustomOutputFormatConfig_FromProto(mapCtx *direct.MapContext, in *pb.CustomOutputFormatConfig) *krm.CustomOutputFormatConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomOutputFormatConfig{}
+	out.ReturnRawOutput = direct.LazyPtr(in.GetReturnRawOutput())
+	return out
+}
+func CustomOutputFormatConfig_ToProto(mapCtx *direct.MapContext, in *krm.CustomOutputFormatConfig) *pb.CustomOutputFormatConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomOutputFormatConfig{}
+	if oneof := CustomOutputFormatConfig_ReturnRawOutput_ToProto(mapCtx, in.ReturnRawOutput); oneof != nil {
+		out.CustomOutputFormatConfig = oneof
+	}
+	return out
+}
+func CustomOutputFormatConfig_ReturnRawOutput_ToProto(mapCtx *direct.MapContext, in *bool) *pb.CustomOutputFormatConfig_ReturnRawOutput {
+	if in == nil {
+		return nil
+	}
+	return &pb.CustomOutputFormatConfig_ReturnRawOutput{ReturnRawOutput: *in}
 }
 func DeployedModelRef_FromProto(mapCtx *direct.MapContext, in *pb.DeployedModelRef) *krm.DeployedModelRef {
 	if in == nil {
@@ -269,6 +350,42 @@ func EnvVar_ToProto(mapCtx *direct.MapContext, in *krm.EnvVar) *pb.EnvVar {
 	out := &pb.EnvVar{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func EvaluationConfig_FromProto(mapCtx *direct.MapContext, in *pb.EvaluationConfig) *krm.EvaluationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EvaluationConfig{}
+	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, Metric_FromProto)
+	out.OutputConfig = OutputConfig_FromProto(mapCtx, in.GetOutputConfig())
+	out.AutoraterConfig = AutoraterConfig_FromProto(mapCtx, in.GetAutoraterConfig())
+	out.InferenceGenerationConfig = GenerationConfig_FromProto(mapCtx, in.GetInferenceGenerationConfig())
+	return out
+}
+func EvaluationConfig_ToProto(mapCtx *direct.MapContext, in *krm.EvaluationConfig) *pb.EvaluationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EvaluationConfig{}
+	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, Metric_ToProto)
+	out.OutputConfig = OutputConfig_ToProto(mapCtx, in.OutputConfig)
+	out.AutoraterConfig = AutoraterConfig_ToProto(mapCtx, in.AutoraterConfig)
+	out.InferenceGenerationConfig = GenerationConfig_ToProto(mapCtx, in.InferenceGenerationConfig)
+	return out
+}
+func ExactMatchSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExactMatchSpec) *krm.ExactMatchSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExactMatchSpec{}
+	return out
+}
+func ExactMatchSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExactMatchSpec) *pb.ExactMatchSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExactMatchSpec{}
 	return out
 }
 func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
@@ -427,6 +544,9 @@ func FeatureOnlineStore_Bigtable_FromProto(mapCtx *direct.MapContext, in *pb.Fea
 	}
 	out := &krm.FeatureOnlineStore_Bigtable{}
 	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx, in.GetAutoScaling())
+	// MISSING: EnableDirectBigtableAccess
+	// MISSING: BigtableMetadata
+	// MISSING: Zone
 	return out
 }
 func FeatureOnlineStore_Bigtable_ToProto(mapCtx *direct.MapContext, in *krm.FeatureOnlineStore_Bigtable) *pb.FeatureOnlineStore_Bigtable {
@@ -435,6 +555,9 @@ func FeatureOnlineStore_Bigtable_ToProto(mapCtx *direct.MapContext, in *krm.Feat
 	}
 	out := &pb.FeatureOnlineStore_Bigtable{}
 	out.AutoScaling = FeatureOnlineStore_Bigtable_AutoScaling_ToProto(mapCtx, in.AutoScaling)
+	// MISSING: EnableDirectBigtableAccess
+	// MISSING: BigtableMetadata
+	// MISSING: Zone
 	return out
 }
 func FeatureOnlineStore_Bigtable_AutoScaling_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore_Bigtable_AutoScaling) *krm.FeatureOnlineStore_Bigtable_AutoScaling {
@@ -517,7 +640,9 @@ func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm
 	}
 	out := &krm.FunctionCall{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Args = direct.Struct_FromProto(mapCtx, in.GetArgs())
+	out.Args = direct.ValueOf(direct.Struct_FromProto(mapCtx, in.GetArgs()))
+	out.PartialArgs = direct.Slice_FromProto(mapCtx, in.PartialArgs, PartialArg_FromProto)
+	out.WillContinue = direct.LazyPtr(in.GetWillContinue())
 	return out
 }
 */
@@ -529,7 +654,9 @@ func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.F
 	}
 	out := &pb.FunctionCall{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Args = direct.Struct_ToProto(mapCtx, in.Args)
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
+	out.PartialArgs = direct.Slice_ToProto(mapCtx, in.PartialArgs, PartialArg_ToProto)
+	out.WillContinue = direct.ValueOf(in.WillContinue)
 	return out
 }
 */
@@ -541,7 +668,8 @@ func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionRespon
 	}
 	out := &krm.FunctionResponse{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Response = direct.Struct_FromProto(mapCtx, in.GetResponse())
+	out.Response = direct.ValueOf(direct.Struct_FromProto(mapCtx, in.GetResponse()))
+	out.Parts = direct.Slice_FromProto(mapCtx, in.Parts, FunctionResponsePart_FromProto)
 	return out
 }
 */
@@ -555,10 +683,89 @@ found existing non-generated mapping function "FunctionResponse_ToProto", skippi
 		}
 		out := &pb.FunctionResponse{}
 		out.Name = direct.ValueOf(in.Name)
-		out.Response = direct.Struct_ToProto(mapCtx, in.Response)
+		out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
+		out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, FunctionResponsePart_ToProto)
 		return out
 	}
 */
+func FunctionResponseBlob_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponseBlob) *krm.FunctionResponseBlob {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionResponseBlob{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.Data = in.GetData()
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func FunctionResponseBlob_ToProto(mapCtx *direct.MapContext, in *krm.FunctionResponseBlob) *pb.FunctionResponseBlob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionResponseBlob{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.Data = in.Data
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func FunctionResponseFileData_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponseFileData) *krm.FunctionResponseFileData {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionResponseFileData{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.FileURI = direct.LazyPtr(in.GetFileUri())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func FunctionResponseFileData_ToProto(mapCtx *direct.MapContext, in *krm.FunctionResponseFileData) *pb.FunctionResponseFileData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionResponseFileData{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.FileUri = direct.ValueOf(in.FileURI)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func FunctionResponsePart_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponsePart) *krm.FunctionResponsePart {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionResponsePart{}
+	out.InlineData = FunctionResponseBlob_FromProto(mapCtx, in.GetInlineData())
+	out.FileData = FunctionResponseFileData_FromProto(mapCtx, in.GetFileData())
+	return out
+}
+func FunctionResponsePart_ToProto(mapCtx *direct.MapContext, in *krm.FunctionResponsePart) *pb.FunctionResponsePart {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionResponsePart{}
+	if oneof := FunctionResponseBlob_ToProto(mapCtx, in.InlineData); oneof != nil {
+		out.Data = &pb.FunctionResponsePart_InlineData{InlineData: oneof}
+	}
+	if oneof := FunctionResponseFileData_ToProto(mapCtx, in.FileData); oneof != nil {
+		out.Data = &pb.FunctionResponsePart_FileData{FileData: oneof}
+	}
+	return out
+}
+func GCSDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GCSDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSDestination{}
+	out.OutputURIPrefix = direct.LazyPtr(in.GetOutputUriPrefix())
+	return out
+}
+func GCSDestination_ToProto(mapCtx *direct.MapContext, in *krm.GCSDestination) *pb.GcsDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsDestination{}
+	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
+	return out
+}
 func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSource {
 	if in == nil {
 		return nil
@@ -575,6 +782,136 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 	out.Uris = in.Uris
 	return out
 }
+func GenerationConfig_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig) *krm.GenerationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig{}
+	out.Temperature = in.Temperature
+	out.TopP = in.TopP
+	out.TopK = in.TopK
+	out.CandidateCount = in.CandidateCount
+	out.MaxOutputTokens = in.MaxOutputTokens
+	out.StopSequences = in.StopSequences
+	out.ResponseLogprobs = in.ResponseLogprobs
+	out.Logprobs = in.Logprobs
+	out.PresencePenalty = in.PresencePenalty
+	out.FrequencyPenalty = in.FrequencyPenalty
+	out.Seed = in.Seed
+	out.ResponseMimeType = direct.LazyPtr(in.GetResponseMimeType())
+	out.ResponseSchema = Schema_FromProto(mapCtx, in.GetResponseSchema())
+	out.ResponseJsonSchema = Value_FromProto(mapCtx, in.GetResponseJsonSchema())
+	out.RoutingConfig = GenerationConfig_RoutingConfig_FromProto(mapCtx, in.GetRoutingConfig())
+	out.AudioTimestamp = in.AudioTimestamp
+	out.ResponseModalities = direct.EnumSlice_FromProto(mapCtx, in.ResponseModalities)
+	out.MediaResolution = direct.Enum_FromProto(mapCtx, in.GetMediaResolution())
+	out.SpeechConfig = SpeechConfig_FromProto(mapCtx, in.GetSpeechConfig())
+	out.ThinkingConfig = GenerationConfig_ThinkingConfig_FromProto(mapCtx, in.GetThinkingConfig())
+	out.ImageConfig = ImageConfig_FromProto(mapCtx, in.GetImageConfig())
+	return out
+}
+func GenerationConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig) *pb.GenerationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig{}
+	out.Temperature = in.Temperature
+	out.TopP = in.TopP
+	out.TopK = in.TopK
+	out.CandidateCount = in.CandidateCount
+	out.MaxOutputTokens = in.MaxOutputTokens
+	out.StopSequences = in.StopSequences
+	out.ResponseLogprobs = in.ResponseLogprobs
+	out.Logprobs = in.Logprobs
+	out.PresencePenalty = in.PresencePenalty
+	out.FrequencyPenalty = in.FrequencyPenalty
+	out.Seed = in.Seed
+	out.ResponseMimeType = direct.ValueOf(in.ResponseMimeType)
+	out.ResponseSchema = Schema_ToProto(mapCtx, in.ResponseSchema)
+	out.ResponseJsonSchema = Value_ToProto(mapCtx, in.ResponseJsonSchema)
+	out.RoutingConfig = GenerationConfig_RoutingConfig_ToProto(mapCtx, in.RoutingConfig)
+	out.AudioTimestamp = in.AudioTimestamp
+	out.ResponseModalities = direct.EnumSlice_ToProto[pb.GenerationConfig_Modality](mapCtx, in.ResponseModalities)
+	out.MediaResolution = direct.EnumPtr_ToProto[pb.GenerationConfig_MediaResolution](mapCtx, in.MediaResolution)
+	out.SpeechConfig = SpeechConfig_ToProto(mapCtx, in.SpeechConfig)
+	out.ThinkingConfig = GenerationConfig_ThinkingConfig_ToProto(mapCtx, in.ThinkingConfig)
+	out.ImageConfig = ImageConfig_ToProto(mapCtx, in.ImageConfig)
+	return out
+}
+func GenerationConfig_RoutingConfig_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_RoutingConfig) *krm.GenerationConfig_RoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_RoutingConfig{}
+	out.AutoMode = GenerationConfig_RoutingConfig_AutoRoutingMode_FromProto(mapCtx, in.GetAutoMode())
+	out.ManualMode = GenerationConfig_RoutingConfig_ManualRoutingMode_FromProto(mapCtx, in.GetManualMode())
+	return out
+}
+func GenerationConfig_RoutingConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_RoutingConfig) *pb.GenerationConfig_RoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_RoutingConfig{}
+	if oneof := GenerationConfig_RoutingConfig_AutoRoutingMode_ToProto(mapCtx, in.AutoMode); oneof != nil {
+		out.RoutingConfig = &pb.GenerationConfig_RoutingConfig_AutoMode{AutoMode: oneof}
+	}
+	if oneof := GenerationConfig_RoutingConfig_ManualRoutingMode_ToProto(mapCtx, in.ManualMode); oneof != nil {
+		out.RoutingConfig = &pb.GenerationConfig_RoutingConfig_ManualMode{ManualMode: oneof}
+	}
+	return out
+}
+func GenerationConfig_RoutingConfig_AutoRoutingMode_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_RoutingConfig_AutoRoutingMode) *krm.GenerationConfig_RoutingConfig_AutoRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_RoutingConfig_AutoRoutingMode{}
+	out.ModelRoutingPreference = direct.Enum_FromProto(mapCtx, in.GetModelRoutingPreference())
+	return out
+}
+func GenerationConfig_RoutingConfig_AutoRoutingMode_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_RoutingConfig_AutoRoutingMode) *pb.GenerationConfig_RoutingConfig_AutoRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_RoutingConfig_AutoRoutingMode{}
+	out.ModelRoutingPreference = direct.EnumPtr_ToProto[pb.GenerationConfig_RoutingConfig_AutoRoutingMode_ModelRoutingPreference](mapCtx, in.ModelRoutingPreference)
+	return out
+}
+func GenerationConfig_RoutingConfig_ManualRoutingMode_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_RoutingConfig_ManualRoutingMode) *krm.GenerationConfig_RoutingConfig_ManualRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_RoutingConfig_ManualRoutingMode{}
+	out.ModelName = in.ModelName
+	return out
+}
+func GenerationConfig_RoutingConfig_ManualRoutingMode_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_RoutingConfig_ManualRoutingMode) *pb.GenerationConfig_RoutingConfig_ManualRoutingMode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_RoutingConfig_ManualRoutingMode{}
+	out.ModelName = in.ModelName
+	return out
+}
+func GenerationConfig_ThinkingConfig_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_ThinkingConfig) *krm.GenerationConfig_ThinkingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenerationConfig_ThinkingConfig{}
+	out.IncludeThoughts = in.IncludeThoughts
+	out.ThinkingBudget = in.ThinkingBudget
+	out.ThinkingLevel = direct.Enum_FromProto(mapCtx, in.GetThinkingLevel())
+	return out
+}
+func GenerationConfig_ThinkingConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfig_ThinkingConfig) *pb.GenerationConfig_ThinkingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenerationConfig_ThinkingConfig{}
+	out.IncludeThoughts = in.IncludeThoughts
+	out.ThinkingBudget = in.ThinkingBudget
+	out.ThinkingLevel = direct.EnumPtr_ToProto[pb.GenerationConfig_ThinkingConfig_ThinkingLevel](mapCtx, in.ThinkingLevel)
+	return out
+}
 func GenieSource_FromProto(mapCtx *direct.MapContext, in *pb.GenieSource) *krm.GenieSource {
 	if in == nil {
 		return nil
@@ -589,6 +926,46 @@ func GenieSource_ToProto(mapCtx *direct.MapContext, in *krm.GenieSource) *pb.Gen
 	}
 	out := &pb.GenieSource{}
 	out.BaseModelUri = direct.ValueOf(in.BaseModelURI)
+	return out
+}
+func ImageConfig_FromProto(mapCtx *direct.MapContext, in *pb.ImageConfig) *krm.ImageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageConfig{}
+	out.ImageOutputOptions = ImageConfig_ImageOutputOptions_FromProto(mapCtx, in.GetImageOutputOptions())
+	out.AspectRatio = in.AspectRatio
+	out.PersonGeneration = direct.Enum_FromProto(mapCtx, in.GetPersonGeneration())
+	out.ImageSize = in.ImageSize
+	return out
+}
+func ImageConfig_ToProto(mapCtx *direct.MapContext, in *krm.ImageConfig) *pb.ImageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageConfig{}
+	out.ImageOutputOptions = ImageConfig_ImageOutputOptions_ToProto(mapCtx, in.ImageOutputOptions)
+	out.AspectRatio = in.AspectRatio
+	out.PersonGeneration = direct.EnumPtr_ToProto[pb.ImageConfig_PersonGeneration](mapCtx, in.PersonGeneration)
+	out.ImageSize = in.ImageSize
+	return out
+}
+func ImageConfig_ImageOutputOptions_FromProto(mapCtx *direct.MapContext, in *pb.ImageConfig_ImageOutputOptions) *krm.ImageConfig_ImageOutputOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageConfig_ImageOutputOptions{}
+	out.MimeType = in.MimeType
+	out.CompressionQuality = in.CompressionQuality
+	return out
+}
+func ImageConfig_ImageOutputOptions_ToProto(mapCtx *direct.MapContext, in *krm.ImageConfig_ImageOutputOptions) *pb.ImageConfig_ImageOutputOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageConfig_ImageOutputOptions{}
+	out.MimeType = in.MimeType
+	out.CompressionQuality = in.CompressionQuality
 	return out
 }
 func IntegratedGradientsAttribution_FromProto(mapCtx *direct.MapContext, in *pb.IntegratedGradientsAttribution) *krm.IntegratedGradientsAttribution {
@@ -609,6 +986,90 @@ func IntegratedGradientsAttribution_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out.StepCount = direct.ValueOf(in.StepCount)
 	out.SmoothGradConfig = SmoothGradConfig_ToProto(mapCtx, in.SmoothGradConfig)
 	out.BlurBaselineConfig = BlurBaselineConfig_ToProto(mapCtx, in.BlurBaselineConfig)
+	return out
+}
+func LlmBasedMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.LLMBasedMetricSpec) *krm.LlmBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LlmBasedMetricSpec{}
+	out.RubricGroupKey = direct.LazyPtr(in.GetRubricGroupKey())
+	out.PredefinedRubricGenerationSpec = PredefinedMetricSpec_FromProto(mapCtx, in.GetPredefinedRubricGenerationSpec())
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.SystemInstruction = in.SystemInstruction
+	out.JudgeAutoraterConfig = AutoraterConfig_FromProto(mapCtx, in.GetJudgeAutoraterConfig())
+	out.AdditionalConfig = direct.ValueOf(direct.Struct_FromProto(mapCtx, in.GetAdditionalConfig()))
+	return out
+}
+func LlmBasedMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.LlmBasedMetricSpec) *pb.LLMBasedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LLMBasedMetricSpec{}
+	if oneof := LlmBasedMetricSpec_RubricGroupKey_ToProto(mapCtx, in.RubricGroupKey); oneof != nil {
+		out.RubricsSource = oneof
+	}
+	if oneof := PredefinedMetricSpec_ToProto(mapCtx, in.PredefinedRubricGenerationSpec); oneof != nil {
+		out.RubricsSource = &pb.LLMBasedMetricSpec_PredefinedRubricGenerationSpec{PredefinedRubricGenerationSpec: oneof}
+	}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.SystemInstruction = in.SystemInstruction
+	out.JudgeAutoraterConfig = AutoraterConfig_ToProto(mapCtx, in.JudgeAutoraterConfig)
+	out.AdditionalConfig = direct.Struct_ToProto(mapCtx, &in.AdditionalConfig)
+	return out
+}
+func LlmBasedMetricSpec_RubricGroupKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.LLMBasedMetricSpec_RubricGroupKey {
+	if in == nil {
+		return nil
+	}
+	return &pb.LLMBasedMetricSpec_RubricGroupKey{RubricGroupKey: *in}
+}
+func Metric_FromProto(mapCtx *direct.MapContext, in *pb.Metric) *krm.Metric {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Metric{}
+	out.PredefinedMetricSpec = PredefinedMetricSpec_FromProto(mapCtx, in.GetPredefinedMetricSpec())
+	out.ComputationBasedMetricSpec = ComputationBasedMetricSpec_FromProto(mapCtx, in.GetComputationBasedMetricSpec())
+	out.LlmBasedMetricSpec = LlmBasedMetricSpec_FromProto(mapCtx, in.GetLlmBasedMetricSpec())
+	out.PointwiseMetricSpec = PointwiseMetricSpec_FromProto(mapCtx, in.GetPointwiseMetricSpec())
+	out.PairwiseMetricSpec = PairwiseMetricSpec_FromProto(mapCtx, in.GetPairwiseMetricSpec())
+	out.ExactMatchSpec = ExactMatchSpec_FromProto(mapCtx, in.GetExactMatchSpec())
+	out.BleuSpec = BleuSpec_FromProto(mapCtx, in.GetBleuSpec())
+	out.RougeSpec = RougeSpec_FromProto(mapCtx, in.GetRougeSpec())
+	out.AggregationMetrics = direct.EnumSlice_FromProto(mapCtx, in.AggregationMetrics)
+	return out
+}
+func Metric_ToProto(mapCtx *direct.MapContext, in *krm.Metric) *pb.Metric {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Metric{}
+	if oneof := PredefinedMetricSpec_ToProto(mapCtx, in.PredefinedMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_PredefinedMetricSpec{PredefinedMetricSpec: oneof}
+	}
+	if oneof := ComputationBasedMetricSpec_ToProto(mapCtx, in.ComputationBasedMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_ComputationBasedMetricSpec{ComputationBasedMetricSpec: oneof}
+	}
+	if oneof := LlmBasedMetricSpec_ToProto(mapCtx, in.LlmBasedMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_LlmBasedMetricSpec{LlmBasedMetricSpec: oneof}
+	}
+	if oneof := PointwiseMetricSpec_ToProto(mapCtx, in.PointwiseMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_PointwiseMetricSpec{PointwiseMetricSpec: oneof}
+	}
+	if oneof := PairwiseMetricSpec_ToProto(mapCtx, in.PairwiseMetricSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_PairwiseMetricSpec{PairwiseMetricSpec: oneof}
+	}
+	if oneof := ExactMatchSpec_ToProto(mapCtx, in.ExactMatchSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_ExactMatchSpec{ExactMatchSpec: oneof}
+	}
+	if oneof := BleuSpec_ToProto(mapCtx, in.BleuSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_BleuSpec{BleuSpec: oneof}
+	}
+	if oneof := RougeSpec_ToProto(mapCtx, in.RougeSpec); oneof != nil {
+		out.MetricSpec = &pb.Metric_RougeSpec{RougeSpec: oneof}
+	}
+	out.AggregationMetrics = direct.EnumSlice_ToProto[pb.Metric_AggregationMetric](mapCtx, in.AggregationMetrics)
 	return out
 }
 func ModelContainerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ModelContainerSpec) *krm.ModelContainerSpec {
@@ -773,6 +1234,40 @@ func Model_OriginalModelInfo_ToProto(mapCtx *direct.MapContext, in *krm.Model_Or
 	// MISSING: Model
 	return out
 }
+func MultiSpeakerVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.MultiSpeakerVoiceConfig) *krm.MultiSpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiSpeakerVoiceConfig{}
+	out.SpeakerVoiceConfigs = direct.Slice_FromProto(mapCtx, in.SpeakerVoiceConfigs, SpeakerVoiceConfig_FromProto)
+	return out
+}
+func MultiSpeakerVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.MultiSpeakerVoiceConfig) *pb.MultiSpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiSpeakerVoiceConfig{}
+	out.SpeakerVoiceConfigs = direct.Slice_ToProto(mapCtx, in.SpeakerVoiceConfigs, SpeakerVoiceConfig_ToProto)
+	return out
+}
+func OutputConfig_FromProto(mapCtx *direct.MapContext, in *pb.OutputConfig) *krm.OutputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OutputConfig{}
+	out.GCSDestination = GCSDestination_FromProto(mapCtx, in.GetGcsDestination())
+	return out
+}
+func OutputConfig_ToProto(mapCtx *direct.MapContext, in *krm.OutputConfig) *pb.OutputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OutputConfig{}
+	if oneof := GCSDestination_ToProto(mapCtx, in.GCSDestination); oneof != nil {
+		out.Destination = &pb.OutputConfig_GcsDestination{GcsDestination: oneof}
+	}
+	return out
+}
 func PSCAutomationConfig_FromProto(mapCtx *direct.MapContext, in *pb.PSCAutomationConfig) *krm.PSCAutomationConfig {
 	if in == nil {
 		return nil
@@ -803,6 +1298,30 @@ func PSCAutomationConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutomatio
 	// MISSING: ErrorMessage
 	return out
 }
+func PairwiseMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.PairwiseMetricSpec) *krm.PairwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PairwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.CandidateResponseFieldName = direct.LazyPtr(in.GetCandidateResponseFieldName())
+	out.BaselineResponseFieldName = direct.LazyPtr(in.GetBaselineResponseFieldName())
+	out.SystemInstruction = in.SystemInstruction
+	out.CustomOutputFormatConfig = CustomOutputFormatConfig_FromProto(mapCtx, in.GetCustomOutputFormatConfig())
+	return out
+}
+func PairwiseMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.PairwiseMetricSpec) *pb.PairwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PairwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.CandidateResponseFieldName = direct.ValueOf(in.CandidateResponseFieldName)
+	out.BaselineResponseFieldName = direct.ValueOf(in.BaselineResponseFieldName)
+	out.SystemInstruction = in.SystemInstruction
+	out.CustomOutputFormatConfig = CustomOutputFormatConfig_ToProto(mapCtx, in.CustomOutputFormatConfig)
+	return out
+}
 func Part_FromProto(mapCtx *direct.MapContext, in *pb.Part) *krm.Part {
 	if in == nil {
 		return nil
@@ -818,6 +1337,7 @@ func Part_FromProto(mapCtx *direct.MapContext, in *pb.Part) *krm.Part {
 	out.Thought = direct.LazyPtr(in.GetThought())
 	out.ThoughtSignature = in.GetThoughtSignature()
 	out.VideoMetadata = VideoMetadata_FromProto(mapCtx, in.GetVideoMetadata())
+	out.MediaResolution = Part_MediaResolution_FromProto(mapCtx, in.GetMediaResolution())
 	return out
 }
 func Part_ToProto(mapCtx *direct.MapContext, in *krm.Part) *pb.Part {
@@ -851,6 +1371,7 @@ func Part_ToProto(mapCtx *direct.MapContext, in *krm.Part) *pb.Part {
 	if oneof := VideoMetadata_ToProto(mapCtx, in.VideoMetadata); oneof != nil {
 		out.Metadata = &pb.Part_VideoMetadata{VideoMetadata: oneof}
 	}
+	out.MediaResolution = Part_MediaResolution_ToProto(mapCtx, in.MediaResolution)
 	return out
 }
 func Part_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_Text {
@@ -858,6 +1379,108 @@ func Part_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_Text {
 		return nil
 	}
 	return &pb.Part_Text{Text: *in}
+}
+func Part_MediaResolution_FromProto(mapCtx *direct.MapContext, in *pb.Part_MediaResolution) *krm.Part_MediaResolution {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Part_MediaResolution{}
+	out.Level = direct.Enum_FromProto(mapCtx, in.GetLevel())
+	return out
+}
+func Part_MediaResolution_ToProto(mapCtx *direct.MapContext, in *krm.Part_MediaResolution) *pb.Part_MediaResolution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Part_MediaResolution{}
+	if oneof := Part_MediaResolution_Level_ToProto(mapCtx, in.Level); oneof != nil {
+		out.Value = oneof
+	}
+	return out
+}
+func Part_MediaResolution_Level_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_MediaResolution_Level_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Part_MediaResolution_Level_{Level: direct.Enum_ToProto[pb.Part_MediaResolution_Level](mapCtx, in)}
+}
+func PartialArg_FromProto(mapCtx *direct.MapContext, in *pb.PartialArg) *krm.PartialArg {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PartialArg{}
+	out.NullValue = direct.Enum_FromProto(mapCtx, in.GetNullValue())
+	out.NumberValue = direct.LazyPtr(in.GetNumberValue())
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	out.JsonPath = direct.LazyPtr(in.GetJsonPath())
+	out.WillContinue = direct.LazyPtr(in.GetWillContinue())
+	return out
+}
+func PartialArg_ToProto(mapCtx *direct.MapContext, in *krm.PartialArg) *pb.PartialArg {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PartialArg{}
+	if oneof := PartialArg_NullValue_ToProto(mapCtx, in.NullValue); oneof != nil {
+		out.Delta = oneof
+	}
+	if oneof := PartialArg_NumberValue_ToProto(mapCtx, in.NumberValue); oneof != nil {
+		out.Delta = oneof
+	}
+	if oneof := PartialArg_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Delta = oneof
+	}
+	if oneof := PartialArg_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Delta = oneof
+	}
+	out.JsonPath = direct.ValueOf(in.JsonPath)
+	out.WillContinue = direct.ValueOf(in.WillContinue)
+	return out
+}
+func PartialArg_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.PartialArg_NullValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_NullValue{NullValue: direct.Enum_ToProto[structpb.NullValue](mapCtx, in)}
+}
+func PartialArg_NumberValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.PartialArg_NumberValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_NumberValue{NumberValue: *in}
+}
+func PartialArg_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.PartialArg_StringValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_StringValue{StringValue: *in}
+}
+func PartialArg_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PartialArg_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.PartialArg_BoolValue{BoolValue: *in}
+}
+func PointwiseMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.PointwiseMetricSpec) *krm.PointwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PointwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.SystemInstruction = in.SystemInstruction
+	out.CustomOutputFormatConfig = CustomOutputFormatConfig_FromProto(mapCtx, in.GetCustomOutputFormatConfig())
+	return out
+}
+func PointwiseMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.PointwiseMetricSpec) *pb.PointwiseMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PointwiseMetricSpec{}
+	out.MetricPromptTemplate = in.MetricPromptTemplate
+	out.SystemInstruction = in.SystemInstruction
+	out.CustomOutputFormatConfig = CustomOutputFormatConfig_ToProto(mapCtx, in.CustomOutputFormatConfig)
+	return out
 }
 func Port_FromProto(mapCtx *direct.MapContext, in *pb.Port) *krm.Port {
 	if in == nil {
@@ -873,6 +1496,40 @@ func Port_ToProto(mapCtx *direct.MapContext, in *krm.Port) *pb.Port {
 	}
 	out := &pb.Port{}
 	out.ContainerPort = direct.ValueOf(in.ContainerPort)
+	return out
+}
+func PrebuiltVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrebuiltVoiceConfig) *krm.PrebuiltVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrebuiltVoiceConfig{}
+	out.VoiceName = in.VoiceName
+	return out
+}
+func PrebuiltVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrebuiltVoiceConfig) *pb.PrebuiltVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrebuiltVoiceConfig{}
+	out.VoiceName = in.VoiceName
+	return out
+}
+func PredefinedMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.PredefinedMetricSpec) *krm.PredefinedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PredefinedMetricSpec{}
+	out.MetricSpecName = direct.LazyPtr(in.GetMetricSpecName())
+	out.MetricSpecParameters = direct.ValueOf(direct.Struct_FromProto(mapCtx, in.GetMetricSpecParameters()))
+	return out
+}
+func PredefinedMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.PredefinedMetricSpec) *pb.PredefinedMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredefinedMetricSpec{}
+	out.MetricSpecName = direct.ValueOf(in.MetricSpecName)
+	out.MetricSpecParameters = direct.Struct_ToProto(mapCtx, &in.MetricSpecParameters)
 	return out
 }
 func PredictSchemata_FromProto(mapCtx *direct.MapContext, in *pb.PredictSchemata) *krm.PredictSchemata {
@@ -909,9 +1566,7 @@ func Presets_ToProto(mapCtx *direct.MapContext, in *krm.Presets) *pb.Presets {
 		return nil
 	}
 	out := &pb.Presets{}
-	if oneof := Presets_Query_ToProto(mapCtx, in.Query); oneof != nil {
-		out.Query = oneof
-	}
+	out.Query = direct.EnumPtr_ToProto[pb.Presets_Query](mapCtx, in.Query)
 	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
 	return out
 }
@@ -1071,6 +1726,44 @@ func Probe_TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_TCPS
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+func ReplicatedVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.ReplicatedVoiceConfig) *krm.ReplicatedVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicatedVoiceConfig{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.VoiceSampleAudio = in.GetVoiceSampleAudio()
+	return out
+}
+func ReplicatedVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.ReplicatedVoiceConfig) *pb.ReplicatedVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicatedVoiceConfig{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.VoiceSampleAudio = in.VoiceSampleAudio
+	return out
+}
+func RougeSpec_FromProto(mapCtx *direct.MapContext, in *pb.RougeSpec) *krm.RougeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RougeSpec{}
+	out.RougeType = direct.LazyPtr(in.GetRougeType())
+	out.UseStemmer = direct.LazyPtr(in.GetUseStemmer())
+	out.SplitSummaries = direct.LazyPtr(in.GetSplitSummaries())
+	return out
+}
+func RougeSpec_ToProto(mapCtx *direct.MapContext, in *krm.RougeSpec) *pb.RougeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RougeSpec{}
+	out.RougeType = direct.ValueOf(in.RougeType)
+	out.UseStemmer = direct.ValueOf(in.UseStemmer)
+	out.SplitSummaries = direct.ValueOf(in.SplitSummaries)
+	return out
+}
 func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {
 	if in == nil {
 		return nil
@@ -1085,6 +1778,70 @@ func SampledShapleyAttribution_ToProto(mapCtx *direct.MapContext, in *krm.Sample
 	}
 	out := &pb.SampledShapleyAttribution{}
 	out.PathCount = direct.ValueOf(in.PathCount)
+	return out
+}
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Format = direct.LazyPtr(in.GetFormat())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Nullable = direct.LazyPtr(in.GetNullable())
+	out.Default = Value_FromProto(mapCtx, in.GetDefault())
+	out.Items = Schema_FromProto(mapCtx, in.GetItems())
+	out.MinItems = direct.LazyPtr(in.GetMinItems())
+	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
+	out.Enum = in.Enum
+	// MISSING: Properties
+	out.PropertyOrdering = in.PropertyOrdering
+	out.Required = in.Required
+	out.MinProperties = direct.LazyPtr(in.GetMinProperties())
+	out.MaxProperties = direct.LazyPtr(in.GetMaxProperties())
+	out.Minimum = direct.LazyPtr(in.GetMinimum())
+	out.Maximum = direct.LazyPtr(in.GetMaximum())
+	out.MinLength = direct.LazyPtr(in.GetMinLength())
+	out.MaxLength = direct.LazyPtr(in.GetMaxLength())
+	out.Pattern = direct.LazyPtr(in.GetPattern())
+	out.Example = Value_FromProto(mapCtx, in.GetExample())
+	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, Schema_FromProto)
+	out.AdditionalProperties = Value_FromProto(mapCtx, in.GetAdditionalProperties())
+	out.Ref = direct.LazyPtr(in.GetRef())
+	// MISSING: Defs
+	return out
+}
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	out.Type = direct.Enum_ToProto[pb.Type](mapCtx, in.Type)
+	out.Format = direct.ValueOf(in.Format)
+	out.Title = direct.ValueOf(in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	out.Nullable = direct.ValueOf(in.Nullable)
+	out.Default = Value_ToProto(mapCtx, in.Default)
+	out.Items = Schema_ToProto(mapCtx, in.Items)
+	out.MinItems = direct.ValueOf(in.MinItems)
+	out.MaxItems = direct.ValueOf(in.MaxItems)
+	out.Enum = in.Enum
+	// MISSING: Properties
+	out.PropertyOrdering = in.PropertyOrdering
+	out.Required = in.Required
+	out.MinProperties = direct.ValueOf(in.MinProperties)
+	out.MaxProperties = direct.ValueOf(in.MaxProperties)
+	out.Minimum = direct.ValueOf(in.Minimum)
+	out.Maximum = direct.ValueOf(in.Maximum)
+	out.MinLength = direct.ValueOf(in.MinLength)
+	out.MaxLength = direct.ValueOf(in.MaxLength)
+	out.Pattern = direct.ValueOf(in.Pattern)
+	out.Example = Value_ToProto(mapCtx, in.Example)
+	out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, Schema_ToProto)
+	out.AdditionalProperties = Value_ToProto(mapCtx, in.AdditionalProperties)
+	out.Ref = direct.ValueOf(in.Ref)
+	// MISSING: Defs
 	return out
 }
 func SmoothGradConfig_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krm.SmoothGradConfig {
@@ -1122,6 +1879,44 @@ found existing non-generated mapping function "SmoothGradConfig_NoiseSigma_ToPro
 		return &pb.SmoothGradConfig_NoiseSigma{NoiseSigma: *in}
 	}
 */
+func SpeakerVoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeakerVoiceConfig) *krm.SpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeakerVoiceConfig{}
+	out.Speaker = direct.LazyPtr(in.GetSpeaker())
+	out.VoiceConfig = VoiceConfig_FromProto(mapCtx, in.GetVoiceConfig())
+	return out
+}
+func SpeakerVoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeakerVoiceConfig) *pb.SpeakerVoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpeakerVoiceConfig{}
+	out.Speaker = direct.ValueOf(in.Speaker)
+	out.VoiceConfig = VoiceConfig_ToProto(mapCtx, in.VoiceConfig)
+	return out
+}
+func SpeechConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeechConfig) *krm.SpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechConfig{}
+	out.VoiceConfig = VoiceConfig_FromProto(mapCtx, in.GetVoiceConfig())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.MultiSpeakerVoiceConfig = MultiSpeakerVoiceConfig_FromProto(mapCtx, in.GetMultiSpeakerVoiceConfig())
+	return out
+}
+func SpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeechConfig) *pb.SpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpeechConfig{}
+	out.VoiceConfig = VoiceConfig_ToProto(mapCtx, in.VoiceConfig)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.MultiSpeakerVoiceConfig = MultiSpeakerVoiceConfig_ToProto(mapCtx, in.MultiSpeakerVoiceConfig)
+	return out
+}
 func SupervisedHyperParameters_FromProto(mapCtx *direct.MapContext, in *pb.SupervisedHyperParameters) *krm.SupervisedHyperParameters {
 	if in == nil {
 		return nil
@@ -1241,6 +2036,7 @@ func SupervisedTuningSpec_FromProto(mapCtx *direct.MapContext, in *pb.Supervised
 	out.ValidationDatasetURI = direct.LazyPtr(in.GetValidationDatasetUri())
 	out.HyperParameters = SupervisedHyperParameters_FromProto(mapCtx, in.GetHyperParameters())
 	out.ExportLastCheckpointOnly = direct.LazyPtr(in.GetExportLastCheckpointOnly())
+	out.EvaluationConfig = EvaluationConfig_FromProto(mapCtx, in.GetEvaluationConfig())
 	return out
 }
 func SupervisedTuningSpec_ToProto(mapCtx *direct.MapContext, in *krm.SupervisedTuningSpec) *pb.SupervisedTuningSpec {
@@ -1252,6 +2048,7 @@ func SupervisedTuningSpec_ToProto(mapCtx *direct.MapContext, in *krm.SupervisedT
 	out.ValidationDatasetUri = direct.ValueOf(in.ValidationDatasetURI)
 	out.HyperParameters = SupervisedHyperParameters_ToProto(mapCtx, in.HyperParameters)
 	out.ExportLastCheckpointOnly = direct.ValueOf(in.ExportLastCheckpointOnly)
+	out.EvaluationConfig = EvaluationConfig_ToProto(mapCtx, in.EvaluationConfig)
 	return out
 }
 func TunedModelCheckpoint_FromProto(mapCtx *direct.MapContext, in *pb.TunedModelCheckpoint) *krm.TunedModelCheckpoint {
@@ -1419,6 +2216,7 @@ func VertexAITuningJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.VertexAITuningJobObservedState{}
+	// MISSING: PreTunedModel
 	out.Name = direct.LazyPtr(in.GetName())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -1429,6 +2227,7 @@ func VertexAITuningJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Experiment = direct.LazyPtr(in.GetExperiment())
 	out.TunedModel = TunedModelObservedState_FromProto(mapCtx, in.GetTunedModel())
 	out.TuningDataStats = TuningDataStatsObservedState_FromProto(mapCtx, in.GetTuningDataStats())
+	// MISSING: EvaluateDatasetRuns
 	return out
 }
 func VertexAITuningJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITuningJobObservedState) *pb.TuningJob {
@@ -1436,6 +2235,7 @@ func VertexAITuningJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.V
 		return nil
 	}
 	out := &pb.TuningJob{}
+	// MISSING: PreTunedModel
 	out.Name = direct.ValueOf(in.Name)
 	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -1446,6 +2246,7 @@ func VertexAITuningJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.Experiment = direct.ValueOf(in.Experiment)
 	out.TunedModel = TunedModelObservedState_ToProto(mapCtx, in.TunedModel)
 	out.TuningDataStats = TuningDataStatsObservedState_ToProto(mapCtx, in.TuningDataStats)
+	// MISSING: EvaluateDatasetRuns
 	return out
 }
 
@@ -1456,6 +2257,7 @@ func VertexAITuningJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.TuningJob
 	}
 	out := &krm.VertexAITuningJobSpec{}
 	out.BaseModel = direct.LazyPtr(in.GetBaseModel())
+	// MISSING: PreTunedModel
 	out.SupervisedTuningSpec = SupervisedTuningSpec_FromProto(mapCtx, in.GetSupervisedTuningSpec())
 	out.TunedModelDisplayName = direct.LazyPtr(in.GetTunedModelDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -1464,6 +2266,7 @@ func VertexAITuningJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.TuningJob
 	if in.GetServiceAccount() != "" {
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
+	// MISSING: EvaluateDatasetRuns
 	return out
 }
 */
@@ -1479,6 +2282,7 @@ found existing non-generated mapping function "VertexAITuningJobSpec_ToProto", s
 		if oneof := VertexAITuningJobSpec_BaseModel_ToProto(mapCtx, in.BaseModel); oneof != nil {
 			out.SourceModel = oneof
 		}
+		// MISSING: PreTunedModel
 		if oneof := SupervisedTuningSpec_ToProto(mapCtx, in.SupervisedTuningSpec); oneof != nil {
 			out.TuningSpec = &pb.TuningJob_SupervisedTuningSpec{SupervisedTuningSpec: oneof}
 		}
@@ -1489,6 +2293,7 @@ found existing non-generated mapping function "VertexAITuningJobSpec_ToProto", s
 		if in.ServiceAccountRef != nil {
 			out.ServiceAccount = in.ServiceAccountRef.External
 		}
+		// MISSING: EvaluateDatasetRuns
 		return out
 	}
 */
@@ -1505,6 +2310,7 @@ func VideoMetadata_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *k
 	out := &krm.VideoMetadata{}
 	out.StartOffset = direct.StringDuration_FromProto(mapCtx, in.GetStartOffset())
 	out.EndOffset = direct.StringDuration_FromProto(mapCtx, in.GetEndOffset())
+	out.Fps = direct.LazyPtr(in.GetFps())
 	return out
 }
 func VideoMetadata_ToProto(mapCtx *direct.MapContext, in *krm.VideoMetadata) *pb.VideoMetadata {
@@ -1514,6 +2320,29 @@ func VideoMetadata_ToProto(mapCtx *direct.MapContext, in *krm.VideoMetadata) *pb
 	out := &pb.VideoMetadata{}
 	out.StartOffset = direct.StringDuration_ToProto(mapCtx, in.StartOffset)
 	out.EndOffset = direct.StringDuration_ToProto(mapCtx, in.EndOffset)
+	out.Fps = direct.ValueOf(in.Fps)
+	return out
+}
+func VoiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.VoiceConfig) *krm.VoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VoiceConfig{}
+	out.PrebuiltVoiceConfig = PrebuiltVoiceConfig_FromProto(mapCtx, in.GetPrebuiltVoiceConfig())
+	out.ReplicatedVoiceConfig = ReplicatedVoiceConfig_FromProto(mapCtx, in.GetReplicatedVoiceConfig())
+	return out
+}
+func VoiceConfig_ToProto(mapCtx *direct.MapContext, in *krm.VoiceConfig) *pb.VoiceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VoiceConfig{}
+	if oneof := PrebuiltVoiceConfig_ToProto(mapCtx, in.PrebuiltVoiceConfig); oneof != nil {
+		out.VoiceConfig = &pb.VoiceConfig_PrebuiltVoiceConfig{PrebuiltVoiceConfig: oneof}
+	}
+	if oneof := ReplicatedVoiceConfig_ToProto(mapCtx, in.ReplicatedVoiceConfig); oneof != nil {
+		out.VoiceConfig = &pb.VoiceConfig_ReplicatedVoiceConfig{ReplicatedVoiceConfig: oneof}
+	}
 	return out
 }
 func XraiAttribution_FromProto(mapCtx *direct.MapContext, in *pb.XraiAttribution) *krm.XraiAttribution {

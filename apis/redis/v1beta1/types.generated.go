@@ -135,6 +135,20 @@ type Cluster struct {
 	// Optional. The automated backup config for the cluster.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.automated_backup_config
 	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional. Server CA mode for the cluster.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.server_ca_mode
+	ServerCAMode *string `json:"serverCAMode,omitempty"`
+
+	// Optional. Customer-managed CA pool for the cluster. Only applicable for
+	//  BYOCA i.e. if server_ca_mode is SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA.
+	//  Format: "projects/{project}/locations/{region}/caPools/{ca_pool}".
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.server_ca_pool
+	ServerCAPool *string `json:"serverCAPool,omitempty"`
+
+	// Optional. Input only. Rotate the server certificates.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.rotate_server_certificate
+	RotateServerCertificate *bool `json:"rotateServerCertificate,omitempty"`
 }
 */
 
@@ -659,21 +673,25 @@ type WeeklyMaintenanceWindow struct {
 
 // +kcc:proto=google.type.TimeOfDay
 type TimeOfDay struct {
-	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
-	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// Hours of a day in 24 hour format. Must be greater than or equal to 0 and
+	//  typically must be less than or equal to 23. An API may choose to allow the
+	//  value "24:00:00" for scenarios like business closing time.
 	// +kcc:proto:field=google.type.TimeOfDay.hours
 	Hours *int32 `json:"hours,omitempty"`
 
-	// Minutes of hour of day. Must be from 0 to 59.
+	// Minutes of an hour. Must be greater than or equal to 0 and less than or
+	//  equal to 59.
 	// +kcc:proto:field=google.type.TimeOfDay.minutes
 	Minutes *int32 `json:"minutes,omitempty"`
 
-	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
-	//  allow the value 60 if it allows leap-seconds.
+	// Seconds of a minute. Must be greater than or equal to 0 and typically must
+	//  be less than or equal to 59. An API may allow the value 60 if it allows
+	//  leap-seconds.
 	// +kcc:proto:field=google.type.TimeOfDay.seconds
 	Seconds *int32 `json:"seconds,omitempty"`
 
-	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// Fractions of seconds, in nanoseconds. Must be greater than or equal to 0
+	//  and less than or equal to 999,999,999.
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
