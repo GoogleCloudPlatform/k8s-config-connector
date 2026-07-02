@@ -1482,7 +1482,7 @@ func (in *MonitoringGroupSpec) DeepCopyInto(out *MonitoringGroupSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refs.ProjectRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
