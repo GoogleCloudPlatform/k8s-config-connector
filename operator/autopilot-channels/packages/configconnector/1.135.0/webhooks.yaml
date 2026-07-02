@@ -1,0 +1,7147 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnrm-validating-webhook
+  namespace: cnrm-system
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    cnrm.cloud.google.com/component: cnrm-webhook-manager
+    cnrm.cloud.google.com/system: "true"
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: validating-webhook.cnrm.cloud.google.com
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /deny-immutable-field-updates
+  failurePolicy: Fail
+  name: deny-immutable-field-updates.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - accesscontextmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - accesscontextmanageraccesslevelconditions
+    - accesscontextmanageraccesslevels
+    - accesscontextmanageraccesspolicies
+    - accesscontextmanagergcpuseraccessbindings
+    - accesscontextmanagerserviceperimeterresources
+    - accesscontextmanagerserviceperimeters
+  - apiGroups:
+    - alloydb.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - alloydbbackups
+    - alloydbclusters
+    - alloydbinstances
+    - alloydbusers
+  - apiGroups:
+    - apigateway.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - apigatewayapiconfigs
+    - apigatewayapis
+    - apigatewaygateways
+  - apiGroups:
+    - apigee.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - apigeeaddonsconfigs
+    - apigeeendpointattachments
+    - apigeeenvgroupattachments
+    - apigeeenvgroups
+    - apigeeenvironments
+    - apigeeinstanceattachments
+    - apigeeinstances
+    - apigeenataddresses
+    - apigeeorganizations
+    - apigeesyncauthorizations
+  - apiGroups:
+    - apikeys.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - apikeyskeys
+  - apiGroups:
+    - appengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - appenginedomainmappings
+    - appenginefirewallrules
+    - appengineflexibleappversions
+    - appengineservicesplittraffics
+    - appenginestandardappversions
+  - apiGroups:
+    - apphub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - apphubapplications
+  - apiGroups:
+    - artifactregistry.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - artifactregistryrepositories
+  - apiGroups:
+    - asset.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - assetfeeds
+    - assetsavedqueries
+  - apiGroups:
+    - backupdr.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - backupdrbackupplanassociations
+    - backupdrbackupplans
+    - backupdrbackupvaults
+    - backupdrmanagementservers
+  - apiGroups:
+    - batch.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - batchjobs
+  - apiGroups:
+    - beyondcorp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - beyondcorpappconnections
+    - beyondcorpappconnectors
+    - beyondcorpappgateways
+  - apiGroups:
+    - bigquery.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - bigquerydatasetaccesses
+    - bigquerydatasets
+    - bigqueryjobs
+    - bigqueryroutines
+    - bigquerytables
+  - apiGroups:
+    - bigqueryanalyticshub.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - bigqueryanalyticshubdataexchanges
+    - bigqueryanalyticshublistings
+  - apiGroups:
+    - bigquerybiglake.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - biglaketables
+  - apiGroups:
+    - bigqueryconnection.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - bigqueryconnectionconnections
+  - apiGroups:
+    - bigquerydatapolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - bigquerydatapolicydatapolicies
+  - apiGroups:
+    - bigquerydatatransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - bigquerydatatransferconfigs
+  - apiGroups:
+    - bigqueryreservation.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - bigqueryreservationassignments
+    - bigqueryreservationcapacitycommitments
+    - bigqueryreservationreservations
+  - apiGroups:
+    - bigtable.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - bigtableappprofiles
+    - bigtablegcpolicies
+    - bigtableinstances
+    - bigtablelogicalviews
+    - bigtabletables
+  - apiGroups:
+    - billingbudgets.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - billingbudgetsbudgets
+  - apiGroups:
+    - binaryauthorization.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - binaryauthorizationattestors
+    - binaryauthorizationpolicies
+  - apiGroups:
+    - certificatemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - certificatemanagercertificatemapentries
+    - certificatemanagercertificatemaps
+    - certificatemanagercertificates
+    - certificatemanagerdnsauthorizations
+  - apiGroups:
+    - cloudasset.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - cloudassetfolderfeeds
+    - cloudassetorganizationfeeds
+    - cloudassetprojectfeeds
+  - apiGroups:
+    - cloudbuild.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - cloudbuildtriggers
+    - cloudbuildworkerpools
+  - apiGroups:
+    - clouddeploy.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - clouddeploydeliverypipelines
+  - apiGroups:
+    - cloudfunctions.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - cloudfunctionsfunctions
+  - apiGroups:
+    - cloudfunctions2.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - cloudfunctions2functions
+  - apiGroups:
+    - cloudidentity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - cloudidentitygroups
+    - cloudidentitymemberships
+  - apiGroups:
+    - cloudids.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - cloudidsendpoints
+  - apiGroups:
+    - cloudiot.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - cloudiotdeviceregistries
+    - cloudiotdevices
+  - apiGroups:
+    - cloudquota.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - apiquotaadjustersettingses
+    - apiquotapreferences
+  - apiGroups:
+    - cloudscheduler.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - cloudschedulerjobs
+  - apiGroups:
+    - cloudtasks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - tasksqueues
+  - apiGroups:
+    - colab.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - colabruntimes
+    - colabruntimetemplates
+  - apiGroups:
+    - composer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - composerenvironments
+  - apiGroups:
+    - compute.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - computeaddresses
+    - computeautoscalers
+    - computebackendbuckets
+    - computebackendbucketsignedurlkeys
+    - computebackendservices
+    - computebackendservicesignedurlkeys
+    - computediskresourcepolicyattachments
+    - computedisks
+    - computeexternalvpngateways
+    - computefirewallpolicies
+    - computefirewallpolicyassociations
+    - computefirewallpolicyrules
+    - computefirewalls
+    - computeforwardingrules
+    - computeglobalnetworkendpointgroups
+    - computeglobalnetworkendpoints
+    - computehealthchecks
+    - computehttphealthchecks
+    - computehttpshealthchecks
+    - computeimages
+    - computeinstancegroupmanagers
+    - computeinstancegroupnamedports
+    - computeinstancegroups
+    - computeinstances
+    - computeinstancetemplates
+    - computeinterconnectattachments
+    - computemachineimages
+    - computemanagedsslcertificates
+    - computenetworkattachments
+    - computenetworkedgesecurityservices
+    - computenetworkendpointgroups
+    - computenetworkendpoints
+    - computenetworkfirewallpolicies
+    - computenetworkfirewallpolicyassociations
+    - computenetworkfirewallpolicyrules
+    - computenetworkpeeringroutesconfigs
+    - computenetworkpeerings
+    - computenetworks
+    - computenodegroups
+    - computenodetemplates
+    - computeorganizationsecuritypolicies
+    - computeorganizationsecuritypolicyassociations
+    - computeorganizationsecuritypolicyrules
+    - computepacketmirrorings
+    - computeperinstanceconfigs
+    - computeprojectmetadatas
+    - computeregionautoscalers
+    - computeregiondiskresourcepolicyattachments
+    - computeregionnetworkendpointgroups
+    - computeregionperinstanceconfigs
+    - computeregionsslpolicies
+    - computereservations
+    - computeresourcepolicies
+    - computerouterinterfaces
+    - computerouternats
+    - computerouterpeers
+    - computerouters
+    - computeroutes
+    - computesecuritypolicies
+    - computeserviceattachments
+    - computesharedvpchostprojects
+    - computesharedvpcserviceprojects
+    - computesnapshots
+    - computesslcertificates
+    - computesslpolicies
+    - computesubnetworks
+    - computetargetgrpcproxies
+    - computetargethttpproxies
+    - computetargethttpsproxies
+    - computetargetinstances
+    - computetargetpools
+    - computetargetsslproxies
+    - computetargettcpproxies
+    - computetargetvpngateways
+    - computeurlmaps
+    - computevpngateways
+    - computevpntunnels
+  - apiGroups:
+    - configcontroller.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - configcontrollerinstances
+  - apiGroups:
+    - container.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - containerclusters
+    - containernodepools
+  - apiGroups:
+    - containeranalysis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - containeranalysisnotes
+    - containeranalysisoccurrences
+  - apiGroups:
+    - containerattached.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - containerattachedclusters
+  - apiGroups:
+    - datacatalog.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - datacatalogentries
+    - datacatalogentrygroups
+    - datacatalogpolicytags
+    - datacatalogtags
+    - datacatalogtagtemplates
+    - datacatalogtaxonomies
+  - apiGroups:
+    - dataflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - dataflowflextemplatejobs
+    - dataflowjobs
+  - apiGroups:
+    - dataform.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - dataformrepositories
+  - apiGroups:
+    - datafusion.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - datafusioninstances
+  - apiGroups:
+    - dataplex.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - dataplexentrygroups
+    - dataplexentrytypes
+    - dataplexlakes
+    - dataplextasks
+    - dataplexzones
+  - apiGroups:
+    - dataproc.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - dataprocautoscalingpolicies
+    - dataprocbatchs
+    - dataprocclusters
+    - dataprocjobs
+    - dataprocworkflowtemplates
+  - apiGroups:
+    - datastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - datastoreindexes
+  - apiGroups:
+    - datastream.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - datastreamconnectionprofiles
+    - datastreamprivateconnections
+    - datastreamroutes
+    - datastreamstreams
+  - apiGroups:
+    - deploymentmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - deploymentmanagerdeployments
+  - apiGroups:
+    - dialogflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - dialogflowagents
+    - dialogflowentitytypes
+    - dialogflowfulfillments
+    - dialogflowintents
+  - apiGroups:
+    - dialogflowcx.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - dialogflowcxagents
+    - dialogflowcxentitytypes
+    - dialogflowcxflows
+    - dialogflowcxintents
+    - dialogflowcxpages
+    - dialogflowcxwebhooks
+  - apiGroups:
+    - discoveryengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - discoveryenginedatastores
+  - apiGroups:
+    - dlp.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - dlpdeidentifytemplates
+    - dlpinspecttemplates
+    - dlpjobtriggers
+    - dlpstoredinfotypes
+  - apiGroups:
+    - dns.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - dnsmanagedzones
+    - dnspolicies
+    - dnsrecordsets
+    - dnsresponsepolicies
+    - dnsresponsepolicyrules
+  - apiGroups:
+    - documentai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - documentaiprocessordefaultversions
+    - documentaiprocessors
+    - documentaiprocessorversions
+  - apiGroups:
+    - edgecontainer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - edgecontainerclusters
+    - edgecontainernodepools
+    - edgecontainervpnconnections
+  - apiGroups:
+    - edgenetwork.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - edgenetworknetworks
+    - edgenetworksubnets
+  - apiGroups:
+    - essentialcontacts.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - essentialcontactscontacts
+  - apiGroups:
+    - eventarc.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - eventarcchannels
+    - eventarcgooglechannelconfigs
+    - eventarctriggers
+  - apiGroups:
+    - filestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - filestorebackups
+    - filestoreinstances
+    - filestoresnapshots
+  - apiGroups:
+    - firebase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - firebaseandroidapps
+    - firebaseprojects
+    - firebasewebapps
+  - apiGroups:
+    - firebasedatabase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - firebasedatabaseinstances
+  - apiGroups:
+    - firebasehosting.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - firebasehostingchannels
+    - firebasehostingsites
+  - apiGroups:
+    - firebasestorage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - firebasestoragebuckets
+  - apiGroups:
+    - firestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - firestoredatabases
+    - firestoreindexes
+  - apiGroups:
+    - gkebackup.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - gkebackupbackupplans
+    - gkebackupbackups
+    - gkebackuprestoreplans
+    - gkebackuprestores
+  - apiGroups:
+    - gkehub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - gkehubfeaturememberships
+    - gkehubfeatures
+    - gkehubmemberships
+  - apiGroups:
+    - healthcare.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - healthcareconsentstores
+    - healthcaredatasets
+    - healthcaredicomstores
+    - healthcarefhirstores
+    - healthcarehl7v2stores
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - iamaccessboundarypolicies
+    - iamcustomroles
+    - iamserviceaccountkeys
+    - iamserviceaccounts
+    - iamworkforcepoolproviders
+    - iamworkforcepools
+    - iamworkloadidentitypoolproviders
+    - iamworkloadidentitypools
+  - apiGroups:
+    - iap.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - iapbrands
+    - iapidentityawareproxyclients
+    - iapsettingses
+  - apiGroups:
+    - identityplatform.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - identityplatformconfigs
+    - identityplatformdefaultsupportedidpconfigs
+    - identityplatforminboundsamlconfigs
+    - identityplatformoauthidpconfigs
+    - identityplatformprojectdefaultconfigs
+    - identityplatformtenantdefaultsupportedidpconfigs
+    - identityplatformtenantinboundsamlconfigs
+    - identityplatformtenantoauthidpconfigs
+    - identityplatformtenants
+  - apiGroups:
+    - kms.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - kmsautokeyconfigs
+    - kmscryptokeys
+    - kmscryptokeyversions
+    - kmsimportjobs
+    - kmskeyhandles
+    - kmskeyringimportjobs
+    - kmskeyrings
+    - kmssecretciphertexts
+  - apiGroups:
+    - logging.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - logginglinks
+    - logginglogbuckets
+    - logginglogexclusions
+    - logginglogmetrics
+    - logginglogsinks
+    - logginglogviews
+  - apiGroups:
+    - managedkafka.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - managedkafkaclusters
+    - managedkafkatopics
+  - apiGroups:
+    - memcache.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - memcacheinstances
+  - apiGroups:
+    - metastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - metastorebackups
+    - metastorefederations
+    - metastoreservices
+  - apiGroups:
+    - mlengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - mlenginemodels
+  - apiGroups:
+    - monitoring.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - monitoringalertpolicies
+    - monitoringdashboards
+    - monitoringgroups
+    - monitoringmetricdescriptors
+    - monitoringmonitoredprojects
+    - monitoringnotificationchannels
+    - monitoringservicelevelobjectives
+    - monitoringservices
+    - monitoringuptimecheckconfigs
+  - apiGroups:
+    - netapp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - netappbackuppolicies
+  - apiGroups:
+    - networkconnectivity.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - networkconnectivityhubs
+    - networkconnectivityinternalranges
+    - networkconnectivityserviceconnectionpolicies
+    - networkconnectivityspokes
+  - apiGroups:
+    - networkmanagement.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - networkmanagementconnectivitytests
+  - apiGroups:
+    - networksecurity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - networksecurityauthorizationpolicies
+    - networksecurityclienttlspolicies
+    - networksecurityservertlspolicies
+  - apiGroups:
+    - networkservices.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - networkservicesedgecachekeysets
+    - networkservicesedgecacheorigins
+    - networkservicesedgecacheservices
+    - networkservicesendpointpolicies
+    - networkservicesgateways
+    - networkservicesgrpcroutes
+    - networkserviceshttproutes
+    - networkservicesmeshes
+    - networkservicesservicebindings
+    - networkservicestcproutes
+    - networkservicestlsroutes
+  - apiGroups:
+    - notebooks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - notebookinstances
+    - notebooksenvironments
+  - apiGroups:
+    - orgpolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - orgpolicycustomconstraints
+    - orgpolicypolicies
+  - apiGroups:
+    - osconfig.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - osconfigguestpolicies
+    - osconfigospolicyassignments
+    - osconfigpatchdeployments
+  - apiGroups:
+    - oslogin.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - osloginsshpublickeys
+  - apiGroups:
+    - privateca.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - privatecacapools
+    - privatecacertificateauthorities
+    - privatecacertificates
+    - privatecacertificatetemplates
+  - apiGroups:
+    - privilegedaccessmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - privilegedaccessmanagerentitlements
+  - apiGroups:
+    - pubsub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - pubsubschemas
+    - pubsubsnapshots
+    - pubsubsubscriptions
+    - pubsubtopics
+  - apiGroups:
+    - pubsublite.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - pubsublitereservations
+    - pubsublitesubscriptions
+    - pubsublitetopics
+  - apiGroups:
+    - recaptchaenterprise.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - recaptchaenterprisefirewallpolicies
+    - recaptchaenterprisekeys
+  - apiGroups:
+    - redis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - redisclusters
+    - redisinstances
+  - apiGroups:
+    - resourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - folders
+    - projects
+    - resourcemanagerliens
+    - resourcemanagerpolicies
+  - apiGroups:
+    - run.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - runjobs
+    - runservices
+  - apiGroups:
+    - secretmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - secretmanagersecrets
+    - secretmanagersecretversions
+  - apiGroups:
+    - securesourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - securesourcemanagerinstances
+    - securesourcemanagerrepositories
+  - apiGroups:
+    - securitycenter.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - securitycenternotificationconfigs
+    - securitycentersources
+  - apiGroups:
+    - servicedirectory.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - servicedirectoryendpoints
+    - servicedirectorynamespaces
+    - servicedirectoryservices
+  - apiGroups:
+    - servicenetworking.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - servicenetworkingconnections
+    - servicenetworkingpeereddnsdomains
+  - apiGroups:
+    - serviceusage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - serviceidentities
+    - services
+    - serviceusageconsumerquotaoverrides
+  - apiGroups:
+    - sourcerepo.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - sourcereporepositories
+  - apiGroups:
+    - spanner.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - spannerbackupschedules
+    - spannerdatabases
+    - spannerinstanceconfigs
+    - spannerinstances
+  - apiGroups:
+    - speech.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - speechcustomclasses
+    - speechphrasesets
+    - speechrecognizers
+  - apiGroups:
+    - sql.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - sqldatabases
+    - sqlinstances
+    - sqlsslcerts
+    - sqlusers
+  - apiGroups:
+    - storage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - storageanywherecaches
+    - storagebucketaccesscontrols
+    - storagebuckets
+    - storagedefaultobjectaccesscontrols
+    - storagefolders
+    - storagehmackeys
+    - storagenotifications
+  - apiGroups:
+    - storagetransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - storagetransferagentpools
+    - storagetransferjobs
+  - apiGroups:
+    - tags.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - tagslocationtagbindings
+    - tagstagbindings
+    - tagstagkeys
+    - tagstagvalues
+  - apiGroups:
+    - tpu.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - tpunodes
+  - apiGroups:
+    - vertexai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - vertexaidatasets
+    - vertexaiendpoints
+    - vertexaifeaturestoreentitytypefeatures
+    - vertexaifeaturestoreentitytypes
+    - vertexaifeaturestores
+    - vertexaiindexendpoints
+    - vertexaiindexes
+    - vertexaimetadatastores
+    - vertexaitensorboards
+  - apiGroups:
+    - vmwareengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - vmwareengineexternalaccessrules
+    - vmwareengineexternaladdresses
+    - vmwareenginenetworkpeerings
+    - vmwareenginenetworkpolicies
+    - vmwareenginenetworks
+    - vmwareengineprivateclouds
+  - apiGroups:
+    - vpcaccess.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - vpcaccessconnectors
+  - apiGroups:
+    - workflowexecutions.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - workflowsexecutions
+  - apiGroups:
+    - workflows.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - UPDATE
+    resources:
+    - workflowsworkflows
+  - apiGroups:
+    - workstations.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - UPDATE
+    resources:
+    - workstationclusters
+    - workstationconfigs
+    - workstations
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /deny-unknown-fields
+  failurePolicy: Fail
+  name: deny-unknown-fields.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - accesscontextmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - accesscontextmanageraccesslevelconditions
+    - accesscontextmanageraccesslevels
+    - accesscontextmanageraccesspolicies
+    - accesscontextmanagergcpuseraccessbindings
+    - accesscontextmanagerserviceperimeterresources
+    - accesscontextmanagerserviceperimeters
+  - apiGroups:
+    - alloydb.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - alloydbbackups
+    - alloydbclusters
+    - alloydbinstances
+    - alloydbusers
+  - apiGroups:
+    - apigateway.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apigatewayapiconfigs
+    - apigatewayapis
+    - apigatewaygateways
+  - apiGroups:
+    - apigee.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apigeeaddonsconfigs
+    - apigeeendpointattachments
+    - apigeeenvgroupattachments
+    - apigeeenvgroups
+    - apigeeenvironments
+    - apigeeinstanceattachments
+    - apigeeinstances
+    - apigeenataddresses
+    - apigeeorganizations
+    - apigeesyncauthorizations
+  - apiGroups:
+    - apikeys.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apikeyskeys
+  - apiGroups:
+    - appengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - appenginedomainmappings
+    - appenginefirewallrules
+    - appengineflexibleappversions
+    - appengineservicesplittraffics
+    - appenginestandardappversions
+  - apiGroups:
+    - apphub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apphubapplications
+  - apiGroups:
+    - artifactregistry.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - artifactregistryrepositories
+  - apiGroups:
+    - asset.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - assetfeeds
+    - assetsavedqueries
+  - apiGroups:
+    - backupdr.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - backupdrbackupplanassociations
+    - backupdrbackupplans
+    - backupdrbackupvaults
+    - backupdrmanagementservers
+  - apiGroups:
+    - batch.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - batchjobs
+  - apiGroups:
+    - beyondcorp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - beyondcorpappconnections
+    - beyondcorpappconnectors
+    - beyondcorpappgateways
+  - apiGroups:
+    - bigquery.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigquerydatasetaccesses
+    - bigquerydatasets
+    - bigqueryjobs
+    - bigqueryroutines
+    - bigquerytables
+  - apiGroups:
+    - bigqueryanalyticshub.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigqueryanalyticshubdataexchanges
+    - bigqueryanalyticshublistings
+  - apiGroups:
+    - bigquerybiglake.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - biglaketables
+  - apiGroups:
+    - bigqueryconnection.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigqueryconnectionconnections
+  - apiGroups:
+    - bigquerydatapolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigquerydatapolicydatapolicies
+  - apiGroups:
+    - bigquerydatatransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigquerydatatransferconfigs
+  - apiGroups:
+    - bigqueryreservation.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigqueryreservationassignments
+    - bigqueryreservationcapacitycommitments
+    - bigqueryreservationreservations
+  - apiGroups:
+    - bigtable.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigtableappprofiles
+    - bigtablegcpolicies
+    - bigtableinstances
+    - bigtablelogicalviews
+    - bigtabletables
+  - apiGroups:
+    - billingbudgets.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - billingbudgetsbudgets
+  - apiGroups:
+    - binaryauthorization.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - binaryauthorizationattestors
+    - binaryauthorizationpolicies
+  - apiGroups:
+    - certificatemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - certificatemanagercertificatemapentries
+    - certificatemanagercertificatemaps
+    - certificatemanagercertificates
+    - certificatemanagerdnsauthorizations
+  - apiGroups:
+    - cloudasset.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudassetfolderfeeds
+    - cloudassetorganizationfeeds
+    - cloudassetprojectfeeds
+  - apiGroups:
+    - cloudbuild.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudbuildtriggers
+    - cloudbuildworkerpools
+  - apiGroups:
+    - clouddeploy.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - clouddeploydeliverypipelines
+  - apiGroups:
+    - cloudfunctions.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudfunctionsfunctions
+  - apiGroups:
+    - cloudfunctions2.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudfunctions2functions
+  - apiGroups:
+    - cloudidentity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudidentitygroups
+    - cloudidentitymemberships
+  - apiGroups:
+    - cloudids.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudidsendpoints
+  - apiGroups:
+    - cloudiot.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudiotdeviceregistries
+    - cloudiotdevices
+  - apiGroups:
+    - cloudquota.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apiquotaadjustersettingses
+    - apiquotapreferences
+  - apiGroups:
+    - cloudscheduler.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudschedulerjobs
+  - apiGroups:
+    - cloudtasks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - tasksqueues
+  - apiGroups:
+    - colab.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - colabruntimes
+    - colabruntimetemplates
+  - apiGroups:
+    - composer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - composerenvironments
+  - apiGroups:
+    - compute.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - computeaddresses
+    - computeautoscalers
+    - computebackendbuckets
+    - computebackendbucketsignedurlkeys
+    - computebackendservices
+    - computebackendservicesignedurlkeys
+    - computediskresourcepolicyattachments
+    - computedisks
+    - computeexternalvpngateways
+    - computefirewallpolicies
+    - computefirewallpolicyassociations
+    - computefirewallpolicyrules
+    - computefirewalls
+    - computeforwardingrules
+    - computeglobalnetworkendpointgroups
+    - computeglobalnetworkendpoints
+    - computehealthchecks
+    - computehttphealthchecks
+    - computehttpshealthchecks
+    - computeimages
+    - computeinstancegroupmanagers
+    - computeinstancegroupnamedports
+    - computeinstancegroups
+    - computeinstances
+    - computeinstancetemplates
+    - computeinterconnectattachments
+    - computemachineimages
+    - computemanagedsslcertificates
+    - computenetworkattachments
+    - computenetworkedgesecurityservices
+    - computenetworkendpointgroups
+    - computenetworkendpoints
+    - computenetworkfirewallpolicies
+    - computenetworkfirewallpolicyassociations
+    - computenetworkfirewallpolicyrules
+    - computenetworkpeeringroutesconfigs
+    - computenetworkpeerings
+    - computenetworks
+    - computenodegroups
+    - computenodetemplates
+    - computeorganizationsecuritypolicies
+    - computeorganizationsecuritypolicyassociations
+    - computeorganizationsecuritypolicyrules
+    - computepacketmirrorings
+    - computeperinstanceconfigs
+    - computeprojectmetadatas
+    - computeregionautoscalers
+    - computeregiondiskresourcepolicyattachments
+    - computeregionnetworkendpointgroups
+    - computeregionperinstanceconfigs
+    - computeregionsslpolicies
+    - computereservations
+    - computeresourcepolicies
+    - computerouterinterfaces
+    - computerouternats
+    - computerouterpeers
+    - computerouters
+    - computeroutes
+    - computesecuritypolicies
+    - computeserviceattachments
+    - computesharedvpchostprojects
+    - computesharedvpcserviceprojects
+    - computesnapshots
+    - computesslcertificates
+    - computesslpolicies
+    - computesubnetworks
+    - computetargetgrpcproxies
+    - computetargethttpproxies
+    - computetargethttpsproxies
+    - computetargetinstances
+    - computetargetpools
+    - computetargetsslproxies
+    - computetargettcpproxies
+    - computetargetvpngateways
+    - computeurlmaps
+    - computevpngateways
+    - computevpntunnels
+  - apiGroups:
+    - configcontroller.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - configcontrollerinstances
+  - apiGroups:
+    - container.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - containerclusters
+    - containernodepools
+  - apiGroups:
+    - containeranalysis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - containeranalysisnotes
+    - containeranalysisoccurrences
+  - apiGroups:
+    - containerattached.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - containerattachedclusters
+  - apiGroups:
+    - datacatalog.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datacatalogentries
+    - datacatalogentrygroups
+    - datacatalogpolicytags
+    - datacatalogtags
+    - datacatalogtagtemplates
+    - datacatalogtaxonomies
+  - apiGroups:
+    - dataflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataflowflextemplatejobs
+    - dataflowjobs
+  - apiGroups:
+    - dataform.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataformrepositories
+  - apiGroups:
+    - datafusion.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datafusioninstances
+  - apiGroups:
+    - dataplex.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataplexentrygroups
+    - dataplexentrytypes
+    - dataplexlakes
+    - dataplextasks
+    - dataplexzones
+  - apiGroups:
+    - dataproc.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataprocautoscalingpolicies
+    - dataprocbatchs
+    - dataprocclusters
+    - dataprocjobs
+    - dataprocworkflowtemplates
+  - apiGroups:
+    - datastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datastoreindexes
+  - apiGroups:
+    - datastream.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datastreamconnectionprofiles
+    - datastreamprivateconnections
+    - datastreamroutes
+    - datastreamstreams
+  - apiGroups:
+    - deploymentmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - deploymentmanagerdeployments
+  - apiGroups:
+    - dialogflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dialogflowagents
+    - dialogflowentitytypes
+    - dialogflowfulfillments
+    - dialogflowintents
+  - apiGroups:
+    - dialogflowcx.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dialogflowcxagents
+    - dialogflowcxentitytypes
+    - dialogflowcxflows
+    - dialogflowcxintents
+    - dialogflowcxpages
+    - dialogflowcxwebhooks
+  - apiGroups:
+    - discoveryengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - discoveryenginedatastores
+  - apiGroups:
+    - dlp.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dlpdeidentifytemplates
+    - dlpinspecttemplates
+    - dlpjobtriggers
+    - dlpstoredinfotypes
+  - apiGroups:
+    - dns.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dnsmanagedzones
+    - dnspolicies
+    - dnsrecordsets
+    - dnsresponsepolicies
+    - dnsresponsepolicyrules
+  - apiGroups:
+    - documentai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - documentaiprocessordefaultversions
+    - documentaiprocessors
+    - documentaiprocessorversions
+  - apiGroups:
+    - edgecontainer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - edgecontainerclusters
+    - edgecontainernodepools
+    - edgecontainervpnconnections
+  - apiGroups:
+    - edgenetwork.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - edgenetworknetworks
+    - edgenetworksubnets
+  - apiGroups:
+    - essentialcontacts.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - essentialcontactscontacts
+  - apiGroups:
+    - eventarc.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - eventarcchannels
+    - eventarcgooglechannelconfigs
+    - eventarctriggers
+  - apiGroups:
+    - filestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - filestorebackups
+    - filestoreinstances
+    - filestoresnapshots
+  - apiGroups:
+    - firebase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebaseandroidapps
+    - firebaseprojects
+    - firebasewebapps
+  - apiGroups:
+    - firebasedatabase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebasedatabaseinstances
+  - apiGroups:
+    - firebasehosting.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebasehostingchannels
+    - firebasehostingsites
+  - apiGroups:
+    - firebasestorage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebasestoragebuckets
+  - apiGroups:
+    - firestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firestoredatabases
+    - firestoreindexes
+  - apiGroups:
+    - gkebackup.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - gkebackupbackupplans
+    - gkebackupbackups
+    - gkebackuprestoreplans
+    - gkebackuprestores
+  - apiGroups:
+    - gkehub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - gkehubfeaturememberships
+    - gkehubfeatures
+    - gkehubmemberships
+  - apiGroups:
+    - healthcare.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - healthcareconsentstores
+    - healthcaredatasets
+    - healthcaredicomstores
+    - healthcarefhirstores
+    - healthcarehl7v2stores
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - iamaccessboundarypolicies
+    - iamauditconfigs
+    - iamcustomroles
+    - iampartialpolicies
+    - iampolicies
+    - iampolicymembers
+    - iamserviceaccountkeys
+    - iamserviceaccounts
+    - iamworkforcepoolproviders
+    - iamworkforcepools
+    - iamworkloadidentitypoolproviders
+    - iamworkloadidentitypools
+  - apiGroups:
+    - iap.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - iapbrands
+    - iapidentityawareproxyclients
+    - iapsettingses
+  - apiGroups:
+    - identityplatform.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - identityplatformconfigs
+    - identityplatformdefaultsupportedidpconfigs
+    - identityplatforminboundsamlconfigs
+    - identityplatformoauthidpconfigs
+    - identityplatformprojectdefaultconfigs
+    - identityplatformtenantdefaultsupportedidpconfigs
+    - identityplatformtenantinboundsamlconfigs
+    - identityplatformtenantoauthidpconfigs
+    - identityplatformtenants
+  - apiGroups:
+    - kms.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - kmsautokeyconfigs
+    - kmscryptokeys
+    - kmscryptokeyversions
+    - kmsimportjobs
+    - kmskeyhandles
+    - kmskeyringimportjobs
+    - kmskeyrings
+    - kmssecretciphertexts
+  - apiGroups:
+    - logging.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - logginglinks
+    - logginglogbuckets
+    - logginglogexclusions
+    - logginglogmetrics
+    - logginglogsinks
+    - logginglogviews
+  - apiGroups:
+    - managedkafka.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - managedkafkaclusters
+    - managedkafkatopics
+  - apiGroups:
+    - memcache.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - memcacheinstances
+  - apiGroups:
+    - metastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - metastorebackups
+    - metastorefederations
+    - metastoreservices
+  - apiGroups:
+    - mlengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - mlenginemodels
+  - apiGroups:
+    - monitoring.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - monitoringalertpolicies
+    - monitoringdashboards
+    - monitoringgroups
+    - monitoringmetricdescriptors
+    - monitoringmonitoredprojects
+    - monitoringnotificationchannels
+    - monitoringservicelevelobjectives
+    - monitoringservices
+    - monitoringuptimecheckconfigs
+  - apiGroups:
+    - netapp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - netappbackuppolicies
+  - apiGroups:
+    - networkconnectivity.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networkconnectivityhubs
+    - networkconnectivityinternalranges
+    - networkconnectivityserviceconnectionpolicies
+    - networkconnectivityspokes
+  - apiGroups:
+    - networkmanagement.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networkmanagementconnectivitytests
+  - apiGroups:
+    - networksecurity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networksecurityauthorizationpolicies
+    - networksecurityclienttlspolicies
+    - networksecurityservertlspolicies
+  - apiGroups:
+    - networkservices.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networkservicesedgecachekeysets
+    - networkservicesedgecacheorigins
+    - networkservicesedgecacheservices
+    - networkservicesendpointpolicies
+    - networkservicesgateways
+    - networkservicesgrpcroutes
+    - networkserviceshttproutes
+    - networkservicesmeshes
+    - networkservicesservicebindings
+    - networkservicestcproutes
+    - networkservicestlsroutes
+  - apiGroups:
+    - notebooks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - notebookinstances
+    - notebooksenvironments
+  - apiGroups:
+    - orgpolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - orgpolicycustomconstraints
+    - orgpolicypolicies
+  - apiGroups:
+    - osconfig.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - osconfigguestpolicies
+    - osconfigospolicyassignments
+    - osconfigpatchdeployments
+  - apiGroups:
+    - oslogin.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - osloginsshpublickeys
+  - apiGroups:
+    - privateca.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - privatecacapools
+    - privatecacertificateauthorities
+    - privatecacertificates
+    - privatecacertificatetemplates
+  - apiGroups:
+    - privilegedaccessmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - privilegedaccessmanagerentitlements
+  - apiGroups:
+    - pubsub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pubsubschemas
+    - pubsubsnapshots
+    - pubsubsubscriptions
+    - pubsubtopics
+  - apiGroups:
+    - pubsublite.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pubsublitereservations
+    - pubsublitesubscriptions
+    - pubsublitetopics
+  - apiGroups:
+    - recaptchaenterprise.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - recaptchaenterprisefirewallpolicies
+    - recaptchaenterprisekeys
+  - apiGroups:
+    - redis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - redisclusters
+    - redisinstances
+  - apiGroups:
+    - resourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - folders
+    - projects
+    - resourcemanagerliens
+    - resourcemanagerpolicies
+  - apiGroups:
+    - run.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - runjobs
+    - runservices
+  - apiGroups:
+    - secretmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - secretmanagersecrets
+    - secretmanagersecretversions
+  - apiGroups:
+    - securesourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - securesourcemanagerinstances
+    - securesourcemanagerrepositories
+  - apiGroups:
+    - securitycenter.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - securitycenternotificationconfigs
+    - securitycentersources
+  - apiGroups:
+    - servicedirectory.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - servicedirectoryendpoints
+    - servicedirectorynamespaces
+    - servicedirectoryservices
+  - apiGroups:
+    - servicenetworking.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - servicenetworkingconnections
+    - servicenetworkingpeereddnsdomains
+  - apiGroups:
+    - serviceusage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - serviceidentities
+    - services
+    - serviceusageconsumerquotaoverrides
+  - apiGroups:
+    - sourcerepo.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - sourcereporepositories
+  - apiGroups:
+    - spanner.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - spannerbackupschedules
+    - spannerdatabases
+    - spannerinstanceconfigs
+    - spannerinstances
+  - apiGroups:
+    - speech.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - speechcustomclasses
+    - speechphrasesets
+    - speechrecognizers
+  - apiGroups:
+    - sql.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - sqldatabases
+    - sqlinstances
+    - sqlsslcerts
+    - sqlusers
+  - apiGroups:
+    - storage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - storageanywherecaches
+    - storagebucketaccesscontrols
+    - storagebuckets
+    - storagedefaultobjectaccesscontrols
+    - storagefolders
+    - storagehmackeys
+    - storagenotifications
+  - apiGroups:
+    - storagetransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - storagetransferagentpools
+    - storagetransferjobs
+  - apiGroups:
+    - tags.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - tagslocationtagbindings
+    - tagstagbindings
+    - tagstagkeys
+    - tagstagvalues
+  - apiGroups:
+    - tpu.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - tpunodes
+  - apiGroups:
+    - vertexai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - vertexaidatasets
+    - vertexaiendpoints
+    - vertexaifeaturestoreentitytypefeatures
+    - vertexaifeaturestoreentitytypes
+    - vertexaifeaturestores
+    - vertexaiindexendpoints
+    - vertexaiindexes
+    - vertexaimetadatastores
+    - vertexaitensorboards
+  - apiGroups:
+    - vmwareengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - vmwareengineexternalaccessrules
+    - vmwareengineexternaladdresses
+    - vmwareenginenetworkpeerings
+    - vmwareenginenetworkpolicies
+    - vmwareenginenetworks
+    - vmwareengineprivateclouds
+  - apiGroups:
+    - vpcaccess.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - vpcaccessconnectors
+  - apiGroups:
+    - workflowexecutions.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - workflowsexecutions
+  - apiGroups:
+    - workflows.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - workflowsworkflows
+  - apiGroups:
+    - workstations.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - workstationclusters
+    - workstationconfigs
+    - workstations
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /iam-validation
+  failurePolicy: Fail
+  name: iam-validation.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - iamauditconfigs
+    - iampartialpolicies
+    - iampolicies
+    - iampolicymembers
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /resource-validation
+  failurePolicy: Fail
+  name: resource-validation.cnrm.cloud.google.com
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /state-into-spec-validation
+  failurePolicy: Fail
+  name: state-into-spec-validation.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - accesscontextmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - accesscontextmanageraccesslevelconditions
+    - accesscontextmanageraccesslevels
+    - accesscontextmanageraccesspolicies
+    - accesscontextmanagergcpuseraccessbindings
+    - accesscontextmanagerserviceperimeterresources
+    - accesscontextmanagerserviceperimeters
+  - apiGroups:
+    - alloydb.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - alloydbbackups
+    - alloydbclusters
+    - alloydbinstances
+    - alloydbusers
+  - apiGroups:
+    - apigateway.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apigatewayapiconfigs
+    - apigatewayapis
+    - apigatewaygateways
+  - apiGroups:
+    - apigee.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apigeeaddonsconfigs
+    - apigeeendpointattachments
+    - apigeeenvgroupattachments
+    - apigeeenvgroups
+    - apigeeenvironments
+    - apigeeinstanceattachments
+    - apigeeinstances
+    - apigeenataddresses
+    - apigeeorganizations
+    - apigeesyncauthorizations
+  - apiGroups:
+    - apikeys.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apikeyskeys
+  - apiGroups:
+    - appengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - appenginedomainmappings
+    - appenginefirewallrules
+    - appengineflexibleappversions
+    - appengineservicesplittraffics
+    - appenginestandardappversions
+  - apiGroups:
+    - apphub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apphubapplications
+  - apiGroups:
+    - artifactregistry.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - artifactregistryrepositories
+  - apiGroups:
+    - asset.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - assetfeeds
+    - assetsavedqueries
+  - apiGroups:
+    - backupdr.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - backupdrbackupplanassociations
+    - backupdrbackupplans
+    - backupdrbackupvaults
+    - backupdrmanagementservers
+  - apiGroups:
+    - batch.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - batchjobs
+  - apiGroups:
+    - beyondcorp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - beyondcorpappconnections
+    - beyondcorpappconnectors
+    - beyondcorpappgateways
+  - apiGroups:
+    - bigquery.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigquerydatasetaccesses
+    - bigquerydatasets
+    - bigqueryjobs
+    - bigqueryroutines
+    - bigquerytables
+  - apiGroups:
+    - bigqueryanalyticshub.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigqueryanalyticshubdataexchanges
+    - bigqueryanalyticshublistings
+  - apiGroups:
+    - bigquerybiglake.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - biglaketables
+  - apiGroups:
+    - bigqueryconnection.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigqueryconnectionconnections
+  - apiGroups:
+    - bigquerydatapolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigquerydatapolicydatapolicies
+  - apiGroups:
+    - bigquerydatatransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigquerydatatransferconfigs
+  - apiGroups:
+    - bigqueryreservation.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigqueryreservationassignments
+    - bigqueryreservationcapacitycommitments
+    - bigqueryreservationreservations
+  - apiGroups:
+    - bigtable.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - bigtableappprofiles
+    - bigtablegcpolicies
+    - bigtableinstances
+    - bigtablelogicalviews
+    - bigtabletables
+  - apiGroups:
+    - billingbudgets.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - billingbudgetsbudgets
+  - apiGroups:
+    - binaryauthorization.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - binaryauthorizationattestors
+    - binaryauthorizationpolicies
+  - apiGroups:
+    - certificatemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - certificatemanagercertificatemapentries
+    - certificatemanagercertificatemaps
+    - certificatemanagercertificates
+    - certificatemanagerdnsauthorizations
+  - apiGroups:
+    - cloudasset.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudassetfolderfeeds
+    - cloudassetorganizationfeeds
+    - cloudassetprojectfeeds
+  - apiGroups:
+    - cloudbuild.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudbuildtriggers
+    - cloudbuildworkerpools
+  - apiGroups:
+    - clouddeploy.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - clouddeploydeliverypipelines
+  - apiGroups:
+    - cloudfunctions.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudfunctionsfunctions
+  - apiGroups:
+    - cloudfunctions2.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudfunctions2functions
+  - apiGroups:
+    - cloudidentity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudidentitygroups
+    - cloudidentitymemberships
+  - apiGroups:
+    - cloudids.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudidsendpoints
+  - apiGroups:
+    - cloudiot.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudiotdeviceregistries
+    - cloudiotdevices
+  - apiGroups:
+    - cloudquota.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apiquotaadjustersettingses
+    - apiquotapreferences
+  - apiGroups:
+    - cloudscheduler.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudschedulerjobs
+  - apiGroups:
+    - cloudtasks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - tasksqueues
+  - apiGroups:
+    - colab.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - colabruntimes
+    - colabruntimetemplates
+  - apiGroups:
+    - composer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - composerenvironments
+  - apiGroups:
+    - compute.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - computeaddresses
+    - computeautoscalers
+    - computebackendbuckets
+    - computebackendbucketsignedurlkeys
+    - computebackendservices
+    - computebackendservicesignedurlkeys
+    - computediskresourcepolicyattachments
+    - computedisks
+    - computeexternalvpngateways
+    - computefirewallpolicies
+    - computefirewallpolicyassociations
+    - computefirewallpolicyrules
+    - computefirewalls
+    - computeforwardingrules
+    - computeglobalnetworkendpointgroups
+    - computeglobalnetworkendpoints
+    - computehealthchecks
+    - computehttphealthchecks
+    - computehttpshealthchecks
+    - computeimages
+    - computeinstancegroupmanagers
+    - computeinstancegroupnamedports
+    - computeinstancegroups
+    - computeinstances
+    - computeinstancetemplates
+    - computeinterconnectattachments
+    - computemachineimages
+    - computemanagedsslcertificates
+    - computenetworkattachments
+    - computenetworkedgesecurityservices
+    - computenetworkendpointgroups
+    - computenetworkendpoints
+    - computenetworkfirewallpolicies
+    - computenetworkfirewallpolicyassociations
+    - computenetworkfirewallpolicyrules
+    - computenetworkpeeringroutesconfigs
+    - computenetworkpeerings
+    - computenetworks
+    - computenodegroups
+    - computenodetemplates
+    - computeorganizationsecuritypolicies
+    - computeorganizationsecuritypolicyassociations
+    - computeorganizationsecuritypolicyrules
+    - computepacketmirrorings
+    - computeperinstanceconfigs
+    - computeprojectmetadatas
+    - computeregionautoscalers
+    - computeregiondiskresourcepolicyattachments
+    - computeregionnetworkendpointgroups
+    - computeregionperinstanceconfigs
+    - computeregionsslpolicies
+    - computereservations
+    - computeresourcepolicies
+    - computerouterinterfaces
+    - computerouternats
+    - computerouterpeers
+    - computerouters
+    - computeroutes
+    - computesecuritypolicies
+    - computeserviceattachments
+    - computesharedvpchostprojects
+    - computesharedvpcserviceprojects
+    - computesnapshots
+    - computesslcertificates
+    - computesslpolicies
+    - computesubnetworks
+    - computetargetgrpcproxies
+    - computetargethttpproxies
+    - computetargethttpsproxies
+    - computetargetinstances
+    - computetargetpools
+    - computetargetsslproxies
+    - computetargettcpproxies
+    - computetargetvpngateways
+    - computeurlmaps
+    - computevpngateways
+    - computevpntunnels
+  - apiGroups:
+    - configcontroller.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - configcontrollerinstances
+  - apiGroups:
+    - container.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - containerclusters
+    - containernodepools
+  - apiGroups:
+    - containeranalysis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - containeranalysisnotes
+    - containeranalysisoccurrences
+  - apiGroups:
+    - containerattached.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - containerattachedclusters
+  - apiGroups:
+    - datacatalog.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datacatalogentries
+    - datacatalogentrygroups
+    - datacatalogpolicytags
+    - datacatalogtags
+    - datacatalogtagtemplates
+    - datacatalogtaxonomies
+  - apiGroups:
+    - dataflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataflowflextemplatejobs
+    - dataflowjobs
+  - apiGroups:
+    - dataform.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataformrepositories
+  - apiGroups:
+    - datafusion.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datafusioninstances
+  - apiGroups:
+    - dataplex.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataplexentrygroups
+    - dataplexentrytypes
+    - dataplexlakes
+    - dataplextasks
+    - dataplexzones
+  - apiGroups:
+    - dataproc.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dataprocautoscalingpolicies
+    - dataprocbatchs
+    - dataprocclusters
+    - dataprocjobs
+    - dataprocworkflowtemplates
+  - apiGroups:
+    - datastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datastoreindexes
+  - apiGroups:
+    - datastream.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - datastreamconnectionprofiles
+    - datastreamprivateconnections
+    - datastreamroutes
+    - datastreamstreams
+  - apiGroups:
+    - deploymentmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - deploymentmanagerdeployments
+  - apiGroups:
+    - dialogflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dialogflowagents
+    - dialogflowentitytypes
+    - dialogflowfulfillments
+    - dialogflowintents
+  - apiGroups:
+    - dialogflowcx.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dialogflowcxagents
+    - dialogflowcxentitytypes
+    - dialogflowcxflows
+    - dialogflowcxintents
+    - dialogflowcxpages
+    - dialogflowcxwebhooks
+  - apiGroups:
+    - discoveryengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - discoveryenginedatastores
+  - apiGroups:
+    - dlp.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dlpdeidentifytemplates
+    - dlpinspecttemplates
+    - dlpjobtriggers
+    - dlpstoredinfotypes
+  - apiGroups:
+    - dns.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - dnsmanagedzones
+    - dnspolicies
+    - dnsrecordsets
+    - dnsresponsepolicies
+    - dnsresponsepolicyrules
+  - apiGroups:
+    - documentai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - documentaiprocessordefaultversions
+    - documentaiprocessors
+    - documentaiprocessorversions
+  - apiGroups:
+    - edgecontainer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - edgecontainerclusters
+    - edgecontainernodepools
+    - edgecontainervpnconnections
+  - apiGroups:
+    - edgenetwork.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - edgenetworknetworks
+    - edgenetworksubnets
+  - apiGroups:
+    - essentialcontacts.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - essentialcontactscontacts
+  - apiGroups:
+    - eventarc.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - eventarcchannels
+    - eventarcgooglechannelconfigs
+    - eventarctriggers
+  - apiGroups:
+    - filestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - filestorebackups
+    - filestoreinstances
+    - filestoresnapshots
+  - apiGroups:
+    - firebase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebaseandroidapps
+    - firebaseprojects
+    - firebasewebapps
+  - apiGroups:
+    - firebasedatabase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebasedatabaseinstances
+  - apiGroups:
+    - firebasehosting.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebasehostingchannels
+    - firebasehostingsites
+  - apiGroups:
+    - firebasestorage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firebasestoragebuckets
+  - apiGroups:
+    - firestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - firestoredatabases
+    - firestoreindexes
+  - apiGroups:
+    - gkebackup.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - gkebackupbackupplans
+    - gkebackupbackups
+    - gkebackuprestoreplans
+    - gkebackuprestores
+  - apiGroups:
+    - gkehub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - gkehubfeaturememberships
+    - gkehubfeatures
+    - gkehubmemberships
+  - apiGroups:
+    - healthcare.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - healthcareconsentstores
+    - healthcaredatasets
+    - healthcaredicomstores
+    - healthcarefhirstores
+    - healthcarehl7v2stores
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - iamaccessboundarypolicies
+    - iamauditconfigs
+    - iamcustomroles
+    - iampartialpolicies
+    - iampolicies
+    - iampolicymembers
+    - iamserviceaccountkeys
+    - iamserviceaccounts
+    - iamworkforcepoolproviders
+    - iamworkforcepools
+    - iamworkloadidentitypoolproviders
+    - iamworkloadidentitypools
+  - apiGroups:
+    - iap.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - iapbrands
+    - iapidentityawareproxyclients
+    - iapsettingses
+  - apiGroups:
+    - identityplatform.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - identityplatformconfigs
+    - identityplatformdefaultsupportedidpconfigs
+    - identityplatforminboundsamlconfigs
+    - identityplatformoauthidpconfigs
+    - identityplatformprojectdefaultconfigs
+    - identityplatformtenantdefaultsupportedidpconfigs
+    - identityplatformtenantinboundsamlconfigs
+    - identityplatformtenantoauthidpconfigs
+    - identityplatformtenants
+  - apiGroups:
+    - kms.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - kmsautokeyconfigs
+    - kmscryptokeys
+    - kmscryptokeyversions
+    - kmsimportjobs
+    - kmskeyhandles
+    - kmskeyringimportjobs
+    - kmskeyrings
+    - kmssecretciphertexts
+  - apiGroups:
+    - logging.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - logginglinks
+    - logginglogbuckets
+    - logginglogexclusions
+    - logginglogmetrics
+    - logginglogsinks
+    - logginglogviews
+  - apiGroups:
+    - managedkafka.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - managedkafkaclusters
+    - managedkafkatopics
+  - apiGroups:
+    - memcache.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - memcacheinstances
+  - apiGroups:
+    - metastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - metastorebackups
+    - metastorefederations
+    - metastoreservices
+  - apiGroups:
+    - mlengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - mlenginemodels
+  - apiGroups:
+    - monitoring.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - monitoringalertpolicies
+    - monitoringdashboards
+    - monitoringgroups
+    - monitoringmetricdescriptors
+    - monitoringmonitoredprojects
+    - monitoringnotificationchannels
+    - monitoringservicelevelobjectives
+    - monitoringservices
+    - monitoringuptimecheckconfigs
+  - apiGroups:
+    - netapp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - netappbackuppolicies
+  - apiGroups:
+    - networkconnectivity.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networkconnectivityhubs
+    - networkconnectivityinternalranges
+    - networkconnectivityserviceconnectionpolicies
+    - networkconnectivityspokes
+  - apiGroups:
+    - networkmanagement.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networkmanagementconnectivitytests
+  - apiGroups:
+    - networksecurity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networksecurityauthorizationpolicies
+    - networksecurityclienttlspolicies
+    - networksecurityservertlspolicies
+  - apiGroups:
+    - networkservices.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - networkservicesedgecachekeysets
+    - networkservicesedgecacheorigins
+    - networkservicesedgecacheservices
+    - networkservicesendpointpolicies
+    - networkservicesgateways
+    - networkservicesgrpcroutes
+    - networkserviceshttproutes
+    - networkservicesmeshes
+    - networkservicesservicebindings
+    - networkservicestcproutes
+    - networkservicestlsroutes
+  - apiGroups:
+    - notebooks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - notebookinstances
+    - notebooksenvironments
+  - apiGroups:
+    - orgpolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - orgpolicycustomconstraints
+    - orgpolicypolicies
+  - apiGroups:
+    - osconfig.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - osconfigguestpolicies
+    - osconfigospolicyassignments
+    - osconfigpatchdeployments
+  - apiGroups:
+    - oslogin.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - osloginsshpublickeys
+  - apiGroups:
+    - privateca.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - privatecacapools
+    - privatecacertificateauthorities
+    - privatecacertificates
+    - privatecacertificatetemplates
+  - apiGroups:
+    - privilegedaccessmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - privilegedaccessmanagerentitlements
+  - apiGroups:
+    - pubsub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pubsubschemas
+    - pubsubsnapshots
+    - pubsubsubscriptions
+    - pubsubtopics
+  - apiGroups:
+    - pubsublite.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pubsublitereservations
+    - pubsublitesubscriptions
+    - pubsublitetopics
+  - apiGroups:
+    - recaptchaenterprise.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - recaptchaenterprisefirewallpolicies
+    - recaptchaenterprisekeys
+  - apiGroups:
+    - redis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - redisclusters
+    - redisinstances
+  - apiGroups:
+    - resourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - folders
+    - projects
+    - resourcemanagerliens
+    - resourcemanagerpolicies
+  - apiGroups:
+    - run.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - runjobs
+    - runservices
+  - apiGroups:
+    - secretmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - secretmanagersecrets
+    - secretmanagersecretversions
+  - apiGroups:
+    - securesourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - securesourcemanagerinstances
+    - securesourcemanagerrepositories
+  - apiGroups:
+    - securitycenter.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - securitycenternotificationconfigs
+    - securitycentersources
+  - apiGroups:
+    - servicedirectory.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - servicedirectoryendpoints
+    - servicedirectorynamespaces
+    - servicedirectoryservices
+  - apiGroups:
+    - servicenetworking.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - servicenetworkingconnections
+    - servicenetworkingpeereddnsdomains
+  - apiGroups:
+    - serviceusage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - serviceidentities
+    - services
+    - serviceusageconsumerquotaoverrides
+  - apiGroups:
+    - sourcerepo.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - sourcereporepositories
+  - apiGroups:
+    - spanner.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - spannerbackupschedules
+    - spannerdatabases
+    - spannerinstanceconfigs
+    - spannerinstances
+  - apiGroups:
+    - speech.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - speechcustomclasses
+    - speechphrasesets
+    - speechrecognizers
+  - apiGroups:
+    - sql.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - sqldatabases
+    - sqlinstances
+    - sqlsslcerts
+    - sqlusers
+  - apiGroups:
+    - storage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - storageanywherecaches
+    - storagebucketaccesscontrols
+    - storagebuckets
+    - storagedefaultobjectaccesscontrols
+    - storagefolders
+    - storagehmackeys
+    - storagenotifications
+  - apiGroups:
+    - storagetransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - storagetransferagentpools
+    - storagetransferjobs
+  - apiGroups:
+    - tags.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - tagslocationtagbindings
+    - tagstagbindings
+    - tagstagkeys
+    - tagstagvalues
+  - apiGroups:
+    - tpu.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - tpunodes
+  - apiGroups:
+    - vertexai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - vertexaidatasets
+    - vertexaiendpoints
+    - vertexaifeaturestoreentitytypefeatures
+    - vertexaifeaturestoreentitytypes
+    - vertexaifeaturestores
+    - vertexaiindexendpoints
+    - vertexaiindexes
+    - vertexaimetadatastores
+    - vertexaitensorboards
+  - apiGroups:
+    - vmwareengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - vmwareengineexternalaccessrules
+    - vmwareengineexternaladdresses
+    - vmwareenginenetworkpeerings
+    - vmwareenginenetworkpolicies
+    - vmwareenginenetworks
+    - vmwareengineprivateclouds
+  - apiGroups:
+    - vpcaccess.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - vpcaccessconnectors
+  - apiGroups:
+    - workflowexecutions.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - workflowsexecutions
+  - apiGroups:
+    - workflows.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - workflowsworkflows
+  - apiGroups:
+    - workstations.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - workstationclusters
+    - workstationconfigs
+    - workstations
+  sideEffects: None
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: mutating-webhook.cnrm.cloud.google.com
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /container-annotation-handler
+  failurePolicy: Fail
+  name: container-annotation-handler.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - accesscontextmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - accesscontextmanageraccesslevelconditions
+    - accesscontextmanageraccesslevels
+    - accesscontextmanageraccesspolicies
+    - accesscontextmanagergcpuseraccessbindings
+    - accesscontextmanagerserviceperimeterresources
+    - accesscontextmanagerserviceperimeters
+  - apiGroups:
+    - alloydb.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - alloydbbackups
+    - alloydbclusters
+    - alloydbinstances
+    - alloydbusers
+  - apiGroups:
+    - apigateway.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - apigatewayapiconfigs
+    - apigatewaygateways
+  - apiGroups:
+    - apigee.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - apigeeaddonsconfigs
+    - apigeeenvironments
+    - apigeenataddresses
+    - apigeeorganizations
+    - apigeesyncauthorizations
+  - apiGroups:
+    - apikeys.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - apikeyskeys
+  - apiGroups:
+    - appengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - appenginedomainmappings
+    - appenginefirewallrules
+    - appengineflexibleappversions
+    - appengineservicesplittraffics
+    - appenginestandardappversions
+  - apiGroups:
+    - artifactregistry.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - artifactregistryrepositories
+  - apiGroups:
+    - beyondcorp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - beyondcorpappconnections
+    - beyondcorpappconnectors
+    - beyondcorpappgateways
+  - apiGroups:
+    - bigquery.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - bigquerydatasetaccesses
+    - bigquerydatasets
+    - bigqueryjobs
+    - bigqueryroutines
+    - bigquerytables
+  - apiGroups:
+    - bigquerydatapolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - bigquerydatapolicydatapolicies
+  - apiGroups:
+    - bigqueryreservation.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - bigqueryreservationcapacitycommitments
+    - bigqueryreservationreservations
+  - apiGroups:
+    - bigtable.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - bigtableappprofiles
+    - bigtablegcpolicies
+    - bigtableinstances
+    - bigtabletables
+  - apiGroups:
+    - billingbudgets.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - billingbudgetsbudgets
+  - apiGroups:
+    - binaryauthorization.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - binaryauthorizationattestors
+    - binaryauthorizationpolicies
+  - apiGroups:
+    - certificatemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - certificatemanagercertificatemapentries
+    - certificatemanagercertificatemaps
+    - certificatemanagercertificates
+    - certificatemanagerdnsauthorizations
+  - apiGroups:
+    - cloudasset.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudassetfolderfeeds
+    - cloudassetorganizationfeeds
+    - cloudassetprojectfeeds
+  - apiGroups:
+    - cloudbuild.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudbuildtriggers
+  - apiGroups:
+    - cloudfunctions.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudfunctionsfunctions
+  - apiGroups:
+    - cloudfunctions2.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudfunctions2functions
+  - apiGroups:
+    - cloudidentity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudidentitygroups
+    - cloudidentitymemberships
+  - apiGroups:
+    - cloudids.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudidsendpoints
+  - apiGroups:
+    - cloudiot.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudiotdeviceregistries
+    - cloudiotdevices
+  - apiGroups:
+    - cloudscheduler.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudschedulerjobs
+  - apiGroups:
+    - compute.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - computeaddresses
+    - computeautoscalers
+    - computebackendbuckets
+    - computebackendbucketsignedurlkeys
+    - computebackendservices
+    - computebackendservicesignedurlkeys
+    - computediskresourcepolicyattachments
+    - computedisks
+    - computeexternalvpngateways
+    - computefirewallpolicies
+    - computefirewallpolicyassociations
+    - computefirewallpolicyrules
+    - computefirewalls
+    - computeforwardingrules
+    - computeglobalnetworkendpointgroups
+    - computeglobalnetworkendpoints
+    - computehealthchecks
+    - computehttphealthchecks
+    - computehttpshealthchecks
+    - computeimages
+    - computeinstancegroupmanagers
+    - computeinstancegroupnamedports
+    - computeinstancegroups
+    - computeinstances
+    - computeinstancetemplates
+    - computeinterconnectattachments
+    - computemachineimages
+    - computemanagedsslcertificates
+    - computenetworkendpointgroups
+    - computenetworkendpoints
+    - computenetworkfirewallpolicies
+    - computenetworkfirewallpolicyassociations
+    - computenetworkfirewallpolicyrules
+    - computenetworkpeeringroutesconfigs
+    - computenetworkpeerings
+    - computenetworks
+    - computenodegroups
+    - computenodetemplates
+    - computeorganizationsecuritypolicies
+    - computeorganizationsecuritypolicyassociations
+    - computeorganizationsecuritypolicyrules
+    - computepacketmirrorings
+    - computeperinstanceconfigs
+    - computeprojectmetadatas
+    - computeregionautoscalers
+    - computeregiondiskresourcepolicyattachments
+    - computeregionnetworkendpointgroups
+    - computeregionperinstanceconfigs
+    - computeregionsslpolicies
+    - computereservations
+    - computeresourcepolicies
+    - computerouterinterfaces
+    - computerouternats
+    - computerouterpeers
+    - computerouters
+    - computeroutes
+    - computesecuritypolicies
+    - computeserviceattachments
+    - computesharedvpchostprojects
+    - computesharedvpcserviceprojects
+    - computesnapshots
+    - computesslcertificates
+    - computesslpolicies
+    - computesubnetworks
+    - computetargetgrpcproxies
+    - computetargethttpproxies
+    - computetargethttpsproxies
+    - computetargetinstances
+    - computetargetpools
+    - computetargetsslproxies
+    - computetargettcpproxies
+    - computetargetvpngateways
+    - computeurlmaps
+    - computevpngateways
+    - computevpntunnels
+  - apiGroups:
+    - configcontroller.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - configcontrollerinstances
+  - apiGroups:
+    - container.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containerclusters
+    - containernodepools
+  - apiGroups:
+    - containeranalysis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containeranalysisnotes
+    - containeranalysisoccurrences
+  - apiGroups:
+    - containerattached.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containerattachedclusters
+  - apiGroups:
+    - datacatalog.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - datacatalogentries
+    - datacatalogentrygroups
+    - datacatalogpolicytags
+    - datacatalogtags
+    - datacatalogtagtemplates
+    - datacatalogtaxonomies
+  - apiGroups:
+    - dataflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dataflowflextemplatejobs
+    - dataflowjobs
+  - apiGroups:
+    - datafusion.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - datafusioninstances
+  - apiGroups:
+    - dataproc.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dataprocautoscalingpolicies
+    - dataprocclusters
+    - dataprocworkflowtemplates
+  - apiGroups:
+    - datastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - datastoreindexes
+  - apiGroups:
+    - datastream.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - datastreamconnectionprofiles
+    - datastreamprivateconnections
+    - datastreamstreams
+  - apiGroups:
+    - deploymentmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - deploymentmanagerdeployments
+  - apiGroups:
+    - dialogflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - dialogflowagents
+    - dialogflowentitytypes
+    - dialogflowfulfillments
+    - dialogflowintents
+  - apiGroups:
+    - dialogflowcx.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - dialogflowcxagents
+    - dialogflowcxentitytypes
+    - dialogflowcxflows
+    - dialogflowcxintents
+    - dialogflowcxpages
+    - dialogflowcxwebhooks
+  - apiGroups:
+    - dlp.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dlpdeidentifytemplates
+    - dlpinspecttemplates
+    - dlpjobtriggers
+    - dlpstoredinfotypes
+  - apiGroups:
+    - dns.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dnsmanagedzones
+    - dnspolicies
+    - dnsrecordsets
+    - dnsresponsepolicies
+    - dnsresponsepolicyrules
+  - apiGroups:
+    - documentai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - documentaiprocessordefaultversions
+    - documentaiprocessors
+  - apiGroups:
+    - edgecontainer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - edgecontainerclusters
+    - edgecontainernodepools
+    - edgecontainervpnconnections
+  - apiGroups:
+    - edgenetwork.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - edgenetworknetworks
+    - edgenetworksubnets
+  - apiGroups:
+    - essentialcontacts.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - essentialcontactscontacts
+  - apiGroups:
+    - eventarc.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - eventarctriggers
+  - apiGroups:
+    - filestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - filestorebackups
+    - filestoreinstances
+    - filestoresnapshots
+  - apiGroups:
+    - firebase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebaseandroidapps
+    - firebaseprojects
+    - firebasewebapps
+  - apiGroups:
+    - firebasedatabase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasedatabaseinstances
+  - apiGroups:
+    - firebasehosting.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasehostingchannels
+    - firebasehostingsites
+  - apiGroups:
+    - firebasestorage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasestoragebuckets
+  - apiGroups:
+    - firestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - firestoreindexes
+  - apiGroups:
+    - gkebackup.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - gkebackupbackupplans
+  - apiGroups:
+    - gkehub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - gkehubfeaturememberships
+    - gkehubfeatures
+    - gkehubmemberships
+  - apiGroups:
+    - healthcare.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - healthcareconsentstores
+    - healthcaredatasets
+    - healthcaredicomstores
+    - healthcarefhirstores
+    - healthcarehl7v2stores
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - iamaccessboundarypolicies
+    - iamcustomroles
+    - iamserviceaccountkeys
+    - iamserviceaccounts
+    - iamworkforcepoolproviders
+    - iamworkforcepools
+    - iamworkloadidentitypoolproviders
+    - iamworkloadidentitypools
+  - apiGroups:
+    - iap.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - iapbrands
+    - iapidentityawareproxyclients
+  - apiGroups:
+    - identityplatform.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - identityplatformconfigs
+    - identityplatformdefaultsupportedidpconfigs
+    - identityplatforminboundsamlconfigs
+    - identityplatformoauthidpconfigs
+    - identityplatformprojectdefaultconfigs
+    - identityplatformtenantdefaultsupportedidpconfigs
+    - identityplatformtenantinboundsamlconfigs
+    - identityplatformtenantoauthidpconfigs
+    - identityplatformtenants
+  - apiGroups:
+    - kms.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - kmscryptokeys
+    - kmscryptokeyversions
+    - kmskeyringimportjobs
+    - kmskeyrings
+    - kmssecretciphertexts
+  - apiGroups:
+    - logging.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - logginglogbuckets
+    - logginglogexclusions
+    - logginglogmetrics
+    - logginglogsinks
+    - logginglogviews
+  - apiGroups:
+    - memcache.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - memcacheinstances
+  - apiGroups:
+    - mlengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - mlenginemodels
+  - apiGroups:
+    - monitoring.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - monitoringalertpolicies
+    - monitoringdashboards
+    - monitoringgroups
+    - monitoringmetricdescriptors
+    - monitoringmonitoredprojects
+    - monitoringnotificationchannels
+    - monitoringservicelevelobjectives
+    - monitoringservices
+    - monitoringuptimecheckconfigs
+  - apiGroups:
+    - networkconnectivity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networkconnectivityhubs
+    - networkconnectivityspokes
+  - apiGroups:
+    - networkmanagement.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - networkmanagementconnectivitytests
+  - apiGroups:
+    - networksecurity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networksecurityauthorizationpolicies
+    - networksecurityclienttlspolicies
+    - networksecurityservertlspolicies
+  - apiGroups:
+    - networkservices.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networkservicesedgecachekeysets
+    - networkservicesedgecacheorigins
+    - networkservicesedgecacheservices
+    - networkservicesendpointpolicies
+    - networkservicesgateways
+    - networkservicesgrpcroutes
+    - networkserviceshttproutes
+    - networkservicesmeshes
+    - networkservicestcproutes
+    - networkservicestlsroutes
+  - apiGroups:
+    - notebooks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - notebooksenvironments
+  - apiGroups:
+    - orgpolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - orgpolicycustomconstraints
+  - apiGroups:
+    - osconfig.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - osconfigguestpolicies
+    - osconfigospolicyassignments
+    - osconfigpatchdeployments
+  - apiGroups:
+    - oslogin.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - osloginsshpublickeys
+  - apiGroups:
+    - privateca.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - privatecacapools
+    - privatecacertificateauthorities
+    - privatecacertificates
+    - privatecacertificatetemplates
+  - apiGroups:
+    - pubsub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - pubsubschemas
+    - pubsubsubscriptions
+    - pubsubtopics
+  - apiGroups:
+    - pubsublite.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - pubsublitereservations
+    - pubsublitesubscriptions
+    - pubsublitetopics
+  - apiGroups:
+    - recaptchaenterprise.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - recaptchaenterprisekeys
+  - apiGroups:
+    - redis.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - redisinstances
+  - apiGroups:
+    - resourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - folders
+    - projects
+    - resourcemanagerliens
+    - resourcemanagerpolicies
+  - apiGroups:
+    - run.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - runjobs
+    - runservices
+  - apiGroups:
+    - secretmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - secretmanagersecrets
+    - secretmanagersecretversions
+  - apiGroups:
+    - securitycenter.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - securitycenternotificationconfigs
+    - securitycentersources
+  - apiGroups:
+    - servicedirectory.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - servicedirectoryendpoints
+    - servicedirectorynamespaces
+    - servicedirectoryservices
+  - apiGroups:
+    - servicenetworking.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - servicenetworkingconnections
+  - apiGroups:
+    - serviceusage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - serviceidentities
+    - services
+    - serviceusageconsumerquotaoverrides
+  - apiGroups:
+    - sourcerepo.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - sourcereporepositories
+  - apiGroups:
+    - spanner.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - spannerdatabases
+    - spannerinstances
+  - apiGroups:
+    - sql.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - sqldatabases
+    - sqlinstances
+    - sqlsslcerts
+    - sqlusers
+  - apiGroups:
+    - storage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - storagebucketaccesscontrols
+    - storagebuckets
+    - storagedefaultobjectaccesscontrols
+    - storagehmackeys
+    - storagenotifications
+  - apiGroups:
+    - storagetransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - storagetransferagentpools
+    - storagetransferjobs
+  - apiGroups:
+    - tags.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - tagslocationtagbindings
+    - tagstagbindings
+    - tagstagkeys
+    - tagstagvalues
+  - apiGroups:
+    - tpu.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - tpunodes
+  - apiGroups:
+    - vertexai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - vertexaidatasets
+    - vertexaiendpoints
+    - vertexaifeaturestoreentitytypefeatures
+    - vertexaifeaturestoreentitytypes
+    - vertexaifeaturestores
+    - vertexaiindexendpoints
+    - vertexaiindexes
+    - vertexaitensorboards
+  - apiGroups:
+    - vpcaccess.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - vpcaccessconnectors
+  - apiGroups:
+    - workflows.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - workflowsworkflows
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /generic-defaulter
+  failurePolicy: Fail
+  name: generic-defaulter.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - accesscontextmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - accesscontextmanageraccesslevelconditions
+    - accesscontextmanageraccesslevels
+    - accesscontextmanageraccesspolicies
+    - accesscontextmanagergcpuseraccessbindings
+    - accesscontextmanagerserviceperimeterresources
+    - accesscontextmanagerserviceperimeters
+  - apiGroups:
+    - alloydb.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - alloydbbackups
+    - alloydbclusters
+    - alloydbinstances
+    - alloydbusers
+  - apiGroups:
+    - apigateway.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - apigatewayapiconfigs
+    - apigatewaygateways
+  - apiGroups:
+    - apigee.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - apigeeaddonsconfigs
+    - apigeeenvironments
+    - apigeenataddresses
+    - apigeeorganizations
+    - apigeesyncauthorizations
+  - apiGroups:
+    - apikeys.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - apikeyskeys
+  - apiGroups:
+    - appengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - appenginedomainmappings
+    - appenginefirewallrules
+    - appengineflexibleappversions
+    - appengineservicesplittraffics
+    - appenginestandardappversions
+  - apiGroups:
+    - artifactregistry.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - artifactregistryrepositories
+  - apiGroups:
+    - beyondcorp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - beyondcorpappconnections
+    - beyondcorpappconnectors
+    - beyondcorpappgateways
+  - apiGroups:
+    - bigquery.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - bigquerydatasetaccesses
+    - bigquerydatasets
+    - bigqueryjobs
+    - bigqueryroutines
+    - bigquerytables
+  - apiGroups:
+    - bigquerydatapolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - bigquerydatapolicydatapolicies
+  - apiGroups:
+    - bigqueryreservation.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - bigqueryreservationcapacitycommitments
+    - bigqueryreservationreservations
+  - apiGroups:
+    - bigtable.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - bigtableappprofiles
+    - bigtablegcpolicies
+    - bigtableinstances
+    - bigtabletables
+  - apiGroups:
+    - billingbudgets.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - billingbudgetsbudgets
+  - apiGroups:
+    - binaryauthorization.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - binaryauthorizationattestors
+    - binaryauthorizationpolicies
+  - apiGroups:
+    - certificatemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - certificatemanagercertificatemapentries
+    - certificatemanagercertificatemaps
+    - certificatemanagercertificates
+    - certificatemanagerdnsauthorizations
+  - apiGroups:
+    - cloudasset.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudassetfolderfeeds
+    - cloudassetorganizationfeeds
+    - cloudassetprojectfeeds
+  - apiGroups:
+    - cloudbuild.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudbuildtriggers
+  - apiGroups:
+    - cloudfunctions.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudfunctionsfunctions
+  - apiGroups:
+    - cloudfunctions2.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudfunctions2functions
+  - apiGroups:
+    - cloudidentity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudidentitygroups
+    - cloudidentitymemberships
+  - apiGroups:
+    - cloudids.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudidsendpoints
+  - apiGroups:
+    - cloudiot.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudiotdeviceregistries
+    - cloudiotdevices
+  - apiGroups:
+    - cloudscheduler.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudschedulerjobs
+  - apiGroups:
+    - compute.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - computeaddresses
+    - computeautoscalers
+    - computebackendbuckets
+    - computebackendbucketsignedurlkeys
+    - computebackendservices
+    - computebackendservicesignedurlkeys
+    - computediskresourcepolicyattachments
+    - computedisks
+    - computeexternalvpngateways
+    - computefirewallpolicies
+    - computefirewallpolicyassociations
+    - computefirewallpolicyrules
+    - computefirewalls
+    - computeforwardingrules
+    - computeglobalnetworkendpointgroups
+    - computeglobalnetworkendpoints
+    - computehealthchecks
+    - computehttphealthchecks
+    - computehttpshealthchecks
+    - computeimages
+    - computeinstancegroupmanagers
+    - computeinstancegroupnamedports
+    - computeinstancegroups
+    - computeinstances
+    - computeinstancetemplates
+    - computeinterconnectattachments
+    - computemachineimages
+    - computemanagedsslcertificates
+    - computenetworkendpointgroups
+    - computenetworkendpoints
+    - computenetworkfirewallpolicies
+    - computenetworkfirewallpolicyassociations
+    - computenetworkfirewallpolicyrules
+    - computenetworkpeeringroutesconfigs
+    - computenetworkpeerings
+    - computenetworks
+    - computenodegroups
+    - computenodetemplates
+    - computeorganizationsecuritypolicies
+    - computeorganizationsecuritypolicyassociations
+    - computeorganizationsecuritypolicyrules
+    - computepacketmirrorings
+    - computeperinstanceconfigs
+    - computeprojectmetadatas
+    - computeregionautoscalers
+    - computeregiondiskresourcepolicyattachments
+    - computeregionnetworkendpointgroups
+    - computeregionperinstanceconfigs
+    - computeregionsslpolicies
+    - computereservations
+    - computeresourcepolicies
+    - computerouterinterfaces
+    - computerouternats
+    - computerouterpeers
+    - computerouters
+    - computeroutes
+    - computesecuritypolicies
+    - computeserviceattachments
+    - computesharedvpchostprojects
+    - computesharedvpcserviceprojects
+    - computesnapshots
+    - computesslcertificates
+    - computesslpolicies
+    - computesubnetworks
+    - computetargetgrpcproxies
+    - computetargethttpproxies
+    - computetargethttpsproxies
+    - computetargetinstances
+    - computetargetpools
+    - computetargetsslproxies
+    - computetargettcpproxies
+    - computetargetvpngateways
+    - computeurlmaps
+    - computevpngateways
+    - computevpntunnels
+  - apiGroups:
+    - configcontroller.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - configcontrollerinstances
+  - apiGroups:
+    - container.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containerclusters
+    - containernodepools
+  - apiGroups:
+    - containeranalysis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containeranalysisnotes
+    - containeranalysisoccurrences
+  - apiGroups:
+    - containerattached.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containerattachedclusters
+  - apiGroups:
+    - datacatalog.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - datacatalogentries
+    - datacatalogentrygroups
+    - datacatalogpolicytags
+    - datacatalogtags
+    - datacatalogtagtemplates
+    - datacatalogtaxonomies
+  - apiGroups:
+    - dataflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dataflowflextemplatejobs
+    - dataflowjobs
+  - apiGroups:
+    - datafusion.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - datafusioninstances
+  - apiGroups:
+    - dataproc.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dataprocautoscalingpolicies
+    - dataprocclusters
+    - dataprocworkflowtemplates
+  - apiGroups:
+    - datastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - datastoreindexes
+  - apiGroups:
+    - datastream.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - datastreamconnectionprofiles
+    - datastreamprivateconnections
+    - datastreamstreams
+  - apiGroups:
+    - deploymentmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - deploymentmanagerdeployments
+  - apiGroups:
+    - dialogflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - dialogflowagents
+    - dialogflowentitytypes
+    - dialogflowfulfillments
+    - dialogflowintents
+  - apiGroups:
+    - dialogflowcx.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - dialogflowcxagents
+    - dialogflowcxentitytypes
+    - dialogflowcxflows
+    - dialogflowcxintents
+    - dialogflowcxpages
+    - dialogflowcxwebhooks
+  - apiGroups:
+    - dlp.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dlpdeidentifytemplates
+    - dlpinspecttemplates
+    - dlpjobtriggers
+    - dlpstoredinfotypes
+  - apiGroups:
+    - dns.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dnsmanagedzones
+    - dnspolicies
+    - dnsrecordsets
+    - dnsresponsepolicies
+    - dnsresponsepolicyrules
+  - apiGroups:
+    - documentai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - documentaiprocessordefaultversions
+    - documentaiprocessors
+  - apiGroups:
+    - edgecontainer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - edgecontainerclusters
+    - edgecontainernodepools
+    - edgecontainervpnconnections
+  - apiGroups:
+    - edgenetwork.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - edgenetworknetworks
+    - edgenetworksubnets
+  - apiGroups:
+    - essentialcontacts.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - essentialcontactscontacts
+  - apiGroups:
+    - eventarc.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - eventarctriggers
+  - apiGroups:
+    - filestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - filestorebackups
+    - filestoreinstances
+    - filestoresnapshots
+  - apiGroups:
+    - firebase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebaseandroidapps
+    - firebaseprojects
+    - firebasewebapps
+  - apiGroups:
+    - firebasedatabase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasedatabaseinstances
+  - apiGroups:
+    - firebasehosting.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasehostingchannels
+    - firebasehostingsites
+  - apiGroups:
+    - firebasestorage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasestoragebuckets
+  - apiGroups:
+    - firestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - firestoreindexes
+  - apiGroups:
+    - gkebackup.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - gkebackupbackupplans
+  - apiGroups:
+    - gkehub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - gkehubfeaturememberships
+    - gkehubfeatures
+    - gkehubmemberships
+  - apiGroups:
+    - healthcare.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - healthcareconsentstores
+    - healthcaredatasets
+    - healthcaredicomstores
+    - healthcarefhirstores
+    - healthcarehl7v2stores
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - iamaccessboundarypolicies
+    - iamcustomroles
+    - iamserviceaccountkeys
+    - iamserviceaccounts
+    - iamworkforcepoolproviders
+    - iamworkforcepools
+    - iamworkloadidentitypoolproviders
+    - iamworkloadidentitypools
+  - apiGroups:
+    - iap.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - iapbrands
+    - iapidentityawareproxyclients
+  - apiGroups:
+    - identityplatform.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - identityplatformconfigs
+    - identityplatformdefaultsupportedidpconfigs
+    - identityplatforminboundsamlconfigs
+    - identityplatformoauthidpconfigs
+    - identityplatformprojectdefaultconfigs
+    - identityplatformtenantdefaultsupportedidpconfigs
+    - identityplatformtenantinboundsamlconfigs
+    - identityplatformtenantoauthidpconfigs
+    - identityplatformtenants
+  - apiGroups:
+    - kms.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - kmscryptokeys
+    - kmscryptokeyversions
+    - kmskeyringimportjobs
+    - kmskeyrings
+    - kmssecretciphertexts
+  - apiGroups:
+    - logging.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - logginglogbuckets
+    - logginglogexclusions
+    - logginglogmetrics
+    - logginglogsinks
+    - logginglogviews
+  - apiGroups:
+    - memcache.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - memcacheinstances
+  - apiGroups:
+    - mlengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - mlenginemodels
+  - apiGroups:
+    - monitoring.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - monitoringalertpolicies
+    - monitoringdashboards
+    - monitoringgroups
+    - monitoringmetricdescriptors
+    - monitoringmonitoredprojects
+    - monitoringnotificationchannels
+    - monitoringservicelevelobjectives
+    - monitoringservices
+    - monitoringuptimecheckconfigs
+  - apiGroups:
+    - networkconnectivity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networkconnectivityhubs
+    - networkconnectivityspokes
+  - apiGroups:
+    - networkmanagement.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - networkmanagementconnectivitytests
+  - apiGroups:
+    - networksecurity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networksecurityauthorizationpolicies
+    - networksecurityclienttlspolicies
+    - networksecurityservertlspolicies
+  - apiGroups:
+    - networkservices.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networkservicesedgecachekeysets
+    - networkservicesedgecacheorigins
+    - networkservicesedgecacheservices
+    - networkservicesendpointpolicies
+    - networkservicesgateways
+    - networkservicesgrpcroutes
+    - networkserviceshttproutes
+    - networkservicesmeshes
+    - networkservicestcproutes
+    - networkservicestlsroutes
+  - apiGroups:
+    - notebooks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - notebooksenvironments
+  - apiGroups:
+    - orgpolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - orgpolicycustomconstraints
+  - apiGroups:
+    - osconfig.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - osconfigguestpolicies
+    - osconfigospolicyassignments
+    - osconfigpatchdeployments
+  - apiGroups:
+    - oslogin.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - osloginsshpublickeys
+  - apiGroups:
+    - privateca.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - privatecacapools
+    - privatecacertificateauthorities
+    - privatecacertificates
+    - privatecacertificatetemplates
+  - apiGroups:
+    - pubsub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - pubsubschemas
+    - pubsubsubscriptions
+    - pubsubtopics
+  - apiGroups:
+    - pubsublite.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - pubsublitereservations
+    - pubsublitesubscriptions
+    - pubsublitetopics
+  - apiGroups:
+    - recaptchaenterprise.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - recaptchaenterprisekeys
+  - apiGroups:
+    - redis.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - redisinstances
+  - apiGroups:
+    - resourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - folders
+    - projects
+    - resourcemanagerliens
+    - resourcemanagerpolicies
+  - apiGroups:
+    - run.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - runjobs
+    - runservices
+  - apiGroups:
+    - secretmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - secretmanagersecrets
+    - secretmanagersecretversions
+  - apiGroups:
+    - securitycenter.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - securitycenternotificationconfigs
+    - securitycentersources
+  - apiGroups:
+    - servicedirectory.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - servicedirectoryendpoints
+    - servicedirectorynamespaces
+    - servicedirectoryservices
+  - apiGroups:
+    - servicenetworking.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - servicenetworkingconnections
+  - apiGroups:
+    - serviceusage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - serviceidentities
+    - services
+    - serviceusageconsumerquotaoverrides
+  - apiGroups:
+    - sourcerepo.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - sourcereporepositories
+  - apiGroups:
+    - spanner.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - spannerdatabases
+    - spannerinstances
+  - apiGroups:
+    - sql.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - sqldatabases
+    - sqlinstances
+    - sqlsslcerts
+    - sqlusers
+  - apiGroups:
+    - storage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - storagebucketaccesscontrols
+    - storagebuckets
+    - storagedefaultobjectaccesscontrols
+    - storagehmackeys
+    - storagenotifications
+  - apiGroups:
+    - storagetransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - storagetransferagentpools
+    - storagetransferjobs
+  - apiGroups:
+    - tags.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - tagslocationtagbindings
+    - tagstagbindings
+    - tagstagkeys
+    - tagstagvalues
+  - apiGroups:
+    - tpu.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - tpunodes
+  - apiGroups:
+    - vertexai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - vertexaidatasets
+    - vertexaiendpoints
+    - vertexaifeaturestoreentitytypefeatures
+    - vertexaifeaturestoreentitytypes
+    - vertexaifeaturestores
+    - vertexaiindexendpoints
+    - vertexaiindexes
+    - vertexaitensorboards
+  - apiGroups:
+    - vpcaccess.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - vpcaccessconnectors
+  - apiGroups:
+    - workflows.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - workflowsworkflows
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /iam-defaulter
+  failurePolicy: Fail
+  name: iam-defaulter.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - iamauditconfigs
+    - iampartialpolicies
+    - iampolicies
+    - iampolicymembers
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: cnrm-validating-webhook
+      namespace: cnrm-system
+      path: /management-conflict-annotation-defaulter
+  failurePolicy: Fail
+  name: management-conflict-annotation-defaulter.cnrm.cloud.google.com
+  rules:
+  - apiGroups:
+    - accesscontextmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - accesscontextmanageraccesslevelconditions
+    - accesscontextmanageraccesslevels
+    - accesscontextmanageraccesspolicies
+    - accesscontextmanagergcpuseraccessbindings
+    - accesscontextmanagerserviceperimeterresources
+    - accesscontextmanagerserviceperimeters
+  - apiGroups:
+    - alloydb.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - alloydbbackups
+    - alloydbclusters
+    - alloydbinstances
+    - alloydbusers
+  - apiGroups:
+    - apigateway.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - apigatewayapiconfigs
+    - apigatewaygateways
+  - apiGroups:
+    - apigee.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - apigeeaddonsconfigs
+    - apigeeenvironments
+    - apigeenataddresses
+    - apigeeorganizations
+    - apigeesyncauthorizations
+  - apiGroups:
+    - apikeys.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - apikeyskeys
+  - apiGroups:
+    - appengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - appenginedomainmappings
+    - appenginefirewallrules
+    - appengineflexibleappversions
+    - appengineservicesplittraffics
+    - appenginestandardappversions
+  - apiGroups:
+    - artifactregistry.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - artifactregistryrepositories
+  - apiGroups:
+    - beyondcorp.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - beyondcorpappconnections
+    - beyondcorpappconnectors
+    - beyondcorpappgateways
+  - apiGroups:
+    - bigquery.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - bigquerydatasetaccesses
+    - bigquerydatasets
+    - bigqueryjobs
+    - bigqueryroutines
+    - bigquerytables
+  - apiGroups:
+    - bigquerydatapolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - bigquerydatapolicydatapolicies
+  - apiGroups:
+    - bigqueryreservation.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - bigqueryreservationcapacitycommitments
+    - bigqueryreservationreservations
+  - apiGroups:
+    - bigtable.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - bigtableappprofiles
+    - bigtablegcpolicies
+    - bigtableinstances
+    - bigtabletables
+  - apiGroups:
+    - billingbudgets.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - billingbudgetsbudgets
+  - apiGroups:
+    - binaryauthorization.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - binaryauthorizationattestors
+    - binaryauthorizationpolicies
+  - apiGroups:
+    - certificatemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - certificatemanagercertificatemapentries
+    - certificatemanagercertificatemaps
+    - certificatemanagercertificates
+    - certificatemanagerdnsauthorizations
+  - apiGroups:
+    - cloudasset.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudassetfolderfeeds
+    - cloudassetorganizationfeeds
+    - cloudassetprojectfeeds
+  - apiGroups:
+    - cloudbuild.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudbuildtriggers
+  - apiGroups:
+    - cloudfunctions.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudfunctionsfunctions
+  - apiGroups:
+    - cloudfunctions2.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudfunctions2functions
+  - apiGroups:
+    - cloudidentity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudidentitygroups
+    - cloudidentitymemberships
+  - apiGroups:
+    - cloudids.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudidsendpoints
+  - apiGroups:
+    - cloudiot.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - cloudiotdeviceregistries
+    - cloudiotdevices
+  - apiGroups:
+    - cloudscheduler.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - cloudschedulerjobs
+  - apiGroups:
+    - compute.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - computeaddresses
+    - computeautoscalers
+    - computebackendbuckets
+    - computebackendbucketsignedurlkeys
+    - computebackendservices
+    - computebackendservicesignedurlkeys
+    - computediskresourcepolicyattachments
+    - computedisks
+    - computeexternalvpngateways
+    - computefirewallpolicies
+    - computefirewallpolicyassociations
+    - computefirewallpolicyrules
+    - computefirewalls
+    - computeforwardingrules
+    - computeglobalnetworkendpointgroups
+    - computeglobalnetworkendpoints
+    - computehealthchecks
+    - computehttphealthchecks
+    - computehttpshealthchecks
+    - computeimages
+    - computeinstancegroupmanagers
+    - computeinstancegroupnamedports
+    - computeinstancegroups
+    - computeinstances
+    - computeinstancetemplates
+    - computeinterconnectattachments
+    - computemachineimages
+    - computemanagedsslcertificates
+    - computenetworkendpointgroups
+    - computenetworkendpoints
+    - computenetworkfirewallpolicies
+    - computenetworkfirewallpolicyassociations
+    - computenetworkfirewallpolicyrules
+    - computenetworkpeeringroutesconfigs
+    - computenetworkpeerings
+    - computenetworks
+    - computenodegroups
+    - computenodetemplates
+    - computeorganizationsecuritypolicies
+    - computeorganizationsecuritypolicyassociations
+    - computeorganizationsecuritypolicyrules
+    - computepacketmirrorings
+    - computeperinstanceconfigs
+    - computeprojectmetadatas
+    - computeregionautoscalers
+    - computeregiondiskresourcepolicyattachments
+    - computeregionnetworkendpointgroups
+    - computeregionperinstanceconfigs
+    - computeregionsslpolicies
+    - computereservations
+    - computeresourcepolicies
+    - computerouterinterfaces
+    - computerouternats
+    - computerouterpeers
+    - computerouters
+    - computeroutes
+    - computesecuritypolicies
+    - computeserviceattachments
+    - computesharedvpchostprojects
+    - computesharedvpcserviceprojects
+    - computesnapshots
+    - computesslcertificates
+    - computesslpolicies
+    - computesubnetworks
+    - computetargetgrpcproxies
+    - computetargethttpproxies
+    - computetargethttpsproxies
+    - computetargetinstances
+    - computetargetpools
+    - computetargetsslproxies
+    - computetargettcpproxies
+    - computetargetvpngateways
+    - computeurlmaps
+    - computevpngateways
+    - computevpntunnels
+  - apiGroups:
+    - configcontroller.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - configcontrollerinstances
+  - apiGroups:
+    - container.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containerclusters
+    - containernodepools
+  - apiGroups:
+    - containeranalysis.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containeranalysisnotes
+    - containeranalysisoccurrences
+  - apiGroups:
+    - containerattached.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - containerattachedclusters
+  - apiGroups:
+    - datacatalog.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - datacatalogentries
+    - datacatalogentrygroups
+    - datacatalogpolicytags
+    - datacatalogtags
+    - datacatalogtagtemplates
+    - datacatalogtaxonomies
+  - apiGroups:
+    - dataflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dataflowflextemplatejobs
+    - dataflowjobs
+  - apiGroups:
+    - datafusion.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - datafusioninstances
+  - apiGroups:
+    - dataproc.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dataprocautoscalingpolicies
+    - dataprocclusters
+    - dataprocworkflowtemplates
+  - apiGroups:
+    - datastore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - datastoreindexes
+  - apiGroups:
+    - datastream.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - datastreamconnectionprofiles
+    - datastreamprivateconnections
+    - datastreamstreams
+  - apiGroups:
+    - deploymentmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - deploymentmanagerdeployments
+  - apiGroups:
+    - dialogflow.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - dialogflowagents
+    - dialogflowentitytypes
+    - dialogflowfulfillments
+    - dialogflowintents
+  - apiGroups:
+    - dialogflowcx.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - dialogflowcxagents
+    - dialogflowcxentitytypes
+    - dialogflowcxflows
+    - dialogflowcxintents
+    - dialogflowcxpages
+    - dialogflowcxwebhooks
+  - apiGroups:
+    - dlp.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dlpdeidentifytemplates
+    - dlpinspecttemplates
+    - dlpjobtriggers
+    - dlpstoredinfotypes
+  - apiGroups:
+    - dns.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - dnsmanagedzones
+    - dnspolicies
+    - dnsrecordsets
+    - dnsresponsepolicies
+    - dnsresponsepolicyrules
+  - apiGroups:
+    - documentai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - documentaiprocessordefaultversions
+    - documentaiprocessors
+  - apiGroups:
+    - edgecontainer.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - edgecontainerclusters
+    - edgecontainernodepools
+    - edgecontainervpnconnections
+  - apiGroups:
+    - edgenetwork.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - edgenetworknetworks
+    - edgenetworksubnets
+  - apiGroups:
+    - essentialcontacts.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - essentialcontactscontacts
+  - apiGroups:
+    - eventarc.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - eventarctriggers
+  - apiGroups:
+    - filestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - filestorebackups
+    - filestoreinstances
+    - filestoresnapshots
+  - apiGroups:
+    - firebase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebaseandroidapps
+    - firebaseprojects
+    - firebasewebapps
+  - apiGroups:
+    - firebasedatabase.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasedatabaseinstances
+  - apiGroups:
+    - firebasehosting.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasehostingchannels
+    - firebasehostingsites
+  - apiGroups:
+    - firebasestorage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - firebasestoragebuckets
+  - apiGroups:
+    - firestore.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - firestoreindexes
+  - apiGroups:
+    - gkebackup.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - gkebackupbackupplans
+  - apiGroups:
+    - gkehub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - gkehubfeaturememberships
+    - gkehubfeatures
+    - gkehubmemberships
+  - apiGroups:
+    - healthcare.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - healthcareconsentstores
+    - healthcaredatasets
+    - healthcaredicomstores
+    - healthcarefhirstores
+    - healthcarehl7v2stores
+  - apiGroups:
+    - iam.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - iamaccessboundarypolicies
+    - iamcustomroles
+    - iamserviceaccountkeys
+    - iamserviceaccounts
+    - iamworkforcepoolproviders
+    - iamworkforcepools
+    - iamworkloadidentitypoolproviders
+    - iamworkloadidentitypools
+  - apiGroups:
+    - iap.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - iapbrands
+    - iapidentityawareproxyclients
+  - apiGroups:
+    - identityplatform.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - identityplatformconfigs
+    - identityplatformdefaultsupportedidpconfigs
+    - identityplatforminboundsamlconfigs
+    - identityplatformoauthidpconfigs
+    - identityplatformprojectdefaultconfigs
+    - identityplatformtenantdefaultsupportedidpconfigs
+    - identityplatformtenantinboundsamlconfigs
+    - identityplatformtenantoauthidpconfigs
+    - identityplatformtenants
+  - apiGroups:
+    - kms.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - kmscryptokeys
+    - kmscryptokeyversions
+    - kmskeyringimportjobs
+    - kmskeyrings
+    - kmssecretciphertexts
+  - apiGroups:
+    - logging.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - logginglogbuckets
+    - logginglogexclusions
+    - logginglogmetrics
+    - logginglogsinks
+    - logginglogviews
+  - apiGroups:
+    - memcache.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - memcacheinstances
+  - apiGroups:
+    - mlengine.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - mlenginemodels
+  - apiGroups:
+    - monitoring.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - monitoringalertpolicies
+    - monitoringdashboards
+    - monitoringgroups
+    - monitoringmetricdescriptors
+    - monitoringmonitoredprojects
+    - monitoringnotificationchannels
+    - monitoringservicelevelobjectives
+    - monitoringservices
+    - monitoringuptimecheckconfigs
+  - apiGroups:
+    - networkconnectivity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networkconnectivityhubs
+    - networkconnectivityspokes
+  - apiGroups:
+    - networkmanagement.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - networkmanagementconnectivitytests
+  - apiGroups:
+    - networksecurity.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networksecurityauthorizationpolicies
+    - networksecurityclienttlspolicies
+    - networksecurityservertlspolicies
+  - apiGroups:
+    - networkservices.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - networkservicesedgecachekeysets
+    - networkservicesedgecacheorigins
+    - networkservicesedgecacheservices
+    - networkservicesendpointpolicies
+    - networkservicesgateways
+    - networkservicesgrpcroutes
+    - networkserviceshttproutes
+    - networkservicesmeshes
+    - networkservicestcproutes
+    - networkservicestlsroutes
+  - apiGroups:
+    - notebooks.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - notebooksenvironments
+  - apiGroups:
+    - orgpolicy.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - orgpolicycustomconstraints
+  - apiGroups:
+    - osconfig.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - osconfigguestpolicies
+    - osconfigospolicyassignments
+    - osconfigpatchdeployments
+  - apiGroups:
+    - oslogin.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - osloginsshpublickeys
+  - apiGroups:
+    - privateca.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - privatecacapools
+    - privatecacertificateauthorities
+    - privatecacertificates
+    - privatecacertificatetemplates
+  - apiGroups:
+    - pubsub.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - pubsubschemas
+    - pubsubsubscriptions
+    - pubsubtopics
+  - apiGroups:
+    - pubsublite.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - pubsublitereservations
+    - pubsublitesubscriptions
+    - pubsublitetopics
+  - apiGroups:
+    - recaptchaenterprise.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - recaptchaenterprisekeys
+  - apiGroups:
+    - redis.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - redisinstances
+  - apiGroups:
+    - resourcemanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - folders
+    - projects
+    - resourcemanagerliens
+    - resourcemanagerpolicies
+  - apiGroups:
+    - run.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - runjobs
+    - runservices
+  - apiGroups:
+    - secretmanager.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - secretmanagersecrets
+    - secretmanagersecretversions
+  - apiGroups:
+    - securitycenter.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - securitycenternotificationconfigs
+    - securitycentersources
+  - apiGroups:
+    - servicedirectory.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - servicedirectoryendpoints
+    - servicedirectorynamespaces
+    - servicedirectoryservices
+  - apiGroups:
+    - servicenetworking.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - servicenetworkingconnections
+  - apiGroups:
+    - serviceusage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - serviceidentities
+    - services
+    - serviceusageconsumerquotaoverrides
+  - apiGroups:
+    - sourcerepo.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - sourcereporepositories
+  - apiGroups:
+    - spanner.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - spannerdatabases
+    - spannerinstances
+  - apiGroups:
+    - sql.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - sqldatabases
+    - sqlinstances
+    - sqlsslcerts
+    - sqlusers
+  - apiGroups:
+    - storage.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - storagebucketaccesscontrols
+    - storagebuckets
+    - storagedefaultobjectaccesscontrols
+    - storagehmackeys
+    - storagenotifications
+  - apiGroups:
+    - storagetransfer.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - storagetransferagentpools
+    - storagetransferjobs
+  - apiGroups:
+    - tags.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - tagslocationtagbindings
+    - tagstagbindings
+    - tagstagkeys
+    - tagstagvalues
+  - apiGroups:
+    - tpu.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - tpunodes
+  - apiGroups:
+    - vertexai.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - vertexaidatasets
+    - vertexaiendpoints
+    - vertexaifeaturestoreentitytypefeatures
+    - vertexaifeaturestoreentitytypes
+    - vertexaifeaturestores
+    - vertexaiindexendpoints
+    - vertexaiindexes
+    - vertexaitensorboards
+  - apiGroups:
+    - vpcaccess.cnrm.cloud.google.com
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    resources:
+    - vpcaccessconnectors
+  - apiGroups:
+    - workflows.cnrm.cloud.google.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    resources:
+    - workflowsworkflows
+  sideEffects: None
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: abandon-on-uninstall
+  namespace: cnrm-system
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    cnrm.cloud.google.com/component: cnrm-deletiondefender
+    cnrm.cloud.google.com/system: "true"
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: abandon-on-uninstall.cnrm.cloud.google.com
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: abandon-on-uninstall
+      namespace: cnrm-system
+      path: /abandon-on-uninstall
+  failurePolicy: Fail
+  name: abandon-on-uninstall.cnrm.cloud.google.com
+  objectSelector:
+    matchLabels:
+      cnrm.cloud.google.com/managed-by-kcc: no-op
+  rules:
+  - apiGroups:
+    - apiextensions.k8s.io
+    apiVersions:
+    - v1
+    operations:
+    - DELETE
+    resources:
+    - customresourcedefinitions
+  sideEffects: NoneOnDryRun
