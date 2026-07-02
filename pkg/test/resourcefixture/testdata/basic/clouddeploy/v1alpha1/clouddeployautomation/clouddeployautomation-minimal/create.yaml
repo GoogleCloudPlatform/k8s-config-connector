@@ -1,0 +1,22 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployAutomation
+metadata:
+  name: clouddeployautomation-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  deliveryPipelineRef:
+    name: clouddeploydeliverypipeline-${uniqueId}
+  description: "Minimal CloudDeployAutomation"
+  suspended: false
+  serviceAccountRef:
+    name: gsa-${uniqueId}
+  selector:
+    targets:
+    - targetRef:
+        name: clouddeploytarget-${uniqueId}
+  rules:
+  - promoteReleaseRule:
+      id: "promote-release"
+      wait: "60s"
