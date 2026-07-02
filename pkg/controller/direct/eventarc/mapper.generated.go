@@ -29,6 +29,52 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func EventarcChannelConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ChannelConnection) *krm.EventarcChannelConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcChannelConnectionObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func EventarcChannelConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelConnectionObservedState) *pb.ChannelConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelConnection{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func EventarcChannelConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ChannelConnection) *krm.EventarcChannelConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcChannelConnectionSpec{}
+	// MISSING: Name
+	if in.GetChannel() != "" {
+		out.ChannelRef = &krm.ChannelRef{External: in.GetChannel()}
+	}
+	out.ActivationToken = direct.LazyPtr(in.GetActivationToken())
+	return out
+}
+func EventarcChannelConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelConnectionSpec) *pb.ChannelConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ChannelConnection{}
+	// MISSING: Name
+	if in.ChannelRef != nil {
+		out.Channel = in.ChannelRef.External
+	}
+	out.ActivationToken = direct.ValueOf(in.ActivationToken)
+	return out
+}
 func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *krm.EventarcChannelObservedState {
 	if in == nil {
 		return nil
@@ -68,34 +114,38 @@ func EventarcEnrollmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.EventarcEnrollmentObservedState{}
+	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: CelMatch
 	return out
 }
-
 func EventarcEnrollmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcEnrollmentObservedState) *pb.Enrollment {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Enrollment{}
+	// MISSING: Name
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Etag = direct.ValueOf(in.Etag)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: CelMatch
 	return out
 }
-
 func EventarcEnrollmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Enrollment) *krm.EventarcEnrollmentSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.EventarcEnrollmentSpec{}
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.CELMatch = direct.LazyPtr(in.GetCelMatch())
+	// MISSING: CelMatch
+	// (near miss): "CelMatch" vs "CELMatch"
 	if in.GetMessageBus() != "" {
 		out.MessageBusRef = &krm.EventarcMessageBusRef{External: in.GetMessageBus()}
 	}
@@ -104,16 +154,17 @@ func EventarcEnrollmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Enrollme
 	}
 	return out
 }
-
 func EventarcEnrollmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcEnrollmentSpec) *pb.Enrollment {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Enrollment{}
+	// MISSING: Name
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.CelMatch = direct.ValueOf(in.CELMatch)
+	// MISSING: CelMatch
+	// (near miss): "CelMatch" vs "CELMatch"
 	if in.MessageBusRef != nil {
 		out.MessageBus = in.MessageBusRef.External
 	}
@@ -122,7 +173,62 @@ func EventarcEnrollmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcE
 	}
 	return out
 }
-
+func EventarcGoogleAPISourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleApiSource) *krm.EventarcGoogleAPISourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcGoogleAPISourceObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Destination
+	// MISSING: CryptoKeyName
+	return out
+}
+func EventarcGoogleAPISourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleAPISourceObservedState) *pb.GoogleApiSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleApiSource{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Destination
+	// MISSING: CryptoKeyName
+	return out
+}
+func EventarcGoogleAPISourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleApiSource) *krm.EventarcGoogleAPISourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcGoogleAPISourceSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Destination
+	// MISSING: CryptoKeyName
+	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	return out
+}
+func EventarcGoogleAPISourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleAPISourceSpec) *pb.GoogleApiSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleApiSource{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Destination
+	// MISSING: CryptoKeyName
+	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	return out
+}
 func EventarcGoogleChannelConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krm.EventarcGoogleChannelConfigObservedState {
 	if in == nil {
 		return nil
