@@ -3294,6 +3294,54 @@ func ComputeRegionPerInstanceConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapConte
 	// MISSING: Status
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeRegionSSLPolicySpec_v1alpha1_FromProto", skipping
+func ComputeRegionSSLPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SslPolicy) *krmcomputev1alpha1.ComputeRegionSSLPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRegionSSLPolicySpec{}
+	// MISSING: CreationTimestamp
+	out.CustomFeatures = in.CustomFeatures
+	out.Description = in.Description
+	// MISSING: EnabledFeatures
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	out.MinTLSVersion = in.MinTlsVersion
+	// MISSING: Name
+	out.Profile = in.Profile
+	out.Region = in.Region
+	// MISSING: SelfLink
+	// MISSING: Warnings
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ComputeRegionSSLPolicySpec_v1alpha1_ToProto", skipping
+
+	func ComputeRegionSSLPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRegionSSLPolicySpec) *pb.SslPolicy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SslPolicy{}
+		// MISSING: CreationTimestamp
+		out.CustomFeatures = in.CustomFeatures
+		out.Description = in.Description
+		// MISSING: EnabledFeatures
+		// MISSING: Fingerprint
+		// MISSING: ID
+		// MISSING: Kind
+		out.MinTlsVersion = in.MinTLSVersion
+		// MISSING: Name
+		out.Profile = in.Profile
+		out.Region = in.Region
+		// MISSING: SelfLink
+		// MISSING: Warnings
+		return out
+	}
+*/
 func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
 	if in == nil {
 		return nil
