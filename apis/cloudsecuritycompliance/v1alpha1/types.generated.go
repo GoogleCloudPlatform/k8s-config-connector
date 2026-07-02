@@ -19,6 +19,7 @@
 // proto.service: google.cloud.cloudsecuritycompliance.v1
 // resource: CloudSecurityComplianceCloudControl:CloudControl
 // resource: CloudSecurityComplianceFramework:Framework
+// resource: CloudSecurityComplianceFrameworkDeployment:FrameworkDeployment
 
 package v1alpha1
 
@@ -108,6 +109,44 @@ type CloudControl struct {
 }
 */
 
+/* unreachable type CloudControlDeployment
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment
+type CloudControlDeployment struct {
+	// Identifier. CloudControlDeployment name in either of the following formats:
+	//  organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. target_resource_config referencing either an already existing
+	//  target_resource or contains config for a target_resource to be created
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.target_resource_config
+	TargetResourceConfig *TargetResourceConfig `json:"targetResourceConfig,omitempty"`
+
+	// Required. CloudControlReference, Deployment mode and parameters for the
+	//  cloud_control
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.cloud_control_metadata
+	CloudControlMetadata *CloudControlMetadata `json:"cloudControlMetadata,omitempty"`
+
+	// Optional. User provided description of the deployment
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. To prevent concurrent updates from overwriting each other, always
+	//  provide the `etag` when you update a CustomComplianceCloudControl. You can
+	//  also provide the `etag` when you delete a CustomComplianceCloudControl, to
+	//  help ensure that you're deleting the intended version of the
+	//  CustomComplianceCloudControl.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+/* unreachable type CloudControlDeploymentReference
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeploymentReference
+type CloudControlDeploymentReference struct {
+}
+*/
+
 /* found existing non-generated go type "CloudControlDetails", skipping
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails
@@ -167,6 +206,47 @@ type CloudControlGroup struct {
 }
 */
 
+/* unreachable type CloudControlGroupDeployment
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment
+type CloudControlGroupDeployment struct {
+	// Required. Cloud control group
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment.cloud_control_group
+	CloudControlGroup *CloudControlGroup `json:"cloudControlGroup,omitempty"`
+
+	// Required. Cloud control deployments in the group
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment.cc_deployments
+	CcDeployments []CloudControlDeployment `json:"ccDeployments,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "CloudControlMetadata", skipping
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlMetadata
+type CloudControlMetadata struct {
+	// Required. Cloud control details
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlMetadata.cloud_control_details
+	CloudControlDetails *CloudControlDetails `json:"cloudControlDetails,omitempty"`
+
+	// Required. Enforcement mode of the cloud control
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlMetadata.enforcement_mode
+	EnforcementMode *string `json:"enforcementMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "FolderCreationConfig", skipping
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.FolderCreationConfig
+type FolderCreationConfig struct {
+	// Required. organizations/{org} or folders/{folder}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FolderCreationConfig.parent
+	Parent *string `json:"parent,omitempty"`
+
+	// Required. Display name of the folder to be created
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FolderCreationConfig.folder_display_name
+	FolderDisplayName *string `json:"folderDisplayName,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.Framework", skipping
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Framework
@@ -209,6 +289,78 @@ type Framework_CloudControlGroupDetails struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails.cloud_control_group
 	CloudControlGroup *CloudControlGroup `json:"cloudControlGroup,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment", skipping
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment
+type FrameworkDeployment struct {
+	// Identifier. FrameworkDeployment name in either of the following formats:
+	//  organizations/{organization}/locations/{location}/frameworkDeployments/{framework_deployment_id}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. target_resource_config referencing either an already existing
+	//  target_resource or contains config for a target_resource to be created
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.target_resource_config
+	TargetResourceConfig *TargetResourceConfig `json:"targetResourceConfig,omitempty"`
+
+	// Required. Framework resource reference
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.framework
+	Framework *FrameworkReference `json:"framework,omitempty"`
+
+	// Optional. User provided description of the deployment
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Deployment mode and parameters for each of the cloud_controls
+	//  part of the framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.cloud_control_metadata
+	CloudControlMetadata []CloudControlMetadata `json:"cloudControlMetadata,omitempty"`
+
+	// Optional. To prevent concurrent updates from overwriting each other, always
+	//  provide the `etag` when you update a CustomComplianceFramework. You can
+	//  also provide the `etag` when you delete a CustomComplianceFramework, to
+	//  help ensure that you're deleting the intended version of the
+	//  CustomComplianceFramework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+/* unreachable type FrameworkDeploymentReference
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference
+type FrameworkDeploymentReference struct {
+
+	// Optional. The reference to the framework that this deployment is for.
+	//  Example: {
+	//    framework:
+	//    "organizations/{org}/locations/{location}/frameworks/{framework}",
+	//    major_revision_id: 1
+	//  }
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference.framework_reference
+	FrameworkReference *FrameworkReference `json:"frameworkReference,omitempty"`
+
+	// Optional. The display name of the framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference.framework_display_name
+	FrameworkDisplayName *string `json:"frameworkDisplayName,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "FrameworkReference", skipping
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkReference
+type FrameworkReference struct {
+	// Required. In the format:
+	//  organizations/{org}/locations/{location}/frameworks/{framework}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkReference.framework
+	Framework *string `json:"framework,omitempty"`
+
+	// Optional. Major revision id of the framework. If not specified, corresponds
+	//  to the latest revision of the framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkReference.major_revision_id
+	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.IntRange
 type IntRange struct {
@@ -323,6 +475,24 @@ type PlaceholderSubstitutionRule struct {
 	Attribute *string `json:"attribute,omitempty"`
 }
 
+/* found existing non-generated go type "ProjectCreationConfig", skipping
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.ProjectCreationConfig
+type ProjectCreationConfig struct {
+	// Required. organizations/{org} or folders/{folder}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ProjectCreationConfig.parent
+	Parent *string `json:"parent,omitempty"`
+
+	// Required. Display name of the project to be created
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ProjectCreationConfig.project_display_name
+	ProjectDisplayName *string `json:"projectDisplayName,omitempty"`
+
+	// Required. Billing account id to be used for the project
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ProjectCreationConfig.billing_account_id
+	BillingAccountID *string `json:"billingAccountID,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.RegexpPattern
 type RegexpPattern struct {
 	// Required. Regex Pattern to match the value(s) of parameter.
@@ -352,6 +522,37 @@ type StringList struct {
 	Values []string `json:"values,omitempty"`
 }
 
+/* found existing non-generated go type "TargetResourceConfig", skipping
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.TargetResourceConfig
+type TargetResourceConfig struct {
+	// Optional. CRM node in format organizations/{organization},
+	//  folders/{folder}, projects/{project} or
+	//  projects/{project}/locations/{location}/applications/{application}.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.TargetResourceConfig.existing_target_resource
+	ExistingTargetResource *string `json:"existingTargetResource,omitempty"`
+
+	// Optional. Config to create a new resource and use that as the
+	//  target_resource for deployment
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.TargetResourceConfig.target_resource_creation_config
+	TargetResourceCreationConfig *TargetResourceCreationConfig `json:"targetResourceCreationConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "TargetResourceCreationConfig", skipping
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.TargetResourceCreationConfig
+type TargetResourceCreationConfig struct {
+	// Optional. Config to create a new folder
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.TargetResourceCreationConfig.folder_creation_config
+	FolderCreationConfig *FolderCreationConfig `json:"folderCreationConfig,omitempty"`
+
+	// Optional. Config to create a new project
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.TargetResourceCreationConfig.project_creation_config
+	ProjectCreationConfig *ProjectCreationConfig `json:"projectCreationConfig,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Validation
 type Validation struct {
 	// Allowed set of values for the parameter.
@@ -367,42 +568,224 @@ type Validation struct {
 	RegexpPattern *RegexpPattern `json:"regexpPattern,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.CloudControl", skipping
+/* found existing non-generated go type "CloudControlObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControl
 type CloudControlObservedState struct {
+	// Required. Identifier. The resource name of the cloud control.
+	//  Format:
+	//  organizations/{organization}/locations/{location}/cloudControls/{cloud_control_id}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.name
+	Name *string `json:"name,omitempty"`
+
 	// Output only. Major revision of the cloud control incremented in ascending
 	//  order.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.major_revision_id
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
+
+	// Optional. A description of the cloud control. The maximum length is 2000
+	//  characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The display name of the cloud control. The maximum length is 200
+	//  characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 
 	// Output only. The supported enforcement mode of the cloud control. Default
 	//  is DETECTIVE.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.supported_enforcement_modes
 	SupportedEnforcementModes []string `json:"supportedEnforcementModes,omitempty"`
 
+	// Optional. The parameter spec of the cloud control.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.parameter_spec
+	ParameterSpec []ParameterSpec `json:"parameterSpec,omitempty"`
+
+	// Optional. The Policy to be enforced to prevent/detect resource
+	//  non-compliance.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.rules
+	Rules []Rule `json:"rules,omitempty"`
+
+	// Optional. The severity of findings generated by the cloud control.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Optional. The finding_category of the cloud control. The maximum length is
+	//  255 characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.finding_category
+	FindingCategory *string `json:"findingCategory,omitempty"`
+
+	// Optional. cloud providers supported
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.supported_cloud_providers
+	SupportedCloudProviders []string `json:"supportedCloudProviders,omitempty"`
+
 	// Output only. The Frameworks that include this CloudControl
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.related_frameworks
 	RelatedFrameworks []string `json:"relatedFrameworks,omitempty"`
+
+	// Optional. The remediation steps for the findings generated by the cloud
+	//  control. The maximum length is 400 characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.remediation_steps
+	RemediationSteps *string `json:"remediationSteps,omitempty"`
+
+	// Optional. The categories of the cloud control.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.categories
+	Categories []string `json:"categories,omitempty"`
 
 	// Output only. The last updated time of the cloud control.
 	//  The create_time is used because a new CC is created whenever we update an
 	//  existing CC.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.create_time
 	CreateTime *string `json:"createTime,omitempty"`
+
+	// Optional. target resource types supported by the CloudControl.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.supported_target_resource_types
+	SupportedTargetResourceTypes []string `json:"supportedTargetResourceTypes,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment
+type CloudControlDeploymentObservedState struct {
+	// Identifier. CloudControlDeployment name in either of the following formats:
+	//  organizations/{organization}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. target_resource_config referencing either an already existing
+	//  target_resource or contains config for a target_resource to be created
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.target_resource_config
+	TargetResourceConfig *TargetResourceConfig `json:"targetResourceConfig,omitempty"`
+
+	// Output only. The resource on which the CloudControl is deployed based on
+	//  the provided TargetResourceConfig. In format organizations/{organization},
+	//  folders/{folder} or projects/{project}.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.target_resource
+	TargetResource *string `json:"targetResource,omitempty"`
+
+	// Required. CloudControlReference, Deployment mode and parameters for the
+	//  cloud_control
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.cloud_control_metadata
+	CloudControlMetadata *CloudControlMetadata `json:"cloudControlMetadata,omitempty"`
+
+	// Optional. User provided description of the deployment
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. State of the deployment
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.deployment_state
+	DeploymentState *string `json:"deploymentState,omitempty"`
+
+	// Output only. The time at which the resource was created.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which the resource last updated.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. To prevent concurrent updates from overwriting each other, always
+	//  provide the `etag` when you update a CustomComplianceCloudControl. You can
+	//  also provide the `etag` when you delete a CustomComplianceCloudControl, to
+	//  help ensure that you're deleting the intended version of the
+	//  CustomComplianceCloudControl.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The cloud control after parameter substitution.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.parameter_substituted_cloud_control
+	ParameterSubstitutedCloudControl *CloudControlObservedState `json:"parameterSubstitutedCloudControl,omitempty"`
+
+	// Output only. The references to the framework deployments that this cloud
+	//  control deployment is part of.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.framework_deployment_references
+	FrameworkDeploymentReferences []FrameworkDeploymentReferenceObservedState `json:"frameworkDeploymentReferences,omitempty"`
+
+	// Output only. The name of the application, project, folder, or organization
+	//  that the cloud control is deployed on.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeployment.target_resource_display_name
+	TargetResourceDisplayName *string `json:"targetResourceDisplayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlDeploymentReference
+type CloudControlDeploymentReferenceObservedState struct {
+	// Output only. The name of the cloud control deployment. The format is:
+	//  organizations/{org}/locations/{location}/cloudControlDeployments/{cloud_control_deployment_id}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDeploymentReference.cloud_control_deployment
+	CloudControlDeployment *string `json:"cloudControlDeployment,omitempty"`
+}
 
 /* found existing non-generated go type "CloudControlGroupObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
 type CloudControlGroupObservedState struct {
+	// Required. The name of the cloud control group in the format:
+	//  “organizations/{organization}/locations/{location}/
+	//  cloudControlGroups/{cloud-control-group}”
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The description of the cloud control group.The maximum length is
+	//  2000 characters.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.description
+	Description *string `json:"description,omitempty"`
+
 	// Optional. Output only. The type of the cloud control group. Default is
 	//  TYPE_CUSTOM.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.type
 	Type *string `json:"type,omitempty"`
+
+	// Optional. The control identifier used to fetch the findings. This is same
+	//  as the control report name.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.control_id
+	ControlID *string `json:"controlID,omitempty"`
+
+	// Required. The details of the cloud controls to be referred to in the
+	//  framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.cloud_control_details
+	CloudControlDetails []CloudControlDetails `json:"cloudControlDetails,omitempty"`
+
+	// Optional. Major revision of the cloud control group.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.major_revision_id
+	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
+
+	// Optional. The industry-defined Control assciated with the cloud controls in
+	//  this group.
+	//  organizations/{organization}/locations/{location}/controls/{control_id}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.control
+	Control *string `json:"control,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment
+type CloudControlGroupDeploymentObservedState struct {
+	// Required. Cloud control group
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment.cloud_control_group
+	CloudControlGroup *CloudControlGroupObservedState `json:"cloudControlGroup,omitempty"`
+
+	// Required. Cloud control deployments in the group
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment.cc_deployments
+	CcDeployments []CloudControlDeploymentObservedState `json:"ccDeployments,omitempty"`
+
+	// Output only. The references to the cloud control deployments in the cloud
+	//  control group. For example, if a cloud control group has two cloud
+	//  controls, `cloud-control-1` and `cloud-control-2`, and the cloud control
+	//  deployments for these cloud controls are `cloud-control-deployment-1` and
+	//  `cloud-control-deployment-2` respectively, then the
+	//  references are:
+	//  ```
+	//   cloud_control_deployment_reference: {
+	//     cloud_control_deployment:
+	//     "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-1"
+	//   },
+	//   cloud_control_deployment_reference: {
+	//    cloud_control_deployment:
+	//    "organizations/{organization}/locations/{location}/cloudControlDeployments/cloud-control-deployment-2"
+	//   }
+	//  ```
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroupDeployment.cc_deployment_references
+	CcDeploymentReferences []CloudControlDeploymentReferenceObservedState `json:"ccDeploymentReferences,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.Framework", skipping
 
@@ -437,4 +820,81 @@ type Framework_CloudControlGroupDetailsObservedState struct {
 	// The cloud control group included in the framework.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails.cloud_control_group
 	CloudControlGroup *CloudControlGroupObservedState `json:"cloudControlGroup,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment", skipping
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment
+type FrameworkDeploymentObservedState struct {
+	// Output only. The resource on which the Framework is deployed based on the
+	//  provided TargetResourceConfig. In format organizations/{organization},
+	//  folders/{folder}, projects/{project} or
+	//  projects/{project}/locations/{location}/applications/{application}.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.computed_target_resource
+	ComputedTargetResource *string `json:"computedTargetResource,omitempty"`
+
+	// Output only. State of the deployment
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.deployment_state
+	DeploymentState *string `json:"deploymentState,omitempty"`
+
+	// Output only. This field is inlined just for cloudNext because the one
+	//  platform apis of CCDeployment does not exist. Beyond cloud
+	//  next it will be replaced with the field below which is the
+	//  references of cloud control deployment
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.cc_deployments
+	CcDeployments []CloudControlDeploymentObservedState `json:"ccDeployments,omitempty"`
+
+	// Output only. The time at which the resource was created.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which the resource last updated.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Similarly we'll also have a field for CloudControlGroups
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.cc_group_deployments
+	CcGroupDeployments []CloudControlGroupDeploymentObservedState `json:"ccGroupDeployments,omitempty"`
+
+	// Output only. The display name of the target resource.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.target_resource_display_name
+	TargetResourceDisplayName *string `json:"targetResourceDisplayName,omitempty"`
+
+	// Output only. The references to the cloud control deployments.
+	//  Example: If a framework deployment deploys two cloud controls,
+	//  cc-deployment-1 and cc-deployment-2, then the
+	//  cloud_control_deployment_references will be:
+	//  {
+	//   cloud_control_deployment_reference: {
+	//     cloud_control_deployment:
+	//     "organizations/{organization}/locations/{location}/cloudControlDeployments/cc-deployment-1"
+	//   },
+	//   cloud_control_deployment_reference: {
+	//    cloud_control_deployment:
+	//    "organizations/{organization}/locations/{location}/cloudControlDeployments/cc-deployment-2"
+	//   }
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment.cloud_control_deployment_references
+	CloudControlDeploymentReferences []CloudControlDeploymentReferenceObservedState `json:"cloudControlDeploymentReferences,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference
+type FrameworkDeploymentReferenceObservedState struct {
+	// Output only. The name of the framework. The format is:
+	//  organizations/{org}/locations/{location}/frameworkDeployments/{framework_deployment_id}
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference.framework_deployment
+	FrameworkDeployment *string `json:"frameworkDeployment,omitempty"`
+
+	// Optional. The reference to the framework that this deployment is for.
+	//  Example: {
+	//    framework:
+	//    "organizations/{org}/locations/{location}/frameworks/{framework}",
+	//    major_revision_id: 1
+	//  }
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference.framework_reference
+	FrameworkReference *FrameworkReference `json:"frameworkReference,omitempty"`
+
+	// Optional. The display name of the framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.FrameworkDeploymentReference.framework_display_name
+	FrameworkDisplayName *string `json:"frameworkDisplayName,omitempty"`
 }
