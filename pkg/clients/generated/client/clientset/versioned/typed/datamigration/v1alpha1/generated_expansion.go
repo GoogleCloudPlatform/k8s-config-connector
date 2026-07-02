@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type DatabaseMigrationConnectionProfileExpansion interface{}
+
 type DatabaseMigrationConversionWorkspaceExpansion interface{}
 
 type DatabaseMigrationMigrationJobExpansion interface{}
