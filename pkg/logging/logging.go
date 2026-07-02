@@ -30,13 +30,13 @@ var logger = log.Log
 
 // SetupLogger configures the controller-runtime/pkg/log Logger to the
 // standard configuration across cnrm applications, writing to os.Stdout.
-func SetupLogger() {
-	log.SetLogger(BuildLogger(os.Stdout))
+func SetupLogger(opts *zap.Options) {
+	log.SetLogger(BuildLogger(os.Stdout, opts))
 }
 
 // BuildLogger constructs a logr.Logger object that matches the standard
 // configuration across cnrm applications, writing to the io.Writer passed.
-func BuildLogger(output io.Writer) logr.Logger {
+func BuildLogger(output io.Writer, opts *zap.Options) logr.Logger {
 	encoderCfg := zapcore.EncoderConfig{
 		MessageKey:     "msg",
 		LevelKey:       "severity",
@@ -47,7 +47,15 @@ func BuildLogger(output io.Writer) logr.Logger {
 		EncodeDuration: zapcore.StringDurationEncoder,
 	}
 	encoder := zapcore.NewJSONEncoder(encoderCfg)
-	return zapr.NewLogger(zap.NewRaw(zap.WriteTo(output), zap.Encoder(encoder)))
+
+	var zapOpts []zap.Opts
+	zapOpts = append(zapOpts, zap.WriteTo(output))
+	zapOpts = append(zapOpts, zap.Encoder(encoder))
+	if opts != nil && opts.Level != nil {
+		zapOpts = append(zapOpts, zap.Level(opts.Level))
+	}
+
+	return zapr.NewLogger(zap.NewRaw(zapOpts...))
 }
 
 // Fatal is a utility function to replace log.Fatal, which doesn't exist
