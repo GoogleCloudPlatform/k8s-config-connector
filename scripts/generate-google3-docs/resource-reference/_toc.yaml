@@ -161,6 +161,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/cloudfunctions/cloudfunctionsfunction.md
 - title: "Cloud Identity"
   section:
+  - title: "CloudIdentityDevice"
+    path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitydevice.md
   - title: "CloudIdentityGroup"
     path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitygroup.md
   - title: "CloudIdentityMembership"
