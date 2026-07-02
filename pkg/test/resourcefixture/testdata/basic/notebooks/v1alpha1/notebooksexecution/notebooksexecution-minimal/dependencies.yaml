@@ -20,3 +20,4 @@ metadata:
   name: ${projectId}-bucket-${uniqueId}
 spec:
   location: us-central1
+  uniformBucketLevelAccess: true
