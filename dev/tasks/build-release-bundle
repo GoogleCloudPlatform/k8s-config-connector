@@ -176,7 +176,6 @@ BLOCKED_KINDS=(
     "DiscoveryEngineConversation"
     "DiscoveryEngineSampleQuery"
     "DiscoveryEngineSession"
-    "NotebooksExecution"
     "NotebooksSchedule"
     "VertexAIPersistentResource"
     "VertexAIPipelineJob"

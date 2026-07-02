@@ -27,15 +27,11 @@ spec:
     paramsYamlFile: gs://${projectId}-bucket-${uniqueId}/params.yaml
     scaleTier: CUSTOM
     serviceAccountRef:
-      external: ${projectId}@${projectId}.iam.gserviceaccount.com
-    tensorboardRef:
-      external: projects/${projectId}/locations/us-central1/tensorboards/my-tensorboard
+      name: sa-${uniqueId}
     vertexAiParameters:
       env:
         MY_VAR: MY_VAL
-      networkRef:
-        external: projects/${projectId}/global/networks/default
-  location: us-central1-a
+  location: us-central1
   outputNotebookFile: gs://${projectId}-bucket-${uniqueId}/output.ipynb
   projectRef:
     external: ${projectId}
@@ -46,7 +42,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"

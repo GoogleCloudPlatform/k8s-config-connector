@@ -24,6 +24,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -78,6 +79,25 @@ func (m *modelExecution) AdapterForObject(ctx context.Context, op *directbase.Ad
 	// Always call common.NormalizeReferences to resolve references
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	// Manually resolve IAMServiceAccountRef
+	if obj.Spec.ExecutionTemplate != nil && obj.Spec.ExecutionTemplate.ServiceAccountRef != nil {
+		if err := obj.Spec.ExecutionTemplate.ServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+			return nil, fmt.Errorf("resolving serviceAccountRef: %w", err)
+		}
+	}
+
+	// Manually normalize ClusterRef
+	if obj.Spec.ExecutionTemplate != nil && obj.Spec.ExecutionTemplate.DataprocParameters != nil && obj.Spec.ExecutionTemplate.DataprocParameters.ClusterRef != nil {
+		if err := obj.Spec.ExecutionTemplate.DataprocParameters.ClusterRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, fmt.Errorf("normalizing clusterRef: %w", err)
+		}
+
+		id := &dataprocv1beta1.DataprocClusterIdentity{}
+		if err := id.FromExternal(obj.Spec.ExecutionTemplate.DataprocParameters.ClusterRef.External); err == nil {
+			obj.Spec.ExecutionTemplate.DataprocParameters.ClusterRef.External = dataprocv1beta1.DataprocClusterIdentityFormatRelative.ToString(*id)
+		}
 	}
 
 	id, err := krm.NewExecutionIdentity(ctx, reader, obj)
