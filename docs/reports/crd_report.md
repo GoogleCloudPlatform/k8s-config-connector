@@ -487,6 +487,7 @@
 | run.cnrm.cloud.google.com                     | RunJob                                          | False        | True        | False  | Terraform  | True        |
 | run.cnrm.cloud.google.com                     | RunService                                      | False        | True        | False  | Terraform  | False       |
 | run.cnrm.cloud.google.com                     | RunWorkerPool                                   | True         | False       | False  | Direct     | True        |
+| saasservicemgmt.cnrm.cloud.google.com         | SaasServiceMgmtRelease                          | True         | False       | False  | Direct     | True        |
 | secretmanager.cnrm.cloud.google.com           | SecretManagerSecret                             | False        | True        | False  | Terraform  | True        |
 | secretmanager.cnrm.cloud.google.com           | SecretManagerSecretVersion                      | False        | True        | False  | Terraform  | True        |
 | securesourcemanager.cnrm.cloud.google.com     | SecureSourceManagerInstance                     | True         | True        | False  | Direct     | True        |

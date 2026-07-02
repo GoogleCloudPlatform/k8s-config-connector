@@ -76,6 +76,7 @@ require (
 	cloud.google.com/go/redis v1.23.0
 	cloud.google.com/go/resourcemanager v1.15.0
 	cloud.google.com/go/run v1.21.0
+	cloud.google.com/go/saasplatform v0.9.0
 	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/security v1.24.0
