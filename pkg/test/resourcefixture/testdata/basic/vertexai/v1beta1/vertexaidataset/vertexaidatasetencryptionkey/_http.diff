@@ -1,0 +1,236 @@
+451c451,474
+< POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/vertexaidataset-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?%24alt=json%3Benum-encoding%3Dint
+456,458c479
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+---
+>   "encryptionSpec": {},
+485c506
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}
+511,513c532
+<     "encryptionSpec": {
+<       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<     },
+---
+>     "encryptionSpec": {},
+527,559c546
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "an encrypted vertex AI dataset",
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "etag": "abcdef0123A=",
+<   "metadata": {
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+<   },
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+<   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+562c549
+< 200 OK
+---
+> 404 Not Found
+573,586c560,564
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "an encrypted vertex AI dataset",
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "etag": "abcdef0123A=",
+<   "metadata": {
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+<   },
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+<   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>   "error": {
+>     "code": 404,
+>     "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/vertexaidataset-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+>   }
+591c569
+< PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json&updateMask=displayName
+---
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?%24alt=json%3Benum-encoding%3Dint
+595,609d572
+<   "displayName": "an encrypted vertex AI dataset with updated name"
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+611,622c574,575
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "etag": "abcdef0123A=",
+<   "metadata": {
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+<   },
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+<   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>   "encryptionSpec": {},
+>   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml"
+625,629d577
+< ---
+< 
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+< 
+641,646d588
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "an encrypted vertex AI dataset with updated name",
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "etag": "abcdef0123A=",
+648,649c590,594
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+---
+>     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateDatasetOperationMetadata",
+>     "genericMetadata": {
+>       "createTime": "2024-04-01T12:34:56.123456Z",
+>       "updateTime": "2024-04-01T12:34:56.123456Z"
+>     }
+651,654c596
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+<   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}"
+659c601
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}
+673,678c615
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "an encrypted vertex AI dataset with updated name",
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "etag": "abcdef0123A=",
+---
+>   "done": true,
+680,681c617,621
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+---
+>     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateDatasetOperationMetadata",
+>     "genericMetadata": {
+>       "createTime": "2024-04-01T12:34:56.123456Z",
+>       "updateTime": "2024-04-01T12:34:56.123456Z"
+>     }
+683,686c623,636
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+<   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}",
+>   "response": {
+>     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Dataset",
+>     "displayName": "an encrypted vertex AI dataset with updated name",
+>     "encryptionSpec": {},
+>     "labels": {
+>       "aiplatform.googleapis.com/dataset_metadata_schema": "IMAGE"
+>     },
+>     "metadata": {
+>       "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml"
+>     },
+>     "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+>     "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}"
+>   }
+691c641
+< DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+694c644
+< 200 OK
+---
+> 404 Not Found
+705,715c655,658
+<   "done": true,
+<   "metadata": {
+<     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+<     "genericMetadata": {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "updateTime": "2024-04-01T12:34:56.123456Z"
+<     }
+<   },
+<   "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+<   "response": {
+<     "@type": "type.googleapis.com/google.protobuf.Empty"
+---
+>   "error": {
+>     "code": 404,
+>     "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/vertexaidataset-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
