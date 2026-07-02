@@ -65,6 +65,14 @@ git reset --hard ${GOOGLEAPI_VERSION}
 mkdir -p google/cloud/config/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
 
+# Download hypercomputecluster proto files if missing
+if [ ! -f "google/cloud/hypercomputecluster/v1/hypercompute_cluster.proto" ]; then
+    echo "Downloading hypercomputecluster proto files to transient third_party/googleapis..."
+    mkdir -p "google/cloud/hypercomputecluster/v1"
+    curl -s -o "google/cloud/hypercomputecluster/v1/hypercompute_cluster.proto" https://raw.githubusercontent.com/googleapis/googleapis/master/google/cloud/hypercomputecluster/v1/hypercompute_cluster.proto
+    curl -s -o "google/cloud/hypercomputecluster/v1/operation_metadata.proto" https://raw.githubusercontent.com/googleapis/googleapis/master/google/cloud/hypercomputecluster/v1/operation_metadata.proto
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
