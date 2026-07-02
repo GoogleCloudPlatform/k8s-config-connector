@@ -50,6 +50,7 @@ func computeNetworkAttachmentFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".network")
 
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".connection_endpoints[].service_class_id")
 
 	return f
 }

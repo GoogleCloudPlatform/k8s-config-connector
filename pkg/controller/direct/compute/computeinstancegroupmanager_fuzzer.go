@@ -169,6 +169,10 @@ func computeInstanceGroupManagerFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".update_policy.most_disruptive_allowed_action")
 	f.Unimplemented_NotYetTriaged(".update_policy.max_surge.calculated")
 	f.Unimplemented_NotYetTriaged(".update_policy.max_unavailable.calculated")
+	f.Unimplemented_NotYetTriaged(".target_size_policy")
+	f.Unimplemented_NotYetTriaged(".status.current_instance_statuses")
+	f.Unimplemented_NotYetTriaged(".status.bulk_instance_operation")
+	f.Unimplemented_NotYetTriaged(".status.applied_accelerator_topologies")
 
 	// FilterSpec handles the required non-pointer `target_size` in the KRM Spec
 	// (which defaults to 0 on round-trip if originally nil in the proto message).

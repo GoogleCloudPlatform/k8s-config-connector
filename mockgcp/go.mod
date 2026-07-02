@@ -9,64 +9,64 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector => ./..
 replace github.com/hashicorp/terraform-provider-google-beta => ../third_party/github.com/hashicorp/terraform-provider-google-beta
 
 require (
-	cloud.google.com/go/accesscontextmanager v1.9.7
-	cloud.google.com/go/aiplatform v1.123.0
+	cloud.google.com/go/accesscontextmanager v1.14.0
+	cloud.google.com/go/aiplatform v1.125.0
 	cloud.google.com/go/alloydb v1.26.0
-	cloud.google.com/go/analytics v0.30.1
-	cloud.google.com/go/apigateway v1.7.7
+	cloud.google.com/go/analytics v0.35.0
+	cloud.google.com/go/apigateway v1.12.0
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
-	cloud.google.com/go/artifactregistry v1.20.0
-	cloud.google.com/go/asset v1.22.1
+	cloud.google.com/go/artifactregistry v1.25.0
+	cloud.google.com/go/asset v1.27.0
 	cloud.google.com/go/backupdr v1.6.0
-	cloud.google.com/go/batch v1.14.0
-	cloud.google.com/go/bigquery v1.74.0
-	cloud.google.com/go/bigtable v1.42.0
-	cloud.google.com/go/billing v1.21.0
-	cloud.google.com/go/certificatemanager v1.9.6
-	cloud.google.com/go/clouddms v1.8.8
+	cloud.google.com/go/batch v1.19.0
+	cloud.google.com/go/bigquery v1.77.0
+	cloud.google.com/go/bigtable v1.50.0
+	cloud.google.com/go/billing v1.26.0
+	cloud.google.com/go/certificatemanager v1.14.0
+	cloud.google.com/go/clouddms v1.13.0
 	cloud.google.com/go/cloudquotas v1.11.0
-	cloud.google.com/go/compute v1.54.0
-	cloud.google.com/go/dataplex v1.28.0
-	cloud.google.com/go/dataproc/v2 v2.19.0
-	cloud.google.com/go/datastream v1.15.1
-	cloud.google.com/go/deploy v1.27.3
+	cloud.google.com/go/compute v1.63.0
+	cloud.google.com/go/dataplex v1.34.0
+	cloud.google.com/go/dataproc/v2 v2.22.0
+	cloud.google.com/go/datastream v1.20.0
+	cloud.google.com/go/deploy v1.32.0
 	cloud.google.com/go/discoveryengine v1.22.0
-	cloud.google.com/go/edgecontainer v1.4.4
+	cloud.google.com/go/edgecontainer v1.9.0
 	cloud.google.com/go/edgenetwork v1.8.0
-	cloud.google.com/go/essentialcontacts v1.7.7
-	cloud.google.com/go/eventarc v1.18.0
+	cloud.google.com/go/essentialcontacts v1.12.0
+	cloud.google.com/go/eventarc v1.23.0
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/geminidataanalytics v1.3.0
-	cloud.google.com/go/gkemulticloud v1.6.0
+	cloud.google.com/go/gkemulticloud v1.11.0
 	cloud.google.com/go/iam v1.11.0
-	cloud.google.com/go/iap v1.12.0
-	cloud.google.com/go/kms v1.26.0
-	cloud.google.com/go/logging v1.13.2
+	cloud.google.com/go/iap v1.17.0
+	cloud.google.com/go/kms v1.31.0
+	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/longrunning v1.0.0
 	cloud.google.com/go/managedkafka v0.8.1
-	cloud.google.com/go/memcache v1.11.7
+	cloud.google.com/go/memcache v1.16.0
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/modelarmor v1.0.0
-	cloud.google.com/go/monitoring v1.24.3
+	cloud.google.com/go/monitoring v1.29.0
 	cloud.google.com/go/netapp v1.12.0
-	cloud.google.com/go/networkmanagement v1.23.0
+	cloud.google.com/go/networkmanagement v1.28.0
 	cloud.google.com/go/networksecurity v0.17.0
 	cloud.google.com/go/networkservices v0.6.0
-	cloud.google.com/go/notebooks v1.12.7
-	cloud.google.com/go/orgpolicy v1.15.1
+	cloud.google.com/go/notebooks v1.17.0
+	cloud.google.com/go/orgpolicy v1.20.0
 	cloud.google.com/go/parametermanager v0.3.1
-	cloud.google.com/go/pubsub v1.50.1
+	cloud.google.com/go/pubsub v1.50.2
 	cloud.google.com/go/pubsublite v1.8.2
-	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
-	cloud.google.com/go/redis v1.18.3
-	cloud.google.com/go/secretmanager v1.16.0
+	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
+	cloud.google.com/go/redis v1.23.0
+	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
-	cloud.google.com/go/speech v1.30.0
-	cloud.google.com/go/storage v1.59.2
-	cloud.google.com/go/vmwareengine v1.3.6
-	cloud.google.com/go/vpcaccess v1.8.7
-	cloud.google.com/go/workflows v1.14.3
+	cloud.google.com/go/speech v1.35.0
+	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/vmwareengine v1.8.0
+	cloud.google.com/go/vpcaccess v1.13.0
+	cloud.google.com/go/workflows v1.19.0
 	cloud.google.com/go/workstations v1.1.6
 	github.com/GoogleCloudPlatform/k8s-config-connector v1.129.2
 	github.com/golang/protobuf v1.5.4
@@ -74,9 +74,9 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1
 	golang.org/x/oauth2 v0.36.0
 	google.golang.org/api v0.283.0
-	google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7
+	google.golang.org/genproto v0.0.0-20260519071638-aa98bba5eb94
 	google.golang.org/genproto/googleapis/api v0.0.0-20260526163538-3dc84a4a5aaa
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260523011958-0a33c5d7ca68
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260526163538-3dc84a4a5aaa
 	google.golang.org/grpc v1.81.1
 	google.golang.org/protobuf v1.36.11
 	k8s.io/api v0.33.10
@@ -93,14 +93,14 @@ require (
 	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
-	cloud.google.com/go/osconfig v1.16.0 // indirect
-	cloud.google.com/go/pubsub/v2 v2.3.0 // indirect
-	cloud.google.com/go/resourcemanager v1.10.7 // indirect
+	cloud.google.com/go/osconfig v1.21.0 // indirect
+	cloud.google.com/go/pubsub/v2 v2.5.1 // indirect
+	cloud.google.com/go/resourcemanager v1.15.0 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.31.0 // indirect
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.57.0 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.57.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-cidr v1.1.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
@@ -204,13 +204,13 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.42.0 // indirect
-	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.67.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.68.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.67.0 // indirect
-	go.opentelemetry.io/otel v1.43.0 // indirect
-	go.opentelemetry.io/otel/metric v1.43.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.43.0 // indirect
-	go.opentelemetry.io/otel/sdk/metric v1.43.0 // indirect
-	go.opentelemetry.io/otel/trace v1.43.0 // indirect
+	go.opentelemetry.io/otel v1.44.0 // indirect
+	go.opentelemetry.io/otel/metric v1.44.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.44.0 // indirect
+	go.opentelemetry.io/otel/sdk/metric v1.44.0 // indirect
+	go.opentelemetry.io/otel/trace v1.44.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect

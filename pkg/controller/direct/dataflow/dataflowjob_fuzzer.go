@@ -74,6 +74,7 @@ func dataflowJobFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".satisfies_pzi")
 	f.UnimplementedFields.Insert(".service_resources")
 	f.UnimplementedFields.Insert(".current_state_time")
+	f.UnimplementedFields.Insert(".pausable")
 
 	// Unimplemented Job.Environment fields
 	f.UnimplementedFields.Insert(".environment.cluster_manager_api_service")
@@ -91,6 +92,7 @@ func dataflowJobFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".environment.flex_resource_scheduling_goal")
 	f.UnimplementedFields.Insert(".environment.use_streaming_engine_resource_based_billing")
 	f.UnimplementedFields.Insert(".environment.debug_options")
+	f.UnimplementedFields.Insert(".environment.use_public_ips")
 
 	// Unimplemented Job.Environment.WorkerPools[] fields
 	f.UnimplementedFields.Insert(".environment.worker_pools[].kind")
@@ -110,6 +112,8 @@ func dataflowJobFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".environment.worker_pools[].num_threads_per_worker")
 	f.UnimplementedFields.Insert(".environment.worker_pools[].sdk_harness_container_images")
 	f.UnimplementedFields.Insert(".environment.worker_pools[].autoscaling_settings.algorithm")
+	f.UnimplementedFields.Insert(".environment.worker_pools[].disk_provisioned_iops")
+	f.UnimplementedFields.Insert(".environment.worker_pools[].disk_provisioned_throughput_mibps")
 
 	f.FilterSpec = func(in *pb.Job) {
 		if in.GetEnvironment() != nil {

@@ -36,6 +36,10 @@ func dataprocBatchFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")      // special field
 	f.UnimplementedFields.Insert(".operation") // only returned in LRO
 	f.UnimplementedFields.Insert(".environment_config.execution_config.authentication_config")
+	f.UnimplementedFields.Insert(".pyspark_notebook_batch")
+	f.UnimplementedFields.Insert(".pyspark_notebook_batch.notebook_file_uri")
+	f.UnimplementedFields.Insert(".runtime_info.approximate_usage.update_time")
+	f.UnimplementedFields.Insert(".environment_config.execution_config.resource_manager_tags")
 
 	f.SpecFields.Insert(".pyspark_batch")
 	f.SpecFields.Insert(".spark_batch")
