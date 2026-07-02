@@ -207,11 +207,6 @@ X-Goog-Request-Params: project=shared-reservations-project&zone=us-central1-a&fu
   "autoDeleteAutoCreatedReservations": false,
   "name": "${futureReservationID}",
   "shareSettings": {
-    "projectMap": {
-      "${projectNumber}": {
-        "projectId": "${projectNumber}"
-      }
-    },
     "shareType": "LOCAL"
   },
   "specificSkuProperties": {

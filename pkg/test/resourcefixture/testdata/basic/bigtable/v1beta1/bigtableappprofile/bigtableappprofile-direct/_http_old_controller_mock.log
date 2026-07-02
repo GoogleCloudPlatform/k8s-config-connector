@@ -10,52 +10,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
-
-{
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
-
-{
-  "appProfile": {
-    "description": "Initial description.",
-    "singleClusterRouting": {
-      "allowTransactionalWrites": true,
-      "clusterId": "cluster1-${uniqueId}"
-    },
-    "standardIsolation": {
-      "priority": "PRIORITY_MEDIUM"
-    }
-  },
-  "appProfileId": "bigtableappprofile-${uniqueId}",
-  "ignoreWarnings": true,
-  "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
-}
-
-OK
-
-{
-  "description": "Initial description.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "allowTransactionalWrites": true,
-    "clusterId": "cluster1-${uniqueId}"
-  },
-  "standardIsolation": {
-    "priority": "PRIORITY_MEDIUM"
-  }
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
 
 {
@@ -292,6 +246,52 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
 }
 
+error: rpc error: code = NotFound desc = projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
+
+{
+  "appProfile": {
+    "description": "Initial description.",
+    "singleClusterRouting": {
+      "allowTransactionalWrites": true,
+      "clusterId": "cluster1-${uniqueId}"
+    },
+    "standardIsolation": {
+      "priority": "PRIORITY_MEDIUM"
+    }
+  },
+  "appProfileId": "bigtableappprofile-${uniqueId}",
+  "ignoreWarnings": true,
+  "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
+}
+
+OK
+
+{
+  "description": "Initial description.",
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
+  "singleClusterRouting": {
+    "allowTransactionalWrites": true,
+    "clusterId": "cluster1-${uniqueId}"
+  },
+  "standardIsolation": {
+    "priority": "PRIORITY_MEDIUM"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+
+{
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+}
+
 OK
 
 {
@@ -313,13 +313,19 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
 {
   "appProfile": {
     "description": "Updated description.",
+    "multiClusterRoutingUseAny": {
+      "clusterIds": [
+        "cluster1-${uniqueId}",
+        "cluster2-${uniqueId}"
+      ]
+    },
     "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
     "standardIsolation": {
       "priority": "PRIORITY_LOW"
     }
   },
   "ignoreWarnings": true,
-  "updateMask": "description,standardIsolation"
+  "updateMask": "description,multiClusterRoutingUseAny,standardIsolation"
 }
 
 OK
@@ -333,6 +339,12 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
     "description": "Updated description.",
+    "multiClusterRoutingUseAny": {
+      "clusterIds": [
+        "cluster1-${uniqueId}",
+        "cluster2-${uniqueId}"
+      ]
+    },
     "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
     "standardIsolation": {
       "priority": "PRIORITY_LOW"
@@ -352,11 +364,13 @@ OK
 
 {
   "description": "Updated description.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "allowTransactionalWrites": true,
-    "clusterId": "cluster1-${uniqueId}"
+  "multiClusterRoutingUseAny": {
+    "clusterIds": [
+      "cluster1-${uniqueId}",
+      "cluster2-${uniqueId}"
+    ]
   },
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
   "standardIsolation": {
     "priority": "PRIORITY_LOW"
   }
