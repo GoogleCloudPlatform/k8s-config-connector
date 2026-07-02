@@ -1,0 +1,17 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigqueryanalyticshublisting-dep
+spec:
+  friendlyName: my-bigquerydataset
+  location: us-central1
+---
+apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1beta1
+kind: BigQueryAnalyticsHubDataExchange
+metadata:
+  name: bigqueryanalyticshublisting-dep
+spec:
+  displayName: my_data_exchange
+  location: us-central1
+  projectRef:
+    external: ${projectId}
