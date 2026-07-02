@@ -218,6 +218,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}": true,
 
+		// Storage Insights
+		"//storageinsights.googleapis.com/projects/{}/locations/{}/datasetConfigs/{}": true,
+
 		// Workflow Executions
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
 	}
