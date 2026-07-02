@@ -150,6 +150,7 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
+	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/livestream/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/managedkafka/v1alpha1"
 	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/managedkafka/v1beta1"
@@ -357,6 +358,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	k8sv1alpha1.AddToScheme,
 	kmsv1alpha1.AddToScheme,
 	kmsv1beta1.AddToScheme,
+	livestreamv1alpha1.AddToScheme,
 	loggingv1beta1.AddToScheme,
 	managedkafkav1alpha1.AddToScheme,
 	managedkafkav1beta1.AddToScheme,

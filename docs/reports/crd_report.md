@@ -393,6 +393,7 @@
 | kms.cnrm.cloud.google.com                     | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                     | KMSKeyRing                                      | False        | True        | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                     | KMSSecretCiphertext                             | True         | False       | False  | Terraform  | True        |
+| livestream.cnrm.cloud.google.com              | LiveStreamAsset                                 | True         | False       | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLink                                     | True         | True        | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLogBucket                                | False        | True        | False  | DCL        | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLogExclusion                             | False        | True        | False  | DCL        | True        |
