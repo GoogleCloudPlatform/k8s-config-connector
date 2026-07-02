@@ -435,7 +435,9 @@ type ExplanationParameters struct {
 	//  Only applicable to Models that predict multiple outputs (e,g, multi-class
 	//  Models that predict multiple classes).
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationParameters.output_indices
-	OutputIndices *ListValue `json:"outputIndices,omitempty"`
+	// OutputIndices is temporarily disabled due to CRD instability
+
+	// OutputIndices *ListValue `json:"outputIndices,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.ExplanationSpec
@@ -1366,9 +1368,9 @@ type Value struct {
 
 	// Represents a repeated `Value`.
 	// +kcc:proto:field=google.protobuf.Value.list_value
-	// +kubebuilder:pruning:PreserveUnknownFields
-	// +kubebuilder:validation:Type=object
-	ListValue *ListValue `json:"listValue,omitempty"`
+	// ListValue is temporarily disabled due to CRD instability
+
+	// ListValue *ListValue `json:"listValue,omitempty"`
 }
 
 /* unreachable type Model_ExportFormatObservedState

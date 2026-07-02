@@ -229,6 +229,7 @@ func FunctionResponse_ToProto(mapCtx *direct.MapContext, in *krm.FunctionRespons
 	return out
 }
 
+/*
 func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
 	if in == nil {
 		return nil
@@ -256,6 +257,7 @@ func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.L
 	}
 	return out
 }
+*/
 
 func ExplanationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krm.ExplanationMetadata {
 	if in == nil {
