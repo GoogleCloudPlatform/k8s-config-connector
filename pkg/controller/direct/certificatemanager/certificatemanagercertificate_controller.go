@@ -275,5 +275,22 @@ func compareCertificate(ctx context.Context, actual, desired *pb.Certificate) (*
 	if err != nil {
 		return nil, nil, err
 	}
+
+	var filteredFields []structuredreporting.DiffField
+	for _, f := range diffs.Fields {
+		if f.ID != "managed" && f.ID != "self_managed" {
+			filteredFields = append(filteredFields, f)
+		}
+	}
+	diffs.Fields = filteredFields
+
+	var filteredPaths []string
+	for _, path := range updateMask.Paths {
+		if path != "managed" && path != "self_managed" {
+			filteredPaths = append(filteredPaths, path)
+		}
+	}
+	updateMask.Paths = filteredPaths
+
 	return diffs, updateMask, nil
 }
