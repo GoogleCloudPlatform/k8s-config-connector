@@ -68,8 +68,9 @@ spec:
                   The email address does not need to be a Google Account.
                 type: string
               folderRef:
-                description: FolderRef represents the Folder that this resource belongs
-                  to.
+                description: 'FolderRef represents the Folder that this resource belongs
+                  to. Deprecated: Use FolderRef in github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs
+                  instead.'
                 oneOf:
                 - not:
                     required:
@@ -272,8 +273,9 @@ spec:
                   The email address does not need to be a Google Account.
                 type: string
               folderRef:
-                description: FolderRef represents the Folder that this resource belongs
-                  to.
+                description: 'FolderRef represents the Folder that this resource belongs
+                  to. Deprecated: Use FolderRef in github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs
+                  instead.'
                 oneOf:
                 - not:
                     required:

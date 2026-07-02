@@ -1157,7 +1157,7 @@ func (in *ComputeFirewallPolicySpec) DeepCopyInto(out *ComputeFirewallPolicySpec
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRef)
+		*out = new(refs.FolderRef)
 		**out = **in
 	}
 	if in.OrganizationRef != nil {

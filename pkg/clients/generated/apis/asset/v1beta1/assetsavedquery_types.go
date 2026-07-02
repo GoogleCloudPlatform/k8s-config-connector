@@ -231,7 +231,7 @@ type AssetSavedQuerySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* FolderRef represents the Folder that this resource belongs to. */
+	/* FolderRef represents the Folder that this resource belongs to. Deprecated: Use FolderRef in github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs instead. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 

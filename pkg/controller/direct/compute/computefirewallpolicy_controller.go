@@ -29,7 +29,6 @@ import (
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -257,7 +256,7 @@ func (a *computeFirewallPolicyAdapter) Export(ctx context.Context) (*unstructure
 		tokens := strings.Split(parent, "/")
 		if len(tokens) == 2 {
 			if tokens[0] == "folders" {
-				spec.FolderRef = &refsv1beta1.FolderRef{External: parent}
+				spec.FolderRef = &refs.FolderRef{External: parent}
 			} else if tokens[0] == "organizations" {
 				spec.OrganizationRef = &refs.OrganizationRef{External: parent}
 			}
