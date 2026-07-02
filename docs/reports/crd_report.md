@@ -230,6 +230,7 @@
 | contentwarehouse.cnrm.cloud.google.com        | ContentWarehouseDocument                        | True         | False       | False  | Direct     | True        |
 | contentwarehouse.cnrm.cloud.google.com        | ContentWarehouseRuleSet                         | True         | False       | False  | Direct     | True        |
 | contentwarehouse.cnrm.cloud.google.com        | ContentWarehouseSchema                          | True         | False       | False  | Direct     | True        |
+| datamigration.cnrm.cloud.google.com           | DatabaseMigrationConnectionProfile              | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com           | DatabaseMigrationConversionWorkspace            | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com           | DatabaseMigrationMigrationJob                   | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com           | DatabaseMigrationPrivateConnection              | True         | False       | False  | Direct     | True        |

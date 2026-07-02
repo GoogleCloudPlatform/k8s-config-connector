@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -25,9 +26,7 @@ import (
 
 var _ refsv1beta1.Ref = &DatabaseMigrationConnectionProfileRef{}
 
-var DatabaseMigrationConnectionProfileGVK = GroupVersion.WithKind("DatabaseMigrationConnectionProfile")
-
-// DatabaseMigrationConnectionProfileRef is a reference to a DatabaseMigrationConnectionProfile resource.
+// DatabaseMigrationConnectionProfileRef is a reference to a DatabaseMigrationConnectionProfile.
 type DatabaseMigrationConnectionProfileRef struct {
 	// A reference to an externally managed DatabaseMigrationConnectionProfile resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionProfileID}}".
@@ -38,6 +37,10 @@ type DatabaseMigrationConnectionProfileRef struct {
 
 	// The namespace of a DatabaseMigrationConnectionProfile resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&DatabaseMigrationConnectionProfileRef{}, &DatabaseMigrationConnectionProfile{})
 }
 
 func (r *DatabaseMigrationConnectionProfileRef) GetGVK() schema.GroupVersionKind {
@@ -60,7 +63,19 @@ func (r *DatabaseMigrationConnectionProfileRef) SetExternal(ref string) {
 }
 
 func (r *DatabaseMigrationConnectionProfileRef) ValidateExternal(ref string) error {
+	id := &DatabaseMigrationConnectionProfileIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
 	return nil
+}
+
+func (r *DatabaseMigrationConnectionProfileRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &DatabaseMigrationConnectionProfileIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *DatabaseMigrationConnectionProfileRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
