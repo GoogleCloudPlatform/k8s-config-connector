@@ -1,0 +1,12 @@
+19a20
+>   networkTier: PREMIUM
+21,23c22,24
+<   target:
+<     targetHTTPProxyRef:
+<       external: all-apis
+\ No newline at end of file
+---
+>   serviceDirectoryRegistrations:
+>   - namespace: goog-psc-${networkID}-${networkID}
+>   target: {}
+\ No newline at end of file
