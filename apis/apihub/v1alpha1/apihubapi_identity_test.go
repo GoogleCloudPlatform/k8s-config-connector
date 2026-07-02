@@ -16,6 +16,8 @@ package v1alpha1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAPIHubAPIIdentity_FromExternal(t *testing.T) {
@@ -66,8 +68,8 @@ func TestAPIHubAPIIdentity_FromExternal(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if id.Project != tc.expected.Project || id.Location != tc.expected.Location || id.Api != tc.expected.Api {
-				t.Fatalf("expected %+v, got %+v", tc.expected, id)
+			if diff := cmp.Diff(tc.expected, id); diff != "" {
+				t.Fatalf("mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
