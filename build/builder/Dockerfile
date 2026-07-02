@@ -31,6 +31,10 @@ COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen
 COPY go.mod go.mod
 COPY go.sum go.sum
+
+# Optionally copy vendor folder if it exists on the host
+COPY vendo[r]/ vendor/
+
 # Build the binaries from source. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender && \
@@ -40,6 +44,6 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiond
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager && \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
 
-RUN go mod vendor -o temp-vendor && \
+RUN if [ ! -d "vendor" ]; then go mod vendor -o temp-vendor; else cp -r vendor temp-vendor; fi && \
     go run scripts/generate-third-party-licenses/main.go && \
     rm -rf temp-vendor
