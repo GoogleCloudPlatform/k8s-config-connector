@@ -768,6 +768,12 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 
 	events.PrettifyJSON(jsonMutators...)
 
+	if strings.Contains(t.Name(), "osconfig") {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			return strings.Contains(e.Request.URL, "osconfig.googleapis.com")
+		})
+	}
+
 	NormalizeHTTPLog(t, events, h.RegisteredServices(), project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
 
 	events = RemoveExtraEvents(events)
