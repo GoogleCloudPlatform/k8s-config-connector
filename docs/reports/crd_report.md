@@ -370,6 +370,7 @@
 | healthcare.cnrm.cloud.google.com               | HealthcareDICOMStore                            | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareFHIRStore                             | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareHL7V2Store                            | True         | False       | False  | Terraform  | False       |
+| hypercomputecluster.cnrm.cloud.google.com      | HypercomputeClusterCluster                      | True         | False       | False  | Direct     | True        |
 | iam.cnrm.cloud.google.com                      | IAMAccessBoundaryPolicy                         | False        | True        | False  | Terraform  | False       |
 | iam.cnrm.cloud.google.com                      | IAMAuditConfig                                  | False        | True        | False  | Direct     | True        |
 | iam.cnrm.cloud.google.com                      | IAMCustomRole                                   | False        | True        | False  | Terraform  | False       |

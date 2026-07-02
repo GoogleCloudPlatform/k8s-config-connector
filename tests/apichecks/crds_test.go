@@ -1091,7 +1091,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
 		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
-
+		"hypercomputeclusterclusters.hypercomputecluster.cnrm.cloud.google.com":         true, // spec.networkResources[*].network is an empty object because NetworkReference only contains output-only fields
 	}
 
 	crds, err := crdloader.LoadAllCRDs()
