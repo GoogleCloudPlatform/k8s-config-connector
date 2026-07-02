@@ -3129,6 +3129,8 @@
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.postStartupScript" is not set in unstructured objects
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.vmImage.imageName" is not set in unstructured objects
+[missing_field] crd=notebooksexecutions.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTemplate.tensorboardRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=notebooksexecutions.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTemplate.vertexAiParameters.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.duration" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.all" is not set in unstructured objects

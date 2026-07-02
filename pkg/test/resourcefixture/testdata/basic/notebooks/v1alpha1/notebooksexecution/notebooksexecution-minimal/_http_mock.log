@@ -31,7 +31,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {
   "iamConfiguration": {
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true
     }
   },
   "labels": {
@@ -58,11 +58,13 @@ Vary: X-Origin
   "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
@@ -103,11 +105,13 @@ Vary: X-Origin
   "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
@@ -137,10 +141,10 @@ Vary: X-Origin
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = execution "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}" not found
+error: rpc error: code = NotFound desc = execution "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}" not found
 
 {}
 
@@ -151,13 +155,15 @@ GRPC /google.cloud.notebooks.v1.NotebookService/CreateExecution
 {
   "execution": {
     "executionTemplate": {
+      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
       "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
       "masterType": "n1-standard-4",
+      "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
       "scaleTier": "CUSTOM"
     }
   },
   "executionId": "notebooksexecution-minimal-${uniqueId}",
-  "parent": "projects/${projectId}/locations/us-central1-a"
+  "parent": "projects/${projectId}/locations/us-central1"
 }
 
 OK
@@ -168,10 +174,10 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
@@ -179,7 +185,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 OK
@@ -192,19 +198,21 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Execution",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "executionTemplate": {
+      "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
       "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
       "masterType": "n1-standard-4",
+      "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
       "scaleTier": "CUSTOM"
     },
-    "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
     "state": "SUCCEEDED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -215,7 +223,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}"
 }
 
 OK
@@ -223,11 +231,13 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "executionTemplate": {
+    "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
     "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
     "masterType": "n1-standard-4",
+    "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
     "scaleTier": "CUSTOM"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
   "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -237,7 +247,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}"
 }
 
 OK
@@ -245,11 +255,13 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "executionTemplate": {
+    "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
     "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
     "masterType": "n1-standard-4",
+    "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
     "scaleTier": "CUSTOM"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
   "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -259,7 +271,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/DeleteExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}"
 }
 
 OK
@@ -270,10 +282,10 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
@@ -281,7 +293,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 OK
@@ -294,10 +306,10 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-minimal-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -319,11 +331,13 @@ Vary: X-Origin
   "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
