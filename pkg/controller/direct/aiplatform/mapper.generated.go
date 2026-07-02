@@ -345,7 +345,7 @@ func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.Explanati
 	out.XraiAttribution = XraiAttribution_FromProto(mapCtx, in.GetXraiAttribution())
 	out.Examples = Examples_FromProto(mapCtx, in.GetExamples())
 	out.TopK = direct.LazyPtr(in.GetTopK())
-	out.OutputIndices = ListValue_FromProto(mapCtx, in.GetOutputIndices())
+	// MISSING: OutputIndices
 	return out
 }
 func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationParameters) *pb.ExplanationParameters {
@@ -366,7 +366,7 @@ func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.Explanatio
 		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
 	}
 	out.TopK = direct.ValueOf(in.TopK)
-	out.OutputIndices = ListValue_ToProto(mapCtx, in.OutputIndices)
+	// MISSING: OutputIndices
 	return out
 }
 func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {

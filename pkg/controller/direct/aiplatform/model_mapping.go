@@ -229,33 +229,33 @@ func FunctionResponse_ToProto(mapCtx *direct.MapContext, in *krm.FunctionRespons
 	return out
 }
 
-func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ListValue{}
-	for _, v := range in.Values {
-		krmVal := Value_FromProto(mapCtx, v)
-		if krmVal != nil {
-			out.Values = append(out.Values, *krmVal)
-		}
-	}
-	return out
-}
+// func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &krm.ListValue{}
+// 	for _, v := range in.Values {
+// 		krmVal := Value_FromProto(mapCtx, v)
+// 		if krmVal != nil {
+// 			out.Values = append(out.Values, *krmVal)
+// 		}
+// 	}
+// 	return out
+// }
 
-func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.ListValue{}
-	for i := range in.Values {
-		pbVal := Value_ToProto(mapCtx, &in.Values[i])
-		if pbVal != nil {
-			out.Values = append(out.Values, pbVal)
-		}
-	}
-	return out
-}
+// func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &structpb.ListValue{}
+// 	for i := range in.Values {
+// 		pbVal := Value_ToProto(mapCtx, &in.Values[i])
+// 		if pbVal != nil {
+// 			out.Values = append(out.Values, pbVal)
+// 		}
+// 	}
+// 	return out
+// }
 
 func ExplanationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krm.ExplanationMetadata {
 	if in == nil {
