@@ -57,6 +57,7 @@ go run . generate-types \
   --resource ComputeSSLCertificate:SslCertificate \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
+  --resource ComputeTargetInstance:TargetInstance \
   --resource ComputeTargetPool:TargetPool \
   --resource ComputeTargetSSLProxy:TargetSslProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
