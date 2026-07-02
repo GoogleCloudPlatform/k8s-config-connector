@@ -13,6 +13,10 @@ backend:
       external: string
       name: string
       namespace: string
+    regionNetworkEndpointGroupRef:
+      external: string
+      name: string
+      namespace: string
   maxConnections: integer
   maxConnectionsPerEndpoint: integer
   maxConnectionsPerInstance: integer
