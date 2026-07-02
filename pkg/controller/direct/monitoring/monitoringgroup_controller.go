@@ -90,12 +90,7 @@ func (m *groupModel) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, err
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := common.NormalizeReferences(ctx, kube, obj, projectRef); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
 		return nil, err
 	}
 
