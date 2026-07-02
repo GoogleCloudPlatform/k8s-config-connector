@@ -51,6 +51,9 @@ func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
 	return "", false
 }
 
+// CurrentGoPackage stores the package currently being generated
+var CurrentGoPackage string
+
 // special-case proto messages that are currently not mapped to KRM Go structs
 var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Timestamp":         "string",
@@ -61,6 +64,18 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Struct":            "apiextensionsv1.JSON",
 	"google.rpc.Status":                 "common.Status",
 	"google.cloud.connectors.v1.Secret": "secretmanagerv1beta1.SecretRef",
+}
+
+func IsProtoMessageNotMappedToGoStruct(fullName string) (string, bool) {
+	if goType, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
+		return goType, true
+	}
+	if fullName == "google.protobuf.Value" || fullName == "google.protobuf.ListValue" {
+		if strings.Contains(CurrentGoPackage, "gsuiteaddons") {
+			return "apiextensionsv1.JSON", true
+		}
+	}
+	return "", false
 }
 
 // This acronym list contains both acronym (including initialism) and abbreviation.

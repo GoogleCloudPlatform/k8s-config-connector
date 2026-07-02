@@ -108,6 +108,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	}
 
 	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
+	codegen.CurrentGoPackage = goPackage
 
 	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
 		fullName := string(msg.FullName())

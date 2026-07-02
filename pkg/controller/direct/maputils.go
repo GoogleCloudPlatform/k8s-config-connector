@@ -609,6 +609,64 @@ func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Stru
 	return s
 }
 
+func Value_FromProto(mapCtx *MapContext, in *structpb.Value) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := json.Marshal(in.AsInterface())
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.Value to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func Value_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Value {
+	if in == nil {
+		return nil
+	}
+	var val interface{}
+	if err := json.Unmarshal(in.Raw, &val); err != nil {
+		mapCtx.Errorf("unmarshalling json to interface{}: %v", err)
+		return nil
+	}
+	s, err := structpb.NewValue(val)
+	if err != nil {
+		mapCtx.Errorf("error converting interface{} to structpb.Value: %v", err)
+		return nil
+	}
+	return s
+}
+
+func ListValue_FromProto(mapCtx *MapContext, in *structpb.ListValue) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := json.Marshal(in.AsSlice())
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.ListValue to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func ListValue_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	var slice []interface{}
+	if err := json.Unmarshal(in.Raw, &slice); err != nil {
+		mapCtx.Errorf("unmarshalling json to []interface{}: %v", err)
+		return nil
+	}
+	s, err := structpb.NewList(slice)
+	if err != nil {
+		mapCtx.Errorf("error converting []interface{} to structpb.ListValue: %v", err)
+		return nil
+	}
+	return s
+}
+
 func MapStringString_ToProto(mapCtx *MapContext, in map[string]string) map[string]string {
 	if in == nil {
 		return nil

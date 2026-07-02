@@ -144,6 +144,7 @@ import (
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
+	gsuiteaddonsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gsuiteaddons/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
@@ -347,6 +348,7 @@ type Interface interface {
 	GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Interface
 	GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
+	GsuiteaddonsV1alpha1() gsuiteaddonsv1alpha1.GsuiteaddonsV1alpha1Interface
 	HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface
 	IamV1alpha1() iamv1alpha1.IamV1alpha1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
@@ -548,6 +550,7 @@ type Clientset struct {
 	gkebackupV1alpha1               *gkebackupv1alpha1.GkebackupV1alpha1Client
 	gkehubV1alpha1                  *gkehubv1alpha1.GkehubV1alpha1Client
 	gkehubV1beta1                   *gkehubv1beta1.GkehubV1beta1Client
+	gsuiteaddonsV1alpha1            *gsuiteaddonsv1alpha1.GsuiteaddonsV1alpha1Client
 	healthcareV1alpha1              *healthcarev1alpha1.HealthcareV1alpha1Client
 	iamV1alpha1                     *iamv1alpha1.IamV1alpha1Client
 	iamV1beta1                      *iamv1beta1.IamV1beta1Client
@@ -1220,6 +1223,11 @@ func (c *Clientset) GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface {
 // GkehubV1beta1 retrieves the GkehubV1beta1Client
 func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
 	return c.gkehubV1beta1
+}
+
+// GsuiteaddonsV1alpha1 retrieves the GsuiteaddonsV1alpha1Client
+func (c *Clientset) GsuiteaddonsV1alpha1() gsuiteaddonsv1alpha1.GsuiteaddonsV1alpha1Interface {
+	return c.gsuiteaddonsV1alpha1
 }
 
 // HealthcareV1alpha1 retrieves the HealthcareV1alpha1Client
@@ -2127,6 +2135,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.gsuiteaddonsV1alpha1, err = gsuiteaddonsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.healthcareV1alpha1, err = healthcarev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2575,6 +2587,7 @@ func New(c rest.Interface) *Clientset {
 	cs.gkebackupV1alpha1 = gkebackupv1alpha1.New(c)
 	cs.gkehubV1alpha1 = gkehubv1alpha1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
+	cs.gsuiteaddonsV1alpha1 = gsuiteaddonsv1alpha1.New(c)
 	cs.healthcareV1alpha1 = healthcarev1alpha1.New(c)
 	cs.iamV1alpha1 = iamv1alpha1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)

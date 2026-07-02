@@ -1086,6 +1086,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
 		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
+		"gsuiteaddonsdeployments.gsuiteaddons.cnrm.cloud.google.com":                    true, // spec.addOns.gmail.contextualTriggers[].unconditional is an empty object
 
 	}
 
