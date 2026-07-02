@@ -214,6 +214,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Workflow Executions
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
+
+		// Workload Manager
+		"//workloadmanager.googleapis.com/projects/{}/locations/{}/evaluations/{}": true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
