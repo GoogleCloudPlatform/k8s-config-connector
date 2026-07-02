@@ -247,6 +247,11 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 				replacements.ReplaceStringValue(targetId, placeholder)
 
+				namePlaceholder := placeholder
+				if kind == "routes" {
+					namePlaceholder = "${routeName}"
+				}
+
 				if v := tokens[n-1]; v == "default" {
 					// Don't replace, "default" is a well-known value used for both subnetwork and network
 					// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
