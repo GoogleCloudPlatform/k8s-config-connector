@@ -124,6 +124,8 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/storage/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
+    ${THIRD_PARTY}/googleapis/google/maps/mapmanagement/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/maps/mapsplatformdatasets/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/container/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
