@@ -250,6 +250,8 @@ func EventarcGoogleAPISourceObservedState_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: CryptoKeyName
 	return out
 }
+
+/* found existing non-generated mapping function "EventarcGoogleAPISourceSpec_FromProto", skipping
 func EventarcGoogleAPISourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleApiSource) *krm.EventarcGoogleAPISourceSpec {
 	if in == nil {
 		return nil
@@ -264,20 +266,26 @@ func EventarcGoogleAPISourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Goo
 	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
-func EventarcGoogleAPISourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleAPISourceSpec) *pb.GoogleApiSource {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "EventarcGoogleAPISourceSpec_ToProto", skipping
+
+	func EventarcGoogleAPISourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleAPISourceSpec) *pb.GoogleApiSource {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GoogleApiSource{}
+		// MISSING: Name
+		out.Labels = in.Labels
+		out.Annotations = in.Annotations
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		// MISSING: Destination
+		// MISSING: CryptoKeyName
+		out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+		return out
 	}
-	out := &pb.GoogleApiSource{}
-	// MISSING: Name
-	out.Labels = in.Labels
-	out.Annotations = in.Annotations
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: Destination
-	// MISSING: CryptoKeyName
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	return out
-}
+*/
 func EventarcGoogleChannelConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krm.EventarcGoogleChannelConfigObservedState {
 	if in == nil {
 		return nil
@@ -319,6 +327,28 @@ func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.GoogleChannelConfig{}
 	// MISSING: Name
 	// MISSING: CryptoKeyName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "LoggingConfig_FromProto", skipping
+func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingConfig{}
+	out.LogSeverity = direct.Enum_FromProto(mapCtx, in.GetLogSeverity())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "LoggingConfig_ToProto", skipping
+func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb.LoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LoggingConfig{}
+	out.LogSeverity = direct.Enum_ToProto[pb.LoggingConfig_LogSeverity](mapCtx, in.LogSeverity)
 	return out
 }
 */
