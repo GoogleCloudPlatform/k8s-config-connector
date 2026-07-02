@@ -42,6 +42,8 @@ import (
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
+
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.org/x/sync/semaphore"
 	"google.golang.org/api/iam/v1"
