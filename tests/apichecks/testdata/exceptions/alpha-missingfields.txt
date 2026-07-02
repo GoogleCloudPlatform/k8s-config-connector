@@ -3207,6 +3207,15 @@
 [missing_field] crd=pubsublitesubscriptions.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=pubsublitetopics.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=pubsublitetopics.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionConfig.period" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.collectionDays" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.eulaURI" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.expectedAssetCount" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=rapidmigrationassessmentcollectors.rapidmigrationassessment.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].allow" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].block" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].includeRecaptchaScript" is not set in unstructured objects
