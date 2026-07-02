@@ -21,6 +21,7 @@ package mockstorage
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -28,7 +29,10 @@ import (
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -194,4 +198,50 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 	}
 
 	return obj, nil
+}
+
+func (s *StorageControlService) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
+	fqn := req.GetName()
+	ret := &pb.ManagedFolder{}
+	if err := s.storage.Get(ctx, fqn, ret); err != nil {
+		return nil, err
+	}
+	return ret, nil
+}
+
+func (s *StorageControlService) CreateManagedFolder(ctx context.Context, req *pb.CreateManagedFolderRequest) (*pb.ManagedFolder, error) {
+	// Parent format: projects/_/buckets/{bucket}
+	parent := req.GetParent()
+	tokens := strings.Split(parent, "/")
+	if len(tokens) < 4 || tokens[0] != "projects" || tokens[2] != "buckets" {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid parent: %s", parent)
+	}
+
+	managedFolderId := req.GetManagedFolderId()
+	fqn := fmt.Sprintf("%s/managedFolders/%s", parent, managedFolderId)
+
+	now := timestamppb.Now()
+
+	obj := proto.Clone(req.GetManagedFolder()).(*pb.ManagedFolder)
+	obj.Name = fqn
+	obj.CreateTime = now
+	obj.UpdateTime = now
+	obj.Metageneration = 1
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *StorageControlService) DeleteManagedFolder(ctx context.Context, req *pb.DeleteManagedFolderRequest) (*emptypb.Empty, error) {
+	fqn := req.GetName()
+
+	deleted := &pb.ManagedFolder{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
