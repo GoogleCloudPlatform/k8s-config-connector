@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -23,12 +22,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
-
-go run . generate-types \
-    --service google.cloud.bigquery.reservation.v1 \
-    --api-version "bigqueryreservation.cnrm.cloud.google.com/v1alpha1" \
-    --include-skipped-output \
-    --resource BigQueryReservationCapacityCommitment:CapacityCommitment
 
 go run . generate-types \
     --service google.cloud.bigquery.reservation.v1 \
