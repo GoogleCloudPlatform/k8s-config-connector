@@ -30,7 +30,7 @@ var _ refs.Ref = &DataformRepositoryRef{}
 // DataformRepositoryRef is a reference to a DataformRepository.
 type DataformRepositoryRef struct {
 	// A reference to an externally managed DataformRepository resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
+	// Should be in the format "projects/{project}/locations/{location}/repositories/{repository}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataformRepository resource.
