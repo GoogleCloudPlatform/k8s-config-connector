@@ -1,0 +1,53 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexMetadataJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: dataplexmetadatajob-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  importSpec:
+    aspectSyncMode: INCREMENTAL
+    entrySyncMode: FULL
+    logLevel: DEBUG
+    scope:
+      aspectTypeRefs:
+      - external: projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type
+      entryGroupRefs:
+      - name: dataplexmetadatajob-eg-max-${uniqueId}
+      entryTypeRefs:
+      - name: dataplexmetadatajob-et-max-${uniqueId}
+    sourceCreateTime: "2026-06-30T10:00:00Z"
+    sourceStorageURI: gs://dataplex-metadatajob-bucket-max-${uniqueId}/import/
+  labels:
+    gcp-dataplex-metadatajob-test: "true"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  type: IMPORT
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    importResult:
+      createdEntries: 10
+      unchangedEntries: 100
+      updateTime: "2024-04-01T12:34:56.123456Z"
+      updatedEntries: 5
+    status:
+      completionPercent: 100
+      state: SUCCEEDED
+      updateTime: "2024-04-01T12:34:56.123456Z"
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
