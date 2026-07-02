@@ -16,4 +16,8 @@
 # This script finds the version of golang.org/x/tools in go.mod and sets it to GOLANG_X_TOOLS_VERSION.
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-export GOLANG_X_TOOLS_VERSION=$(grep -E '^\s*golang.org/x/tools\s+' "${REPO_ROOT}/go.mod" | awk '{print $2}')
+export GOLANG_X_TOOLS_VERSION=$(awk '/^[[:space:]]*golang\.org\/x\/tools[[:space:]]+/{print $2}' "${REPO_ROOT}/go.mod")
+if [[ -z "${GOLANG_X_TOOLS_VERSION}" ]]; then
+  echo "ERROR: Could not determine GOLANG_X_TOOLS_VERSION from ${REPO_ROOT}/go.mod" >&2
+  exit 1
+fi
