@@ -140,7 +140,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.33.10
 	k8s.io/apimachinery v0.33.10
 	k8s.io/client-go v0.33.10
-	k8s.io/klog/v2 v2.130.1
+	k8s.io/klog/v2 v2.140.0
 	sigs.k8s.io/controller-runtime v0.20.4
 	sigs.k8s.io/controller-tools v0.16.5
 	sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1.0.20250514194322-871029137730
@@ -353,7 +353,7 @@ replace (
 	k8s.io/client-go => k8s.io/client-go v0.33.10
 	k8s.io/code-generator => k8s.io/code-generator v0.33.10
 	k8s.io/component-base => k8s.io/component-base v0.33.10
-	k8s.io/klog/v2 => k8s.io/klog/v2 v2.130.1
+	k8s.io/klog/v2 => k8s.io/klog/v2 v2.140.0
 	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
 	k8s.io/kubectl => k8s.io/kubectl v0.32.1
 	sigs.k8s.io/yaml => sigs.k8s.io/yaml v1.4.0

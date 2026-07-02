@@ -58,6 +58,11 @@ func run(ctx context.Context) error {
 	addVPrefix := false
 	flag.BoolVar(&addVPrefix, "add-v-prefix", addVPrefix, "prefix tag with 'v'")
 	klog.InitFlags(nil)
+	// Opt into the new klog behavior so that -stderrthreshold is honored even
+	// when -logtostderr=true (the default).
+	// Ref: kubernetes/klog#212, kubernetes/klog#432
+	_ = flag.Set("legacy_stderr_threshold_behavior", "false")
+	_ = flag.Set("stderrthreshold", "INFO")
 	flag.Parse()
 
 	if branch == "" {
