@@ -20,3 +20,11 @@ metadata:
   name: ${projectId}-bucket-${uniqueId}
 spec:
   location: us-central1
+  uniformBucketLevelAccess: true
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: sa-${uniqueId}
+spec:
+  displayName: "NotebooksExecution Test SA"

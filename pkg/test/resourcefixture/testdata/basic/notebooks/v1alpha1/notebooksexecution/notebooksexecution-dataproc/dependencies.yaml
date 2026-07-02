@@ -20,3 +20,43 @@ metadata:
   name: ${projectId}-bucket-${uniqueId}
 spec:
   location: us-central1
+  uniformBucketLevelAccess: true
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: dataproc-sa-${uniqueId}
+spec:
+  displayName: Dataproc SA ${uniqueId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: dataproc-sa-worker-${uniqueId}
+spec:
+  memberFrom:
+    serviceAccountRef:
+      name: dataproc-sa-${uniqueId}
+  role: roles/dataproc.worker
+  resourceRef:
+    kind: Project
+    external: ${projectId}
+---
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocCluster
+metadata:
+  name: dataproccluster-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  config:
+    gceClusterConfig:
+      serviceAccountRef:
+        name: dataproc-sa-${uniqueId}
+    masterConfig:
+      machineType: n2-standard-2
+      numInstances: 1
+    workerConfig:
+      machineType: n2-standard-2
+      numInstances: 2

@@ -5,6 +5,12 @@
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMServiceAccount
+  name: sa-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
   group: notebooks.cnrm.cloud.google.com
   kind: NotebooksExecution
   name: notebooksexecution-maximal-${uniqueId}

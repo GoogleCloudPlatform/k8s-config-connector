@@ -19,7 +19,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1-a
+  location: us-central1
   description: "A maximal NotebooksExecution test fixture"
   outputNotebookFile: gs://${projectId}-bucket-${uniqueId}/output.ipynb
   executionTemplate:
@@ -35,14 +35,10 @@ spec:
     vertexAiParameters:
       env:
         MY_VAR: MY_VAL
-      networkRef:
-        external: projects/${projectId}/global/networks/default
     acceleratorConfig:
       coreCount: 1
       type: NVIDIA_TESLA_T4
     kernelSpec: python3
     parameters: key=value
     serviceAccountRef:
-      external: ${projectId}@${projectId}.iam.gserviceaccount.com
-    tensorboardRef:
-      external: projects/${projectId}/locations/us-central1/tensorboards/my-tensorboard
+      name: sa-${uniqueId}

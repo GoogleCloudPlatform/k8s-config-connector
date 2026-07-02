@@ -7,18 +7,19 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
-  name: notebooksexecution-dataproc-${uniqueId}
+  name: notebooksexec-dp-${uniqueId}
   namespace: ${uniqueId}
 spec:
   executionTemplate:
     dataprocParameters:
       clusterRef:
-        external: projects/${projectId}/regions/us-central1/clusters/my-cluster
+        name: dataproccluster-${uniqueId}
     inputNotebookFile: gs://${projectId}-bucket-${uniqueId}/notebook.ipynb
     jobType: DATAPROC
     masterType: n1-standard-4
+    outputNotebookFolder: gs://${projectId}-bucket-${uniqueId}/output
     scaleTier: CUSTOM
-  location: us-central1-a
+  location: us-central1
   projectRef:
     external: ${projectId}
 status:
@@ -28,9 +29,11 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-dataproc-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/executions/notebooksexec-dp-${uniqueId}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    state: SUCCEEDED
+    displayName: notebooksexec-dp-${uniqueId}
+    jobURI: 1b558c2f-b42b-3b47-b45b-e159a484ed06
+    state: PREPARING
     updateTime: "1970-01-01T00:00:00Z"
