@@ -9,7 +9,6 @@
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeterResource    | True         | True        | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | AIPlatformModel                                 | True         | False       | False  | Direct     | True        |
-| aistreams.cnrm.cloud.google.com                | AIStreamsCluster                                | True         | False       | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBBackup                                   | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBCluster                                  | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBInstance                                 | True         | True        | False  | Direct     | True        |
@@ -404,6 +403,7 @@
 | kms.cnrm.cloud.google.com                      | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                      | KMSKeyRing                                      | False        | True        | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                      | KMSSecretCiphertext                             | True         | False       | False  | Terraform  | True        |
+| licensemanager.cnrm.cloud.google.com           | LicenseManagerConfiguration                     | True         | False       | False  | Direct     | True        |
 | livestream.cnrm.cloud.google.com               | LiveStreamAsset                                 | True         | False       | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                  | LoggingLink                                     | True         | True        | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                  | LoggingLogBucket                                | False        | True        | False  | DCL        | True        |
@@ -438,6 +438,7 @@
 | netapp.cnrm.cloud.google.com                   | NetAppBackupVault                               | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityHub                          | False        | True        | False  | DCL        | False       |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityInternalRange                | True         | False       | False  | Direct     | True        |
+| networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityMulticloudDataTransferConfig | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityRegionalEndpoint             | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityServiceConnectionPolicy      | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivitySpoke                        | False        | True        | False  | DCL        | False       |
@@ -563,6 +564,7 @@
 | tpu.cnrm.cloud.google.com                      | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |
 | translate.cnrm.cloud.google.com                | TranslateAdaptiveMtDataset                      | True         | False       | False  | Direct     | True        |
 | vectorsearch.cnrm.cloud.google.com             | VectorSearchCollection                          | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAICustomJob                               | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDataLabelingJob                         | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDataset                                 | True         | True        | False  | Terraform  | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDeploymentResourcePool                  | True         | False       | False  | Direct     | True        |
@@ -585,6 +587,7 @@
 | videostitcher.cnrm.cloud.google.com            | VideoStitcherCDNKey                             | True         | False       | False  | Direct     | True        |
 | visionai.cnrm.cloud.google.com                 | VisionAIApplication                             | True         | False       | False  | Direct     | True        |
 | vision.cnrm.cloud.google.com                   | VisionProduct                                   | True         | False       | False  | Direct     | True        |
+| vmmigration.cnrm.cloud.google.com              | VMMigrationGroup                                | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com             | VMwareEngineExternalAccessRule                  | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com             | VMwareEngineExternalAddress                     | True         | True        | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com             | VMwareEngineNetworkPeering                      | True         | False       | False  | Direct     | True        |

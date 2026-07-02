@@ -155,6 +155,7 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
+	licensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/licensemanager/v1alpha1"
 	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1alpha1"
@@ -227,6 +228,7 @@ import (
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1"
 	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1"
 	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1"
+	vmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
@@ -371,6 +373,7 @@ type Interface interface {
 	K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface
 	KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface
 	KmsV1beta1() kmsv1beta1.KmsV1beta1Interface
+	LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface
 	LivestreamV1alpha1() livestreamv1alpha1.LivestreamV1alpha1Interface
 	LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface
 	ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1alpha1Interface
@@ -443,6 +446,7 @@ type Interface interface {
 	VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface
 	VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface
 	VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface
+	VmmigrationV1alpha1() vmmigrationv1alpha1.VmmigrationV1alpha1Interface
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
 	VmwareengineV1beta1() vmwareenginev1beta1.VmwareengineV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
@@ -585,6 +589,7 @@ type Clientset struct {
 	k8sV1alpha1                      *k8sv1alpha1.K8sV1alpha1Client
 	kmsV1alpha1                      *kmsv1alpha1.KmsV1alpha1Client
 	kmsV1beta1                       *kmsv1beta1.KmsV1beta1Client
+	licensemanagerV1alpha1           *licensemanagerv1alpha1.LicensemanagerV1alpha1Client
 	livestreamV1alpha1               *livestreamv1alpha1.LivestreamV1alpha1Client
 	loggingV1beta1                   *loggingv1beta1.LoggingV1beta1Client
 	managedkafkaV1alpha1             *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
@@ -657,6 +662,7 @@ type Clientset struct {
 	videostitcherV1alpha1            *videostitcherv1alpha1.VideostitcherV1alpha1Client
 	visionV1alpha1                   *visionv1alpha1.VisionV1alpha1Client
 	visionaiV1alpha1                 *visionaiv1alpha1.VisionaiV1alpha1Client
+	vmmigrationV1alpha1              *vmmigrationv1alpha1.VmmigrationV1alpha1Client
 	vmwareengineV1alpha1             *vmwareenginev1alpha1.VmwareengineV1alpha1Client
 	vmwareengineV1beta1              *vmwareenginev1beta1.VmwareengineV1beta1Client
 	vpcaccessV1beta1                 *vpcaccessv1beta1.VpcaccessV1beta1Client
@@ -1316,6 +1322,11 @@ func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return c.kmsV1beta1
 }
 
+// LicensemanagerV1alpha1 retrieves the LicensemanagerV1alpha1Client
+func (c *Clientset) LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface {
+	return c.licensemanagerV1alpha1
+}
+
 // LivestreamV1alpha1 retrieves the LivestreamV1alpha1Client
 func (c *Clientset) LivestreamV1alpha1() livestreamv1alpha1.LivestreamV1alpha1Interface {
 	return c.livestreamV1alpha1
@@ -1674,6 +1685,11 @@ func (c *Clientset) VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface {
 // VisionaiV1alpha1 retrieves the VisionaiV1alpha1Client
 func (c *Clientset) VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface {
 	return c.visionaiV1alpha1
+}
+
+// VmmigrationV1alpha1 retrieves the VmmigrationV1alpha1Client
+func (c *Clientset) VmmigrationV1alpha1() vmmigrationv1alpha1.VmmigrationV1alpha1Interface {
+	return c.vmmigrationV1alpha1
 }
 
 // VmwareengineV1alpha1 retrieves the VmwareengineV1alpha1Client
@@ -2275,6 +2291,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.licensemanagerV1alpha1, err = licensemanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.livestreamV1alpha1, err = livestreamv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2563,6 +2583,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.vmmigrationV1alpha1, err = vmmigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vmwareengineV1alpha1, err = vmwareenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2742,6 +2766,7 @@ func New(c rest.Interface) *Clientset {
 	cs.k8sV1alpha1 = k8sv1alpha1.New(c)
 	cs.kmsV1alpha1 = kmsv1alpha1.New(c)
 	cs.kmsV1beta1 = kmsv1beta1.New(c)
+	cs.licensemanagerV1alpha1 = licensemanagerv1alpha1.New(c)
 	cs.livestreamV1alpha1 = livestreamv1alpha1.New(c)
 	cs.loggingV1beta1 = loggingv1beta1.New(c)
 	cs.managedkafkaV1alpha1 = managedkafkav1alpha1.New(c)
@@ -2814,6 +2839,7 @@ func New(c rest.Interface) *Clientset {
 	cs.videostitcherV1alpha1 = videostitcherv1alpha1.New(c)
 	cs.visionV1alpha1 = visionv1alpha1.New(c)
 	cs.visionaiV1alpha1 = visionaiv1alpha1.New(c)
+	cs.vmmigrationV1alpha1 = vmmigrationv1alpha1.New(c)
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)
 	cs.vmwareengineV1beta1 = vmwareenginev1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)
