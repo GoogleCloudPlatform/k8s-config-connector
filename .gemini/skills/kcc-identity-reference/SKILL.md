@@ -50,7 +50,8 @@ Create or update the file to match the canonical example. Key requirements:
 - Implement `ParentString()` to return the GCP parent URI string (e.g., `projects/{project}` or `projects/{project}/locations/{location}`) to simplify parent path construction in controllers.
 - Implement `getIdentityFrom<Kind>Spec(ctx context.Context, reader client.Reader, obj *<Kind>) (*<Kind>Identity, error)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
   - **Important:** This function MUST take a typed pointer `*<Kind>` directly. If any callers (such as `Normalize` fallback) only have an `*unstructured.Unstructured` object, those callers must first convert it using `common.ToStructuredType[*<Kind>](unstructuredObj)` before calling `getIdentityFrom<Kind>Spec`. This keeps the extraction code highly type-safe and avoids manual unstructured field parsing.
-- Implement `GetIdentity(ctx, reader)` on the Resource struct, including cross-checking `externalRef` or `status.Name` if either exists on the `Status` struct. (Look at `artifactregistryrepository_identity.go`'s `GetIdentity` implementation for exactly how to do this cross-check).
+- Implement Boilerplate and GetIdentity(ctx, reader) on the Resource struct:
+  - **CRITICAL / MANDATORY STATUS CROSS-CHECK IN GETIDENTITY:** In `GetIdentity`, you MUST always cross-check the parsed identity from spec against `status.externalRef` or whatever other status field holds the identity for created objects (e.g. `status.name`). This prevents drift and guarantees that the identity resolved is authoritative for created objects. If the resource is created, its identity MUST come from status; we cross-check spec against status to detect drift.
   - **CRITICAL / MANDATORY:** Do NOT change the schema (e.g., do not add `status.externalRef` or `status.name` fields to the `_types.go` file if they are not already there) in this phase. If the resource's `Status` struct does not already contain an `ExternalRef` or `Name` field, do NOT perform any cross-check against the status in `GetIdentity`. Simply return the parsed `specIdentity` without checking status. **We should never change the schema to introduce an identity or reference.**
   - **Verification:** Always run `dev/tasks/diff-crds` to check and guarantee that we have not changed the schema in any way.
 
@@ -72,10 +73,14 @@ Create or update the file to match the canonical example. Key requirements:
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
 - Implement boilerplate methods: `GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`.
-- Implement `Normalize` delegating to `refs.Normalize` or `refs.NormalizeWithFallback`.
-  - **CRITICAL RULE:** `Normalize` must ONLY look at `status`, NEVER at `spec` (because we want to know if the resource is ready and fully reconciled).
-  - When the resource supports `status.externalRef`, you can use `refs.Normalize`.
-  - When you have to look at a different status field for backward compatibility (e.g., `status.selfLink` or `status.name`), you MUST use `refs.NormalizeWithFallback`, and the fallback function should only extract and parse that alternative `status` field. Do NOT fallback to parsing the spec.
+- Implement `Normalize` to populate the `External` field:
+  - Normalize's primary goal is to populate the `External` field from status (specifically `status.externalRef`) when the object is ready.
+  - If the referenced resource is managed by a direct controller or standard resource where the fully-resolved GCP URI/identifier is guaranteed to be populated inside `status.externalRef` when ready, delegate `Normalize` directly to `refs.Normalize`. `refs.Normalize` reads strictly from status and avoids using spec.
+  - If the referenced resource is an older or legacy resource (e.g. DCL or Terraform) that lacks `status.externalRef`, delegate `Normalize` to `refs.NormalizeWithFallback`.
+  - **CRITICAL GUIDELINES FOR FALLBACK FUNCTION IN NORMALIZE:**
+    1. The fallback function is ONLY for when `status.externalRef` is not available. It MUST first check if the referenced resource is fully reconciled and ready in GCP by inspecting status fields. It should look at `status.conditions` (i.e. checking if the `Ready` condition is `True`) or whatever other status field signals that the object is ready (such as `status.state`, `status.selfLink`, etc.).
+    2. If the status fields indicate that the resource is not ready, the fallback function MUST return `""` (empty string). This will correctly bubble up a `k8s.NewReferenceNotReadyError`.
+    3. If and only if the status fields indicate that the resource is ready, the fallback function may construct and return the external identity string. It should use spec fields (by converting the unstructured object using `common.ToStructuredType` and calling `getIdentityFrom<Kind>Spec`) as a last-resort fallback to build the identity. (No spec/status cross-checking is needed inside `Normalize` itself).
 
 ### Step 5: Verify
 
