@@ -65,6 +65,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			if isIPv4Address(value) {
 				replacements.ReplaceStringValue(value, "${privateEndpointIPV4}")
 			}
+
+		case ".controlPlaneEndpointsConfig.dnsEndpointConfig.endpoint":
+			tokens := strings.Split(value, "-")
+			if len(tokens) > 2 {
+				replacements.ReplaceStringValue(tokens[1], "12345trewq")
+			}
 		}
 	})
 }
