@@ -75,6 +75,8 @@ import (
 	fakebatchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1/fake"
 	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1"
 	fakebeyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1/fake"
+	biglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/biglake/v1alpha1"
+	fakebiglakev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/biglake/v1alpha1/fake"
 	bigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1alpha1"
 	fakebigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1alpha1/fake"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1"
@@ -616,6 +618,11 @@ func (c *Clientset) BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface {
 // BeyondcorpV1alpha1 retrieves the BeyondcorpV1alpha1Client
 func (c *Clientset) BeyondcorpV1alpha1() beyondcorpv1alpha1.BeyondcorpV1alpha1Interface {
 	return &fakebeyondcorpv1alpha1.FakeBeyondcorpV1alpha1{Fake: &c.Fake}
+}
+
+// BiglakeV1alpha1 retrieves the BiglakeV1alpha1Client
+func (c *Clientset) BiglakeV1alpha1() biglakev1alpha1.BiglakeV1alpha1Interface {
+	return &fakebiglakev1alpha1.FakeBiglakeV1alpha1{Fake: &c.Fake}
 }
 
 // BigqueryV1alpha1 retrieves the BigqueryV1alpha1Client

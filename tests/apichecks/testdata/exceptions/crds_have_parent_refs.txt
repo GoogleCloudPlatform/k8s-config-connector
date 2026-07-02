@@ -1,4 +1,5 @@
 [crds_should_not_have_parent_refs] crd=biglakedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: found a parent ref (found [parentCatalog])
+[crds_should_not_have_parent_refs] crd=biglakelocks.biglake.cnrm.cloud.google.com version=v1alpha1: found a parent ref (found [parentDatabase table])
 [crds_should_not_have_parent_refs] crd=biglaketables.bigquerybiglake.cnrm.cloud.google.com version=v1beta1: found a parent ref (found [parentDatabase])
 [crds_should_not_have_parent_refs] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: found a parent ref (found [parent])
 [crds_should_not_have_parent_refs] crd=datacatalogpolicytags.datacatalog.cnrm.cloud.google.com version=v1beta1: found a parent ref (found [parentPolicyTag taxonomy])
