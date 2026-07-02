@@ -163,6 +163,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":          true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}/rules/{}": true,
 
+		// Grafeas Note
+		"//containeranalysis.googleapis.com/projects/{}/notes/{}": true,
+
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,

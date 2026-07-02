@@ -141,6 +141,7 @@ import (
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
+	grafeasv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/grafeas/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
@@ -348,6 +349,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	gkebackupv1alpha1.AddToScheme,
 	gkehubv1alpha1.AddToScheme,
 	gkehubv1beta1.AddToScheme,
+	grafeasv1alpha1.AddToScheme,
 	healthcarev1alpha1.AddToScheme,
 	iamv1alpha1.AddToScheme,
 	iamv1beta1.AddToScheme,

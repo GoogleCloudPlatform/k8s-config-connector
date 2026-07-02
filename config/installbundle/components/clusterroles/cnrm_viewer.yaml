@@ -743,6 +743,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - grafeas.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
   resources:
   - '*'
