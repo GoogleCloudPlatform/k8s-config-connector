@@ -99,7 +99,9 @@ spec:
                 - message: Location field is immutable
                   rule: self == oldSelf
               projectRef:
-                description: The Project that this resource belongs to.
+                description: 'The Project that this resource belongs to. Deprecated:
+                  Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
+                  instead to avoid adding the ''kind'' field to the CRD.'
                 oneOf:
                 - not:
                     required:
@@ -371,7 +373,9 @@ spec:
                 - message: Location field is immutable
                   rule: self == oldSelf
               projectRef:
-                description: The Project that this resource belongs to.
+                description: 'The Project that this resource belongs to. Deprecated:
+                  Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
+                  instead to avoid adding the ''kind'' field to the CRD.'
                 oneOf:
                 - not:
                     required:

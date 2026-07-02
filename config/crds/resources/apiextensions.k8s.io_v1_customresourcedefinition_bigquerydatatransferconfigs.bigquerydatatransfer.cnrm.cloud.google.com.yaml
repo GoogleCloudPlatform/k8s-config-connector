@@ -175,7 +175,9 @@ spec:
                   are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq'
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: 'The Project that this resource belongs to. Deprecated:
+                  Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
+                  instead to avoid adding the ''kind'' field to the CRD.'
                 oneOf:
                 - not:
                     required:
@@ -654,7 +656,9 @@ spec:
                   are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq'
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: 'The Project that this resource belongs to. Deprecated:
+                  Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
+                  instead to avoid adding the ''kind'' field to the CRD.'
                 oneOf:
                 - not:
                     required:
