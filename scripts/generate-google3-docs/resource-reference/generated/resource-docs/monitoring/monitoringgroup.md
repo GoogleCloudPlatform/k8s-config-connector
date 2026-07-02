@@ -65,6 +65,7 @@ parentRef:
   namespace: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -165,6 +166,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
