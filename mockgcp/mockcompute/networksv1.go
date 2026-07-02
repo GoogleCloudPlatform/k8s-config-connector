@@ -187,6 +187,16 @@ func (s *NetworksV1) RemovePeering(ctx context.Context, req *pb.RemovePeeringNet
 	fqn := name.String()
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			log.Info("network already deleted, removePeering is a no-op", "network", fqn)
+			op := &pb.Operation{
+				Id:            PtrTo(uint64(123456789)),
+				OperationType: PtrTo("compute.networks.removePeering"),
+				Status:        PtrTo(pb.Operation_DONE),
+				Progress:      PtrTo(int32(100)),
+			}
+			return op, nil
+		}
 		return nil, err
 	}
 
