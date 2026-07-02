@@ -46,9 +46,6 @@ func TestGoldenLogAlignment(t *testing.T) {
 			if fileExists(realLogPath) && fileExists(mockLogPath) {
 				relPath, _ := filepath.Rel(absRootDir, path)
 				t.Run(relPath, func(t *testing.T) {
-					if shouldSkip(relPath) {
-						t.Skip("skipping alignment check for known misaligned resource on master")
-					}
 					compareLogs(t, realLogPath, mockLogPath)
 				})
 			}
@@ -60,42 +57,6 @@ func TestGoldenLogAlignment(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error walking directory: %v", err)
 	}
-}
-
-var skipList = []string{
-	"alloydb/v1beta1/alloydbcluster",
-	"apigee/v1beta1/apigeeorganization",
-	"bigquery/v1beta1/bigquerytable",
-	"bigtable/v1alpha1/bigtablematerializedview",
-	"bigtable/v1beta1/bigtableappprofile",
-	"bigtable/v1beta1/bigtablegcpolicy",
-	"bigtable/v1beta1/bigtabletable",
-	"compute/v1alpha1/computefuturereservation",
-	"container/v1beta1/containercluster",
-	"dataform/v1beta1/dataformrepository",
-	"edgenetwork/v1beta1/edgenetworksubnet",
-	"firestore/v1alpha1/firestorebackupschedule",
-	"gkehub/v1beta1/gkehubfeature",
-	"gkehub/v1beta1/gkehubfeaturemembership",
-	"iam/v1alpha1/iamdenypolicy",
-	"memorystore/v1beta1/memorystoreinstance",
-	"monitoring/v1beta1/monitoringdashboard",
-	"notebooks/v1beta1/notebookinstance",
-	"orgpolicy/v1beta1/orgpolicypolicy",
-	"pubsub/pubsubsnapshot",
-	"pubsub/v1beta1/pubsubsubscription",
-	"run/v1beta1/runjob",
-	"sql/v1beta1/sqlinstance",
-	"workflows/v1alpha1/workflowsworkflow",
-}
-
-func shouldSkip(relPath string) bool {
-	for _, prefix := range skipList {
-		if strings.HasPrefix(relPath, prefix) {
-			return true
-		}
-	}
-	return false
 }
 
 type httpEvent struct {

@@ -71,6 +71,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "networkPolicyConfig": {
         "disabled": true
+      },
+      "parallelstoreCsiDriverConfig": {
+        "enabled": false
       }
     },
     "autopilot": {
@@ -258,7 +261,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -647,7 +651,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1036,7 +1041,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1375,6 +1381,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "networkPolicyConfig": {
         "disabled": true
+      },
+      "parallelstoreCsiDriverConfig": {
+        "enabled": false
       }
     }
   }
@@ -1471,7 +1480,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1860,7 +1870,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2249,7 +2260,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2589,6 +2601,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "networkPolicyConfig": {
         "disabled": false
+      },
+      "parallelstoreCsiDriverConfig": {
+        "enabled": true
       }
     }
   }
@@ -2688,7 +2703,10 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
-    "networkPolicyConfig": {}
+    "networkPolicyConfig": {},
+    "parallelstoreCsiDriverConfig": {
+      "enabled": true
+    }
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -3080,7 +3098,10 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
-    "networkPolicyConfig": {}
+    "networkPolicyConfig": {},
+    "parallelstoreCsiDriverConfig": {
+      "enabled": true
+    }
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -3472,7 +3493,10 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
-    "networkPolicyConfig": {}
+    "networkPolicyConfig": {},
+    "parallelstoreCsiDriverConfig": {
+      "enabled": true
+    }
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"

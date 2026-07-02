@@ -1,91 +1,3 @@
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Unknown service account",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Unknown service account",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "accountId": "gsa-${uniqueId}",
-  "serviceAccount": {
-    "displayName": "Test GSA for big query data transfer config"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "Test GSA for big query data transfer config",
-  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "Test GSA for big query data transfer config",
-  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -235,108 +147,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=pubsubtopic-${uniqueId}).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=pubsubtopic-${uniqueId}-2).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -363,212 +173,6 @@ X-Xss-Protection: 0
     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
     "status": "NOT_FOUND"
   }
-}
-
----
-
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2"
-}
-
----
-
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
 
 ---
@@ -846,7 +450,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -863,33 +467,21 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}-2).",
+    "message": "Resource not found (resource=pubsubtopic-${uniqueId}).",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs?%24alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "dataSourceId": "google_cloud_storage",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
-  "displayName": "example of scheduled option v2 query",
-  "notificationPubsubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2",
-  "params": {
-    "data_path_template": "gs://config-connector-samples/bigquerydatatransferconfig/*.csv",
-    "destination_table_name_template": "bigquerytable${uniqueId}",
-    "file_format": "CSV",
-    "write_disposition": "APPEND"
-  },
-  "scheduleOptionsV2": {
-    "eventDrivenSchedule": {
-      "pubsubSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}"
-    }
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -904,49 +496,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "dataSourceId": "google_cloud_storage",
-  "datasetRegion": "us-central1",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
-  "displayName": "example of scheduled option v2 query",
-  "encryptionConfiguration": {},
-  "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
-  "notificationPubsubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2",
-  "ownerInfo": {
-    "email": "user@google.com"
-  },
-  "params": {
-    "data_path_template": "gs://config-connector-samples/bigquerydatatransferconfig/*.csv",
-    "destination_table_name_template": "bigquerytable${uniqueId}",
-    "file_format": "CSV",
-    "write_disposition": "APPEND"
-  },
-  "scheduleOptionsV2": {
-    "eventDrivenSchedule": {
-      "pubsubSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}"
-    }
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "userId": "0000000000000000000"
-}
-
----
-
-PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "ackDeadlineSeconds": 20,
-  "deadLetterPolicy": null,
-  "enableExactlyOnceDelivery": true,
-  "expirationPolicy": null,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "messageRetentionDuration": "86400s",
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -959,25 +520,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "ackDeadlineSeconds": 20,
-  "enableExactlyOnceDelivery": true,
-  "expirationPolicy": {
-    "ttl": "2678400s"
-  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "messageRetentionDuration": "86400s",
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2",
-  "pushConfig": {},
-  "state": "ACTIVE",
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -994,9 +546,64 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}-2).",
+    "message": "Resource not found (resource=pubsubtopic-${uniqueId}-2).",
     "status": "NOT_FOUND"
   }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2"
 }
 
 ---
@@ -1093,6 +700,38 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ackDeadlineSeconds": 15,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "86400s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1117,11 +756,24 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+{
+  "ackDeadlineSeconds": 20,
+  "deadLetterPolicy": null,
+  "enableExactlyOnceDelivery": true,
+  "expirationPolicy": null,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "86400s",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1132,11 +784,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}).",
-    "status": "NOT_FOUND"
-  }
+  "ackDeadlineSeconds": 20,
+  "enableExactlyOnceDelivery": true,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "86400s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
 }
 
 ---
@@ -1159,30 +820,6 @@ X-Xss-Protection: 0
   "error": {
     "code": 404,
     "message": "Resource not found (resource=pubsubsubscription-${uniqueId}-2).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}).",
     "status": "NOT_FOUND"
   }
 }
@@ -1222,9 +859,46 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "gsa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Test GSA for big query data transfer config"
+  }
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1237,19 +911,99 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "ackDeadlineSeconds": 15,
-  "expirationPolicy": {
-    "ttl": "2678400s"
+  "displayName": "Test GSA for big query data transfer config",
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test GSA for big query data transfer config",
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs?%24alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "dataSourceId": "google_cloud_storage",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "displayName": "example of scheduled option v2 query",
+  "notificationPubsubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2",
+  "params": {
+    "data_path_template": "gs://config-connector-samples/bigquerydatatransferconfig/*.csv",
+    "destination_table_name_template": "bigquerytable${uniqueId}",
+    "file_format": "CSV",
+    "write_disposition": "APPEND"
   },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+  "scheduleOptionsV2": {
+    "eventDrivenSchedule": {
+      "pubsubSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataSourceId": "google_cloud_storage",
+  "datasetRegion": "us-central1",
+  "destinationDatasetId": "bigquerydataset${uniqueId}",
+  "displayName": "example of scheduled option v2 query",
+  "encryptionConfiguration": {},
+  "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
+  "notificationPubsubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2",
+  "ownerInfo": {
+    "email": "user@google.com"
   },
-  "messageRetentionDuration": "86400s",
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-  "pushConfig": {},
-  "state": "ACTIVE",
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+  "params": {
+    "data_path_template": "gs://config-connector-samples/bigquerydatatransferconfig/*.csv",
+    "destination_table_name_template": "bigquerytable${uniqueId}",
+    "file_format": "CSV",
+    "write_disposition": "APPEND"
+  },
+  "scheduleOptionsV2": {
+    "eventDrivenSchedule": {
+      "pubsubSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}"
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userId": "0000000000000000000"
 }
 
 ---
@@ -1409,6 +1163,25 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1451,49 +1224,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "dataSourceId": "google_cloud_storage",
-  "datasetRegion": "us-central1",
-  "destinationDatasetId": "bigquerydataset${uniqueId}",
-  "displayName": "example of scheduled option v2 query",
-  "emailPreferences": {},
-  "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
-  "notificationPubsubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}-2",
-  "ownerInfo": {
-    "email": "user@google.com"
-  },
-  "params": {
-    "data_path_template": "gs://config-connector-samples/bigquerydatatransferconfig/*.csv",
-    "destination_table_name_template": "bigquerytable${uniqueId}",
-    "file_format": "CSV",
-    "write_disposition": "APPEND"
-  },
-  "scheduleOptionsV2": {
-    "eventDrivenSchedule": {
-      "pubsubSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}"
-    }
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "userId": "0000000000000000000"
-}
-
----
-
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1527,10 +1257,9 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1546,7 +1275,39 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ackDeadlineSeconds": 15,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "86400s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1588,57 +1349,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "ackDeadlineSeconds": 15,
-  "expirationPolicy": {
-    "ttl": "2678400s"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "messageRetentionDuration": "86400s",
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-  "pushConfig": {},
-  "state": "ACTIVE",
-  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1695,60 +1406,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-  "type": "DEFAULT"
-}
 
 ---
 
@@ -1890,6 +1547,60 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
 
 ---
 

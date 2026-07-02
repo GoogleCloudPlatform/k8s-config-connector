@@ -1,75 +1,3 @@
-GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-403 Forbidden
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 403,
-    "message": "Permission denied for ${projectId}.dctt_${uniqueId}, or resource doesn't exist. ",
-    "status": "PERMISSION_DENIED"
-  }
-}
-
----
-
-POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates?tagTemplateId=dctt_${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
-X-Goog-User-Project: ${projectId}
-
-{
-  "displayName": "TestTagTemplate",
-  "fields": {
-    "testfield": {
-      "displayName": "TestField",
-      "isRequired": true,
-      "type": {
-        "primitiveType": 2
-      }
-    }
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "TestTagTemplate",
-  "fields": {
-    "testfield": {
-      "displayName": "TestField",
-      "isRequired": true,
-      "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}/fields/testfield",
-      "type": {
-        "primitiveType": "STRING"
-      }
-    }
-  },
-  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
-}
-
----
-
 GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -191,6 +119,78 @@ X-Xss-Protection: 0
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "type": "FILESET"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission denied for ${projectId}.dctt_${uniqueId}, or resource doesn't exist. ",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates?tagTemplateId=dctt_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "TestTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "type": {
+        "primitiveType": 2
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}/fields/testfield",
+      "type": {
+        "primitiveType": "STRING"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
 }
 
 ---
@@ -336,10 +336,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}%2Ftags%2Fmocktagid
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -352,80 +352,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{
-  "displayName": "TestTagTemplate",
-  "fields": {
-    "testfield": {
-      "displayName": "TestField",
-      "isRequired": true,
-      "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}/fields/testfield",
-      "type": {
-        "primitiveType": "STRING"
-      }
-    }
-  },
-  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
-}
-
----
-
-GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "gcsFilesetSpec": {
-    "filePatterns": [
-      "gs://bucket/file"
-    ]
-  },
-  "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}",
-  "sourceSystemTimestamps": {
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "type": "FILESET"
-}
-
----
-
-GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "dataCatalogTimestamps": {
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "displayName": "Initial Minimal Entry Group",
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}"
-}
+{}
 
 ---
 
@@ -482,9 +409,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -498,25 +426,26 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "tags": [
-    {
-      "fields": {
-        "testfield": {
-          "stringValue": "test value updated"
-        }
-      },
-      "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid",
-      "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
-    }
-  ]
+  "gcsFilesetSpec": {
+    "filePatterns": [
+      "gs://bucket/file"
+    ]
+  },
+  "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}",
+  "sourceSystemTimestamps": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "type": "FILESET"
 }
 
 ---
 
-DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}%2Ftags%2Fmocktagid
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -564,59 +493,6 @@ DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "gcsFilesetSpec": {
-    "filePatterns": [
-      "gs://bucket/file"
-    ]
-  },
-  "linkedResource": "//datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}",
-  "sourceSystemTimestamps": {
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "type": "FILESET"
-}
-
----
-
-DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
