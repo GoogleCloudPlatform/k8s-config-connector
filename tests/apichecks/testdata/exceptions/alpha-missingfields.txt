@@ -3454,6 +3454,26 @@
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountEmail" is not set in unstructured objects
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudStorageObjectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudStorageObjectRef.bucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludeCloudStorageBuckets.cloudStorageBuckets[].bucketPrefixRegex" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludeCloudStorageBuckets.cloudStorageBuckets[].bucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludeCloudStorageLocations.locations[]" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.identity.type" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.includeCloudStorageBuckets.cloudStorageBuckets[].bucketPrefixRegex" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.includeCloudStorageBuckets.cloudStorageBuckets[].bucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.includeCloudStorageLocations.locations[]" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.includeNewlyCreatedBuckets" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationNumber" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationScope" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionPeriodDays" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.skipVerificationAndIngest" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceFolders.folderNumbers[]" is not set in unstructured objects
+[missing_field] crd=storageinsightsdatasetconfigs.storageinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceProjects.projectNumbers[]" is not set in unstructured objects
 [missing_field] crd=storagemanagedfolders.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=storagemanagedfolders.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.storagebucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.bandwidthLimit.limitMbps" is not set in unstructured objects

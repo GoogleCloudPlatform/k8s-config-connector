@@ -246,6 +246,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}": true,
 
+		// Storage Insights
+		"//storageinsights.googleapis.com/projects/{}/locations/{}/datasetConfigs/{}": true,
+
 		// Vision
 		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
 
