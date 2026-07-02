@@ -38,6 +38,10 @@ func fuzzIdentityMappingStore() fuzztesting.KRMFuzzer {
 	f.SpecField(".kms_key_name")
 
 	f.StatusField(".cmek_config")
+	f.Unimplemented_NotYetTriaged(".cmek_config.state")
+	f.Unimplemented_NotYetTriaged(".cmek_config.is_default")
+	f.Unimplemented_NotYetTriaged(".cmek_config.last_rotation_timestamp_micros")
+	f.Unimplemented_NotYetTriaged(".cmek_config.notebooklm_state")
 
 	return f
 }
