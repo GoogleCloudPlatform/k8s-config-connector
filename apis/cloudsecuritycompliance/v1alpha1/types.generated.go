@@ -19,6 +19,7 @@
 // proto.service: google.cloud.cloudsecuritycompliance.v1
 // resource: CloudSecurityComplianceCloudControl:CloudControl
 // resource: CloudSecurityComplianceFramework:Framework
+// resource: CloudSecurityFramework:Framework
 
 package v1alpha1
 

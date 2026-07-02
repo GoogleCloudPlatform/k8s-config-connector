@@ -136,6 +136,7 @@
 | cloudscheduler.cnrm.cloud.google.com          | CloudSchedulerJob                               | False        | True        | False  | DCL        | False       |
 | cloudsecuritycompliance.cnrm.cloud.google.com | CloudSecurityComplianceCloudControl             | True         | False       | False  | Direct     | True        |
 | cloudsecuritycompliance.cnrm.cloud.google.com | CloudSecurityComplianceFramework                | True         | False       | False  | Direct     | True        |
+| cloudsecuritycompliance.cnrm.cloud.google.com | CloudSecurityFramework                          | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                   | ColabRuntime                                    | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                   | ColabRuntimeTemplate                            | True         | False       | False  | Direct     | True        |
 | composer.cnrm.cloud.google.com                | ComposerEnvironment                             | True         | True        | False  | Direct     | True        |
