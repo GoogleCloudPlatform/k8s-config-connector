@@ -895,6 +895,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-ces:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-ces"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-ces
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-ces
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-cloudasset:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -2155,6 +2175,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-mapmanagement:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-mapmanagement"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-mapmanagement
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-mapmanagement
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-memcache:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -2212,6 +2252,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-metastore
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-migrationcenter:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-migrationcenter"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-migrationcenter
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-migrationcenter
           path: /tmp/artifacts/
 
 
@@ -2852,6 +2912,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-sql
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-sqladmin:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sqladmin"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-sqladmin
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-sqladmin
           path: /tmp/artifacts/
 
 
