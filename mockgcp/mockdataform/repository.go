@@ -16,17 +16,15 @@ package mockdataform
 
 import (
 	"context"
-	"net/http"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataform/v1beta1"
 
-	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type RepositoryV1Beta1 struct {
@@ -110,7 +108,7 @@ func (r *RepositoryV1Beta1) UpdateRepository(ctx context.Context, request *pb.Up
 
 	return obj, nil
 }
-func (r *RepositoryV1Beta1) DeleteRepository(ctx context.Context, request *pb.DeleteRepositoryRequest) (*empty.Empty, error) {
+func (r *RepositoryV1Beta1) DeleteRepository(ctx context.Context, request *pb.DeleteRepositoryRequest) (*emptypb.Empty, error) {
 	name, err := r.parseDataformRepository(request.Name)
 	if err != nil {
 		return nil, err
@@ -123,9 +121,9 @@ func (r *RepositoryV1Beta1) DeleteRepository(ctx context.Context, request *pb.De
 		return nil, err
 	}
 
-	httpmux.SetStatusCode(ctx, http.StatusNoContent)
+	// TODO: We used to return 204 No Content here via httpmux.SetStatusCode(ctx, http.StatusNoContent)
 
-	return &empty.Empty{}, nil
+	return &emptypb.Empty{}, nil
 }
 
 // 'projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}'
