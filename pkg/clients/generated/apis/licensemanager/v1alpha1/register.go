@@ -28,12 +28,12 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1alpha1 contains API Schema definitions for the networkconnectivity v1alpha1 API group.
+// Package v1alpha1 contains API Schema definitions for the licensemanager v1alpha1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
-// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/networkconnectivity
+// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/licensemanager
 // +k8s:defaulter-gen=TypeMeta
-// +groupName=networkconnectivity.cnrm.cloud.google.com
+// +groupName=licensemanager.cnrm.cloud.google.com
 package v1alpha1
 
 import (
@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "networkconnectivity.cnrm.cloud.google.com", Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "licensemanager.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
@@ -53,29 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	NetworkConnectivityInternalRangeGVK = schema.GroupVersionKind{
+	LicenseManagerConfigurationGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(NetworkConnectivityInternalRange{}).Name(),
+		Kind:    reflect.TypeOf(LicenseManagerConfiguration{}).Name(),
 	}
 
-	NetworkConnectivityMulticloudDataTransferConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(NetworkConnectivityMulticloudDataTransferConfig{}).Name(),
-	}
-
-	NetworkConnectivityRegionalEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(NetworkConnectivityRegionalEndpoint{}).Name(),
-	}
-
-	NetworkConnectivityServiceConnectionPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(NetworkConnectivityServiceConnectionPolicy{}).Name(),
-	}
-
-	networkconnectivityAPIVersion = SchemeGroupVersion.String()
+	licensemanagerAPIVersion = SchemeGroupVersion.String()
 )
