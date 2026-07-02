@@ -179,6 +179,7 @@ import (
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1"
 	osloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1"
+	parallelstorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parallelstore/v1alpha1"
 	parametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parametermanager/v1alpha1"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
 	privilegedaccessmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1beta1"
@@ -382,6 +383,7 @@ type Interface interface {
 	OsconfigV1alpha1() osconfigv1alpha1.OsconfigV1alpha1Interface
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
 	OsloginV1alpha1() osloginv1alpha1.OsloginV1alpha1Interface
+	ParallelstoreV1alpha1() parallelstorev1alpha1.ParallelstoreV1alpha1Interface
 	ParametermanagerV1alpha1() parametermanagerv1alpha1.ParametermanagerV1alpha1Interface
 	PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface
 	PrivilegedaccessmanagerV1beta1() privilegedaccessmanagerv1beta1.PrivilegedaccessmanagerV1beta1Interface
@@ -583,6 +585,7 @@ type Clientset struct {
 	osconfigV1alpha1                *osconfigv1alpha1.OsconfigV1alpha1Client
 	osconfigV1beta1                 *osconfigv1beta1.OsconfigV1beta1Client
 	osloginV1alpha1                 *osloginv1alpha1.OsloginV1alpha1Client
+	parallelstoreV1alpha1           *parallelstorev1alpha1.ParallelstoreV1alpha1Client
 	parametermanagerV1alpha1        *parametermanagerv1alpha1.ParametermanagerV1alpha1Client
 	privatecaV1beta1                *privatecav1beta1.PrivatecaV1beta1Client
 	privilegedaccessmanagerV1beta1  *privilegedaccessmanagerv1beta1.PrivilegedaccessmanagerV1beta1Client
@@ -1395,6 +1398,11 @@ func (c *Clientset) OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface {
 // OsloginV1alpha1 retrieves the OsloginV1alpha1Client
 func (c *Clientset) OsloginV1alpha1() osloginv1alpha1.OsloginV1alpha1Interface {
 	return c.osloginV1alpha1
+}
+
+// ParallelstoreV1alpha1 retrieves the ParallelstoreV1alpha1Client
+func (c *Clientset) ParallelstoreV1alpha1() parallelstorev1alpha1.ParallelstoreV1alpha1Interface {
+	return c.parallelstoreV1alpha1
 }
 
 // ParametermanagerV1alpha1 retrieves the ParametermanagerV1alpha1Client
@@ -2267,6 +2275,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.parallelstoreV1alpha1, err = parallelstorev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.parametermanagerV1alpha1, err = parametermanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2610,6 +2622,7 @@ func New(c rest.Interface) *Clientset {
 	cs.osconfigV1alpha1 = osconfigv1alpha1.New(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)
 	cs.osloginV1alpha1 = osloginv1alpha1.New(c)
+	cs.parallelstoreV1alpha1 = parallelstorev1alpha1.New(c)
 	cs.parametermanagerV1alpha1 = parametermanagerv1alpha1.New(c)
 	cs.privatecaV1beta1 = privatecav1beta1.New(c)
 	cs.privilegedaccessmanagerV1beta1 = privilegedaccessmanagerv1beta1.New(c)

@@ -2455,6 +2455,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-parallelstore:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-parallelstore"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-parallelstore
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-parallelstore
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-parametermanager:
     runs-on: ubuntu-latest
     needs: unit-tests
