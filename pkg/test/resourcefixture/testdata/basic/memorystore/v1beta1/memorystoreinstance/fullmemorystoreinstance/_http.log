@@ -945,6 +945,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -955,6 +956,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1069,6 +1071,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
+            "pscConnectionStatus": 1,
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
@@ -1079,6 +1082,7 @@ X-Xss-Protection: 0
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
+            "pscConnectionStatus": 1,
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
@@ -1294,6 +1298,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -1304,6 +1309,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1520,6 +1526,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -1530,6 +1537,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1746,6 +1754,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -1756,6 +1765,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -1972,6 +1982,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -1982,6 +1993,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -2199,6 +2211,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -2209,6 +2222,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -2651,6 +2665,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -2661,6 +2676,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -2876,6 +2892,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -2886,6 +2903,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -3102,6 +3120,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -3112,6 +3131,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -3328,6 +3348,7 @@ X-Xss-Protection: 0
               "port": 6379,
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
             }
           },
@@ -3338,6 +3359,7 @@ X-Xss-Protection: 0
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
+              "pscConnectionStatus": "ACTIVE",
               "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
             }
           }
@@ -3452,6 +3474,7 @@ X-Xss-Protection: 0
             "port": 6379,
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
+            "pscConnectionStatus": 1,
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
@@ -3462,6 +3485,7 @@ X-Xss-Protection: 0
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
+            "pscConnectionStatus": 1,
             "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
