@@ -189,7 +189,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	latest := a.actual
-	if diffs.HasDiff() {
+	if len(updateMask.Paths) > 0 {
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
@@ -289,5 +289,12 @@ func compareCertificateManagerDNSAuthorization(ctx context.Context, actual, desi
 	if err != nil {
 		return nil, nil, err
 	}
+	var allowedPaths []string
+	for _, path := range updateMask.Paths {
+		if path == "description" || path == "labels" {
+			allowedPaths = append(allowedPaths, path)
+		}
+	}
+	updateMask.Paths = allowedPaths
 	return diffs, updateMask, nil
 }

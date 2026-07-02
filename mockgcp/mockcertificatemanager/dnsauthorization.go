@@ -39,6 +39,9 @@ func (s *CertificateManagerV1) GetDnsAuthorization(ctx context.Context, req *pb.
 
 	obj := &pb.DnsAuthorization{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -58,12 +61,21 @@ func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
+
+	if obj.Type == pb.DnsAuthorization_TYPE_UNSPECIFIED {
+		obj.Type = pb.DnsAuthorization_FIXED_RECORD
+	}
+
+	recordData := "authorize.certificatemanager.goog."
+	if obj.Type == pb.DnsAuthorization_PER_PROJECT_RECORD {
+		recordData = fmt.Sprintf("123456789.%d.authorize.certificatemanager.goog.", name.Project.Number)
+	}
+
 	obj.DnsResourceRecord = &pb.DnsAuthorization_DnsResourceRecord{
-		Data: "authorize.certificatemanager.goog.",
+		Data: recordData,
 		Name: fmt.Sprintf("_acme-challenge.%s.", obj.GetDomain()),
 		Type: "CNAME",
 	}
-	obj.Type = pb.DnsAuthorization_FIXED_RECORD
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/global", name.Project.ID)
 
@@ -78,7 +90,7 @@ func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *
 		Verb:                  "create",
 	}
 
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+	return s.operations.StartLROWithDone(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		result := proto.CloneOf(obj)
 		result.Labels = nil
 		lroMetadata.RequestedCancellation = false
@@ -97,6 +109,9 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	fqn := name.String()
 	obj := &pb.DnsAuthorization{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -148,6 +163,9 @@ func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *
 
 	oldObj := &pb.DnsAuthorization{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
