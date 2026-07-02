@@ -8,6 +8,8 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
 
 *   **Real GCP Baseline Required**: You must always generate the initial baseline `_http.log` by running `hack/record-gcp` against a real GCP project and commit it first.
 *   **Do NOT Generate Golden Logs from Mock**: You are strictly forbidden from generating or updating `_http.log` files against the mock in this step. You MUST first establish a baseline against `real` GCP with `E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest` with `WRITE_GOLDEN_OUTPUT=1`.
+*   **Do NOT Modify Test Cases Post-Recording**: Do not update/modify the test case configuration (e.g., changing location/zone) after you have committed the real GCP logs. If you must change the test case, you must run `hack/record-gcp` again to record the real GCP logs.
+*   **Focus on Target CRUD Requests**: When aligning the HTTP logs, we only care about the requests made to the CRUD endpoint of the target resource. Non-target/dependent resource requests in the log do not need to be matched as strictly.
 
 ## Workflow
 
