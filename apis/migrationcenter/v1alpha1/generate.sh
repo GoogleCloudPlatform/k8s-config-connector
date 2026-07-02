@@ -29,5 +29,13 @@ go run . generate-types \
   --include-skipped-output \
   --resource MigrationCenterGroup:Group
 
+go run . generate-mapper \
+  --service google.cloud.migrationcenter.v1 \
+  --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/migrationcenter/
+
