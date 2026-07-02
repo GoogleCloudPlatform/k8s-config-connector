@@ -624,7 +624,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: Locations
 	out.EnableKubernetesAlpha = direct.LazyPtr(in.GetEnableKubernetesAlpha())
 	// MISSING: AlphaClusterFeatureGates
-	// MISSING: ResourceLabels
+	out.ResourceLabels = in.ResourceLabels
 	// MISSING: LabelFingerprint
 	// MISSING: LegacyAbac
 	out.NetworkPolicy = NetworkPolicy_FromProto(mapCtx, in.GetNetworkPolicy())
@@ -717,7 +717,7 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 	// MISSING: Locations
 	out.EnableKubernetesAlpha = direct.ValueOf(in.EnableKubernetesAlpha)
 	// MISSING: AlphaClusterFeatureGates
-	// MISSING: ResourceLabels
+	out.ResourceLabels = in.ResourceLabels
 	// MISSING: LabelFingerprint
 	// MISSING: LegacyAbac
 	out.NetworkPolicy = NetworkPolicy_ToProto(mapCtx, in.NetworkPolicy)

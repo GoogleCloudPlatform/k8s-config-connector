@@ -99,9 +99,20 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	}
 	if r.ResourceConfig.MetadataMapping.Labels != "" {
 		path := text.SnakeCaseToLowerCamelCase(r.ResourceConfig.MetadataMapping.Labels)
-		labels := label.ToJSONCompatibleFormat(label.NewGCPLabelsFromK8sLabels(r.GetLabels()))
-		if err := setValue(config, path, labels); err != nil {
-			return nil, nil, fmt.Errorf("error mapping 'metadata.labels': %w", err)
+		val, exists := config[path]
+		hasValue := exists && val != nil
+		if hasValue {
+			if m, ok := val.(map[string]interface{}); ok && len(m) == 0 {
+				hasValue = false
+			} else if m, ok := val.(map[string]string); ok && len(m) == 0 {
+				hasValue = false
+			}
+		}
+		if !hasValue {
+			labels := label.ToJSONCompatibleFormat(label.NewGCPLabelsFromK8sLabels(r.GetLabels()))
+			if err := setValue(config, path, labels); err != nil {
+				return nil, nil, fmt.Errorf("error mapping 'metadata.labels': %w", err)
+			}
 		}
 	}
 	if r.ResourceConfig.Locationality != "" {

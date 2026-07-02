@@ -1320,6 +1320,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* The GCE resource labels (a map of key/value pairs) to be applied to the cluster. */
+	// +optional
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
+
 	/* Configuration for the ResourceUsageExportConfig feature. */
 	// +optional
 	ResourceUsageExportConfig *ClusterResourceUsageExportConfig `json:"resourceUsageExportConfig,omitempty"`

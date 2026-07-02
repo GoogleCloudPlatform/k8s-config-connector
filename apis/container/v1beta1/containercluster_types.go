@@ -1509,6 +1509,10 @@ type ContainerClusterSpec struct {
 	// +kcc:proto:field=google.container.v1.Cluster.locations
 	NodeLocations []string `json:"nodeLocations,omitempty"`
 
+	/* The GCE resource labels (a map of key/value pairs) to be applied to the cluster. */
+	// +kcc:proto:field=google.container.v1.Cluster.resource_labels
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
+
 	/* Node pool configs that apply to all auto-provisioned node pools in autopilot clusters and node auto-provisioning enabled clusters. */
 	// +kcc:proto:field=google.container.v1.Cluster.node_pool_auto_config
 	NodePoolAutoConfig *NodePoolAutoConfig `json:"nodePoolAutoConfig,omitempty"`
