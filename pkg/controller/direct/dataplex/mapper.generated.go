@@ -318,7 +318,7 @@ func DataDiscoverySpec_StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb
 	out.ExcludePatterns = in.ExcludePatterns
 	out.CsvOptions = DataDiscoverySpec_StorageConfig_CsvOptions_FromProto(mapCtx, in.GetCsvOptions())
 	out.JsonOptions = DataDiscoverySpec_StorageConfig_JsonOptions_FromProto(mapCtx, in.GetJsonOptions())
-	out.UnstructuredDataOptions = DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_FromProto(mapCtx, in.GetUnstructuredDataOptions())
+	// out.UnstructuredDataOptions = DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_FromProto(mapCtx, in.GetUnstructuredDataOptions())
 	return out
 }
 func DataDiscoverySpec_StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataDiscoverySpec_StorageConfig) *pb.DataDiscoverySpec_StorageConfig {
@@ -330,7 +330,7 @@ func DataDiscoverySpec_StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.ExcludePatterns = in.ExcludePatterns
 	out.CsvOptions = DataDiscoverySpec_StorageConfig_CsvOptions_ToProto(mapCtx, in.CsvOptions)
 	out.JsonOptions = DataDiscoverySpec_StorageConfig_JsonOptions_ToProto(mapCtx, in.JsonOptions)
-	out.UnstructuredDataOptions = DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_ToProto(mapCtx, in.UnstructuredDataOptions)
+	// out.UnstructuredDataOptions = DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_ToProto(mapCtx, in.UnstructuredDataOptions)
 	return out
 }
 func DataDiscoverySpec_StorageConfig_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig_CsvOptions) *krm.DataDiscoverySpec_StorageConfig_CsvOptions {
@@ -375,6 +375,7 @@ func DataDiscoverySpec_StorageConfig_JsonOptions_ToProto(mapCtx *direct.MapConte
 	out.TypeInferenceDisabled = direct.ValueOf(in.TypeInferenceDisabled)
 	return out
 }
+/*
 func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_FromProto(mapCtx *direct.MapContext, in *pb.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions) *krm.DataDiscoverySpec_StorageConfig_UnstructuredDataOptions {
 	if in == nil {
 		return nil
@@ -391,6 +392,7 @@ func DataDiscoverySpec_StorageConfig_UnstructuredDataOptions_ToProto(mapCtx *dir
 	out.SemanticInferenceEnabled = direct.ValueOf(in.SemanticInferenceEnabled)
 	return out
 }
+*/
 func DataProfileResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult) *krm.DataProfileResultObservedState {
 	if in == nil {
 		return nil
@@ -600,7 +602,7 @@ func DataProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileSpec
 	out.IncludeFields = DataProfileSpec_SelectedFields_FromProto(mapCtx, in.GetIncludeFields())
 	out.ExcludeFields = DataProfileSpec_SelectedFields_FromProto(mapCtx, in.GetExcludeFields())
 	out.CatalogPublishingEnabled = direct.LazyPtr(in.GetCatalogPublishingEnabled())
-	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	// out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	return out
 }
 func DataProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileSpec) *pb.DataProfileSpec {
@@ -614,7 +616,7 @@ func DataProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataProfileSpec)
 	out.IncludeFields = DataProfileSpec_SelectedFields_ToProto(mapCtx, in.IncludeFields)
 	out.ExcludeFields = DataProfileSpec_SelectedFields_ToProto(mapCtx, in.ExcludeFields)
 	out.CatalogPublishingEnabled = direct.ValueOf(in.CatalogPublishingEnabled)
-	out.Mode = direct.Enum_ToProto[pb.DataProfileSpec_Mode](mapCtx, in.Mode)
+	// out.Mode = direct.Enum_ToProto[pb.DataProfileSpec_Mode](mapCtx, in.Mode)
 	return out
 }
 func DataProfileSpec_PostScanActions_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileSpec_PostScanActions) *krm.DataProfileSpec_PostScanActions {
@@ -797,7 +799,7 @@ func DataQualityRule_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule
 	out.RowConditionExpectation = DataQualityRule_RowConditionExpectation_FromProto(mapCtx, in.GetRowConditionExpectation())
 	out.TableConditionExpectation = DataQualityRule_TableConditionExpectation_FromProto(mapCtx, in.GetTableConditionExpectation())
 	out.SQLAssertion = DataQualityRule_SQLAssertion_FromProto(mapCtx, in.GetSqlAssertion())
-	out.TemplateReference = DataQualityRule_TemplateReference_FromProto(mapCtx, in.GetTemplateReference())
+	// out.TemplateReference = DataQualityRule_TemplateReference_FromProto(mapCtx, in.GetTemplateReference())
 	out.Column = direct.LazyPtr(in.GetColumn())
 	out.IgnoreNull = direct.LazyPtr(in.GetIgnoreNull())
 	out.Dimension = direct.LazyPtr(in.GetDimension())
@@ -842,9 +844,9 @@ func DataQualityRule_ToProto(mapCtx *direct.MapContext, in *krm.DataQualityRule)
 	if oneof := DataQualityRule_SQLAssertion_ToProto(mapCtx, in.SQLAssertion); oneof != nil {
 		out.RuleType = &pb.DataQualityRule_SqlAssertion_{SqlAssertion: oneof}
 	}
-	if oneof := DataQualityRule_TemplateReference_ToProto(mapCtx, in.TemplateReference); oneof != nil {
-		out.RuleType = &pb.DataQualityRule_TemplateReference_{TemplateReference: oneof}
-	}
+	// if oneof := DataQualityRule_TemplateReference_ToProto(mapCtx, in.TemplateReference); oneof != nil {
+	// 	out.RuleType = &pb.DataQualityRule_TemplateReference_{TemplateReference: oneof}
+	// }
 	out.Column = direct.ValueOf(in.Column)
 	out.IgnoreNull = direct.ValueOf(in.IgnoreNull)
 	out.Dimension = direct.ValueOf(in.Dimension)
@@ -1047,6 +1049,7 @@ func DataQualityRule_TableConditionExpectation_ToProto(mapCtx *direct.MapContext
 	out.SqlExpression = direct.ValueOf(in.SQLExpression)
 	return out
 }
+/*
 func DataQualityRule_TemplateReference_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_TemplateReference) *krm.DataQualityRule_TemplateReference {
 	if in == nil {
 		return nil
@@ -1069,6 +1072,7 @@ func DataQualityRule_TemplateReference_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: RuleTemplate
 	return out
 }
+*/
 func DataQualityRule_UniquenessExpectation_FromProto(mapCtx *direct.MapContext, in *pb.DataQualityRule_UniquenessExpectation) *krm.DataQualityRule_UniquenessExpectation {
 	if in == nil {
 		return nil

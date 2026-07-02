@@ -155,8 +155,8 @@ func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: PointInTimeRecoveryEnabled
 	// MISSING: TransactionLogRetentionDays
 	// MISSING: BackupRetentionSettings
-	out.TransactionalLogStorageState = EnumPtr_ToProto[pb.BackupConfiguration_TransactionalLogStorageState][pb.BackupConfiguration_TransactionalLogStorageState](mapCtx, in.TransactionalLogStorageState)
-	out.BackupTier = EnumPtr_ToProto[pb.BackupConfiguration_BackupTier][pb.BackupConfiguration_BackupTier](mapCtx, in.BackupTier)
+	out.TransactionalLogStorageState = direct.EnumPtr_ToProto[pb.BackupConfiguration_TransactionalLogStorageState](mapCtx, in.TransactionalLogStorageState)
+	out.BackupTier = direct.EnumPtr_ToProto[pb.BackupConfiguration_BackupTier](mapCtx, in.BackupTier)
 	return out
 }
 func BackupRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.BackupRetentionSettings) *krm.BackupRetentionSettings {
@@ -413,7 +413,7 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	// MISSING: AvailableMaintenanceVersions
 	out.MaintenanceVersion = direct.ValueOf(in.MaintenanceVersion)
 	// MISSING: UpgradableDatabaseVersions
-	out.SqlNetworkArchitecture = EnumPtr_ToProto[pb.DatabaseInstance_SqlNetworkArchitecture][pb.DatabaseInstance_SqlNetworkArchitecture](mapCtx, in.SQLNetworkArchitecture)
+	out.SqlNetworkArchitecture = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlNetworkArchitecture](mapCtx, in.SQLNetworkArchitecture)
 	// MISSING: PSCServiceAttachmentLink
 	// MISSING: DNSName
 	// MISSING: PrimaryDNSName
@@ -599,7 +599,7 @@ func DatabaseInstance_PoolNodeConfigObservedState_ToProto(mapCtx *direct.MapCont
 	out.GceZone = in.GCEZone
 	out.IpAddresses = direct.Slice_ToProto(mapCtx, in.IPAddresses, IPMapping_ToProto)
 	out.DnsName = in.DNSName
-	out.State = EnumPtr_ToProto[pb.DatabaseInstance_SqlInstanceState][pb.DatabaseInstance_SqlInstanceState](mapCtx, in.State)
+	out.State = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlInstanceState](mapCtx, in.State)
 	out.DnsNames = direct.Slice_ToProto(mapCtx, in.DNSNames, DNSNameMappingObservedState_ToProto)
 	out.PscServiceAttachmentLink = in.PSCServiceAttachmentLink
 	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PSCAutoConnections, PSCAutoConnectionConfigObservedState_ToProto)
@@ -637,7 +637,7 @@ func DatabaseInstance_SQLOutOfDiskReport_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.DatabaseInstance_SqlOutOfDiskReport{}
-	out.SqlOutOfDiskState = EnumPtr_ToProto[pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState][pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState](mapCtx, in.SQLOutOfDiskState)
+	out.SqlOutOfDiskState = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState](mapCtx, in.SQLOutOfDiskState)
 	out.SqlMinRecommendedIncreaseSizeGb = in.SQLMinRecommendedIncreaseSizeGB
 	return out
 }
@@ -821,10 +821,10 @@ func IPConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.IPConfiguration)
 	out.EnablePrivatePathForGoogleCloudServices = direct.BoolValue_ToProto(mapCtx, in.EnablePrivatePathForGoogleCloudServices)
 	out.SslMode = direct.Enum_ToProto[pb.IpConfiguration_SslMode](mapCtx, in.SSLMode)
 	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
-	out.ServerCaMode = EnumPtr_ToProto[pb.IpConfiguration_CaMode][pb.IpConfiguration_CaMode](mapCtx, in.ServerCAMode)
+	out.ServerCaMode = direct.EnumPtr_ToProto[pb.IpConfiguration_CaMode](mapCtx, in.ServerCAMode)
 	out.CustomSubjectAlternativeNames = in.CustomSubjectAlternativeNames
 	out.ServerCaPool = in.ServerCAPool
-	out.ServerCertificateRotationMode = EnumPtr_ToProto[pb.IpConfiguration_ServerCertificateRotationMode][pb.IpConfiguration_ServerCertificateRotationMode](mapCtx, in.ServerCertificateRotationMode)
+	out.ServerCertificateRotationMode = direct.EnumPtr_ToProto[pb.IpConfiguration_ServerCertificateRotationMode](mapCtx, in.ServerCertificateRotationMode)
 	return out
 }
 func IPConfigurationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IpConfiguration) *krm.IPConfigurationObservedState {
@@ -1107,8 +1107,8 @@ func PSCAutoConnectionConfigObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out.ConsumerNetworkStatus = in.ConsumerNetworkStatus
 	out.ServiceConnectionPolicy = in.ServiceConnectionPolicy
 	out.ServiceConnectionPolicyCreationResult = in.ServiceConnectionPolicyCreationResult
-	out.InstanceAutoDnsStatus = EnumPtr_ToProto[pb.AutoDnsStatus][pb.AutoDnsStatus](mapCtx, in.InstanceAutoDNSStatus)
-	out.WriteEndpointAutoDnsStatus = EnumPtr_ToProto[pb.AutoDnsStatus][pb.AutoDnsStatus](mapCtx, in.WriteEndpointAutoDNSStatus)
+	out.InstanceAutoDnsStatus = direct.EnumPtr_ToProto[pb.AutoDnsStatus](mapCtx, in.InstanceAutoDNSStatus)
+	out.WriteEndpointAutoDnsStatus = direct.EnumPtr_ToProto[pb.AutoDnsStatus](mapCtx, in.WriteEndpointAutoDNSStatus)
 	return out
 }
 func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
@@ -1234,7 +1234,7 @@ func PerformanceCaptureConfig_ToProto(mapCtx *direct.MapContext, in *krm.Perform
 	out.HistoryListLengthThresholdCount = in.HistoryListLengthThresholdCount
 	out.TransactionKillThresholdSeconds = in.TransactionKillThresholdSeconds
 	out.TransactionKillExcludedUserHosts = in.TransactionKillExcludedUserHosts
-	out.TransactionKillType = EnumPtr_ToProto[pb.PerformanceCaptureConfig_TransactionKillType][pb.PerformanceCaptureConfig_TransactionKillType](mapCtx, in.TransactionKillType)
+	out.TransactionKillType = direct.EnumPtr_ToProto[pb.PerformanceCaptureConfig_TransactionKillType](mapCtx, in.TransactionKillType)
 	return out
 }
 func ReadPoolAutoScaleConfig_FromProto(mapCtx *direct.MapContext, in *pb.ReadPoolAutoScaleConfig) *krm.ReadPoolAutoScaleConfig {
@@ -1571,7 +1571,7 @@ func Settings_ToProto(mapCtx *direct.MapContext, in *krm.Settings) *pb.Settings 
 	out.AcceleratedReplicaMode = direct.BoolValue_ToProto(mapCtx, in.AcceleratedReplicaMode)
 	out.AutoUpgradeEnabled = in.AutoUpgradeEnabled
 	out.EntraidConfig = SQLServerEntraIDConfig_ToProto(mapCtx, in.EntraidConfig)
-	out.DataApiAccess = EnumPtr_ToProto[pb.Settings_DataApiAccess][pb.Settings_DataApiAccess](mapCtx, in.DataAPIAccess)
+	out.DataApiAccess = direct.EnumPtr_ToProto[pb.Settings_DataApiAccess](mapCtx, in.DataAPIAccess)
 	out.PerformanceCaptureConfig = PerformanceCaptureConfig_ToProto(mapCtx, in.PerformanceCaptureConfig)
 	return out
 }

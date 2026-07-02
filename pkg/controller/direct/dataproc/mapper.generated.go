@@ -2345,7 +2345,7 @@ func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_FromProto(mapCtx *dire
 	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelection{}
 	out.MachineTypes = in.MachineTypes
 	out.Rank = direct.LazyPtr(in.GetRank())
-	out.DiskConfig = DiskConfig_v1alpha1_FromProto(mapCtx, in.GetDiskConfig())
+	// out.DiskConfig = DiskConfig_v1alpha1_FromProto(mapCtx, in.GetDiskConfig())
 	return out
 }
 func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelection) *pb.InstanceFlexibilityPolicy_InstanceSelection {
@@ -2355,7 +2355,7 @@ func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto(mapCtx *direct
 	out := &pb.InstanceFlexibilityPolicy_InstanceSelection{}
 	out.MachineTypes = in.MachineTypes
 	out.Rank = direct.ValueOf(in.Rank)
-	out.DiskConfig = DiskConfig_v1alpha1_ToProto(mapCtx, in.DiskConfig)
+	// out.DiskConfig = DiskConfig_v1alpha1_ToProto(mapCtx, in.DiskConfig)
 	return out
 }
 func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState {

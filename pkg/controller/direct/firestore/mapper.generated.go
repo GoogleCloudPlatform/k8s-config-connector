@@ -454,7 +454,7 @@ func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index
 	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
 	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
 	out.VectorConfig = Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx, in.GetVectorConfig())
-	out.SearchConfig = Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx, in.GetSearchConfig())
+	// out.SearchConfig = Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx, in.GetSearchConfig())
 	return out
 }
 func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField) *pb.Index_IndexField {
@@ -472,9 +472,9 @@ func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfiresto
 	if oneof := Index_IndexField_VectorConfig_v1alpha1_ToProto(mapCtx, in.VectorConfig); oneof != nil {
 		out.ValueMode = &pb.Index_IndexField_VectorConfig_{VectorConfig: oneof}
 	}
-	if oneof := Index_IndexField_SearchConfig_v1alpha1_ToProto(mapCtx, in.SearchConfig); oneof != nil {
-		out.ValueMode = &pb.Index_IndexField_SearchConfig_{SearchConfig: oneof}
-	}
+	// if oneof := Index_IndexField_SearchConfig_v1alpha1_ToProto(mapCtx, in.SearchConfig); oneof != nil {
+	// 	out.ValueMode = &pb.Index_IndexField_SearchConfig_{SearchConfig: oneof}
+	// }
 	return out
 }
 func Index_IndexField_Order_ToProto(mapCtx *direct.MapContext, in *string) *pb.Index_IndexField_Order_ {
@@ -489,6 +489,7 @@ func Index_IndexField_ArrayConfig_ToProto(mapCtx *direct.MapContext, in *string)
 	}
 	return &pb.Index_IndexField_ArrayConfig_{ArrayConfig: direct.Enum_ToProto[pb.Index_IndexField_ArrayConfig](mapCtx, in)}
 }
+/*
 func Index_IndexField_SearchConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_SearchConfig) *krmfirestorev1alpha1.Index_IndexField_SearchConfig {
 	if in == nil {
 		return nil
@@ -557,6 +558,7 @@ func Index_IndexField_SearchConfig_SearchTextSpec_v1alpha1_ToProto(mapCtx *direc
 	out.IndexSpecs = direct.Slice_ToProto(mapCtx, in.IndexSpecs, Index_IndexField_SearchConfig_SearchTextIndexSpec_v1alpha1_ToProto)
 	return out
 }
+*/
 func Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krmfirestorev1alpha1.Index_IndexField_VectorConfig {
 	if in == nil {
 		return nil
