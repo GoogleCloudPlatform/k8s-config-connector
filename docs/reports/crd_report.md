@@ -532,6 +532,7 @@
 | storage.cnrm.cloud.google.com                 | StorageDefaultObjectAccessControl               | False        | True        | False  | Terraform  | False       |
 | storage.cnrm.cloud.google.com                 | StorageFolder                                   | True         | False       | False  | Direct     | True        |
 | storage.cnrm.cloud.google.com                 | StorageHMACKey                                  | True         | False       | False  | Terraform  | False       |
+| storageinsights.cnrm.cloud.google.com         | StorageInsightsDatasetConfig                    | True         | False       | False  | Direct     | True        |
 | storage.cnrm.cloud.google.com                 | StorageManagedFolder                            | True         | False       | False  | Direct     | True        |
 | storage.cnrm.cloud.google.com                 | StorageNotification                             | False        | True        | False  | Terraform  | False       |
 | storagetransfer.cnrm.cloud.google.com         | StorageTransferAgentPool                        | True         | False       | False  | Terraform  | False       |
