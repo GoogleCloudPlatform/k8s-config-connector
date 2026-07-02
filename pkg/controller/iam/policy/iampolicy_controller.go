@@ -300,6 +300,9 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 
 	diff := iamv1beta1.IAMPolicySpecDiffers(&oldIAMPolicy.Spec, &policy.Spec)
 	if diff.HasDiff() {
+		if policy.Status.ObservedGeneration == 0 {
+			diff.IsNewObject = true
+		}
 		structuredreporting.ReportDiff(r.Ctx, diff)
 	}
 
