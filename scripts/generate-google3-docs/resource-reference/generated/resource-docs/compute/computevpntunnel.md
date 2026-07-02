@@ -133,9 +133,7 @@ vpnGatewayRef:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. IKE protocol version to use when establishing the VPN tunnel with
-peer VPN gateway.
-Acceptable IKE versions are 1 or 2. Default version is 2.</p>
+            <p>Immutable. IKE protocol version to use when establishing the VPN tunnel with peer VPN gateway. Acceptable IKE versions are 1 or 2. Default version is 2.</p>
         </td>
     </tr>
     <tr>
@@ -145,10 +143,7 @@ Acceptable IKE versions are 1 or 2. Default version is 2.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Local traffic selector to use when establishing the VPN tunnel with
-peer VPN gateway. The value should be a CIDR formatted string,
-for example '192.168.0.0/16'. The ranges should be disjoint.
-Only IPv4 is supported.</p>
+            <p>Immutable. Local traffic selector to use when establishing the VPN tunnel with peer VPN gateway. The value should be a CIDR formatted string, for example '192.168.0.0/16'. The ranges should be disjoint. Only IPv4 is supported.</p>
         </td>
     </tr>
     <tr>
@@ -178,8 +173,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The peer side external VPN gateway to which this VPN tunnel
-is connected.</p>
+            <p>The peer side external VPN gateway to which this VPN tunnel is connected.</p>
         </td>
     </tr>
     <tr>
@@ -189,7 +183,7 @@ is connected.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeExternalVPNGateway` resource.</p>
+            <p>A reference to an externally managed ComputeExternalVPNGateway resource. Should be in the format "projects/{{projectID}}/global/externalVpnGateways/{{externalVPNGatewayID}}".</p>
         </td>
     </tr>
     <tr>
@@ -199,7 +193,7 @@ is connected.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeExternalVPNGateway resource.</p>
         </td>
     </tr>
     <tr>
@@ -209,7 +203,7 @@ is connected.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeExternalVPNGateway resource.</p>
         </td>
     </tr>
     <tr>
@@ -219,9 +213,7 @@ is connected.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The peer side HA GCP VPN gateway to which this VPN tunnel is
-connected. If provided, the VPN tunnel will automatically use the
-same VPN gateway interface ID in the peer GCP VPN gateway.</p>
+            <p>The peer side HA GCP VPN gateway to which this VPN tunnel is connected. If provided, the VPN tunnel will automatically use the same VPN gateway interface ID in the peer GCP VPN gateway.</p>
         </td>
     </tr>
     <tr>
@@ -231,7 +223,7 @@ same VPN gateway interface ID in the peer GCP VPN gateway.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeVPNGateway` resource.</p>
+            <p>A reference to an externally managed ComputeVPNGateway resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/vpnGateways/{{vpnGatewayID}}".</p>
         </td>
     </tr>
     <tr>
@@ -241,7 +233,7 @@ same VPN gateway interface ID in the peer GCP VPN gateway.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeVPNGateway resource.</p>
         </td>
     </tr>
     <tr>
@@ -251,7 +243,7 @@ same VPN gateway interface ID in the peer GCP VPN gateway.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeVPNGateway resource.</p>
         </td>
     </tr>
     <tr>
@@ -281,10 +273,7 @@ same VPN gateway interface ID in the peer GCP VPN gateway.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Remote traffic selector to use when establishing the VPN tunnel with
-peer VPN gateway. The value should be a CIDR formatted string,
-for example '192.168.0.0/16'. The ranges should be disjoint.
-Only IPv4 is supported.</p>
+            <p>Immutable. Remote traffic selector to use when establishing the VPN tunnel with peer VPN gateway. The value should be a CIDR formatted string, for example '192.168.0.0/16'. The ranges should be disjoint. Only IPv4 is supported.</p>
         </td>
     </tr>
     <tr>
@@ -324,7 +313,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeRouter` resource.</p>
+            <p>A reference to an externally managed ComputeRouter resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/routers/{{routerID}}".</p>
         </td>
     </tr>
     <tr>
@@ -334,7 +323,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -344,7 +333,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeRouter resource.</p>
         </td>
     </tr>
     <tr>
@@ -354,8 +343,7 @@ Only IPv4 is supported.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Shared secret used to set the secure session between the Cloud VPN
-gateway and the peer VPN gateway.</p>
+            <p>Immutable. Shared secret used to set the secure session between the Cloud VPN gateway and the peer VPN gateway.</p>
         </td>
     </tr>
     <tr>
@@ -415,8 +403,7 @@ gateway and the peer VPN gateway.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The ComputeTargetVPNGateway with which this VPN tunnel is
-associated.</p>
+            <p>The ComputeTargetVPNGateway with which this VPN tunnel is associated.</p>
         </td>
     </tr>
     <tr>
@@ -426,7 +413,7 @@ associated.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeTargetVPNGateway` resource.</p>
+            <p>The ComputeTargetVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -436,7 +423,7 @@ associated.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `ComputeTargetVPNGateway` resource.</p>
         </td>
     </tr>
     <tr>
@@ -446,7 +433,7 @@ associated.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `ComputeTargetVPNGateway` resource.</p>
         </td>
     </tr>
     <tr>
@@ -466,9 +453,7 @@ associated.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The ComputeVPNGateway with which this VPN tunnel is associated.
-This must be used if a High Availability VPN gateway resource is
-created.</p>
+            <p>The ComputeVPNGateway with which this VPN tunnel is associated. This must be used if a High Availability VPN gateway resource is created.</p>
         </td>
     </tr>
     <tr>
@@ -478,7 +463,7 @@ created.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeVPNGateway` resource.</p>
+            <p>A reference to an externally managed ComputeVPNGateway resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/vpnGateways/{{vpnGatewayID}}".</p>
         </td>
     </tr>
     <tr>
@@ -488,7 +473,7 @@ created.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeVPNGateway resource.</p>
         </td>
     </tr>
     <tr>
@@ -498,7 +483,7 @@ created.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeVPNGateway resource.</p>
         </td>
     </tr>
 </tbody>
@@ -535,7 +520,7 @@ tunnelId: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the ComputeVPNTunnel's current state.</p>
         </td>
     </tr>
     <tr>
@@ -598,8 +583,7 @@ tunnelId: string
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The fingerprint used for optimistic locking of this resource.  Used
-internally during updates.</p>
+            <p>The fingerprint used for optimistic locking of this resource.  Used internally during updates.</p>
         </td>
     </tr>
     <tr>

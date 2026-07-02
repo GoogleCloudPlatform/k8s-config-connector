@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/vpnGateways/computevpngateway-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeVPNGateway
   name: computevpngateway-${uniqueId}

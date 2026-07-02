@@ -62,6 +62,7 @@ go run . generate-types \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
   --resource ComputeURLMap:UrlMap \
   --resource ComputeVPNGateway:VpnGateway \
+  --resource ComputeVPNTunnel:VpnTunnel \
   --resource ComputeInterconnectAttachment:InterconnectAttachment \
   --include-skipped-output
 
