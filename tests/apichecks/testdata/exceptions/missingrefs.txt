@@ -16,6 +16,10 @@
 [refs] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.connectionId" should be a reference
 [refs] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.allUpdatesRule.monitoringNotificationChannels[].external" should be a reference
 [refs] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultAdmissionRule.requireAttestationsBy[].external" should be a reference
+[refs] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.issueModels[].external" should be a reference
+[refs] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.phraseMatchers" should be a reference
+[refs] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.phraseMatchers[].external" should be a reference
+[refs] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.summarizationConfig.conversationProfile" should be a reference
 [refs] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.workerPool" should be a reference
 [refs] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" should be a reference
 [refs] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.resourcePolicies[].external" should be a reference

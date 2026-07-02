@@ -21,6 +21,7 @@
 // resource: CCInsightsPhraseMatcher:PhraseMatcher
 // resource: CCInsightsIssueModel:IssueModel
 // resource: CCInsightsConversation:Conversation
+// resource: CCInsightsAnalysisRule:AnalysisRule
 
 package v1alpha1
 
@@ -78,6 +79,46 @@ type AnalysisResult_CallAnalysisMetadata struct {
 	QaScorecardResults []QaScorecardResult `json:"qaScorecardResults,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.AnalysisRule", skipping
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.AnalysisRule
+type AnalysisRule struct {
+	// Identifier. The resource name of the analysis rule.
+	//  Format:
+	//  projects/{project}/locations/{location}/analysisRules/{analysis_rule}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.name
+	Name *string `json:"name,omitempty"`
+
+	// Display Name of the analysis rule.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Filter for the conversations that should apply this analysis
+	//  rule. An empty filter means this analysis rule applies to all
+	//  conversations.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.conversation_filter
+	ConversationFilter *string `json:"conversationFilter,omitempty"`
+
+	// Selector of annotators to run and the phrase matchers to use for
+	//  conversations that matches the conversation_filter. If not specified, NO
+	//  annotators will be run.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.annotator_selector
+	AnnotatorSelector *AnnotatorSelector `json:"annotatorSelector,omitempty"`
+
+	// Percentage of conversations that we should apply this analysis setting
+	//  automatically, between [0, 1]. For example, 0.1 means 10%. Conversations
+	//  are sampled in a determenestic way. The original runtime_percentage &
+	//  upload percentage will be replaced by defining filters on the conversation.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.analysis_percentage
+	AnalysisPercentage *float64 `json:"analysisPercentage,omitempty"`
+
+	// If true, apply this rule to conversations. Otherwise, this rule is
+	//  inactive and saved as a draft.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.active
+	Active *bool `json:"active,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.contactcenterinsights.v1.AnnotationBoundary
 type AnnotationBoundary struct {
 	// The word index of this boundary with respect to the first word in the
@@ -90,6 +131,8 @@ type AnnotationBoundary struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnnotationBoundary.transcript_index
 	TranscriptIndex *int32 `json:"transcriptIndex,omitempty"`
 }
+
+/* found existing non-generated go type "AnnotatorSelector", skipping
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.AnnotatorSelector
 type AnnotatorSelector struct {
@@ -154,6 +197,7 @@ type AnnotatorSelector struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnnotatorSelector.qa_config
 	QaConfig *AnnotatorSelector_QaConfig `json:"qaConfig,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.AnnotatorSelector.QaConfig
 type AnnotatorSelector_QaConfig struct {
@@ -1317,6 +1361,20 @@ type AnalysisResult_CallAnalysisMetadataObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.qa_scorecard_results
 	QaScorecardResults []QaScorecardResultObservedState `json:"qaScorecardResults,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.AnalysisRule", skipping
+
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.AnalysisRule
+type AnalysisRuleObservedState struct {
+	// Output only. The time at which this analysis rule was created.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The most recent time at which this analysis rule was updated.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisRule.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.Conversation", skipping
 

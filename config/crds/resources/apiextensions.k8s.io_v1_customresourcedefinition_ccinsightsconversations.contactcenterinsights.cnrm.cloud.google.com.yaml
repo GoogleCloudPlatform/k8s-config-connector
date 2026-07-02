@@ -296,7 +296,37 @@ spec:
                               only the first provided issue model will be used for
                               inference.
                             items:
-                              type: string
+                              description: CCInsightsIssueModelRef is a reference
+                                to a CCInsightsIssueModel.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    CCInsightsIssueModel resource. Should be in the
+                                    format "projects/{{projectID}}/locations/{{location}}/issueModels/{{issueModelID}}".
+                                  type: string
+                                name:
+                                  description: The name of a CCInsightsIssueModel
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a CCInsightsIssueModel
+                                    resource.
+                                  type: string
+                              type: object
                             type: array
                           phraseMatchers:
                             description: 'The list of phrase matchers to run. If not
@@ -305,7 +335,37 @@ spec:
                               be used. Phrase matchers will be run only if run_phrase_matcher_annotator
                               is set to true. Format: projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}'
                             items:
-                              type: string
+                              description: CCInsightsPhraseMatcherRef is a reference
+                                to a CCInsightsPhraseMatcher.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    CCInsightsPhraseMatcher resource. Should be in
+                                    the format "projects/{{projectID}}/locations/{{location}}/phraseMatchers/{{phraseMatcherID}}".
+                                  type: string
+                                name:
+                                  description: The name of a CCInsightsPhraseMatcher
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a CCInsightsPhraseMatcher
+                                    resource.
+                                  type: string
+                              type: object
                             type: array
                           qaConfig:
                             description: Configuration for the QA annotator.
