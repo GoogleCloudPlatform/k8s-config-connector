@@ -184,7 +184,11 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	mockRoundTripper.server = server
 
 	// We listen on a random port on 127.0.0.2, to avoid conflicts with the webhook server which starts on a random port on "default" localhost
+	// macOS fallback: if 127.0.0.2 is unavailable (no loopback alias), fall back to 127.0.0.1
 	listener, err := net.Listen("tcp", "127.0.0.2:0")
+	if err != nil {
+		listener, err = net.Listen("tcp", "127.0.0.1:0")
+	}
 	if err != nil {
 		return nil, fmt.Errorf("net.Listen failed: %w", err)
 	}

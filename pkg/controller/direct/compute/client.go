@@ -131,6 +131,18 @@ func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*com
 	return client, err
 }
 
+func (m *gcpClient) newBackendBucketsClient(ctx context.Context) (*compute.BackendBucketsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewBackendBucketsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute backendBuckets client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newFutureReservationsClient(ctx context.Context) (*compute.FutureReservationsClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {

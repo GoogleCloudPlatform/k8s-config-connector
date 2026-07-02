@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  storage-signing-key: QUFBQUFBQUFBQUFBQUFBQUFBQUFBQQ==
+kind: Secret
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: signing-key-${uniqueId}
+  namespace: ${projectId}
+type: Opaque

@@ -1,0 +1,1 @@
+Step1: Create a ComputeBackendBucketSignedURLKey and TOUCH it to trigger a second reconcile. Verifies that Update() is a no-op (the key is immutable in GCP) and that the controller does not attempt to re-create an already-existing key.
