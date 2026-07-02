@@ -2743,6 +2743,14 @@
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" is not set in unstructured objects
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.plaintext.value" is not set in unstructured objects
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.plaintext.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.currentBillingInfo.userCountBilling.userCount" is not set in unstructured objects
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.licenseType" is not set in unstructured objects
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.nextBillingInfo.userCountBilling.userCount" is not set in unstructured objects
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.product" is not set in unstructured objects
+[missing_field] crd=licensemanagerconfigurations.licensemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.crc32c" is not set in unstructured objects
 [missing_field] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.uri" is not set in unstructured objects
 [missing_field] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
