@@ -68,7 +68,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuresourcemanager"
 	mockspanner "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspanner/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspeech"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmwareengine"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmwareengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
@@ -165,7 +165,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockbigquerybiglake.New(env, storage))
 	services = append(services, mocknetapp.New(env, storage))
 	services = append(services, mockdataplex.New(env, storage))
-	services = append(services, mockvmwareengine.New(env, storage))
 	services = append(services, mockkms.New(env, storage))
 	services = append(services, mockgkebackup.New(env, storage))
 	services = append(services, mockrecaptchaenterprise.New(env, storage))
