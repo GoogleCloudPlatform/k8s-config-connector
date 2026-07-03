@@ -88,3 +88,12 @@ func (d *Diff) FieldIDs() []string {
 	sort.Strings(ids)
 	return ids
 }
+
+// FieldsByID returns a mutable map of field IDs to their DiffField details, making it easy to check membership and manipulate the diffs.
+func (d *Diff) FieldsByID() map[string]DiffField {
+	m := make(map[string]DiffField, len(d.Fields))
+	for _, f := range d.Fields {
+		m[f.ID] = f
+	}
+	return m
+}

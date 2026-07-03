@@ -13,6 +13,7 @@
 // limitations under the License.
 
 // +tool:controller-client
+// proto.service: google.cloud.compute.v1.ExternalVpnGateways
 // proto.service: google.cloud.compute.v1.NetworkEdgeSecurityServices
 // proto.service: google.cloud.compute.v1.NetworkAttachments
 // proto.service: google.cloud.compute.v1.HealthChecks
@@ -440,6 +441,18 @@ func (m *gcpClient) newRegionInstanceGroupManagersClient(ctx context.Context) (*
 	client, err := compute.NewRegionInstanceGroupManagersRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ComputeRegionInstanceGroupManagers client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newExternalVpnGatewaysClient(ctx context.Context) (*compute.ExternalVpnGatewaysClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewExternalVpnGatewaysRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeExternalVpnGateways client: %w", err)
 	}
 	return client, err
 }
