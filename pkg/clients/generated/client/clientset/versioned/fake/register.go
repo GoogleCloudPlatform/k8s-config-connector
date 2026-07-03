@@ -145,6 +145,7 @@ import (
 	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkemulticloud/v1alpha1"
 	grafeasv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/grafeas/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
+	hypercomputeclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/hypercomputecluster/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
@@ -153,6 +154,7 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
+	licensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/licensemanager/v1alpha1"
 	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/livestream/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/managedkafka/v1alpha1"
@@ -219,6 +221,7 @@ import (
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	testingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/testing/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
+	transcoderv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/transcoder/v1alpha1"
 	translatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/translate/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
@@ -367,6 +370,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	gkemulticloudv1alpha1.AddToScheme,
 	grafeasv1alpha1.AddToScheme,
 	healthcarev1alpha1.AddToScheme,
+	hypercomputeclusterv1alpha1.AddToScheme,
 	iamv1alpha1.AddToScheme,
 	iamv1beta1.AddToScheme,
 	iapv1beta1.AddToScheme,
@@ -375,6 +379,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	k8sv1alpha1.AddToScheme,
 	kmsv1alpha1.AddToScheme,
 	kmsv1beta1.AddToScheme,
+	licensemanagerv1alpha1.AddToScheme,
 	livestreamv1alpha1.AddToScheme,
 	loggingv1beta1.AddToScheme,
 	managedkafkav1alpha1.AddToScheme,
@@ -441,6 +446,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	tagsv1beta1.AddToScheme,
 	testingv1alpha1.AddToScheme,
 	tpuv1alpha1.AddToScheme,
+	transcoderv1alpha1.AddToScheme,
 	translatev1alpha1.AddToScheme,
 	vectorsearchv1alpha1.AddToScheme,
 	vertexaiv1alpha1.AddToScheme,

@@ -55,12 +55,24 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineIdentityMappingStores(names
 	return newFakeDiscoveryEngineIdentityMappingStores(c, namespace)
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineLicenseConfigs(namespace string) v1alpha1.DiscoveryEngineLicenseConfigInterface {
+	return newFakeDiscoveryEngineLicenseConfigs(c, namespace)
+}
+
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQueries(namespace string) v1alpha1.DiscoveryEngineSampleQueryInterface {
 	return newFakeDiscoveryEngineSampleQueries(c, namespace)
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQuerySets(namespace string) v1alpha1.DiscoveryEngineSampleQuerySetInterface {
 	return newFakeDiscoveryEngineSampleQuerySets(c, namespace)
+}
+
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSearchEngines(namespace string) v1alpha1.DiscoveryEngineSearchEngineInterface {
+	return newFakeDiscoveryEngineSearchEngines(c, namespace)
+}
+
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineServingConfigs(namespace string) v1alpha1.DiscoveryEngineServingConfigInterface {
+	return newFakeDiscoveryEngineServingConfigs(c, namespace)
 }
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSessions(namespace string) v1alpha1.DiscoveryEngineSessionInterface {

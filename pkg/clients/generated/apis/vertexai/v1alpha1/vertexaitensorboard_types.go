@@ -39,9 +39,8 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type TensorboardEncryptionSpec struct {
-	/* Immutable. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
-	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key. The key needs to be in the same region as where the resource is created. */
-	KmsKeyName string `json:"kmsKeyName"`
+	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
+	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type VertexAITensorboardSpec struct {
@@ -49,51 +48,73 @@ type VertexAITensorboardSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* User provided name of this Tensorboard. */
+	/* Required. User provided name of this Tensorboard. */
 	DisplayName string `json:"displayName"`
 
-	/* Immutable. Customer-managed encryption key spec for a Tensorboard. If set, this Tensorboard and all sub-resources of this Tensorboard will be secured by this key. */
+	/* Customer-managed encryption key spec for a Tensorboard. If set, this Tensorboard and all sub-resources of this Tensorboard will be secured by this key. */
 	// +optional
 	EncryptionSpec *TensorboardEncryptionSpec `json:"encryptionSpec,omitempty"`
+
+	/* Used to indicate if the TensorBoard instance is the default one. Each project & region can have at most one default TensorBoard instance. Creation of a default TensorBoard instance and updating an existing TensorBoard instance to be default will mark all other TensorBoard instances (if any) as non default. */
+	// +optional
+	IsDefault *bool `json:"isDefault,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The region of the tensorboard. eg us-central1. */
+	/* The region of this resource. */
 	Region string `json:"region"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The VertexAITensorboard ID (which is server-generated). If not given, Config Connector will create a new Tensorboard. If given, Config Connector will acquire the existing Tensorboard with this ID. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type TensorboardObservedStateStatus struct {
+	/* Output only. Consumer project Cloud Storage path prefix used to store blob data, which can either be a bucket or directory. Does not end with a '/'. */
+	// +optional
+	BlobStoragePathPrefix *string `json:"blobStoragePathPrefix,omitempty"`
+
+	/* Output only. Timestamp when this Tensorboard was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Name of the Tensorboard. Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}` */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Output only. The number of Runs stored in this Tensorboard. */
+	// +optional
+	RunCount *int32 `json:"runCount,omitempty"`
+
+	/* Output only. Reserved for future use. */
+	// +optional
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	/* Output only. Reserved for future use. */
+	// +optional
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	/* Output only. Timestamp when this Tensorboard was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type VertexAITensorboardStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAITensorboard's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Consumer project Cloud Storage path prefix used to store blob data, which can either be a bucket or directory. Does not end with a '/'. */
+	/* A unique specifier for the VertexAITensorboard resource in GCP. */
 	// +optional
-	BlobStoragePathPrefix *string `json:"blobStoragePathPrefix,omitempty"`
-
-	/* The timestamp of when the Tensorboard was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
-	/* Name of the Tensorboard. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The number of Runs stored in this Tensorboard. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	RunCount *string `json:"runCount,omitempty"`
-
-	/* The timestamp of when the Tensorboard was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *TensorboardObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(AIPlatformModel{}).Name(),
 	}
 
+	VertexAIExtensionGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIExtension{}).Name(),
+	}
+
 	VertexAIFeatureOnlineStoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

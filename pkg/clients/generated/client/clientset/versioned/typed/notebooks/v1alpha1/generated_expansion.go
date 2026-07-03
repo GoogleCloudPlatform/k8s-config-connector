@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type NotebookInstanceV2Expansion interface{}
+
 type NotebooksEnvironmentExpansion interface{}
 
 type NotebooksExecutionExpansion interface{}
