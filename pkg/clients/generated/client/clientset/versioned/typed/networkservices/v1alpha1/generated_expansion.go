@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type NetworkServicesAuthzExtensionExpansion interface{}
+
 type NetworkServicesEdgeCacheKeysetExpansion interface{}
 
 type NetworkServicesEdgeCacheOriginExpansion interface{}
