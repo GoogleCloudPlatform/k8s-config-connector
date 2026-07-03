@@ -3,95 +3,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "displayName": "monitoringnotificationchannel3-${uniqueId}",
-  "enabled": true,
-  "labels": {
-    "email_address": "dev@example.com"
-  },
-  "type": "email",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "displayName": "monitoringnotificationchannel3-${uniqueId}",
-  "enabled": true,
-  "labels": {
-    "email_address": "dev@example.com"
-  },
-  "mutationRecords": [
-    {
-      "mutateTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ],
-  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
-  "type": "email",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "displayName": "monitoringnotificationchannel3-${uniqueId}",
-  "enabled": true,
-  "labels": {
-    "email_address": "dev@example.com"
-  },
-  "mutationRecords": [
-    {
-      "mutateTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ],
-  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
-  "type": "email",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
-POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
   "displayName": "monitoringnotificationchannel1-${uniqueId}",
   "enabled": true,
   "labels": {
@@ -265,9 +176,22 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "monitoringnotificationchannel3-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -283,7 +207,7 @@ X-Xss-Protection: 0
   "creationRecord": {
     "mutateTime": "2024-04-01T12:34:56.123456Z"
   },
-  "displayName": "monitoringnotificationchannel1-${uniqueId}",
+  "displayName": "monitoringnotificationchannel3-${uniqueId}",
   "enabled": true,
   "labels": {
     "email_address": "dev@example.com"
@@ -321,7 +245,7 @@ X-Xss-Protection: 0
   "creationRecord": {
     "mutateTime": "2024-04-01T12:34:56.123456Z"
   },
-  "displayName": "monitoringnotificationchannel2-${uniqueId}",
+  "displayName": "monitoringnotificationchannel3-${uniqueId}",
   "enabled": true,
   "labels": {
     "email_address": "dev@example.com"
@@ -716,6 +640,24 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -811,95 +753,6 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionThreshold": {
-        "aggregations": [
-          {
-            "alignmentPeriod": "60s",
-            "crossSeriesReducer": "REDUCE_MEAN",
-            "groupByFields": [
-              "project",
-              "resource.label.instance_id",
-              "resource.label.zone"
-            ],
-            "perSeriesAligner": "ALIGN_MAX"
-          }
-        ],
-        "comparison": "COMPARISON_LT",
-        "duration": "900s",
-        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
-        "thresholdValue": 0.1,
-        "trigger": {
-          "count": 3
-        }
-      },
-      "displayName": "Very low CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Updated Test Alert Policy",
-  "documentation": {
-    "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”",
-    "mimeType": "text/markdown"
-  },
-  "enabled": false,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "notificationChannels": [
-    "projects/${projectId}/notificationChannels/${notificationChannelID}",
-    "projects/${projectId}/notificationChannels/${notificationChannelID}"
-  ],
-  "severity": "ERROR",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
-DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 

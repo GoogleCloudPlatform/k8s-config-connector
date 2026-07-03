@@ -21,6 +21,58 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://pubsub.googleapis.com/v1/projects/${projectId}/schemas?alt=json&schemaId=pubsubschema-${uniqueId}
+Content-Type: application/json
+
+{
+  "definition": "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}",
+  "name": "pubsubschema-${uniqueId}",
+  "type": "PROTOCOL_BUFFER"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "definition": "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}",
+  "name": "projects/${projectId}/schemas/pubsubschema-${uniqueId}",
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "revision-id-placeholder",
+  "type": "PROTOCOL_BUFFER"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "definition": "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}",
+  "name": "projects/${projectId}/schemas/pubsubschema-${uniqueId}",
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "revision-id-placeholder",
+  "type": "PROTOCOL_BUFFER"
+}
+
+---
+
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
@@ -93,58 +145,6 @@ X-Xss-Protection: 0
     "encoding": 1,
     "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
   }
-}
-
----
-
-POST https://pubsub.googleapis.com/v1/projects/${projectId}/schemas?alt=json&schemaId=pubsubschema-${uniqueId}
-Content-Type: application/json
-
-{
-  "definition": "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}",
-  "name": "pubsubschema-${uniqueId}",
-  "type": "PROTOCOL_BUFFER"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "definition": "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}",
-  "name": "projects/${projectId}/schemas/pubsubschema-${uniqueId}",
-  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
-  "revisionId": "revision-id-placeholder",
-  "type": "PROTOCOL_BUFFER"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "definition": "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}",
-  "name": "projects/${projectId}/schemas/pubsubschema-${uniqueId}",
-  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
-  "revisionId": "revision-id-placeholder",
-  "type": "PROTOCOL_BUFFER"
 }
 
 ---

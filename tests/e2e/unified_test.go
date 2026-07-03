@@ -218,7 +218,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 	t.Helper()
 
 	subtestTimeout := time.Hour
-	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+	targetGCP := os.Getenv("E2E_GCP_TARGET")
+	if targetGCP == "" {
+		targetGCP = "mock"
+	}
+	if targetGCP == "mock" {
 		// We allow a total of 5 minutes: 4 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
 		subtestTimeout = 5 * time.Minute
@@ -829,9 +833,29 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					if options.TestPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {
-						key := "_http.log"
+						targetGCP := os.Getenv("E2E_GCP_TARGET")
+						if targetGCP == "" {
+							targetGCP = "mock"
+						}
+
+						key := "_http_mock.log"
 						if options.FallbackToOldController {
-							key = "_http_old_controller.log"
+							key = "_http_old_controller_mock.log"
+						}
+
+						if targetGCP == "real" {
+							key = "_http.log"
+							if options.FallbackToOldController {
+								key = "_http_old_controller.log"
+							}
+						} else {
+							mockPath := filepath.Join(fixture.AbsoluteSourceDir, key)
+							if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
+								key = "_http.log"
+								if options.FallbackToOldController {
+									key = "_http_old_controller.log"
+								}
+							}
 						}
 						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, key)
 

@@ -262,13 +262,16 @@ func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest)
 		networkFQN := networkName.String()
 		network := &pb.Network{}
 		if err := s.storage.Get(ctx, networkFQN, network); err != nil {
-			return nil, err
-		}
-
-		network.Subnetworks, _ = removeFromSlice(network.Subnetworks, deleted.GetSelfLink())
-
-		if err := s.storage.Update(ctx, networkFQN, network); err != nil {
-			return nil, err
+			if status.Code(err) == codes.NotFound {
+				// Parent network already deleted, skip updating its subnetworks list
+			} else {
+				return nil, err
+			}
+		} else {
+			network.Subnetworks, _ = removeFromSlice(network.Subnetworks, deleted.GetSelfLink())
+			if err := s.storage.Update(ctx, networkFQN, network); err != nil {
+				return nil, err
+			}
 		}
 	}
 

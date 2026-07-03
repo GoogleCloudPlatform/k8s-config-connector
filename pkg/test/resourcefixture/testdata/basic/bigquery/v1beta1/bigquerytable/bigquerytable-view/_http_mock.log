@@ -1,191 +1,3 @@
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "clustering": {
-    "fields": [
-      "user_id"
-    ]
-  },
-  "friendlyName": "mv_test3",
-  "labels": {
-    "cnrm-test": "true",
-    "department_name": "marketing",
-    "managed-by-cnrm": "true"
-  },
-  "materializedView": {
-    "enableRefresh": true,
-    "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
-    "refreshIntervalMs": "1800000"
-  },
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  }
-}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "friendlyName": "main-table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "description": "User ID",
-        "mode": "REQUIRED",
-        "name": "user_id",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "description": "Unique identifier of the entity",
-        "mode": "REQUIRED",
-        "name": "guid",
-        "policyTags": {},
-        "type": "STRING"
-      }
-    ]
-  },
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-main-${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  }
-}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
 
@@ -332,145 +144,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "clustering": {
-    "fields": [
-      "user_id"
-    ]
-  },
-  "friendlyName": "mv_test3",
-  "labels": {
-    "cnrm-test": "true",
-    "department_name": "marketing",
-    "managed-by-cnrm": "true"
-  },
-  "materializedView": {
-    "enableRefresh": true,
-    "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
-    "refreshIntervalMs": "1800000"
-  },
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clustering": {
-    "fields": [
-      "user_id"
-    ]
-  },
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "friendlyName": "mv_test3",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "department_name": "marketing",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "materializedView": {
-    "enableRefresh": true,
-    "lastRefreshTime": "123456789",
-    "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
-    "refreshIntervalMs": "1800000"
-  },
-  "materializedViewStatus": {
-    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
-  },
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "dt"
-      }
-    ]
-  },
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "dt",
-        "type": "DATE"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "user_id",
-        "type": "STRING"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  },
-  "type": "MATERIALIZED_VIEW"
-}
-
----
-
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
 
 404 Not Found
@@ -619,6 +292,64 @@ X-Xss-Protection: 0
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
 
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "clustering": {
+    "fields": [
+      "user_id"
+    ]
+  },
+  "friendlyName": "mv_test3",
+  "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
+    "managed-by-cnrm": "true"
+  },
+  "materializedView": {
+    "enableRefresh": true,
+    "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+    "refreshIntervalMs": "1800000"
+  },
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "dt",
+    "type": "DAY"
+  }
+}
+
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -694,80 +425,6 @@ X-Xss-Protection: 0
     "type": "DAY"
   },
   "type": "MATERIALIZED_VIEW"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "friendlyName": "main-table",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "dt"
-      }
-    ]
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "type": "DATE"
-      },
-      {
-        "description": "User ID",
-        "mode": "REQUIRED",
-        "name": "user_id",
-        "type": "STRING"
-      },
-      {
-        "description": "Unique identifier of the entity",
-        "mode": "REQUIRED",
-        "name": "guid",
-        "type": "STRING"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytable-main-${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-main-${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  },
-  "type": "TABLE"
 }
 
 ---
@@ -853,7 +510,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
@@ -868,7 +525,81 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "main-table",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "dt"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Date",
+        "mode": "REQUIRED",
+        "name": "dt",
+        "type": "DATE"
+      },
+      {
+        "description": "User ID",
+        "mode": "REQUIRED",
+        "name": "user_id",
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytable-main-${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-main-${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "dt",
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
