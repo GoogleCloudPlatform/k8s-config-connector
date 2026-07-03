@@ -20,5 +20,6 @@
 // resource: NetworkServicesServiceBinding:ServiceBinding
 // resource: NetworkServicesLBRouteExtension:LbRouteExtension
 // resource: NetworkServicesWasmPlugin:WasmPlugin
+// resource: NetworkServicesAuthzExtension:AuthzExtension
 
 package v1alpha1
