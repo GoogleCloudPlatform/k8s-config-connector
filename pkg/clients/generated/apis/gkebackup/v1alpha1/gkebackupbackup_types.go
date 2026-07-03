@@ -236,7 +236,7 @@ type BackupSelectedApplicationsStatus struct {
 }
 
 type BackupSelectedNamespacesStatus struct {
-	/* Optional. A list of Kubernetes Namespaces */
+	/* Optional. A list of Kubernetes Namespaces. */
 	// +optional
 	Namespaces []string `json:"namespaces,omitempty"`
 }
