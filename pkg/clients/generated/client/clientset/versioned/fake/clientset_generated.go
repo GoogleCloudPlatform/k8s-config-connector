@@ -397,6 +397,8 @@ import (
 	faketagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1/fake"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
 	faketpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1/fake"
+	translatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/translate/v1alpha1"
+	faketranslatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/translate/v1alpha1/fake"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
 	fakevectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1/fake"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
@@ -1423,6 +1425,11 @@ func (c *Clientset) TagsV1beta1() tagsv1beta1.TagsV1beta1Interface {
 // TpuV1alpha1 retrieves the TpuV1alpha1Client
 func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return &faketpuv1alpha1.FakeTpuV1alpha1{Fake: &c.Fake}
+}
+
+// TranslateV1alpha1 retrieves the TranslateV1alpha1Client
+func (c *Clientset) TranslateV1alpha1() translatev1alpha1.TranslateV1alpha1Interface {
+	return &faketranslatev1alpha1.FakeTranslateV1alpha1{Fake: &c.Fake}
 }
 
 // VectorsearchV1alpha1 retrieves the VectorsearchV1alpha1Client
