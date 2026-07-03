@@ -79,6 +79,13 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Apigee Registry
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
 
+		// APIHub
+		"//apihub.googleapis.com/projects/{}/locations/{}/apis/{}":                      true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}":               true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/externalApis/{}":              true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/plugins/{}":                   true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/runtimeProjectAttachments/{}": true,
+
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
 
