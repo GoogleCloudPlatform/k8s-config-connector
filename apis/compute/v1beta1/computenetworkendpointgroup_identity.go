@@ -71,15 +71,20 @@ func getIdentityFromComputeNetworkEndpointGroupSpec(ctx context.Context, reader 
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	u, ok := obj.(*unstructured.Unstructured)
-	if !ok {
-		return nil, fmt.Errorf("expected *unstructured.Unstructured, got %T", obj)
+	var location string
+	switch t := obj.(type) {
+	case *unstructured.Unstructured:
+		var err error
+		location, _, err = unstructured.NestedString(t.Object, "spec", "location")
+		if err != nil {
+			return nil, fmt.Errorf("cannot resolve location: %w", err)
+		}
+	case *ComputeNetworkEndpointGroup:
+		location = t.Spec.Location
+	default:
+		return nil, fmt.Errorf("unexpected object type: %T", obj)
 	}
 
-	location, _, err := unstructured.NestedString(u.Object, "spec", "location")
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location: %w", err)
-	}
 	if location == "" {
 		return nil, fmt.Errorf("location is required but not found in spec")
 	}
@@ -95,4 +100,26 @@ func getIdentityFromComputeNetworkEndpointGroupSpec(ctx context.Context, reader 
 		ComputeNetworkEndpointGroup: resourceID,
 	}
 	return identity, nil
+}
+
+func (obj *ComputeNetworkEndpointGroup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromComputeNetworkEndpointGroupSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against status.selfLink, if present.
+	selfLink := obj.Status.SelfLink
+	if selfLink != nil && *selfLink != "" {
+		statusIdentity := &ComputeNetworkEndpointGroupIdentity{}
+		if err := statusIdentity.FromExternal(*selfLink); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ComputeNetworkEndpointGroup identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }
