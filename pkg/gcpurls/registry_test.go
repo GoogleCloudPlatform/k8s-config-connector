@@ -77,7 +77,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
 
 		// Apigee Registry
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/apis/{}":      true,
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/instances/{}": true,
 
 		// APIHub
 		"//apihub.googleapis.com/projects/{}/locations/{}/apis/{}":                      true,
