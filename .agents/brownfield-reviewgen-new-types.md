@@ -49,7 +49,11 @@ You are strictly responsible for reviewing the following files generated or modi
     *  **Exception: You can review or re-review a PR even if you have LGTM'ed if someone else has explicitly asked you to**. Use `gh pr view <PR_NUMBER> --json reviewRequests --jq '.reviewRequests[].login'` and verify that the last `login` in the list matches `codebot-robot` or `reviewbot-robot`.
 *   **No reviews after Approval:** If the PR has already been approved, **you must not review the PR**. You can use `gh pr view <PR_NUMBER> --json reviewDecision --jq '.reviewDecision'` to verify if a PR has already been approved.
 *   **Focus on Substance, Ignore Minutiae:** **DO NOT** comment on minor code style, readability, static checks, or compilation errors. Assume standard CI/CD linting handles this. 
-*   **Bias for Action:** We prefer correct code over "perfect" code. If the CRD is complete/idiomatic, Go files align with standards, and CI is green, LGTM the PR.
+*   **Mandatory CI/CD Check:** You MUST check the status of all GitHub Actions CI checks before submitting your review. Run `gh pr checks <PR_NUMBER>` to inspect the checks status.
+    *   **Pending CI**: If any CI checks are still in-progress or pending (status `pending`), you **must exit immediately and do not submit any review** (LGTM or changes requested) yet. Let the chore run exit and check again in the next cycle.
+    *   **Failing CI**: If any CI checks are failing (status `fail` / `failure` / `error`), you **must not submit an `/lgtm` review.** You may, however, inspect the failures to request changes if needed, or simply exit and wait for a green run.
+    *   **LGTM requirement**: You **must only** submit a review with `/lgtm` if **all** CI checks are fully complete and successful (status `success` / green).
+*   **Bias for Action:** We prefer correct code over "perfect" code. If the CRD is complete/idiomatic, Go files align with standards, and all CI checks are green (success), LGTM the PR.
 *   **Requesting changes**: If a PR under review needs changes/fixes before it can be LGTM'ed (`/lgtm`) then you **must use the `--request-changes`** flag when submitting your review, see: `gh pr review <PR_NUMBER> --request-changes`
 *   **No Direct Approvals:** You are not authorized to write `/approve` or hit the GitHub approval API. You may only output `/lgtm` or request changes.
 *   **Ready for Human Labeling:** Upon submitting an `/lgtm` review, you must add the label `ready-for-human` to the PR using the GitHub CLI (e.g., `gh pr edit <PR_NUMBER> --add-label ready-for-human`).
