@@ -65,6 +65,7 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
+type: string
 ```
 
 <table class="properties responsive">
@@ -162,6 +163,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>type</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Optional. The type of DNS Authorization. If not specified, "FIXED_RECORD" is used. Possible values: FIXED_RECORD, PER_PROJECT_RECORD.</p>
         </td>
     </tr>
 </tbody>

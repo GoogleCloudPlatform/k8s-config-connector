@@ -256,6 +256,85 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 			}
 		}
 	})
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if record, found, _ := unstructured.NestedMap(obj, "dnsResourceRecord"); found {
+			if data, found, _ := unstructured.NestedString(record, "data"); found {
+				if strings.HasSuffix(data, "authorize.certificatemanager.goog.") {
+					record["data"] = "dns-resource-record-data-placeholder"
+					if err := unstructured.SetNestedMap(obj, record, "dnsResourceRecord"); err != nil {
+						klog.Warningf("failed to set dnsResourceRecord: %v", err)
+					}
+				}
+			}
+			if name, found, _ := unstructured.NestedString(record, "name"); found {
+				if strings.HasPrefix(name, "_acme-challenge") {
+					record["name"] = fmt.Sprintf("_acme-challenge.%s.hashicorptest.com.", x.uniqueID)
+					if err := unstructured.SetNestedMap(obj, record, "dnsResourceRecord"); err != nil {
+						klog.Warningf("failed to set dnsResourceRecord: %v", err)
+					}
+				}
+			}
+		}
+		if response, found, _ := unstructured.NestedMap(obj, "response"); found {
+			if record, found, _ := unstructured.NestedMap(response, "dnsResourceRecord"); found {
+				if data, found, _ := unstructured.NestedString(record, "data"); found {
+					if strings.HasSuffix(data, "authorize.certificatemanager.goog.") {
+						record["data"] = "dns-resource-record-data-placeholder"
+						if err := unstructured.SetNestedMap(response, record, "dnsResourceRecord"); err != nil {
+							klog.Warningf("failed to set dnsResourceRecord on response: %v", err)
+						}
+						if err := unstructured.SetNestedMap(obj, response, "response"); err != nil {
+							klog.Warningf("failed to set response: %v", err)
+						}
+					}
+				}
+				if name, found, _ := unstructured.NestedString(record, "name"); found {
+					if strings.HasPrefix(name, "_acme-challenge") {
+						record["name"] = fmt.Sprintf("_acme-challenge.%s.hashicorptest.com.", x.uniqueID)
+						if err := unstructured.SetNestedMap(response, record, "dnsResourceRecord"); err != nil {
+							klog.Warningf("failed to set dnsResourceRecord on response: %v", err)
+						}
+						if err := unstructured.SetNestedMap(obj, response, "response"); err != nil {
+							klog.Warningf("failed to set response: %v", err)
+						}
+					}
+				}
+			}
+		}
+		if typeVal, found, _ := unstructured.NestedFieldNoCopy(obj, "type"); found {
+			if typeNum, ok := typeVal.(float64); ok {
+				switch int(typeNum) {
+				case 1:
+					if err := unstructured.SetNestedField(obj, "FIXED_RECORD", "type"); err != nil {
+						klog.Warningf("failed to set type FIXED_RECORD: %v", err)
+					}
+				case 2:
+					if err := unstructured.SetNestedField(obj, "PER_PROJECT_RECORD", "type"); err != nil {
+						klog.Warningf("failed to set type PER_PROJECT_RECORD: %v", err)
+					}
+				}
+			}
+		}
+		if response, found, _ := unstructured.NestedMap(obj, "response"); found {
+			if typeVal, found, _ := unstructured.NestedFieldNoCopy(response, "type"); found {
+				if typeNum, ok := typeVal.(float64); ok {
+					switch int(typeNum) {
+					case 1:
+						if err := unstructured.SetNestedField(response, "FIXED_RECORD", "type"); err != nil {
+							klog.Warningf("failed to set type FIXED_RECORD on response: %v", err)
+						}
+					case 2:
+						if err := unstructured.SetNestedField(response, "PER_PROJECT_RECORD", "type"); err != nil {
+							klog.Warningf("failed to set type PER_PROJECT_RECORD on response: %v", err)
+						}
+					}
+					if err := unstructured.SetNestedMap(obj, response, "response"); err != nil {
+						klog.Warningf("failed to set response: %v", err)
+					}
+				}
+			}
+		}
+	})
 
 	events.PrettifyJSON(jsonMutators...)
 

@@ -47,6 +47,12 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	/* Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Type field is immutable"
+	/* Immutable. Optional. The type of DNS Authorization. If not specified, "FIXED_RECORD" is used.
+	Possible values: FIXED_RECORD, PER_PROJECT_RECORD. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 // CertificateManagerDNSAuthorizationStatus defines the config connector machine state of CertificateManagerDNSAuthorization
