@@ -21,7 +21,8 @@
 
 package v1alpha1
 
-/* unreachable type AnalyticsAccountLink
+/* found existing non-generated go type with proto tag "google.marketingplatform.admin.v1alpha.AnalyticsAccountLink", skipping
+
 // +kcc:proto=google.marketingplatform.admin.v1alpha.AnalyticsAccountLink
 type AnalyticsAccountLink struct {
 	// Identifier. Resource name of this AnalyticsAccountLink. Note the resource
@@ -43,7 +44,8 @@ type AnalyticsAccountLink struct {
 }
 */
 
-/* unreachable type AnalyticsAccountLinkObservedState
+/* found existing non-generated go type with proto tag "google.marketingplatform.admin.v1alpha.AnalyticsAccountLink", skipping
+
 // +kcc:observedstate:proto=google.marketingplatform.admin.v1alpha.AnalyticsAccountLink
 type AnalyticsAccountLinkObservedState struct {
 	// Output only. The human-readable name for the Analytics account.
