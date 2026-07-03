@@ -22,9 +22,15 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+# We must compile GKEHub using a newer googleapis pin than the global default in apis/git.versions.
+# Therefore, we override SKIP_GENERATE_PROTOS and specify a custom output path to compile the newer version.
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  unset SKIP_GENERATE_PROTOS
+fi
+./generate-proto.sh "0fcabfc28371e7bab8107402eb06ad58134ee383" "${REPO_ROOT}/.build/googleapis-gkehub.pb"
 
 go run . generate-types \
+  --proto-source-path "${REPO_ROOT}/.build/googleapis-gkehub.pb" \
   --service google.cloud.gkehub.v1 \
   --api-version gkehub.cnrm.cloud.google.com/v1alpha1 \
   --resource GKEHubFleet:Fleet
