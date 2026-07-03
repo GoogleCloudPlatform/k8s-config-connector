@@ -166,18 +166,6 @@ X-Xss-Protection: 0
 
 ---
 
-GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
-
-{
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
-
-{}
-
----
-
 GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
 
 {
@@ -200,7 +188,11 @@ GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
       }
     ],
     "displayName": "Test SQL Alert Policy Hourly",
-    "enabled": true
+    "enabled": true,
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
   "name": "projects/${projectId}"
 }
@@ -236,7 +228,11 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
 
 ---
@@ -244,16 +240,50 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
 }
 
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+OK
 
-{}
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "hourly": {
+          "minuteOffset": 30,
+          "periodicity": 1
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "10"
+        }
+      },
+      "displayName": "SQL Log Alert Condition Hourly",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Hourly",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
 
 ---
 
-GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+GRPC /google.monitoring.v3.AlertPolicyService/UpdateAlertPolicy
 
 {
   "alertPolicy": {
@@ -275,9 +305,14 @@ GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
       }
     ],
     "displayName": "Test SQL Alert Policy Hourly",
-    "enabled": true
+    "enabled": true,
+    "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
-  "name": "projects/${projectId}"
+  "updateMask": "conditions"
 }
 
 OK
@@ -297,8 +332,7 @@ OK
           "threshold": "20"
         }
       },
-      "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "displayName": "SQL Log Alert Condition Hourly"
     }
   ],
   "creationRecord": {
@@ -311,30 +345,157 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+
+{
   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
 }
 
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "hourly": {
+          "minuteOffset": 45,
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "20"
+        }
+      },
+      "displayName": "SQL Log Alert Condition Hourly"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Hourly",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
 ---
 
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
 }
 
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+OK
 
-{}
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "hourly": {
+          "minuteOffset": 45,
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "20"
+        }
+      },
+      "displayName": "SQL Log Alert Condition Hourly"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Hourly",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
 
 ---
 
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
 }
 
-error: rpc error: code = NotFound desc = alertPolicy "projects/${projectId}/alertPolicies/monitoringalertpolicy-${uniqueId}" not found
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "hourly": {
+          "minuteOffset": 45,
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20",
+        "rowCountTest": {
+          "comparison": "COMPARISON_GT",
+          "threshold": "20"
+        }
+      },
+      "displayName": "SQL Log Alert Condition Hourly"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Hourly",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/DeleteAlertPolicy
+
+{
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+}
+
+OK
 
 {}
 

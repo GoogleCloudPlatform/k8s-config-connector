@@ -10,7 +10,7 @@
   name: logginglink${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //monitoring.googleapis.com/projects/${projectId}/alertPolicies/1783081228762219622
   group: monitoring.cnrm.cloud.google.com
   kind: MonitoringAlertPolicy
   name: monitoringalertpolicy-${uniqueId}

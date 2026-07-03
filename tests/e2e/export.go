@@ -38,6 +38,14 @@ type exportOptions struct {
 }
 
 func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *exportOptions) string {
+	// Fetch the reconciled object from the API server to get the populated status fields (such as status.name)
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(obj.GroupVersionKind())
+	id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+	if err := h.GetClient().Get(h.Ctx, id, u); err == nil {
+		obj = u
+	}
+
 	exportURI := ""
 
 	projectID := resolveProjectID(h, obj)
@@ -156,6 +164,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebooksEnvironment"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringAlertPolicy"}:
 		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:

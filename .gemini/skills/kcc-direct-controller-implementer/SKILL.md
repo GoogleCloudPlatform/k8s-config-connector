@@ -43,9 +43,29 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
       ```
     - **Diff Comparison & Structured Diff (`tags.DiffForTopLevelFields`)**: Always prefer using top-level field tags-based diff comparison via `tags.DiffForTopLevelFields` over recursive/magical comparison functions (such as `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` which are deprecated/discouraged due to unpredictable behaviors in `BasicDiff`).
       ```go
-      diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
-      if err != nil {
-          return nil, nil, err
+      func compareResource(ctx context.Context, actual, desired *pb.MyResource) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+          maskedActual, err := mappers.OnlySpecFields(actual, MyResourceSpec_FromProto, MyResourceSpec_ToProto)
+          if err != nil {
+              return nil, nil, err
+          }
+          maskedActual.Name = desired.Name // Restore any non-spec identifier fields if needed
+
+          clonedDesired := proto.CloneOf(desired)
+
+          populateDefaults := func(obj *pb.MyResource) {
+              // Even if empty, it's a good pattern to define and populate GCP/server defaults here
+              if obj.SomeDefaultedField == nil {
+                  obj.SomeDefaultedField = ...
+              }
+          }
+          populateDefaults(maskedActual)
+          populateDefaults(clonedDesired)
+
+          diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+          if err != nil {
+              return nil, nil, err
+          }
+          return diffs, updateMask, nil
       }
       ```
     - **Reconciling Empty or Incomplete LRO Responses**: Many GCP APIs (such as Dataproc's `UpdateCluster` LRO) return an empty response (`google.protobuf.Empty`), or do not fully populate read-only status fields (such as state, metrics, or instance names) during resource creation. If you map status directly from such incomplete/empty LRO responses, you will inadvertently clear status fields in Kubernetes.

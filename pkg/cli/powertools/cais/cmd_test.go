@@ -268,10 +268,17 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 						tempReader := cais.NewInMemoryReader(scheme, []*unstructured.Unstructured{u})
 						if id, err := resource.GetIdentity(ctx, tempReader); err == nil && id != nil {
 							if sgId, ok := id.(identity.ServerGeneratedIdentity); ok {
-								if !sgId.HasIdentitySpecified() && gk.Kind == "KMSKeyHandle" {
-									placeholder := "${keyHandleID}"
-									if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
-										t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+								if !sgId.HasIdentitySpecified() {
+									if gk.Kind == "KMSKeyHandle" {
+										placeholder := "${keyHandleID}"
+										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
+											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+										}
+									} else if gk.Kind == "MonitoringAlertPolicy" {
+										placeholder := "alertpolicy-placeholder"
+										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
+											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+										}
 									}
 								}
 							}
