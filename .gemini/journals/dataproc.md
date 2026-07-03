@@ -10,3 +10,10 @@
 - **Solution**: Explicitly defined `SparkConnectConfig` as `type SparkConnectConfig struct {}` with the `// +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig` annotation inside `sessiontemplate_types.go`. This satisfies the generator while providing the correct type definition for compilation.
 - **Impact**: When implementing Dataproc resources that utilize `SparkConnectConfig`, the struct is now fully defined and compiled.
 
+### [2026-07-03] DataprocSession Direct Controller Deletion LRO and Mock Alignment
+- **Context**: Greenfield implementation of DataprocSession direct controller, fuzzer, and mockgcp support.
+- **Problem**: The Dataproc SDK/API specifies that deleting a session returns `dataprocpb.Session` as the LRO result rather than `google.protobuf.Empty`. A mock implementation that returns `Empty` will cause the client library's `Wait(ctx)` method to panic or fail with a type mismatch error: `mismatched message type: got "google.protobuf.Empty", want "google.cloud.dataproc.v1.Session"`.
+- **Solution**: Aligned MockGCP to return the deleted `Session` message in the `DeleteSession` LRO instead of an empty message.
+- **Impact**: Any direct controller waiting on Dataproc job or session deletion operations should expect the LRO to yield a fully-populated `Session` object. Ensure MockGCP registers and returns the actual deleted resource.
+
+
