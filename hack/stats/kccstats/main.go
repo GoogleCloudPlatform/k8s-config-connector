@@ -37,6 +37,9 @@ type Commit struct {
 			Date time.Time `json:"date"`
 		} `json:"committer"`
 	} `json:"commit"`
+	Author *struct {
+		Login string `json:"login"`
+	} `json:"author"`
 }
 
 type Parent struct {
@@ -57,10 +60,19 @@ type TreeResponse struct {
 }
 
 var (
-	weeks       = flag.Int("w", 1, "Number of weeks to go back in time for")
-	verbose     = flag.Bool("verbose", false, "Tell you about the commits being fetched and processed")
-	showDetails = flag.Bool("show-details", false, "Name the resources/kinds added and the fields added as a json path like spec.a.b.c")
+	weeks            = flag.Int("w", 1, "Number of weeks to go back in time for")
+	currentWeek      = flag.Bool("current-week", false, "Generate stats for this week so far (equivalent to -w 0)")
+	verbose          = flag.Bool("verbose", false, "Tell you about the commits being fetched and processed")
+	showDetails      = flag.Bool("show-details", false, "Name the resources/kinds added and the fields added as a json path like spec.a.b.c")
+	showContributors = flag.Bool("show-contributors", false, "Break down metrics by contributor")
+	showAllCommits   = flag.Bool("show-all-commits", false, "Show the total number of merge commits (not just positive ones)")
 )
+
+type ContributorStats struct {
+	CommitCount int
+	NewRes      int
+	NewFields   int
+}
 
 const repo = "GoogleCloudPlatform/k8s-config-connector"
 const crdPath = "config/crds/resources"
@@ -68,11 +80,26 @@ const crdPath = "config/crds/resources"
 func main() {
 	flag.Parse()
 
-	now := time.Now()
-	since := now.AddDate(0, 0, -7*(*weeks))
+	if *currentWeek {
+		*weeks = 0
+	}
+
+	now := time.Now().UTC()
+	// Calculate the start of the current ISO week (Monday, 00:00:00 UTC)
+	weekday := int(now.Weekday())
+	if weekday == 0 {
+		weekday = 7 // Sunday is 7
+	}
+	startOfCurrentWeek := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC).AddDate(0, 0, -weekday+1)
+
+	since := startOfCurrentWeek.AddDate(0, 0, -7*(*weeks))
 	sinceStr := since.Format(time.RFC3339)
 
-	fmt.Printf("Analyzing velocity for the last %d weeks (since %s)...\n", *weeks, sinceStr)
+	if *weeks == 0 {
+		fmt.Printf("Analyzing velocity for the current week so far (since %s)...\n", sinceStr)
+	} else {
+		fmt.Printf("Analyzing velocity for the last %d weeks (since %s)...\n", *weeks, sinceStr)
+	}
 
 	if *verbose {
 		fmt.Println("Fetching commits via gh api...")
@@ -132,13 +159,15 @@ func main() {
 	}
 
 	type WeekStats struct {
-		Week        int
-		Year        int
-		NewRes      int
-		NewFields   int
-		CommitCount int
-		DetailsRes  []string
-		DetailsFld  []string
+		Week                int
+		Year                int
+		NewRes              int
+		NewFields           int
+		AllCommitCount      int
+		PositiveCommitCount int
+		Contributors        map[string]*ContributorStats
+		DetailsRes          []string
+		DetailsFld          []string
 	}
 	statsMap := make(map[string]*WeekStats)
 
@@ -149,12 +178,24 @@ func main() {
 		year, week := mc.Commit.Committer.Date.ISOWeek()
 		weekKey := fmt.Sprintf("%d-W%02d", year, week)
 		if statsMap[weekKey] == nil {
-			statsMap[weekKey] = &WeekStats{Year: year, Week: week}
+			statsMap[weekKey] = &WeekStats{
+				Year:         year,
+				Week:         week,
+				Contributors: make(map[string]*ContributorStats),
+			}
 		}
 		stats := statsMap[weekKey]
-		stats.CommitCount++
+		stats.AllCommitCount++
+
+		authorLogin := "unknown"
+		if mc.Author != nil && mc.Author.Login != "" {
+			authorLogin = mc.Author.Login
+		}
 
 		newTree := getTreeState(mc.SHA)
+
+		commitNewRes := 0
+		commitNewFields := 0
 
 		for path, newSHA := range newTree {
 			if !strings.HasSuffix(path, ".yaml") {
@@ -164,10 +205,10 @@ func main() {
 			oldSHA, exists := stateMap[path]
 			if !exists {
 				// Added resource
-				stats.NewRes++
+				commitNewRes++
 				newContent := getBlob(newSHA, cacheDir)
 				kind := getKindFromYaml(newContent)
-				stats.DetailsRes = append(stats.DetailsRes, kind)
+				stats.DetailsRes = append(stats.DetailsRes, fmt.Sprintf("%s (by %s)", kind, authorLogin))
 			} else if oldSHA != newSHA {
 				// Modified resource
 				oldContent := getBlob(oldSHA, cacheDir)
@@ -202,14 +243,27 @@ func main() {
 
 					if !isChildOfAdded {
 						netFields++
-						stats.DetailsFld = append(stats.DetailsFld, fmt.Sprintf("%s => %s", kind, p))
+						stats.DetailsFld = append(stats.DetailsFld, fmt.Sprintf("%s => %s (by %s)", kind, p, authorLogin))
 					}
 				}
 
 				if netFields > 0 {
-					stats.NewFields += netFields
+					commitNewFields += netFields
 				}
 			}
+		}
+
+		if commitNewRes > 0 || commitNewFields > 0 {
+			stats.PositiveCommitCount++
+			stats.NewRes += commitNewRes
+			stats.NewFields += commitNewFields
+
+			if stats.Contributors[authorLogin] == nil {
+				stats.Contributors[authorLogin] = &ContributorStats{}
+			}
+			stats.Contributors[authorLogin].CommitCount++
+			stats.Contributors[authorLogin].NewRes += commitNewRes
+			stats.Contributors[authorLogin].NewFields += commitNewFields
 		}
 
 		// Update state map
@@ -218,8 +272,15 @@ func main() {
 
 	// Report
 	fmt.Printf("\n--- KCC Velocity Report ---\n")
-	fmt.Printf("%-10s | %-12s | %-14s | %-15s\n", "Week", "Merge Commits", "New Resources", "Net New Fields")
-	fmt.Printf("----------------------------------------------------------\n")
+	fmt.Printf("Note: Positive Merge Commits only count commits that add a new resource or net new fields.\n\n")
+
+	if *showAllCommits {
+		fmt.Printf("%-20s | %-17s | %-22s | %-13s | %-15s\n", "Week/Contributor", "All Merge Commits", "Positive Merge Commits", "New Resources", "Net New Fields")
+		fmt.Printf("------------------------------------------------------------------------------------------------------\n")
+	} else {
+		fmt.Printf("%-20s | %-22s | %-13s | %-15s\n", "Week/Contributor", "Positive Merge Commits", "New Resources", "Net New Fields")
+		fmt.Printf("------------------------------------------------------------------------------\n")
+	}
 
 	// Sort weeks
 	var weeksKeys []string
@@ -230,7 +291,34 @@ func main() {
 
 	for _, k := range weeksKeys {
 		s := statsMap[k]
-		fmt.Printf("%-10s | %-12d | %-14d | %-15d\n", k, s.CommitCount, s.NewRes, s.NewFields)
+		if *showAllCommits {
+			fmt.Printf("%-20s | %-17d | %-22d | %-13d | %-15d\n", k, s.AllCommitCount, s.PositiveCommitCount, s.NewRes, s.NewFields)
+		} else {
+			fmt.Printf("%-20s | %-22d | %-13d | %-15d\n", k, s.PositiveCommitCount, s.NewRes, s.NewFields)
+		}
+
+		if *showContributors {
+			var authorsList []string
+			for author := range s.Contributors {
+				authorsList = append(authorsList, author)
+			}
+			sort.Strings(authorsList)
+			for _, author := range authorsList {
+				cStats := s.Contributors[author]
+				// If author name is too long, truncate it
+				displayAuthor := author
+				if len(displayAuthor) > 18 {
+					displayAuthor = displayAuthor[:15] + "..."
+				}
+				
+				if *showAllCommits {
+					fmt.Printf("  %-18s | %-17s | %-22d | %-13d | %-15d\n", displayAuthor, "-", cStats.CommitCount, cStats.NewRes, cStats.NewFields)
+				} else {
+					fmt.Printf("  %-18s | %-22d | %-13d | %-15d\n", displayAuthor, cStats.CommitCount, cStats.NewRes, cStats.NewFields)
+				}
+			}
+		}
+
 		if *showDetails {
 			if len(s.DetailsRes) > 0 {
 				fmt.Printf("  -> Added Kinds:\n")

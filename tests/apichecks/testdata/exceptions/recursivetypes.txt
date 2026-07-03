@@ -1,0 +1,5 @@
+[recursive_type] package=apis/cloudsecuritycompliance/v1alpha1: ParamValue -> Parameter -> ParamValue
+[recursive_type] package=apis/contentwarehouse/v1alpha1: PropertyDefinition -> PropertyTypeOptions -> PropertyDefinition
+[recursive_type] package=apis/datacatalog/v1alpha1: ColumnSchema -> ColumnSchema
+[recursive_type] package=apis/dataplex/v1alpha1: AspectType_MetadataTemplate -> AspectType_MetadataTemplate
+[recursive_type] package=apis/vertexai/v1alpha1: ListValue -> Value -> ListValue

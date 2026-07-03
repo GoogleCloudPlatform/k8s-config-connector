@@ -93,6 +93,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.creationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.createTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.lastUsedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.endTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.pairingKey.expireTime"] = mockgcpregistry.PlaceholderTime
@@ -301,6 +302,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 
 	// Specific to DataPlex
+	visitor.replacePaths[".status.observedState.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.importResult.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.executionStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -1394,6 +1397,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	}
 
 	// Dataplex
+	visitor.replacePaths[".response.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.importResult.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".importResult.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.serviceRevision.createTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.serviceRevision.updateTime"] = mockgcpregistry.PlaceholderTimestamp

@@ -5,6 +5,13 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -33,18 +40,25 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}",
   "agents": [
     "projects/${projectId}/locations/us-central1/dataAgents/dataagent-max-${uniqueId}"
   ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "env": "test",
     "owner": "devteam"
   },
-  "createTime": "1970-01-01T00:00:00Z",
-  "lastUsedTime": "1970-01-01T00:00:00Z"
+  "lastUsedTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}"
 }
 
 ---
@@ -56,18 +70,25 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}",
   "agents": [
     "projects/${projectId}/locations/us-central1/dataAgents/dataagent-max-${uniqueId}"
   ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "env": "test",
     "owner": "devteam"
   },
-  "createTime": "1970-01-01T00:00:00Z",
-  "lastUsedTime": "1970-01-01T00:00:00Z"
+  "lastUsedTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/conversations/geminidataanalyticsconversation-max-${uniqueId}"
 }
 
 ---
@@ -79,5 +100,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

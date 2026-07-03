@@ -28,7 +28,8 @@ go run . generate-types \
   --api-version cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource CloudSecurityComplianceCloudControl:CloudControl \
-  --resource CloudSecurityComplianceFramework:Framework
+  --resource CloudSecurityComplianceFramework:Framework \
+  --resource CloudSecurityFramework:Framework
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

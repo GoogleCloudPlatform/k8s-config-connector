@@ -110,6 +110,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControls/{}":      true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControlGroups/{}": true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/controls/{}":           true,
+		"//cloudsecuritycompliance.googleapis.com/projects/{}/locations/{}/frameworks/{}":              true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworks/{}":         true,
 
 		// Compute

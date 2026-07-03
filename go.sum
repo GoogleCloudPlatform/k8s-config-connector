@@ -1216,6 +1216,8 @@ cloud.google.com/go/run v1.3.3/go.mod h1:WSM5pGyJ7cfYyYbONVQBN4buz42zFqwG67Q3ch0
 cloud.google.com/go/run v1.3.4/go.mod h1:FGieuZvQ3tj1e9GnzXqrMABSuir38AJg5xhiYq+SF3o=
 cloud.google.com/go/run v1.21.0 h1:gQJUy0//XNXXpiZs42KlbLPhbycxbpS2QymGRFlPXv4=
 cloud.google.com/go/run v1.21.0/go.mod h1:Z5wHbyFirI8XU48EPs5XJf/qmVm1SXZEhuS8EvZOuQU=
+cloud.google.com/go/saasplatform v0.9.0 h1:FktrN10p0Dum0ZbNjLXg+JE9ktoistj+tFuJEABkDK4=
+cloud.google.com/go/saasplatform v0.9.0/go.mod h1:U+Gyh1iyxZD05J/ywyxkyxGvIFIFcdOLYah1BOLg9VA=
 cloud.google.com/go/scheduler v1.4.0/go.mod h1:drcJBmxF3aqZJRhmkHQ9b3uSSpQoltBPGPxGAWROx6s=
 cloud.google.com/go/scheduler v1.5.0/go.mod h1:ri073ym49NW3AfT6DZi21vLZrG07GXr5p3H1KxN5QlI=
 cloud.google.com/go/scheduler v1.6.0/go.mod h1:SgeKVM7MIwPn3BqtcBntpLyrIJftQISRrYB5ZtT+KOk=

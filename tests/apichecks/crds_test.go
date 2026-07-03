@@ -17,6 +17,9 @@ package lint
 import (
 	"bufio"
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"os"
 	"path/filepath"
 	"slices"
@@ -1328,4 +1331,188 @@ func normalizeStringsJoin(input string) string {
 		}
 	}
 	return strings.Join(result, "\n")
+}
+
+type StructField struct {
+	Name string
+	Type string
+}
+
+type StructType struct {
+	Name   string
+	Fields []StructField
+}
+
+func getFieldTypeStr(expr ast.Expr) string {
+	switch t := expr.(type) {
+	case *ast.Ident:
+		return t.Name
+	case *ast.StarExpr:
+		return getFieldTypeStr(t.X)
+	case *ast.ArrayType:
+		return getFieldTypeStr(t.Elt)
+	case *ast.MapType:
+		return getFieldTypeStr(t.Value)
+	case *ast.SelectorExpr:
+		return t.Sel.Name
+	default:
+		return ""
+	}
+}
+
+func normalizeCycle(cycle []string) string {
+	if len(cycle) == 0 {
+		return ""
+	}
+	minIndex := 0
+	for i := 1; i < len(cycle); i++ {
+		if cycle[i] < cycle[minIndex] {
+			minIndex = i
+		}
+	}
+	normalized := make([]string, 0, len(cycle)+1)
+	for i := 0; i < len(cycle); i++ {
+		idx := (minIndex + i) % len(cycle)
+		normalized = append(normalized, cycle[idx])
+	}
+	normalized = append(normalized, normalized[0])
+	return strings.Join(normalized, " -> ")
+}
+
+func findCyclesInStructs(structs map[string]StructType) []string {
+	var results []string
+	visitedCycles := make(map[string]bool)
+
+	var dfs func(current string, visited map[string]bool, path []string)
+	dfs = func(current string, visited map[string]bool, path []string) {
+		visited[current] = true
+		defer func() { visited[current] = false }()
+
+		s, ok := structs[current]
+		if !ok {
+			return
+		}
+
+		for _, field := range s.Fields {
+			if _, exists := structs[field.Type]; !exists {
+				continue
+			}
+
+			for i, p := range path {
+				if p == field.Type {
+					cycleSlice := path[i:]
+					cycleStr := normalizeCycle(cycleSlice)
+					if !visitedCycles[cycleStr] {
+						visitedCycles[cycleStr] = true
+						results = append(results, cycleStr)
+					}
+					return
+				}
+			}
+
+			newPath := append(path, field.Type)
+			dfs(field.Type, visited, newPath)
+		}
+	}
+
+	for sName := range structs {
+		visited := make(map[string]bool)
+		dfs(sName, visited, []string{sName})
+	}
+
+	sort.Strings(results)
+	return results
+}
+
+func TestNoRecursiveTypes(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadCRDs()
+	if err != nil {
+		t.Fatalf("error loading KCC CRDs: %v", err)
+	}
+
+	var errs []string
+	visitedDirs := make(map[string]bool)
+
+	for _, crd := range crds {
+		service := strings.Split(crd.Spec.Group, ".")[0]
+		for _, version := range crd.Spec.Versions {
+			dirPath := filepath.Join("../../apis", service, version.Name)
+			dirPath = filepath.Clean(dirPath)
+			if visitedDirs[dirPath] {
+				continue
+			}
+			visitedDirs[dirPath] = true
+
+			if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+				continue
+			}
+
+			fset := token.NewFileSet()
+			filter := func(fi os.FileInfo) bool {
+				return !strings.HasSuffix(fi.Name(), "_test.go") && strings.HasSuffix(fi.Name(), ".go")
+			}
+			pkgs, err := parser.ParseDir(fset, dirPath, filter, parser.ParseComments)
+			if err != nil {
+				t.Fatalf("error parsing dir %s: %v", dirPath, err)
+			}
+
+			for _, pkg := range pkgs {
+				structs := make(map[string]StructType)
+				for _, file := range pkg.Files {
+					ast.Inspect(file, func(n ast.Node) bool {
+						typeSpec, ok := n.(*ast.TypeSpec)
+						if !ok {
+							return true
+						}
+						structType, ok := typeSpec.Type.(*ast.StructType)
+						if !ok {
+							return true
+						}
+
+						sName := typeSpec.Name.Name
+						var fields []StructField
+
+						if structType.Fields != nil {
+							for _, f := range structType.Fields.List {
+								fieldTypeStr := getFieldTypeStr(f.Type)
+								if fieldTypeStr == "" {
+									continue
+								}
+								var fieldName string
+								if len(f.Names) > 0 {
+									fieldName = f.Names[0].Name
+								}
+								fields = append(fields, StructField{
+									Name: fieldName,
+									Type: fieldTypeStr,
+								})
+							}
+						}
+
+						structs[sName] = StructType{
+							Name:   sName,
+							Fields: fields,
+						}
+						return true
+					})
+				}
+
+				cycles := findCyclesInStructs(structs)
+				for _, cycle := range cycles {
+					relDir := filepath.ToSlash(dirPath)
+					relDir = strings.TrimPrefix(relDir, "../../")
+					errs = append(errs, fmt.Sprintf("[recursive_type] package=%s: %s", relDir, cycle))
+				}
+			}
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	if len(errs) > 0 {
+		want += "\n"
+	}
+
+	test.CompareGoldenFile(t, "testdata/exceptions/recursivetypes.txt", want)
 }

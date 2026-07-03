@@ -100,5 +100,7 @@ done
 # Now we generate CRDs
 unset SKIP_GENERATE_CRDS
 unset SKIP_GENERATE_PROTOS
+echo "Cleaning Go build cache to prevent stale metadata compilation issues"
+go clean -cache
 echo "Generating CRDs"
 dev/tasks/generate-crds
