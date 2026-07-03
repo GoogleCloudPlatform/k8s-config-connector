@@ -1424,6 +1424,8 @@ cloud.google.com/go/video v1.20.1/go.mod h1:3gJS+iDprnj8SY6pe0SwLeC5BUW80NjhwX7I
 cloud.google.com/go/video v1.20.2/go.mod h1:lrixr5JeKNThsgfM9gqtwb6Okuqzfo4VrY2xynaViTA=
 cloud.google.com/go/video v1.20.3/go.mod h1:TnH/mNZKVHeNtpamsSPygSR0iHtvrR/cW1/GDjN5+GU=
 cloud.google.com/go/video v1.20.4/go.mod h1:LyUVjyW+Bwj7dh3UJnUGZfyqjEto9DnrvTe1f/+QrW0=
+cloud.google.com/go/video v1.32.0 h1:9Us/tkhNRg3WY9wIrVC3Jcs1P0nXKE4XnS1zYJ3xTTY=
+cloud.google.com/go/video v1.32.0/go.mod h1:KxDL728ZzH+FJwtEb9XkiLTETW5bI37hTWbJiRYeXkk=
 cloud.google.com/go/videointelligence v1.6.0/go.mod h1:w0DIDlVRKtwPCn/C4iwZIJdvC69yInhW0cfi+p546uU=
 cloud.google.com/go/videointelligence v1.7.0/go.mod h1:k8pI/1wAhjznARtVT9U1llUaFNPh7muw8QyOUpavru4=
 cloud.google.com/go/videointelligence v1.8.0/go.mod h1:dIcCn4gVDdS7yte/w+koiXn5dWVplOZkE+xwG9FgK+M=
