@@ -208,6 +208,7 @@ import (
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
+	telcoautomationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/telcoautomation/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
@@ -416,6 +417,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	storagetransferv1alpha1.AddToScheme,
 	storagetransferv1beta1.AddToScheme,
 	tagsv1beta1.AddToScheme,
+	telcoautomationv1alpha1.AddToScheme,
 	tpuv1alpha1.AddToScheme,
 	vectorsearchv1alpha1.AddToScheme,
 	vertexaiv1alpha1.AddToScheme,
