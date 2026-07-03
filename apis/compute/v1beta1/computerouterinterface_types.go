@@ -21,20 +21,6 @@ import (
 
 var ComputeRouterInterfaceGVK = GroupVersion.WithKind("ComputeRouterInterface")
 
-type ComputeInterconnectAttachmentRef struct {
-	/* Allowed value: The `name` field of a `ComputeInterconnectAttachment` resource. */
-	// +optional
-	External string `json:"external,omitempty"`
-
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	// +optional
-	Name string `json:"name,omitempty"`
-
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	// +optional
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type ComputeVPNTunnelRef struct {
 	/* Allowed value: The `selfLink` field of a `ComputeVPNTunnel` resource. */
 	// +optional
