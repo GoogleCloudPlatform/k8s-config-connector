@@ -109,6 +109,10 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 
 	obj.Port = 6379
 
+	if obj.SecondaryIpRange == "auto" {
+		obj.SecondaryIpRange = "10.20.30.16/28"
+	}
+
 	if obj.RedisVersion == "" {
 		obj.RedisVersion = "REDIS_7_0"
 	}
