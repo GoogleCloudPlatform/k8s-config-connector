@@ -173,6 +173,7 @@ type DatasetConfig_CloudStorageBuckets_CloudStorageBucket struct {
 }
 
 // +kcc:proto=google.cloud.storageinsights.v1.DatasetConfig.Link
+// +kubebuilder:validation:XPreserveUnknownFields
 type DatasetConfig_Link struct {
 }
 

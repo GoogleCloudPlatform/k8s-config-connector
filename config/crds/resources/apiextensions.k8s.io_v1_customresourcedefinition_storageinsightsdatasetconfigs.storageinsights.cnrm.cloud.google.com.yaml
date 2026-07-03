@@ -155,6 +155,7 @@ spec:
               link:
                 description: Details of the linked dataset.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               location:
                 description: The location of this resource.
                 type: string
