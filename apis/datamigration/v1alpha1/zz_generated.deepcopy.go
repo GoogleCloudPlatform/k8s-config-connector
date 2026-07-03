@@ -195,7 +195,7 @@ func (in *DatabaseMigrationConversionWorkspaceSpec) DeepCopyInto(out *DatabaseMi
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -391,7 +391,7 @@ func (in *DatabaseMigrationMigrationJobSpec) DeepCopyInto(out *DatabaseMigration
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -647,7 +647,7 @@ func (in *DatabaseMigrationPrivateConnectionSpec) DeepCopyInto(out *DatabaseMigr
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {

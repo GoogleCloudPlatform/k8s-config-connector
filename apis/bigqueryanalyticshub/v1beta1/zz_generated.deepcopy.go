@@ -149,7 +149,7 @@ func (in *BigQueryAnalyticsHubDataExchangeSpec) DeepCopyInto(out *BigQueryAnalyt
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -353,7 +353,7 @@ func (in *BigQueryAnalyticsHubListingSpec) DeepCopyInto(out *BigQueryAnalyticsHu
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.DataExchangeRef != nil {

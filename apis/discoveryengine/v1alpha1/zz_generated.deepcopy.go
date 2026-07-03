@@ -566,7 +566,7 @@ func (in *DiscoveryEngineControlSpec) DeepCopyInto(out *DiscoveryEngineControlSp
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -772,7 +772,7 @@ func (in *DiscoveryEngineConversationSpec) DeepCopyInto(out *DiscoveryEngineConv
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1003,7 +1003,7 @@ func (in *DiscoveryEngineDataStoreSpec) DeepCopyInto(out *DiscoveryEngineDataSto
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -1387,7 +1387,7 @@ func (in *DiscoveryEngineEngineSpec) DeepCopyInto(out *DiscoveryEngineEngineSpec
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1541,7 +1541,7 @@ func (in *DiscoveryEngineIdentityMappingStoreSpec) DeepCopyInto(out *DiscoveryEn
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1685,7 +1685,7 @@ func (in *DiscoveryEngineSampleQuerySetSpec) DeepCopyInto(out *DiscoveryEngineSa
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {

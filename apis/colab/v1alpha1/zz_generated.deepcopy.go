@@ -809,7 +809,7 @@ func (in *RuntimeTemplate_Parent) DeepCopyInto(out *RuntimeTemplate_Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -829,7 +829,7 @@ func (in *Runtime_Parent) DeepCopyInto(out *Runtime_Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }

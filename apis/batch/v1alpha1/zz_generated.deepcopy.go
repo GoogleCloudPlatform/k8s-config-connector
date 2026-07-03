@@ -836,7 +836,7 @@ func (in *CloudBatchResourceAllowanceSpec) DeepCopyInto(out *CloudBatchResourceA
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1306,7 +1306,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }

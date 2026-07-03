@@ -300,7 +300,7 @@ func (in *WorkstationCluster_PrivateClusterConfig) DeepCopyInto(out *Workstation
 	}
 	if in.AllowedProjects != nil {
 		in, out := &in.AllowedProjects, &out.AllowedProjects
-		*out = make([]refsv1beta1.ProjectRef, len(*in))
+		*out = make([]refsv1beta1.ProjectRefDeprecated, len(*in))
 		copy(*out, *in)
 	}
 }

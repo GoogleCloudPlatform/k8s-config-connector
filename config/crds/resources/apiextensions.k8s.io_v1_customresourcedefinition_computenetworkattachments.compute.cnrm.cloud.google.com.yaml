@@ -82,9 +82,7 @@ spec:
                 description: Projects that are allowed to connect to this network
                   attachment. The project can be specified using its id or number.
                 items:
-                  description: 'The Project that this resource belongs to. Deprecated:
-                    Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
-                    instead to avoid adding the ''kind'' field to the CRD.'
+                  description: The Project that this resource belongs to.
                   oneOf:
                   - not:
                       required:
@@ -120,9 +118,7 @@ spec:
                 description: Projects that are not allowed to connect to this network
                   attachment. The project can be specified using its id or number.
                 items:
-                  description: 'The Project that this resource belongs to. Deprecated:
-                    Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
-                    instead to avoid adding the ''kind'' field to the CRD.'
+                  description: The Project that this resource belongs to.
                   oneOf:
                   - not:
                       required:
@@ -155,9 +151,7 @@ spec:
                   type: object
                 type: array
               projectRef:
-                description: 'The Project that this resource belongs to. Deprecated:
-                  Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
-                  instead to avoid adding the ''kind'' field to the CRD.'
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

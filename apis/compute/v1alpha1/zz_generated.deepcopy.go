@@ -996,7 +996,7 @@ func (in *ComputeFutureReservationParent) DeepCopyInto(out *ComputeFutureReserva
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -1584,7 +1584,7 @@ func (in *ComputeNetworkAttachmentParent) DeepCopyInto(out *ComputeNetworkAttach
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -1640,22 +1640,22 @@ func (in *ComputeNetworkAttachmentSpec) DeepCopyInto(out *ComputeNetworkAttachme
 	}
 	if in.ProducerAcceptLists != nil {
 		in, out := &in.ProducerAcceptLists, &out.ProducerAcceptLists
-		*out = make([]*v1beta1.ProjectRef, len(*in))
+		*out = make([]*v1beta1.ProjectRefDeprecated, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(v1beta1.ProjectRef)
+				*out = new(v1beta1.ProjectRefDeprecated)
 				**out = **in
 			}
 		}
 	}
 	if in.ProducerRejectLists != nil {
 		in, out := &in.ProducerRejectLists, &out.ProducerRejectLists
-		*out = make([]*v1beta1.ProjectRef, len(*in))
+		*out = make([]*v1beta1.ProjectRefDeprecated, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(v1beta1.ProjectRef)
+				*out = new(v1beta1.ProjectRefDeprecated)
 				**out = **in
 			}
 		}
@@ -1827,7 +1827,7 @@ func (in *ComputeNetworkEdgeSecurityServiceParent) DeepCopyInto(out *ComputeNetw
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -3070,7 +3070,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -3516,7 +3516,7 @@ func (in *ShareSettingsProjectConfig) DeepCopyInto(out *ShareSettingsProjectConf
 	*out = *in
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }

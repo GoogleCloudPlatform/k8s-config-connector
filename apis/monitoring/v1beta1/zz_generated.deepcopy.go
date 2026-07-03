@@ -867,7 +867,7 @@ func (in *ErrorReportingPanel) DeepCopyInto(out *ErrorReportingPanel) {
 	*out = *in
 	if in.ProjectRefs != nil {
 		in, out := &in.ProjectRefs, &out.ProjectRefs
-		*out = make([]refsv1beta1.ProjectRef, len(*in))
+		*out = make([]refsv1beta1.ProjectRefDeprecated, len(*in))
 		copy(*out, *in)
 	}
 	if in.Services != nil {

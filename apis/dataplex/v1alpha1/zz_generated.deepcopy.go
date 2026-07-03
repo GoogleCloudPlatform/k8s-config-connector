@@ -1964,7 +1964,7 @@ func (in *DataplexDataAttributeBindingSpec) DeepCopyInto(out *DataplexDataAttrib
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -2182,7 +2182,7 @@ func (in *DataplexDataScanSpec) DeepCopyInto(out *DataplexDataScanSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -2927,7 +2927,7 @@ func (in *DataplexGlossarySpec) DeepCopyInto(out *DataplexGlossarySpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -3297,7 +3297,7 @@ func (in *DataplexMetadataJobSpec) DeepCopyInto(out *DataplexMetadataJobSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -4060,7 +4060,7 @@ func (in *MetadataJobExportJobSpecScope) DeepCopyInto(out *MetadataJobExportJobS
 	}
 	if in.ProjectRefs != nil {
 		in, out := &in.ProjectRefs, &out.ProjectRefs
-		*out = make([]v1beta1.ProjectRef, len(*in))
+		*out = make([]v1beta1.ProjectRefDeprecated, len(*in))
 		copy(*out, *in)
 	}
 	if in.EntryGroupRefs != nil {
@@ -4327,7 +4327,7 @@ func (in *Task_ExecutionSpec) DeepCopyInto(out *Task_ExecutionSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.MaxJobExecutionLifetime != nil {

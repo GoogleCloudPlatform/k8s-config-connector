@@ -614,7 +614,7 @@ func (in *CCInsightsConversationSpec) DeepCopyInto(out *CCInsightsConversationSp
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -895,7 +895,7 @@ func (in *CCInsightsIssueModelSpec) DeepCopyInto(out *CCInsightsIssueModelSpec) 
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1069,7 +1069,7 @@ func (in *CCInsightsPhraseMatcherSpec) DeepCopyInto(out *CCInsightsPhraseMatcher
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1265,7 +1265,7 @@ func (in *CCInsightsViewSpec) DeepCopyInto(out *CCInsightsViewSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {

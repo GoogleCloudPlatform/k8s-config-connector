@@ -372,9 +372,7 @@ spec:
                   analysis. This is applicable to scenarios where a test can cross
                   project boundaries.
                 items:
-                  description: 'The Project that this resource belongs to. Deprecated:
-                    Use github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs.ProjectRef
-                    instead to avoid adding the ''kind'' field to the CRD.'
+                  description: The Project that this resource belongs to.
                   oneOf:
                   - not:
                       required:
