@@ -154,6 +154,7 @@ import (
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/managedkafka/v1alpha1"
 	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/managedkafka/v1beta1"
+	marketingplatformadminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/marketingplatformadmin/v1alpha1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memcache/v1beta1"
 	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1alpha1"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1beta1"
@@ -369,6 +370,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	loggingv1beta1.AddToScheme,
 	managedkafkav1alpha1.AddToScheme,
 	managedkafkav1beta1.AddToScheme,
+	marketingplatformadminv1alpha1.AddToScheme,
 	memcachev1beta1.AddToScheme,
 	memorystorev1alpha1.AddToScheme,
 	memorystorev1beta1.AddToScheme,
