@@ -48,6 +48,8 @@ cloud.google.com/go/clouddms v1.13.0 h1:/oIzRKf/FgUYqSBwSnwrrtJPkSQ2EMzY8UHQwhGX
 cloud.google.com/go/clouddms v1.13.0/go.mod h1:aMgrOZ+/EKF/PL+h1sDbS+7fAIYV5rTwD+G/apCeHQk=
 cloud.google.com/go/cloudquotas v1.11.0 h1:/V18B5MjitIfA1Ggb3p0nLFjdZutlaUeiEnx53JVxeQ=
 cloud.google.com/go/cloudquotas v1.11.0/go.mod h1:4i/yo7jay43HyTMpYxaZwHdpAePkTEK7mAcGwRMf2tI=
+cloud.google.com/go/cloudsecuritycompliance v1.0.0 h1:CB/BJL7Ye+8EG7T1pKUZQ5/vcbJFFdNWtn2kVDPMSr4=
+cloud.google.com/go/cloudsecuritycompliance v1.0.0/go.mod h1:gxkuafvJ+IL5CQLSXRFGUZCkyZOmtd7vo4UHrnT79NM=
 cloud.google.com/go/cloudtasks v1.18.0 h1:KzT7hfix/9/xAf20tNPIxwX59XGpRF0Lun2t8LHOj9E=
 cloud.google.com/go/cloudtasks v1.18.0/go.mod h1:3KeCxwtGEyaySL7CR3lMmEa2I4mq1ynXdgmfNiO4RYE=
 cloud.google.com/go/compute v1.63.0 h1:KsBourH0wajM4RhzwPwRMKbxHVdvzGsk7StvACoWXD8=

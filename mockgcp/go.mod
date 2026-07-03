@@ -26,6 +26,7 @@ require (
 	cloud.google.com/go/certificatemanager v1.14.0
 	cloud.google.com/go/clouddms v1.13.0
 	cloud.google.com/go/cloudquotas v1.11.0
+	cloud.google.com/go/cloudsecuritycompliance v1.0.0
 	cloud.google.com/go/compute v1.63.0
 	cloud.google.com/go/dataplex v1.34.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
