@@ -343,6 +343,91 @@ OK
 
 ---
 
+GRPC /google.cloud.dataplex.v1.DataplexService/GetTask
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "executionSpec": {
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+  },
+  "executionStatus": {
+    "latestJob": {
+      "name": "projects/${projectNumber}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}/jobs/0123456789abcdef",
+      "trigger": "TASK_CONFIG",
+      "uid": "0123456789abcdef"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}",
+  "spark": {
+    "pythonScriptFile": "gs://dataproc-examples/pyspark/hello-world/hello-world.py"
+  },
+  "state": "ACTIVE",
+  "triggerSpec": {
+    "type": "ON_DEMAND"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/DeleteTask
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
 GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
 
 {
@@ -442,91 +527,6 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.DataplexService/GetTask
-
-{
-  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "executionSpec": {
-    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
-  },
-  "executionStatus": {
-    "latestJob": {
-      "name": "projects/${projectNumber}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}/jobs/0123456789abcdef",
-      "trigger": "TASK_CONFIG",
-      "uid": "0123456789abcdef"
-    },
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}",
-  "spark": {
-    "pythonScriptFile": "gs://dataproc-examples/pyspark/hello-world/hello-world.py"
-  },
-  "state": "ACTIVE",
-  "triggerSpec": {
-    "type": "ON_DEMAND"
-  },
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.dataplex.v1.DataplexService/DeleteTask
-
-{
-  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",

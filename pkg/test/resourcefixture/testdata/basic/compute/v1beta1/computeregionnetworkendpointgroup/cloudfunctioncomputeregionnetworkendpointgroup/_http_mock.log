@@ -13,51 +13,6 @@ Content-Type: application/json
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found"
-  }
-}
-
----
-
-GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json
-
-{
-  "code": 5,
-  "details": [],
-  "message": "cloudFunction \"projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}\" not found"
-}
-
----
-
 POST https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-central1/functions?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
@@ -138,6 +93,36 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found"
+  }
+}
+
+---
+
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -207,86 +192,6 @@ X-Xss-Protection: 0
   "targetId": "${networkEndpointGroupID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
   "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "cloudFunction": {
-    "function": "cloudfunctionsfunction-${uniqueId}"
-  },
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#networkEndpointGroup",
-  "name": "${networkEndpointGroupID}",
-  "networkEndpointType": "SERVERLESS",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
-  "size": 0
-}
-
----
-
-GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "availableMemoryMb": 0,
-  "buildEnvironmentVariables": {},
-  "buildId": "",
-  "buildName": "",
-  "buildServiceAccount": "",
-  "buildWorkerPool": "",
-  "description": "",
-  "dockerRegistry": "DOCKER_REGISTRY_UNSPECIFIED",
-  "dockerRepository": "",
-  "entryPoint": "helloGET",
-  "environmentVariables": {},
-  "httpsTrigger": {
-    "securityLevel": "SECURE_OPTIONAL",
-    "url": ""
-  },
-  "ingressSettings": "INGRESS_SETTINGS_UNSPECIFIED",
-  "kmsKeyName": "",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maxInstances": 0,
-  "minInstances": 0,
-  "name": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-  "network": "",
-  "runtime": "nodejs20",
-  "secretEnvironmentVariables": [],
-  "secretVolumes": [],
-  "serviceAccountEmail": "",
-  "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-  "sourceToken": "",
-  "status": "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
-  "timeout": null,
-  "updateTime": null,
-  "versionId": "0",
-  "vpcConnector": "",
-  "vpcConnectorEgressSettings": "VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED"
 }
 
 ---

@@ -1,28 +1,3 @@
-POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/secretmanager.googleapis.com:generateServiceIdentity?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
-    "email": "service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com",
-    "uniqueId": "12345678"
-  }
-}
-
----
-
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -40,29 +15,6 @@ X-Xss-Protection: 0
   "error": {
     "code": 404,
     "message": "Resource not found (resource=topic-${uniqueId}).",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}?alt=json
-Content-Type: application/json
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource not found (resource=topic-2-${uniqueId}).",
     "status": "NOT_FOUND"
   }
 }
@@ -122,6 +74,29 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=topic-2-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -175,7 +150,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
+POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/secretmanager.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
 
 200 OK
@@ -189,68 +164,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A="
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/topic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "email": "service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com",
+    "uniqueId": "12345678"
+  }
 }
 
 ---
@@ -317,7 +237,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
 
 200 OK
@@ -331,11 +251,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.publisher"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
 }
 
 ---
@@ -376,34 +301,6 @@ Content-Type: application/json
     "version": 3
   }
 }
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.publisher"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -589,160 +486,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.publisher"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.publisher"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.publisher"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-secretmanager.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.publisher"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "annotations": {
-    "foo": "secretmanagersecret"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
-  "replication": {
-    "automatic": {}
-  },
-  "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
-    "rotationPeriod": "3600s"
-  },
-  "topics": [
-    {
-      "name": "projects/${projectId}/topics/topic-${uniqueId}"
-    }
-  ]
-}
-
----
-
 PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json&updateMask=labels%2Cannotations%2Ctopics%2CexpireTime%2Crotation
 Content-Type: application/json
 
@@ -857,6 +600,23 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
 
@@ -894,6 +654,26 @@ Content-Type: application/json
     "version": 1
   }
 }
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -967,7 +747,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
 
 200 OK
@@ -981,50 +761,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "annotations": {
-    "bar": "secretmanagersecret-bar",
-    "foo": "secretmanagersecret"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
-  "replication": {
-    "automatic": {}
-  },
-  "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
-    "rotationPeriod": "3600s"
-  },
-  "topics": [
-    {
-      "name": "projects/${projectId}/topics/topic-2-${uniqueId}"
-    }
-  ]
+  "version": 1
 }
-
----
-
-DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
 
 ---
 
@@ -1105,123 +844,3 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-2-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/topic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}

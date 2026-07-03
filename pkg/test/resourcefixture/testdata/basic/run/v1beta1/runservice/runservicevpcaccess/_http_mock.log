@@ -125,104 +125,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "The connector is not found.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors?alt=json&connectorId=c1-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "ipCidrRange": "10.1.0.0/28",
-  "machineType": "e2-micro",
-  "maxThroughput": 300,
-  "minThroughput": 200,
-  "network": "${networkID}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
-    "target": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
-    "target": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.Connector",
-    "ipCidrRange": "10.1.0.0/28",
-    "machineType": "e2-micro",
-    "maxInstances": 4,
-    "maxThroughput": 300,
-    "minInstances": 3,
-    "minThroughput": 200,
-    "name": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-    "network": "${networkID}",
-    "state": "READY"
-  }
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -368,6 +270,104 @@ GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "The connector is not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors?alt=json&connectorId=c1-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ipCidrRange": "10.1.0.0/28",
+  "machineType": "e2-micro",
+  "maxThroughput": 300,
+  "minThroughput": 200,
+  "network": "${networkID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
+    "target": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.CreateConnector",
+    "target": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.Connector",
+    "ipCidrRange": "10.1.0.0/28",
+    "machineType": "e2-micro",
+    "maxInstances": 4,
+    "maxThroughput": 300,
+    "minInstances": 3,
+    "minThroughput": 200,
+    "name": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
+    "network": "${networkID}",
+    "state": "READY"
+  }
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -410,30 +410,6 @@ X-Xss-Protection: 0
   "error": {
     "code": 404,
     "message": "The connector is not found.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "service \"projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -513,6 +489,60 @@ X-Xss-Protection: 0
       "name": "${subnetworkID}",
       "projectId": "${projectId}"
     }
+  }
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "machineType": "e2-micro",
+  "maxInstances": 4,
+  "maxThroughput": 300,
+  "minInstances": 3,
+  "minThroughput": 200,
+  "name": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
+  "state": "READY",
+  "subnet": {
+    "name": "${subnetworkID}",
+    "projectId": "${projectId}"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "service \"projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -701,95 +731,6 @@ X-Xss-Protection: 0
     },
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "creator": "${creatorID}",
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "ingress": "INGRESS_TRAFFIC_ALL",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifier": "test@google.com",
-  "launchStage": "GA",
-  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
-  "template": {
-    "containers": [
-      {
-        "image": "gcr.io/cloudrun/hello",
-        "resources": {
-          "limits": {
-            "cpu": "1000m",
-            "memory": "512Mi"
-          }
-        }
-      }
-    ],
-    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-    "maxInstanceRequestConcurrency": 80,
-    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-    "timeout": "300s",
-    "vpcAccess": {
-      "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-      "egress": "ALL_TRAFFIC"
-    }
-  },
-  "terminalCondition": {
-    "lastTransitionTime": "2025-01-01T00:00:00Z",
-    "state": "CONDITION_SUCCEEDED",
-    "type": "Ready"
-  },
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "machineType": "e2-micro",
-  "maxInstances": 4,
-  "maxThroughput": 300,
-  "minInstances": 3,
-  "minThroughput": 200,
-  "name": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-  "state": "READY",
-  "subnet": {
-    "name": "${subnetworkID}",
-    "projectId": "${projectId}"
   }
 }
 
@@ -1111,180 +1052,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "machineType": "e2-micro",
-  "maxInstances": 4,
-  "maxThroughput": 300,
-  "minInstances": 3,
-  "minThroughput": 200,
-  "name": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-  "state": "READY",
-  "subnet": {
-    "name": "${subnetworkID}",
-    "projectId": "${projectId}"
-  }
-}
-
----
-
-DELETE https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
-    "target": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "creator": "${creatorID}",
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "ingress": "INGRESS_TRAFFIC_ALL",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifier": "test@google.com",
-  "launchStage": "GA",
-  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
-  "template": {
-    "containers": [
-      {
-        "image": "gcr.io/cloudrun/hello",
-        "resources": {
-          "limits": {
-            "cpu": "1000m",
-            "memory": "512Mi"
-          }
-        }
-      }
-    ],
-    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-    "maxInstanceRequestConcurrency": 80,
-    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-    "timeout": "300s",
-    "vpcAccess": {
-      "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-      "egress": "PRIVATE_RANGES_ONLY"
-    }
-  },
-  "terminalCondition": {
-    "lastTransitionTime": "2025-01-01T00:00:00Z",
-    "state": "CONDITION_SUCCEEDED",
-    "type": "Ready"
-  },
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
-    "target": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "ipCidrRange": "10.1.0.0/28",
-  "machineType": "e2-micro",
-  "maxInstances": 4,
-  "maxThroughput": 300,
-  "minInstances": 3,
-  "minThroughput": 200,
-  "name": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-  "network": "${networkID}",
-  "state": "READY"
-}
-
----
-
 DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1341,32 +1108,6 @@ X-Xss-Protection: 0
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-DELETE https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
-    "target": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -1479,6 +1220,147 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "machineType": "e2-micro",
+  "maxInstances": 4,
+  "maxThroughput": 300,
+  "minInstances": 3,
+  "minThroughput": 200,
+  "name": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
+  "state": "READY",
+  "subnet": {
+    "name": "${subnetworkID}",
+    "projectId": "${projectId}"
+  }
+}
+
+---
+
+DELETE https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
+    "target": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
+    "target": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ipCidrRange": "10.1.0.0/28",
+  "machineType": "e2-micro",
+  "maxInstances": 4,
+  "maxThroughput": 300,
+  "minInstances": 3,
+  "minThroughput": 200,
+  "name": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
+  "network": "${networkID}",
+  "state": "READY"
+}
+
+---
+
+DELETE https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vpcaccess.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.vpcaccess.v1beta1.VpcAccessService.DeleteConnector",
+    "target": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
 GET https://vpcaccess.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1506,37 +1388,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Test network",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-  ]
 }
 
 ---
@@ -1578,6 +1429,98 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1605,36 +1548,6 @@ X-Xss-Protection: 0
   "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "network \"projects/${projectId}/global/networks/${networkID}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "network \"projects/${projectId}/global/networks/${networkID}\" not found"
-  }
 }
 
 ---

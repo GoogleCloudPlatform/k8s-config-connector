@@ -1,0 +1,68 @@
+1c1
+< POST https://www.googleapis.com/compute/v1/locations/global/firewallPolicies?alt=json&parentId=organizations%2F${organizationID}
+---
+> POST https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies?parentId=organizations%2F${organizationID}
+6d5
+<   "parent": "organizations/${organizationID}",
+35c34
+< GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json&parentId=organizations%2F${organizationID}
+---
+> GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+66c65
+< GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+174c173
+< PATCH https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+---
+> PATCH https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+179c178
+<   "fingerprint": "abcdef0123A="
+---
+>   "shortName": "firewallpolicy-${uniqueId}"
+209c208
+< GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+240c239
+< GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+348c347
+< DELETE https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+378c377
+< GET https://www.googleapis.com/compute/v1/locations/global/operations/${operationID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/locations/global/operations/${operationID}
+405,433d403
+< }
+< 
+< ---
+< 
+< GET https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyID}' was not found",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "The resource 'locations/global/firewallPolicies/${firewallPolicyID}' was not found"
+<   }

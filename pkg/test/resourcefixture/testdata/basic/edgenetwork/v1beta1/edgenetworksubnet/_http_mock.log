@@ -168,6 +168,27 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/subnets/edgenetworksubnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
 GET https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -190,81 +211,6 @@ X-Xss-Protection: 0
   },
   "mtu": 9000,
   "name": "projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/edgenetworknetwork-${uniqueId}"
-}
-
----
-
-GET https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/subnets/edgenetworksubnet-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "description": "Basic Subnet",
-  "ipv4Cidr": [
-    "1.1.1.1/24",
-    "2.2.2.2/32"
-  ],
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/subnets/edgenetworksubnet-${uniqueId}",
-  "network": "projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/edgenetworknetwork-${uniqueId}"
-}
-
----
-
-DELETE https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-500 Internal Server Error
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 500,
-    "message": "cannot delete network with attached subnet: projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/subnets/edgenetworksubnet-${uniqueId}"
-  }
-}
-
----
-
-DELETE https://edgenetwork.googleapis.com/v1/projects/${projectId}/locations/us-central1/zones/us-central1-test-zone/subnets/edgenetworksubnet-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "name": "operations/${operationID}"
 }
 
 ---

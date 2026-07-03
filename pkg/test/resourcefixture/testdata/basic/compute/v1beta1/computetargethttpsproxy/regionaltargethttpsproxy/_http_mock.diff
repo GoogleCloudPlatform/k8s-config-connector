@@ -1,0 +1,83 @@
+669c669
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}
+698c698
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies
+704c704
+<   "region": "projects/${projectId}/global/regions/us-central1",
+---
+>   "quicOverride": "DISABLE",
+706c706
+<     "projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}"
+---
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}"
+739c739,740
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+770c771
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}
+789a791
+>   "quicOverride": "DISABLE",
+793c795
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}"
+---
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}"
+796c798
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+---
+>   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+801c803
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}/setUrlMap?alt=json
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}
+804a807,812
+>   "description": "test description",
+>   "name": "${targetHttpsProxyID}",
+>   "quicOverride": "ENABLE",
+>   "sslCertificates": [
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}"
+>   ],
+823c831
+<   "operationType": "SetUrlMap",
+---
+>   "operationType": "patch",
+836c844,845
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+854c863
+<   "operationType": "SetUrlMap",
+---
+>   "operationType": "patch",
+867c876
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}
+886a896
+>   "quicOverride": "ENABLE",
+890c900,901
+<     "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}"
+---
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}",
+>     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/sslCertificates/${sslCertificateID}"
+893c904
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+---
+>   "urlMap": "projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+898c909
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}
+929c940,941
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json

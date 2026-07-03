@@ -1,44 +1,3 @@
-POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-
-{
-  "launchParameter": {
-    "containerSpecGcsPath": "gs://dataflow-templates-us-central1/2024-07-23-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex",
-    "environment": {},
-    "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
-    "parameters": {
-      "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-      "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path1"
-    }
-  },
-  "location": "us-central1",
-  "projectId": "${projectId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "job": {
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "currentStateTime": "2024-04-01T12:34:56.123456Z",
-    "id": "${jobID}",
-    "location": "us-central1",
-    "name": "streamingdataflowflextemplatejob2-${uniqueId}",
-    "projectId": "${projectId}",
-    "startTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic0-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -111,43 +70,6 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
-}
-
----
-
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentState": 11,
-  "currentStateTime": "2024-04-01T12:34:56.123456Z",
-  "environment": {
-    "dataset": "bigquery.googleapis.com/cloud_dataflow"
-  },
-  "id": "000000000000000000000",
-  "labels": {
-    "goog-dataflow-provided-template-name": "cloud_pubsub_to_gcs_text_flex",
-    "goog-dataflow-provided-template-type": "flex",
-    "goog-dataflow-provided-template-version": "2024-07-23-00_rc00"
-  },
-  "location": "us-central1",
-  "name": "streamingdataflowflextemplatejob2-${uniqueId}",
-  "pipelineDescription": {
-    "removed": "simplicity"
-  },
-  "projectId": "${projectId}",
-  "startTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -267,6 +189,47 @@ X-Xss-Protection: 0
   "pushConfig": {},
   "state": "ACTIVE",
   "topic": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
+}
+
+---
+
+POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "launchParameter": {
+    "containerSpecGcsPath": "gs://dataflow-templates-us-central1/2024-07-23-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex",
+    "environment": {},
+    "jobName": "streamingdataflowflextemplatejob2-${uniqueId}",
+    "parameters": {
+      "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+      "outputDirectory": "gs://bucket-dataflow-output-${uniqueId}/path1"
+    }
+  },
+  "location": "us-central1",
+  "projectId": "${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "job": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentStateTime": "2024-04-01T12:34:56.123456Z",
+    "id": "${jobID}",
+    "location": "us-central1",
+    "name": "streamingdataflowflextemplatejob2-${uniqueId}",
+    "projectId": "${projectId}",
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -816,94 +779,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "ackDeadlineSeconds": 10,
-  "expirationPolicy": {
-    "ttl": "2678400s"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "messageRetentionDuration": "604800s",
-  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-  "pushConfig": {},
-  "state": "ACTIVE",
-  "topic": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic0-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
-}
-
----
-
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic0-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
 GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 Content-Type: application/json
 
@@ -1304,3 +1179,91 @@ X-Xss-Protection: 0
   "steps": [],
   "type": 2
 }
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ackDeadlineSeconds": 10,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "604800s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic0-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic0-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

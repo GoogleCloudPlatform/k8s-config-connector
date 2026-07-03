@@ -1,3 +1,173 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "accountId": "usersa1-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "User Service Account 1"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 1",
+  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 1",
+  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "accountId": "usersa2-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "User Service Account 2"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 2",
+  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 2",
+  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
 
@@ -44,6 +214,211 @@ X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/dataproc.worker"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
 }
 
 ---
@@ -252,529 +627,6 @@ X-Xss-Protection: 0
     },
     "projectId": "${projectId}"
   }
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clusterName": "dataproccluster-${uniqueId}",
-  "clusterUuid": "${dataStoreClusterUUID}",
-  "config": {
-    "configBucket": "${dataStoreConfigBucketPath}",
-    "endpointConfig": {},
-    "gceClusterConfig": {
-      "internalIpOnly": true,
-      "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
-      "serviceAccountScopes": [
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "shieldedInstanceConfig": {
-        "enableIntegrityMonitoring": true,
-        "enableSecureBoot": true,
-        "enableVtpm": true
-      },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-    },
-    "masterConfig": {
-      "diskConfig": {
-        "bootDiskSizeGb": 1000,
-        "bootDiskType": "pd-standard"
-      },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-m"
-      ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
-      "minCpuPlatform": "AUTOMATIC",
-      "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
-    },
-    "securityConfig": {
-      "identityConfig": {
-        "userServiceAccountMapping": {
-          "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
-        }
-      }
-    },
-    "softwareConfig": {
-      "imageVersion": "2.2.81-debian12",
-      "properties": {
-        "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
-      }
-    },
-    "tempBucket": "${dataStoreTempBucketPath}",
-    "workerConfig": {
-      "diskConfig": {
-        "bootDiskSizeGb": 1000,
-        "bootDiskType": "pd-standard"
-      },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-w-0",
-        "dataproccluster-${uniqueId}-w-1"
-      ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
-      "minCpuPlatform": "AUTOMATIC",
-      "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "goog-dataproc-autozone": "enabled",
-    "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
-    "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-    "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1",
-    "managed-by-cnrm": "true"
-  },
-  "projectId": "${projectId}",
-  "status": {
-    "state": "RUNNING",
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": "CREATING",
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Unknown service account",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Unknown service account",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Unknown service account",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Unknown service account",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "accountId": "usersa1-${uniqueId}",
-  "serviceAccount": {
-    "displayName": "User Service Account 1"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 1",
-  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 1",
-  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "accountId": "usersa2-${uniqueId}",
-  "serviceAccount": {
-    "displayName": "User Service Account 2"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 2",
-  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 2",
-  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 1",
-  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 2",
-  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "policy": {
-    "bindings": [
-      {
-        "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/dataproc.worker"
-      }
-    ],
-    "etag": "abcdef0123A=",
-    "version": 3
-  },
-  "updateMask": "bindings,etag,auditConfigs"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.worker"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.worker"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.worker"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.worker"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.worker"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
 }
 
 ---
@@ -1235,275 +1087,6 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/dataproc.worker"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 2",
-  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "User Service Account 1",
-  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clusterName": "dataproccluster-${uniqueId}",
-  "clusterUuid": "${dataStoreClusterUUID}",
-  "config": {
-    "configBucket": "${dataStoreConfigBucketPath}",
-    "endpointConfig": {},
-    "gceClusterConfig": {
-      "internalIpOnly": true,
-      "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
-      "serviceAccountScopes": [
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "shieldedInstanceConfig": {
-        "enableIntegrityMonitoring": true,
-        "enableSecureBoot": true,
-        "enableVtpm": true
-      },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-    },
-    "masterConfig": {
-      "diskConfig": {
-        "bootDiskSizeGb": 1000,
-        "bootDiskType": "pd-standard"
-      },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-m"
-      ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
-      "minCpuPlatform": "AUTOMATIC",
-      "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
-    },
-    "securityConfig": {
-      "identityConfig": {
-        "userServiceAccountMapping": {
-          "user1@example.com": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-          "user2@example.com": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
-        }
-      }
-    },
-    "softwareConfig": {
-      "imageVersion": "2.2.81-debian12",
-      "properties": {
-        "dataproc:dataproc.dynamic.multi.tenancy.enabled": "true"
-      }
-    },
-    "tempBucket": "${dataStoreTempBucketPath}",
-    "workerConfig": {
-      "diskConfig": {
-        "bootDiskSizeGb": 1000,
-        "bootDiskType": "pd-standard"
-      },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "instanceNames": [
-        "dataproccluster-${uniqueId}-w-0",
-        "dataproccluster-${uniqueId}-w-1"
-      ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
-      "minCpuPlatform": "AUTOMATIC",
-      "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "goog-dataproc-autozone": "enabled",
-    "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
-    "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-    "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1",
-    "managed-by-cnrm": "true"
-  },
-  "metrics": {
-    "hdfsMetrics": {
-      "dfs-blocks-corrupt": "0",
-      "dfs-blocks-default-replication-factor": "2",
-      "dfs-blocks-missing": "0",
-      "dfs-blocks-missing-repl-one": "0",
-      "dfs-blocks-pending-deletion": "0",
-      "dfs-blocks-under-replication": "0",
-      "dfs-capacity-present": 12345,
-      "dfs-capacity-remaining": 12345,
-      "dfs-capacity-total": 12345,
-      "dfs-capacity-used": 12345,
-      "dfs-nodes-decommissioned": "0",
-      "dfs-nodes-decommissioning": "0",
-      "dfs-nodes-running": "2"
-    },
-    "yarnMetrics": {
-      "yarn-apps-completed": "0",
-      "yarn-apps-failed": "0",
-      "yarn-apps-killed": "0",
-      "yarn-apps-pending": "0",
-      "yarn-apps-running": "0",
-      "yarn-apps-submitted": "0",
-      "yarn-containers-allocated": "0",
-      "yarn-containers-pending": "0",
-      "yarn-containers-reserved": "0",
-      "yarn-memory-mb-allocated": "0",
-      "yarn-memory-mb-available": "27088",
-      "yarn-memory-mb-pending": "0",
-      "yarn-memory-mb-reserved": "0",
-      "yarn-memory-mb-total": "27088",
-      "yarn-nodes-active": "2",
-      "yarn-nodes-decommissioned": "0",
-      "yarn-nodes-decommissioning": "0",
-      "yarn-nodes-lost": "0",
-      "yarn-nodes-new": "0",
-      "yarn-nodes-rebooted": "0",
-      "yarn-nodes-shutdown": "0",
-      "yarn-nodes-unhealthy": "0",
-      "yarn-vcores-allocated": "0",
-      "yarn-vcores-available": "8",
-      "yarn-vcores-pending": "0",
-      "yarn-vcores-reserved": "0",
-      "yarn-vcores-total": "8"
-    }
-  },
-  "projectId": "${projectId}",
-  "status": {
-    "state": "RUNNING",
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": "CREATING",
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    },
-    {
-      "state": "RUNNING",
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    },
-    {
-      "state": "UPDATING",
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
-}
-
----
-
 DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -1599,6 +1182,40 @@ X-Xss-Protection: 0
     "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
     "status": "NOT_FOUND"
   }
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
 }
 
 ---
@@ -1766,3 +1383,83 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "version": 1
 }
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 2",
+  "email": "usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "User Service Account 1",
+  "email": "usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

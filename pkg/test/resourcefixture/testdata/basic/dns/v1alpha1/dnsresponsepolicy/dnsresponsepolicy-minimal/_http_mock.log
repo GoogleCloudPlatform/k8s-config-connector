@@ -1,70 +1,3 @@
-GET https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "responsePolicy \"projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "responsePolicy \"projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "description": "A minimal DNS response policy",
-  "networks": [
-    {
-      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-    }
-  ],
-  "responsePolicyName": "dnsresponsepolicy-test-${uniqueId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "description": "A minimal DNS response policy",
-  "id": "000000000000000000000",
-  "kind": "dns#responsePolicy",
-  "networks": [
-    {
-      "kind": "dns#responsePolicyNetwork",
-      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-    }
-  ],
-  "responsePolicyName": "dnsresponsepolicy-test-${uniqueId}"
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
@@ -131,6 +64,73 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
   ]
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "responsePolicy \"projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "responsePolicy \"projects/${projectId}/responsePolicies/dnsresponsepolicy-test-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1/projects/${projectId}/responsePolicies?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "description": "A minimal DNS response policy",
+  "networks": [
+    {
+      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "responsePolicyName": "dnsresponsepolicy-test-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A minimal DNS response policy",
+  "id": "000000000000000000000",
+  "kind": "dns#responsePolicy",
+  "networks": [
+    {
+      "kind": "dns#responsePolicyNetwork",
+      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "responsePolicyName": "dnsresponsepolicy-test-${uniqueId}"
 }
 
 ---

@@ -1,238 +1,3 @@
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Unknown service account",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Unknown service account",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "accountId": "iamsa-${uniqueId}",
-  "serviceAccount": {}
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "friendlyName": "referencedtable${uniqueId}",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "description": "State Code",
-        "mode": "REQUIRED",
-        "name": "state_code",
-        "policyTags": {},
-        "type": "STRING"
-      }
-    ]
-  },
-  "tableConstraints": {
-    "primaryKey": {
-      "columns": [
-        "dt",
-        "state_code"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "referencedtable${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  }
-}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -292,31 +57,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/bigquery.googleapis.com:generateServiceIdentity?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
-    "email": "bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com",
-    "uniqueId": "12345678"
-  }
 }
 
 ---
@@ -431,127 +171,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "friendlyName": "referencedtable${uniqueId}",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "description": "State Code",
-        "mode": "REQUIRED",
-        "name": "state_code",
-        "policyTags": {},
-        "type": "STRING"
-      }
-    ]
-  },
-  "tableConstraints": {
-    "primaryKey": {
-      "columns": [
-        "dt",
-        "state_code"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "referencedtable${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  }
-}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/bigquery.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
 
 200 OK
@@ -565,26 +185,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyScheduledDuration": "2592000s",
-  "labels": {
-    "cnrm-test": "true",
-    "key-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
-  "purpose": "ENCRYPT_DECRYPT",
-  "versionTemplate": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "protectionLevel": "SOFTWARE"
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "email": "bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com",
+    "uniqueId": "12345678"
   }
 }
 
@@ -677,7 +283,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -695,142 +301,26 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+        "message": "Unknown service account",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+    "message": "Unknown service account",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
-  "clustering": {
-    "fields": [
-      "name",
-      "post_abbr"
-    ]
-  },
-  "description": "A detailed example of a BigQuery Table resource.",
-  "encryptionConfiguration": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "expirationTime": "2024-09-01T12:34:56.123456Z",
-  "friendlyName": "BigQueryTable Full Example",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "value1",
-    "metadata-key2": "value2"
-  },
-  "requirePartitionFilter": true,
-  "schema": {
-    "fields": [
-      {
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "post_abbr",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "date",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "name": "col_numeric",
-        "policyTags": {},
-        "precision": "38",
-        "scale": "9",
-        "type": "NUMERIC"
-      },
-      {
-        "name": "col_bignumeric",
-        "policyTags": {},
-        "precision": "76",
-        "scale": "38",
-        "type": "BIGNUMERIC"
-      },
-      {
-        "name": "col_geography",
-        "policyTags": {},
-        "type": "GEOGRAPHY"
-      },
-      {
-        "name": "col_timestamp",
-        "policyTags": {},
-        "type": "TIMESTAMP"
-      },
-      {
-        "fields": [
-          {
-            "name": "sub_col1",
-            "policyTags": {},
-            "type": "INTEGER"
-          },
-          {
-            "name": "sub_col2",
-            "policyTags": {},
-            "type": "BOOLEAN"
-          }
-        ],
-        "name": "col_record",
-        "type": "RECORD"
-      },
-      {
-        "mode": "REPEATED",
-        "name": "col_array",
-        "policyTags": {},
-        "type": "INTEGER"
-      }
-    ]
-  },
-  "tableConstraints": {
-    "foreignKeys": [
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "state_code",
-            "referencingColumn": "post_abbr"
-          }
-        ],
-        "name": "fk_constraint_example",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      }
-    ],
-    "primaryKey": {
-      "columns": [
-        "name"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "timePartitioning": {
-    "expirationMs": "86400000",
-    "field": "date",
-    "type": "DAY"
-  }
+  "accountId": "iamsa-${uniqueId}",
+  "serviceAccount": {}
 }
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -841,126 +331,41 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-    "status": "NOT_FOUND"
-  }
+  "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
 }
 
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "friendlyName": "referencedtable${uniqueId}",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "description": "State Code",
-        "mode": "REQUIRED",
-        "name": "state_code",
-        "policyTags": {},
-        "type": "STRING"
-      }
-    ]
-  },
-  "tableConstraints": {
-    "primaryKey": {
-      "columns": [
-        "dt",
-        "state_code"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "referencedtable${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  }
-}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -1110,6 +515,158 @@ X-Xss-Protection: 0
   "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "friendlyName": "referencedtable${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Date",
+        "mode": "REQUIRED",
+        "name": "dt",
+        "policyTags": {},
+        "type": "DATE"
+      },
+      {
+        "description": "State Code",
+        "mode": "REQUIRED",
+        "name": "state_code",
+        "policyTags": {},
+        "type": "STRING"
+      }
+    ]
+  },
+  "tableConstraints": {
+    "primaryKey": {
+      "columns": [
+        "dt",
+        "state_code"
+      ]
+    }
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "referencedtable${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "dt",
+    "type": "DAY"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "etag": "abcdef0123A=",
+  "friendlyName": "referencedtable${uniqueId}",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "dt"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Date",
+        "mode": "REQUIRED",
+        "name": "dt",
+        "type": "DATE"
+      },
+      {
+        "description": "State Code",
+        "mode": "REQUIRED",
+        "name": "state_code",
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/referencedtable${uniqueId}",
+  "tableConstraints": {
+    "primaryKey": {
+      "columns": [
+        "dt",
+        "state_code"
+      ]
+    }
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "referencedtable${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "dt",
+    "type": "DAY"
+  },
+  "type": "TABLE"
 }
 
 ---
@@ -1404,158 +961,6 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
-    "type": "DAY"
-  },
-  "type": "TABLE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
-Content-Type: application/json
-
-{
-  "friendlyName": "referencedtable${uniqueId}",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "description": "State Code",
-        "mode": "REQUIRED",
-        "name": "state_code",
-        "policyTags": {},
-        "type": "STRING"
-      }
-    ]
-  },
-  "tableConstraints": {
-    "primaryKey": {
-      "columns": [
-        "dt",
-        "state_code"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "referencedtable${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "encryptionConfiguration": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "friendlyName": "referencedtable${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "dt"
-      }
-    ]
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "type": "DATE"
-      },
-      {
-        "description": "State Code",
-        "mode": "REQUIRED",
-        "name": "state_code",
-        "type": "STRING"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/referencedtable${uniqueId}",
-  "tableConstraints": {
-    "primaryKey": {
-      "columns": [
-        "dt",
-        "state_code"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "referencedtable${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
     "type": "DAY"
   },
   "type": "TABLE"
@@ -2168,246 +1573,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "encryptionConfiguration": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "friendlyName": "referencedtable${uniqueId}",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "dt"
-      }
-    ]
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "Date",
-        "mode": "REQUIRED",
-        "name": "dt",
-        "type": "DATE"
-      },
-      {
-        "description": "State Code",
-        "mode": "REQUIRED",
-        "name": "state_code",
-        "type": "STRING"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/referencedtable${uniqueId}",
-  "tableConstraints": {
-    "primaryKey": {
-      "columns": [
-        "dt",
-        "state_code"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "referencedtable${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  },
-  "type": "TABLE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clustering": {
-    "fields": [
-      "name",
-      "post_abbr"
-    ]
-  },
-  "creationTime": "123456789",
-  "description": "A detailed example of a BigQuery Table resource.",
-  "encryptionConfiguration": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "expirationTime": "2024-09-01T12:34:56.123456Z",
-  "friendlyName": "BigQueryTable Full Example",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "updated-value1",
-    "metadata-key2": "updated-value2"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "date"
-      }
-    ]
-  },
-  "requirePartitionFilter": true,
-  "schema": {
-    "fields": [
-      {
-        "mode": "REQUIRED",
-        "name": "name",
-        "type": "STRING"
-      },
-      {
-        "name": "post_abbr",
-        "type": "STRING"
-      },
-      {
-        "name": "date",
-        "type": "DATE"
-      },
-      {
-        "name": "col_numeric",
-        "precision": "38",
-        "scale": "9",
-        "type": "NUMERIC"
-      },
-      {
-        "name": "col_bignumeric",
-        "precision": "76",
-        "scale": "38",
-        "type": "BIGNUMERIC"
-      },
-      {
-        "name": "col_geography",
-        "type": "GEOGRAPHY"
-      },
-      {
-        "name": "col_timestamp",
-        "type": "TIMESTAMP"
-      },
-      {
-        "fields": [
-          {
-            "name": "sub_col1",
-            "type": "INTEGER"
-          },
-          {
-            "name": "sub_col2",
-            "type": "BOOLEAN"
-          }
-        ],
-        "name": "col_record",
-        "type": "RECORD"
-      },
-      {
-        "mode": "REPEATED",
-        "name": "col_array",
-        "type": "INTEGER"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
-  "tableConstraints": {
-    "foreignKeys": [
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "state_code",
-            "referencingColumn": "post_abbr"
-          }
-        ],
-        "name": "fk_constraint_example",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      },
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "dt",
-            "referencingColumn": "date"
-          }
-        ],
-        "name": "fk_constraint_example_2",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      }
-    ],
-    "primaryKey": {
-      "columns": [
-        "name"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "timePartitioning": {
-    "expirationMs": "86400000",
-    "field": "date",
-    "requirePartitionFilter": true,
-    "type": "DAY"
-  },
-  "type": "TABLE"
-}
-
----
-
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 
 204 No Content
@@ -2517,45 +1682,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
 
@@ -2609,6 +1735,61 @@ X-Xss-Protection: 0
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
 
 ---
 
@@ -2666,22 +1847,6 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-Content-Type: application/json
-
-204 No Content
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-
----
-
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -2717,26 +1882,6 @@ X-Xss-Protection: 0
     "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
     "protectionLevel": "SOFTWARE"
   }
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
@@ -2792,4 +1937,24 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
   "protectionLevel": "SOFTWARE",
   "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
 }

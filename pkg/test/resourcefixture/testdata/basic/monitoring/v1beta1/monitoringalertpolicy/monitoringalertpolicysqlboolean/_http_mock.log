@@ -1,35 +1,8 @@
-POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
-{
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionSql": {
-        "booleanTest": {
-          "column": "has_error"
-        },
-        "daily": {
-          "executionTime": {
-            "hours": 12
-          },
-          "periodicity": 1
-        },
-        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
-      },
-      "displayName": "SQL Log Alert Condition Daily Boolean"
-    }
-  ],
-  "displayName": "Test SQL Alert Policy Daily Boolean",
-  "enabled": true,
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -40,47 +13,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionSql": {
-        "booleanTest": {
-          "column": "has_error"
-        },
-        "daily": {
-          "executionTime": {
-            "hours": 12
-          },
-          "periodicity": 1
-        },
-        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
-      },
-      "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Test SQL Alert Policy Daily Boolean",
-  "enabled": true,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+  "error": {
+    "code": 404,
+    "message": "Bucket `logginglogbucket-${uniqueId}` in location `global` does not exist",
+    "status": "NOT_FOUND"
   }
 }
 
 ---
 
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=logginglogbucket-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "analyticsEnabled": true,
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -93,40 +42,37 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionSql": {
-        "booleanTest": {
-          "column": "has_error"
-        },
-        "daily": {
-          "executionTime": {
-            "hours": 12
-          },
-          "periodicity": 1
-        },
-        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
-      },
-      "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Test SQL Alert Policy Daily Boolean",
-  "enabled": true,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
+  "analyticsEnabled": true,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "analyticsEnabled": true,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -229,39 +175,37 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "error": {
-    "code": 404,
-    "message": "Bucket `logginglogbucket-${uniqueId}` in location `global` does not exist",
-    "status": "NOT_FOUND"
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 12
+          },
+          "periodicity": 1
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean"
+    }
+  ],
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   }
 }
 
----
-
-POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=logginglogbucket-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-{
-  "analyticsEnabled": true,
-  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}"
-}
-
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -273,37 +217,40 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "analyticsEnabled": true,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
-  "retentionDays": 30,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "analyticsEnabled": true,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
-  "retentionDays": 30,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 12
+          },
+          "periodicity": 1
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
 
 ---
@@ -498,6 +445,24 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -584,78 +549,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
-
----
-
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "combiner": "OR",
-  "conditions": [
-    {
-      "conditionSql": {
-        "booleanTest": {
-          "column": "has_error"
-        },
-        "daily": {
-          "executionTime": {
-            "hours": 15,
-            "minutes": 30
-          },
-          "periodicity": 2
-        },
-        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
-      },
-      "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
-    }
-  ],
-  "creationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "displayName": "Test SQL Alert Policy Daily Boolean",
-  "enabled": true,
-  "mutationRecord": {
-    "mutateTime": "2024-04-01T12:34:56.123456Z",
-    "mutatedBy": "user@example.com"
-  },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
-  "userLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
----
-
-DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
 
 ---
 

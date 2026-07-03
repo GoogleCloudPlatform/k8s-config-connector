@@ -273,6 +273,23 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?alt=json
 Content-Type: application/json
 
@@ -293,23 +310,6 @@ X-Xss-Protection: 0
   "revisionId": "revision-id-placeholder",
   "type": "PROTOCOL_BUFFER"
 }
-
----
-
-DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
 
 ---
 

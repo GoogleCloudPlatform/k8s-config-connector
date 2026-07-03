@@ -1,0 +1,34 @@
+77c77,78
+< GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+99c100
+< POST https://logging.googleapis.com/v2/projects/${projectId}/sinks?alt=json&prettyPrint=false&uniqueWriterIdentity=true
+---
+> POST https://logging.googleapis.com/v2/projects/${projectId}/sinks?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true
+129c130,131
+< GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+152c154
+< PATCH https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
+---
+> PUT https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&uniqueWriterIdentity=true&updateMask=filter
+157,158c159,160
+<   "disabled": false,
+<   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\""
+---
+>   "filter": "resource.type=\"bigquery_dataset\" AND logName:\"cloudaudit.googleapis.com\"",
+>   "name": "logsink-${uniqueId}"
+182c184,185
+< GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+205c208,209
+< DELETE https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?alt=json&prettyPrint=false
+---
+> DELETE https://logging.googleapis.com/v2/projects/${projectId}/sinks/logsink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json

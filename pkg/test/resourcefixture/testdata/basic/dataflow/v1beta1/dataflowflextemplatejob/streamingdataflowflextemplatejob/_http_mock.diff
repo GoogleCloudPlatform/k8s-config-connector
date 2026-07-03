@@ -1,0 +1,103 @@
+541c541
+< POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?alt=json&prettyPrint=false
+---
+> POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?%24alt=json%3Benum-encoding%3Dint
+556c556,558
+<   }
+---
+>   },
+>   "location": "us-central1",
+>   "projectId": "${projectId}"
+583c585,618
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "currentState": 11,
+>   "currentStateTime": "2024-04-01T12:34:56.123456Z",
+>   "environment": {
+>     "dataset": "bigquery.googleapis.com/cloud_dataflow"
+>   },
+>   "id": "000000000000000000000",
+>   "location": "us-central1",
+>   "name": "dataflowflextemplatejob-${uniqueId}",
+>   "pipelineDescription": {
+>     "removed": "simplicity"
+>   },
+>   "projectId": "${projectId}",
+>   "startTime": "2024-04-01T12:34:56.123456Z"
+> }
+> 
+> ---
+> 
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+597c632
+<   "currentState": "JOB_STATE_RUNNING",
+---
+>   "currentState": 2,
+752c787
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "type": 2
+757c792
+< PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false
+---
+> PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+761c796
+<   "requestedState": "JOB_STATE_CANCELLED"
+---
+>   "requestedState": 5
+775c810
+<   "currentState": "JOB_STATE_CANCELLING",
+---
+>   "currentState": 10,
+779,780c814,815
+<   "requestedState": "JOB_STATE_CANCELLED",
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "requestedState": 5,
+>   "type": 2
+785c820,821
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+799c835
+<   "currentState": "JOB_STATE_CANCELLING",
+---
+>   "currentState": 10,
+951c987
+<   "requestedState": "JOB_STATE_CANCELLED",
+---
+>   "requestedState": 5,
+955c991
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "type": 2
+960c996,997
+< GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
+---
+> GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+> Content-Type: application/json
+974c1011
+<   "currentState": "JOB_STATE_CANCELLED",
+---
+>   "currentState": 5,
+1129c1166
+<   "type": "JOB_TYPE_STREAMING"
+---
+>   "type": 2
