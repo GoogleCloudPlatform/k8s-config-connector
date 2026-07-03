@@ -315,7 +315,7 @@
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessorDefaultVersion               | True         | False       | False  | Terraform  | False       |
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessor                             | True         | False       | False  | Direct     | True        |
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessorVersion                      | True         | True        | False  | Direct     | True        |
-| edgecontainer.cnrm.cloud.google.com           | EdgeContainerCluster                            | False        | True        | False  | Terraform  | False       |
+| edgecontainer.cnrm.cloud.google.com           | EdgeContainerCluster                            | False        | True        | False  | Terraform  | True        |
 | edgecontainer.cnrm.cloud.google.com           | EdgeContainerMachine                            | True         | False       | False  | Direct     | True        |
 | edgecontainer.cnrm.cloud.google.com           | EdgeContainerNodePool                           | False        | True        | False  | Terraform  | False       |
 | edgecontainer.cnrm.cloud.google.com           | EdgeContainerVpnConnection                      | False        | True        | False  | Terraform  | False       |
