@@ -20,6 +20,7 @@ import (
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -363,6 +364,35 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfi
 	out := &pb.EncryptionConfig{}
 	if in.KMSKeyRef != nil {
 		out.KmsKeyName = in.KMSKeyRef.External
+	}
+	return out
+}
+
+func StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb.StorageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageConfig{}
+	if in.BucketRef != nil {
+		id := &storagev1beta1.StorageBucketIdentity{}
+		if err := id.FromExternal(in.BucketRef.External); err != nil {
+			mapCtx.Errorf("storageConfig.bucketRef: %v", err)
+		} else {
+			out.Bucket = id.Bucket
+		}
+	}
+	return out
+}
+
+func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *krm.StorageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageConfig{}
+	if in.GetBucket() != "" {
+		out.BucketRef = &storagev1beta1.StorageBucketRef{
+			External: "gs://" + in.GetBucket(),
+		}
 	}
 	return out
 }
