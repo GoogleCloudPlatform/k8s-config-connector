@@ -35,6 +35,10 @@ func (c *FakeGkebackupV1alpha1) GKEBackupBackups(namespace string) v1alpha1.GKEB
 	return newFakeGKEBackupBackups(c, namespace)
 }
 
+func (c *FakeGkebackupV1alpha1) GKEBackupBackupChannels(namespace string) v1alpha1.GKEBackupBackupChannelInterface {
+	return newFakeGKEBackupBackupChannels(c, namespace)
+}
+
 func (c *FakeGkebackupV1alpha1) GKEBackupBackupPlans(namespace string) v1alpha1.GKEBackupBackupPlanInterface {
 	return newFakeGKEBackupBackupPlans(c, namespace)
 }

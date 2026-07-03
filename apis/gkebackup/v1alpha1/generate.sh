@@ -30,7 +30,8 @@ go run . generate-types \
     --resource GKEBackupBackupPlan:BackupPlan \
     --resource GKEBackupRestorePlan:RestorePlan \
     --resource GKEBackupBackup:Backup \
-    --resource GKEBackupRestore:Restore
+    --resource GKEBackupRestore:Restore \
+    --resource GKEBackupBackupChannel:BackupChannel
 
 go run . generate-mapper \
     --service google.cloud.gkebackup.v1 \
