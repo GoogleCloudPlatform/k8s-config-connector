@@ -43,6 +43,10 @@ func (i *InstanceIdentity) String() string {
 	return InstanceIdentityFormat.ToString(*i)
 }
 
+func (i *InstanceIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *InstanceIdentity) FromExternal(ref string) error {
 	parsed, match, err := InstanceIdentityFormat.Parse(ref)
 	if err != nil {

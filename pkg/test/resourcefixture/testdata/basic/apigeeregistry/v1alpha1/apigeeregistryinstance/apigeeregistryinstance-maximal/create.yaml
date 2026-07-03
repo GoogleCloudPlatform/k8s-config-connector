@@ -1,0 +1,12 @@
+apiVersion: apigeeregistry.cnrm.cloud.google.com/v1alpha1
+kind: ApigeeRegistryInstance
+metadata:
+  name: apigeeregistryinstance-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  resourceID: registryinst-${uniqueId}
+  config:
+    cmekKeyNameRef:
+      external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
