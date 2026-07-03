@@ -86,6 +86,7 @@ import (
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
+	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
 	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1beta1"
@@ -297,6 +298,7 @@ type Interface interface {
 	CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface
+	CloudtalentsolutionV1alpha1() cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Interface
 	CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface
 	ColabV1alpha1() colabv1alpha1.ColabV1alpha1Interface
 	ComposerV1beta1() composerv1beta1.ComposerV1beta1Interface
@@ -506,6 +508,7 @@ type Clientset struct {
 	cloudquotaV1beta1               *cloudquotav1beta1.CloudquotaV1beta1Client
 	cloudschedulerV1beta1           *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	cloudsecuritycomplianceV1alpha1 *cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Client
+	cloudtalentsolutionV1alpha1     *cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Client
 	cloudtasksV1alpha1              *cloudtasksv1alpha1.CloudtasksV1alpha1Client
 	colabV1alpha1                   *colabv1alpha1.ColabV1alpha1Client
 	composerV1beta1                 *composerv1beta1.ComposerV1beta1Client
@@ -954,6 +957,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
 func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
 	return c.cloudsecuritycomplianceV1alpha1
+}
+
+// CloudtalentsolutionV1alpha1 retrieves the CloudtalentsolutionV1alpha1Client
+func (c *Clientset) CloudtalentsolutionV1alpha1() cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Interface {
+	return c.cloudtalentsolutionV1alpha1
 }
 
 // CloudtasksV1alpha1 retrieves the CloudtasksV1alpha1Client
@@ -1959,6 +1967,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudtalentsolutionV1alpha1, err = cloudtalentsolutionv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudtasksV1alpha1, err = cloudtasksv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2613,6 +2625,7 @@ func New(c rest.Interface) *Clientset {
 	cs.cloudquotaV1beta1 = cloudquotav1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.cloudsecuritycomplianceV1alpha1 = cloudsecuritycompliancev1alpha1.New(c)
+	cs.cloudtalentsolutionV1alpha1 = cloudtalentsolutionv1alpha1.New(c)
 	cs.cloudtasksV1alpha1 = cloudtasksv1alpha1.New(c)
 	cs.colabV1alpha1 = colabv1alpha1.New(c)
 	cs.composerV1beta1 = composerv1beta1.New(c)

@@ -145,6 +145,8 @@ import (
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
 	fakecloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1/fake"
+	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1"
+	fakecloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1/fake"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	fakecloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1/fake"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
@@ -807,6 +809,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
 func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
 	return &fakecloudsecuritycompliancev1alpha1.FakeCloudsecuritycomplianceV1alpha1{Fake: &c.Fake}
+}
+
+// CloudtalentsolutionV1alpha1 retrieves the CloudtalentsolutionV1alpha1Client
+func (c *Clientset) CloudtalentsolutionV1alpha1() cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Interface {
+	return &fakecloudtalentsolutionv1alpha1.FakeCloudtalentsolutionV1alpha1{Fake: &c.Fake}
 }
 
 // CloudtasksV1alpha1 retrieves the CloudtasksV1alpha1Client
