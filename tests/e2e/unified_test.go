@@ -218,7 +218,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 	t.Helper()
 
 	subtestTimeout := time.Hour
-	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+	targetGCP := os.Getenv("E2E_GCP_TARGET")
+	if targetGCP == "" {
+		targetGCP = "mock"
+	}
+	if targetGCP == "mock" {
 		// We allow a total of 5 minutes: 4 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
 		subtestTimeout = 5 * time.Minute
@@ -411,14 +415,37 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 
 	// _http.log
 	{
-		oldPath := filepath.Join(dir, "_http_old_controller.log")
-		newPath := filepath.Join(dir, "_http.log")
+		targetGCP := os.Getenv("E2E_GCP_TARGET")
+		if targetGCP == "" {
+			targetGCP = "mock"
+		}
+
+		oldKey := "_http_old_controller_mock.log"
+		newKey := "_http_mock.log"
+		diffKey := "_http_mock.diff"
+
+		if targetGCP == "real" {
+			oldKey = "_http_old_controller.log"
+			newKey = "_http.log"
+			diffKey = "_http.diff"
+		} else {
+			mockPath := filepath.Join(dir, newKey)
+			if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
+				oldKey = "_http_old_controller.log"
+				newKey = "_http.log"
+				diffKey = "_http.diff"
+			}
+		}
+
+		oldPath := filepath.Join(dir, oldKey)
+		newPath := filepath.Join(dir, newKey)
+		diffPath := filepath.Join(dir, diffKey)
 
 		if fileExists(oldPath) && fileExists(newPath) {
 			diff := computeDiff(oldPath, newPath)
-			h.CompareGoldenFile(filepath.Join(dir, "_http.diff"), diff)
+			h.CompareGoldenFile(diffPath, diff)
 		} else {
-			h.AssertGoldenFileNotFound(filepath.Join(dir, "_http.diff"))
+			h.AssertGoldenFileNotFound(diffPath)
 		}
 	}
 
@@ -829,9 +856,29 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					if options.TestPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {
-						key := "_http.log"
+						targetGCP := os.Getenv("E2E_GCP_TARGET")
+						if targetGCP == "" {
+							targetGCP = "mock"
+						}
+
+						key := "_http_mock.log"
 						if options.FallbackToOldController {
-							key = "_http_old_controller.log"
+							key = "_http_old_controller_mock.log"
+						}
+
+						if targetGCP == "real" {
+							key = "_http.log"
+							if options.FallbackToOldController {
+								key = "_http_old_controller.log"
+							}
+						} else {
+							mockPath := filepath.Join(fixture.AbsoluteSourceDir, key)
+							if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
+								key = "_http.log"
+								if options.FallbackToOldController {
+									key = "_http_old_controller.log"
+								}
+							}
 						}
 						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, key)
 
