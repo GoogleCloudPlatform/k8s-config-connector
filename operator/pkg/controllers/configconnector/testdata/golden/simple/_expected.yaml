@@ -3996,6 +3996,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - transcoder.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - translate.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5559,6 +5571,14 @@ rules:
   - watch
 - apiGroups:
   - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - transcoder.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
