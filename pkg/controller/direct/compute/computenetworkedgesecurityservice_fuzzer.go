@@ -33,18 +33,30 @@ func computeNetworkEdgeSecurityServiceFuzzer() fuzztesting.KRMFuzzer {
 		ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_FromProto, ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".fingerprint")
-	f.SpecFields.Insert(".security_policy")
+	// Spec fields mapping:
+	// - description       -> .description
+	// - fingerprint       -> .fingerprint
+	// - securityPolicyRef -> .security_policy
+	f.SpecField(".description")
+	f.SpecField(".fingerprint")
+	f.SpecField(".security_policy")
 
-	f.StatusFields.Insert(".creation_timestamp")
-	f.StatusFields.Insert(".id")
-	f.StatusFields.Insert(".kind")
-	f.StatusFields.Insert(".region")
-	f.StatusFields.Insert(".self_link")
-	f.StatusFields.Insert(".self_link_with_id")
+	// Status fields mapping:
+	// - creationTimestamp -> .creation_timestamp
+	// - id                -> .id
+	// - kind              -> .kind
+	// - region            -> .region
+	// - selfLink          -> .self_link
+	// - selfLinkWithID    -> .self_link_with_id
+	f.StatusField(".creation_timestamp")
+	f.StatusField(".id")
+	f.StatusField(".kind")
+	f.StatusField(".region")
+	f.StatusField(".self_link")
+	f.StatusField(".self_link_with_id")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	// Identity/Special fields
+	f.Unimplemented_Identity(".name")
 
 	return f
 }
