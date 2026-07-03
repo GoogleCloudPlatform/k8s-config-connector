@@ -71,7 +71,8 @@ func NewFromURI(uri string, smLoader *servicemappingloader.ServiceMappingLoader,
 	tfInfo := terraform.InstanceInfo{
 		Type: rc.Name,
 	}
-	state, err := krmtotf.ImportState(context.Background(), strings.TrimPrefix(parsedURL.Path, "/"), &tfInfo, tfProvider)
+	importID := trimURLPathPrefix(parsedURL.Path)
+	state, err := krmtotf.ImportState(context.Background(), importID, &tfInfo, tfProvider)
 	if err != nil {
 		return nil, fmt.Errorf("error importing resource name to TF state: %w", err)
 	}
@@ -236,4 +237,17 @@ func trimRegionPrefix(host string) string {
 	// e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
 	parts := strings.Split(host, "-")
 	return parts[len(parts)-1]
+}
+
+func trimURLPathPrefix(path string) string {
+	cleanedPath := strings.TrimPrefix(path, "/")
+	if strings.HasPrefix(cleanedPath, "batch/compute/") {
+		for _, kw := range []string{"projects/", "global/", "regions/"} {
+			idx := strings.Index(cleanedPath, kw)
+			if idx != -1 {
+				return cleanedPath[idx:]
+			}
+		}
+	}
+	return cleanedPath
 }
