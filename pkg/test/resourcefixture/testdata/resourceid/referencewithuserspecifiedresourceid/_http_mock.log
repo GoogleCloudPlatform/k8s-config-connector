@@ -17,11 +17,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+        "message": "Not found: Dataset ${projectId}:bigquerydataset_resourceid_${uniqueId}",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+    "message": "Not found: Dataset ${projectId}:bigquerydataset_resourceid_${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 {
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}"
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}"
   },
   "labels": {
     "cnrm-test": "true",
@@ -73,7 +73,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -85,7 +85,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
   "type": "DEFAULT"
 }
 
@@ -125,7 +125,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -138,13 +138,13 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
   "type": "DEFAULT"
 }
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable_resourceid_${uniqueId}?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -162,11 +162,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+        "message": "Not found: Table ${projectId}:bigquerydataset_resourceid_${uniqueId}.bigquerytable_resourceid_${uniqueId}",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+    "message": "Not found: Table ${projectId}:bigquerydataset_resourceid_${uniqueId}.bigquerytable_resourceid_${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -177,51 +177,15 @@ POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/
 Content-Type: application/json
 
 {
-  "description": "Description of BQ Table",
-  "friendlyName": "BigQueryTable Example",
+  "friendlyName": "bigquerytable-sample",
   "labels": {
     "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
     "managed-by-cnrm": "true"
   },
-  "schema": {
-    "fields": [
-      {
-        "description": "Name of the entity",
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "description": "atlan BQ labels",
-        "fields": [
-          {
-            "description": "key",
-            "mode": "NULLABLE",
-            "name": "key",
-            "policyTags": {},
-            "type": "STRING"
-          },
-          {
-            "description": "values",
-            "mode": "NULLABLE",
-            "name": "value",
-            "policyTags": {},
-            "type": "STRING"
-          }
-        ],
-        "mode": "REPEATED",
-        "name": "labels",
-        "type": "RECORD"
-      }
-    ]
-  },
   "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
+    "tableId": "bigquerytable_resourceid_${uniqueId}"
   }
 }
 
@@ -237,15 +201,12 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
-  "description": "Description of BQ Table",
   "etag": "abcdef0123A=",
-  "friendlyName": "BigQueryTable Example",
+  "friendlyName": "bigquerytable-sample",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -256,48 +217,19 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "schema": {
-    "fields": [
-      {
-        "description": "Name of the entity",
-        "mode": "REQUIRED",
-        "name": "name",
-        "type": "STRING"
-      },
-      {
-        "description": "atlan BQ labels",
-        "fields": [
-          {
-            "description": "key",
-            "mode": "NULLABLE",
-            "name": "key",
-            "type": "STRING"
-          },
-          {
-            "description": "values",
-            "mode": "NULLABLE",
-            "name": "value",
-            "type": "STRING"
-          }
-        ],
-        "mode": "REPEATED",
-        "name": "labels",
-        "type": "RECORD"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "schema": {},
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
   "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
+    "tableId": "bigquerytable_resourceid_${uniqueId}"
   },
   "type": "TABLE"
 }
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable_resourceid_${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -311,15 +243,12 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
-  "description": "Description of BQ Table",
   "etag": "abcdef0123A=",
-  "friendlyName": "BigQueryTable Example",
+  "friendlyName": "bigquerytable-sample",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -330,48 +259,114 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "schema": {
-    "fields": [
-      {
-        "description": "Name of the entity",
-        "mode": "REQUIRED",
-        "name": "name",
-        "type": "STRING"
-      },
-      {
-        "description": "atlan BQ labels",
-        "fields": [
-          {
-            "description": "key",
-            "mode": "NULLABLE",
-            "name": "key",
-            "type": "STRING"
-          },
-          {
-            "description": "values",
-            "mode": "NULLABLE",
-            "name": "value",
-            "type": "STRING"
-          }
-        ],
-        "mode": "REPEATED",
-        "name": "labels",
-        "type": "RECORD"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
   "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
+    "tableId": "bigquerytable_resourceid_${uniqueId}"
   },
   "type": "TABLE"
 }
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable_resourceid_${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "friendlyName": "bigquerytable-sample-updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable_resourceid_${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable_resourceid_${uniqueId}"
+  },
+  "type": "TABLE"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable_resourceid_${uniqueId}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable_resourceid_${uniqueId}"
+  },
+  "type": "TABLE"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable_resourceid_${uniqueId}?alt=json&prettyPrint=false
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
@@ -420,7 +415,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
+    "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -433,7 +428,7 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
   "type": "DEFAULT"
 }
 
