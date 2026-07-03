@@ -71,5 +71,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvideostitcher"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
 )
