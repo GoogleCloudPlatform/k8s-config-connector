@@ -8,20 +8,21 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: networksecurityfirewallendpointassociations.networksecurity.cnrm.cloud.google.com
+  name: networksecurityfirewallendpoints.networksecurity.cnrm.cloud.google.com
 spec:
   group: networksecurity.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: NetworkSecurityFirewallEndpointAssociation
-    listKind: NetworkSecurityFirewallEndpointAssociationList
-    plural: networksecurityfirewallendpointassociations
+    kind: NetworkSecurityFirewallEndpoint
+    listKind: NetworkSecurityFirewallEndpointList
+    plural: networksecurityfirewallendpoints
     shortNames:
-    - gcpnetworksecurityfirewallendpointassociation
-    - gcpnetworksecurityfirewallendpointassociations
-    singular: networksecurityfirewallendpointassociation
+    - gcpnetworksecurityfirewallendpoint
+    - gcpnetworksecurityfirewallendpoints
+    singular: networksecurityfirewallendpoint
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -44,8 +45,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NetworkSecurityFirewallEndpointAssociation is the Schema for
-          the NetworkSecurityFirewallEndpointAssociation API
+        description: NetworkSecurityFirewallEndpoint is the Schema for the NetworkSecurityFirewallEndpoint
+          API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,80 +61,32 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkSecurityFirewallEndpointAssociationSpec defines the
-              desired state of NetworkSecurityFirewallEndpointAssociation
+            description: NetworkSecurityFirewallEndpointSpec defines the desired state
+              of NetworkSecurityFirewallEndpoint
             properties:
-              disabled:
-                description: Optional. Whether the association is disabled. True indicates
-                  that traffic won't be intercepted
-                type: boolean
-              firewallEndpointRef:
-                description: Required. The URL of the FirewallEndpoint that is being
-                  associated.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
+              billingProjectID:
+                description: Optional. Billing project ID.
+                type: string
+              description:
+                description: Optional. Description of the firewall endpoint. Max length
+                  2048 characters.
+                type: string
+              endpointSettings:
+                description: Optional. Settings for the endpoint.
                 properties:
-                  external:
-                    description: A reference to an externally managed NetworkSecurityFirewallEndpoint
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/firewallEndpoints/{{firewall_endpoint}}"
-                      or "organizations/{{organizationID}}/locations/{{location}}/firewallEndpoints/{{firewall_endpoint}}".
-                    type: string
-                  name:
-                    description: The name of a NetworkSecurityFirewallEndpoint resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a NetworkSecurityFirewallEndpoint
-                      resource.
-                    type: string
+                  jumboFramesEnabled:
+                    description: Optional. Immutable. Indicates whether Jumbo Frames
+                      are enabled.
+                    type: boolean
                 type: object
               labels:
                 additionalProperties:
                   type: string
-                description: Optional. Labels as key value pairs
+                description: Optional. Labels as key value pairs.
                 type: object
               location:
                 description: The location of this resource.
                 type: string
-              networkRef:
-                description: Required. The URL of the network that is being associated.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The network selflink of form "projects/{{project}}/global/networks/{{name}}",
-                      when not managed by Config Connector.
-                    type: string
-                  name:
-                    description: The `name` field of a `ComputeNetwork` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `ComputeNetwork` resource.
-                    type: string
-                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -167,49 +120,16 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The NetworkSecurityFirewallEndpointAssociation name.
-                  If not given, the metadata.name will be used.
+                description: The NetworkSecurityFirewallEndpoint name. If not given,
+                  the metadata.name will be used.
                 type: string
-              tlsInspectionPolicyRef:
-                description: Optional. The URL of the TlsInspectionPolicy that is
-                  being associated.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The TLS inspection policy selflink, when not managed
-                      by Config Connector.
-                    type: string
-                  name:
-                    description: The `name` field of a `NetworkSecurityTLSInspectionPolicy`
-                      resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `NetworkSecurityTLSInspectionPolicy`
-                      resource.
-                    type: string
-                type: object
             required:
-            - firewallEndpointRef
             - location
-            - networkRef
             - projectRef
             type: object
           status:
-            description: NetworkSecurityFirewallEndpointAssociationStatus defines
-              the config connector machine state of NetworkSecurityFirewallEndpointAssociation
+            description: NetworkSecurityFirewallEndpointStatus defines the config
+              connector machine state of NetworkSecurityFirewallEndpoint
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -238,7 +158,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the NetworkSecurityFirewallEndpointAssociation
+                description: A unique specifier for the NetworkSecurityFirewallEndpoint
                   resource in GCP.
                 type: string
               observedGeneration:
@@ -253,18 +173,37 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  associatedNetworks:
+                    description: 'Output only. Deprecated: List of networks that are
+                      associated with this endpoint in the local zone.'
+                    items:
+                      type: string
+                    type: array
+                  associations:
+                    description: Output only. List of FirewallEndpointAssociations
+                      that are associated to this endpoint.
+                    items:
+                      properties:
+                        name:
+                          description: Output only. The resource name of the FirewallEndpointAssociation.
+                          type: string
+                        network:
+                          description: Output only. The VPC network associated.
+                          type: string
+                      type: object
+                    type: array
                   createTime:
-                    description: Output only. Create time stamp
+                    description: Output only. Create time stamp.
                     type: string
                   reconciling:
                     description: Output only. Whether reconciling is in progress,
                       recommended per https://google.aip.dev/128.
                     type: boolean
                   state:
-                    description: Output only. Current state of the association.
+                    description: Output only. Current state of the endpoint.
                     type: string
                   updateTime:
-                    description: Output only. Update time stamp
+                    description: Output only. Update time stamp.
                     type: string
                 type: object
             type: object

@@ -34,6 +34,7 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecurityAddressGroupsGetter
 	NetworkSecurityAuthzPoliciesGetter
 	NetworkSecurityBackendAuthenticationConfigsGetter
+	NetworkSecurityFirewallEndpointsGetter
 	NetworkSecurityFirewallEndpointAssociationsGetter
 	NetworkSecurityGatewaySecurityPoliciesGetter
 	NetworkSecurityInterceptDeploymentsGetter
@@ -61,6 +62,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityAuthzPolicies(namespace s
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
 	return newNetworkSecurityBackendAuthenticationConfigs(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpoints(namespace string) NetworkSecurityFirewallEndpointInterface {
+	return newNetworkSecurityFirewallEndpoints(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpointAssociations(namespace string) NetworkSecurityFirewallEndpointAssociationInterface {

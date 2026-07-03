@@ -68,14 +68,7 @@ type NetworkRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type FirewallEndpointRef struct {
-	/* The firewall endpoint selflink, when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `NetworkSecurityFirewallEndpoint` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `NetworkSecurityFirewallEndpoint` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
+// FirewallEndpointRef is moved to networksecurityfirewallendpoint_reference.go
 
 type TLSInspectionPolicyRef struct {
 	/* The TLS inspection policy selflink, when not managed by Config Connector. */
