@@ -24,3 +24,9 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-07-02] Implement direct KRM types and Identity for NetworkSecuritySecurityProfileGroup
+- **Context**: Implementing types, CRD, and Identity for `NetworkSecuritySecurityProfileGroup` (Issue #8738).
+- **Problem**: The proto contains reference fields to `SecurityProfile` resource (`threat_prevention_profile`, `custom_mirroring_profile`, `custom_intercept_profile`, `url_filtering_profile`), which must be represented as proper KCC reference fields rather than raw string fields.
+- **Solution**: Mapped all of these fields as `NetworkSecuritySecurityProfileRef` pointers (e.g., `ThreatPreventionProfileRef *NetworkSecuritySecurityProfileRef`), leveraging the existing `NetworkSecuritySecurityProfileRef` type. Scaffolded types, implemented `IdentityV2`, and regenerated clients and CRD schemas.
+- **Impact**: Ensures that `NetworkSecuritySecurityProfileGroup` resources can seamlessly reference their underlying security profiles in an idiomatic KCC manner.
