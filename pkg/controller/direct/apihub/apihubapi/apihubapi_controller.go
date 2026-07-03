@@ -182,9 +182,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 
-	if err := structuredreporting.ReportDiff(ctx, diffs); err != nil {
-		return err
-	}
+	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateApiRequest{
 		Api:        desired,
