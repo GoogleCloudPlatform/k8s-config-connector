@@ -92,8 +92,7 @@ spec:
                    dimension.
                 type: object
               folderRef:
-                description: FolderRefDeprecated represents the Folder that contains
-                  this resource.
+                description: The Folder that contains this resource.
                 oneOf:
                 - not:
                     required:

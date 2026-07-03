@@ -161,8 +161,7 @@ spec:
                     type: object
                 type: object
               folderRef:
-                description: FolderRefDeprecated represents the Folder that contains
-                  this resource.
+                description: The Folder that contains this resource.
                 oneOf:
                 - not:
                     required:
@@ -445,8 +444,7 @@ spec:
                     type: object
                 type: object
               folderRef:
-                description: FolderRefDeprecated represents the Folder that contains
-                  this resource.
+                description: The Folder that contains this resource.
                 oneOf:
                 - not:
                     required:

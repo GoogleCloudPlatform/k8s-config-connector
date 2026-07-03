@@ -78,7 +78,7 @@ type APIQuotaPreferenceSpec struct {
 	// +optional
 	Dimensions map[string]string `json:"dimensions,omitempty"`
 
-	/* FolderRefDeprecated represents the Folder that contains this resource. */
+	/* The Folder that contains this resource. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 

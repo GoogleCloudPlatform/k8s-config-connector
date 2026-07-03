@@ -261,8 +261,7 @@ spec:
                   be fewer than 255 characters.
                 type: string
               folderRef:
-                description: FolderRefDeprecated represents the Folder that contains
-                  this resource.
+                description: The Folder that contains this resource.
                 oneOf:
                 - not:
                     required:
@@ -653,8 +652,7 @@ spec:
                   be fewer than 255 characters.
                 type: string
               folderRef:
-                description: FolderRefDeprecated represents the Folder that contains
-                  this resource.
+                description: The Folder that contains this resource.
                 oneOf:
                 - not:
                     required:
