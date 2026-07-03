@@ -1,31 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoCreateSubnetworks": true,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default network for the project",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
 Content-Type: application/json
 
 404 Not Found
@@ -44,31 +17,24 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found",
+        "message": "The resource 'projects/${projectId}/global/sslPolicies/${sslPolicyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found"
+    "message": "The resource 'projects/${projectId}/global/sslPolicies/${sslPolicyID}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies
 Content-Type: application/json
 
 {
-  "addressType": "INTERNAL",
-  "description": "a test global address",
-  "ipVersion": "IPV4",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "${addressID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
-  "prefixLength": 16,
-  "purpose": "VPC_PEERING"
+  "description": "SSL Policy for test-ilb-multiregion",
+  "minTlsVersion": "TLS_1_2",
+  "name": "${sslPolicyID}",
+  "profile": "MODERN"
 }
 
 200 OK
@@ -91,8 +57,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "targetId": "${sslPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}",
   "user": "user@example.com"
 }
 
@@ -122,14 +88,14 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "targetId": "${sslPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
 Content-Type: application/json
 
 200 OK
@@ -143,28 +109,32 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "address": "8.8.8.8",
-  "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "a test global address",
+  "description": "SSL Policy for test-ilb-multiregion",
+  "enabledFeatures": [
+    "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+    "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+    "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+    "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+    "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+    "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+    "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+    "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+    "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+    "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
+  ],
+  "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "ipVersion": "IPV4",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "${addressID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
-  "prefixLength": 16,
-  "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+  "kind": "compute#sslPolicy",
+  "minTlsVersion": "TLS_1_2",
+  "name": "${sslPolicyID}",
+  "profile": "MODERN",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
 Content-Type: application/json
 
 200 OK
@@ -187,8 +157,8 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "targetId": "${sslPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}",
   "user": "user@example.com"
 }
 
@@ -218,7 +188,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "targetId": "${sslPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}",
   "user": "user@example.com"
 }
