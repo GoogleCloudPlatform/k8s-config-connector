@@ -28,7 +28,7 @@ import (
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
-// FolderRefDeprecated represents the Folder that this resource belongs to.
+// FolderRefDeprecated represents the Folder that contains this resource.
 type FolderRefDeprecated struct {
 	// The 'name' field of a folder, when not managed by Config Connector.
 	// This field must be set when 'name' field is not set.
