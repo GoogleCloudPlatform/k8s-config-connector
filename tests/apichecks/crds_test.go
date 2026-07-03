@@ -1089,7 +1089,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
 		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
-
+		"hypercomputeclusterclusters.hypercomputecluster.cnrm.cloud.google.com":         true, // spec.networkResources[*].network is an empty object because NetworkReference only contains output-only fields
 	}
 
 	crds, err := crdloader.LoadAllCRDs()
