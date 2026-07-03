@@ -110,51 +110,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fprivatecacapool-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
 POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?alt=json&caPoolId=privatecacapool-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
@@ -584,112 +539,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "issuancePolicy": {
-    "allowedIssuanceModes": {
-      "allowCsrBasedIssuance": true
-    },
-    "allowedKeyTypes": [
-      {
-        "rsa": {
-          "maxModulusSize": "128",
-          "minModulusSize": "64"
-        }
-      },
-      {
-        "ellipticCurve": {
-          "signatureAlgorithm": "ECDSA_P384"
-        }
-      }
-    ],
-    "baselineValues": {
-      "additionalExtensions": [
-        {
-          "objectId": {
-            "objectIdPath": [
-              1,
-              7
-            ]
-          },
-          "value": "c3RyaW5nCg=="
-        }
-      ],
-      "aiaOcspServers": [
-        "string"
-      ],
-      "caOptions": {
-        "isCa": false,
-        "maxIssuerPathLength": 7
-      },
-      "keyUsage": {
-        "unknownExtendedKeyUsages": [
-          {
-            "objectIdPath": [
-              1,
-              7
-            ]
-          }
-        ]
-      },
-      "policyIds": [
-        {
-          "objectIdPath": [
-            1,
-            7
-          ]
-        }
-      ]
-    },
-    "identityConstraints": {
-      "allowSubjectAltNamesPassthrough": false,
-      "allowSubjectPassthrough": false,
-      "celExpression": {
-        "description": "Always false",
-        "expression": "false",
-        "location": "devops.ca_pool.json",
-        "title": "Sample expression"
-      }
-    },
-    "maximumLifetime": "43200s",
-    "passthroughExtensions": {
-      "additionalExtensions": [
-        {
-          "objectIdPath": [
-            1,
-            7
-          ]
-        }
-      ],
-      "knownExtensions": [
-        "BASE_KEY_USAGE"
-      ]
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
-  "tier": "ENTERPRISE"
-}
-
----
-
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -757,48 +606,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "version": 1
 }
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/capool-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "ExampleGSA",
-  "email": "capool-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/capool-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/capool-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
 
 ---
 
@@ -988,3 +795,45 @@ X-Xss-Protection: 0
     "status": "NOT_FOUND"
   }
 }
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/capool-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "ExampleGSA",
+  "email": "capool-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/capool-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/capool-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

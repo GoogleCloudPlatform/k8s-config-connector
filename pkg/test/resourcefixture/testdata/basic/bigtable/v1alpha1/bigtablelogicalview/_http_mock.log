@@ -1,15 +1,3 @@
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
-
-{
-  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId} not found
-
-{}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -19,35 +7,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 OK
 
 {}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateLogicalView
-
-{
-  "logicalView": {
-    "deletionProtection": true,
-    "query": "SELECT 1 AS value"
-  },
-  "logicalViewId": "lv-${uniqueId}",
-  "parent": "projects/${projectId}/instances/lvdep${uniqueId}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "deletionProtection": true,
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  }
-}
 
 ---
 
@@ -203,51 +162,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
-
-{
-  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}"
-}
-
-OK
-
-{
-  "deletionProtection": true,
-  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-  "query": "SELECT 1 AS value"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
-
-{
-  "logicalView": {
-    "deletionProtection": true,
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  },
-  "updateMask": "query,deletionProtection"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "deletionProtection": true,
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  }
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -292,6 +206,92 @@ OK
       "state": "READY"
     }
   ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
+
+{
+  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId} not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateLogicalView
+
+{
+  "logicalView": {
+    "deletionProtection": true,
+    "query": "SELECT 1 AS value"
+  },
+  "logicalViewId": "lv-${uniqueId}",
+  "parent": "projects/${projectId}/instances/lvdep${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "deletionProtection": true,
+    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
+    "query": "SELECT 1 AS value"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
+
+{
+  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}"
+}
+
+OK
+
+{
+  "deletionProtection": true,
+  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
+  "query": "SELECT 1 AS value"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
+
+{
+  "logicalView": {
+    "deletionProtection": true,
+    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
+    "query": "SELECT 1 AS value"
+  },
+  "updateMask": "query,deletionProtection"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "deletionProtection": true,
+    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
+    "query": "SELECT 1 AS value"
+  }
 }
 
 ---
