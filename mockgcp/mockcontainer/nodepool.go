@@ -405,6 +405,13 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 		}
 		update.KubeletConfig = nil
 	}
+	if update.ResourceManagerTags != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.ResourceManagerTags = update.ResourceManagerTags
+		update.ResourceManagerTags = nil
+	}
 
 	// TODO: Support more updates!
 

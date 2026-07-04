@@ -302,6 +302,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredNodePoolAutoConfigNetworkTags = nil
 	}
 
+	if update.DesiredNodePoolAutoConfigResourceManagerTags != nil {
+		if obj.NodePoolAutoConfig == nil {
+			obj.NodePoolAutoConfig = &pb.NodePoolAutoConfig{}
+		}
+		obj.NodePoolAutoConfig.ResourceManagerTags = update.DesiredNodePoolAutoConfigResourceManagerTags
+		update.DesiredNodePoolAutoConfigResourceManagerTags = nil
+	}
+
 	if update.DesiredMasterAuthorizedNetworksConfig != nil {
 		obj.MasterAuthorizedNetworksConfig = update.DesiredMasterAuthorizedNetworksConfig
 		update.DesiredMasterAuthorizedNetworksConfig = nil

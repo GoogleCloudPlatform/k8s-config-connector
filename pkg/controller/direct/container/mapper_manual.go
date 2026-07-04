@@ -598,3 +598,19 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
 	return out
 }
+
+func map_string_string_FromProto(mapCtx *direct.MapContext, in *pb.ResourceManagerTags) map[string]string {
+	if in == nil {
+		return nil
+	}
+	return in.Tags
+}
+
+func map_string_string_ToProto(mapCtx *direct.MapContext, in map[string]string) *pb.ResourceManagerTags {
+	if in == nil {
+		return nil
+	}
+	return &pb.ResourceManagerTags{
+		Tags: in,
+	}
+}
