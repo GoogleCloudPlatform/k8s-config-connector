@@ -34,6 +34,14 @@ func serviceIdentityFuzzer() fuzztesting.KRMFuzzer {
 		ServiceIdentityObservedState_FromProto, ServiceIdentityObservedState_ToProto,
 	)
 
+	// Field Comparison & Mapping Status:
+	// KRM Spec Fields:
+	// - resourceID -> Maps to the service name segment of the parent URL, not a field in the pb.ServiceIdentity struct.
+	// - projectRef -> Maps to the project segment of the parent URL, not a field in the pb.ServiceIdentity struct.
+	//
+	// KRM Status / ObservedState Fields:
+	// - email -> Maps to .email (StatusField)
+	// - uniqueID -> Maps to .unique_id (StatusField)
 	f.StatusField(".email")
 	f.StatusField(".unique_id")
 
