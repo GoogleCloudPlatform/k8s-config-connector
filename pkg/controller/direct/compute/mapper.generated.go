@@ -2467,33 +2467,147 @@ func ComputeInterconnectSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 }
 */
 
-/* found existing non-generated mapping function "ComputeInterconnectSpec_v1alpha1_ToProto", skipping
-func ComputeInterconnectSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectSpec) *pb.Interconnect {
+/*
+found existing non-generated mapping function "ComputeInterconnectSpec_v1alpha1_ToProto", skipping
+
+	func ComputeInterconnectSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInterconnectSpec) *pb.Interconnect {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Interconnect{}
+		// MISSING: AaiEnabled
+		out.AdminEnabled = in.AdminEnabled
+		// MISSING: ApplicationAwareInterconnect
+		out.CustomerName = in.CustomerName
+		out.Description = in.Description
+		// MISSING: InterconnectGroups
+		out.InterconnectType = in.InterconnectType
+		out.LabelFingerprint = in.LabelFingerprint
+		out.Labels = in.Labels
+		out.LinkType = in.LinkType
+		out.Location = in.Location
+		out.Macsec = InterconnectMacsec_v1alpha1_ToProto(mapCtx, in.Macsec)
+		out.MacsecEnabled = in.MacsecEnabled
+		// MISSING: Name
+		out.NocContactEmail = in.NocContactEmail
+		out.RemoteLocation = in.RemoteLocation
+		out.RequestedFeatures = in.RequestedFeatures
+		out.RequestedLinkCount = in.RequestedLinkCount
+		return out
+	}
+*/
+func ComputeMachineImageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineImage) *krmcomputev1alpha1.ComputeMachineImageSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Interconnect{}
-	// MISSING: AaiEnabled
-	out.AdminEnabled = in.AdminEnabled
-	// MISSING: ApplicationAwareInterconnect
-	out.CustomerName = in.CustomerName
+	out := &krmcomputev1alpha1.ComputeMachineImageSpec{}
+	// MISSING: CreationTimestamp
 	out.Description = in.Description
-	// MISSING: InterconnectGroups
-	out.InterconnectType = in.InterconnectType
-	out.LabelFingerprint = in.LabelFingerprint
-	out.Labels = in.Labels
-	out.LinkType = in.LinkType
-	out.Location = in.Location
-	out.Macsec = InterconnectMacsec_v1alpha1_ToProto(mapCtx, in.Macsec)
-	out.MacsecEnabled = in.MacsecEnabled
+	out.GuestFlush = in.GuestFlush
+	// MISSING: ID
+	// MISSING: InstanceProperties
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	out.MachineImageEncryptionKey = MachineImageEncryptionKey_v1alpha1_FromProto(mapCtx, in.GetMachineImageEncryptionKey())
 	// MISSING: Name
-	out.NocContactEmail = in.NocContactEmail
-	out.RemoteLocation = in.RemoteLocation
-	out.RequestedFeatures = in.RequestedFeatures
-	out.RequestedLinkCount = in.RequestedLinkCount
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SavedDisks
+	// MISSING: SelfLink
+	// MISSING: SourceDiskEncryptionKeys
+	if in.GetSourceInstance() != "" {
+		out.SourceInstanceRef = &krm.InstanceRef{External: in.GetSourceInstance()}
+	}
+	// MISSING: SourceInstanceProperties
+	// MISSING: Status
+	// MISSING: StorageLocations
+	// MISSING: TotalStorageBytes
 	return out
 }
-*/
+func ComputeMachineImageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeMachineImageSpec) *pb.MachineImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MachineImage{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.GuestFlush = in.GuestFlush
+	// MISSING: ID
+	// MISSING: InstanceProperties
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	out.MachineImageEncryptionKey = MachineImageEncryptionKey_v1alpha1_ToProto(mapCtx, in.MachineImageEncryptionKey)
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SavedDisks
+	// MISSING: SelfLink
+	// MISSING: SourceDiskEncryptionKeys
+	if in.SourceInstanceRef != nil {
+		out.SourceInstance = &in.SourceInstanceRef.External
+	}
+	// MISSING: SourceInstanceProperties
+	// MISSING: Status
+	// MISSING: StorageLocations
+	// MISSING: TotalStorageBytes
+	return out
+}
+func ComputeMachineImageStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineImage) *krmcomputev1alpha1.ComputeMachineImageStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeMachineImageStatus{}
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: GuestFlush
+	// MISSING: ID
+	// MISSING: InstanceProperties
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: MachineImageEncryptionKey
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SavedDisks
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceDiskEncryptionKeys
+	// MISSING: SourceInstance
+	// MISSING: SourceInstanceProperties
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	// MISSING: TotalStorageBytes
+	return out
+}
+func ComputeMachineImageStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeMachineImageStatus) *pb.MachineImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MachineImage{}
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: GuestFlush
+	// MISSING: ID
+	// MISSING: InstanceProperties
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: MachineImageEncryptionKey
+	// MISSING: Name
+	// MISSING: SatisfiesPzi
+	// MISSING: SatisfiesPzs
+	// MISSING: SavedDisks
+	out.SelfLink = in.SelfLink
+	// MISSING: SourceDiskEncryptionKeys
+	// MISSING: SourceInstance
+	// MISSING: SourceInstanceProperties
+	// MISSING: Status
+	out.StorageLocations = in.StorageLocations
+	// MISSING: TotalStorageBytes
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeNetworkAttachmentObservedState_v1alpha1_FromProto", skipping
 func ComputeNetworkAttachmentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAttachment) *krmcomputev1alpha1.ComputeNetworkAttachmentObservedState {
@@ -5296,6 +5410,30 @@ func InterconnectOutageNotification_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.Source = in.Source
 	out.StartTime = in.StartTime
 	out.State = in.State
+	return out
+}
+func MachineImageEncryptionKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomerEncryptionKey) *krmcomputev1alpha1.MachineImageEncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.MachineImageEncryptionKey{}
+	out.KMSKeyName = in.KmsKeyName
+	out.KMSKeyServiceAccount = in.KmsKeyServiceAccount
+	out.RawKey = in.RawKey
+	// MISSING: RsaEncryptedKey
+	out.Sha256 = in.Sha256
+	return out
+}
+func MachineImageEncryptionKey_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.MachineImageEncryptionKey) *pb.CustomerEncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomerEncryptionKey{}
+	out.KmsKeyName = in.KMSKeyName
+	out.KmsKeyServiceAccount = in.KMSKeyServiceAccount
+	out.RawKey = in.RawKey
+	// MISSING: RsaEncryptedKey
+	out.Sha256 = in.Sha256
 	return out
 }
 func MetadataFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
