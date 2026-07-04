@@ -4685,6 +4685,102 @@ func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 }
 */
 
+/* found existing non-generated mapping function "ComputeTargetVPNGatewaySpec_v1beta1_FromProto", skipping
+func ComputeTargetVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetVpnGateway) *krm.ComputeTargetVPNGatewaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetVPNGatewaySpec{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ForwardingRules
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.Region = in.Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Tunnels
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetVPNGatewaySpec_v1beta1_ToProto", skipping
+func ComputeTargetVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetVPNGatewaySpec) *pb.TargetVpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetVpnGateway{}
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ForwardingRules
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.Region = in.Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Tunnels
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetVPNGatewayStatus_v1beta1_FromProto", skipping
+func ComputeTargetVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetVpnGateway) *krm.ComputeTargetVPNGatewayStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeTargetVPNGatewayStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ForwardingRules
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Status
+	// MISSING: Tunnels
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeTargetVPNGatewayStatus_v1beta1_ToProto", skipping
+func ComputeTargetVPNGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetVPNGatewayStatus) *pb.TargetVpnGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetVpnGateway{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: ForwardingRules
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Status
+	// MISSING: Tunnels
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_FromProto", skipping
 func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapSpec {
 	if in == nil {
