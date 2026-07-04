@@ -1,0 +1,47 @@
+1c1,24
+< POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectNumber}",
+>   "projectId": "${projectId}",
+>   "state": 1
+> }
+> 
+> ---
+> 
+> POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?%24alt=json%3Benum-encoding%3Dint
+6c29
+<   "parent": "projects/${projectId}",
+---
+>   "parent": "projects/${projectNumber}",
+29c52
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+63c86
+< GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+89c112
+< DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+---
+> DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+111c134
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}

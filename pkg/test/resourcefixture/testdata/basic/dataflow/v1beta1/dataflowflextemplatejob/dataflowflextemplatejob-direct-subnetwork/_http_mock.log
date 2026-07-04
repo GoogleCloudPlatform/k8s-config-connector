@@ -23,52 +23,6 @@ Vary: X-Origin
 
 ---
 
-POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-
-{
-  "launchParameter": {
-    "containerSpecGcsPath": "gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery",
-    "environment": {
-      "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
-    },
-    "jobName": "dataflowflextemplatejob-${uniqueId}",
-    "parameters": {
-      "createDisposition": "CREATE_NEVER",
-      "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
-      "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
-      "outputTopic": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}",
-      "schemaPath": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc"
-    }
-  },
-  "location": "us-central1",
-  "projectId": "${projectId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "job": {
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "currentStateTime": "2024-04-01T12:34:56.123456Z",
-    "id": "${jobID}",
-    "location": "us-central1",
-    "name": "dataflowflextemplatejob-${uniqueId}",
-    "projectId": "${projectId}",
-    "startTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
 
@@ -172,6 +126,52 @@ Vary: X-Origin
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "launchParameter": {
+    "containerSpecGcsPath": "gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery",
+    "environment": {
+      "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+    },
+    "jobName": "dataflowflextemplatejob-${uniqueId}",
+    "parameters": {
+      "createDisposition": "CREATE_NEVER",
+      "inputSubscription": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+      "outputTableSpec": "${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}",
+      "outputTopic": "projects/${projectId}/topics/pubsubtopic0-${uniqueId}",
+      "schemaPath": "gs://config-connector-samples/dataflowflextemplate/numbers.avsc"
+    }
+  },
+  "location": "us-central1",
+  "projectId": "${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "job": {
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentStateTime": "2024-04-01T12:34:56.123456Z",
+    "id": "${jobID}",
+    "location": "us-central1",
+    "name": "dataflowflextemplatejob-${uniqueId}",
+    "projectId": "${projectId}",
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -408,80 +408,6 @@ X-Xss-Protection: 0
   "requestedState": 5,
   "type": 2
 }
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": false
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": false
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
-}
-
----
-
-DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
-
-204 No Content
-Content-Type: application/json
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
 
 ---
 
@@ -833,3 +759,76 @@ X-Xss-Protection: 0
   "steps": [],
   "type": 2
 }
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin

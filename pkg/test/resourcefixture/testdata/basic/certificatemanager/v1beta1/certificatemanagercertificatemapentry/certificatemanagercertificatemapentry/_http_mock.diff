@@ -1,0 +1,55 @@
+247c247
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+270c270
+< POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries?alt=json&certificateMapEntryId=certificatemanagercertificatemapentry${uniqueId}
+---
+> POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries?%24alt=json%3Benum-encoding%3Dint&certificateMapEntryId=certificatemanagercertificatemapentry${uniqueId}
+282,283c282
+<   "matcher": "PRIMARY",
+<   "name": "certificatemanagercertificatemapentry${uniqueId}"
+---
+>   "matcher": 1
+309c308
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+346c345
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+369c368
+<   "matcher": "PRIMARY",
+---
+>   "matcher": 1,
+375c374
+< PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json&updateMask=description
+---
+> PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+386c385,387
+<   }
+---
+>   },
+>   "matcher": 1,
+>   "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}"
+412c413
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+449c450
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+472c473
+<   "matcher": "PRIMARY",
+---
+>   "matcher": 1,
+478c479
+< DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
+---
+> DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+504c505
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}

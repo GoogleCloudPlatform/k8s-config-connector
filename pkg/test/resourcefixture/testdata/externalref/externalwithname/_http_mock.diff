@@ -1,0 +1,72 @@
+77c77
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+100c100
+< PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+105,106d104
+<   "deadLetterPolicy": null,
+<   "expirationPolicy": null,
+111c109
+<   "messageRetentionDuration": "604800s",
+---
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+134d131
+<   "messageRetentionDuration": "604800s",
+137c134
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+143c140
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+166c163
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+188d184
+<   "messageRetentionDuration": "604800s",
+191c187
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+197c193
+< PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json&updateMask=ackDeadlineSeconds
+---
+> PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+203,206d198
+<     "deadLetterPolicy": null,
+<     "expirationPolicy": {
+<       "ttl": "2678400s"
+<     },
+211,212c203,206
+<     "messageRetentionDuration": "604800s"
+<   }
+---
+>     "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+>     "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+>   },
+>   "updateMask": "ackDeadlineSeconds"
+234d227
+<   "messageRetentionDuration": "604800s",
+241c234
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+247c240
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+269d261
+<   "messageRetentionDuration": "604800s",
+272c264
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+278c270
+< DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

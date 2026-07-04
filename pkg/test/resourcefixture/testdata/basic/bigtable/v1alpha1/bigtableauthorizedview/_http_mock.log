@@ -1,42 +1,3 @@
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = authorizedView "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}" not found
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateAuthorizedView
-
-{
-  "authorizedView": {
-    "subsetView": {
-      "rowPrefixes": [
-        "dXNlcg=="
-      ]
-    }
-  },
-  "authorizedViewId": "av-${uniqueId}",
-  "parent": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateAuthorizedViewMetadata",
-    "originalRequest": {},
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -332,6 +293,45 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
   "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}"
 }
 
+error: rpc error: code = NotFound desc = authorizedView "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateAuthorizedView
+
+{
+  "authorizedView": {
+    "subsetView": {
+      "rowPrefixes": [
+        "dXNlcg=="
+      ]
+    }
+  },
+  "authorizedViewId": "av-${uniqueId}",
+  "parent": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateAuthorizedViewMetadata",
+    "originalRequest": {},
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}"
+}
+
 OK
 
 {
@@ -454,6 +454,37 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -502,41 +533,10 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
 
 {
   "name": "projects/${projectId}/instances/avdep${uniqueId}"
-}
-
-OK
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
 }
 
 OK

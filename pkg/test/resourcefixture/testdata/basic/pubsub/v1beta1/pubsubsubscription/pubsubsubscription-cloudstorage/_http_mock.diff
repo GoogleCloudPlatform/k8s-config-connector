@@ -1,0 +1,112 @@
+596c596
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+619c619
+< PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+628c628
+<     "bucket": "storagebucket-1-${uniqueId}",
+---
+>     "bucket": "projects/${projectId}/buckets/storagebucket-1-${uniqueId}",
+631c631
+<     "maxBytes": 10240,
+---
+>     "maxBytes": "10240",
+647a648
+>   "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+672c673
+<     "bucket": "storagebucket-1-${uniqueId}",
+---
+>     "bucket": "projects/${projectId}/buckets/storagebucket-1-${uniqueId}",
+677c678
+<     "state": "ACTIVE"
+---
+>     "state": 1
+700c701
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+706c707
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+729c730
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+748c749
+<     "bucket": "storagebucket-1-${uniqueId}",
+---
+>     "bucket": "projects/${projectId}/buckets/storagebucket-1-${uniqueId}",
+753c754
+<     "state": "ACTIVE"
+---
+>     "state": 1
+776c777
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+782c783
+< PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json&updateMask=cloudStorageConfig%2CackDeadlineSeconds%2CmessageRetentionDuration%2CretainAckedMessages%2CexpirationPolicy%2CdeadLetterPolicy%2CretryPolicy
+---
+> PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+789c790,791
+<       "bucket": "storagebucket-2-${uniqueId}",
+---
+>       "avroConfig": {},
+>       "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
+792,794c794,795
+<       "maxBytes": 102400,
+<       "maxDuration": "400s",
+<       "state": "ACTIVE"
+---
+>       "maxBytes": "102400",
+>       "maxDuration": "400s"
+799a801
+>     "enableMessageOrdering": true,
+802a805
+>     "filter": "attributes.type = \"key\"",
+807a811
+>     "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+811,812c815,818
+<     }
+<   }
+---
+>     },
+>     "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+>   },
+>   "updateMask": "ackDeadlineSeconds,cloudStorageConfig,deadLetterPolicy,expirationPolicy,messageRetentionDuration,retainAckedMessages,retryPolicy"
+828c834
+<     "bucket": "storagebucket-2-${uniqueId}",
+---
+>     "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
+833c839
+<     "state": "ACTIVE",
+---
+>     "state": 1,
+860c866
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+866c872
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+882c888
+<     "bucket": "storagebucket-2-${uniqueId}",
+---
+>     "bucket": "projects/${projectId}/buckets/storagebucket-2-${uniqueId}",
+887c893
+<     "state": "ACTIVE",
+---
+>     "state": 1,
+910c916
+<   "state": "ACTIVE",
+---
+>   "state": 1,
+916c922
+< DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+---
+> DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

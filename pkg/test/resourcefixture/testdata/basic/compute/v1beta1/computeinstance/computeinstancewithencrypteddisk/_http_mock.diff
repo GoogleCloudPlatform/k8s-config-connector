@@ -1,0 +1,749 @@
+263c263,264
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+291,336c292
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "availableCpuPlatforms": [
+<     "Ampere Altra",
+<     "Intel Broadwell",
+<     "Intel Cascade Lake",
+<     "Intel Emerald Rapids",
+<     "AMD Genoa",
+<     "NVIDIA Grace",
+<     "Intel Granite Rapids",
+<     "Intel Haswell",
+<     "Intel Ice Lake",
+<     "Intel Ivy Bridge",
+<     "Google Axion",
+<     "AMD Milan",
+<     "AMD Rome",
+<     "Intel Sandy Bridge",
+<     "Intel Sapphire Rapids",
+<     "Intel Skylake",
+<     "AMD Turin"
+<   ],
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "us-west1-a",
+<   "id": "000000000000000000000",
+<   "kind": "compute#zone",
+<   "name": "us-west1-a",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a",
+<   "status": "UP",
+<   "supportsPzs": false
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances
+340,341d295
+<   "canIpForward": false,
+<   "deletionProtection": false,
+344a299
+>       "autoDelete": false,
+346,349d300
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+353,359c304
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "test",
+<     "managed-by-cnrm": "true"
+<   },
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+<   "metadata": {},
+---
+>   "machineType": "n1-standard-1",
+366d310
+<   "params": {},
+369,372d312
+<     "instanceTerminationAction": "",
+<     "nodeAffinities": [
+<       null
+<     ],
+374,375c314
+<     "preemptible": true,
+<     "provisioningModel": ""
+---
+>     "preemptible": true
+377c316
+<   "tags": {}
+---
+>   "zone": "us-west1-a"
+408c347,348
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
+> Content-Type: application/json
+439,534c379,380
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "canIpForward": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "deletionProtection": false,
+<   "description": "an basic instance example",
+<   "disks": [
+<     {
+<       "boot": true,
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "test",
+<     "managed-by-cnrm": "true"
+<   },
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+<   "metadata": {},
+<   "name": "${instanceID}",
+<   "networkInterfaces": [
+<     {
+<       "network": "projects/${projectId}/global/networks/${networkID}"
+<     }
+<   ],
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": false,
+<     "instanceTerminationAction": "",
+<     "onHostMaintenance": "TERMINATE",
+<     "preemptible": true,
+<     "provisioningModel": ""
+<   },
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+<   "status": "RUNNING",
+<   "tags": {},
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "diskEncryptionKey": {
+<     "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${diskID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+<   "sourceImageId": "2443108620951880213",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+547d392
+<   "canIpForward": false,
+549d393
+<   "deletionProtection": false,
+552a397
+>       "autoDelete": false,
+554,557d398
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+564,570c405
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "test",
+<     "managed-by-cnrm": "true"
+<   },
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+<   "metadata": {},
+---
+>   "machineType": "n1-standard-1",
+577d411
+<   "params": {},
+580d413
+<     "instanceTerminationAction": "",
+582,583c415
+<     "preemptible": true,
+<     "provisioningModel": ""
+---
+>     "preemptible": true
+587,623d418
+<   "tags": {},
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "diskEncryptionKey": {
+<     "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${diskID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+<   "sourceImageId": "2443108620951880213",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+629c424,425
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop
+> Content-Type: application/json
+642,655d437
+<   "canIpForward": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "deletionProtection": false,
+<   "description": "an basic instance example",
+<   "disks": [
+<     {
+<       "boot": true,
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<     }
+<   ],
+657,680c439,445
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "test",
+<     "managed-by-cnrm": "true"
+<   },
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+<   "metadata": {},
+<   "name": "${instanceID}",
+<   "networkInterfaces": [
+<     {
+<       "network": "projects/${projectId}/global/networks/${networkID}"
+<     }
+<   ],
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": false,
+<     "instanceTerminationAction": "",
+<     "onHostMaintenance": "TERMINATE",
+<     "preemptible": true,
+<     "provisioningModel": ""
+<   },
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "stop",
+>   "progress": 0,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+682c447,449
+<   "tags": {},
+---
+>   "targetId": "${instanceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+>   "user": "user@example.com",
+688c455,456
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
+> Content-Type: application/json
+701,704c469
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "diskEncryptionKey": {
+<     "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<   },
+---
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+706,718c471,481
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${diskID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+<   "sourceImageId": "2443108620951880213",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "stop",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${instanceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+>   "user": "user@example.com",
+724c487,488
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+737d500
+<   "canIpForward": false,
+739d501
+<   "deletionProtection": false,
+742a505
+>       "autoDelete": false,
+744,747d506
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+754,760c513
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "test",
+<     "managed-by-cnrm": "true"
+<   },
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-1",
+<   "metadata": {},
+---
+>   "machineType": "n1-standard-1",
+767d519
+<   "params": {},
+770d521
+<     "instanceTerminationAction": "",
+772,773c523
+<     "preemptible": true,
+<     "provisioningModel": ""
+---
+>     "preemptible": true
+776,777c526
+<   "status": "RUNNING",
+<   "tags": {},
+---
+>   "status": "TERMINATED",
+783c532
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType
+787,792c536
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "prod",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2"
+810c554
+<   "operationType": "setLabels",
+---
+>   "operationType": "setMachineType",
+823c567,568
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
+> Content-Type: application/json
+841c586
+<   "operationType": "setLabels",
+---
+>   "operationType": "setMachineType",
+854c599,606
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/stop?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setScheduling
+> Content-Type: application/json
+> 
+> {
+>   "automaticRestart": false,
+>   "onHostMaintenance": "TERMINATE",
+>   "preemptible": true
+> }
+871c623
+<   "operationType": "stop",
+---
+>   "operationType": "setScheduling",
+884c636,637
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
+> Content-Type: application/json
+902c655
+<   "operationType": "stop",
+---
+>   "operationType": "setScheduling",
+915c668
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setMachineType?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/setLabels
+919c672,676
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2"
+---
+>   "labelFingerprint": "abcdef0123A=",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "env": "prod"
+>   }
+937c694
+<   "operationType": "setMachineType",
+---
+>   "operationType": "setLabels",
+950c707,708
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
+> Content-Type: application/json
+968c726
+<   "operationType": "setMachineType",
+---
+>   "operationType": "setLabels",
+981,1040c739
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "canIpForward": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "deletionProtection": false,
+<   "description": "an basic instance example",
+<   "disks": [
+<     {
+<       "boot": true,
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<     }
+<   ],
+<   "id": "000000000000000000000",
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "prod",
+<     "managed-by-cnrm": "true"
+<   },
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
+<   "metadata": {},
+<   "name": "${instanceID}",
+<   "networkInterfaces": [
+<     {
+<       "network": "projects/${projectId}/global/networks/${networkID}"
+<     }
+<   ],
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": false,
+<     "instanceTerminationAction": "",
+<     "onHostMaintenance": "TERMINATE",
+<     "preemptible": true,
+<     "provisioningModel": ""
+<   },
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+<   "status": "TERMINATED",
+<   "tags": {},
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/startWithEncryptionKey?alt=json&prettyPrint=false
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}/start
+1043,1074d741
+< {
+<   "disks": [
+<     {
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<     }
+<   ]
+< }
+< 
+< 501 Not Implemented
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 501,
+<     "message": "method StartWithEncryptionKey not implemented"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+< 
+1086,1099d752
+<   "canIpForward": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "deletionProtection": false,
+<   "description": "an basic instance example",
+<   "disks": [
+<     {
+<       "boot": true,
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+<       "source": "projects/${projectId}/zones/us-west1-a/disks/${diskID}"
+<     }
+<   ],
+1101,1126c754,764
+<   "kind": "compute#instance",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "env": "prod",
+<     "managed-by-cnrm": "true"
+<   },
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
+<   "metadata": {},
+<   "name": "${instanceID}",
+<   "networkInterfaces": [
+<     {
+<       "network": "projects/${projectId}/global/networks/${networkID}"
+<     }
+<   ],
+<   "params": {},
+<   "scheduling": {
+<     "automaticRestart": false,
+<     "instanceTerminationAction": "",
+<     "onHostMaintenance": "TERMINATE",
+<     "preemptible": true,
+<     "provisioningModel": ""
+<   },
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+<   "status": "TERMINATED",
+<   "tags": {},
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "start",
+>   "progress": 0,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "RUNNING",
+>   "targetId": "${instanceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+>   "user": "user@example.com",
+1132c770,771
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
+> Content-Type: application/json
+1145,1148c784
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "diskEncryptionKey": {
+<     "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<   },
+---
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+1150,1162c786,796
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${diskID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+<   "sourceImageId": "2443108620951880213",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+---
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "start",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${instanceID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}",
+>   "user": "user@example.com",
+1168c802,803
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+1181d815
+<   "canIpForward": false,
+1183d816
+<   "deletionProtection": false,
+1186a820
+>       "autoDelete": false,
+1188,1191d821
+<       "diskEncryptionKey": {
+<         "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<       },
+<       "mode": "READ_WRITE",
+1200,1201c830
+<     "env": "prod",
+<     "managed-by-cnrm": "true"
+---
+>     "env": "prod"
+1203,1204c832
+<   "machineType": "projects/${projectId}/zones/us-west1-a/machineTypes/n1-standard-2",
+<   "metadata": {},
+---
+>   "machineType": "zones/us-west1-a/machineTypes/n1-standard-2",
+1211d838
+<   "params": {},
+1214d840
+<     "instanceTerminationAction": "",
+1216,1217c842
+<     "preemptible": true,
+<     "provisioningModel": ""
+---
+>     "preemptible": true
+1220,1257c845
+<   "status": "TERMINATED",
+<   "tags": {},
+<   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "diskEncryptionKey": {
+<     "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "compute#disk",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${diskID}",
+<   "physicalBlockSizeBytes": "4096",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/${diskID}",
+<   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
+<   "sourceImageId": "2443108620951880213",
+<   "status": "READY",
+<   "type": "projects/${projectId}/zones/us-west1-a/diskTypes/pd-standard",
+---
+>   "status": "RUNNING",
+1263c851,852
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}?alt=json&prettyPrint=false
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/${instanceID}
+> Content-Type: application/json
+1293c882,883
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/operations/${operationID}
+> Content-Type: application/json

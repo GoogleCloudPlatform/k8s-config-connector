@@ -1,7 +1,246 @@
-GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudresourcemanager.googleapis.com/v1/projects/projectiam-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projectiam",
+  "parent": {
+    "id": "${folderID}",
+    "type": "folder"
+  },
+  "projectId": "projectiam-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lifecycleState": "ACTIVE",
+    "name": "projectiam",
+    "parent": {
+      "id": "${folderID}",
+      "type": "folder"
+    },
+    "projectId": "projectiam-${uniqueId}",
+    "projectNumber": "${projectNumber}"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/projectiam-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "projectiam",
+  "parent": {
+    "id": "${folderID}",
+    "type": "folder"
+  },
+  "projectId": "projectiam-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/projectiam-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/projectiam-${uniqueId}/billingInfo",
+  "projectId": "projectiam-${uniqueId}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/projectiam-${uniqueId}/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/projectiam-${uniqueId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Test Service Account"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test Service Account",
+  "email": "sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/projectiam-${uniqueId}/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "projectiam-${uniqueId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/projectiam-${uniqueId}/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test Service Account",
+  "email": "sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/projectiam-${uniqueId}/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "projectiam-${uniqueId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,10 +269,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies?%24alt=json%3Benum-encoding%3Dint&policyId=iamdenypolicy-${uniqueId}
+POST https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}/denypolicies?%24alt=json%3Benum-encoding%3Dint&policyId=iamdenypolicy-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}%2Fdenypolicies
+X-Goog-Request-Params: parent=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}%2Fdenypolicies
 
 {
   "displayName": "My Deny Policy",
@@ -50,7 +289,7 @@ X-Goog-Request-Params: parent=policies%2Fcloudresourcemanager.googleapis.com%252
           "iam.googleapis.com/roles.get"
         ],
         "exceptionPrincipals": [
-          "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+          "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"
         ]
       },
       "description": "Deny roles.list"
@@ -95,7 +334,7 @@ X-Xss-Protection: 0
             "iam.googleapis.com/roles.get"
           ],
           "exceptionPrincipals": [
-            "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+            "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"
           ]
         },
         "description": "Deny roles.list"
@@ -108,10 +347,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
+X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -142,7 +381,7 @@ X-Xss-Protection: 0
           "iam.googleapis.com/roles.get"
         ],
         "exceptionPrincipals": [
-          "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+          "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"
         ]
       },
       "description": "Deny roles.list"
@@ -178,7 +417,7 @@ X-Goog-Request-Params: policy.name=policies%2Fcloudresourcemanager.googleapis.co
           "iam.googleapis.com/roles.list"
         ],
         "exceptionPrincipals": [
-          "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+          "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"
         ]
       },
       "description": "Deny roles.get"
@@ -225,7 +464,7 @@ X-Xss-Protection: 0
             "iam.googleapis.com/roles.list"
           ],
           "exceptionPrincipals": [
-            "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+            "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"
           ]
         },
         "description": "Deny roles.get"
@@ -238,10 +477,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
+X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -272,7 +511,7 @@ X-Xss-Protection: 0
           "iam.googleapis.com/roles.list"
         ],
         "exceptionPrincipals": [
-          "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+          "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"
         ]
       },
       "description": "Deny roles.get"
@@ -284,10 +523,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}/denypolicies/iamdenypolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
+X-Goog-Request-Params: name=policies%2Fcloudresourcemanager.googleapis.com%252Fprojects%252Fprojectiam-${uniqueId}%2Fdenypolicies%2Fiamdenypolicy-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -327,7 +566,7 @@ X-Xss-Protection: 0
             "iam.googleapis.com/roles.list"
           ],
           "exceptionPrincipals": [
-            "principalSet://goog/cloudIdentityCustomerId/C01Abc35"
+            "principal://iam.googleapis.com/projects/-/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com"
           ]
         },
         "description": "Deny roles.get"
@@ -337,3 +576,115 @@ X-Xss-Protection: 0
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
+
+---
+
+GET https://iam.googleapis.com/v1/projects/projectiam-${uniqueId}/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test Service Account",
+  "email": "sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/projectiam-${uniqueId}/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "projectiam-${uniqueId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/projectiam-${uniqueId}/serviceAccounts/sa-${uniqueId}@projectiam-${uniqueId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/projectiam-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "projectiam",
+  "parent": {
+    "id": "${folderID}",
+    "type": "folder"
+  },
+  "projectId": "projectiam-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/projectiam-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/projectiam-${uniqueId}/billingInfo",
+  "projectId": "projectiam-${uniqueId}"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v1/projects/projectiam-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
