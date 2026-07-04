@@ -14,12 +14,14 @@
 
 // +tool:fuzz-gen
 // proto.message: google.monitoring.metricsscope.v1.MonitoredProject
-// api.group: monitoring.cnrm.cloud.google.com
+// krm.group: monitoring.cnrm.cloud.google.com
+// krm.kind: MonitoringMonitoredProject
 
 package monitoring
 
 import (
 	metricsscopepb "cloud.google.com/go/monitoring/metricsscope/apiv1/metricsscopepb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -28,15 +30,24 @@ func init() {
 }
 
 func monitoringMonitoredProjectFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&metricsscopepb.MonitoredProject{},
-		MonitoringMonitoredProjectSpec_FromProto, MonitoringMonitoredProjectSpec_ToProto,
-		MonitoringMonitoredProjectStatus_FromProto, MonitoringMonitoredProjectStatus_ToProto,
+	f := fuzztesting.NewKRMTypedFuzzer[*metricsscopepb.MonitoredProject, krm.MonitoringMonitoredProjectSpec, krm.MonitoringMonitoredProjectStatus](
+		&metricsscopepb.MonitoredProject{},
+		MonitoringMonitoredProjectSpec_FromProto,
+		MonitoringMonitoredProjectSpec_ToProto,
+		MonitoringMonitoredProjectStatus_FromProto,
+		MonitoringMonitoredProjectStatus_ToProto,
 	)
+
+	// Field comparison between KRM Spec (MonitoringMonitoredProjectSpec) and GCP Proto (google.monitoring.metricsscope.v1.MonitoredProject):
+	// - MetricsScope (KRM Spec) and ResourceID (KRM Spec) are combined into `.name` in Proto representing
+	//   "locations/global/metricsScopes/{metrics_scope}/projects/{project}".
+	// - CreateTime (KRM Status) maps to `.create_time` (GCP Proto).
 
 	// Status fields
 	f.StatusField(".create_time")
 
-	// Identity/unimplemented fields
+	// Identity and Unimplemented fields
+	// - Name (GCP Proto) contains both the parent metrics scope and the project ID.
 	f.Unimplemented_Identity(".name")
 
 	return f
