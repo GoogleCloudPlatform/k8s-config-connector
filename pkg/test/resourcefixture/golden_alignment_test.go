@@ -248,6 +248,11 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if len(mockEvs) > len(realEvs) {
 					allowed = true // Allow extra retries/reconciliations in mock
 				}
+				// Allow generateServiceIdentity to have fewer calls in mock because the direct controller
+				// optimizes and avoids duplicate POST calls.
+				if method == "POST" && strings.Contains(path, ":generateServiceIdentity") && len(mockEvs) < len(realEvs) {
+					allowed = true
+				}
 				if !allowed {
 					t.Errorf("path %q, method %s: mismatched number of calls: real has %d, mock has %d", path, method, len(realEvs), len(mockEvs))
 					continue
