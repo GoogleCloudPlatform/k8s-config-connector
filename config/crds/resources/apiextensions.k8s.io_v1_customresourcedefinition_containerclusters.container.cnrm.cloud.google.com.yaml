@@ -575,6 +575,9 @@ spec:
               description:
                 description: Immutable.  Description of the cluster.
                 type: string
+              disableL4LbFirewallReconciliation:
+                description: Whether the cluster disables L4 LB firewall reconciliation.
+                type: boolean
               dnsConfig:
                 description: Immutable. Configuration for Cloud DNS for Kubernetes
                   Engine.

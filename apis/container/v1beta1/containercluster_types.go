@@ -1403,6 +1403,10 @@ type ContainerClusterSpec struct {
 	// +kcc:proto:field=google.container.v1.Cluster.default_snat_status
 	DefaultSnatStatus *DefaultSnatStatus `json:"defaultSnatStatus,omitempty"`
 
+	/* Whether the cluster disables L4 LB firewall reconciliation. */
+	// +kcc:proto:field=google.container.v1.Cluster.network_config.disable_l4_lb_firewall_reconciliation
+	DisableL4LbFirewallReconciliation *bool `json:"disableL4LbFirewallReconciliation,omitempty"`
+
 	/* Immutable.  Description of the cluster. */
 	// +kcc:proto:field=google.container.v1.Cluster.description
 	Description *string `json:"description,omitempty"`

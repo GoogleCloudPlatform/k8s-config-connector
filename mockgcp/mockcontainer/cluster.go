@@ -367,6 +367,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
 	}
 
+	if update.DesiredDisableL4LbFirewallReconciliation != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.DisableL4LbFirewallReconciliation = update.DesiredDisableL4LbFirewallReconciliation
+		update.DesiredDisableL4LbFirewallReconciliation = nil
+	}
+
 	if update.DesiredAdditionalIpRangesConfig != nil {
 		if obj.IpAllocationPolicy == nil {
 			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
