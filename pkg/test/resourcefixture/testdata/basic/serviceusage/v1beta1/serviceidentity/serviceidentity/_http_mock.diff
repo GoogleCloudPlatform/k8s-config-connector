@@ -1,0 +1,10 @@
+1,2c1
+< POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json
+< Content-Type: application/json
+---
+> POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json&prettyPrint=false
+26,27c25
+< POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json
+< Content-Type: application/json
+---
+> GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json&prettyPrint=false
