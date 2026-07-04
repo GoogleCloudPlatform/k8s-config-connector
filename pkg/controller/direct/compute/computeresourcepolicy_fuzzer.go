@@ -33,6 +33,54 @@ func computeResourcePolicyFuzzer() fuzztesting.KRMFuzzer {
 		ComputeResourcePolicyObservedState_v1beta1_FromProto, ComputeResourcePolicyObservedState_v1beta1_ToProto,
 	)
 
+	// Detailed Field Comparison:
+	// KRM Spec Field / Path                                             <-> Proto/Fuzzer Path/Field Mapping Status
+	// ============================================================================================================
+	// .spec.region                                                      <-> .region
+	// .spec.resourceID                                                  <-> .name (Fuzzed Identity Field)
+	// .spec.description                                                 <-> .description
+	// .spec.diskConsistencyGroupPolicy                                  <-> .disk_consistency_group_policy
+	// .spec.diskConsistencyGroupPolicy.enabled                          <-> .disk_consistency_group_policy.enabled
+	// .spec.groupPlacementPolicy                                        <-> .group_placement_policy
+	// .spec.groupPlacementPolicy.availabilityDomainCount                <-> .group_placement_policy.availability_domain_count
+	// .spec.groupPlacementPolicy.collocation                            <-> .group_placement_policy.collocation
+	// .spec.groupPlacementPolicy.maxDistance                            <-> Missing in Proto v1 (Marked Unimplemented_NotYetTriaged)
+	// .spec.groupPlacementPolicy.vmCount                                <-> .group_placement_policy.vm_count
+	// .spec.instanceSchedulePolicy                                      <-> .instance_schedule_policy
+	// .spec.instanceSchedulePolicy.expirationTime                       <-> .instance_schedule_policy.expiration_time
+	// .spec.instanceSchedulePolicy.startTime                            <-> .instance_schedule_policy.start_time
+	// .spec.instanceSchedulePolicy.timeZone                             <-> .instance_schedule_policy.time_zone
+	// .spec.instanceSchedulePolicy.vmStartSchedule                      <-> .instance_schedule_policy.vm_start_schedule
+	// .spec.instanceSchedulePolicy.vmStartSchedule.schedule             <-> .instance_schedule_policy.vm_start_schedule.schedule
+	// .spec.instanceSchedulePolicy.vmStopSchedule                       <-> .instance_schedule_policy.vm_stop_schedule
+	// .spec.instanceSchedulePolicy.vmStopSchedule.schedule              <-> .instance_schedule_policy.vm_stop_schedule.schedule
+	// .spec.snapshotSchedulePolicy                                      <-> .snapshot_schedule_policy
+	// .spec.snapshotSchedulePolicy.retentionPolicy                      <-> .snapshot_schedule_policy.retention_policy
+	// .spec.snapshotSchedulePolicy.retentionPolicy.maxRetentionDays     <-> .snapshot_schedule_policy.retention_policy.max_retention_days
+	// .spec.snapshotSchedulePolicy.retentionPolicy.onSourceDiskDelete   <-> .snapshot_schedule_policy.retention_policy.on_source_disk_delete
+	// .spec.snapshotSchedulePolicy.schedule                             <-> .snapshot_schedule_policy.schedule
+	// .spec.snapshotSchedulePolicy.schedule.dailySchedule               <-> .snapshot_schedule_policy.schedule.daily_schedule
+	// .spec.snapshotSchedulePolicy.schedule.dailySchedule.daysInCycle   <-> .snapshot_schedule_policy.schedule.daily_schedule.days_in_cycle
+	// .spec.snapshotSchedulePolicy.schedule.dailySchedule.startTime     <-> .snapshot_schedule_policy.schedule.daily_schedule.start_time
+	// .spec.snapshotSchedulePolicy.schedule.hourlySchedule              <-> .snapshot_schedule_policy.schedule.hourly_schedule
+	// .spec.snapshotSchedulePolicy.schedule.hourlySchedule.hoursInCycle <-> .snapshot_schedule_policy.schedule.hourly_schedule.hours_in_cycle
+	// .spec.snapshotSchedulePolicy.schedule.hourlySchedule.startTime    <-> .snapshot_schedule_policy.schedule.hourly_schedule.start_time
+	// .spec.snapshotSchedulePolicy.schedule.weeklySchedule              <-> .snapshot_schedule_policy.schedule.weekly_schedule
+	// .spec.snapshotSchedulePolicy.schedule.weeklySchedule.dayOfWeeks   <-> .snapshot_schedule_policy.schedule.weekly_schedule.day_of_weeks
+	// .spec.snapshotSchedulePolicy.schedule.weeklySchedule.dayOfWeeks[].day <-> .snapshot_schedule_policy.schedule.weekly_schedule.day_of_weeks[].day
+	// .spec.snapshotSchedulePolicy.schedule.weeklySchedule.dayOfWeeks[].startTime <-> .snapshot_schedule_policy.schedule.weekly_schedule.day_of_weeks[].start_time
+	// .spec.snapshotSchedulePolicy.snapshotProperties                    <-> .snapshot_schedule_policy.snapshot_properties
+	// .spec.snapshotSchedulePolicy.snapshotProperties.chainName          <-> .snapshot_schedule_policy.snapshot_properties.chain_name
+	// .spec.snapshotSchedulePolicy.snapshotProperties.guestFlush         <-> .snapshot_schedule_policy.snapshot_properties.guest_flush
+	// .spec.snapshotSchedulePolicy.snapshotProperties.labels             <-> .snapshot_schedule_policy.snapshot_properties.labels
+	// .spec.snapshotSchedulePolicy.snapshotProperties.storageLocations   <-> .snapshot_schedule_policy.snapshot_properties.storage_locations
+	//
+	// KRM Status Field / Path                                           <-> Proto/Fuzzer Path/Field Mapping Status
+	// ============================================================================================================
+	// .status.observedState.creationTimestamp                            <-> .creation_timestamp
+	// .status.observedState.id                                           <-> .id
+	// .status.observedState.status                                       <-> .status
+
 	// Spec fields
 	f.SpecField(".region")
 	f.SpecField(".description")
