@@ -1,0 +1,6 @@
+- caisURL: //migrationcenter.googleapis.com/projects/${projectId}/locations/us-central1/groups/migrationcentergroup-minimal-${uniqueId}
+  group: migrationcenter.cnrm.cloud.google.com
+  kind: MigrationCenterGroup
+  name: migrationcentergroup-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
