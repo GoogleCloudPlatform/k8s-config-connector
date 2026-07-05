@@ -56,6 +56,7 @@ go run . generate-types \
   --resource ComputeSSLPolicy:SslPolicy \
   --resource ComputeSSLCertificate:SslCertificate \
   --resource ComputeSubnetwork:Subnetwork \
+  --resource ComputeTargetGRPCProxy:TargetGrpcProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
   --resource ComputeTargetHTTPProxy:TargetHttpProxy \
   --resource ComputeTargetPool:TargetPool \
