@@ -659,6 +659,69 @@ type LinuxNodeConfig struct {
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
 	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.sysctls
 	Sysctls map[string]string `json:"sysctls,omitempty"`
+
+	/* SwapConfig specifies the swap configuration on the nodes. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.swap_config
+	SwapConfig *LinuxNodeConfig_SwapConfig `json:"swapConfig,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig
+type LinuxNodeConfig_SwapConfig struct {
+	/* Whether swap is enabled. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* BootDiskProfile specifies the configuration for swap on the node's boot disk. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.boot_disk_profile
+	BootDiskProfile *SwapConfig_BootDiskProfile `json:"bootDiskProfile,omitempty"`
+
+	/* DedicatedLocalSsdProfile specifies the configuration for swap on dedicated local NVMe SSDs. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.dedicated_local_ssd_profile
+	DedicatedLocalSsdProfile *SwapConfig_DedicatedLocalSsdProfile `json:"dedicatedLocalSsdProfile,omitempty"`
+
+	/* EphemeralLocalSsdProfile specifies the configuration for swap on ephemeral local SSDs. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.ephemeral_local_ssd_profile
+	EphemeralLocalSsdProfile *SwapConfig_EphemeralLocalSsdProfile `json:"ephemeralLocalSsdProfile,omitempty"`
+
+	/* EncryptionConfig specifies the encryption configuration for swap. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.encryption_config
+	EncryptionConfig *SwapConfig_EncryptionConfig `json:"encryptionConfig,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.BootDiskProfile
+type SwapConfig_BootDiskProfile struct {
+	/* Swap size in GiB. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.BootDiskProfile.swap_size_gib
+	SwapSizeGib *int `json:"swapSizeGib,omitempty"`
+
+	/* Swap size as a percentage of the boot disk size. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.BootDiskProfile.swap_size_percent
+	SwapSizePercent *int `json:"swapSizePercent,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.DedicatedLocalSsdProfile
+type SwapConfig_DedicatedLocalSsdProfile struct {
+	/* The number of physical local NVMe SSD disks to attach. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.DedicatedLocalSsdProfile.disk_count
+	DiskCount *int `json:"diskCount,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile
+type SwapConfig_EphemeralLocalSsdProfile struct {
+	/* Swap size in GiB. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile.swap_size_gib
+	SwapSizeGib *int `json:"swapSizeGib,omitempty"`
+
+	/* Swap size as a percentage of the ephemeral local SSD capacity. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile.swap_size_percent
+	SwapSizePercent *int `json:"swapSizePercent,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.LinuxNodeConfig.SwapConfig.EncryptionConfig
+type SwapConfig_EncryptionConfig struct {
+	/* If true, swap space will not be encrypted. */
+	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.SwapConfig.EncryptionConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.NodeConfig.LocalNvmeSsdBlockConfig
