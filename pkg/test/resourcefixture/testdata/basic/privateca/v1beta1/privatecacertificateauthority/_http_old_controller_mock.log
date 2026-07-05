@@ -381,7 +381,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -404,7 +404,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities?%24alt=json%3Benum-encoding%3Dint&certificateAuthorityId=privatecacertificateauthority-${uniqueId}
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities?alt=json&certificateAuthorityId=privatecacertificateauthority-${uniqueId}
 Content-Type: application/json
 
 {
@@ -436,7 +436,7 @@ Content-Type: application/json
     }
   },
   "keySpec": {
-    "algorithm": 8
+    "algorithm": "RSA_PKCS1_4096_SHA256"
   },
   "labels": {
     "cnrm-test": "true",
@@ -444,7 +444,8 @@ Content-Type: application/json
     "managed-by-cnrm": "true"
   },
   "lifetime": "86400s",
-  "type": 1
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+  "type": "SELF_SIGNED"
 }
 
 200 OK
@@ -470,7 +471,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -593,7 +594,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -682,7 +683,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "keySpec": {
-    "algorithm": 8
+    "algorithm": "RSA_PKCS1_4096_SHA256"
   },
   "labels": {
     "cnrm-test": "true",
@@ -695,57 +696,24 @@ X-Xss-Protection: 0
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
   "satisfiesPzi": true,
-  "state": 3,
-  "tier": 1,
-  "type": 1,
+  "state": "STAGED",
+  "tier": "ENTERPRISE",
+  "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
 Content-Type: application/json
 
 {
-  "config": {
-    "subjectConfig": {
-      "subject": {
-        "commonName": "my-certificate-authority",
-        "organization": "Example"
-      },
-      "subjectAltName": {
-        "dnsNames": [
-          "example.com"
-        ]
-      }
-    },
-    "x509Config": {
-      "caOptions": {
-        "isCa": true
-      },
-      "keyUsage": {
-        "baseKeyUsage": {
-          "certSign": true,
-          "crlSign": true
-        },
-        "extendedKeyUsage": {
-          "serverAuth": true
-        }
-      }
-    }
-  },
-  "keySpec": {
-    "algorithm": 8
-  },
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  },
-  "lifetime": "86400s",
-  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
-  "type": 1
+  }
 }
 
 200 OK
@@ -771,7 +739,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -851,7 +819,6 @@ X-Xss-Protection: 0
         },
         "subjectAltName": {
           "dnsNames": [
-            "example.com",
             "example.com"
           ]
         }
@@ -896,7 +863,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -964,7 +931,6 @@ X-Xss-Protection: 0
       },
       "subjectAltName": {
         "dnsNames": [
-          "example.com",
           "example.com"
         ]
       }
@@ -986,7 +952,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "keySpec": {
-    "algorithm": 8
+    "algorithm": "RSA_PKCS1_4096_SHA256"
   },
   "labels": {
     "cnrm-test": "true",
@@ -1000,15 +966,15 @@ X-Xss-Protection: 0
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
   "satisfiesPzi": true,
-  "state": 3,
-  "tier": 1,
-  "type": 1,
+  "state": "STAGED",
+  "tier": "ENTERPRISE",
+  "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&ignoreActiveCertificates=true&ignoreDependentResources=true&skipGracePeriod=true
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&ignoreActiveCertificates=true
 Content-Type: application/json
 
 200 OK
@@ -1034,7 +1000,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1114,7 +1080,6 @@ X-Xss-Protection: 0
         },
         "subjectAltName": {
           "dnsNames": [
-            "example.com",
             "example.com"
           ]
         }
