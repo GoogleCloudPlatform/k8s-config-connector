@@ -756,6 +756,7 @@ func PrivateCACertificateAuthorityStatus_FromProto(mapCtx *direct.MapContext, in
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.SubordinateConfig = SubordinateConfig_FromProto(mapCtx, in.GetSubordinateConfig())
 	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
 

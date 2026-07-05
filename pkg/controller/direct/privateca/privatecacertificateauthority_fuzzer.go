@@ -60,12 +60,36 @@ func PrivateCACertificateAuthorityFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_Identity(".name")
 
+	// Documented Field Comparison (KRM Spec -> Proto):
+	// - projectRef (refs.ProjectRef): Mapped to parent project context, not directly in CertificateAuthority proto.
+	// - location (string): Mapped to parent location context, not directly in CertificateAuthority proto.
+	// - resourceID (*string): Mapped to the last segment of the .name field in the CertificateAuthority proto.
+	// - config (CertificateConfig): Mapped to .config.
+	// - keySpec (CertificateAuthority_KeyVersionSpec): Mapped to .key_spec.
+	// - lifetime (string): Mapped to .lifetime.
+	// - type (string): Mapped to .type.
+	// - gcsBucketRef (*storagev1beta1.StorageBucketRef): Mapped to .gcs_bucket string.
+	// - caPoolRef (privatecarefs.PrivateCACAPoolRef): Mapped to parent CA Pool context, not directly in CertificateAuthority proto.
 	f.SpecField(".config")
 	f.SpecField(".key_spec")
 	f.SpecField(".lifetime")
 	f.SpecField(".type")
 	f.SpecField(".gcs_bucket")
 
+	// Documented Field Comparison (KRM Status -> Proto):
+	// - conditions ([]v1alpha1.Condition): Metadata, not mapped to proto.
+	// - observedGeneration (*int64): Metadata, not mapped to proto.
+	// - accessUrls (*CertificateAuthority_AccessUrls): Mapped to .access_urls.
+	// - caCertificateDescriptions ([]CertificateDescription): Mapped to .ca_certificate_descriptions.
+	// - config (*CertificateAuthority_ConfigStatus): Mapped to .config.
+	// - createTime (*string): Mapped to .create_time.
+	// - deleteTime (*string): Mapped to .delete_time.
+	// - expireTime (*string): Mapped to .expire_time.
+	// - pemCaCertificates ([]string): Mapped to .pem_ca_certificates.
+	// - state (*string): Mapped to .state.
+	// - subordinateConfig (*SubordinateConfig): Mapped to .subordinate_config.
+	// - tier (*string): Mapped to .tier.
+	// - updateTime (*string): Mapped to .update_time.
 	f.StatusField(".access_urls")
 	f.StatusField(".ca_certificate_descriptions")
 	f.StatusField(".config")
@@ -73,16 +97,15 @@ func PrivateCACertificateAuthorityFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".state")
 	f.StatusField(".subordinate_config")
 	f.StatusField(".tier")
+	f.StatusField(".create_time")
+	f.StatusField(".delete_time")
+	f.StatusField(".expire_time")
+	f.StatusField(".update_time")
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
 	f.Unimplemented_NotYetTriaged(".satisfies_pzi")
 	f.Unimplemented_NotYetTriaged(".user_defined_access_urls")
-
-	f.Unimplemented_NotYetTriaged(".create_time")
-	f.Unimplemented_NotYetTriaged(".delete_time")
-	f.Unimplemented_NotYetTriaged(".expire_time")
-	f.Unimplemented_NotYetTriaged(".update_time")
 
 	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.subject.rdn_sequence")
 	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_key_id")
