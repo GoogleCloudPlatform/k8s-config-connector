@@ -392,6 +392,13 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 		update.Taints = nil
 	}
 
+	if update.LinuxNodeConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.LinuxNodeConfig = update.LinuxNodeConfig
+		update.LinuxNodeConfig = nil
+	}
 	if update.KubeletConfig != nil {
 		if obj.Config == nil {
 			obj.Config = &pb.NodeConfig{}

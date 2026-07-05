@@ -29,7 +29,8 @@ cd ${REPO_ROOT}
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 # A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
+export CLOUDSDK_CORE_PROJECT=foobar
+gcloud config set project foobar --quiet 2>/dev/null || true
 
 # Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
 unset VALIDATE_URLS
