@@ -64,7 +64,7 @@ type ComputeTargetVPNGatewayStatus struct {
 	/* The unique identifier for the resource. */
 	// +optional
 	// +kcc:proto:field=google.cloud.compute.v1.TargetVpnGateway.id
-	GatewayId *int64 `json:"gatewayId,omitempty"`
+	ID *int64 `json:"gatewayId,omitempty"`
 
 	// +optional
 	// +kcc:proto:field=google.cloud.compute.v1.TargetVpnGateway.self_link

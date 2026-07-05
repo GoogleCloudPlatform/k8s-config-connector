@@ -4665,27 +4665,27 @@ func ComputeTargetTCPProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in
 }
 */
 
-/* found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1beta1_ToProto", skipping
-func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TargetTcpProxy{}
-	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Description
-	// MISSING: ID
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: ProxyBind
-	// MISSING: ProxyHeader
-	// MISSING: Region
-	out.SelfLink = in.SelfLink
-	// MISSING: Service
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "ComputeTargetTCPProxyStatus_v1beta1_ToProto", skipping
 
-/* found existing non-generated mapping function "ComputeTargetVPNGatewaySpec_v1beta1_FromProto", skipping
+	func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TargetTcpProxy{}
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: Description
+		// MISSING: ID
+		// MISSING: Kind
+		// MISSING: Name
+		// MISSING: ProxyBind
+		// MISSING: ProxyHeader
+		// MISSING: Region
+		out.SelfLink = in.SelfLink
+		// MISSING: Service
+		return out
+	}
+*/
 func ComputeTargetVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetVpnGateway) *krm.ComputeTargetVPNGatewaySpec {
 	if in == nil {
 		return nil
@@ -4708,9 +4708,6 @@ func ComputeTargetVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Tunnels
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ComputeTargetVPNGatewaySpec_v1beta1_ToProto", skipping
 func ComputeTargetVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetVPNGatewaySpec) *pb.TargetVpnGateway {
 	if in == nil {
 		return nil
@@ -4733,7 +4730,6 @@ func ComputeTargetVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Tunnels
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "ComputeTargetVPNGatewayStatus_v1beta1_FromProto", skipping
 func ComputeTargetVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetVpnGateway) *krm.ComputeTargetVPNGatewayStatus {
@@ -4744,7 +4740,7 @@ func ComputeTargetVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: ForwardingRules
-	// MISSING: ID
+	out.ID = in.Id
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
@@ -4767,7 +4763,7 @@ func ComputeTargetVPNGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.CreationTimestamp = in.CreationTimestamp
 	// MISSING: Description
 	// MISSING: ForwardingRules
-	// MISSING: ID
+	out.Id = in.ID
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
 	// MISSING: Labels

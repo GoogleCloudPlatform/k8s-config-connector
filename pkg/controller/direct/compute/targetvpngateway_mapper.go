@@ -24,32 +24,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeTargetVPNGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetVpnGateway) *krm.ComputeTargetVPNGatewaySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeTargetVPNGatewaySpec{}
-	out.Description = in.Description
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	out.Region = in.Region
-	return out
-}
-
-func ComputeTargetVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetVPNGatewaySpec) *pb.TargetVpnGateway {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TargetVpnGateway{}
-	out.Description = in.Description
-	if in.NetworkRef != nil {
-		out.Network = &in.NetworkRef.External
-	}
-	out.Region = in.Region
-	return out
-}
-
 func ComputeTargetVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetVpnGateway) *krm.ComputeTargetVPNGatewayStatus {
 	if in == nil {
 		return nil
@@ -58,7 +32,7 @@ func ComputeTargetVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.CreationTimestamp = in.CreationTimestamp
 	if in.Id != nil {
 		val := int64(*in.Id)
-		out.GatewayId = &val
+		out.ID = &val
 	}
 	out.SelfLink = in.SelfLink
 	return out
@@ -70,8 +44,8 @@ func ComputeTargetVPNGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.TargetVpnGateway{}
 	out.CreationTimestamp = in.CreationTimestamp
-	if in.GatewayId != nil {
-		val := uint64(*in.GatewayId)
+	if in.ID != nil {
+		val := uint64(*in.ID)
 		out.Id = &val
 	}
 	out.SelfLink = in.SelfLink

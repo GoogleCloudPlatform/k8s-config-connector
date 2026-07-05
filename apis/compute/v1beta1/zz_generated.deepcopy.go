@@ -7204,8 +7204,8 @@ func (in *ComputeTargetVPNGatewayStatus) DeepCopyInto(out *ComputeTargetVPNGatew
 		*out = new(string)
 		**out = **in
 	}
-	if in.GatewayId != nil {
-		in, out := &in.GatewayId, &out.GatewayId
+	if in.ID != nil {
+		in, out := &in.ID, &out.ID
 		*out = new(int64)
 		**out = **in
 	}
