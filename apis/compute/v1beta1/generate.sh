@@ -62,6 +62,7 @@ go run . generate-types \
   --resource ComputeTargetPool:TargetPool \
   --resource ComputeTargetSSLProxy:TargetSslProxy \
   --resource ComputeTargetTcpProxy:TargetTcpProxy \
+  --resource ComputeTargetVPNGateway:TargetVpnGateway \
   --resource ComputeURLMap:UrlMap \
   --resource ComputeVPNGateway:VpnGateway \
   --resource ComputeInterconnectAttachment:InterconnectAttachment \
