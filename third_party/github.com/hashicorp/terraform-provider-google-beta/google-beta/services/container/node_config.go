@@ -541,6 +541,91 @@ func schemaNodeConfig() *schema.Schema {
 								Description:      `cgroupMode specifies the cgroup mode to be used on the node.`,
 								DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("CGROUP_MODE_UNSPECIFIED"),
 							},
+							"swap_config": {
+								Type:        schema.TypeList,
+								Optional:    true,
+								MaxItems:    1,
+								Description: `Parameters for swap config.`,
+								Elem: &schema.Resource{
+									Schema: map[string]*schema.Schema{
+										"enabled": {
+											Type:        schema.TypeBool,
+											Optional:    true,
+											Description: `Enable or disable swap config on the nodes.`,
+										},
+										"boot_disk_profile": {
+											Type:        schema.TypeList,
+											Optional:    true,
+											MaxItems:    1,
+											Description: `Configuration for swap on the node's boot disk.`,
+											Elem: &schema.Resource{
+												Schema: map[string]*schema.Schema{
+													"swap_size_gib": {
+														Type:        schema.TypeInt,
+														Optional:    true,
+														Description: `Swap size in GiB.`,
+													},
+													"swap_size_percent": {
+														Type:        schema.TypeInt,
+														Optional:    true,
+														Description: `Swap size as percentage of boot disk.`,
+													},
+												},
+											},
+										},
+										"dedicated_local_ssd_profile": {
+											Type:        schema.TypeList,
+											Optional:    true,
+											MaxItems:    1,
+											Description: `Separate local NVMe SSD for swap.`,
+											Elem: &schema.Resource{
+												Schema: map[string]*schema.Schema{
+													"disk_count": {
+														Type:        schema.TypeInt,
+														Optional:    true,
+														Description: `Number of disks.`,
+													},
+												},
+											},
+										},
+										"ephemeral_local_ssd_profile": {
+											Type:        schema.TypeList,
+											Optional:    true,
+											MaxItems:    1,
+											Description: `Swap on local SSD shared with pod storage.`,
+											Elem: &schema.Resource{
+												Schema: map[string]*schema.Schema{
+													"swap_size_gib": {
+														Type:        schema.TypeInt,
+														Optional:    true,
+														Description: `Swap size in GiB.`,
+													},
+													"swap_size_percent": {
+														Type:        schema.TypeInt,
+														Optional:    true,
+														Description: `Swap size as percentage of ephemeral local SSD capacity.`,
+													},
+												},
+											},
+										},
+										"encryption_config": {
+											Type:        schema.TypeList,
+											Optional:    true,
+											MaxItems:    1,
+											Description: `Swap encryption configuration.`,
+											Elem: &schema.Resource{
+												Schema: map[string]*schema.Schema{
+													"disabled": {
+														Type:        schema.TypeBool,
+														Optional:    true,
+														Description: `If true, swap space will not be encrypted.`,
+													},
+												},
+											},
+										},
+									},
+								},
+							},
 						},
 					},
 				},
@@ -1060,8 +1145,60 @@ func expandLinuxNodeConfig(v interface{}) *container.LinuxNodeConfig {
 	if len(cgroupMode) != 0 {
 		linuxNodeConfig.CgroupMode = cgroupMode
 	}
+	swapConfig := expandSwapConfig(cfg)
+	if swapConfig != nil {
+		linuxNodeConfig.SwapConfig = swapConfig
+	}
 
 	return linuxNodeConfig
+}
+
+func expandSwapConfig(cfg map[string]interface{}) *container.SwapConfig {
+	raw, ok := cfg["swap_config"]
+	if !ok || raw == nil {
+		return nil
+	}
+	ls := raw.([]interface{})
+	if len(ls) == 0 || ls[0] == nil {
+		return nil
+	}
+	m := ls[0].(map[string]interface{})
+
+	swapConfig := &container.SwapConfig{
+		Enabled: m["enabled"].(bool),
+	}
+
+	if v, ok := m["boot_disk_profile"]; ok && len(v.([]interface{})) > 0 && v.([]interface{})[0] != nil {
+		p := v.([]interface{})[0].(map[string]interface{})
+		swapConfig.BootDiskProfile = &container.BootDiskProfile{
+			SwapSizeGib:     int64(p["swap_size_gib"].(int)),
+			SwapSizePercent: int64(p["swap_size_percent"].(int)),
+		}
+	}
+
+	if v, ok := m["dedicated_local_ssd_profile"]; ok && len(v.([]interface{})) > 0 && v.([]interface{})[0] != nil {
+		p := v.([]interface{})[0].(map[string]interface{})
+		swapConfig.DedicatedLocalSsdProfile = &container.DedicatedLocalSsdProfile{
+			DiskCount: int64(p["disk_count"].(int)),
+		}
+	}
+
+	if v, ok := m["ephemeral_local_ssd_profile"]; ok && len(v.([]interface{})) > 0 && v.([]interface{})[0] != nil {
+		p := v.([]interface{})[0].(map[string]interface{})
+		swapConfig.EphemeralLocalSsdProfile = &container.EphemeralLocalSsdProfile{
+			SwapSizeGib:     int64(p["swap_size_gib"].(int)),
+			SwapSizePercent: int64(p["swap_size_percent"].(int)),
+		}
+	}
+
+	if v, ok := m["encryption_config"]; ok && len(v.([]interface{})) > 0 && v.([]interface{})[0] != nil {
+		p := v.([]interface{})[0].(map[string]interface{})
+		swapConfig.EncryptionConfig = &container.EncryptionConfig{
+			Disabled: p["disabled"].(bool),
+		}
+	}
+
+	return swapConfig
 }
 
 func expandSysctls(cfg map[string]interface{}) map[string]string {
@@ -1449,9 +1586,55 @@ func flattenLinuxNodeConfig(c *container.LinuxNodeConfig) []map[string]interface
 		result = append(result, map[string]interface{}{
 			"sysctls":     c.Sysctls,
 			"cgroup_mode": c.CgroupMode,
+			"swap_config": flattenSwapConfig(c.SwapConfig),
 		})
 	}
 	return result
+}
+
+func flattenSwapConfig(c *container.SwapConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	m := map[string]interface{}{
+		"enabled": c.Enabled,
+	}
+
+	if c.BootDiskProfile != nil {
+		m["boot_disk_profile"] = []map[string]interface{}{
+			{
+				"swap_size_gib":     c.BootDiskProfile.SwapSizeGib,
+				"swap_size_percent": c.BootDiskProfile.SwapSizePercent,
+			},
+		}
+	}
+
+	if c.DedicatedLocalSsdProfile != nil {
+		m["dedicated_local_ssd_profile"] = []map[string]interface{}{
+			{
+				"disk_count": c.DedicatedLocalSsdProfile.DiskCount,
+			},
+		}
+	}
+
+	if c.EphemeralLocalSsdProfile != nil {
+		m["ephemeral_local_ssd_profile"] = []map[string]interface{}{
+			{
+				"swap_size_gib":     c.EphemeralLocalSsdProfile.SwapSizeGib,
+				"swap_size_percent": c.EphemeralLocalSsdProfile.SwapSizePercent,
+			},
+		}
+	}
+
+	if c.EncryptionConfig != nil {
+		m["encryption_config"] = []map[string]interface{}{
+			{
+				"disabled": c.EncryptionConfig.Disabled,
+			},
+		}
+	}
+
+	return []map[string]interface{}{m}
 }
 
 func flattenConfidentialNodes(c *container.ConfidentialNodes) []map[string]interface{} {

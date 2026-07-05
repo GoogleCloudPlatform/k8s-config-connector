@@ -352,10 +352,22 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	update := proto.CloneOf(req)
 	update.Name = ""
+	update.NodePoolId = ""
+	update.ClusterId = ""
+	update.ProjectId = ""
+	update.Zone = ""
 
 	if update.Taints != nil {
 		obj.Config.Taints = update.GetTaints().Taints
 		update.Taints = nil
+	}
+
+	if update.LinuxNodeConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.LinuxNodeConfig = update.LinuxNodeConfig
+		update.LinuxNodeConfig = nil
 	}
 
 	// TODO: Support more updates!
