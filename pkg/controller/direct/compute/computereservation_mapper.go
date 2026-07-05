@@ -26,9 +26,8 @@ func ReservationSpecificReservation_v1beta1_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krm.ReservationSpecificReservation{}
-	// Note: Count and InUseCount are int32 in KRM types, but are represented as int64 in the computepb Go client library.
-	out.Count = direct.PtrInt64ToPtrInt32(in.Count)
-	out.InUseCount = direct.PtrInt64ToPtrInt32(in.InUseCount)
+	out.Count = in.Count
+	out.InUseCount = in.InUseCount
 	out.InstanceProperties = ReservationInstanceProperties_v1beta1_FromProto(mapCtx, in.GetInstanceProperties())
 	return out
 }
@@ -38,9 +37,8 @@ func ReservationSpecificReservation_v1beta1_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.AllocationSpecificSKUReservation{}
-	// Note: Count and InUseCount are int32 in KRM types, but are represented as int64 in the computepb Go client library.
-	out.Count = direct.PtrInt32ToPtrInt64(in.Count)
-	out.InUseCount = direct.PtrInt32ToPtrInt64(in.InUseCount)
+	out.Count = in.Count
+	out.InUseCount = in.InUseCount
 	out.InstanceProperties = ReservationInstanceProperties_v1beta1_ToProto(mapCtx, in.InstanceProperties)
 	return out
 }
@@ -50,8 +48,7 @@ func ReservationLocalSsds_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Al
 		return nil
 	}
 	out := &krm.ReservationLocalSsds{}
-	// Note: DiskSizeGb is int32 in KRM types, but is represented as int64 in the computepb Go client library.
-	out.DiskSizeGb = direct.PtrInt64ToPtrInt32(in.DiskSizeGb)
+	out.DiskSizeGb = in.DiskSizeGb
 	out.Interface = in.Interface
 	return out
 }
@@ -61,8 +58,7 @@ func ReservationLocalSsds_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Res
 		return nil
 	}
 	out := &pb.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk{}
-	// Note: DiskSizeGb is int32 in KRM types, but is represented as int64 in the computepb Go client library.
-	out.DiskSizeGb = direct.PtrInt32ToPtrInt64(in.DiskSizeGb)
+	out.DiskSizeGb = in.DiskSizeGb
 	out.Interface = in.Interface
 	return out
 }

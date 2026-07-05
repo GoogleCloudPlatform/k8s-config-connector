@@ -9916,7 +9916,7 @@ func (in *ReservationLocalSsds) DeepCopyInto(out *ReservationLocalSsds) {
 	*out = *in
 	if in.DiskSizeGb != nil {
 		in, out := &in.DiskSizeGb, &out.DiskSizeGb
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Interface != nil {
@@ -9941,12 +9941,12 @@ func (in *ReservationSpecificReservation) DeepCopyInto(out *ReservationSpecificR
 	*out = *in
 	if in.Count != nil {
 		in, out := &in.Count, &out.Count
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.InUseCount != nil {
 		in, out := &in.InUseCount, &out.InUseCount
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.InstanceProperties != nil {

@@ -56,11 +56,11 @@ type ReservationSpecificReservation struct {
 	// The number of resources that are allocated.
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.count
-	Count *int32 `json:"count"`
+	Count *int64 `json:"count"`
 
 	// How many instances are in use.
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.in_use_count
-	InUseCount *int32 `json:"inUseCount,omitempty"`
+	InUseCount *int64 `json:"inUseCount,omitempty"`
 
 	// Immutable. The instance properties for the reservation.
 	// +required
@@ -106,7 +106,7 @@ type ReservationLocalSsds struct {
 	// Immutable. The size of the disk in base-2 GB.
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.disk_size_gb
-	DiskSizeGb *int32 `json:"diskSizeGb"`
+	DiskSizeGb *int64 `json:"diskSizeGb"`
 
 	// Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"].
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.interface
