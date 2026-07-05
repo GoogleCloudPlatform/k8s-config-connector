@@ -109,8 +109,21 @@ func (m *modelCapacityCommitment) AdapterForObject(ctx context.Context, op *dire
 }
 
 func (m *modelCapacityCommitment) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.BigQueryReservationCapacityCommitmentIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CapacityCommitmentAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type CapacityCommitmentAdapter struct {
@@ -213,6 +226,10 @@ func (a *CapacityCommitmentAdapter) Export(ctx context.Context) (*unstructured.U
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = &a.id.CapacityCommitment
+	obj.Spec.ProjectRef.External = a.id.Project
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
