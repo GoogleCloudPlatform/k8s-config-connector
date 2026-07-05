@@ -164,11 +164,11 @@ spec:
                 properties:
                   count:
                     description: The number of resources that are allocated.
-                    format: int32
+                    format: int64
                     type: integer
                   inUseCount:
                     description: How many instances are in use.
-                    format: int32
+                    format: int64
                     type: integer
                   instanceProperties:
                     description: Immutable. The instance properties for the reservation.
@@ -202,7 +202,7 @@ spec:
                             diskSizeGb:
                               description: Immutable. The size of the disk in base-2
                                 GB.
-                              format: int32
+                              format: int64
                               type: integer
                             interface:
                               description: 'Immutable. The disk interface to use for

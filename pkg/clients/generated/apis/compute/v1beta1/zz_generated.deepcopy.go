@@ -13851,7 +13851,7 @@ func (in *ReservationSpecificReservation) DeepCopyInto(out *ReservationSpecificR
 	*out = *in
 	if in.InUseCount != nil {
 		in, out := &in.InUseCount, &out.InUseCount
-		*out = new(int32)
+		*out = new(int64)
 		**out = **in
 	}
 	in.InstanceProperties.DeepCopyInto(&out.InstanceProperties)
