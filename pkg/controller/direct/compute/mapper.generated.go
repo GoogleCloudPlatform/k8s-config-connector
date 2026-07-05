@@ -4730,8 +4730,6 @@ func ComputeTargetVPNGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Tunnels
 	return out
 }
-
-/* found existing non-generated mapping function "ComputeTargetVPNGatewayStatus_v1beta1_FromProto", skipping
 func ComputeTargetVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetVpnGateway) *krm.ComputeTargetVPNGatewayStatus {
 	if in == nil {
 		return nil
@@ -4752,9 +4750,6 @@ func ComputeTargetVPNGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Tunnels
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ComputeTargetVPNGatewayStatus_v1beta1_ToProto", skipping
 func ComputeTargetVPNGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetVPNGatewayStatus) *pb.TargetVpnGateway {
 	if in == nil {
 		return nil
@@ -4775,7 +4770,6 @@ func ComputeTargetVPNGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Tunnels
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_FromProto", skipping
 func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapSpec {

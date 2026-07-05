@@ -7206,7 +7206,7 @@ func (in *ComputeTargetVPNGatewayStatus) DeepCopyInto(out *ComputeTargetVPNGatew
 	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
-		*out = new(int64)
+		*out = new(uint64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
