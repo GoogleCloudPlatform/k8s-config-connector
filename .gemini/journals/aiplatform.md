@@ -16,6 +16,16 @@
 - **Solution**: Explicitly defined `PipelineJobRuntimeConfig`, `PSCInterfaceConfig`, `DNSPeeringConfig`, and the `VertexAIPipelineJobObservedState` nested structures inside `vertexaipipelinejob_types.go`. This automatically allowed the code generator to recognize and map these structures. We also implemented proper reference types like `computev1beta1.ComputeNetworkRef`, `computev1alpha1.ComputeNetworkAttachmentRef`, and `refsv1beta1.IAMServiceAccountRef` for reference fields.
 - **Impact**: Enables flawless generation of deepcopy methods, CRD fields, and mappers for `VertexAIPipelineJob` while maintaining 100% clean pre-submit checks.
 
+### 2026-07-06 Implementing types, CRD, and IdentityV2 for VertexAIStudy
+- **Context**: Implementing direct types, CRD, and IdentityV2 for `VertexAIStudy` under `apis/aiplatform/v1alpha1/` (Issue #9250).
+- **Problem**: The `StudySpec` in Vertex AI is a highly complex nested structure with recursive self-references in parameter specifications (e.g., `ConditionalParameterSpecs` containing nested `ParameterSpec` fields). These types were previously marked "unreachable" and commented out in `types.generated.go`.
+- **Solution**:
+  1. Updated `apis/aiplatform/v1alpha1/generate.sh` to include `--resource VertexAIStudy:Study`.
+  2. Defined KRM Go type `VertexAIStudySpec` referencing `StudySpec` and `VertexAIStudyObservedState` in `vertexaistudy_types.go`.
+  3. Re-ran `generate.sh` and `make fmt`, which automatically uncommented and populated the nested and recursive types in `types.generated.go`, generated deepcopy functions, and produced mapping code.
+  4. Implemented `VertexAIStudy` IdentityV2 matching `projects/{project}/locations/{location}/studies/{study}` and verified it via unit tests.
+- **Impact**: Enables full structural representation of complex studies and hyperparameter tuning specs in KRM with 100% Go-compatible schemas, preserving nested and recursive specs natively.
+
 ### 2026-07-08 Implementing the Greenfield Direct Controller, Fuzzer, and E2E Fixtures for VertexAIPipelineJob
 - **Context**: Implementing the direct controller, E2E basic test fixtures, and fuzzer for `VertexAIPipelineJob` as part of the Greenfield migration.
 - **Problem**: Greenfield resource implementation requires the creation of a fully-isolated direct controller to manage the reconciliation lifecycle (Adapter interface: Find, Create, Update, Delete, and Export), registration in the static configuration, a KRM fuzzer matching specification/status fields, and minimal/maximal golden test fixtures.
@@ -25,4 +35,3 @@
   3. Created `pkg/controller/direct/aiplatform/vertexaipipelinejob_fuzzer.go` and configured fuzzer fields utilizing the fluent builder pattern.
   4. Scaffolded E2E golden tests under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/vertexaipipelinejob/` (`vertexaipipelinejob-minimal` and `vertexaipipelinejob-maximal`), including `dependencies.yaml` to provision a `StorageBucket` used as the `gcsOutputDirectory` parameter.
 - **Impact**: Ensures standard, fully compliant Greenfield controller implementation and E2E testing framework support for VertexAIPipelineJob.
-

@@ -29,4 +29,6 @@ type VertexAIPipelineJobExpansion interface{}
 
 type VertexAISpecialistPoolExpansion interface{}
 
+type VertexAIStudyExpansion interface{}
+
 type VertexAITuningJobExpansion interface{}

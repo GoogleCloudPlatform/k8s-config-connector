@@ -1411,6 +1411,378 @@ found existing non-generated mapping function "SmoothGradConfig_NoiseSigma_ToPro
 		return &pb.SmoothGradConfig_NoiseSigma{NoiseSigma: *in}
 	}
 */
+func StudySpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec) *krm.StudySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec{}
+	out.DecayCurveStoppingSpec = StudySpec_DecayCurveAutomatedStoppingSpec_FromProto(mapCtx, in.GetDecayCurveStoppingSpec())
+	out.MedianAutomatedStoppingSpec = StudySpec_MedianAutomatedStoppingSpec_FromProto(mapCtx, in.GetMedianAutomatedStoppingSpec())
+	out.ConvexAutomatedStoppingSpec = StudySpec_ConvexAutomatedStoppingSpec_FromProto(mapCtx, in.GetConvexAutomatedStoppingSpec())
+	out.Metrics = direct.Slice_FromProto(mapCtx, in.Metrics, StudySpec_MetricSpec_FromProto)
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, StudySpec_ParameterSpec_FromProto)
+	out.Algorithm = direct.Enum_FromProto(mapCtx, in.GetAlgorithm())
+	out.ObservationNoise = direct.Enum_FromProto(mapCtx, in.GetObservationNoise())
+	out.MeasurementSelectionType = direct.Enum_FromProto(mapCtx, in.GetMeasurementSelectionType())
+	out.StudyStoppingConfig = StudySpec_StudyStoppingConfig_FromProto(mapCtx, in.GetStudyStoppingConfig())
+	return out
+}
+func StudySpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec) *pb.StudySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec{}
+	if oneof := StudySpec_DecayCurveAutomatedStoppingSpec_ToProto(mapCtx, in.DecayCurveStoppingSpec); oneof != nil {
+		out.AutomatedStoppingSpec = &pb.StudySpec_DecayCurveStoppingSpec{DecayCurveStoppingSpec: oneof}
+	}
+	if oneof := StudySpec_MedianAutomatedStoppingSpec_ToProto(mapCtx, in.MedianAutomatedStoppingSpec); oneof != nil {
+		out.AutomatedStoppingSpec = &pb.StudySpec_MedianAutomatedStoppingSpec_{MedianAutomatedStoppingSpec: oneof}
+	}
+	if oneof := StudySpec_ConvexAutomatedStoppingSpec_ToProto(mapCtx, in.ConvexAutomatedStoppingSpec); oneof != nil {
+		out.AutomatedStoppingSpec = &pb.StudySpec_ConvexAutomatedStoppingSpec_{ConvexAutomatedStoppingSpec: oneof}
+	}
+	out.Metrics = direct.Slice_ToProto(mapCtx, in.Metrics, StudySpec_MetricSpec_ToProto)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, StudySpec_ParameterSpec_ToProto)
+	out.Algorithm = direct.Enum_ToProto[pb.StudySpec_Algorithm](mapCtx, in.Algorithm)
+	out.ObservationNoise = direct.Enum_ToProto[pb.StudySpec_ObservationNoise](mapCtx, in.ObservationNoise)
+	out.MeasurementSelectionType = direct.Enum_ToProto[pb.StudySpec_MeasurementSelectionType](mapCtx, in.MeasurementSelectionType)
+	out.StudyStoppingConfig = StudySpec_StudyStoppingConfig_ToProto(mapCtx, in.StudyStoppingConfig)
+	return out
+}
+func StudySpec_ConvexAutomatedStoppingSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ConvexAutomatedStoppingSpec) *krm.StudySpec_ConvexAutomatedStoppingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ConvexAutomatedStoppingSpec{}
+	out.MaxStepCount = direct.LazyPtr(in.GetMaxStepCount())
+	out.MinStepCount = direct.LazyPtr(in.GetMinStepCount())
+	out.MinMeasurementCount = direct.LazyPtr(in.GetMinMeasurementCount())
+	out.LearningRateParameterName = direct.LazyPtr(in.GetLearningRateParameterName())
+	out.UseElapsedDuration = direct.LazyPtr(in.GetUseElapsedDuration())
+	out.UpdateAllStoppedTrials = in.UpdateAllStoppedTrials
+	return out
+}
+func StudySpec_ConvexAutomatedStoppingSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ConvexAutomatedStoppingSpec) *pb.StudySpec_ConvexAutomatedStoppingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ConvexAutomatedStoppingSpec{}
+	out.MaxStepCount = direct.ValueOf(in.MaxStepCount)
+	out.MinStepCount = direct.ValueOf(in.MinStepCount)
+	out.MinMeasurementCount = direct.ValueOf(in.MinMeasurementCount)
+	out.LearningRateParameterName = direct.ValueOf(in.LearningRateParameterName)
+	out.UseElapsedDuration = direct.ValueOf(in.UseElapsedDuration)
+	out.UpdateAllStoppedTrials = in.UpdateAllStoppedTrials
+	return out
+}
+func StudySpec_DecayCurveAutomatedStoppingSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_DecayCurveAutomatedStoppingSpec) *krm.StudySpec_DecayCurveAutomatedStoppingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_DecayCurveAutomatedStoppingSpec{}
+	out.UseElapsedDuration = direct.LazyPtr(in.GetUseElapsedDuration())
+	return out
+}
+func StudySpec_DecayCurveAutomatedStoppingSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_DecayCurveAutomatedStoppingSpec) *pb.StudySpec_DecayCurveAutomatedStoppingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_DecayCurveAutomatedStoppingSpec{}
+	out.UseElapsedDuration = direct.ValueOf(in.UseElapsedDuration)
+	return out
+}
+func StudySpec_MedianAutomatedStoppingSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_MedianAutomatedStoppingSpec) *krm.StudySpec_MedianAutomatedStoppingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_MedianAutomatedStoppingSpec{}
+	out.UseElapsedDuration = direct.LazyPtr(in.GetUseElapsedDuration())
+	return out
+}
+func StudySpec_MedianAutomatedStoppingSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_MedianAutomatedStoppingSpec) *pb.StudySpec_MedianAutomatedStoppingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_MedianAutomatedStoppingSpec{}
+	out.UseElapsedDuration = direct.ValueOf(in.UseElapsedDuration)
+	return out
+}
+func StudySpec_MetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_MetricSpec) *krm.StudySpec_MetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_MetricSpec{}
+	out.MetricID = direct.LazyPtr(in.GetMetricId())
+	out.Goal = direct.Enum_FromProto(mapCtx, in.GetGoal())
+	out.SafetyConfig = StudySpec_MetricSpec_SafetyMetricConfig_FromProto(mapCtx, in.GetSafetyConfig())
+	return out
+}
+func StudySpec_MetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_MetricSpec) *pb.StudySpec_MetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_MetricSpec{}
+	out.MetricId = direct.ValueOf(in.MetricID)
+	out.Goal = direct.Enum_ToProto[pb.StudySpec_MetricSpec_GoalType](mapCtx, in.Goal)
+	out.SafetyConfig = StudySpec_MetricSpec_SafetyMetricConfig_ToProto(mapCtx, in.SafetyConfig)
+	return out
+}
+func StudySpec_MetricSpec_SafetyMetricConfig_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_MetricSpec_SafetyMetricConfig) *krm.StudySpec_MetricSpec_SafetyMetricConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_MetricSpec_SafetyMetricConfig{}
+	out.SafetyThreshold = direct.LazyPtr(in.GetSafetyThreshold())
+	out.DesiredMinSafeTrialsFraction = in.DesiredMinSafeTrialsFraction
+	return out
+}
+func StudySpec_MetricSpec_SafetyMetricConfig_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_MetricSpec_SafetyMetricConfig) *pb.StudySpec_MetricSpec_SafetyMetricConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_MetricSpec_SafetyMetricConfig{}
+	out.SafetyThreshold = direct.ValueOf(in.SafetyThreshold)
+	out.DesiredMinSafeTrialsFraction = in.DesiredMinSafeTrialsFraction
+	return out
+}
+func StudySpec_ParameterSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec) *krm.StudySpec_ParameterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec{}
+	out.DoubleValueSpec = StudySpec_ParameterSpec_DoubleValueSpec_FromProto(mapCtx, in.GetDoubleValueSpec())
+	out.IntegerValueSpec = StudySpec_ParameterSpec_IntegerValueSpec_FromProto(mapCtx, in.GetIntegerValueSpec())
+	out.CategoricalValueSpec = StudySpec_ParameterSpec_CategoricalValueSpec_FromProto(mapCtx, in.GetCategoricalValueSpec())
+	out.DiscreteValueSpec = StudySpec_ParameterSpec_DiscreteValueSpec_FromProto(mapCtx, in.GetDiscreteValueSpec())
+	out.ParameterID = direct.LazyPtr(in.GetParameterId())
+	out.ScaleType = direct.Enum_FromProto(mapCtx, in.GetScaleType())
+	out.ConditionalParameterSpecs = direct.Slice_FromProto(mapCtx, in.ConditionalParameterSpecs, StudySpec_ParameterSpec_ConditionalParameterSpec_FromProto)
+	return out
+}
+func StudySpec_ParameterSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec) *pb.StudySpec_ParameterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec{}
+	if oneof := StudySpec_ParameterSpec_DoubleValueSpec_ToProto(mapCtx, in.DoubleValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_DoubleValueSpec_{DoubleValueSpec: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_IntegerValueSpec_ToProto(mapCtx, in.IntegerValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_IntegerValueSpec_{IntegerValueSpec: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_CategoricalValueSpec_ToProto(mapCtx, in.CategoricalValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_CategoricalValueSpec_{CategoricalValueSpec: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_DiscreteValueSpec_ToProto(mapCtx, in.DiscreteValueSpec); oneof != nil {
+		out.ParameterValueSpec = &pb.StudySpec_ParameterSpec_DiscreteValueSpec_{DiscreteValueSpec: oneof}
+	}
+	out.ParameterId = direct.ValueOf(in.ParameterID)
+	out.ScaleType = direct.Enum_ToProto[pb.StudySpec_ParameterSpec_ScaleType](mapCtx, in.ScaleType)
+	out.ConditionalParameterSpecs = direct.Slice_ToProto(mapCtx, in.ConditionalParameterSpecs, StudySpec_ParameterSpec_ConditionalParameterSpec_ToProto)
+	return out
+}
+func StudySpec_ParameterSpec_CategoricalValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_CategoricalValueSpec) *krm.StudySpec_ParameterSpec_CategoricalValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_CategoricalValueSpec{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_CategoricalValueSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_CategoricalValueSpec) *pb.StudySpec_ParameterSpec_CategoricalValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_CategoricalValueSpec{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_ConditionalParameterSpec) *krm.StudySpec_ParameterSpec_ConditionalParameterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_ConditionalParameterSpec{}
+	out.ParentDiscreteValues = StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition_FromProto(mapCtx, in.GetParentDiscreteValues())
+	out.ParentIntValues = StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition_FromProto(mapCtx, in.GetParentIntValues())
+	out.ParentCategoricalValues = StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition_FromProto(mapCtx, in.GetParentCategoricalValues())
+	// MISSING: ParameterSpec
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_ConditionalParameterSpec) *pb.StudySpec_ParameterSpec_ConditionalParameterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_ConditionalParameterSpec{}
+	if oneof := StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition_ToProto(mapCtx, in.ParentDiscreteValues); oneof != nil {
+		out.ParentValueCondition = &pb.StudySpec_ParameterSpec_ConditionalParameterSpec_ParentDiscreteValues{ParentDiscreteValues: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition_ToProto(mapCtx, in.ParentIntValues); oneof != nil {
+		out.ParentValueCondition = &pb.StudySpec_ParameterSpec_ConditionalParameterSpec_ParentIntValues{ParentIntValues: oneof}
+	}
+	if oneof := StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition_ToProto(mapCtx, in.ParentCategoricalValues); oneof != nil {
+		out.ParentValueCondition = &pb.StudySpec_ParameterSpec_ConditionalParameterSpec_ParentCategoricalValues{ParentCategoricalValues: oneof}
+	}
+	// MISSING: ParameterSpec
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition) *krm.StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition{}
+	out.Values = in.Values
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition) *pb.StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition{}
+	out.Values = in.Values
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition) *krm.StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition{}
+	out.Values = in.Values
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition) *pb.StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition{}
+	out.Values = in.Values
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition) *krm.StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition{}
+	out.Values = in.Values
+	return out
+}
+func StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition) *pb.StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition{}
+	out.Values = in.Values
+	return out
+}
+func StudySpec_ParameterSpec_DiscreteValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_DiscreteValueSpec) *krm.StudySpec_ParameterSpec_DiscreteValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_DiscreteValueSpec{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_DiscreteValueSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_DiscreteValueSpec) *pb.StudySpec_ParameterSpec_DiscreteValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_DiscreteValueSpec{}
+	out.Values = in.Values
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_DoubleValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_DoubleValueSpec) *krm.StudySpec_ParameterSpec_DoubleValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_DoubleValueSpec{}
+	out.MinValue = direct.LazyPtr(in.GetMinValue())
+	out.MaxValue = direct.LazyPtr(in.GetMaxValue())
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_DoubleValueSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_DoubleValueSpec) *pb.StudySpec_ParameterSpec_DoubleValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_DoubleValueSpec{}
+	out.MinValue = direct.ValueOf(in.MinValue)
+	out.MaxValue = direct.ValueOf(in.MaxValue)
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_IntegerValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_ParameterSpec_IntegerValueSpec) *krm.StudySpec_ParameterSpec_IntegerValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_ParameterSpec_IntegerValueSpec{}
+	out.MinValue = direct.LazyPtr(in.GetMinValue())
+	out.MaxValue = direct.LazyPtr(in.GetMaxValue())
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_ParameterSpec_IntegerValueSpec_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_ParameterSpec_IntegerValueSpec) *pb.StudySpec_ParameterSpec_IntegerValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_ParameterSpec_IntegerValueSpec{}
+	out.MinValue = direct.ValueOf(in.MinValue)
+	out.MaxValue = direct.ValueOf(in.MaxValue)
+	out.DefaultValue = in.DefaultValue
+	return out
+}
+func StudySpec_StudyStoppingConfig_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec_StudyStoppingConfig) *krm.StudySpec_StudyStoppingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudySpec_StudyStoppingConfig{}
+	out.ShouldStopAsap = direct.BoolValue_FromProto(mapCtx, in.GetShouldStopAsap())
+	out.MinimumRuntimeConstraint = StudyTimeConstraint_FromProto(mapCtx, in.GetMinimumRuntimeConstraint())
+	out.MaximumRuntimeConstraint = StudyTimeConstraint_FromProto(mapCtx, in.GetMaximumRuntimeConstraint())
+	out.MinNumTrials = Int32Value_FromProto(mapCtx, in.GetMinNumTrials())
+	out.MaxNumTrials = Int32Value_FromProto(mapCtx, in.GetMaxNumTrials())
+	out.MaxNumTrialsNoProgress = Int32Value_FromProto(mapCtx, in.GetMaxNumTrialsNoProgress())
+	out.MaxDurationNoProgress = direct.StringDuration_FromProto(mapCtx, in.GetMaxDurationNoProgress())
+	return out
+}
+func StudySpec_StudyStoppingConfig_ToProto(mapCtx *direct.MapContext, in *krm.StudySpec_StudyStoppingConfig) *pb.StudySpec_StudyStoppingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudySpec_StudyStoppingConfig{}
+	out.ShouldStopAsap = direct.BoolValue_ToProto(mapCtx, in.ShouldStopAsap)
+	out.MinimumRuntimeConstraint = StudyTimeConstraint_ToProto(mapCtx, in.MinimumRuntimeConstraint)
+	out.MaximumRuntimeConstraint = StudyTimeConstraint_ToProto(mapCtx, in.MaximumRuntimeConstraint)
+	out.MinNumTrials = Int32Value_ToProto(mapCtx, in.MinNumTrials)
+	out.MaxNumTrials = Int32Value_ToProto(mapCtx, in.MaxNumTrials)
+	out.MaxNumTrialsNoProgress = Int32Value_ToProto(mapCtx, in.MaxNumTrialsNoProgress)
+	out.MaxDurationNoProgress = direct.StringDuration_ToProto(mapCtx, in.MaxDurationNoProgress)
+	return out
+}
+func StudyTimeConstraint_FromProto(mapCtx *direct.MapContext, in *pb.StudyTimeConstraint) *krm.StudyTimeConstraint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudyTimeConstraint{}
+	out.MaxDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxDuration())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func StudyTimeConstraint_ToProto(mapCtx *direct.MapContext, in *krm.StudyTimeConstraint) *pb.StudyTimeConstraint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudyTimeConstraint{}
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.MaxDuration); oneof != nil {
+		out.Constraint = &pb.StudyTimeConstraint_MaxDuration{MaxDuration: oneof}
+	}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.EndTime); oneof != nil {
+		out.Constraint = &pb.StudyTimeConstraint_EndTime{EndTime: oneof}
+	}
+	return out
+}
 func SupervisedHyperParameters_FromProto(mapCtx *direct.MapContext, in *pb.SupervisedHyperParameters) *krm.SupervisedHyperParameters {
 	if in == nil {
 		return nil
@@ -1779,6 +2151,48 @@ func VertexAISpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.Verte
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.SpecialistManagerEmails = in.SpecialistManagerEmails
 	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
+	return out
+}
+func VertexAIStudyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Study) *krm.VertexAIStudyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIStudyObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: InactiveReason
+	return out
+}
+func VertexAIStudyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIStudyObservedState) *pb.Study {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Study{}
+	out.Name = direct.ValueOf(in.Name)
+	out.State = direct.Enum_ToProto[pb.Study_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: InactiveReason
+	return out
+}
+func VertexAIStudySpec_FromProto(mapCtx *direct.MapContext, in *pb.Study) *krm.VertexAIStudySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIStudySpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.StudySpec = StudySpec_FromProto(mapCtx, in.GetStudySpec())
+	// MISSING: InactiveReason
+	return out
+}
+func VertexAIStudySpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIStudySpec) *pb.Study {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Study{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.StudySpec = StudySpec_ToProto(mapCtx, in.StudySpec)
+	// MISSING: InactiveReason
 	return out
 }
 func VertexAITuningJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TuningJob) *krm.VertexAITuningJobObservedState {

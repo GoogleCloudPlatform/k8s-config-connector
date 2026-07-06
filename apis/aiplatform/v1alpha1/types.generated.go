@@ -22,6 +22,7 @@
 // resource: VertexAIFeatureOnlineStore:FeatureOnlineStore
 // resource: VertexAIPipelineJob:PipelineJob
 // resource: VertexAITuningJob:TuningJob
+// resource: VertexAIStudy:Study
 
 package v1alpha1
 
@@ -1239,6 +1240,371 @@ type SmoothGradConfig struct {
 	NoisySampleCount *int32 `json:"noisySampleCount,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec
+type StudySpec struct {
+	// The automated early stopping spec using decay curve rule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.decay_curve_stopping_spec
+	DecayCurveStoppingSpec *StudySpec_DecayCurveAutomatedStoppingSpec `json:"decayCurveStoppingSpec,omitempty"`
+
+	// The automated early stopping spec using median rule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.median_automated_stopping_spec
+	MedianAutomatedStoppingSpec *StudySpec_MedianAutomatedStoppingSpec `json:"medianAutomatedStoppingSpec,omitempty"`
+
+	// The automated early stopping spec using convex stopping rule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.convex_automated_stopping_spec
+	ConvexAutomatedStoppingSpec *StudySpec_ConvexAutomatedStoppingSpec `json:"convexAutomatedStoppingSpec,omitempty"`
+
+	// Required. Metric specs for the Study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.metrics
+	Metrics []StudySpec_MetricSpec `json:"metrics,omitempty"`
+
+	// Required. The set of parameters to tune.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.parameters
+	Parameters []StudySpec_ParameterSpec `json:"parameters,omitempty"`
+
+	// The search algorithm specified for the Study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.algorithm
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	// The observation noise level of the study.
+	//  Currently only supported by the Vertex AI Vizier service. Not supported by
+	//  HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.observation_noise
+	ObservationNoise *string `json:"observationNoise,omitempty"`
+
+	// Describe which measurement selection type will be used
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.measurement_selection_type
+	MeasurementSelectionType *string `json:"measurementSelectionType,omitempty"`
+
+	// Conditions for automated stopping of a Study. Enable automated stopping by
+	//  configuring at least one condition.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.study_stopping_config
+	StudyStoppingConfig *StudySpec_StudyStoppingConfig `json:"studyStoppingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec
+type StudySpec_ConvexAutomatedStoppingSpec struct {
+	// Steps used in predicting the final objective for early stopped trials. In
+	//  general, it's set to be the same as the defined steps in training /
+	//  tuning. If not defined, it will learn it from the completed trials. When
+	//  use_steps is false, this field is set to the maximum elapsed seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.max_step_count
+	MaxStepCount *int64 `json:"maxStepCount,omitempty"`
+
+	// Minimum number of steps for a trial to complete. Trials which do not have
+	//  a measurement with step_count > min_step_count won't be considered for
+	//  early stopping. It's ok to set it to 0, and a trial can be early stopped
+	//  at any stage. By default, min_step_count is set to be one-tenth of the
+	//  max_step_count.
+	//  When use_elapsed_duration is true, this field is set to the minimum
+	//  elapsed seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.min_step_count
+	MinStepCount *int64 `json:"minStepCount,omitempty"`
+
+	// The minimal number of measurements in a Trial.  Early-stopping checks
+	//  will not trigger if less than min_measurement_count+1 completed trials or
+	//  pending trials with less than min_measurement_count measurements. If not
+	//  defined, the default value is 5.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.min_measurement_count
+	MinMeasurementCount *int64 `json:"minMeasurementCount,omitempty"`
+
+	// The hyper-parameter name used in the tuning job that stands for learning
+	//  rate. Leave it blank if learning rate is not in a parameter in tuning.
+	//  The learning_rate is used to estimate the objective value of the ongoing
+	//  trial.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.learning_rate_parameter_name
+	LearningRateParameterName *string `json:"learningRateParameterName,omitempty"`
+
+	// This bool determines whether or not the rule is applied based on
+	//  elapsed_secs or steps. If use_elapsed_duration==false, the early stopping
+	//  decision is made according to the predicted objective values according to
+	//  the target steps. If use_elapsed_duration==true, elapsed_secs is used
+	//  instead of steps. Also, in this case, the parameters max_num_steps and
+	//  min_num_steps are overloaded to contain max_elapsed_seconds and
+	//  min_elapsed_seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.use_elapsed_duration
+	UseElapsedDuration *bool `json:"useElapsedDuration,omitempty"`
+
+	// ConvexAutomatedStoppingSpec by default only updates the trials that needs
+	//  to be early stopped using a newly trained auto-regressive model. When
+	//  this flag is set to True, all stopped trials from the beginning are
+	//  potentially updated in terms of their `final_measurement`. Also, note
+	//  that the training logic of autoregressive models is different in this
+	//  case. Enabling this option has shown better results and this may be the
+	//  default option in the future.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.update_all_stopped_trials
+	UpdateAllStoppedTrials *bool `json:"updateAllStoppedTrials,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.DecayCurveAutomatedStoppingSpec
+type StudySpec_DecayCurveAutomatedStoppingSpec struct {
+	// True if
+	//  [Measurement.elapsed_duration][google.cloud.aiplatform.v1.Measurement.elapsed_duration]
+	//  is used as the x-axis of each Trials Decay Curve. Otherwise,
+	//  [Measurement.step_count][google.cloud.aiplatform.v1.Measurement.step_count]
+	//  will be used as the x-axis.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.DecayCurveAutomatedStoppingSpec.use_elapsed_duration
+	UseElapsedDuration *bool `json:"useElapsedDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.MedianAutomatedStoppingSpec
+type StudySpec_MedianAutomatedStoppingSpec struct {
+	// True if median automated stopping rule applies on
+	//  [Measurement.elapsed_duration][google.cloud.aiplatform.v1.Measurement.elapsed_duration].
+	//  It means that elapsed_duration field of latest measurement of current
+	//  Trial is used to compute median objective value for each completed
+	//  Trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MedianAutomatedStoppingSpec.use_elapsed_duration
+	UseElapsedDuration *bool `json:"useElapsedDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.MetricSpec
+type StudySpec_MetricSpec struct {
+	// Required. The ID of the metric. Must not contain whitespaces and must be
+	//  unique amongst all MetricSpecs.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.metric_id
+	MetricID *string `json:"metricID,omitempty"`
+
+	// Required. The optimization goal of the metric.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.goal
+	Goal *string `json:"goal,omitempty"`
+
+	// Used for safe search. In the case, the metric will be a safety
+	//  metric. You must provide a separate metric for objective metric.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.safety_config
+	SafetyConfig *StudySpec_MetricSpec_SafetyMetricConfig `json:"safetyConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.MetricSpec.SafetyMetricConfig
+type StudySpec_MetricSpec_SafetyMetricConfig struct {
+	// Safety threshold (boundary value between safe and unsafe). NOTE that if
+	//  you leave SafetyMetricConfig unset, a default value of 0 will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.SafetyMetricConfig.safety_threshold
+	SafetyThreshold *float64 `json:"safetyThreshold,omitempty"`
+
+	// Desired minimum fraction of safe trials (over total number of trials)
+	//  that should be targeted by the algorithm at any time during the
+	//  study (best effort). This should be between 0.0 and 1.0 and a value of
+	//  0.0 means that there is no minimum and an algorithm proceeds without
+	//  targeting any specific fraction. A value of 1.0 means that the
+	//  algorithm attempts to only Suggest safe Trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.SafetyMetricConfig.desired_min_safe_trials_fraction
+	DesiredMinSafeTrialsFraction *float64 `json:"desiredMinSafeTrialsFraction,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec
+type StudySpec_ParameterSpec struct {
+	// The value spec for a 'DOUBLE' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.double_value_spec
+	DoubleValueSpec *StudySpec_ParameterSpec_DoubleValueSpec `json:"doubleValueSpec,omitempty"`
+
+	// The value spec for an 'INTEGER' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.integer_value_spec
+	IntegerValueSpec *StudySpec_ParameterSpec_IntegerValueSpec `json:"integerValueSpec,omitempty"`
+
+	// The value spec for a 'CATEGORICAL' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.categorical_value_spec
+	CategoricalValueSpec *StudySpec_ParameterSpec_CategoricalValueSpec `json:"categoricalValueSpec,omitempty"`
+
+	// The value spec for a 'DISCRETE' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.discrete_value_spec
+	DiscreteValueSpec *StudySpec_ParameterSpec_DiscreteValueSpec `json:"discreteValueSpec,omitempty"`
+
+	// Required. The ID of the parameter. Must not contain whitespaces and must
+	//  be unique amongst all ParameterSpecs.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.parameter_id
+	ParameterID *string `json:"parameterID,omitempty"`
+
+	// How the parameter should be scaled.
+	//  Leave unset for `CATEGORICAL` parameters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.scale_type
+	ScaleType *string `json:"scaleType,omitempty"`
+
+	// A conditional parameter node is active if the parameter's value matches
+	//  the conditional node's parent_value_condition.
+	//
+	//  If two items in conditional_parameter_specs have the same name, they
+	//  must have disjoint parent_value_condition.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.conditional_parameter_specs
+	ConditionalParameterSpecs []StudySpec_ParameterSpec_ConditionalParameterSpec `json:"conditionalParameterSpecs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.CategoricalValueSpec
+type StudySpec_ParameterSpec_CategoricalValueSpec struct {
+	// Required. The list of possible categories.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.CategoricalValueSpec.values
+	Values []string `json:"values,omitempty"`
+
+	// A default value for a `CATEGORICAL` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.CategoricalValueSpec.default_value
+	DefaultValue *string `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.CategoricalValueCondition
+type StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition struct {
+	// Required. Matches values of the parent parameter of 'CATEGORICAL'
+	//  type. All values must exist in `categorical_value_spec` of parent
+	//  parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.CategoricalValueCondition.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.DiscreteValueCondition
+type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition struct {
+	// Required. Matches values of the parent parameter of 'DISCRETE' type.
+	//  All values must exist in `discrete_value_spec` of parent parameter.
+	//
+	//  The Epsilon of the value matching is 1e-10.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.DiscreteValueCondition.values
+	Values []float64 `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.IntValueCondition
+type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition struct {
+	// Required. Matches values of the parent parameter of 'INTEGER' type.
+	//  All values must lie in `integer_value_spec` of parent parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.IntValueCondition.values
+	Values []int64 `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec
+type StudySpec_ParameterSpec_DiscreteValueSpec struct {
+	// Required. A list of possible values.
+	//  The list should be in increasing order and at least 1e-10 apart.
+	//  For instance, this parameter might have possible settings of 1.5, 2.5,
+	//  and 4.0. This list should not contain more than 1,000 values.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec.values
+	Values []float64 `json:"values,omitempty"`
+
+	// A default value for a `DISCRETE` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.  It automatically rounds to the
+	//  nearest feasible discrete point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec.default_value
+	DefaultValue *float64 `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec
+type StudySpec_ParameterSpec_DoubleValueSpec struct {
+	// Required. Inclusive minimum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.min_value
+	MinValue *float64 `json:"minValue,omitempty"`
+
+	// Required. Inclusive maximum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.max_value
+	MaxValue *float64 `json:"maxValue,omitempty"`
+
+	// A default value for a `DOUBLE` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.default_value
+	DefaultValue *float64 `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec
+type StudySpec_ParameterSpec_IntegerValueSpec struct {
+	// Required. Inclusive minimum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.min_value
+	MinValue *int64 `json:"minValue,omitempty"`
+
+	// Required. Inclusive maximum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.max_value
+	MaxValue *int64 `json:"maxValue,omitempty"`
+
+	// A default value for an `INTEGER` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.default_value
+	DefaultValue *int64 `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig
+type StudySpec_StudyStoppingConfig struct {
+	// If true, a Study enters STOPPING_ASAP whenever it would normally enters
+	//  STOPPING state.
+	//
+	//  The bottom line is: set to true if you want to interrupt on-going
+	//  evaluations of Trials as soon as the study stopping condition is met.
+	//  (Please see Study.State documentation for the source of truth).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.should_stop_asap
+	ShouldStopAsap *bool `json:"shouldStopAsap,omitempty"`
+
+	// Each "stopping rule" in this proto specifies an "if" condition. Before
+	//  Vizier would generate a new suggestion, it first checks each specified
+	//  stopping rule, from top to bottom in this list.
+	//  Note that the first few rules (e.g. minimum_runtime_constraint,
+	//  min_num_trials) will prevent other stopping rules from being evaluated
+	//  until they are met. For example, setting `min_num_trials=5` and
+	//  `always_stop_after= 1 hour` means that the Study will ONLY stop after it
+	//  has 5 COMPLETED trials, even if more than an hour has passed since its
+	//  creation. It follows the first applicable rule (whose "if" condition is
+	//  satisfied) to make a stopping decision. If none of the specified rules
+	//  are applicable, then Vizier decides that the study should not stop.
+	//  If Vizier decides that the study should stop, the study enters
+	//  STOPPING state (or STOPPING_ASAP if should_stop_asap = true).
+	//  IMPORTANT: The automatic study state transition happens precisely as
+	//  described above; that is, deleting trials or updating StudyConfig NEVER
+	//  automatically moves the study state back to ACTIVE. If you want to
+	//  _resume_ a Study that was stopped, 1) change the stopping conditions if
+	//  necessary, 2) activate the study, and then 3) ask for suggestions.
+	//  If the specified time or duration has not passed, do not stop the
+	//  study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.minimum_runtime_constraint
+	MinimumRuntimeConstraint *StudyTimeConstraint `json:"minimumRuntimeConstraint,omitempty"`
+
+	// If the specified time or duration has passed, stop the study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.maximum_runtime_constraint
+	MaximumRuntimeConstraint *StudyTimeConstraint `json:"maximumRuntimeConstraint,omitempty"`
+
+	// If there are fewer than this many COMPLETED trials, do not stop the
+	//  study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.min_num_trials
+	MinNumTrials *Int32Value `json:"minNumTrials,omitempty"`
+
+	// If there are more than this many trials, stop the study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.max_num_trials
+	MaxNumTrials *Int32Value `json:"maxNumTrials,omitempty"`
+
+	// If the objective value has not improved for this many consecutive
+	//  trials, stop the study.
+	//
+	//  WARNING: Effective only for single-objective studies.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.max_num_trials_no_progress
+	MaxNumTrialsNoProgress *Int32Value `json:"maxNumTrialsNoProgress,omitempty"`
+
+	// If the objective value has not improved for this much time, stop the
+	//  study.
+	//
+	//  WARNING: Effective only for single-objective studies.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.max_duration_no_progress
+	MaxDurationNoProgress *string `json:"maxDurationNoProgress,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudyTimeConstraint
+type StudyTimeConstraint struct {
+	// Counts the wallclock time passed since the creation of this Study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudyTimeConstraint.max_duration
+	MaxDuration *string `json:"maxDuration,omitempty"`
+
+	// Compares the wallclock time to this time. Must use UTC timezone.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudyTimeConstraint.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.SupervisedHyperParameters
 type SupervisedHyperParameters struct {
 	// Optional. Number of complete passes the model makes over the entire
@@ -1369,6 +1735,13 @@ type XraiAttribution struct {
 	//  https://arxiv.org/abs/2004.03383
 	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Int32Value
+type Int32Value struct {
+	// The int32 value.
+	// +kcc:proto:field=google.protobuf.Int32Value.value
+	Value *int32 `json:"value,omitempty"`
 }
 
 /* unreachable type Model_ExportFormatObservedState
