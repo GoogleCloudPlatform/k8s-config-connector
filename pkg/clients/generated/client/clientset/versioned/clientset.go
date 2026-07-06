@@ -211,6 +211,7 @@ import (
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
+	testingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/testing/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
@@ -415,6 +416,7 @@ type Interface interface {
 	StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
+	TestingV1alpha1() testingv1alpha1.TestingV1alpha1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
 	VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
@@ -617,6 +619,7 @@ type Clientset struct {
 	storagetransferV1alpha1         *storagetransferv1alpha1.StoragetransferV1alpha1Client
 	storagetransferV1beta1          *storagetransferv1beta1.StoragetransferV1beta1Client
 	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
+	testingV1alpha1                 *testingv1alpha1.TestingV1alpha1Client
 	tpuV1alpha1                     *tpuv1alpha1.TpuV1alpha1Client
 	vectorsearchV1alpha1            *vectorsearchv1alpha1.VectorsearchV1alpha1Client
 	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
@@ -1560,6 +1563,11 @@ func (c *Clientset) TagsV1beta1() tagsv1beta1.TagsV1beta1Interface {
 	return c.tagsV1beta1
 }
 
+// TestingV1alpha1 retrieves the TestingV1alpha1Client
+func (c *Clientset) TestingV1alpha1() testingv1alpha1.TestingV1alpha1Interface {
+	return c.testingV1alpha1
+}
+
 // TpuV1alpha1 retrieves the TpuV1alpha1Client
 func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return c.tpuV1alpha1
@@ -2403,6 +2411,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.testingV1alpha1, err = testingv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.tpuV1alpha1, err = tpuv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2654,6 +2666,7 @@ func New(c rest.Interface) *Clientset {
 	cs.storagetransferV1alpha1 = storagetransferv1alpha1.New(c)
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
+	cs.testingV1alpha1 = testingv1alpha1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
 	cs.vectorsearchV1alpha1 = vectorsearchv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
