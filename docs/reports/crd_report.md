@@ -218,7 +218,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeTargetVPNGateway                         | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeURLMap                                   | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeVPNGateway                               | False        | True        | False  | Terraform  | True        |
-| compute.cnrm.cloud.google.com                 | ComputeVPNTunnel                                | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeVPNTunnel                                | False        | True        | False  | Terraform  | True        |
 | configcontroller.cnrm.cloud.google.com        | ConfigControllerInstance                        | False        | True        | False  | DCL        | False       |
 | configdelivery.cnrm.cloud.google.com          | ConfigDeliveryFleetPackage                      | True         | False       | False  | Direct     | True        |
 | configdelivery.cnrm.cloud.google.com          | ConfigDeliveryResourceBundle                    | True         | False       | False  | Direct     | True        |
