@@ -113,7 +113,7 @@ func TestMissingRefs(t *testing.T) {
 					isRef = true
 				}
 
-				if strings.HasSuffix(fieldPath, "erviceAccount") {
+				if strings.HasSuffix(fieldPath, "erviceAccount") && field.props.Type != "boolean" {
 					isRef = true
 				}
 				// TODO: how to detect KMS Key

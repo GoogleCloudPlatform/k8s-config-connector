@@ -25,6 +25,7 @@
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
 // resource: VertexAISchedule:Schedule
+// resource: VertexAIPersistentResource:PersistentResource
 
 package v1alpha1
 
@@ -185,6 +186,19 @@ type DeployedModelRef struct {
 	// Immutable. An ID of a DeployedModel in the above Endpoint.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.DeployedModelRef.deployed_model_id
 	DeployedModelID *string `json:"deployedModelID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.DiskSpec
+type DiskSpec struct {
+	// Type of the boot disk (default is "pd-ssd").
+	//  Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
+	//  "pd-standard" (Persistent Disk Hard Disk Drive).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DiskSpec.boot_disk_type
+	BootDiskType *string `json:"bootDiskType,omitempty"`
+
+	// Size in GB of the boot disk (default is 100GB).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DiskSpec.boot_disk_size_gb
+	BootDiskSizeGB *int32 `json:"bootDiskSizeGB,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.EnvVar
@@ -1500,6 +1514,59 @@ type Probe_TCPSocketAction struct {
 	Host *string `json:"host,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.RayLogsSpec
+type RayLogsSpec struct {
+	// Optional. Flag to disable the export of Ray OSS logs to Cloud Logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RayLogsSpec.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RayMetricSpec
+type RayMetricSpec struct {
+	// Optional. Flag to disable the Ray metrics collection.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RayMetricSpec.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RaySpec
+type RaySpec struct {
+	// Optional. Default image for user to choose a preferred ML framework
+	//  (for example, TensorFlow or Pytorch) by choosing from [Vertex prebuilt
+	//  images](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers).
+	//  Either this or the resource_pool_images is required. Use this field if
+	//  you need all the resource pools to have the same Ray image. Otherwise, use
+	//  the {@code resource_pool_images} field.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// Optional. Required if image_uri isn't set. A map of resource_pool_id to
+	//  prebuild Ray image if user need to use different images for different
+	//  head/worker pools. This map needs to cover all the resource pool ids.
+	//  Example:
+	//  {
+	//    "ray_head_node_pool": "head image"
+	//    "ray_worker_node_pool1": "worker image"
+	//    "ray_worker_node_pool2": "another worker image"
+	//  }
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.resource_pool_images
+	ResourcePoolImages map[string]string `json:"resourcePoolImages,omitempty"`
+
+	// Optional. This will be used to indicate which resource pool will serve as
+	//  the Ray head node(the first node within that pool). Will use the machine
+	//  from the first workerpool as the head node by default if this field isn't
+	//  set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.head_node_resource_pool_id
+	HeadNodeResourcePoolID *string `json:"headNodeResourcePoolID,omitempty"`
+
+	// Optional. Ray metrics configurations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.ray_metric_spec
+	RayMetricSpec *RayMetricSpec `json:"rayMetricSpec,omitempty"`
+
+	// Optional. OSS Ray logging configurations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.ray_logs_spec
+	RayLogsSpec *RayLogsSpec `json:"rayLogsSpec,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.ReservationAffinity
 type ReservationAffinity struct {
 	// Required. Specifies the reservation affinity type.
@@ -1517,6 +1584,68 @@ type ReservationAffinity struct {
 	//  must be the full resource name of the reservation.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.values
 	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ResourcePool
+type ResourcePool struct {
+	// Immutable. The unique ID in a PersistentResource for referring to this
+	//  resource pool. User can specify it if necessary. Otherwise, it's generated
+	//  automatically.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. Immutable. The specification of a single machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Optional. The total number of machines to use for this resource pool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.replica_count
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+
+	// Optional. Disk spec for the machine in this node pool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.disk_spec
+	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
+
+	// Optional. Optional spec to configure GKE or Ray-on-Vertex autoscaling
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.autoscaling_spec
+	AutoscalingSpec *ResourcePool_AutoscalingSpec `json:"autoscalingSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ResourcePool.AutoscalingSpec
+type ResourcePool_AutoscalingSpec struct {
+	// Optional. min replicas in the node pool,
+	//  must be ≤ replica_count and < max_replica_count or will throw error.
+	//  For autoscaling enabled Ray-on-Vertex, we allow min_replica_count of a
+	//  resource_pool to be 0 to match the OSS Ray
+	//  behavior(https://docs.ray.io/en/latest/cluster/vms/user-guides/configuring-autoscaling.html#cluster-config-parameters).
+	//  As for Persistent Resource, the min_replica_count must be > 0, we added
+	//  a corresponding validation inside
+	//  CreatePersistentResourceRequestValidator.java.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.AutoscalingSpec.min_replica_count
+	MinReplicaCount *int64 `json:"minReplicaCount,omitempty"`
+
+	// Optional. max replicas in the node pool,
+	//  must be ≥ replica_count and > min_replica_count or will throw error
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.AutoscalingSpec.max_replica_count
+	MaxReplicaCount *int64 `json:"maxReplicaCount,omitempty"`
+}
+
+/* unreachable type ResourceRuntime
+// +kcc:proto=google.cloud.aiplatform.v1.ResourceRuntime
+type ResourceRuntime struct {
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1.ResourceRuntimeSpec
+type ResourceRuntimeSpec struct {
+	// Optional. Configure the use of workload identity on the PersistentResource
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourceRuntimeSpec.service_account_spec
+	ServiceAccountSpec *ServiceAccountSpec `json:"serviceAccountSpec,omitempty"`
+
+	// Optional. Ray cluster configuration.
+	//  Required when creating a dedicated RayCluster on the PersistentResource.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourceRuntimeSpec.ray_spec
+	RaySpec *RaySpec `json:"raySpec,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SampledShapleyAttribution
@@ -2167,6 +2296,26 @@ type Model_OriginalModelInfoObservedState struct {
 	Model *string `json:"model,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourcePool
+type ResourcePoolObservedState struct {
+	// Output only. The number of machines currently in use by training jobs for
+	//  this resource pool. Will replace idle_replica_count.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.used_replica_count
+	UsedReplicaCount *int64 `json:"usedReplicaCount,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourceRuntime
+type ResourceRuntimeObservedState struct {
+	// Output only. URIs for user to connect to the Cluster.
+	//  Example:
+	//  {
+	//    "RAY_HEAD_NODE_INTERNAL_IP": "head-node-IP:10001"
+	//    "RAY_DASHBOARD_URI": "ray-dashboard-address:8888"
+	//  }
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourceRuntime.access_uris
+	AccessURIs map[string]string `json:"accessURIs,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.SupervisedTuningDataStats
 type SupervisedTuningDataStatsObservedState struct {
