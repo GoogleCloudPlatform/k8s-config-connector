@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -56,7 +57,7 @@ type ComputeNetworkEndpointGroupSpec struct {
 	"default" project network if unspecified. */
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.network
-	NetworkRef *ComputeNetworkRef `json:"networkRef"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

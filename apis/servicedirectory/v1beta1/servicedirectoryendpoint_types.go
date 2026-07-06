@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -35,7 +36,7 @@ type ServiceDirectoryEndpointSpec struct {
 
 	// Optional. The ComputeNetwork resource representing the GCE network of this endpoint.
 	// +kcc:proto:field=google.cloud.servicedirectory.v1beta1.Endpoint.network
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. Port that the endpoint is running on, must be in the
 	// range of [0, 65535]. If unspecified, the default is 0.

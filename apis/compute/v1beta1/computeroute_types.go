@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -38,7 +39,7 @@ type ComputeRouteSpec struct {
 
 	// The network that this route applies to.
 	// +required
-	NetworkRef ComputeNetworkRef `json:"networkRef"`
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	// Immutable. URL to a gateway that should handle matching packets.
 	// Currently, you can only specify the internet gateway, using a full or

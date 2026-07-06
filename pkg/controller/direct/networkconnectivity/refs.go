@@ -17,6 +17,8 @@ package networkconnectivity
 import (
 	"context"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -54,7 +56,7 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
-	if networkRef, ok := v.(*computev1beta1.ComputeNetworkRef); ok {
+	if networkRef, ok := v.(*computerefs.ComputeNetworkRef); ok {
 		if err := networkRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return err
 		}

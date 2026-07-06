@@ -129,7 +129,7 @@ func InstanceNetworks_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig)
 	}
 	out := &krm.InstanceNetworks{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Modes = direct.EnumSlice_FromProto(mapCtx, in.Modes)
 	out.ReservedIPRange = direct.LazyPtr(in.GetReservedIpRange())

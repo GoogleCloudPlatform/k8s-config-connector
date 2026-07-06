@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -352,7 +353,7 @@ type NodeConfig struct {
 	//  [Shared VPC](/vpc/docs/shared-vpc) subnetwork requirements, see
 	//  `nodeConfig.subnetwork`.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.network
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. The Compute Engine subnetwork to be used for machine
 	//  communications, specified as a

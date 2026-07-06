@@ -25,6 +25,7 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
@@ -90,7 +91,7 @@ func AdditionalNodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Add
 	}
 	out := &krm.AdditionalNodeNetworkConfig{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
 		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
@@ -613,7 +614,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	out.LoggingService = direct.LazyPtr(in.GetLoggingService())
 	out.MonitoringService = direct.LazyPtr(in.GetMonitoringService())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.ClusterIPV4CIDR = direct.LazyPtr(in.GetClusterIpv4Cidr())
 	out.AddonsConfig = AddonsConfig_FromProto(mapCtx, in.GetAddonsConfig())

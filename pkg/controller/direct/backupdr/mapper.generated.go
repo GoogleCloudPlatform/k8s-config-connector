@@ -427,7 +427,7 @@ found existing non-generated mapping function "NetworkConfig_v1alpha1_FromProto"
 		}
 		out := &krmbackupdrv1alpha1.NetworkConfig{}
 		if in.GetNetwork() != "" {
-			out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+			out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 		}
 		out.PeeringMode = direct.Enum_FromProto(mapCtx, in.GetPeeringMode())
 		return out

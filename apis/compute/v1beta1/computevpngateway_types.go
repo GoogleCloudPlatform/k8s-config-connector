@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,7 +28,7 @@ type ComputeVPNGatewaySpec struct {
 	Description *string `json:"description,omitempty"`
 
 	/* The network this VPN gateway is accepting traffic for. */
-	NetworkRef *ComputeNetworkRef `json:"networkRef"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	/* Immutable. The region this gateway should sit in. */
 	Region string `json:"region"`

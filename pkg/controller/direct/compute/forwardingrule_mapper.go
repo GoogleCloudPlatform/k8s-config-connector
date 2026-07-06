@@ -18,6 +18,8 @@ import (
 	"strconv"
 	"strings"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -185,16 +187,16 @@ func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapCont
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *krm.ComputeNetworkRef {
+func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *computerefs.ComputeNetworkRef {
 	if in == "" {
 		return nil
 	}
-	return &krm.ComputeNetworkRef{
+	return &computerefs.ComputeNetworkRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkRef) *string {
+func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *computerefs.ComputeNetworkRef) *string {
 	if in == nil {
 		return nil
 	}

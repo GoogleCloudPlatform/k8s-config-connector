@@ -17,6 +17,8 @@ package dataflow
 import (
 	"encoding/json"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+
 	pb "cloud.google.com/go/dataflow/apiv1beta3/dataflowpb"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataflow/v1beta1"
@@ -53,7 +55,7 @@ func DataflowJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Dataf
 				out.MaxWorkers = direct.LazyPtr(int64(wp.GetAutoscalingSettings().GetMaxNumWorkers()))
 			}
 			if wp.GetNetwork() != "" {
-				out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: wp.GetNetwork()}
+				out.NetworkRef = &computerefs.ComputeNetworkRef{External: wp.GetNetwork()}
 			}
 			if wp.GetSubnetwork() != "" {
 				out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: wp.GetSubnetwork()}

@@ -25,6 +25,7 @@ package datamigration
 
 import (
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datamigration/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -342,7 +343,7 @@ func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseS
 		out.VMRef = &krmcomputev1beta1.InstanceRef{External: in.GetVm()}
 	}
 	if in.GetVpc() != "" {
-		out.VPCRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetVpc()}
+		out.VPCRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetVpc()}
 	}
 	return out
 }
@@ -381,7 +382,7 @@ func VPCPeeringConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeri
 	}
 	out := &krm.VPCPeeringConnectivity{}
 	if in.GetVpc() != "" {
-		out.VPCRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetVpc()}
+		out.VPCRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetVpc()}
 	}
 	return out
 }

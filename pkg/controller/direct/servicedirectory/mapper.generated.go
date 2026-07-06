@@ -25,6 +25,7 @@ package servicedirectory
 
 import (
 	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -66,7 +67,7 @@ func ServiceDirectoryEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.En
 	out.Port = direct.LazyPtr(in.GetPort())
 	// MISSING: Metadata
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: CreateTime
 	// MISSING: UpdateTime

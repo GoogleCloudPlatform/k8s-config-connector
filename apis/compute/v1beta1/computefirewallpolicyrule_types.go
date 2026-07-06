@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -116,7 +117,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Priority int64 `json:"priority"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_resources
-	TargetResources []*ComputeNetworkRef `json:"targetResources,omitempty"`
+	TargetResources []*computerefs.ComputeNetworkRef `json:"targetResources,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_service_accounts
 	TargetServiceAccounts []*refs.IAMServiceAccountRef `json:"targetServiceAccounts,omitempty"`

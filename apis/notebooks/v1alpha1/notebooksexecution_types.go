@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
@@ -210,7 +210,7 @@ type ExecutionTemplate_DataprocParameters struct {
 // +kcc:proto=google.cloud.notebooks.v1.ExecutionTemplate.VertexAIParameters
 type ExecutionTemplate_VertexAiParameters struct {
 	// The Compute Engine network to which the Job should be peered.
-	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Environment variables.
 	// +kcc:proto:field=google.cloud.notebooks.v1.ExecutionTemplate.VertexAIParameters.env

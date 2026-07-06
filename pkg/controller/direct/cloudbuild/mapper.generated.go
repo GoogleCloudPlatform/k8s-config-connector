@@ -287,7 +287,7 @@ func PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
 	if in.GetPeeredNetwork() != "" {
-		out.PeeredNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetPeeredNetwork()}
+		out.PeeredNetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetPeeredNetwork()}
 	}
 	out.EgressOption = direct.Enum_FromProto(mapCtx, in.GetEgressOption())
 	out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())

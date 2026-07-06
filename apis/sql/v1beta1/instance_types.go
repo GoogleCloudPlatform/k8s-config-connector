@@ -17,7 +17,7 @@ package v1beta1
 import (
 	"reflect"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 
@@ -159,7 +159,7 @@ type InstanceIpConfiguration struct {
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
 
 	// +optional
-	PrivateNetworkRef *computev1beta1.ComputeNetworkRef `json:"privateNetworkRef,omitempty"`
+	PrivateNetworkRef *computerefs.ComputeNetworkRef `json:"privateNetworkRef,omitempty"`
 
 	/* PSC settings for a Cloud SQL instance. */
 	// +optional

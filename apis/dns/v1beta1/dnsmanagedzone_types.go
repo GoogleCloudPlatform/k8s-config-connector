@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -91,7 +91,7 @@ type ManagedZoneServiceDirectoryConfigNamespace struct {
 // +openapi:ManagedZonePrivateVisibilityConfigNetwork
 type ManagedZonePrivateVisibilityConfigNetwork struct {
 	/* VPC network to bind to. */
-	NetworkRef computev1beta1.ComputeNetworkRef `json:"networkRef"`
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
 }
 
 // +openapi:ManagedZoneForwardingConfigNameServerTarget
@@ -109,7 +109,7 @@ type ManagedZoneForwardingConfigNameServerTarget struct {
 // +openapi:ManagedZonePeeringConfigTargetNetwork
 type ManagedZonePeeringConfigTargetNetwork struct {
 	/* VPC network to forward queries to. */
-	NetworkRef computev1beta1.ComputeNetworkRef `json:"networkRef"`
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
 }
 
 // DNSManagedZoneSpec defines the desired state of DNSManagedZone

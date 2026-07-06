@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -36,7 +37,7 @@ type ComputeInstanceGroupSpec struct {
 	NamedPorts []InstanceGroupNamedPort `json:"namedPort,omitempty"`
 
 	// +optional
-	NetworkRef *ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Immutable. Optional. The name of the resource. Used for
 	// creation and acquisition. When unset, the value of `metadata.name`

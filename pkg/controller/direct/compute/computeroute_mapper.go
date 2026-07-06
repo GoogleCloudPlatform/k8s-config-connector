@@ -16,6 +16,7 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -28,7 +29,7 @@ func ComputeRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Route)
 	out.Description = in.Description
 	out.DestRange = in.GetDestRange()
 	if in.GetNetwork() != "" {
-		out.NetworkRef = krm.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NextHopGateway = in.NextHopGateway
 	if in.GetNextHopIlb() != "" {

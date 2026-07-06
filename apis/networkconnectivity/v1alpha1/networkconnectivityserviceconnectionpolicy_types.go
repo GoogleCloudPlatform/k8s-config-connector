@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -53,7 +54,7 @@ type NetworkConnectivityServiceConnectionPolicySpec struct {
 	// Name *string `json:"name,omitempty"`
 
 	// The resource path of the consumer network. Example: - projects/{projectNumOrId}/global/networks/{resourceId}.
-	Network *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	Network *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Configuration used for Private Service Connect connections. Used when Infrastructure is PSC.
 	PSCConfig *PSCConfig `json:"pscConfig,omitempty"`

@@ -17,6 +17,8 @@ package dataproc
 import (
 	"strconv"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
@@ -646,7 +648,7 @@ func ClusterGceClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 		out.Zone = direct.LazyPtr(in.GetZoneUri())
 	}
 	if in.GetNetworkUri() != "" {
-		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetworkUri()}
+		out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetworkUri()}
 	}
 	if in.GetSubnetworkUri() != "" {
 		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetworkUri()}

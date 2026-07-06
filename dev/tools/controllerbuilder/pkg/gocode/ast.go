@@ -192,8 +192,8 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 				if err := p.addStruct(n.Name, def, comments); err != nil {
 					errs = append(errs, err)
 				}
-			case *ast.Ident:
-				// type alias
+			case *ast.Ident, *ast.SelectorExpr:
+				// type alias or simple type
 			case *ast.InterfaceType:
 				// always skip, nothing to generate for interface
 			default:

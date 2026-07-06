@@ -16,7 +16,7 @@ package filestore
 
 import (
 	pb "cloud.google.com/go/filestore/apiv1/filestorepb"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -59,7 +59,7 @@ func InstanceNetworks_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig)
 	}
 	out := &krm.InstanceNetworks{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Modes = direct.EnumSlice_FromProto(mapCtx, in.Modes)
 	out.ReservedIPRange = direct.LazyPtr(in.GetReservedIpRange())

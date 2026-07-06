@@ -16,8 +16,7 @@ package vmwareengine
 
 import (
 	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -98,7 +97,7 @@ func VMwareEngineNetworkPeering_PeerNetwork_FromProto(mapCtx *direct.MapContext,
 	switch inType {
 	case pb.NetworkPeering_STANDARD:
 		return &krm.PeerNetwork{
-			ComputeNetworkRef: &computev1beta1.ComputeNetworkRef{
+			ComputeNetworkRef: &computerefs.ComputeNetworkRef{
 				External: in,
 			},
 		}

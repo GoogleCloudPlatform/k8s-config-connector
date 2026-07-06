@@ -21,7 +21,7 @@ package memorystore
 
 import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -313,7 +313,7 @@ func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnec
 	}
 	out := &krmv1beta1.PscAutoConnection{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetProjectId() != "" {
 		out.ProjectRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}

@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -94,7 +95,7 @@ type RecordsetInternalLoadBalancers struct {
 	/* The type of load balancer. This value is case-sensitive. Possible values: ["regionalL4ilb", "regionalL7ilb", "globalL7ilb"]. */
 	LoadBalancerType string `json:"loadBalancerType"`
 
-	NetworkRef computev1beta1.ComputeNetworkRef `json:"networkRef"`
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	/* The configured port of the load balancer. */
 	Port string `json:"port"`

@@ -15,6 +15,7 @@
 package dns
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
@@ -247,7 +248,7 @@ func RecordsetInternalLoadBalancers_FromAPI(mapCtx *direct.MapContext, in *api.R
 	out.IpAddressRef = computev1beta1.ComputeAddressRef{External: in.IpAddress}
 	out.IpProtocol = in.IpProtocol
 	out.LoadBalancerType = in.LoadBalancerType
-	out.NetworkRef = computev1beta1.ComputeNetworkRef{External: in.NetworkUrl}
+	out.NetworkRef = computerefs.ComputeNetworkRef{External: in.NetworkUrl}
 	out.Port = in.Port
 	out.ProjectRef = apirefs.ProjectRef{External: in.Project}
 	if in.Region != "" {

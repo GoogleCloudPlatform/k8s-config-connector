@@ -17,7 +17,7 @@ package redis
 import (
 	"time"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
@@ -67,7 +67,7 @@ func PscConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.P
 	}
 	out := &krm.PscConfigSpec{}
 	if in.Network != "" {
-		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.Network}
+		out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.Network}
 	}
 	return out
 }
