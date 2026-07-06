@@ -24,10 +24,14 @@
 // resource: VertexAITuningJob:TuningJob
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
+// resource: VertexAISchedule:Schedule
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
 /* unreachable type Artifact
 // +kcc:proto=google.cloud.aiplatform.v1.Artifact
@@ -173,6 +177,43 @@ type Content struct {
 	//  different IANA MIME types.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.parts
 	Parts []Part `json:"parts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.CreateNotebookExecutionJobRequest
+type CreateNotebookExecutionJobRequest struct {
+	// Required. The resource name of the Location to create the
+	//  NotebookExecutionJob. Format: `projects/{project}/locations/{location}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreateNotebookExecutionJobRequest.parent
+	Parent *string `json:"parent,omitempty"`
+
+	// Required. The NotebookExecutionJob to create.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreateNotebookExecutionJobRequest.notebook_execution_job
+	NotebookExecutionJob *NotebookExecutionJob `json:"notebookExecutionJob,omitempty"`
+
+	// Optional. User specified ID for the NotebookExecutionJob.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreateNotebookExecutionJobRequest.notebook_execution_job_id
+	NotebookExecutionJobID *string `json:"notebookExecutionJobID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.CreatePipelineJobRequest
+type CreatePipelineJobRequest struct {
+	// Required. The resource name of the Location to create the PipelineJob in.
+	//  Format: `projects/{project}/locations/{location}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreatePipelineJobRequest.parent
+	Parent *string `json:"parent,omitempty"`
+
+	// Required. The PipelineJob to create.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreatePipelineJobRequest.pipeline_job
+	PipelineJob *PipelineJob `json:"pipelineJob,omitempty"`
+
+	// The ID to use for the PipelineJob, which will become the final component of
+	//  the PipelineJob name. If not provided, an ID will be automatically
+	//  generated.
+	//
+	//  This value should be less than 128 characters, and valid characters
+	//  are `/[a-z][0-9]-/`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreatePipelineJobRequest.pipeline_job_id
+	PipelineJobID *string `json:"pipelineJobID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.DeployedModelRef
@@ -793,6 +834,45 @@ type IntegratedGradientsAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.MachineSpec
+type MachineSpec struct {
+	// Immutable. The type of the machine.
+	//
+	//  See the [list of machine types supported for
+	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
+	//
+	//  See the [list of machine types supported for custom
+	//  training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
+	//
+	//  For [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] this field is
+	//  optional, and the default value is `n1-standard-2`. For
+	//  [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob] or as
+	//  part of [WorkerPoolSpec][google.cloud.aiplatform.v1.WorkerPoolSpec] this
+	//  field is required.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Immutable. The type of accelerator(s) that may be attached to the machine
+	//  as per
+	//  [accelerator_count][google.cloud.aiplatform.v1.MachineSpec.accelerator_count].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// The number of accelerators to attach to the machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+	//  available from GKE. (Example: tpu_topology: "2x2x1").
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.tpu_topology
+	TpuTopology *string `json:"tpuTopology,omitempty"`
+
+	// Optional. Immutable. Configuration controlling how this resource pool
+	//  consumes reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.reservation_affinity
+	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.Model.BaseModelSource
 type Model_BaseModelSource struct {
 	// Source information of Model Garden models.
@@ -1141,6 +1221,156 @@ type ModelSourceInfo struct {
 	Copy *bool `json:"copy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.NetworkSpec
+type NetworkSpec struct {
+	// Whether to enable public internet access. Default false.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NetworkSpec.enable_internet_access
+	EnableInternetAccess *bool `json:"enableInternetAccess,omitempty"`
+
+	// The full name of the Google Compute Engine
+	//  [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NetworkSpec.network
+	Network *string `json:"network,omitempty"`
+
+	// The name of the subnet that this instance is in.
+	//  Format:
+	//  `projects/{project_id_or_number}/regions/{region}/subnetworks/{subnetwork_id}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NetworkSpec.subnetwork
+	Subnetwork *string `json:"subnetwork,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob
+type NotebookExecutionJob struct {
+	// The Dataform Repository pointing to a single file notebook repository.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.dataform_repository_source
+	DataformRepositorySource *NotebookExecutionJob_DataformRepositorySource `json:"dataformRepositorySource,omitempty"`
+
+	// The Cloud Storage url pointing to the ipynb file. Format:
+	//  `gs://bucket/notebook_file.ipynb`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.gcs_notebook_source
+	GCSNotebookSource *NotebookExecutionJob_GCSNotebookSource `json:"gcsNotebookSource,omitempty"`
+
+	// The contents of an input notebook file.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.direct_notebook_source
+	DirectNotebookSource *NotebookExecutionJob_DirectNotebookSource `json:"directNotebookSource,omitempty"`
+
+	// The NotebookRuntimeTemplate to source compute configuration from.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.notebook_runtime_template_resource_name
+	NotebookRuntimeTemplateResourceName *string `json:"notebookRuntimeTemplateResourceName,omitempty"`
+
+	// The custom compute configuration for an execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.custom_environment_spec
+	CustomEnvironmentSpec *NotebookExecutionJob_CustomEnvironmentSpec `json:"customEnvironmentSpec,omitempty"`
+
+	// The Cloud Storage location to upload the result to. Format:
+	//  `gs://bucket-name`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.gcs_output_uri
+	GCSOutputURI *string `json:"gcsOutputURI,omitempty"`
+
+	// The user email to run the execution as. Only supported by Colab runtimes.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.execution_user
+	ExecutionUser *string `json:"executionUser,omitempty"`
+
+	// The service account to run the execution as.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// The Workbench runtime configuration to use for the notebook execution.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.workbench_runtime
+	WorkbenchRuntime *NotebookExecutionJob_WorkbenchRuntime `json:"workbenchRuntime,omitempty"`
+
+	// The display name of the NotebookExecutionJob. The name can be up to 128
+	//  characters long and can consist of any UTF-8 characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Max running time of the execution job in seconds (default 86400s / 24 hrs).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.execution_timeout
+	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
+
+	// The Schedule resource name if this job is triggered by one. Format:
+	//  `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.schedule_resource_name
+	ScheduleResourceName *string `json:"scheduleResourceName,omitempty"`
+
+	// The labels with user-defined metadata to organize NotebookExecutionJobs.
+	//
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores and dashes. International characters are allowed.
+	//
+	//  See https://goo.gl/xmQnxf for more information and examples of labels.
+	//  System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+	//  and are immutable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The name of the kernel to use during notebook execution. If unset, the
+	//  default kernel is used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.kernel_name
+	KernelName *string `json:"kernelName,omitempty"`
+
+	// Customer-managed encryption key spec for the notebook execution job.
+	//  This field is auto-populated if the
+	//  [NotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookRuntimeTemplate]
+	//  has an encryption spec.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
+type NotebookExecutionJob_CustomEnvironmentSpec struct {
+	// The specification of a single machine for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// The specification of a persistent disk to attach for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.persistent_disk_spec
+	PersistentDiskSpec *PersistentDiskSpec `json:"persistentDiskSpec,omitempty"`
+
+	// The network configuration to use for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.network_spec
+	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.DataformRepositorySource
+type NotebookExecutionJob_DataformRepositorySource struct {
+	// The resource name of the Dataform Repository. Format:
+	//  `projects/{project_id}/locations/{location}/repositories/{repository_id}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DataformRepositorySource.dataform_repository_resource_name
+	DataformRepositoryResourceName *string `json:"dataformRepositoryResourceName,omitempty"`
+
+	// The commit SHA to read repository with. If unset, the file will be read
+	//  at HEAD.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DataformRepositorySource.commit_sha
+	CommitSha *string `json:"commitSha,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.DirectNotebookSource
+type NotebookExecutionJob_DirectNotebookSource struct {
+	// The base64-encoded contents of the input notebook file.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DirectNotebookSource.content
+	Content []byte `json:"content,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource
+type NotebookExecutionJob_GCSNotebookSource struct {
+	// The Cloud Storage uri pointing to the ipynb file. Format:
+	//  `gs://bucket/notebook_file.ipynb`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.uri
+	URI *string `json:"uri,omitempty"`
+
+	// The version of the Cloud Storage object to read. If unset, the current
+	//  version of the object is read. See
+	//  https://cloud.google.com/storage/docs/metadata#generation-number.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.generation
+	Generation *string `json:"generation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.WorkbenchRuntime
+type NotebookExecutionJob_WorkbenchRuntime struct {
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.Part
 type Part struct {
 	// Optional. Text part (can be code).
@@ -1189,6 +1419,21 @@ type Part struct {
 	//  video data is presented in inline_data or file_data.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.video_metadata
 	VideoMetadata *VideoMetadata `json:"videoMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PersistentDiskSpec
+type PersistentDiskSpec struct {
+	// Type of the disk (default is "pd-standard").
+	//  Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
+	//  "pd-standard" (Persistent Disk Hard Disk Drive)
+	//  "pd-balanced" (Balanced Persistent Disk)
+	//  "pd-extreme" (Extreme Persistent Disk)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PersistentDiskSpec.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Size in GB of the disk (default is 100GB).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PersistentDiskSpec.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
 }
 
 /* unreachable type PipelineJob_RuntimeConfig_InputArtifact
@@ -1430,6 +1675,25 @@ type Probe_TCPSocketAction struct {
 	Host *string `json:"host,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.ReservationAffinity
+type ReservationAffinity struct {
+	// Required. Specifies the reservation affinity type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.reservation_affinity_type
+	ReservationAffinityType *string `json:"reservationAffinityType,omitempty"`
+
+	// Optional. Corresponds to the label key of a reservation resource. To target
+	//  a SPECIFIC_RESERVATION by name, use
+	//  `compute.googleapis.com/reservation-name` as the key and specify the name
+	//  of your reservation as its value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. Corresponds to the label values of a reservation resource. This
+	//  must be the full resource name of the reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.SampledShapleyAttribution
 type SampledShapleyAttribution struct {
 	// Required. The number of feature permutations to consider when approximating
@@ -1438,6 +1702,17 @@ type SampledShapleyAttribution struct {
 	//  Valid range of its value is [1, 50], inclusively.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SampledShapleyAttribution.path_count
 	PathCount *int32 `json:"pathCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Schedule.RunResponse
+type Schedule_RunResponse struct {
+	// The scheduled run time based on the user-specified schedule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.RunResponse.scheduled_run_time
+	ScheduledRunTime *string `json:"scheduledRunTime,omitempty"`
+
+	// The response of the scheduled run.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.RunResponse.run_response
+	RunResponse *string `json:"runResponse,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SmoothGradConfig
@@ -2024,6 +2299,20 @@ type Int32Value struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.CreateNotebookExecutionJobRequest
+type CreateNotebookExecutionJobRequestObservedState struct {
+	// Required. The NotebookExecutionJob to create.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreateNotebookExecutionJobRequest.notebook_execution_job
+	NotebookExecutionJob *NotebookExecutionJobObservedState `json:"notebookExecutionJob,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.CreatePipelineJobRequest
+type CreatePipelineJobRequestObservedState struct {
+	// Required. The PipelineJob to create.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CreatePipelineJobRequest.pipeline_job
+	PipelineJob *PipelineJobObservedState `json:"pipelineJob,omitempty"`
+}
+
 /* unreachable type Model_ExportFormatObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Model.ExportFormat
 type Model_ExportFormatObservedState struct {
@@ -2067,6 +2356,33 @@ type Model_OriginalModelInfoObservedState struct {
 	Model *string `json:"model,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.NotebookExecutionJob
+type NotebookExecutionJobObservedState struct {
+	// Output only. The resource name of this NotebookExecutionJob. Format:
+	//  `projects/{project_id}/locations/{location}/notebookExecutionJobs/{job_id}`
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The state of the NotebookExecutionJob.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.job_state
+	JobState *string `json:"jobState,omitempty"`
+
+	// Output only. Populated when the NotebookExecutionJob is completed. When
+	//  there is an error during notebook execution, the error details are
+	//  populated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.status
+	Status *common.Status `json:"status,omitempty"`
+
+	// Output only. Timestamp when this NotebookExecutionJob was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when this NotebookExecutionJob was most recently
+	//  updated.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.SupervisedTuningDataStats
 type SupervisedTuningDataStatsObservedState struct {
