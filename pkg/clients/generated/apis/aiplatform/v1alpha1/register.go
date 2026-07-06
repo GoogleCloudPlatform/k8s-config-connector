@@ -83,6 +83,12 @@ var (
 		Kind:    reflect.TypeOf(VertexAIStudy{}).Name(),
 	}
 
+	VertexAITrainingPipelineGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAITrainingPipeline{}).Name(),
+	}
+
 	VertexAITuningJobGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

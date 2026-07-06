@@ -152,6 +152,22 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		return out
 	}
 */
+func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryDestination{}
+	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
+	return out
+}
+func BigQueryDestination_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDestination) *pb.BigQueryDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryDestination{}
+	out.OutputUri = direct.ValueOf(in.OutputURI)
+	return out
+}
 func Blob_FromProto(mapCtx *direct.MapContext, in *pb.Blob) *krm.Blob {
 	if in == nil {
 		return nil
@@ -608,6 +624,46 @@ func FileData_ToProto(mapCtx *direct.MapContext, in *krm.FileData) *pb.FileData 
 	out.FileUri = direct.ValueOf(in.FileURI)
 	return out
 }
+func FilterSplit_FromProto(mapCtx *direct.MapContext, in *pb.FilterSplit) *krm.FilterSplit {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FilterSplit{}
+	out.TrainingFilter = direct.LazyPtr(in.GetTrainingFilter())
+	out.ValidationFilter = direct.LazyPtr(in.GetValidationFilter())
+	out.TestFilter = direct.LazyPtr(in.GetTestFilter())
+	return out
+}
+func FilterSplit_ToProto(mapCtx *direct.MapContext, in *krm.FilterSplit) *pb.FilterSplit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FilterSplit{}
+	out.TrainingFilter = direct.ValueOf(in.TrainingFilter)
+	out.ValidationFilter = direct.ValueOf(in.ValidationFilter)
+	out.TestFilter = direct.ValueOf(in.TestFilter)
+	return out
+}
+func FractionSplit_FromProto(mapCtx *direct.MapContext, in *pb.FractionSplit) *krm.FractionSplit {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FractionSplit{}
+	out.TrainingFraction = direct.LazyPtr(in.GetTrainingFraction())
+	out.ValidationFraction = direct.LazyPtr(in.GetValidationFraction())
+	out.TestFraction = direct.LazyPtr(in.GetTestFraction())
+	return out
+}
+func FractionSplit_ToProto(mapCtx *direct.MapContext, in *krm.FractionSplit) *pb.FractionSplit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FractionSplit{}
+	out.TrainingFraction = direct.ValueOf(in.TrainingFraction)
+	out.ValidationFraction = direct.ValueOf(in.ValidationFraction)
+	out.TestFraction = direct.ValueOf(in.TestFraction)
+	return out
+}
 
 /* found existing non-generated mapping function "FunctionCall_FromProto", skipping
 func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm.FunctionCall {
@@ -658,6 +714,22 @@ found existing non-generated mapping function "FunctionResponse_ToProto", skippi
 		return out
 	}
 */
+func GCSDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GCSDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSDestination{}
+	out.OutputURIPrefix = direct.LazyPtr(in.GetOutputUriPrefix())
+	return out
+}
+func GCSDestination_ToProto(mapCtx *direct.MapContext, in *krm.GCSDestination) *pb.GcsDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsDestination{}
+	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
+	return out
+}
 func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSource {
 	if in == nil {
 		return nil
@@ -688,6 +760,58 @@ func GenieSource_ToProto(mapCtx *direct.MapContext, in *krm.GenieSource) *pb.Gen
 	}
 	out := &pb.GenieSource{}
 	out.BaseModelUri = direct.ValueOf(in.BaseModelURI)
+	return out
+}
+func InputDataConfig_FromProto(mapCtx *direct.MapContext, in *pb.InputDataConfig) *krm.InputDataConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InputDataConfig{}
+	out.FractionSplit = FractionSplit_FromProto(mapCtx, in.GetFractionSplit())
+	out.FilterSplit = FilterSplit_FromProto(mapCtx, in.GetFilterSplit())
+	out.PredefinedSplit = PredefinedSplit_FromProto(mapCtx, in.GetPredefinedSplit())
+	out.TimestampSplit = TimestampSplit_FromProto(mapCtx, in.GetTimestampSplit())
+	out.StratifiedSplit = StratifiedSplit_FromProto(mapCtx, in.GetStratifiedSplit())
+	out.GCSDestination = GCSDestination_FromProto(mapCtx, in.GetGcsDestination())
+	out.BigqueryDestination = BigQueryDestination_FromProto(mapCtx, in.GetBigqueryDestination())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.AnnotationsFilter = direct.LazyPtr(in.GetAnnotationsFilter())
+	out.AnnotationSchemaURI = direct.LazyPtr(in.GetAnnotationSchemaUri())
+	out.SavedQueryID = direct.LazyPtr(in.GetSavedQueryId())
+	out.PersistMlUseAssignment = direct.LazyPtr(in.GetPersistMlUseAssignment())
+	return out
+}
+func InputDataConfig_ToProto(mapCtx *direct.MapContext, in *krm.InputDataConfig) *pb.InputDataConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InputDataConfig{}
+	if oneof := FractionSplit_ToProto(mapCtx, in.FractionSplit); oneof != nil {
+		out.Split = &pb.InputDataConfig_FractionSplit{FractionSplit: oneof}
+	}
+	if oneof := FilterSplit_ToProto(mapCtx, in.FilterSplit); oneof != nil {
+		out.Split = &pb.InputDataConfig_FilterSplit{FilterSplit: oneof}
+	}
+	if oneof := PredefinedSplit_ToProto(mapCtx, in.PredefinedSplit); oneof != nil {
+		out.Split = &pb.InputDataConfig_PredefinedSplit{PredefinedSplit: oneof}
+	}
+	if oneof := TimestampSplit_ToProto(mapCtx, in.TimestampSplit); oneof != nil {
+		out.Split = &pb.InputDataConfig_TimestampSplit{TimestampSplit: oneof}
+	}
+	if oneof := StratifiedSplit_ToProto(mapCtx, in.StratifiedSplit); oneof != nil {
+		out.Split = &pb.InputDataConfig_StratifiedSplit{StratifiedSplit: oneof}
+	}
+	if oneof := GCSDestination_ToProto(mapCtx, in.GCSDestination); oneof != nil {
+		out.Destination = &pb.InputDataConfig_GcsDestination{GcsDestination: oneof}
+	}
+	if oneof := BigQueryDestination_ToProto(mapCtx, in.BigqueryDestination); oneof != nil {
+		out.Destination = &pb.InputDataConfig_BigqueryDestination{BigqueryDestination: oneof}
+	}
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.AnnotationsFilter = direct.ValueOf(in.AnnotationsFilter)
+	out.AnnotationSchemaUri = direct.ValueOf(in.AnnotationSchemaURI)
+	out.SavedQueryId = direct.ValueOf(in.SavedQueryID)
+	out.PersistMlUseAssignment = direct.ValueOf(in.PersistMlUseAssignment)
 	return out
 }
 func IntegratedGradientsAttribution_FromProto(mapCtx *direct.MapContext, in *pb.IntegratedGradientsAttribution) *krm.IntegratedGradientsAttribution {
@@ -1164,6 +1288,22 @@ func Port_ToProto(mapCtx *direct.MapContext, in *krm.Port) *pb.Port {
 	out.ContainerPort = direct.ValueOf(in.ContainerPort)
 	return out
 }
+func PredefinedSplit_FromProto(mapCtx *direct.MapContext, in *pb.PredefinedSplit) *krm.PredefinedSplit {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PredefinedSplit{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	return out
+}
+func PredefinedSplit_ToProto(mapCtx *direct.MapContext, in *krm.PredefinedSplit) *pb.PredefinedSplit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredefinedSplit{}
+	out.Key = direct.ValueOf(in.Key)
+	return out
+}
 func PredictSchemata_FromProto(mapCtx *direct.MapContext, in *pb.PredictSchemata) *krm.PredictSchemata {
 	if in == nil {
 		return nil
@@ -1411,6 +1551,28 @@ found existing non-generated mapping function "SmoothGradConfig_NoiseSigma_ToPro
 		return &pb.SmoothGradConfig_NoiseSigma{NoiseSigma: *in}
 	}
 */
+func StratifiedSplit_FromProto(mapCtx *direct.MapContext, in *pb.StratifiedSplit) *krm.StratifiedSplit {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StratifiedSplit{}
+	out.TrainingFraction = direct.LazyPtr(in.GetTrainingFraction())
+	out.ValidationFraction = direct.LazyPtr(in.GetValidationFraction())
+	out.TestFraction = direct.LazyPtr(in.GetTestFraction())
+	out.Key = direct.LazyPtr(in.GetKey())
+	return out
+}
+func StratifiedSplit_ToProto(mapCtx *direct.MapContext, in *krm.StratifiedSplit) *pb.StratifiedSplit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StratifiedSplit{}
+	out.TrainingFraction = direct.ValueOf(in.TrainingFraction)
+	out.ValidationFraction = direct.ValueOf(in.ValidationFraction)
+	out.TestFraction = direct.ValueOf(in.TestFraction)
+	out.Key = direct.ValueOf(in.Key)
+	return out
+}
 func StudySpec_FromProto(mapCtx *direct.MapContext, in *pb.StudySpec) *krm.StudySpec {
 	if in == nil {
 		return nil
@@ -1915,6 +2077,28 @@ func SupervisedTuningSpec_ToProto(mapCtx *direct.MapContext, in *krm.SupervisedT
 	out.ExportLastCheckpointOnly = direct.ValueOf(in.ExportLastCheckpointOnly)
 	return out
 }
+func TimestampSplit_FromProto(mapCtx *direct.MapContext, in *pb.TimestampSplit) *krm.TimestampSplit {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimestampSplit{}
+	out.TrainingFraction = direct.LazyPtr(in.GetTrainingFraction())
+	out.ValidationFraction = direct.LazyPtr(in.GetValidationFraction())
+	out.TestFraction = direct.LazyPtr(in.GetTestFraction())
+	out.Key = direct.LazyPtr(in.GetKey())
+	return out
+}
+func TimestampSplit_ToProto(mapCtx *direct.MapContext, in *krm.TimestampSplit) *pb.TimestampSplit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimestampSplit{}
+	out.TrainingFraction = direct.ValueOf(in.TrainingFraction)
+	out.ValidationFraction = direct.ValueOf(in.ValidationFraction)
+	out.TestFraction = direct.ValueOf(in.TestFraction)
+	out.Key = direct.ValueOf(in.Key)
+	return out
+}
 func TunedModelCheckpoint_FromProto(mapCtx *direct.MapContext, in *pb.TunedModelCheckpoint) *krm.TunedModelCheckpoint {
 	if in == nil {
 		return nil
@@ -2193,6 +2377,72 @@ func VertexAIStudySpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIStudyS
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.StudySpec = StudySpec_ToProto(mapCtx, in.StudySpec)
 	// MISSING: InactiveReason
+	return out
+}
+func VertexAITrainingPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TrainingPipeline) *krm.VertexAITrainingPipelineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAITrainingPipelineObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.TrainingTaskMetadata = Value_FromProto(mapCtx, in.GetTrainingTaskMetadata())
+	out.ModelToUpload = AIPlatformModelObservedState_FromProto(mapCtx, in.GetModelToUpload())
+	// MISSING: ParentModel
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func VertexAITrainingPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITrainingPipelineObservedState) *pb.TrainingPipeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrainingPipeline{}
+	out.Name = direct.ValueOf(in.Name)
+	out.TrainingTaskMetadata = Value_ToProto(mapCtx, in.TrainingTaskMetadata)
+	out.ModelToUpload = AIPlatformModelObservedState_ToProto(mapCtx, in.ModelToUpload)
+	// MISSING: ParentModel
+	out.State = direct.Enum_ToProto[pb.PipelineState](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func VertexAITrainingPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.TrainingPipeline) *krm.VertexAITrainingPipelineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAITrainingPipelineSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.InputDataConfig = InputDataConfig_FromProto(mapCtx, in.GetInputDataConfig())
+	out.TrainingTaskDefinition = direct.LazyPtr(in.GetTrainingTaskDefinition())
+	out.TrainingTaskInputs = Value_FromProto(mapCtx, in.GetTrainingTaskInputs())
+	out.ModelToUpload = AIPlatformModelSpec_FromProto(mapCtx, in.GetModelToUpload())
+	out.ModelID = direct.LazyPtr(in.GetModelId())
+	// MISSING: ParentModel
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func VertexAITrainingPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITrainingPipelineSpec) *pb.TrainingPipeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrainingPipeline{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.InputDataConfig = InputDataConfig_ToProto(mapCtx, in.InputDataConfig)
+	out.TrainingTaskDefinition = direct.ValueOf(in.TrainingTaskDefinition)
+	out.TrainingTaskInputs = Value_ToProto(mapCtx, in.TrainingTaskInputs)
+	out.ModelToUpload = AIPlatformModelSpec_ToProto(mapCtx, in.ModelToUpload)
+	out.ModelId = direct.ValueOf(in.ModelID)
+	// MISSING: ParentModel
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 func VertexAITuningJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TuningJob) *krm.VertexAITuningJobObservedState {

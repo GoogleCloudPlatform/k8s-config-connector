@@ -36,6 +36,7 @@ type AiplatformV1alpha1Interface interface {
 	VertexAIPipelineJobsGetter
 	VertexAISpecialistPoolsGetter
 	VertexAIStudiesGetter
+	VertexAITrainingPipelinesGetter
 	VertexAITuningJobsGetter
 }
 
@@ -62,6 +63,10 @@ func (c *AiplatformV1alpha1Client) VertexAISpecialistPools(namespace string) Ver
 
 func (c *AiplatformV1alpha1Client) VertexAIStudies(namespace string) VertexAIStudyInterface {
 	return newVertexAIStudies(c, namespace)
+}
+
+func (c *AiplatformV1alpha1Client) VertexAITrainingPipelines(namespace string) VertexAITrainingPipelineInterface {
+	return newVertexAITrainingPipelines(c, namespace)
 }
 
 func (c *AiplatformV1alpha1Client) VertexAITuningJobs(namespace string) VertexAITuningJobInterface {
