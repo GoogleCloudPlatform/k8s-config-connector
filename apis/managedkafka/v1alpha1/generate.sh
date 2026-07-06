@@ -28,6 +28,7 @@ go run . generate-types \
   --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource ManagedKafkaCluster:Cluster \
+  --resource ManagedKafkaConnectCluster:ConnectCluster \
   --resource ManagedKafkaConsumerGroup:ConsumerGroup \
   --resource ManagedKafkaTopic:Topic
 

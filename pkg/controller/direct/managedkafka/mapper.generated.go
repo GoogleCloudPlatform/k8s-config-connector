@@ -100,6 +100,76 @@ func CapacityConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CapacityC
 	out.MemoryBytes = direct.ValueOf(in.MemoryBytes)
 	return out
 }
+func ConnectAccessConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectAccessConfig) *krmmanagedkafkav1alpha1.ConnectAccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ConnectAccessConfig{}
+	out.NetworkConfigs = direct.Slice_FromProto(mapCtx, in.NetworkConfigs, ConnectNetworkConfig_v1alpha1_FromProto)
+	return out
+}
+func ConnectAccessConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ConnectAccessConfig) *pb.ConnectAccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectAccessConfig{}
+	out.NetworkConfigs = direct.Slice_ToProto(mapCtx, in.NetworkConfigs, ConnectNetworkConfig_v1alpha1_ToProto)
+	return out
+}
+func ConnectGCPConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectGcpConfig) *krmmanagedkafkav1alpha1.ConnectGCPConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ConnectGCPConfig{}
+	out.AccessConfig = ConnectAccessConfig_v1alpha1_FromProto(mapCtx, in.GetAccessConfig())
+	out.SecretPaths = ConnectGCPConfig_SecretPaths_FromProto(mapCtx, in.SecretPaths)
+	return out
+}
+func ConnectGCPConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ConnectGCPConfig) *pb.ConnectGcpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectGcpConfig{}
+	out.AccessConfig = ConnectAccessConfig_v1alpha1_ToProto(mapCtx, in.AccessConfig)
+	out.SecretPaths = ConnectGCPConfig_SecretPaths_ToProto(mapCtx, in.SecretPaths)
+	return out
+}
+func ConnectNetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectNetworkConfig) *krmmanagedkafkav1alpha1.ConnectNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ConnectNetworkConfig{}
+	if in.GetPrimarySubnet() != "" {
+		out.PrimarySubnetRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetPrimarySubnet()}
+	}
+
+	if v := in.GetAdditionalSubnets(); len(v) != 0 {
+		for i := range v {
+			out.AdditionalSubnetRefs = append(out.AdditionalSubnetRefs, &krmcomputev1beta1.ComputeSubnetworkRef{External: v[i]})
+		}
+	}
+
+	out.DNSDomainNames = in.DnsDomainNames
+	return out
+}
+func ConnectNetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ConnectNetworkConfig) *pb.ConnectNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectNetworkConfig{}
+	if in.PrimarySubnetRef != nil {
+		out.PrimarySubnet = in.PrimarySubnetRef.External
+	}
+
+	if v := in.AdditionalSubnetRefs; len(v) != 0 {
+		for i := range v {
+			out.AdditionalSubnets = append(out.AdditionalSubnets, v[i].External)
+		}
+	}
+
+	out.DnsDomainNames = in.DNSDomainNames
+	return out
+}
 func GcpConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krmmanagedkafkav1alpha1.GcpConfig {
 	if in == nil {
 		return nil
@@ -270,6 +340,60 @@ func ManagedKafkaClusterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: SatisfiesPzi
 	// MISSING: SatisfiesPzs
 	// MISSING: TLSConfig
+	return out
+}
+func ManagedKafkaConnectClusterObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectCluster) *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterObservedState{}
+	// MISSING: GcpConfig
+	// MISSING: Name
+	// MISSING: KafkaCluster
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func ManagedKafkaConnectClusterObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterObservedState) *pb.ConnectCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectCluster{}
+	// MISSING: GcpConfig
+	// MISSING: Name
+	// MISSING: KafkaCluster
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.ConnectCluster_State](mapCtx, in.State)
+	return out
+}
+func ManagedKafkaConnectClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectCluster) *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec{}
+	// MISSING: GcpConfig
+	// (near miss): "GcpConfig" vs "GCPConfig"
+	// MISSING: Name
+	// MISSING: KafkaCluster
+	out.Labels = in.Labels
+	out.CapacityConfig = CapacityConfig_v1alpha1_FromProto(mapCtx, in.GetCapacityConfig())
+	out.Config = in.Config
+	return out
+}
+func ManagedKafkaConnectClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec) *pb.ConnectCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectCluster{}
+	// MISSING: GcpConfig
+	// (near miss): "GcpConfig" vs "GCPConfig"
+	// MISSING: Name
+	// MISSING: KafkaCluster
+	out.Labels = in.Labels
+	out.CapacityConfig = CapacityConfig_v1alpha1_ToProto(mapCtx, in.CapacityConfig)
+	out.Config = in.Config
 	return out
 }
 
