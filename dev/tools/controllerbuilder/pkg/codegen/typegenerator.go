@@ -595,6 +595,9 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 // GetJSONForKRM returns the KRM JSON name for the field,
 // honoring KRM conventions
 func GetJSONForKRM(protoField protoreflect.FieldDescriptor) string {
+	if protoField.FullName() == "google.cloud.aiplatform.v1.ResourceRuntime.access_uris" {
+		return "accessURIs"
+	}
 	tokens := strings.Split(string(protoField.Name()), "_")
 	for i, token := range tokens {
 		if i == 0 {
@@ -614,6 +617,9 @@ func GetJSONForKRM(protoField protoreflect.FieldDescriptor) string {
 // goFieldName returns the KRM go name for the field,
 // honoring KRM conventions
 func goFieldName(protoField protoreflect.FieldDescriptor) string {
+	if protoField.FullName() == "google.cloud.aiplatform.v1.ResourceRuntime.access_uris" {
+		return "AccessURIs"
+	}
 	tokens := strings.Split(string(protoField.Name()), "_")
 	for i, token := range tokens {
 		if IsAcronym(token) {
