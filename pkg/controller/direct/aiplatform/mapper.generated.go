@@ -153,6 +153,44 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		return out
 	}
 */
+func APIAuth_FromProto(mapCtx *direct.MapContext, in *pb.ApiAuth) *krm.APIAuth {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIAuth{}
+	out.APIKeyConfig = APIAuth_APIKeyConfig_FromProto(mapCtx, in.GetApiKeyConfig())
+	return out
+}
+func APIAuth_ToProto(mapCtx *direct.MapContext, in *krm.APIAuth) *pb.ApiAuth {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiAuth{}
+	if oneof := APIAuth_APIKeyConfig_ToProto(mapCtx, in.APIKeyConfig); oneof != nil {
+		out.AuthConfig = &pb.ApiAuth_ApiKeyConfig_{ApiKeyConfig: oneof}
+	}
+	return out
+}
+func APIAuth_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.ApiAuth_ApiKeyConfig) *krm.APIAuth_APIKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIAuth_APIKeyConfig{}
+	if in.GetApiKeySecretVersion() != "" {
+		out.APIKeySecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetApiKeySecretVersion()}
+	}
+	return out
+}
+func APIAuth_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.APIAuth_APIKeyConfig) *pb.ApiAuth_ApiKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApiAuth_ApiKeyConfig{}
+	if in.APIKeySecretVersionRef != nil {
+		out.ApiKeySecretVersion = in.APIKeySecretVersionRef.External
+	}
+	return out
+}
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
 	if in == nil {
 		return nil
@@ -283,6 +321,24 @@ found existing non-generated mapping function "ContextObservedState_ToProto", sk
 		return out
 	}
 */
+func CorpusStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CorpusStatus) *krm.CorpusStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CorpusStatusObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ErrorStatus = direct.LazyPtr(in.GetErrorStatus())
+	return out
+}
+func CorpusStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CorpusStatusObservedState) *pb.CorpusStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CorpusStatus{}
+	out.State = direct.Enum_ToProto[pb.CorpusStatus_State](mapCtx, in.State)
+	out.ErrorStatus = direct.ValueOf(in.ErrorStatus)
+	return out
+}
 func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
 	if in == nil {
 		return nil
@@ -1857,6 +1913,240 @@ func Probe_TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_TCPS
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+func RagEmbeddingModelConfig_FromProto(mapCtx *direct.MapContext, in *pb.RagEmbeddingModelConfig) *krm.RagEmbeddingModelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagEmbeddingModelConfig{}
+	out.VertexPredictionEndpoint = RagEmbeddingModelConfig_VertexPredictionEndpoint_FromProto(mapCtx, in.GetVertexPredictionEndpoint())
+	return out
+}
+func RagEmbeddingModelConfig_ToProto(mapCtx *direct.MapContext, in *krm.RagEmbeddingModelConfig) *pb.RagEmbeddingModelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagEmbeddingModelConfig{}
+	if oneof := RagEmbeddingModelConfig_VertexPredictionEndpoint_ToProto(mapCtx, in.VertexPredictionEndpoint); oneof != nil {
+		out.ModelConfig = &pb.RagEmbeddingModelConfig_VertexPredictionEndpoint_{VertexPredictionEndpoint: oneof}
+	}
+	return out
+}
+func RagEmbeddingModelConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RagEmbeddingModelConfig) *krm.RagEmbeddingModelConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagEmbeddingModelConfigObservedState{}
+	out.VertexPredictionEndpoint = RagEmbeddingModelConfig_VertexPredictionEndpointObservedState_FromProto(mapCtx, in.GetVertexPredictionEndpoint())
+	return out
+}
+func RagEmbeddingModelConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RagEmbeddingModelConfigObservedState) *pb.RagEmbeddingModelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagEmbeddingModelConfig{}
+	if oneof := RagEmbeddingModelConfig_VertexPredictionEndpointObservedState_ToProto(mapCtx, in.VertexPredictionEndpoint); oneof != nil {
+		out.ModelConfig = &pb.RagEmbeddingModelConfig_VertexPredictionEndpoint_{VertexPredictionEndpoint: oneof}
+	}
+	return out
+}
+func RagEmbeddingModelConfig_VertexPredictionEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.RagEmbeddingModelConfig_VertexPredictionEndpoint) *krm.RagEmbeddingModelConfig_VertexPredictionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagEmbeddingModelConfig_VertexPredictionEndpoint{}
+	if in.GetEndpoint() != "" {
+		out.EndpointRef = &krm.VertexAIEndpointRef{External: in.GetEndpoint()}
+	}
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	return out
+}
+func RagEmbeddingModelConfig_VertexPredictionEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.RagEmbeddingModelConfig_VertexPredictionEndpoint) *pb.RagEmbeddingModelConfig_VertexPredictionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagEmbeddingModelConfig_VertexPredictionEndpoint{}
+	if in.EndpointRef != nil {
+		out.Endpoint = in.EndpointRef.External
+	}
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	return out
+}
+func RagEmbeddingModelConfig_VertexPredictionEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RagEmbeddingModelConfig_VertexPredictionEndpoint) *krm.RagEmbeddingModelConfig_VertexPredictionEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagEmbeddingModelConfig_VertexPredictionEndpointObservedState{}
+	if in.GetEndpoint() != "" {
+		out.EndpointRef = &krm.VertexAIEndpointRef{External: in.GetEndpoint()}
+	}
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	return out
+}
+func RagEmbeddingModelConfig_VertexPredictionEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RagEmbeddingModelConfig_VertexPredictionEndpointObservedState) *pb.RagEmbeddingModelConfig_VertexPredictionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagEmbeddingModelConfig_VertexPredictionEndpoint{}
+	if in.EndpointRef != nil {
+		out.Endpoint = in.EndpointRef.External
+	}
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	return out
+}
+func RagVectorDbConfig_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig) *krm.RagVectorDbConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfig{}
+	out.RagManagedDb = RagVectorDbConfig_RagManagedDb_FromProto(mapCtx, in.GetRagManagedDb())
+	out.Pinecone = RagVectorDbConfig_Pinecone_FromProto(mapCtx, in.GetPinecone())
+	out.VertexVectorSearch = RagVectorDbConfig_VertexVectorSearch_FromProto(mapCtx, in.GetVertexVectorSearch())
+	out.APIAuth = APIAuth_FromProto(mapCtx, in.GetApiAuth())
+	out.RagEmbeddingModelConfig = RagEmbeddingModelConfig_FromProto(mapCtx, in.GetRagEmbeddingModelConfig())
+	return out
+}
+func RagVectorDbConfig_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfig) *pb.RagVectorDbConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig{}
+	if oneof := RagVectorDbConfig_RagManagedDb_ToProto(mapCtx, in.RagManagedDb); oneof != nil {
+		out.VectorDb = &pb.RagVectorDbConfig_RagManagedDb_{RagManagedDb: oneof}
+	}
+	if oneof := RagVectorDbConfig_Pinecone_ToProto(mapCtx, in.Pinecone); oneof != nil {
+		out.VectorDb = &pb.RagVectorDbConfig_Pinecone_{Pinecone: oneof}
+	}
+	if oneof := RagVectorDbConfig_VertexVectorSearch_ToProto(mapCtx, in.VertexVectorSearch); oneof != nil {
+		out.VectorDb = &pb.RagVectorDbConfig_VertexVectorSearch_{VertexVectorSearch: oneof}
+	}
+	out.ApiAuth = APIAuth_ToProto(mapCtx, in.APIAuth)
+	out.RagEmbeddingModelConfig = RagEmbeddingModelConfig_ToProto(mapCtx, in.RagEmbeddingModelConfig)
+	return out
+}
+func RagVectorDbConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig) *krm.RagVectorDbConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfigObservedState{}
+	// MISSING: RagManagedDb
+	// MISSING: Pinecone
+	// MISSING: VertexVectorSearch
+	// MISSING: APIAuth
+	out.RagEmbeddingModelConfig = RagEmbeddingModelConfigObservedState_FromProto(mapCtx, in.GetRagEmbeddingModelConfig())
+	return out
+}
+func RagVectorDbConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfigObservedState) *pb.RagVectorDbConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig{}
+	// MISSING: RagManagedDb
+	// MISSING: Pinecone
+	// MISSING: VertexVectorSearch
+	// MISSING: APIAuth
+	out.RagEmbeddingModelConfig = RagEmbeddingModelConfigObservedState_ToProto(mapCtx, in.RagEmbeddingModelConfig)
+	return out
+}
+func RagVectorDbConfig_Pinecone_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig_Pinecone) *krm.RagVectorDbConfig_Pinecone {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfig_Pinecone{}
+	out.IndexName = direct.LazyPtr(in.GetIndexName())
+	return out
+}
+func RagVectorDbConfig_Pinecone_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfig_Pinecone) *pb.RagVectorDbConfig_Pinecone {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig_Pinecone{}
+	out.IndexName = direct.ValueOf(in.IndexName)
+	return out
+}
+func RagVectorDbConfig_RagManagedDb_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig_RagManagedDb) *krm.RagVectorDbConfig_RagManagedDb {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfig_RagManagedDb{}
+	out.Knn = RagVectorDbConfig_RagManagedDb_Knn_FromProto(mapCtx, in.GetKnn())
+	out.Ann = RagVectorDbConfig_RagManagedDb_Ann_FromProto(mapCtx, in.GetAnn())
+	return out
+}
+func RagVectorDbConfig_RagManagedDb_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfig_RagManagedDb) *pb.RagVectorDbConfig_RagManagedDb {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig_RagManagedDb{}
+	if oneof := RagVectorDbConfig_RagManagedDb_Knn_ToProto(mapCtx, in.Knn); oneof != nil {
+		out.RetrievalStrategy = &pb.RagVectorDbConfig_RagManagedDb_Knn{Knn: oneof}
+	}
+	if oneof := RagVectorDbConfig_RagManagedDb_Ann_ToProto(mapCtx, in.Ann); oneof != nil {
+		out.RetrievalStrategy = &pb.RagVectorDbConfig_RagManagedDb_Ann{Ann: oneof}
+	}
+	return out
+}
+func RagVectorDbConfig_RagManagedDb_Ann_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig_RagManagedDb_ANN) *krm.RagVectorDbConfig_RagManagedDb_Ann {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfig_RagManagedDb_Ann{}
+	out.TreeDepth = direct.LazyPtr(in.GetTreeDepth())
+	out.LeafCount = direct.LazyPtr(in.GetLeafCount())
+	return out
+}
+func RagVectorDbConfig_RagManagedDb_Ann_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfig_RagManagedDb_Ann) *pb.RagVectorDbConfig_RagManagedDb_ANN {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig_RagManagedDb_ANN{}
+	out.TreeDepth = direct.ValueOf(in.TreeDepth)
+	out.LeafCount = direct.ValueOf(in.LeafCount)
+	return out
+}
+func RagVectorDbConfig_RagManagedDb_Knn_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig_RagManagedDb_KNN) *krm.RagVectorDbConfig_RagManagedDb_Knn {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfig_RagManagedDb_Knn{}
+	return out
+}
+func RagVectorDbConfig_RagManagedDb_Knn_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfig_RagManagedDb_Knn) *pb.RagVectorDbConfig_RagManagedDb_KNN {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig_RagManagedDb_KNN{}
+	return out
+}
+func RagVectorDbConfig_VertexVectorSearch_FromProto(mapCtx *direct.MapContext, in *pb.RagVectorDbConfig_VertexVectorSearch) *krm.RagVectorDbConfig_VertexVectorSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagVectorDbConfig_VertexVectorSearch{}
+	if in.GetIndexEndpoint() != "" {
+		out.IndexEndpointRef = &krm.VertexAIIndexEndpointRef{External: in.GetIndexEndpoint()}
+	}
+	if in.GetIndex() != "" {
+		out.IndexRef = &krm.VertexAIIndexRef{External: in.GetIndex()}
+	}
+	return out
+}
+func RagVectorDbConfig_VertexVectorSearch_ToProto(mapCtx *direct.MapContext, in *krm.RagVectorDbConfig_VertexVectorSearch) *pb.RagVectorDbConfig_VertexVectorSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagVectorDbConfig_VertexVectorSearch{}
+	if in.IndexEndpointRef != nil {
+		out.IndexEndpoint = in.IndexEndpointRef.External
+	}
+	if in.IndexRef != nil {
+		out.Index = in.IndexRef.External
+	}
+	return out
+}
 func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -2672,6 +2962,60 @@ func VertexAIPipelineJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAI
 	out.PreflightValidations = direct.ValueOf(in.PreflightValidations)
 	return out
 }
+func VertexAIRagCorpusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RagCorpus) *krm.VertexAIRagCorpusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIRagCorpusObservedState{}
+	out.VectorDbConfig = RagVectorDbConfigObservedState_FromProto(mapCtx, in.GetVectorDbConfig())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CorpusStatus = CorpusStatusObservedState_FromProto(mapCtx, in.GetCorpusStatus())
+	return out
+}
+func VertexAIRagCorpusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIRagCorpusObservedState) *pb.RagCorpus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagCorpus{}
+	if oneof := RagVectorDbConfigObservedState_ToProto(mapCtx, in.VectorDbConfig); oneof != nil {
+		out.BackendConfig = &pb.RagCorpus_VectorDbConfig{VectorDbConfig: oneof}
+	}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CorpusStatus = CorpusStatusObservedState_ToProto(mapCtx, in.CorpusStatus)
+	return out
+}
+func VertexAIRagCorpusSpec_FromProto(mapCtx *direct.MapContext, in *pb.RagCorpus) *krm.VertexAIRagCorpusSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIRagCorpusSpec{}
+	out.VectorDbConfig = RagVectorDbConfig_FromProto(mapCtx, in.GetVectorDbConfig())
+	out.VertexAiSearchConfig = VertexAiSearchConfig_FromProto(mapCtx, in.GetVertexAiSearchConfig())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func VertexAIRagCorpusSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIRagCorpusSpec) *pb.RagCorpus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagCorpus{}
+	if oneof := RagVectorDbConfig_ToProto(mapCtx, in.VectorDbConfig); oneof != nil {
+		out.BackendConfig = &pb.RagCorpus_VectorDbConfig{VectorDbConfig: oneof}
+	}
+	if oneof := VertexAiSearchConfig_ToProto(mapCtx, in.VertexAiSearchConfig); oneof != nil {
+		out.BackendConfig = &pb.RagCorpus_VertexAiSearchConfig{VertexAiSearchConfig: oneof}
+	}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
 func VertexAIScheduleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krm.VertexAIScheduleObservedState {
 	if in == nil {
 		return nil
@@ -2991,6 +3335,22 @@ func VertexAITuningJobSpec_BaseModel_ToProto(mapCtx *direct.MapContext, in *stri
 		return nil
 	}
 	return &pb.TuningJob_BaseModel{BaseModel: *in}
+}
+func VertexAiSearchConfig_FromProto(mapCtx *direct.MapContext, in *pb.VertexAiSearchConfig) *krm.VertexAiSearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAiSearchConfig{}
+	out.ServingConfig = direct.LazyPtr(in.GetServingConfig())
+	return out
+}
+func VertexAiSearchConfig_ToProto(mapCtx *direct.MapContext, in *krm.VertexAiSearchConfig) *pb.VertexAiSearchConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexAiSearchConfig{}
+	out.ServingConfig = direct.ValueOf(in.ServingConfig)
+	return out
 }
 func VideoMetadata_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *krm.VideoMetadata {
 	if in == nil {

@@ -73,6 +73,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// AI Platform
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":              true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}": true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/ragCorpora/{}":                 true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                    true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                  true,
 
