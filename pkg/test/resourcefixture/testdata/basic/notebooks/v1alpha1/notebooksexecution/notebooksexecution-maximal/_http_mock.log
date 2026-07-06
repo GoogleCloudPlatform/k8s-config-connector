@@ -31,7 +31,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {
   "iamConfiguration": {
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true
     }
   },
   "labels": {
@@ -58,11 +58,13 @@ Vary: X-Origin
   "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
@@ -103,11 +105,13 @@ Vary: X-Origin
   "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
@@ -134,13 +138,101 @@ Vary: X-Origin
 
 ---
 
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "NotebooksExecution Test SA"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "NotebooksExecution Test SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "NotebooksExecution Test SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = execution "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}" not found
+error: rpc error: code = NotFound desc = execution "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}" not found
 
 {}
 
@@ -168,19 +260,17 @@ GRPC /google.cloud.notebooks.v1.NotebookService/CreateExecution
       "parameters": "key=value",
       "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
       "scaleTier": "CUSTOM",
-      "serviceAccount": "${projectId}@${projectId}.iam.gserviceaccount.com",
-      "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/my-tensorboard",
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
       "vertexAiParameters": {
         "env": {
           "MY_VAR": "MY_VAL"
-        },
-        "network": "projects/${projectId}/global/networks/default"
+        }
       }
     },
     "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output.ipynb"
   },
   "executionId": "notebooksexecution-maximal-${uniqueId}",
-  "parent": "projects/${projectId}/locations/us-central1-a"
+  "parent": "projects/${projectId}/locations/us-central1"
 }
 
 OK
@@ -191,10 +281,10 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
@@ -202,7 +292,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 OK
@@ -215,10 +305,10 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Execution",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -240,16 +330,14 @@ OK
       "parameters": "key=value",
       "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
       "scaleTier": "CUSTOM",
-      "serviceAccount": "${projectId}@${projectId}.iam.gserviceaccount.com",
-      "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/my-tensorboard",
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
       "vertexAiParameters": {
         "env": {
           "MY_VAR": "MY_VAL"
-        },
-        "network": "projects/${projectId}/global/networks/default"
+        }
       }
     },
-    "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
     "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output.ipynb",
     "state": "SUCCEEDED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -261,7 +349,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}"
 }
 
 OK
@@ -286,16 +374,14 @@ OK
     "parameters": "key=value",
     "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
     "scaleTier": "CUSTOM",
-    "serviceAccount": "${projectId}@${projectId}.iam.gserviceaccount.com",
-    "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/my-tensorboard",
+    "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "vertexAiParameters": {
       "env": {
         "MY_VAR": "MY_VAL"
-      },
-      "network": "projects/${projectId}/global/networks/default"
+      }
     }
   },
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
   "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output.ipynb",
   "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -306,7 +392,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/GetExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}"
 }
 
 OK
@@ -331,16 +417,14 @@ OK
     "parameters": "key=value",
     "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
     "scaleTier": "CUSTOM",
-    "serviceAccount": "${projectId}@${projectId}.iam.gserviceaccount.com",
-    "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/my-tensorboard",
+    "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "vertexAiParameters": {
       "env": {
         "MY_VAR": "MY_VAL"
-      },
-      "network": "projects/${projectId}/global/networks/default"
+      }
     }
   },
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
   "outputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/output.ipynb",
   "state": "SUCCEEDED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -351,7 +435,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/DeleteExecution
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}"
 }
 
 OK
@@ -362,10 +446,10 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
@@ -373,7 +457,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 OK
@@ -386,14 +470,56 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteExecution",
-    "target": "projects/${projectId}/locations/us-central1-a/executions/notebooksexecution-maximal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/executions/notebooksexecution-maximal-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "NotebooksExecution Test SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
 
 ---
 
@@ -411,11 +537,13 @@ Vary: X-Origin
   "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
