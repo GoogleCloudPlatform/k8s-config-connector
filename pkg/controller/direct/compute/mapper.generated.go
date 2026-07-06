@@ -4070,6 +4070,8 @@ func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: UserDefinedFields
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeSnapshotSpec_v1beta1_FromProto", skipping
 func ComputeSnapshotSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotSpec {
 	if in == nil {
 		return nil
@@ -4116,6 +4118,9 @@ func ComputeSnapshotSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Sna
 	out.StorageLocations = in.StorageLocations
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeSnapshotSpec_v1beta1_ToProto", skipping
 func ComputeSnapshotSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotSpec) *pb.Snapshot {
 	if in == nil {
 		return nil
@@ -4162,6 +4167,9 @@ func ComputeSnapshotSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	out.StorageLocations = in.StorageLocations
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeSnapshotStatus_v1beta1_FromProto", skipping
 func ComputeSnapshotStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotStatus {
 	if in == nil {
 		return nil
@@ -4207,51 +4215,57 @@ func ComputeSnapshotStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 	// MISSING: StorageLocations
 	return out
 }
-func ComputeSnapshotStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotStatus) *pb.Snapshot {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeSnapshotStatus_v1beta1_ToProto", skipping
+
+	func ComputeSnapshotStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotStatus) *pb.Snapshot {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Snapshot{}
+		// MISSING: Architecture
+		// MISSING: AutoCreated
+		// MISSING: ChainName
+		// MISSING: CreationSizeBytes
+		out.CreationTimestamp = in.CreationTimestamp
+		// MISSING: Description
+		// MISSING: DiskSizeGB
+		// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+		// MISSING: DownloadBytes
+		// MISSING: EnableConfidentialCompute
+		// MISSING: GuestFlush
+		// MISSING: GuestOSFeatures
+		// MISSING: ID
+		// MISSING: Kind
+		out.LabelFingerprint = in.LabelFingerprint
+		// MISSING: Labels
+		// MISSING: LicenseCodes
+		out.Licenses = in.Licenses
+		// MISSING: LocationHint
+		// MISSING: Name
+		// MISSING: SatisfiesPzi
+		// MISSING: SatisfiesPzs
+		out.SelfLink = in.SelfLink
+		// MISSING: SnapshotEncryptionKey
+		// MISSING: SnapshotType
+		// MISSING: SourceDisk
+		// MISSING: SourceDiskEncryptionKey
+		// MISSING: SourceDiskForRecoveryCheckpoint
+		// MISSING: SourceDiskID
+		// MISSING: SourceInstantSnapshot
+		// MISSING: SourceInstantSnapshotEncryptionKey
+		// MISSING: SourceInstantSnapshotID
+		// MISSING: SourceSnapshotSchedulePolicy
+		// MISSING: SourceSnapshotSchedulePolicyID
+		// MISSING: Status
+		out.StorageBytes = in.StorageBytes
+		// MISSING: StorageBytesStatus
+		// MISSING: StorageLocations
+		return out
 	}
-	out := &pb.Snapshot{}
-	// MISSING: Architecture
-	// MISSING: AutoCreated
-	// MISSING: ChainName
-	// MISSING: CreationSizeBytes
-	out.CreationTimestamp = in.CreationTimestamp
-	// MISSING: Description
-	// MISSING: DiskSizeGB
-	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
-	// MISSING: DownloadBytes
-	// MISSING: EnableConfidentialCompute
-	// MISSING: GuestFlush
-	// MISSING: GuestOSFeatures
-	// MISSING: ID
-	// MISSING: Kind
-	out.LabelFingerprint = in.LabelFingerprint
-	// MISSING: Labels
-	// MISSING: LicenseCodes
-	out.Licenses = in.Licenses
-	// MISSING: LocationHint
-	// MISSING: Name
-	// MISSING: SatisfiesPzi
-	// MISSING: SatisfiesPzs
-	out.SelfLink = in.SelfLink
-	// MISSING: SnapshotEncryptionKey
-	// MISSING: SnapshotType
-	// MISSING: SourceDisk
-	// MISSING: SourceDiskEncryptionKey
-	// MISSING: SourceDiskForRecoveryCheckpoint
-	// MISSING: SourceDiskID
-	// MISSING: SourceInstantSnapshot
-	// MISSING: SourceInstantSnapshotEncryptionKey
-	// MISSING: SourceInstantSnapshotID
-	// MISSING: SourceSnapshotSchedulePolicy
-	// MISSING: SourceSnapshotSchedulePolicyID
-	// MISSING: Status
-	out.StorageBytes = in.StorageBytes
-	// MISSING: StorageBytesStatus
-	// MISSING: StorageLocations
-	return out
-}
+*/
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil

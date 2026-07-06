@@ -33,6 +33,26 @@ func computeSnapshotFuzzer() fuzztesting.KRMFuzzer {
 		ComputeSnapshotStatus_v1beta1_FromProto, ComputeSnapshotStatus_v1beta1_ToProto,
 	)
 
+	// Field Comparison Documentation:
+	// - Spec.ChainName                     maps to proto field .chain_name
+	// - Spec.Description                   maps to proto field .description
+	// - Spec.ResourceID                    maps to metadata.name / resourceID, not in proto body
+	// - Spec.SnapshotEncryptionKey         maps to proto field .snapshot_encryption_key
+	// - Spec.SourceDiskEncryptionKey       maps to proto field .source_disk_encryption_key
+	// - Spec.SourceDiskRef                 maps to proto field .source_disk
+	// - Spec.StorageLocations              maps to proto field .storage_locations
+	// - Spec.Zone                          maps to proto field .zone (unimplemented / not part of the Snapshot proto body)
+	//
+	// - Status.Conditions                  internal KRM conditions, not in proto body
+	// - Status.CreationTimestamp           maps to proto field .creation_timestamp
+	// - Status.DiskSizeGb                  maps to proto field .disk_size_gb
+	// - Status.LabelFingerprint            maps to proto field .label_fingerprint
+	// - Status.Licenses                    maps to proto field .licenses
+	// - Status.ObservedGeneration          internal KRM generation, not in proto body
+	// - Status.SelfLink                    maps to proto field .self_link
+	// - Status.SnapshotId                  maps to proto field .id
+	// - Status.StorageBytes                maps to proto field .storage_bytes
+
 	// Spec fields
 	f.SpecField(".chain_name")
 	f.SpecField(".description")
@@ -49,6 +69,8 @@ func computeSnapshotFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusField(".creation_timestamp")
+	f.StatusField(".disk_size_gb")
+	f.StatusField(".id")
 	f.StatusField(".label_fingerprint")
 	f.StatusField(".licenses")
 	f.StatusField(".self_link")
@@ -85,8 +107,6 @@ func computeSnapshotFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".zone")
 	f.Unimplemented_NotYetTriaged(".params")
 	f.Unimplemented_NotYetTriaged(".params.resource_manager_tags")
-	f.Unimplemented_NotYetTriaged(".id")
-	f.Unimplemented_NotYetTriaged(".disk_size_gb")
 	f.Unimplemented_NotYetTriaged(".region")
 	f.Unimplemented_NotYetTriaged(".snapshot_group_id")
 	f.Unimplemented_NotYetTriaged(".snapshot_group_name")

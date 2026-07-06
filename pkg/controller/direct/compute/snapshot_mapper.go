@@ -102,3 +102,75 @@ func SnapshotSourceDiskEncryptionKey_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	}
 	return out
 }
+
+// ComputeSnapshotSpec_v1beta1_FromProto converts pb.Snapshot to krm.ComputeSnapshotSpec.
+func ComputeSnapshotSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSnapshotSpec{}
+	out.ChainName = in.ChainName
+	out.Description = in.Description
+	out.SnapshotEncryptionKey = SnapshotSnapshotEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSnapshotEncryptionKey())
+	if in.GetSourceDisk() != "" {
+		out.SourceDiskRef = &krm.ComputeDiskRef{External: in.GetSourceDisk()}
+	}
+	out.SourceDiskEncryptionKey = SnapshotSourceDiskEncryptionKey_v1beta1_FromProto(mapCtx, in.GetSourceDiskEncryptionKey())
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+
+// ComputeSnapshotSpec_v1beta1_ToProto converts krm.ComputeSnapshotSpec to pb.Snapshot.
+func ComputeSnapshotSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotSpec) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	out.ChainName = in.ChainName
+	out.Description = in.Description
+	out.SnapshotEncryptionKey = SnapshotSnapshotEncryptionKey_v1beta1_ToProto(mapCtx, in.SnapshotEncryptionKey)
+	if in.SourceDiskRef != nil {
+		out.SourceDisk = &in.SourceDiskRef.External
+	}
+	out.SourceDiskEncryptionKey = SnapshotSourceDiskEncryptionKey_v1beta1_ToProto(mapCtx, in.SourceDiskEncryptionKey)
+	out.StorageLocations = in.StorageLocations
+	return out
+}
+
+// ComputeSnapshotStatus_v1beta1_FromProto converts pb.Snapshot to krm.ComputeSnapshotStatus.
+func ComputeSnapshotStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.ComputeSnapshotStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSnapshotStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.DiskSizeGb = in.DiskSizeGb
+	out.LabelFingerprint = in.LabelFingerprint
+	out.Licenses = in.Licenses
+	out.SelfLink = in.SelfLink
+	if in.Id != nil {
+		id := int64(*in.Id)
+		out.SnapshotId = &id
+	}
+	out.StorageBytes = in.StorageBytes
+	return out
+}
+
+// ComputeSnapshotStatus_v1beta1_ToProto converts krm.ComputeSnapshotStatus to pb.Snapshot.
+func ComputeSnapshotStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSnapshotStatus) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.DiskSizeGb = in.DiskSizeGb
+	out.LabelFingerprint = in.LabelFingerprint
+	out.Licenses = in.Licenses
+	out.SelfLink = in.SelfLink
+	if in.SnapshotId != nil {
+		id := uint64(*in.SnapshotId)
+		out.Id = &id
+	}
+	out.StorageBytes = in.StorageBytes
+	return out
+}
