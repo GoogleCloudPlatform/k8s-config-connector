@@ -185,7 +185,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicy               | True         | False       | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyAssociation    | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicyRule           | True         | False       | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputePacketMirroring                          | False        | True        | False  | DCL        | False       |
+| compute.cnrm.cloud.google.com                 | ComputePacketMirroring                          | False        | True        | False  | DCL        | True        |
 | compute.cnrm.cloud.google.com                 | ComputePerInstanceConfig                        | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeProjectMetadata                          | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeRegionAutoscaler                         | True         | False       | False  | Terraform  | True        |

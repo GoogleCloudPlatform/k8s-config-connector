@@ -3223,6 +3223,100 @@ func ComputeOrganizationSecurityPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapCo
 }
 */
 
+/* found existing non-generated mapping function "ComputePacketMirroringSpec_v1beta1_FromProto", skipping
+func ComputePacketMirroringSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroring) *krm.ComputePacketMirroringSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePacketMirroringSpec{}
+	out.CollectorIlb = PacketmirroringCollectorIlb_v1beta1_FromProto(mapCtx, in.GetCollectorIlb())
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.Enable = in.Enable
+	out.Filter = PacketmirroringFilter_v1beta1_FromProto(mapCtx, in.GetFilter())
+	// MISSING: ID
+	// MISSING: Kind
+	out.MirroredResources = PacketmirroringMirroredResources_v1beta1_FromProto(mapCtx, in.GetMirroredResources())
+	// MISSING: Name
+	out.Network = PacketmirroringNetwork_v1beta1_FromProto(mapCtx, in.GetNetwork())
+	out.Priority = in.Priority
+	// MISSING: Region
+	// MISSING: SelfLink
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputePacketMirroringSpec_v1beta1_ToProto", skipping
+func ComputePacketMirroringSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePacketMirroringSpec) *pb.PacketMirroring {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroring{}
+	out.CollectorIlb = PacketmirroringCollectorIlb_v1beta1_ToProto(mapCtx, in.CollectorIlb)
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.Enable = in.Enable
+	out.Filter = PacketmirroringFilter_v1beta1_ToProto(mapCtx, in.Filter)
+	// MISSING: ID
+	// MISSING: Kind
+	out.MirroredResources = PacketmirroringMirroredResources_v1beta1_ToProto(mapCtx, in.MirroredResources)
+	// MISSING: Name
+	out.Network = PacketmirroringNetwork_v1beta1_ToProto(mapCtx, in.Network)
+	out.Priority = in.Priority
+	// MISSING: Region
+	// MISSING: SelfLink
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputePacketMirroringStatus_v1beta1_FromProto", skipping
+func ComputePacketMirroringStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroring) *krm.ComputePacketMirroringStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePacketMirroringStatus{}
+	out.CollectorIlb = PacketmirroringCollectorIlbStatus_v1beta1_FromProto(mapCtx, in.GetCollectorIlb())
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: Enable
+	// MISSING: Filter
+	// MISSING: ID
+	// (near miss): "ID" vs "Id"
+	// MISSING: Kind
+	// MISSING: MirroredResources
+	// MISSING: Name
+	out.Network = PacketmirroringNetworkStatus_v1beta1_FromProto(mapCtx, in.GetNetwork())
+	// MISSING: Priority
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputePacketMirroringStatus_v1beta1_ToProto", skipping
+func ComputePacketMirroringStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePacketMirroringStatus) *pb.PacketMirroring {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroring{}
+	out.CollectorIlb = PacketmirroringCollectorIlbStatus_v1beta1_ToProto(mapCtx, in.CollectorIlb)
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: Enable
+	// MISSING: Filter
+	// MISSING: ID
+	// (near miss): "ID" vs "Id"
+	// MISSING: Kind
+	// MISSING: MirroredResources
+	// MISSING: Name
+	out.Network = PacketmirroringNetworkStatus_v1beta1_ToProto(mapCtx, in.Network)
+	// MISSING: Priority
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_FromProto", skipping
 func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerSpec {
 	if in == nil {
@@ -5652,6 +5746,202 @@ func NodeTemplateServerBinding_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Type = in.Type
 	return out
 }
+
+/* found existing non-generated mapping function "PacketmirroringCollectorIlb_v1beta1_FromProto", skipping
+func PacketmirroringCollectorIlb_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringForwardingRuleInfo) *krm.PacketmirroringCollectorIlb {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringCollectorIlb{}
+	// MISSING: CanonicalURL
+	// MISSING: URL
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PacketmirroringCollectorIlb_v1beta1_ToProto", skipping
+func PacketmirroringCollectorIlb_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringCollectorIlb) *pb.PacketMirroringForwardingRuleInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroringForwardingRuleInfo{}
+	// MISSING: CanonicalURL
+	// MISSING: URL
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PacketmirroringCollectorIlbStatus_v1beta1_FromProto", skipping
+func PacketmirroringCollectorIlbStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringForwardingRuleInfo) *krm.PacketmirroringCollectorIlbStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringCollectorIlbStatus{}
+	// MISSING: CanonicalURL
+	// (near miss): "CanonicalURL" vs "CanonicalUrl"
+	// MISSING: URL
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "PacketmirroringCollectorIlbStatus_v1beta1_ToProto", skipping
+
+	func PacketmirroringCollectorIlbStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringCollectorIlbStatus) *pb.PacketMirroringForwardingRuleInfo {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PacketMirroringForwardingRuleInfo{}
+		// MISSING: CanonicalURL
+		// (near miss): "CanonicalURL" vs "CanonicalUrl"
+		// MISSING: URL
+		return out
+	}
+*/
+func PacketmirroringFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringFilter) *krm.PacketmirroringFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringFilter{}
+	out.IPProtocols = in.IPProtocols
+	out.CIDRRanges = in.CidrRanges
+	out.Direction = in.Direction
+	return out
+}
+func PacketmirroringFilter_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringFilter) *pb.PacketMirroringFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroringFilter{}
+	out.IPProtocols = in.IPProtocols
+	out.CidrRanges = in.CIDRRanges
+	out.Direction = in.Direction
+	return out
+}
+
+/* found existing non-generated mapping function "PacketmirroringInstances_v1beta1_FromProto", skipping
+func PacketmirroringInstances_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringMirroredResourceInfoInstanceInfo) *krm.PacketmirroringInstances {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringInstances{}
+	// MISSING: CanonicalURL
+	// (near miss): "CanonicalURL" vs "CanonicalUrl"
+	// MISSING: URL
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "PacketmirroringInstances_v1beta1_ToProto", skipping
+
+	func PacketmirroringInstances_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringInstances) *pb.PacketMirroringMirroredResourceInfoInstanceInfo {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PacketMirroringMirroredResourceInfoInstanceInfo{}
+		// MISSING: CanonicalURL
+		// (near miss): "CanonicalURL" vs "CanonicalUrl"
+		// MISSING: URL
+		return out
+	}
+*/
+func PacketmirroringMirroredResources_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringMirroredResourceInfo) *krm.PacketmirroringMirroredResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringMirroredResources{}
+	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, PacketmirroringInstances_v1beta1_FromProto)
+	out.Subnetworks = direct.Slice_FromProto(mapCtx, in.Subnetworks, PacketmirroringSubnetworks_v1beta1_FromProto)
+	out.Tags = in.Tags
+	return out
+}
+func PacketmirroringMirroredResources_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringMirroredResources) *pb.PacketMirroringMirroredResourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroringMirroredResourceInfo{}
+	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, PacketmirroringInstances_v1beta1_ToProto)
+	out.Subnetworks = direct.Slice_ToProto(mapCtx, in.Subnetworks, PacketmirroringSubnetworks_v1beta1_ToProto)
+	out.Tags = in.Tags
+	return out
+}
+
+/* found existing non-generated mapping function "PacketmirroringNetwork_v1beta1_FromProto", skipping
+func PacketmirroringNetwork_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringNetworkInfo) *krm.PacketmirroringNetwork {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringNetwork{}
+	// MISSING: CanonicalURL
+	// MISSING: URL
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PacketmirroringNetwork_v1beta1_ToProto", skipping
+func PacketmirroringNetwork_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringNetwork) *pb.PacketMirroringNetworkInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroringNetworkInfo{}
+	// MISSING: CanonicalURL
+	// MISSING: URL
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PacketmirroringNetworkStatus_v1beta1_FromProto", skipping
+func PacketmirroringNetworkStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringNetworkInfo) *krm.PacketmirroringNetworkStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringNetworkStatus{}
+	// MISSING: CanonicalURL
+	// (near miss): "CanonicalURL" vs "CanonicalUrl"
+	// MISSING: URL
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PacketmirroringNetworkStatus_v1beta1_ToProto", skipping
+func PacketmirroringNetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringNetworkStatus) *pb.PacketMirroringNetworkInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroringNetworkInfo{}
+	// MISSING: CanonicalURL
+	// (near miss): "CanonicalURL" vs "CanonicalUrl"
+	// MISSING: URL
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PacketmirroringSubnetworks_v1beta1_FromProto", skipping
+func PacketmirroringSubnetworks_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PacketMirroringMirroredResourceInfoSubnetInfo) *krm.PacketmirroringSubnetworks {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PacketmirroringSubnetworks{}
+	// MISSING: CanonicalURL
+	// (near miss): "CanonicalURL" vs "CanonicalUrl"
+	// MISSING: URL
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "PacketmirroringSubnetworks_v1beta1_ToProto", skipping
+func PacketmirroringSubnetworks_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PacketmirroringSubnetworks) *pb.PacketMirroringMirroredResourceInfoSubnetInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PacketMirroringMirroredResourceInfoSubnetInfo{}
+	// MISSING: CanonicalURL
+	// (near miss): "CanonicalURL" vs "CanonicalUrl"
+	// MISSING: URL
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto", skipping
 func RegionautoscalerAutoscalingPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krmcomputev1alpha1.RegionautoscalerAutoscalingPolicy {
