@@ -42,3 +42,5 @@ type NetworkSecurityPartnerSSERealmExpansion interface{}
 type NetworkSecuritySACRealmExpansion interface{}
 
 type NetworkSecuritySecurityProfileExpansion interface{}
+
+type NetworkSecurityTLSInspectionPolicyExpansion interface{}

@@ -401,6 +401,7 @@
 | logging.cnrm.cloud.google.com                 | LoggingLogSink                                  | False        | True        | False  | Terraform  | True        |
 | logging.cnrm.cloud.google.com                 | LoggingLogView                                  | False        | True        | False  | DCL        | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaCluster                             | True         | True        | False  | Direct     | True        |
+| managedkafka.cnrm.cloud.google.com            | ManagedKafkaConnectCluster                      | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaConsumerGroup                       | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaTopic                               | True         | True        | False  | Direct     | True        |
 | memcache.cnrm.cloud.google.com                | MemcacheInstance                                | False        | True        | False  | Terraform  | False       |
@@ -443,6 +444,7 @@
 | networksecurity.cnrm.cloud.google.com         | NetworkSecuritySACRealm                         | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecuritySecurityProfile                  | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityServerTLSPolicy                  | False        | True        | False  | DCL        | False       |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityTLSInspectionPolicy              | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheKeyset                  | True         | False       | False  | Terraform  | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheOrigin                  | True         | False       | False  | Terraform  | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheService                 | True         | False       | False  | Terraform  | True        |
@@ -534,6 +536,7 @@
 | tags.cnrm.cloud.google.com                    | TagsTagKey                                      | False        | True        | False  | Terraform  | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagValue                                    | False        | True        | False  | Terraform  | True        |
 | cloudtasks.cnrm.cloud.google.com              | TasksQueue                                      | True         | False       | False  | Direct     | True        |
+| testing.cnrm.cloud.google.com                 | TestingDeviceSession                            | True         | False       | False  | Direct     | True        |
 | tpu.cnrm.cloud.google.com                     | TPUNode                                         | True         | False       | False  | Terraform  | False       |
 | tpu.cnrm.cloud.google.com                     | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |
 | vectorsearch.cnrm.cloud.google.com            | VectorSearchCollection                          | True         | False       | False  | Direct     | True        |

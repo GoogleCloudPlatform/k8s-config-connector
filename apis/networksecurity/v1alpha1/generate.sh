@@ -49,6 +49,7 @@ go run . generate-types \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --resource NetworkSecurityFirewallEndpointAssociation:FirewallEndpointAssociation \
   --resource NetworkSecurityGatewaySecurityPolicy:GatewaySecurityPolicy \
+  --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
@@ -56,6 +57,7 @@ go run . generate-types \
   --service google.cloud.networksecurity.v1alpha1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
+  --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
   --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}

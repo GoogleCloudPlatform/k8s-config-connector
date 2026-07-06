@@ -1895,11 +1895,7 @@
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.executionConfig.ttl" is not set in unstructured objects
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.peripheralsConfig.metastoreService" is not set in unstructured objects
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.environmentConfig.peripheralsConfig.sparkHistoryServerConfig.dataprocClusterRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.jupyterSession.displayName" is not set in unstructured objects
-[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.jupyterSession.kernel" is not set in unstructured objects
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.autotuningConfig.scenarios[]" is not set in unstructured objects
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.cohort" is not set in unstructured objects
 [missing_field] crd=dataprocsessions.dataproc.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.containerImage" is not set in unstructured objects
@@ -2851,6 +2847,19 @@
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" is not set in unstructured objects
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.plaintext.value" is not set in unstructured objects
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.plaintext.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityConfig.memoryBytes" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityConfig.vcpuCount" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.config" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.accessConfig.networkConfigs[].additionalSubnetRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.accessConfig.networkConfigs[].dnsDomainNames[]" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.accessConfig.networkConfigs[].primarySubnetRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].external" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].name" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].namespace" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
@@ -3013,6 +3022,15 @@
 [missing_field] crd=networksecuritysecurityprofiles.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.urlFilteringProfile.urlFilters[].filteringAction" is not set in unstructured objects
 [missing_field] crd=networksecuritysecurityprofiles.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.urlFilteringProfile.urlFilters[].priority" is not set in unstructured objects
 [missing_field] crd=networksecuritysecurityprofiles.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.urlFilteringProfile.urlFilters[].urls[]" is not set in unstructured objects
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.caPoolRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customTLSFeatures[]" is not set in unstructured objects
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludePublicCASet" is not set in unstructured objects
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.minTLSVersion" is not set in unstructured objects
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.tlsFeatureProfile" is not set in unstructured objects
+[missing_field] crd=networksecuritytlsinspectionpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.trustConfigRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].managed" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].value.value" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].value.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
@@ -3334,6 +3352,13 @@
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.bandwidthLimit.limitMbps" is not set in unstructured objects
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.androidModelID" is not set in unstructured objects
+[missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.androidVersionID" is not set in unstructured objects
+[missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.locale" is not set in unstructured objects
+[missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.orientation" is not set in unstructured objects
+[missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
+[missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.ttl" is not set in unstructured objects
 [missing_field] crd=tpunodes.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=tpunodes.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" is not set in unstructured objects
 [missing_field] crd=tpunodes.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedulingConfig.preemptible" is not set in unstructured objects
