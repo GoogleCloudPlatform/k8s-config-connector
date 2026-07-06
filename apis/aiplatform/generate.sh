@@ -43,7 +43,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIStudy:Study \
     --resource VertexAITrainingPipeline:TrainingPipeline \
     --resource VertexAISchedule:Schedule \
-    --resource VertexAIExtension:Extension
+    --resource VertexAIExtension:Extension \
+    --resource VertexAIRagCorpus:RagCorpus
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
