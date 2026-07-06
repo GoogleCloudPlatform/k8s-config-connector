@@ -48,6 +48,7 @@
 // resource: ComputeSSLPolicy:SslPolicy
 // resource: ComputeSSLCertificate:SslCertificate
 // resource: ComputeSubnetwork:Subnetwork
+// resource: ComputeTargetGRPCProxy:TargetGrpcProxy
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 // resource: ComputeTargetHTTPProxy:TargetHttpProxy
 // resource: ComputeTargetInstance:TargetInstance
@@ -6508,6 +6509,52 @@ type Tags struct {
 	// An array of tags. Each tag must be 1-63 characters long, and comply with RFC1035.
 	// +kcc:proto:field=google.cloud.compute.v1.Tags.items
 	Items []string `json:"items,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.TargetGrpcProxy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.TargetGrpcProxy
+type TargetGrpcProxy struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.description
+	Description *string `json:"description,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a TargetGrpcProxy. An up-to-date fingerprint must be provided in order to patch/update the TargetGrpcProxy; otherwise, the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve the TargetGrpcProxy.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#targetGrpcProxy for target grpc proxies.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL with id for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// URL to the UrlMap resource that defines the mapping from URL to the BackendService. The protocol field in the BackendService must be set to GRPC.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.url_map
+	URLMap *string `json:"urlMap,omitempty"`
+
+	// If true, indicates that the BackendServices referenced by the urlMap may be accessed by gRPC applications without using a sidecar proxy. This will enable configuration checks on urlMap and its referenced BackendServices to not allow unsupported features. A gRPC application must use "xds:///" scheme in the target URI of the service it is connecting to. If false, indicates that the BackendServices referenced by the urlMap will be accessed by gRPC applications via a sidecar proxy. In this case, a gRPC application must not use "xds:///" scheme in the target URI of the service it is connecting to
+	// +kcc:proto:field=google.cloud.compute.v1.TargetGrpcProxy.validate_for_proxyless
+	ValidateForProxyless *bool `json:"validateForProxyless,omitempty"`
 }
 */
 
