@@ -263,6 +263,12 @@ func ResourceStorageBucket() *schema.Resource {
 							Required:    true,
 							Description: `While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.`,
 						},
+						"terminal_storage_class": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							ValidateFunc: validation.StringInSlice([]string{"NEARLINE", "ARCHIVE"}, false),
+							Description:  `The storage class that objects in the bucket eventually transition to if they are not accessed for a certain period of time.`,
+						},
 					},
 				},
 				Description: `The bucket's autoclass configuration.`,
@@ -1371,6 +1377,10 @@ func expandBucketAutoclass(configured interface{}) *storage.BucketAutoclass {
 	bucketAutoclass.Enabled = autoclass["enabled"].(bool)
 	bucketAutoclass.ForceSendFields = append(bucketAutoclass.ForceSendFields, "Enabled")
 
+	if v, ok := autoclass["terminal_storage_class"]; ok && v.(string) != "" {
+		bucketAutoclass.TerminalStorageClass = v.(string)
+	}
+
 	return bucketAutoclass
 }
 
@@ -1397,6 +1407,9 @@ func flattenBucketAutoclass(bucketAutoclass *storage.BucketAutoclass) []map[stri
 
 	autoclass := map[string]interface{}{
 		"enabled": bucketAutoclass.Enabled,
+	}
+	if bucketAutoclass.TerminalStorageClass != "" {
+		autoclass["terminal_storage_class"] = bucketAutoclass.TerminalStorageClass
 	}
 	autoclassList = append(autoclassList, autoclass)
 	return autoclassList
