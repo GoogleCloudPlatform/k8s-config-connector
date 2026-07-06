@@ -21,7 +21,7 @@ spec:
     plural: networksecuritygatewaysecuritypolicies
     shortNames:
     - gcpnetworksecuritygatewaysecuritypolicy
-    - gcpnetworksecuritygatewaysecuritypolicys
+    - gcpnetworksecuritygatewaysecuritypolicies
     singular: networksecuritygatewaysecuritypolicy
   preserveUnknownFields: false
   scope: Namespaced
