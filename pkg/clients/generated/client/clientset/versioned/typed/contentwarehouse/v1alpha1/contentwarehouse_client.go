@@ -34,6 +34,7 @@ type ContentwarehouseV1alpha1Interface interface {
 	ContentWarehouseDocumentsGetter
 	ContentWarehouseRuleSetsGetter
 	ContentWarehouseSchemasGetter
+	ContentWarehouseSynonymSetsGetter
 }
 
 // ContentwarehouseV1alpha1Client is used to interact with features provided by the contentwarehouse.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *ContentwarehouseV1alpha1Client) ContentWarehouseRuleSets(namespace stri
 
 func (c *ContentwarehouseV1alpha1Client) ContentWarehouseSchemas(namespace string) ContentWarehouseSchemaInterface {
 	return newContentWarehouseSchemas(c, namespace)
+}
+
+func (c *ContentwarehouseV1alpha1Client) ContentWarehouseSynonymSets(namespace string) ContentWarehouseSynonymSetInterface {
+	return newContentWarehouseSynonymSets(c, namespace)
 }
 
 // NewForConfig creates a new ContentwarehouseV1alpha1Client for the given config.

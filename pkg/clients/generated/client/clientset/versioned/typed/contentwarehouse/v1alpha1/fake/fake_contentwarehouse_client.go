@@ -43,6 +43,10 @@ func (c *FakeContentwarehouseV1alpha1) ContentWarehouseSchemas(namespace string)
 	return newFakeContentWarehouseSchemas(c, namespace)
 }
 
+func (c *FakeContentwarehouseV1alpha1) ContentWarehouseSynonymSets(namespace string) v1alpha1.ContentWarehouseSynonymSetInterface {
+	return newFakeContentWarehouseSynonymSets(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeContentwarehouseV1alpha1) RESTClient() rest.Interface {

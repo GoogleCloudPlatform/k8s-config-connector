@@ -20,6 +20,7 @@
 // resource: ContentWarehouseSchema:DocumentSchema
 // resource: ContentWarehouseRuleSet:RuleSet
 // resource: ContentWarehouseDocument:Document
+// resource: ContentWarehouseSynonymSet:SynonymSet
 
 package v1alpha1
 
@@ -598,6 +599,39 @@ type RuleSet struct {
 	// List of rules given by the customer.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.RuleSet.rules
 	Rules []Rule `json:"rules,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.contentwarehouse.v1.SynonymSet", skipping
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.SynonymSet
+type SynonymSet struct {
+	// The resource name of the SynonymSet
+	//  This is mandatory for google.api.resource.
+	//  Format:
+	//  projects/{project_number}/locations/{location}/synonymSets/{context}.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.SynonymSet.name
+	Name *string `json:"name,omitempty"`
+
+	// This is a freeform field. Example contexts can be "sales," "engineering,"
+	//  "real estate," "accounting," etc.
+	//  The context can be supplied during search requests.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.SynonymSet.context
+	Context *string `json:"context,omitempty"`
+
+	// List of Synonyms for the context.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.SynonymSet.synonyms
+	Synonyms []SynonymSet_Synonym `json:"synonyms,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.contentwarehouse.v1.SynonymSet.Synonym", skipping
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.SynonymSet.Synonym
+type SynonymSet_Synonym struct {
+	// For example: sale, invoice, bill, order
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.SynonymSet.Synonym.words
+	Words []string `json:"words,omitempty"`
 }
 */
 
