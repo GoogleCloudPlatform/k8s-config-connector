@@ -225,6 +225,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Notebooks
 		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":   true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/schedules/{}":    true,
 
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
