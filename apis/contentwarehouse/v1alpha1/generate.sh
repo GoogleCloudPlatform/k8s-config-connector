@@ -29,7 +29,8 @@ go run . generate-types \
     --include-skipped-output \
     --resource ContentWarehouseSchema:DocumentSchema \
     --resource ContentWarehouseRuleSet:RuleSet \
-    --resource ContentWarehouseDocument:Document
+    --resource ContentWarehouseDocument:Document \
+    --resource ContentWarehouseSynonymSet:SynonymSet
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds
