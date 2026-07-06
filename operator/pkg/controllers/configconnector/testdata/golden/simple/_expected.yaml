@@ -3852,6 +3852,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - telcoautomation.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - testing.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5295,6 +5307,14 @@ rules:
   - watch
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - telcoautomation.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -3419,6 +3419,11 @@
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.bandwidthLimit.limitMbps" is not set in unstructured objects
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=telcoautomationedgeslms.telcoautomation.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=telcoautomationedgeslms.telcoautomation.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=telcoautomationedgeslms.telcoautomation.cnrm.cloud.google.com version=v1alpha1: field ".spec.orchestrationClusterRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=telcoautomationedgeslms.telcoautomation.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=telcoautomationedgeslms.telcoautomation.cnrm.cloud.google.com version=v1alpha1: field ".spec.workloadClusterType" is not set in unstructured objects
 [missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.androidModelID" is not set in unstructured objects
 [missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.androidVersionID" is not set in unstructured objects
 [missing_field] crd=testingdevicesessions.testing.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.locale" is not set in unstructured objects
