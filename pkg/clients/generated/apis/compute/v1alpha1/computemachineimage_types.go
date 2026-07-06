@@ -43,18 +43,15 @@ type MachineimageMachineImageEncryptionKey struct {
 	// +optional
 	KmsKeyName *string `json:"kmsKeyName,omitempty"`
 
-	/* Immutable. The service account used for the encryption request for the given KMS key.
-	If absent, the Compute Engine Service Agent service account is used. */
+	/* Immutable. The service account used for the encryption request for the given KMS key. If absent, the Compute Engine Service Agent service account is used. */
 	// +optional
 	KmsKeyServiceAccount *string `json:"kmsKeyServiceAccount,omitempty"`
 
-	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in
-	RFC 4648 base64 to either encrypt or decrypt this resource. */
+	/* Immutable. Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. */
 	// +optional
 	RawKey *string `json:"rawKey,omitempty"`
 
-	/* The RFC 4648 base64 encoded SHA-256 hash of the
-	customer-supplied encryption key that protects this resource. */
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
 	// +optional
 	Sha256 *string `json:"sha256,omitempty"`
 }
@@ -64,16 +61,11 @@ type ComputeMachineImageSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Specify this to create an application consistent machine image by informing the OS to prepare for the snapshot process.
-	Currently only supported on Windows instances using the Volume Shadow Copy Service (VSS). */
+	/* Immutable. Specify this to create an application consistent machine image by informing the OS to prepare for the snapshot process. Currently only supported on Windows instances using the Volume Shadow Copy Service (VSS). */
 	// +optional
 	GuestFlush *bool `json:"guestFlush,omitempty"`
 
-	/* Immutable. Encrypts the machine image using a customer-supplied encryption key.
-
-	After you encrypt a machine image with a customer-supplied key, you must
-	provide the same key if you use the machine image later (e.g. to create a
-	instance from the image). */
+	/* Immutable. Encrypts the machine image using a customer-supplied encryption key. */
 	// +optional
 	MachineImageEncryptionKey *MachineimageMachineImageEncryptionKey `json:"machineImageEncryptionKey,omitempty"`
 
@@ -84,6 +76,7 @@ type ComputeMachineImageSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* The source instance used to create the machine image. */
 	SourceInstanceRef v1alpha1.ResourceRef `json:"sourceInstanceRef"`
 }
 
@@ -95,6 +88,7 @@ type ComputeMachineImageStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* Server-defined URL for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
