@@ -48,6 +48,14 @@ go run . generate-types \
 
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/siptrunk_types.generated.go
 
+# Generate types for Dialogflow CX v3beta1 service (Tool)
+go run . generate-types \
+  --service google.cloud.dialogflow.cx.v3beta1 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowTool:Tool
+
+mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/tool_types.generated.go
+
 # Generate types for Dialogflow v2 service again to restore types.generated.go for Dialogflow v2
 go run . generate-types \
   --service google.cloud.dialogflow.v2 \
