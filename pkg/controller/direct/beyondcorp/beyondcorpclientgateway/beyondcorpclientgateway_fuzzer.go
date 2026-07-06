@@ -29,13 +29,13 @@ func beyondCorpClientGatewayFuzzer() fuzztesting.KRMFuzzer {
 		BeyondCorpClientGatewayObservedState_FromProto, BeyondCorpClientGatewayObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Identity(".name")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".id")
-	f.StatusFields.Insert(".client_connector_service")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".state")
+	f.StatusField(".id")
+	f.StatusField(".client_connector_service")
 
 	return f
 }
