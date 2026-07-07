@@ -20,42 +20,23 @@ This skill guides the implementation of the `Adapter` interface
     - Use the generated mappers and manual mappers as needed.
     - Ensure correct error handling (e.g., handling 404s in `Find`).
 
-2.  **Duplicate and Annotate Test Cases for Direct Reconciler**:
-    We need to duplicate the existing test fixtures and configure the duplicates to use the direct reconciler.
-    
-    *   **Step 2.a: Duplicate test cases**
-        Locate the existing test cases under `pkg/test/resourcefixture/testdata/basic/<service_name>/<version>/<kind>`.
-        For each test case directory (e.g., `<test_name>`), create a duplicate copy of the entire directory in the same folder, appending `-direct` to its name (e.g., `<test_name>-direct`).
-        
-        *Example*: For `bigtableappprofile` under `pkg/test/resourcefixture/testdata/basic/bigtable/v1beta1/bigtableappprofile`, the directory is duplicated as `bigtableappprofile-direct`.
-        
-        Commit this duplication change to git before modifying the files.
-        
-    *   **Step 2.b: Inject direct reconciler annotation**
-        In the new `-direct` test directories, edit the resource YAML files (typically `create.yaml` and `update.yaml`, if present).
-        Add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation under `metadata.annotations`.
-        
-        *Example configuration change in `create.yaml` / `update.yaml`*:
-        ```yaml
-        metadata:
-          annotations:
-            alpha.cnrm.cloud.google.com/reconciler: direct
-        ```
-        
-        Do not add this annotation to dependency resources defined in `dependencies.yaml` unless they are also specifically part of the migration.
+2.  **Verify and Record against MockGCP / Fix Discrepancies**:
+    Run the fixtures tests against mock GCP to check behavior, update golden files, and verify correctness.
 
-
-3.  **Verify and Record against MockGCP / Fix Discrepancies**:
-    Run the newly added duplicate tests against mock GCP to check behavior, update golden files, and verify correctness.
+    When the direct controller becomes available for a resource, the test framework automatically injects the 'direct' 
+    annotation into the test YAML and generates golden logs using the direct controller. If both the legacy and direct 
+    controllers are available, the framework also records the legacy controller logs (_http_old_controller.log, 
+    _final_object_old_controller.golden.yaml, and _exported_old_controller.golden.yaml) along with the diff files between 
+    the two controllers (_final_object.diff and _http.diff).
     
-    *   **Step 3.a: Run compare-mock**
+    *   **Step 2.a: Run compare-mock**
         Run the test using `hack/compare-mock`:
         ```bash
-        hack/compare-mock "fixtures/^<testname>-direct$"
+        hack/compare-mock "fixtures/^<testname>$"
         ```
         This command will execute the tests against MockGCP and automatically generate/update the golden files (such as `_generated_object_<testname>-direct.golden.yaml`) and `_http.log` under the test case directory.
         
-    *   **Step 3.b: Fix discrepancies in the Adapter**
+    *   **Step 2.b: Fix discrepancies in the Adapter**
         If there are any errors or discrepancies between the legacy reconciler and the direct reconciler behavior (indicated by the test failing or having incorrect updates in `_http.log` or golden objects), iteratively update your direct controller.
         
         Focus on the **Adapter** implementation:
