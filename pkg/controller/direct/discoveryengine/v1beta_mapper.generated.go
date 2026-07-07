@@ -29,6 +29,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DiscoveryEngineSampleQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SampleQuery) *krm.DiscoveryEngineSampleQueryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineSampleQueryObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func DiscoveryEngineSampleQueryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineSampleQueryObservedState) *pb.SampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SampleQuery{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
 func DiscoveryEngineSampleQuerySetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SampleQuerySet) *krm.DiscoveryEngineSampleQuerySetObservedState {
 	if in == nil {
 		return nil
@@ -65,5 +83,63 @@ func DiscoveryEngineSampleQuerySetSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func DiscoveryEngineSampleQuerySpec_FromProto(mapCtx *direct.MapContext, in *pb.SampleQuery) *krm.DiscoveryEngineSampleQuerySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineSampleQuerySpec{}
+	out.QueryEntry = SampleQuery_QueryEntry_FromProto(mapCtx, in.GetQueryEntry())
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSampleQuerySpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineSampleQuerySpec) *pb.SampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SampleQuery{}
+	if oneof := SampleQuery_QueryEntry_ToProto(mapCtx, in.QueryEntry); oneof != nil {
+		out.Content = &pb.SampleQuery_QueryEntry_{QueryEntry: oneof}
+	}
+	// MISSING: Name
+	return out
+}
+func SampleQuery_QueryEntry_FromProto(mapCtx *direct.MapContext, in *pb.SampleQuery_QueryEntry) *krm.SampleQuery_QueryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SampleQuery_QueryEntry{}
+	out.Query = direct.LazyPtr(in.GetQuery())
+	out.Targets = direct.Slice_FromProto(mapCtx, in.Targets, SampleQuery_QueryEntry_Target_FromProto)
+	return out
+}
+func SampleQuery_QueryEntry_ToProto(mapCtx *direct.MapContext, in *krm.SampleQuery_QueryEntry) *pb.SampleQuery_QueryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SampleQuery_QueryEntry{}
+	out.Query = direct.ValueOf(in.Query)
+	out.Targets = direct.Slice_ToProto(mapCtx, in.Targets, SampleQuery_QueryEntry_Target_ToProto)
+	return out
+}
+func SampleQuery_QueryEntry_Target_FromProto(mapCtx *direct.MapContext, in *pb.SampleQuery_QueryEntry_Target) *krm.SampleQuery_QueryEntry_Target {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SampleQuery_QueryEntry_Target{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.PageNumbers = in.PageNumbers
+	out.Score = in.Score
+	return out
+}
+func SampleQuery_QueryEntry_Target_ToProto(mapCtx *direct.MapContext, in *krm.SampleQuery_QueryEntry_Target) *pb.SampleQuery_QueryEntry_Target {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SampleQuery_QueryEntry_Target{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.PageNumbers = in.PageNumbers
+	out.Score = in.Score
 	return out
 }
