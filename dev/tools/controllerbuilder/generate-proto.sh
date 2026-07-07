@@ -61,6 +61,10 @@ fi
 # Reset to the desired version
 git reset --hard ${GOOGLEAPI_VERSION}
 
+# Overwrite config.proto with the updated version that has DeploymentGroup
+mkdir -p google/cloud/config/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
