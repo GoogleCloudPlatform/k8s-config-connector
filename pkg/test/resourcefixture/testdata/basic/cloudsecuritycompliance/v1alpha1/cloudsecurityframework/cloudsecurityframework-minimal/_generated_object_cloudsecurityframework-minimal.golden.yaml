@@ -1,5 +1,5 @@
 apiVersion: cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1
-kind: CloudSecurityComplianceFramework
+kind: CloudSecurityFramework
 metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -7,7 +7,7 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
-  name: cscframework-mini-${uniqueId}
+  name: cloudsecurityframework-${uniqueId}
   namespace: ${uniqueId}
 spec:
   location: global
@@ -20,7 +20,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}
+  externalRef: organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-${uniqueId}
   observedGeneration: 1
   observedState:
     majorRevisionID: 1

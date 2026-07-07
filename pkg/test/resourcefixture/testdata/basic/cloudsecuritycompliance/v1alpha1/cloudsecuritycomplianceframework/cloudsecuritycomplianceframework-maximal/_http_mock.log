@@ -1,6 +1,6 @@
 GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
 
 404 Not Found
@@ -25,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks?%24alt=json%3Benum-encoding%3Dint&frameworkId=cscframework-max-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fglobal
 
 {
@@ -34,7 +34,8 @@ X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fgl
   ],
   "cloudControlDetails": [
     {
-      "majorRevisionId": "1"
+      "majorRevisionId": "1",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/my-cloud-control"
     }
   ],
   "description": "Test description for maximal framework",
@@ -58,19 +59,22 @@ X-Xss-Protection: 0
   ],
   "cloudControlDetails": [
     {
-      "majorRevisionId": "1"
+      "majorRevisionId": "1",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/my-cloud-control"
     }
   ],
   "description": "Test description for maximal framework",
   "displayName": "Test Framework Max ${uniqueId}",
-  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+  "majorRevisionId": "1",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}",
+  "type": 2
 }
 
 ---
 
 GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
 
 200 OK
@@ -89,19 +93,22 @@ X-Xss-Protection: 0
   ],
   "cloudControlDetails": [
     {
-      "majorRevisionId": "1"
+      "majorRevisionId": "1",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/my-cloud-control"
     }
   ],
   "description": "Test description for maximal framework",
   "displayName": "Test Framework Max ${uniqueId}",
-  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+  "majorRevisionId": "1",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}",
+  "type": 2
 }
 
 ---
 
 PATCH https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=category%2CcloudControlDetails%2Cdescription%2CdisplayName
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: framework.name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
 
 {
@@ -111,7 +118,8 @@ X-Goog-Request-Params: framework.name=organizations%2F${organizationID}%2Flocati
   ],
   "cloudControlDetails": [
     {
-      "majorRevisionId": "2"
+      "majorRevisionId": "2",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/my-cloud-control"
     }
   ],
   "description": "Test description for maximal framework updated",
@@ -136,19 +144,22 @@ X-Xss-Protection: 0
   ],
   "cloudControlDetails": [
     {
-      "majorRevisionId": "2"
+      "majorRevisionId": "2",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/my-cloud-control"
     }
   ],
   "description": "Test description for maximal framework updated",
   "displayName": "Test Framework Max Updated ${uniqueId}",
-  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+  "majorRevisionId": "2",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}",
+  "type": 2
 }
 
 ---
 
 GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
 
 200 OK
@@ -168,19 +179,22 @@ X-Xss-Protection: 0
   ],
   "cloudControlDetails": [
     {
-      "majorRevisionId": "2"
+      "majorRevisionId": "2",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/my-cloud-control"
     }
   ],
   "description": "Test description for maximal framework updated",
   "displayName": "Test Framework Max Updated ${uniqueId}",
-  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+  "majorRevisionId": "2",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}",
+  "type": 2
 }
 
 ---
 
 DELETE https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
 
 200 OK

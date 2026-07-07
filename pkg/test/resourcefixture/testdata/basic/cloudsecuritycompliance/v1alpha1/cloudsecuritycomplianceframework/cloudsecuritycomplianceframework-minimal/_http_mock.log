@@ -1,6 +1,6 @@
 GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-mini-${uniqueId}
 
 404 Not Found
@@ -25,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks?%24alt=json%3Benum-encoding%3Dint&frameworkId=cscframework-mini-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fglobal
 
 {
@@ -43,14 +43,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}"
+  "majorRevisionId": "1",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}",
+  "type": 2
 }
 
 ---
 
 GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-mini-${uniqueId}
 
 200 OK
@@ -64,14 +66,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}"
+  "majorRevisionId": "1",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}",
+  "type": 2
 }
 
 ---
 
 DELETE https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-mini-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-mini-${uniqueId}
 
 200 OK

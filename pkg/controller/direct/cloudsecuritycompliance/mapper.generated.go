@@ -81,6 +81,8 @@ func CelExpression_ToProto(mapCtx *direct.MapContext, in *krm.CelExpression) *pb
 	out.Expression = direct.ValueOf(in.Expression)
 	return out
 }
+
+/* found existing non-generated mapping function "CloudControlDetails_FromProto", skipping
 func CloudControlDetails_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlDetails) *krm.CloudControlDetails {
 	if in == nil {
 		return nil
@@ -91,16 +93,22 @@ func CloudControlDetails_FromProto(mapCtx *direct.MapContext, in *pb.CloudContro
 	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Parameter_FromProto)
 	return out
 }
-func CloudControlDetails_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlDetails) *pb.CloudControlDetails {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "CloudControlDetails_ToProto", skipping
+
+	func CloudControlDetails_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlDetails) *pb.CloudControlDetails {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CloudControlDetails{}
+		// MISSING: Name
+		out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
+		out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
+		return out
 	}
-	out := &pb.CloudControlDetails{}
-	// MISSING: Name
-	out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
-	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
-	return out
-}
+*/
 func CloudSecurityComplianceCloudControlObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControl) *krm.CloudSecurityComplianceCloudControlObservedState {
 	if in == nil {
 		return nil

@@ -1,0 +1,91 @@
+GET https://cloudsecuritycompliance.googleapis.com/v1/projects/$%7BTEST_PROJECT_ID%7D/locations/global/frameworks/cloudsecurityframework-proj-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F%24%7BTEST_PROJECT_ID%7D%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-proj-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudsecuritycompliance.googleapis.com/v1/projects/$%7BTEST_PROJECT_ID%7D/locations/global/frameworks?%24alt=json%3Benum-encoding%3Dint&frameworkId=cloudsecurityframework-proj-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F%24%7BTEST_PROJECT_ID%7D%2Flocations%2Fglobal
+
+{
+  "name": "projects/${TEST_PROJECT_ID}/locations/global/frameworks/cloudsecurityframework-proj-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "majorRevisionId": "1",
+  "name": "projects/${TEST_PROJECT_ID}/locations/global/frameworks/cloudsecurityframework-proj-${uniqueId}",
+  "type": 2
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/projects/$%7BTEST_PROJECT_ID%7D/locations/global/frameworks/cloudsecurityframework-proj-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F%24%7BTEST_PROJECT_ID%7D%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-proj-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "majorRevisionId": "1",
+  "name": "projects/${TEST_PROJECT_ID}/locations/global/frameworks/cloudsecurityframework-proj-${uniqueId}",
+  "type": 2
+}
+
+---
+
+DELETE https://cloudsecuritycompliance.googleapis.com/v1/projects/$%7BTEST_PROJECT_ID%7D/locations/global/frameworks/cloudsecurityframework-proj-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F%24%7BTEST_PROJECT_ID%7D%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-proj-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

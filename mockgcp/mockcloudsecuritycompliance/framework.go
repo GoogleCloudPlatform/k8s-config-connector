@@ -57,6 +57,10 @@ func (s *configServer) CreateFramework(ctx context.Context, req *pb.CreateFramew
 	obj := proto.Clone(req.GetFramework()).(*pb.Framework)
 	obj.Name = fqn
 
+	// Populate output-only default fields if necessary
+	obj.Type = pb.Framework_CUSTOM
+	obj.MajorRevisionId = 1
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -80,6 +84,10 @@ func (s *configServer) UpdateFramework(ctx context.Context, req *pb.UpdateFramew
 
 	// Just update the storage with the new object
 	obj := proto.Clone(reqObj).(*pb.Framework)
+
+	// Keep existing values or increment major revision if needed
+	obj.MajorRevisionId = existing.MajorRevisionId + 1
+	obj.Type = existing.Type
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

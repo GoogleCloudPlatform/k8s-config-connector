@@ -1,5 +1,5 @@
 apiVersion: cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1
-kind: CloudSecurityComplianceFramework
+kind: CloudSecurityFramework
 metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -7,18 +7,23 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: cscframework-max-${uniqueId}
+  name: cloudsecurityframework-max-${uniqueId}
   namespace: ${uniqueId}
 spec:
   category:
-  - GOOGLE_BEST_PRACTICES
-  - ASSURED_WORKLOADS
+  - INDUSTRY_DEFINED_STANDARD
   cloudControlDetails:
   - cloudControlRef:
-      external: organizations/${organizationID}/locations/global/cloudControls/my-cloud-control
+      external: organizations/${organizationID}/locations/global/cloudControls/test-control-updated
     majorRevisionID: 2
-  description: Test description for maximal framework updated
-  displayName: Test Framework Max Updated ${uniqueId}
+    parameters:
+    - name: test-param-updated
+      parameterValue:
+        stringValue: test-value-updated
+  description: Test description max updated
+  displayName: Test Framework Max ${uniqueId} Updated
+  labels:
+    key1: value2
   location: global
   organizationRef:
     external: organizations/${organizationID}
@@ -29,7 +34,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}
+  externalRef: organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}
   observedGeneration: 2
   observedState:
     majorRevisionID: 2
