@@ -71,6 +71,12 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityFirewallEndpointAssociation{}).Name(),
 	}
 
+	NetworkSecurityGatewaySecurityPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityGatewaySecurityPolicy{}).Name(),
+	}
+
 	NetworkSecurityInterceptDeploymentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

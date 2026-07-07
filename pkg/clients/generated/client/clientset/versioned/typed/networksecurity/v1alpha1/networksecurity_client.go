@@ -34,6 +34,7 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecurityAddressGroupsGetter
 	NetworkSecurityBackendAuthenticationConfigsGetter
 	NetworkSecurityFirewallEndpointAssociationsGetter
+	NetworkSecurityGatewaySecurityPoliciesGetter
 	NetworkSecurityInterceptDeploymentsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
 	NetworkSecurityMirroringDeploymentsGetter
@@ -59,6 +60,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConf
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpointAssociations(namespace string) NetworkSecurityFirewallEndpointAssociationInterface {
 	return newNetworkSecurityFirewallEndpointAssociations(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityGatewaySecurityPolicies(namespace string) NetworkSecurityGatewaySecurityPolicyInterface {
+	return newNetworkSecurityGatewaySecurityPolicies(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(namespace string) NetworkSecurityInterceptDeploymentInterface {
