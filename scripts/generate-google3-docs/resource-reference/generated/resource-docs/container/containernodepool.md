@@ -187,6 +187,8 @@ nodeConfig:
     - string
   resourceLabels:
     string: string
+  resourceManagerTags:
+    string: string
   sandboxConfig:
     sandboxType: string
   serviceAccountRef:
@@ -1405,6 +1407,16 @@ version: string
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>The GCE resource labels (a map of key/value pairs) to be applied to the node pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}.</p>
         </td>
     </tr>
     <tr>
