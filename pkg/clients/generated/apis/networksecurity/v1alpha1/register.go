@@ -95,6 +95,12 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityMirroringEndpointGroup{}).Name(),
 	}
 
+	NetworkSecurityPartnerSSEGatewayGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityPartnerSSEGateway{}).Name(),
+	}
+
 	NetworkSecurityPartnerSSERealmGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

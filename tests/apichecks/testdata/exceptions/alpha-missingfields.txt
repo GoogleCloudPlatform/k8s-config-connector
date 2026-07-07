@@ -2980,6 +2980,15 @@
 [missing_field] crd=networksecurityinterceptendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=networksecurityinterceptendpointgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecuritymirroringdeployments.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.partnerSubnetRange" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.partnerVPCSubnetRange" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.sseGatewayReferenceID" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.sseSubnetRange" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.symantecOptions.symantecSiteTargetHost" is not set in unstructured objects
+[missing_field] crd=networksecuritypartnerssegateways.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.vni" is not set in unstructured objects
 [missing_field] crd=networksecuritypartnersserealms.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networksecuritypartnersserealms.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=networksecuritypartnersserealms.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.pairingKey" is not set in unstructured objects

@@ -195,6 +195,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Network Security
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/partnerSSEGateways/{}":           true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/securityProfiles/{}":             true,
 
