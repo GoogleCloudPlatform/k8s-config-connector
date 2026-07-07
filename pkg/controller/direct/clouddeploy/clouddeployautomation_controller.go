@@ -82,6 +82,14 @@ func (m *modelAutomation) AdapterForObject(ctx context.Context, op *directbase.A
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	// Validate that users are not trying to manage system labels (goog- or go-)
+	labels := u.GetLabels()
+	for k := range labels {
+		if isSystemLabel(k) {
+			return nil, fmt.Errorf("system label %q is not allowed in metadata.labels", k)
+		}
+	}
+
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -247,13 +255,6 @@ func (a *AutomationAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	mapCtx := &direct.MapContext{}
 
 	a.desiredPb.Name = a.id.String()
-
-	// Validate that users are not trying to manage system labels (goog- or go-)
-	for k := range a.labels {
-		if isSystemLabel(k) {
-			return fmt.Errorf("system label %q is not allowed in metadata.labels", k)
-		}
-	}
 
 	a.desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(a.labels)
 
