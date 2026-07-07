@@ -302,6 +302,7 @@
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineDataStoreTargetSite              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineEngine                           | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineIdentityMappingStore             | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineSampleQuery                      | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineSampleQuerySet                   | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineSession                          | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                     | DLPConnection                                   | True         | False       | False  | Direct     | True        |

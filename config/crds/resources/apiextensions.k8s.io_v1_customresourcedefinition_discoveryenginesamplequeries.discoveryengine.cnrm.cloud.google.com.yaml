@@ -21,7 +21,7 @@ spec:
     plural: discoveryenginesamplequeries
     shortNames:
     - gcpdiscoveryenginesamplequery
-    - gcpdiscoveryenginesamplequerys
+    - gcpdiscoveryenginesamplequeries
     singular: discoveryenginesamplequery
   preserveUnknownFields: false
   scope: Namespaced
