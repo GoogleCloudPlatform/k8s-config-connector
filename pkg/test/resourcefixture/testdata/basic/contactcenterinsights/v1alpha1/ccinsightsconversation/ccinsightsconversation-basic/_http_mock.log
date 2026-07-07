@@ -1,0 +1,184 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-$%7Bunique_id%7D?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fccinsightsconversation-%24%7Bunique_id%7D
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/conversations?%24alt=json%3Benum-encoding%3Dint&conversationId=ccinsightsconversation-%24%7Bunique_id%7D
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "agentId": "human-agent-01",
+  "labels": {
+    "env": "test-basic"
+  },
+  "languageCode": "en-US",
+  "medium": 2,
+  "name": "projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "agentId": "human-agent-01",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "env": "test-basic"
+  },
+  "languageCode": "en-US",
+  "medium": 2,
+  "name": "projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-$%7Bunique_id%7D?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fccinsightsconversation-%24%7Bunique_id%7D
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "agentId": "human-agent-01",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "env": "test-basic"
+  },
+  "languageCode": "en-US",
+  "medium": 2,
+  "name": "projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-$%7Bunique_id%7D?%24alt=json%3Benum-encoding%3Dint&updateMask=agentId%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: conversation.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fccinsightsconversation-%24%7Bunique_id%7D
+
+{
+  "agentId": "human-agent-02",
+  "labels": {
+    "env": "test-basic-updated"
+  },
+  "languageCode": "en-US",
+  "medium": 2,
+  "name": "projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "agentId": "human-agent-02",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "env": "test-basic-updated"
+  },
+  "languageCode": "en-US",
+  "medium": 2,
+  "name": "projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-$%7Bunique_id%7D?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fccinsightsconversation-%24%7Bunique_id%7D
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "agentId": "human-agent-02",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "env": "test-basic-updated"
+  },
+  "languageCode": "en-US",
+  "medium": 2,
+  "name": "projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-$%7Bunique_id%7D?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconversations%2Fccinsightsconversation-%24%7Bunique_id%7D
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

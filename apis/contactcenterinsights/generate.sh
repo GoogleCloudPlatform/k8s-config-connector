@@ -48,7 +48,6 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1
 
 # Format generated code
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
