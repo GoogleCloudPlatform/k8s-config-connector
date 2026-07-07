@@ -43,6 +43,13 @@ go run . generate-types \
   --resource DataformFolder:Folder \
   --proto-source-path ${PROTO_OUT}
 
+go run . generate-types \
+  --service google.cloud.dataform.v1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
+  --resource DataformTeamFolder:TeamFolder \
+  --proto-source-path ${PROTO_OUT}
+
 go run . generate-mapper \
   --service google.cloud.dataform.v1beta1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \

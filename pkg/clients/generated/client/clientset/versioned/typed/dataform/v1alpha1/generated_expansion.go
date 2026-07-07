@@ -22,3 +22,5 @@
 package v1alpha1
 
 type DataformFolderExpansion interface{}
+
+type DataformTeamFolderExpansion interface{}
