@@ -33,6 +33,7 @@ require (
 	cloud.google.com/go/cloudtasks v1.18.0
 	cloud.google.com/go/compute v1.63.0
 	cloud.google.com/go/configdelivery v0.1.1
+	cloud.google.com/go/contactcenterinsights v1.22.0
 	cloud.google.com/go/container v1.52.0
 	cloud.google.com/go/datacatalog v1.32.0
 	cloud.google.com/go/dataflow v0.16.0

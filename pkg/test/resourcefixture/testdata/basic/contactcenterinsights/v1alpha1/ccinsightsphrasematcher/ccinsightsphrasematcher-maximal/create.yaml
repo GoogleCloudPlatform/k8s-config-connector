@@ -1,0 +1,23 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsPhraseMatcher
+metadata:
+  name: phrasematcher-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Maximal Phrase Matcher ${uniqueId}"
+  versionTag: "v1"
+  type: ALL_OF
+  active: true
+  roleMatch: END_USER
+  phraseMatchRuleGroups:
+  - type: ANY_OF
+    phraseMatchRules:
+    - query: "hello"
+      negated: false
+      config:
+        exactMatchConfig:
+          caseSensitive: true
+    - query: "world"
+      negated: true
