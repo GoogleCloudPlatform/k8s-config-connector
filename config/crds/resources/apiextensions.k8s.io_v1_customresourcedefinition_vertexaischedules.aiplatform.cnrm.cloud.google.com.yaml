@@ -143,14 +143,68 @@ spec:
                                 description: Whether to enable public internet access.
                                   Default false.
                                 type: boolean
-                              network:
+                              networkRef:
                                 description: The full name of the Google Compute Engine
                                   [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks)
-                                type: string
-                              subnetwork:
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeNetwork resource. Should be in the format
+                                      "projects/{{projectID}}/global/networks/{{networkID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeNetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeNetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              subnetworkRef:
                                 description: 'The name of the subnet that this instance
-                                  is in. Format: `projects/{project_id_or_number}/regions/{region}/subnetworks/{subnetwork_id}`'
-                                type: string
+                                  is in. Format: projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_ID'
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeSubnetwork resource. Should be in the
+                                      format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeSubnetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeSubnetwork
+                                      resource.
+                                    type: string
+                                type: object
                             type: object
                           persistentDiskSpec:
                             description: The specification of a persistent disk to
@@ -177,10 +231,37 @@ spec:
                             description: The commit SHA to read repository with. If
                               unset, the file will be read at HEAD.
                             type: string
-                          dataformRepositoryResourceName:
+                          dataformRepositoryRef:
                             description: 'The resource name of the Dataform Repository.
-                              Format: `projects/{project_id}/locations/{location}/repositories/{repository_id}`'
-                            type: string
+                              Format: projects/PROJECT_ID/locations/LOCATION_ID/repositories/REPOSITORY_ID'
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  DataformRepository resource. Should be in the format
+                                  "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
+                                type: string
+                              name:
+                                description: The name of a DataformRepository resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a DataformRepository
+                                  resource.
+                                type: string
+                            type: object
                         type: object
                       directNotebookSource:
                         description: The contents of an input notebook file.
@@ -258,13 +339,63 @@ spec:
                         description: The NotebookRuntimeTemplate to source compute
                           configuration from.
                         type: string
-                      scheduleResourceName:
+                      scheduleRef:
                         description: 'The Schedule resource name if this job is triggered
                           by one. Format: `projects/{project_id}/locations/{location}/schedules/{schedule_id}`'
-                        type: string
-                      serviceAccount:
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed VertexAISchedule
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/schedules/{{scheduleID}}".
+                            type: string
+                          name:
+                            description: The name of a VertexAISchedule resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a VertexAISchedule resource.
+                            type: string
+                        type: object
+                      serviceAccountRef:
                         description: The service account to run the execution as.
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The `email` field of an `IAMServiceAccount`
+                              resource.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
                       workbenchRuntime:
                         description: The Workbench runtime configuration to use for
                           the notebook execution.
@@ -274,17 +405,18 @@ spec:
                     description: Optional. User specified ID for the NotebookExecutionJob.
                     type: string
                   parent:
-                    description: 'Required. The resource name of the Location to create
-                      the NotebookExecutionJob. Format: `projects/{project}/locations/{location}`'
+                    description: 'Required. Location resource name to create the NotebookExecutionJob.
+                      Format: projects-id/locations-id'
                     type: string
                 type: object
               createPipelineJobRequest:
                 description: 'Request for [PipelineService.CreatePipelineJob][google.cloud.aiplatform.v1.PipelineService.CreatePipelineJob].
-                  CreatePipelineJobRequest.parent field is required (format: projects/{project}/locations/{location}).'
+                  The parent field of CreatePipelineJobRequest is required (format:
+                  projects-id/locations-id).'
                 properties:
                   parent:
-                    description: 'Required. The resource name of the Location to create
-                      the PipelineJob in. Format: `projects/{project}/locations/{location}`'
+                    description: 'Required. Location resource name to create the PipelineJob
+                      in. Format: projects-id/locations-id'
                     type: string
                   pipelineJob:
                     description: Required. The PipelineJob to create.

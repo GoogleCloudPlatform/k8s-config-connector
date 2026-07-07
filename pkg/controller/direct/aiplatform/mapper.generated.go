@@ -238,6 +238,8 @@ func Content_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
 	out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, Part_ToProto)
 	return out
 }
+
+/* found existing non-generated mapping function "ContextObservedState_FromProto", skipping
 func ContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.ContextObservedState {
 	if in == nil {
 		return nil
@@ -256,24 +258,30 @@ func ContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Context) *
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
-func ContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContextObservedState) *pb.Context {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ContextObservedState_ToProto", skipping
+
+	func ContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContextObservedState) *pb.Context {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Context{}
+		out.Name = direct.ValueOf(in.Name)
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Etag = direct.ValueOf(in.Etag)
+		out.Labels = in.Labels
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+		out.ParentContexts = in.ParentContexts
+		out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+		out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+		out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+		out.Description = direct.ValueOf(in.Description)
+		return out
 	}
-	out := &pb.Context{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.ParentContexts = in.ParentContexts
-	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
-	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
-	out.Description = direct.ValueOf(in.Description)
-	return out
-}
+*/
 func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
 	if in == nil {
 		return nil
@@ -414,6 +422,8 @@ func ExecutableCode_ToProto(mapCtx *direct.MapContext, in *krm.ExecutableCode) *
 	out.Code = direct.ValueOf(in.Code)
 	return out
 }
+
+/* found existing non-generated mapping function "ExecutionObservedState_FromProto", skipping
 func ExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.ExecutionObservedState {
 	if in == nil {
 		return nil
@@ -432,24 +442,30 @@ func ExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Executio
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
-func ExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionObservedState) *pb.Execution {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ExecutionObservedState_ToProto", skipping
+
+	func ExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionObservedState) *pb.Execution {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Execution{}
+		out.Name = direct.ValueOf(in.Name)
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
+		out.Etag = direct.ValueOf(in.Etag)
+		out.Labels = in.Labels
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+		out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+		out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+		out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+		out.Description = direct.ValueOf(in.Description)
+		return out
 	}
-	out := &pb.Execution{}
-	out.Name = direct.ValueOf(in.Name)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Labels = in.Labels
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
-	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
-	out.Description = direct.ValueOf(in.Description)
-	return out
-}
+*/
 func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParameters {
 	if in == nil {
 		return nil
@@ -1024,26 +1040,42 @@ func Model_OriginalModelInfo_ToProto(mapCtx *direct.MapContext, in *krm.Model_Or
 	// MISSING: Model
 	return out
 }
+
+/* found existing non-generated mapping function "NetworkSpec_FromProto", skipping
 func NetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkSpec) *krm.NetworkSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkSpec{}
 	out.EnableInternetAccess = direct.LazyPtr(in.GetEnableInternetAccess())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NetworkSpec_ToProto", skipping
 func NetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSpec) *pb.NetworkSpec {
 	if in == nil {
 		return nil
 	}
 	out := &pb.NetworkSpec{}
 	out.EnableInternetAccess = direct.ValueOf(in.EnableInternetAccess)
-	out.Network = direct.ValueOf(in.Network)
-	out.Subnetwork = direct.ValueOf(in.Subnetwork)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NotebookExecutionJob_FromProto", skipping
 func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.NotebookExecutionJob {
 	if in == nil {
 		return nil
@@ -1056,12 +1088,14 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
 	out.GCSOutputURI = direct.LazyPtr(in.GetGcsOutputUri())
 	out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.WorkbenchRuntime = NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx, in.GetWorkbenchRuntime())
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
-	out.ScheduleResourceName = direct.LazyPtr(in.GetScheduleResourceName())
+	// MISSING: ScheduleResourceName
 	// MISSING: JobState
 	// MISSING: Status
 	// MISSING: CreateTime
@@ -1071,51 +1105,57 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
-func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob) *pb.NotebookExecutionJob {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NotebookExecutionJob_ToProto", skipping
+
+	func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob) *pb.NotebookExecutionJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NotebookExecutionJob{}
+		if oneof := NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx, in.DataformRepositorySource); oneof != nil {
+			out.NotebookSource = &pb.NotebookExecutionJob_DataformRepositorySource_{DataformRepositorySource: oneof}
+		}
+		if oneof := NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx, in.GCSNotebookSource); oneof != nil {
+			out.NotebookSource = &pb.NotebookExecutionJob_GcsNotebookSource_{GcsNotebookSource: oneof}
+		}
+		if oneof := NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx, in.DirectNotebookSource); oneof != nil {
+			out.NotebookSource = &pb.NotebookExecutionJob_DirectNotebookSource_{DirectNotebookSource: oneof}
+		}
+		if oneof := NotebookExecutionJob_NotebookRuntimeTemplateResourceName_ToProto(mapCtx, in.NotebookRuntimeTemplateResourceName); oneof != nil {
+			out.EnvironmentSpec = oneof
+		}
+		if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
+			out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
+		}
+		if oneof := NotebookExecutionJob_GcsOutputUri_ToProto(mapCtx, in.GCSOutputURI); oneof != nil {
+			out.ExecutionSink = oneof
+		}
+		if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
+			out.ExecutionIdentity = oneof
+		}
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		if oneof := NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx, in.WorkbenchRuntime); oneof != nil {
+			out.RuntimeEnvironment = &pb.NotebookExecutionJob_WorkbenchRuntime_{WorkbenchRuntime: oneof}
+		}
+		// MISSING: Name
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
+		// MISSING: ScheduleResourceName
+		// MISSING: JobState
+		// MISSING: Status
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		out.Labels = in.Labels
+		out.KernelName = direct.ValueOf(in.KernelName)
+		out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+		return out
 	}
-	out := &pb.NotebookExecutionJob{}
-	if oneof := NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx, in.DataformRepositorySource); oneof != nil {
-		out.NotebookSource = &pb.NotebookExecutionJob_DataformRepositorySource_{DataformRepositorySource: oneof}
-	}
-	if oneof := NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx, in.GCSNotebookSource); oneof != nil {
-		out.NotebookSource = &pb.NotebookExecutionJob_GcsNotebookSource_{GcsNotebookSource: oneof}
-	}
-	if oneof := NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx, in.DirectNotebookSource); oneof != nil {
-		out.NotebookSource = &pb.NotebookExecutionJob_DirectNotebookSource_{DirectNotebookSource: oneof}
-	}
-	if oneof := NotebookExecutionJob_NotebookRuntimeTemplateResourceName_ToProto(mapCtx, in.NotebookRuntimeTemplateResourceName); oneof != nil {
-		out.EnvironmentSpec = oneof
-	}
-	if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
-		out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
-	}
-	if oneof := NotebookExecutionJob_GcsOutputUri_ToProto(mapCtx, in.GCSOutputURI); oneof != nil {
-		out.ExecutionSink = oneof
-	}
-	if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
-		out.ExecutionIdentity = oneof
-	}
-	if oneof := NotebookExecutionJob_ServiceAccount_ToProto(mapCtx, in.ServiceAccount); oneof != nil {
-		out.ExecutionIdentity = oneof
-	}
-	if oneof := NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx, in.WorkbenchRuntime); oneof != nil {
-		out.RuntimeEnvironment = &pb.NotebookExecutionJob_WorkbenchRuntime_{WorkbenchRuntime: oneof}
-	}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
-	out.ScheduleResourceName = direct.ValueOf(in.ScheduleResourceName)
-	// MISSING: JobState
-	// MISSING: Status
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Labels = in.Labels
-	out.KernelName = direct.ValueOf(in.KernelName)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	return out
-}
+*/
 func NotebookExecutionJob_NotebookRuntimeTemplateResourceName_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookExecutionJob_NotebookRuntimeTemplateResourceName {
 	if in == nil {
 		return nil
@@ -1133,12 +1173,6 @@ func NotebookExecutionJob_ExecutionUser_ToProto(mapCtx *direct.MapContext, in *s
 		return nil
 	}
 	return &pb.NotebookExecutionJob_ExecutionUser{ExecutionUser: *in}
-}
-func NotebookExecutionJob_ServiceAccount_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookExecutionJob_ServiceAccount {
-	if in == nil {
-		return nil
-	}
-	return &pb.NotebookExecutionJob_ServiceAccount{ServiceAccount: *in}
 }
 func NotebookExecutionJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.NotebookExecutionJobObservedState {
 	if in == nil {
@@ -1214,24 +1248,32 @@ func NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx *direct.MapContex
 	out.NetworkSpec = NetworkSpec_ToProto(mapCtx, in.NetworkSpec)
 	return out
 }
+
+/* found existing non-generated mapping function "NotebookExecutionJob_DataformRepositorySource_FromProto", skipping
 func NotebookExecutionJob_DataformRepositorySource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_DataformRepositorySource) *krm.NotebookExecutionJob_DataformRepositorySource {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NotebookExecutionJob_DataformRepositorySource{}
-	out.DataformRepositoryResourceName = direct.LazyPtr(in.GetDataformRepositoryResourceName())
+	// MISSING: DataformRepositoryResourceName
 	out.CommitSha = direct.LazyPtr(in.GetCommitSha())
 	return out
 }
-func NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_DataformRepositorySource) *pb.NotebookExecutionJob_DataformRepositorySource {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NotebookExecutionJob_DataformRepositorySource_ToProto", skipping
+
+	func NotebookExecutionJob_DataformRepositorySource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_DataformRepositorySource) *pb.NotebookExecutionJob_DataformRepositorySource {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NotebookExecutionJob_DataformRepositorySource{}
+		// MISSING: DataformRepositoryResourceName
+		out.CommitSha = direct.ValueOf(in.CommitSha)
+		return out
 	}
-	out := &pb.NotebookExecutionJob_DataformRepositorySource{}
-	out.DataformRepositoryResourceName = direct.ValueOf(in.DataformRepositoryResourceName)
-	out.CommitSha = direct.ValueOf(in.CommitSha)
-	return out
-}
+*/
 func NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_DirectNotebookSource) *krm.NotebookExecutionJob_DirectNotebookSource {
 	if in == nil {
 		return nil

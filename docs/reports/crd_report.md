@@ -9,7 +9,6 @@
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeterResource    | True         | True        | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | AIPlatformModel                                 | True         | False       | False  | Direct     | True        |
-| aistreams.cnrm.cloud.google.com                | AIStreamsCluster                                | True         | False       | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBBackup                                   | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBCluster                                  | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBInstance                                 | True         | True        | False  | Direct     | True        |
@@ -563,6 +562,7 @@
 | tpu.cnrm.cloud.google.com                      | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |
 | translate.cnrm.cloud.google.com                | TranslateAdaptiveMtDataset                      | True         | False       | False  | Direct     | True        |
 | vectorsearch.cnrm.cloud.google.com             | VectorSearchCollection                          | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAICustomJob                               | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDataLabelingJob                         | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDataset                                 | True         | True        | False  | Terraform  | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIDeploymentResourcePool                  | True         | False       | False  | Direct     | True        |
@@ -577,6 +577,7 @@
 | vertexai.cnrm.cloud.google.com                 | VertexAIIndex                                   | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                 | VertexAIMetadataStore                           | True         | True        | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIPipelineJob                             | True         | False       | False  | Direct     | True        |
+| aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                          | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                   | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAITensorboard                             | True         | False       | False  | Terraform  | False       |

@@ -74,6 +74,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":              true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}": true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                    true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                  true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,

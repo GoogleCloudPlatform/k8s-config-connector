@@ -26,9 +26,6 @@ import (
 
 var VertexAIPipelineJobGVK = GroupVersion.WithKind("VertexAIPipelineJob")
 
-type PipelineJob = VertexAIPipelineJobSpec
-type PipelineJobObservedState = VertexAIPipelineJobObservedState
-
 // VertexAIPipelineJobSpec defines the desired state of VertexAIPipelineJob
 // +kcc:spec:proto=google.cloud.aiplatform.v1.PipelineJob
 type VertexAIPipelineJobSpec struct {
