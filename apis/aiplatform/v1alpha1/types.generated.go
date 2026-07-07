@@ -1592,10 +1592,6 @@ type RagVectorDbConfig_RagManagedDb_Ann struct {
 	LeafCount *int32 `json:"leafCount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb.KNN
-type RagVectorDbConfig_RagManagedDb_Knn struct {
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.ReservationAffinity
 type ReservationAffinity struct {
 	// Required. Specifies the reservation affinity type.

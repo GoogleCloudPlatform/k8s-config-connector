@@ -165,3 +165,8 @@ type VertexAIRagCorpusList struct {
 func init() {
 	SchemeBuilder.Register(&VertexAIRagCorpus{}, &VertexAIRagCorpusList{})
 }
+
+// +kcc:proto=google.cloud.aiplatform.v1.RagVectorDbConfig.RagManagedDb.KNN
+// +kubebuilder:validation:XPreserveUnknownFields
+type RagVectorDbConfig_RagManagedDb_Knn struct {
+}
