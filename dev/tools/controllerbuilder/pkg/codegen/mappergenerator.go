@@ -197,6 +197,23 @@ func lastGoComponent(goPackage string) string {
 }
 
 func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
+	// Detect multiversion automatically if there are duplicate struct names in different packages
+	structPackageCount := make(map[string]map[string]bool)
+	for _, pair := range v.typePairs {
+		name := pair.KRMType.Name
+		pkg := pair.KRMType.GoPackage
+		if structPackageCount[name] == nil {
+			structPackageCount[name] = make(map[string]bool)
+		}
+		structPackageCount[name][pkg] = true
+	}
+	for _, pkgs := range structPackageCount {
+		if len(pkgs) > 1 {
+			v.multiversion = true
+			break
+		}
+	}
+
 	sort.Slice(v.typePairs, func(i, j int) bool {
 		if v.typePairs[i].KRMType.Name == v.typePairs[j].KRMType.Name {
 			return v.typePairs[i].KRMType.GoPackage < v.typePairs[j].KRMType.GoPackage

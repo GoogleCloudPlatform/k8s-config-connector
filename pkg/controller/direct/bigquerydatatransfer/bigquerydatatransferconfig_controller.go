@@ -237,7 +237,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := BigQueryDataTransferConfigSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BigQueryDataTransferConfigSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -256,7 +256,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("successfully created BigQueryDataTransferConfig", "name", a.id.FullyQualifiedName())
 
 	status := &krm.BigQueryDataTransferConfigStatus{}
-	status.ObservedState = BigQueryDataTransferConfigObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BigQueryDataTransferConfigObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -280,7 +280,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Convert KRM object to proto message
 	desiredKRM := a.desired.DeepCopy()
-	desired := BigQueryDataTransferConfigSpec_ToProto(mapCtx, &desiredKRM.Spec)
+	desired := BigQueryDataTransferConfigSpec_v1beta1_ToProto(mapCtx, &desiredKRM.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -366,7 +366,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated BigQueryDataTransferConfig", "name", a.id.FullyQualifiedName())
 
 	status := &krm.BigQueryDataTransferConfigStatus{}
-	status.ObservedState = BigQueryDataTransferConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryDataTransferConfigObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -381,7 +381,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.BigQueryDataTransferConfig{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = *BigQueryDataTransferConfigSpec_FromProto(mapCtx, a.actual)
+	obj.Spec = *BigQueryDataTransferConfigSpec_v1beta1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
