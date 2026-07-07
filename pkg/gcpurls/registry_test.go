@@ -152,6 +152,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Content Warehouse
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}": true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":        true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documents/{}":       true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/synonymSets/{}":     true,
 
 		// Data Labeling
 		"//datalabeling.googleapis.com/projects/{}/annotationSpecSets/{}": true,

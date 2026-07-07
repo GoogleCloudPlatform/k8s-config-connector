@@ -10,7 +10,7 @@ require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
 	cloud.google.com/go/aiplatform v1.125.0
 	cloud.google.com/go/alloydb v1.26.0
-	cloud.google.com/go/analytics v0.35.0
+	cloud.google.com/go/analytics v0.36.0
 	cloud.google.com/go/apigateway v1.12.0
 	cloud.google.com/go/apigeeregistry v1.0.0
 	cloud.google.com/go/apihub v1.0.0
@@ -26,32 +26,32 @@ require (
 	cloud.google.com/go/bigquery v1.77.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
-	cloud.google.com/go/cloudbuild v1.30.0
+	cloud.google.com/go/cloudbuild v1.31.0
 	cloud.google.com/go/clouddms v1.13.0
 	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudsecuritycompliance v1.0.0
 	cloud.google.com/go/cloudtasks v1.18.0
-	cloud.google.com/go/compute v1.63.0
+	cloud.google.com/go/compute v1.64.0
 	cloud.google.com/go/config v1.12.0
 	cloud.google.com/go/configdelivery v0.1.1
 	cloud.google.com/go/contactcenterinsights v1.22.0
-	cloud.google.com/go/container v1.52.0
+	cloud.google.com/go/container v1.53.0
 	cloud.google.com/go/datacatalog v1.32.0
 	cloud.google.com/go/dataflow v0.16.0
-	cloud.google.com/go/dataform v1.0.0
+	cloud.google.com/go/dataform v1.1.0
 	cloud.google.com/go/datalabeling v0.14.0
-	cloud.google.com/go/dataplex v1.34.0
-	cloud.google.com/go/dataproc/v2 v2.22.0
+	cloud.google.com/go/dataplex v1.35.0
+	cloud.google.com/go/dataproc/v2 v2.24.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
 	cloud.google.com/go/developerconnect v1.1.0
 	cloud.google.com/go/devicestreaming v1.0.0
-	cloud.google.com/go/dialogflow v1.82.0
+	cloud.google.com/go/dialogflow v1.83.0
 	cloud.google.com/go/discoveryengine v1.32.0
 	cloud.google.com/go/documentai v1.48.0
 	cloud.google.com/go/edgecontainer v1.9.0
 	cloud.google.com/go/essentialcontacts v1.12.0
-	cloud.google.com/go/eventarc v1.23.0
+	cloud.google.com/go/eventarc v1.24.0
 	cloud.google.com/go/filestore v1.15.0
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/geminidataanalytics v1.3.0
@@ -70,8 +70,8 @@ require (
 	cloud.google.com/go/migrationcenter v1.6.0
 	cloud.google.com/go/monitoring v1.29.0
 	cloud.google.com/go/netapp v1.12.0
-	cloud.google.com/go/networkmanagement v1.28.0
-	cloud.google.com/go/networksecurity v0.17.0
+	cloud.google.com/go/networkmanagement v1.29.0
+	cloud.google.com/go/networksecurity v0.18.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.17.0
 	cloud.google.com/go/orchestration v1.16.0
@@ -88,11 +88,11 @@ require (
 	cloud.google.com/go/saasplatform v0.9.0
 	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
-	cloud.google.com/go/security v1.24.0
+	cloud.google.com/go/security v1.25.0
 	cloud.google.com/go/securitycenter v1.44.0
 	cloud.google.com/go/securitycentermanagement v1.6.0
 	cloud.google.com/go/servicedirectory v1.17.0
-	cloud.google.com/go/spanner v1.91.0
+	cloud.google.com/go/spanner v1.92.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
 	cloud.google.com/go/talent v1.13.0
@@ -133,7 +133,7 @@ require (
 	github.com/prometheus/procfs v0.16.0
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/stretchr/testify v1.11.1
 	github.com/tmccombs/hcl2json v0.6.8
@@ -145,7 +145,7 @@ require (
 	golang.org/x/sync v0.21.0
 	golang.org/x/time v0.15.0
 	google.golang.org/api v0.287.1
-	google.golang.org/genproto v0.0.0-20260519071638-aa98bba5eb94
+	google.golang.org/genproto v0.0.0-20260706201446-f0a921348800
 	google.golang.org/genproto/googleapis/api v0.0.0-20260630182238-925bb5da69e7
 	google.golang.org/genproto/googleapis/api/serviceusage v0.0.0-20250519155744-55703ea1f237
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260630182238-925bb5da69e7
@@ -155,7 +155,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.33.10
 	k8s.io/apiextensions-apiserver v0.33.10
-	k8s.io/apimachinery v0.33.10
+	k8s.io/apimachinery v0.34.2
 	k8s.io/client-go v0.33.10
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.20.4
@@ -184,7 +184,7 @@ require (
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
 	github.com/google/cel-go v0.23.2 // indirect
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
-	github.com/google/gnostic-models v0.6.9 // indirect
+	github.com/google/gnostic-models v0.7.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
@@ -260,7 +260,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.17 // indirect
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -346,7 +346,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/cli-runtime v0.32.1 // indirect
 	k8s.io/component-base v0.33.10 // indirect
-	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
+	k8s.io/kube-openapi v0.0.0-20250710124328-f3f2b991d03b
 	k8s.io/kubectl v0.32.1 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect

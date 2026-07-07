@@ -1,0 +1,9 @@
+apiVersion: contentwarehouse.cnrm.cloud.google.com/v1alpha1
+kind: ContentWarehouseSchema
+metadata:
+  name: contentwarehouseschema-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  displayName: Display Name ${uniqueId}

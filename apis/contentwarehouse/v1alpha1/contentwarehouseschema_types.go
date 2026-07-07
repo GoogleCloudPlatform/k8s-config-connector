@@ -113,6 +113,7 @@ func init() {
 	SchemeBuilder.Register(&ContentWarehouseSchema{}, &ContentWarehouseSchemaList{})
 }
 
+// +kcc:proto=google.cloud.contentwarehouse.v1.DateTimeTypeOptions
 // +kubebuilder:pruning:PreserveUnknownFields
 // +kubebuilder:validation:XPreserveUnknownFields
 type DateTimeTypeOptions struct {
