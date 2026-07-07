@@ -18,6 +18,8 @@
 
 package mockaiplatform
 
+// deploymentResourcePoolService implements MockGCP and alignment for VertexAIDeploymentResourcePool.
+
 import (
 	"context"
 	"fmt"
