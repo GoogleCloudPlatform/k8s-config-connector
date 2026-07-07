@@ -78,6 +78,7 @@ import (
 	clouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1alpha1"
 	clouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1beta1"
 	clouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1"
+	clouderrorreportingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouderrorreporting/v1beta1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
@@ -283,6 +284,7 @@ type Interface interface {
 	ClouddeployV1alpha1() clouddeployv1alpha1.ClouddeployV1alpha1Interface
 	ClouddeployV1beta1() clouddeployv1beta1.ClouddeployV1beta1Interface
 	ClouddmsV1alpha1() clouddmsv1alpha1.ClouddmsV1alpha1Interface
+	ClouderrorreportingV1beta1() clouderrorreportingv1beta1.ClouderrorreportingV1beta1Interface
 	CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface
 	Cloudfunctions2V1alpha1() cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Interface
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
@@ -486,6 +488,7 @@ type Clientset struct {
 	clouddeployV1alpha1             *clouddeployv1alpha1.ClouddeployV1alpha1Client
 	clouddeployV1beta1              *clouddeployv1beta1.ClouddeployV1beta1Client
 	clouddmsV1alpha1                *clouddmsv1alpha1.ClouddmsV1alpha1Client
+	clouderrorreportingV1beta1      *clouderrorreportingv1beta1.ClouderrorreportingV1beta1Client
 	cloudfunctionsV1beta1           *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
 	cloudfunctions2V1alpha1         *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
 	cloudidentityV1beta1            *cloudidentityv1beta1.CloudidentityV1beta1Client
@@ -896,6 +899,11 @@ func (c *Clientset) ClouddeployV1beta1() clouddeployv1beta1.ClouddeployV1beta1In
 // ClouddmsV1alpha1 retrieves the ClouddmsV1alpha1Client
 func (c *Clientset) ClouddmsV1alpha1() clouddmsv1alpha1.ClouddmsV1alpha1Interface {
 	return c.clouddmsV1alpha1
+}
+
+// ClouderrorreportingV1beta1 retrieves the ClouderrorreportingV1beta1Client
+func (c *Clientset) ClouderrorreportingV1beta1() clouderrorreportingv1beta1.ClouderrorreportingV1beta1Interface {
+	return c.clouderrorreportingV1beta1
 }
 
 // CloudfunctionsV1beta1 retrieves the CloudfunctionsV1beta1Client
@@ -1879,6 +1887,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.clouderrorreportingV1beta1, err = clouderrorreportingv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudfunctionsV1beta1, err = cloudfunctionsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2533,6 +2545,7 @@ func New(c rest.Interface) *Clientset {
 	cs.clouddeployV1alpha1 = clouddeployv1alpha1.New(c)
 	cs.clouddeployV1beta1 = clouddeployv1beta1.New(c)
 	cs.clouddmsV1alpha1 = clouddmsv1alpha1.New(c)
+	cs.clouderrorreportingV1beta1 = clouderrorreportingv1beta1.New(c)
 	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.New(c)
 	cs.cloudfunctions2V1alpha1 = cloudfunctions2v1alpha1.New(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)

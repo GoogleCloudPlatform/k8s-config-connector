@@ -103,6 +103,16 @@ type NodepoolBlueGreenSettings struct {
 	StandardRolloutPolicy NodepoolStandardRolloutPolicy `json:"standardRolloutPolicy"`
 }
 
+type NodepoolBootDiskProfile struct {
+	/* Swap size in GiB. */
+	// +optional
+	SwapSizeGib *int64 `json:"swapSizeGib,omitempty"`
+
+	/* Swap size as a percentage of the boot disk size. */
+	// +optional
+	SwapSizePercent *int64 `json:"swapSizePercent,omitempty"`
+}
+
 type NodepoolConfidentialNodes struct {
 	/* Immutable. Defines the type of technology used by the confidential node. */
 	// +optional
@@ -110,6 +120,28 @@ type NodepoolConfidentialNodes struct {
 
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
+}
+
+type NodepoolDedicatedLocalSsdProfile struct {
+	/* The number of physical local NVMe SSD disks to attach. */
+	// +optional
+	DiskCount *int64 `json:"diskCount,omitempty"`
+}
+
+type NodepoolEncryptionConfig struct {
+	/* If true, swap space will not be encrypted. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+type NodepoolEphemeralLocalSsdProfile struct {
+	/* Swap size in GiB. */
+	// +optional
+	SwapSizeGib *int64 `json:"swapSizeGib,omitempty"`
+
+	/* Swap size as a percentage of the ephemeral local SSD capacity. */
+	// +optional
+	SwapSizePercent *int64 `json:"swapSizePercent,omitempty"`
 }
 
 type NodepoolEphemeralStorageConfig struct {
@@ -200,6 +232,10 @@ type NodepoolLinuxNodeConfig struct {
 	/* cgroupMode specifies the cgroup mode to be used on the node. */
 	// +optional
 	CgroupMode *string `json:"cgroupMode,omitempty"`
+
+	/* SwapConfig specifies the swap configuration on the nodes. */
+	// +optional
+	SwapConfig *NodepoolSwapConfig `json:"swapConfig,omitempty"`
 
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
 	// +optional
@@ -479,6 +515,28 @@ type NodepoolStandardRolloutPolicy struct {
 	/* Soak time after each batch gets drained. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
 	// +optional
 	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
+}
+
+type NodepoolSwapConfig struct {
+	/* BootDiskProfile specifies the configuration for swap on the node's boot disk. */
+	// +optional
+	BootDiskProfile *NodepoolBootDiskProfile `json:"bootDiskProfile,omitempty"`
+
+	/* DedicatedLocalSsdProfile specifies the configuration for swap on dedicated local NVMe SSDs. */
+	// +optional
+	DedicatedLocalSsdProfile *NodepoolDedicatedLocalSsdProfile `json:"dedicatedLocalSsdProfile,omitempty"`
+
+	/* Whether swap is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* EncryptionConfig specifies the encryption configuration for swap. */
+	// +optional
+	EncryptionConfig *NodepoolEncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	/* EphemeralLocalSsdProfile specifies the configuration for swap on ephemeral local SSDs. */
+	// +optional
+	EphemeralLocalSsdProfile *NodepoolEphemeralLocalSsdProfile `json:"ephemeralLocalSsdProfile,omitempty"`
 }
 
 type NodepoolTaint struct {

@@ -129,6 +129,8 @@ import (
 	fakeclouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1beta1/fake"
 	clouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1"
 	fakeclouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1/fake"
+	clouderrorreportingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouderrorreporting/v1beta1"
+	fakeclouderrorreportingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouderrorreporting/v1beta1/fake"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
 	fakecloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1/fake"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
@@ -755,6 +757,11 @@ func (c *Clientset) ClouddeployV1beta1() clouddeployv1beta1.ClouddeployV1beta1In
 // ClouddmsV1alpha1 retrieves the ClouddmsV1alpha1Client
 func (c *Clientset) ClouddmsV1alpha1() clouddmsv1alpha1.ClouddmsV1alpha1Interface {
 	return &fakeclouddmsv1alpha1.FakeClouddmsV1alpha1{Fake: &c.Fake}
+}
+
+// ClouderrorreportingV1beta1 retrieves the ClouderrorreportingV1beta1Client
+func (c *Clientset) ClouderrorreportingV1beta1() clouderrorreportingv1beta1.ClouderrorreportingV1beta1Interface {
+	return &fakeclouderrorreportingv1beta1.FakeClouderrorreportingV1beta1{Fake: &c.Fake}
 }
 
 // CloudfunctionsV1beta1 retrieves the CloudfunctionsV1beta1Client

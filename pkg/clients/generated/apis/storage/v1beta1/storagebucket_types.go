@@ -50,6 +50,10 @@ type BucketAction struct {
 type BucketAutoclass struct {
 	/* While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
 	Enabled bool `json:"enabled"`
+
+	/* The storage class that objects in the bucket eventually transition to if they are not accessed for a certain period of time. Supported values include: NEARLINE, ARCHIVE. */
+	// +optional
+	TerminalStorageClass *string `json:"terminalStorageClass,omitempty"`
 }
 
 type BucketCondition struct {

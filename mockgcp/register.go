@@ -32,6 +32,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddeploy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddms"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouderrorreporting"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudsecuritycompliance"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
