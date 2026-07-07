@@ -26,13 +26,6 @@ import (
 
 	gcp "cloud.google.com/go/eventarc/apiv1"
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -40,7 +33,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -65,7 +67,12 @@ func (m *enrollmentModel) AdapterForObject(ctx context.Context, op *directbase.A
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewEventarcEnrollmentIdentity(ctx, reader, obj)
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -79,23 +86,47 @@ func (m *enrollmentModel) AdapterForObject(ctx context.Context, op *directbase.A
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desiredPb := EventarcEnrollmentSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &enrollmentAdapter{
 		gcpClient: eventarcClient,
-		id:        id,
-		desired:   obj,
+		id:        identity.(*krm.EventarcEnrollmentIdentity),
+		desired:   desiredPb,
 		reader:    reader,
 	}, nil
 }
 
 func (m *enrollmentModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.EventarcEnrollmentIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(ctx, &m.config)
+	if err != nil {
+		return nil, err
+	}
+	eventarcClient, err := gcpClient.newEventarcClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &enrollmentAdapter{
+		gcpClient: eventarcClient,
+		id:        id,
+	}, nil
 }
 
 type enrollmentAdapter struct {
 	gcpClient *gcp.Client
 	id        *krm.EventarcEnrollmentIdentity
-	desired   *krm.EventarcEnrollment
+	desired   *pb.Enrollment
 	actual    *pb.Enrollment
 	reader    client.Reader
 }
@@ -104,7 +135,7 @@ var _ directbase.Adapter = &enrollmentAdapter{}
 
 func (a *enrollmentAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting eventarc enrollment", "name", a.id)
+	log.V(2).Info("getting eventarc enrollment", "name", a.id.String())
 
 	req := &pb.GetEnrollmentRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetEnrollment(ctx, req)
@@ -122,23 +153,14 @@ func (a *enrollmentAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *enrollmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating eventarc enrollment", "name", a.id)
-	mapCtx := &direct.MapContext{}
+	log.V(2).Info("creating eventarc enrollment", "name", a.id.String())
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
-	desired := a.desired.DeepCopy()
-	resource := EventarcEnrollmentSpec_ToProto(mapCtx, &desired.Spec)
-	resource.Name = a.id.String()
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	desired := proto.Clone(a.desired).(*pb.Enrollment)
+	desired.Name = a.id.String()
 
 	req := &pb.CreateEnrollmentRequest{
 		Parent:       fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
-		Enrollment:   resource,
+		Enrollment:   desired,
 		EnrollmentId: a.id.Enrollment,
 	}
 
@@ -147,71 +169,42 @@ func (a *enrollmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		return fmt.Errorf("creating eventarc enrollment %q: %w", a.id.String(), err)
 	}
 
-	created, err := op.Wait(ctx)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("waiting for eventarc enrollment creation %q: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created eventarc enrollment", "name", a.id)
+	log.V(2).Info("successfully created eventarc enrollment", "name", a.id.String())
 
-	status := &krm.EventarcEnrollmentStatus{}
-	status.ObservedState = EventarcEnrollmentObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	// Fetch fully-populated resource after LRO completion
+	latest, err := a.gcpClient.GetEnrollment(ctx, &pb.GetEnrollmentRequest{Name: a.id.String()})
+	if err != nil {
+		return fmt.Errorf("getting eventarc enrollment after creation %q: %w", a.id.String(), err)
 	}
-	status.ExternalRef = direct.LazyPtr(created.Name)
-	return createOp.UpdateStatus(ctx, status, nil)
+
+	return a.updateStatus(ctx, createOp, latest)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *enrollmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating eventarc enrollment", "name", a.id)
-	mapCtx := &direct.MapContext{}
+	log.V(2).Info("updating eventarc enrollment", "name", a.id.String())
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
-	desired := a.desired.DeepCopy()
-	resource := EventarcEnrollmentSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	allowedPaths := make(sets.Set[string])
-	allowedPaths.Insert("labels")
-	allowedPaths.Insert("annotations")
-	allowedPaths.Insert("display_name")
-	allowedPaths.Insert("cel_match")
-	allowedPaths.Insert("message_bus")
-	allowedPaths.Insert("destination")
-	paths := make(sets.Set[string])
-	var err error
-	paths, err = common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	diffs, updateMask, err := compareEventarcEnrollment(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
 
-	if len(paths) > 0 {
-		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-		for path := range paths {
-			report.AddField(path, nil, nil)
-		}
-		structuredreporting.ReportDiff(ctx, report)
-	}
+	latest := a.actual
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
 
-	// Retain updateable fields only
-	updatePaths := paths.Intersection(allowedPaths)
-	var updated *pb.Enrollment
-	if len(updatePaths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		// even though there is no update, we still want to update KRM status
-		updated = a.actual
-	} else {
-		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		desiredCopy := proto.Clone(a.desired).(*pb.Enrollment)
+		desiredCopy.Name = a.id.String()
+
 		req := &pb.UpdateEnrollmentRequest{
-			Enrollment: resource,
-			UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(updatePaths)},
+			Enrollment: desiredCopy,
+			UpdateMask: updateMask,
 		}
 
 		op, err := a.gcpClient.UpdateEnrollment(ctx, req)
@@ -219,20 +212,30 @@ func (a *enrollmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 			return fmt.Errorf("updating eventarc enrollment %s: %w", a.id.String(), err)
 		}
 
-		updated, err = op.Wait(ctx)
+		_, err = op.Wait(ctx)
 		if err != nil {
 			return fmt.Errorf("waiting for eventarc enrollment update %s: %w", a.id.String(), err)
 		}
-		log.V(2).Info("successfully updated eventarc enrollment", "name", a.id)
+		log.V(2).Info("successfully updated eventarc enrollment", "name", a.id.String())
+
+		latest, err = a.gcpClient.GetEnrollment(ctx, &pb.GetEnrollmentRequest{Name: a.id.String()})
+		if err != nil {
+			return fmt.Errorf("getting eventarc enrollment after update %s: %w", a.id.String(), err)
+		}
 	}
 
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func (a *enrollmentAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Enrollment) error {
+	mapCtx := &direct.MapContext{}
 	status := &krm.EventarcEnrollmentStatus{}
-	status.ObservedState = EventarcEnrollmentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = EventarcEnrollmentObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(updated.Name)
-	return updateOp.UpdateStatus(ctx, status, nil)
+	status.ExternalRef = direct.LazyPtr(latest.Name)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -269,14 +272,14 @@ func (a *enrollmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *enrollmentAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting eventarc enrollment", "name", a.id)
+	log.V(2).Info("deleting eventarc enrollment", "name", a.id.String())
 
 	req := &pb.DeleteEnrollmentRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteEnrollment(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			log.V(2).Info("eventarc enrollment not found", "name", a.id)
-			return false, nil // Resource is gone, consider the delete successful.
+			log.V(2).Info("eventarc enrollment not found", "name", a.id.String())
+			return true, nil // Resource is gone, consider the delete successful.
 		}
 		return false, fmt.Errorf("deleting eventarc enrollment %q: %w", a.id.String(), err)
 	}
@@ -286,25 +289,19 @@ func (a *enrollmentAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 		return false, fmt.Errorf("waiting for eventarc enrollment deletion %q: %w", a.id.String(), err)
 	}
 
-	log.V(2).Info("successfully deleted eventarc enrollment", "name", a.id)
+	log.V(2).Info("successfully deleted eventarc enrollment", "name", a.id.String())
 	return true, nil
 }
 
-func (a *enrollmentAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.MessageBusRef != nil {
-		messageBusRef, err := obj.Spec.MessageBusRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
-		if err != nil {
-			return err
-		}
-		obj.Spec.MessageBusRef.External = messageBusRef
+func compareEventarcEnrollment(ctx context.Context, actual, desired *pb.Enrollment) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, EventarcEnrollmentSpec_FromProto, EventarcEnrollmentSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
 	}
-	if obj.Spec.DestinationRef != nil {
-		destinationRef, err := obj.Spec.DestinationRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
-		if err != nil {
-			return err
-		}
-		obj.Spec.DestinationRef.External = destinationRef
+	maskedActual.Name = desired.Name
+	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
 	}
-	return nil
+	return diffs, updateMask, nil
 }
