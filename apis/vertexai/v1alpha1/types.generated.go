@@ -235,19 +235,6 @@ type EnvVar struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExampleStoreConfig
-type ExampleStoreConfig struct {
-	// Required. The embedding model to be used for vector embedding.
-	//  Immutable.
-	//  Supported models:
-	//  * "textembedding-gecko@003"
-	//  * "text-embedding-004"
-	//  * "text-embedding-005"
-	//  * "text-multilingual-embedding-002"
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExampleStoreConfig.vertex_embedding_model
-	VertexEmbeddingModel *string `json:"vertexEmbeddingModel,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1beta1.FeatureGroup.BigQuery
 type FeatureGroup_BigQuery struct {
 	// Required. Immutable. The BigQuery source URI that points to either a

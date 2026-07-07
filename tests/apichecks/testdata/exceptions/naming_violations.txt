@@ -27,6 +27,7 @@
 [naming_violation] file=apis/run/v1beta1/revision_reference.go prefix=revision (expected a valid resource kind prefix)
 [naming_violation] file=apis/storage/v1alpha1/storagebucketobject_identity.go prefix=storagebucketobject (expected a valid resource kind prefix)
 [naming_violation] file=apis/storage/v1alpha1/storagebucketobject_reference.go prefix=storagebucketobject (expected a valid resource kind prefix)
+[naming_violation] file=apis/vertexai/v1alpha1/status_types.go prefix=status (expected a valid resource kind prefix)
 [naming_violation] file=apis/workstations/v1beta1/shared_types.go prefix=shared (expected a valid resource kind prefix)
 [naming_violation] file=pkg/controller/direct/bigtable/status_mapper.go prefix=status (expected a valid resource kind prefix)
 [naming_violation] file=pkg/controller/direct/dlp/dlp_controller.go prefix=dlp (expected a valid resource kind prefix)
