@@ -176,6 +176,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Discovery Engine
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":      true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}": true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":      true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":       true,
 
 		// DLP

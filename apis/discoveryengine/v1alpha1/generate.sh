@@ -29,13 +29,16 @@ go run . generate-types --service google.cloud.discoveryengine.v1 --api-version 
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
   --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
-  --resource DiscoveryEngineTargetSite:TargetSite \
-  --resource DiscoveryEngineConversation:Conversation
+  --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
+  --resource DiscoveryEngineConversation:Conversation \
+  --resource DiscoveryEngineSession:Session
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
 
 go run . generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineSampleQuerySet:SampleQuerySet
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w ../../../apis/discoveryengine/v1alpha1/
 
 go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 mv ../../../pkg/controller/direct/discoveryengine/mapper.generated.go ../../../pkg/controller/direct/discoveryengine/v1_mapper.generated.go
