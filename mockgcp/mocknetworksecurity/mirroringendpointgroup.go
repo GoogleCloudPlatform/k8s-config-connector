@@ -22,6 +22,7 @@ import (
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -63,6 +64,29 @@ func (s *MirroringServer) CreateMirroringEndpointGroup(ctx context.Context, req 
 		result := proto.CloneOf(obj)
 		return result, nil
 	})
+}
+
+func (s *MirroringServer) ListMirroringEndpointGroups(ctx context.Context, req *pbv1.ListMirroringEndpointGroupsRequest) (*pbv1.ListMirroringEndpointGroupsResponse, error) {
+	response := &pbv1.ListMirroringEndpointGroupsResponse{}
+
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+	prefix := req.Parent + "/mirroringEndpointGroups/"
+
+	findKind := (&pbv1.MirroringEndpointGroup{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		item := obj.(*pbv1.MirroringEndpointGroup)
+		response.MirroringEndpointGroups = append(response.MirroringEndpointGroups, item)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *MirroringServer) GetMirroringEndpointGroup(ctx context.Context, req *pbv1.GetMirroringEndpointGroupRequest) (*pbv1.MirroringEndpointGroup, error) {
