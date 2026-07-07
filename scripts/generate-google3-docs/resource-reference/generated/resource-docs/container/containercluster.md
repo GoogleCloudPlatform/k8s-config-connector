@@ -328,6 +328,18 @@ nodeConfig:
     string: string
   linuxNodeConfig:
     cgroupMode: string
+    swapConfig:
+      bootDiskProfile:
+        swapSizeGib: integer
+        swapSizePercent: integer
+      dedicatedLocalSsdProfile:
+        diskCount: integer
+      enabled: boolean
+      encryptionConfig:
+        disabled: boolean
+      ephemeralLocalSsdProfile:
+        swapSizeGib: integer
+        swapSizePercent: integer
     sysctls:
       string: string
   localNvmeSsdBlockConfig:
@@ -2940,6 +2952,126 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p>cgroupMode specifies the cgroup mode to be used on the node.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>SwapConfig specifies the swap configuration on the nodes.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.bootDiskProfile</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>BootDiskProfile specifies the configuration for swap on the node's boot disk.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.bootDiskProfile.swapSizeGib</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Swap size in GiB.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.bootDiskProfile.swapSizePercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Swap size as a percentage of the boot disk size.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.dedicatedLocalSsdProfile</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>DedicatedLocalSsdProfile specifies the configuration for swap on dedicated local NVMe SSDs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.dedicatedLocalSsdProfile.diskCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>The number of physical local NVMe SSD disks to attach.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether swap is enabled.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.encryptionConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>EncryptionConfig specifies the encryption configuration for swap.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.encryptionConfig.disabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>If true, swap space will not be encrypted.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.ephemeralLocalSsdProfile</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>EphemeralLocalSsdProfile specifies the configuration for swap on ephemeral local SSDs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.ephemeralLocalSsdProfile.swapSizeGib</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Swap size in GiB.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.linuxNodeConfig.swapConfig.ephemeralLocalSsdProfile.swapSizePercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Swap size as a percentage of the ephemeral local SSD capacity.</p>
         </td>
     </tr>
     <tr>
