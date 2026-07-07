@@ -6,7 +6,6 @@ accesscontextmanager.cnrm.cloud.google.com,AccessContextManagerGCPUserAccessBind
 accesscontextmanager.cnrm.cloud.google.com,AccessContextManagerServicePerimeterResource,True,True,False,Terraform,False
 accesscontextmanager.cnrm.cloud.google.com,AccessContextManagerServicePerimeter,False,True,False,Terraform,True
 aiplatform.cnrm.cloud.google.com,AIPlatformModel,True,False,False,Direct,True
-aistreams.cnrm.cloud.google.com,AIStreamsCluster,True,False,False,Direct,True
 alloydb.cnrm.cloud.google.com,AlloyDBBackup,True,True,False,Terraform,True
 alloydb.cnrm.cloud.google.com,AlloyDBCluster,True,True,False,Terraform,True
 alloydb.cnrm.cloud.google.com,AlloyDBInstance,True,True,False,Direct,True
@@ -80,6 +79,7 @@ bigquery.cnrm.cloud.google.com,BigQueryJob,False,True,False,Terraform,False
 bigquerymigration.cnrm.cloud.google.com,BigQueryMigrationMigrationWorkflow,True,False,False,Direct,True
 bigqueryreservation.cnrm.cloud.google.com,BigQueryReservationAssignment,True,True,False,Direct,True
 bigqueryreservation.cnrm.cloud.google.com,BigQueryReservationCapacityCommitment,True,False,False,Terraform,True
+bigqueryreservation.cnrm.cloud.google.com,BigQueryReservationReservationGroup,True,False,False,Direct,True
 bigqueryreservation.cnrm.cloud.google.com,BigQueryReservationReservation,True,True,False,Direct,True
 bigquery.cnrm.cloud.google.com,BigQueryRoutine,False,True,False,Terraform,False
 bigquery.cnrm.cloud.google.com,BigQueryTable,False,True,False,Terraform,True
@@ -560,6 +560,7 @@ tpu.cnrm.cloud.google.com,TPUNode,True,False,False,Terraform,False
 tpu.cnrm.cloud.google.com,TPUVirtualMachine,True,False,False,Direct,True
 translate.cnrm.cloud.google.com,TranslateAdaptiveMtDataset,True,False,False,Direct,True
 vectorsearch.cnrm.cloud.google.com,VectorSearchCollection,True,False,False,Direct,True
+vertexai.cnrm.cloud.google.com,VertexAICustomJob,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIDataLabelingJob,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIDataset,True,True,False,Terraform,True
 vertexai.cnrm.cloud.google.com,VertexAIDeploymentResourcePool,True,False,False,Direct,True

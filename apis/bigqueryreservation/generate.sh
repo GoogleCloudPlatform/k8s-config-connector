@@ -22,7 +22,8 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+# We need the newer googleapis version for ReservationGroup, so we force-generate the proto pb file even if SKIP_GENERATE_PROTOS is set.
+SKIP_GENERATE_PROTOS= ./generate-proto.sh 2b625c91510a2e8320a778bc88af8b65bc4a19a2
 
 go run . generate-types \
     --service google.cloud.bigquery.reservation.v1 \
@@ -48,3 +49,7 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/bigqueryreservation/
+
+# Restore the global googleapis.pb to the stable version defined in git.versions so subsequent API generations are not affected.
+DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/git.versions | awk '{print $2}')
+cp "${REPO_ROOT}/.build/googleapis-${DEFAULT_GOOGLE_API_VERSION}.pb" "${REPO_ROOT}/.build/googleapis.pb"

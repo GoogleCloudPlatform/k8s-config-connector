@@ -182,22 +182,6 @@ func BigQueryReservationCapacityCommitmentStatus_v1alpha1_ToProto(mapCtx *direct
 	// MISSING: IsFlatRate
 	return out
 }
-func BigQueryReservationReservationGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState{}
-	// MISSING: Name
-	return out
-}
-func BigQueryReservationReservationGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState) *pb.ReservationGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReservationGroup{}
-	// MISSING: Name
-	return out
-}
 func BigQueryReservationReservationGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec {
 	if in == nil {
 		return nil
