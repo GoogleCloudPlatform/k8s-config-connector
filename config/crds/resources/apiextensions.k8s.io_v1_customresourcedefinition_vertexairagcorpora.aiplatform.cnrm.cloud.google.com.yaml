@@ -270,6 +270,7 @@ spec:
                         description: Performs a KNN search on RagCorpus. Default choice
                           if not specified.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                     type: object
                   vertexVectorSearch:
                     description: The config for the Vertex Vector Search.

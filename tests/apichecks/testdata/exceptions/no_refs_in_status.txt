@@ -1,0 +1,1 @@
+[no_refs_in_status] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.vectorDbConfig.ragEmbeddingModelConfig.vertexPredictionEndpoint.endpointRef" should not be in status
