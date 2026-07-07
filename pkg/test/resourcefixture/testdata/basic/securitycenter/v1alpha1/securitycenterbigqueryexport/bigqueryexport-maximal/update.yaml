@@ -18,7 +18,7 @@ metadata:
   name: scbqexportmaximal${uniqueId}
 spec:
   organizationRef:
-    external: ${TEST_ORG_ID}
+    external: organizations/${TEST_ORG_ID}
   location: global
   description: My Updated Security Center BigQuery Export
   filter: category="OPEN_FIREWALL" OR category="OPEN_PORT"
