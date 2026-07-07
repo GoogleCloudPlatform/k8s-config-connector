@@ -21,7 +21,9 @@
 
 package v1alpha1
 
-import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
 // +kcc:proto=google.cloud.visionai.v1.Application.ApplicationRuntimeInfo
 type Application_ApplicationRuntimeInfo struct {

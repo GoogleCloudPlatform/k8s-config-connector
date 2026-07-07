@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(BigQueryReservationCapacityCommitment{}).Name(),
 	}
 
+	BigQueryReservationReservationGroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigQueryReservationReservationGroup{}).Name(),
+	}
+
 	bigqueryreservationAPIVersion = SchemeGroupVersion.String()
 )
