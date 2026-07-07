@@ -184,6 +184,7 @@ defaultMaxPodsPerNode: integer
 defaultSnatStatus:
   disabled: boolean
 description: string
+disableL4LbFirewallReconciliation: boolean
 dnsConfig:
   clusterDns: string
   clusterDnsDomain: string
@@ -1468,6 +1469,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable.  Description of the cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>disableL4LbFirewallReconciliation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether the cluster disables L4 LB firewall reconciliation.</p>
         </td>
     </tr>
     <tr>
