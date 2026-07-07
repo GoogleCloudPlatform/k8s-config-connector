@@ -254,7 +254,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>IAMServiceAccountRef is the reference type for brownfield/legacy resources. It uses/normalizes to the Service Account email address in the "External" field for backwards compatibility. For newly created greenfield resources, please use ServiceAccountRef instead.</p>
         </td>
     </tr>
     <tr>
@@ -414,7 +414,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>IAMServiceAccountRef is the reference type for brownfield/legacy resources. It uses/normalizes to the Service Account email address in the "External" field for backwards compatibility. For newly created greenfield resources, please use ServiceAccountRef instead.</p>
         </td>
     </tr>
     <tr>
