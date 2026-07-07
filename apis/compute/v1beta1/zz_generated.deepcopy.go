@@ -6210,6 +6210,11 @@ func (in *ComputeSecurityPolicySpec) DeepCopyInto(out *ComputeSecurityPolicySpec
 		*out = new(string)
 		**out = **in
 	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
 	if in.AdaptiveProtectionConfig != nil {
 		in, out := &in.AdaptiveProtectionConfig, &out.AdaptiveProtectionConfig
 		*out = new(SecurityPolicyAdaptiveProtectionConfig)

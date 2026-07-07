@@ -4300,7 +4300,6 @@ func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
-	// MISSING: Region
 	// MISSING: SelfLink
 	// MISSING: UserDefinedFields
 	return out
@@ -4318,7 +4317,6 @@ func ComputeSecurityPolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	// MISSING: Name
-	// MISSING: Region
 	// MISSING: SelfLink
 	// MISSING: UserDefinedFields
 	return out
@@ -4340,7 +4338,7 @@ func ComputeSecurityPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Labels
 	// MISSING: Name
 	out.RecaptchaOptionsConfig = SecurityPolicyRecaptchaOptionsConfig_v1beta1_FromProto(mapCtx, in.GetRecaptchaOptionsConfig())
-	// MISSING: Region
+	out.Region = in.Region
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, SecurityPolicyRule_v1beta1_FromProto)
 	// MISSING: SelfLink
 	out.Type = in.Type
@@ -4364,7 +4362,7 @@ func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Labels
 	// MISSING: Name
 	out.RecaptchaOptionsConfig = SecurityPolicyRecaptchaOptionsConfig_v1beta1_ToProto(mapCtx, in.RecaptchaOptionsConfig)
-	// MISSING: Region
+	out.Region = in.Region
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, SecurityPolicyRule_v1beta1_ToProto)
 	// MISSING: SelfLink
 	out.Type = in.Type

@@ -80,7 +80,7 @@ func (m *securityPolicyModel) AdapterForObject(ctx context.Context, op *directba
 	var globalClient *compute.SecurityPoliciesClient
 	var regionalClient *compute.RegionSecurityPoliciesClient
 	identity := id.(*krm.ComputeSecurityPolicyIdentity)
-	if identity.Region != "" {
+	if !identity.IsGlobal() {
 		regionalClient, err = gcpClient.newRegionSecurityPoliciesClient(ctx)
 		if err != nil {
 			return nil, err
@@ -133,7 +133,7 @@ func (a *SecurityPolicyAdapter) Create(ctx context.Context, createOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ComputeSecurityPolicy", "name", a.id)
 
-	if a.id.Region != "" {
+	if !a.id.IsGlobal() {
 		req := &pb.InsertRegionSecurityPolicyRequest{
 			Project:                a.id.Project,
 			Region:                 a.id.Region,
@@ -198,7 +198,7 @@ func (a *SecurityPolicyAdapter) Update(ctx context.Context, updateOp *directbase
 
 	updateOp.RecordUpdatingEvent()
 
-	if a.id.Region != "" {
+	if !a.id.IsGlobal() {
 		req := &pb.PatchRegionSecurityPolicyRequest{
 			Project:                a.id.Project,
 			Region:                 a.id.Region,
@@ -247,7 +247,7 @@ func (a *SecurityPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ComputeSecurityPolicy", "name", a.id)
 
-	if a.id.Region != "" {
+	if !a.id.IsGlobal() {
 		req := &pb.DeleteRegionSecurityPolicyRequest{
 			Project:        a.id.Project,
 			Region:         a.id.Region,
@@ -314,7 +314,7 @@ func (a *SecurityPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstr
 }
 
 func (a *SecurityPolicyAdapter) get(ctx context.Context) (*pb.SecurityPolicy, error) {
-	if a.id.Region != "" {
+	if !a.id.IsGlobal() {
 		req := &pb.GetRegionSecurityPolicyRequest{
 			Project:        a.id.Project,
 			Region:         a.id.Region,

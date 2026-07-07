@@ -42,8 +42,12 @@ type ComputeSecurityPolicyIdentity struct {
 	Name    string
 }
 
+func (i *ComputeSecurityPolicyIdentity) IsGlobal() bool {
+	return i.Region == "" || i.Region == "global"
+}
+
 func (i *ComputeSecurityPolicyIdentity) String() string {
-	if i.Region != "" {
+	if !i.IsGlobal() {
 		return ComputeRegionalSecurityPolicyIdentityFormat.ToString(*i)
 	}
 	return ComputeGlobalSecurityPolicyIdentityFormat.ToString(*i)
@@ -54,6 +58,7 @@ func (i *ComputeSecurityPolicyIdentity) FromExternal(ref string) error {
 
 	if parsed, match, _ := ComputeGlobalSecurityPolicyIdentityFormat.Parse(ref); match {
 		*i = *parsed
+		i.Region = "global"
 		return nil
 	}
 	if parsed, match, _ := ComputeRegionalSecurityPolicyIdentityFormat.Parse(ref); match {
@@ -93,8 +98,8 @@ func getIdentityFromComputeSecurityPolicySpec(ctx context.Context, reader client
 		}
 	}
 	if ok {
-		if location, _, _ := unstructured.NestedString(u.Object, "spec", "location"); location != "" {
-			identity.Region = location
+		if region, _, _ := unstructured.NestedString(u.Object, "spec", "region"); region != "" {
+			identity.Region = region
 		}
 	}
 
