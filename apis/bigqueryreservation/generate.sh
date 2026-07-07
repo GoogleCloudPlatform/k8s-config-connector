@@ -37,7 +37,8 @@ ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
-    --resource BigQueryReservationCapacityCommitment:CapacityCommitment
+    --resource BigQueryReservationCapacityCommitment:CapacityCommitment \
+    --resource BigQueryReservationReservationGroup:ReservationGroup
 
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.bigquery.reservation.v1 \
