@@ -38,7 +38,8 @@ X-Goog-User-Project: ${projectId}
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
-  }
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}"
 }
 
 200 OK
