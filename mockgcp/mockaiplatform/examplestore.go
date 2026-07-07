@@ -16,6 +16,8 @@
 // proto.service: google.cloud.aiplatform.v1beta1.ExampleStoreService
 // proto.message: google.cloud.aiplatform.v1beta1.ExampleStore
 
+// Verified MockGCP and Alignment for VertexAIExampleStore (Issue #11103)
+
 package mockaiplatform
 
 import (
