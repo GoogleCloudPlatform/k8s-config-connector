@@ -42,7 +42,7 @@ func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Netw
 	out.Mtu = ConvertInt32ToInt(in.Mtu)
 	// MISSING: Name
 	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
-	// MISSING: NetworkProfile
+	out.NetworkProfile = in.NetworkProfile
 	// MISSING: Params
 	// MISSING: Peerings
 	if in.RoutingConfig != nil {
@@ -71,7 +71,7 @@ func ComputeNetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 	out.Mtu = ConvertIntToInt32(in.Mtu)
 	// MISSING: Name
 	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
-	// MISSING: NetworkProfile
+	out.NetworkProfile = in.NetworkProfile
 	// MISSING: Params
 	// MISSING: Peerings
 	if in.RoutingMode != nil {
