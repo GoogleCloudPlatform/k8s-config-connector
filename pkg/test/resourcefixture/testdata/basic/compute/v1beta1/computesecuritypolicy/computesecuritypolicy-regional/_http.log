@@ -135,6 +135,7 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "deny(403)",
+      "description": "",
       "kind": "compute#securityPolicyRule",
       "match": {
         "config": {
@@ -144,6 +145,7 @@ X-Xss-Protection: 0
         },
         "versionedExpr": "SRC_IPS_V1"
       },
+      "preview": false,
       "priority": 2147483647
     }
   ],
@@ -192,8 +194,7 @@ Content-Type: application/json
       "priority": 1000000000
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
-  "type": "CLOUD_ARMOR"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}"
 }
 
 200 OK
@@ -211,7 +212,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.securityPolicies.patch",
+  "operationType": "patch",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -243,7 +244,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.securityPolicies.patch",
+  "operationType": "patch",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -280,7 +281,23 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "rules": [
     {
+      "action": "allow",
+      "description": "",
+      "kind": "compute#securityPolicyRule",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "16.0.0.0/4"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": true,
+      "priority": 1000000000
+    },
+    {
       "action": "deny(403)",
+      "description": "",
       "kind": "compute#securityPolicyRule",
       "match": {
         "config": {
@@ -290,6 +307,7 @@ X-Xss-Protection: 0
         },
         "versionedExpr": "SRC_IPS_V1"
       },
+      "preview": false,
       "priority": 2147483647
     }
   ],

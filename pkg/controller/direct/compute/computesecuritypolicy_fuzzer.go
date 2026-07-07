@@ -40,10 +40,10 @@ func computeSecurityPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".recaptcha_options_config")
 	f.SpecField(".rules")
 	f.SpecField(".type")
+	f.SpecField(".region")
 
 	// Unimplemented / Identity fields
 	f.Unimplemented_Identity(".name")
-	f.Unimplemented_Identity(".region")
 
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".creation_timestamp")
