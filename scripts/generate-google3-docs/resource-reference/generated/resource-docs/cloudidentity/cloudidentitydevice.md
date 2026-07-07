@@ -10,12 +10,30 @@ title: "CloudIdentityDevice"
 </tr>
 </thead>
 <tbody>
-
+<tr>
+<td>Google Cloud Service Name</td>
+<td>Cloud Identity</td>
+</tr>
+<tr>
+<td>Google Cloud Service Documentation</td>
+<td><a href="https://docs.cloud.google.com/identity/docs/">https://docs.cloud.google.com/identity/docs/</a></td>
+</tr>
+<tr>
+<td>Google Cloud REST Resource Name</td>
+<td>v1beta1.devices</td>
+</tr>
+<tr>
+<td>Google Cloud REST Resource Documentation</td>
+<td><a href="https://docs.cloud.google.com/identity/docs/reference/rest/v1beta1/devices">https://docs.cloud.google.com/identity/docs/reference/rest/v1beta1/devices</a></td>
+</tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
 <td>cloudidentitydevice<br>gcpcloudidentitydevice<br>gcpcloudidentitydevices</td>
 </tr>
-
+<tr>
+<td>Config Connector Service Name</td>
+<td>cloudidentity.googleapis.com</td>
+</tr>
 <tr>
 <td>Config Connector Resource Fully Qualified Name</td>
 <td>cloudidentitydevices.cloudidentity.cnrm.cloud.google.com</td>
