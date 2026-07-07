@@ -27,4 +27,6 @@ type CCInsightsIssueModelExpansion interface{}
 
 type CCInsightsPhraseMatcherExpansion interface{}
 
+type CCInsightsQAScorecardExpansion interface{}
+
 type CCInsightsViewExpansion interface{}
