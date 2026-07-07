@@ -177,10 +177,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
 
 		// Discovery Engine
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":      true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}": true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":      true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":       true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":           true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":      true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":           true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":            true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}/sampleQueries/{}": true,
 
 		// DLP
 		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,

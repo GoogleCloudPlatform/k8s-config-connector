@@ -37,6 +37,7 @@ type DiscoveryengineV1alpha1Interface interface {
 	DiscoveryEngineDataStoreTargetSitesGetter
 	DiscoveryEngineEnginesGetter
 	DiscoveryEngineIdentityMappingStoresGetter
+	DiscoveryEngineSampleQueriesGetter
 	DiscoveryEngineSampleQuerySetsGetter
 	DiscoveryEngineSessionsGetter
 }
@@ -68,6 +69,10 @@ func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineEngines(namespace string)
 
 func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineIdentityMappingStores(namespace string) DiscoveryEngineIdentityMappingStoreInterface {
 	return newDiscoveryEngineIdentityMappingStores(c, namespace)
+}
+
+func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineSampleQueries(namespace string) DiscoveryEngineSampleQueryInterface {
+	return newDiscoveryEngineSampleQueries(c, namespace)
 }
 
 func (c *DiscoveryengineV1alpha1Client) DiscoveryEngineSampleQuerySets(namespace string) DiscoveryEngineSampleQuerySetInterface {
