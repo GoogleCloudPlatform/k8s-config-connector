@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
-  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
-  exit 0
-fi
 
 
 set -o errexit
@@ -85,6 +81,11 @@ if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
     exit 0
+fi
+
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
+  exit 0
 fi
 
 protoc --include_imports --include_source_info \
