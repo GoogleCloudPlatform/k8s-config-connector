@@ -38,7 +38,7 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type WorkerpoolBinaryAuthorization struct {
+type CloudruninstanceBinaryAuthorization struct {
 	/* Optional. If present, indicates to use Breakglass using this justification. If use_default is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass */
 	// +optional
 	BreakglassJustification *string `json:"breakglassJustification,omitempty"`
@@ -48,13 +48,13 @@ type WorkerpoolBinaryAuthorization struct {
 	UseDefault *bool `json:"useDefault,omitempty"`
 }
 
-type WorkerpoolCloudSQLInstance struct {
+type CloudruninstanceCloudSQLInstance struct {
 	/* The Cloud SQL instance connection names. */
 	// +optional
 	InstanceRefs []v1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
 }
 
-type WorkerpoolContainers struct {
+type CloudruninstanceContainers struct {
 	/* Arguments to the entrypoint. */
 	// +optional
 	Args []string `json:"args,omitempty"`
@@ -73,7 +73,7 @@ type WorkerpoolContainers struct {
 
 	/* List of environment variables to set in the container. */
 	// +optional
-	Env []WorkerpoolEnv `json:"env,omitempty"`
+	Env []CloudruninstanceEnv `json:"env,omitempty"`
 
 	/* Required. Name of the container image in Dockerhub, Google Artifact Registry, or Google Container Registry. */
 	// +optional
@@ -81,7 +81,7 @@ type WorkerpoolContainers struct {
 
 	/* Periodic probe of container liveness. */
 	// +optional
-	LivenessProbe *WorkerpoolLivenessProbe `json:"livenessProbe,omitempty"`
+	LivenessProbe *CloudruninstanceLivenessProbe `json:"livenessProbe,omitempty"`
 
 	/* Name of the container specified as a DNS_LABEL (RFC 1123). */
 	// +optional
@@ -89,26 +89,26 @@ type WorkerpoolContainers struct {
 
 	/* List of ports to expose from the container. */
 	// +optional
-	Ports []WorkerpoolPorts `json:"ports,omitempty"`
+	Ports []CloudruninstancePorts `json:"ports,omitempty"`
 
 	/* Compute Resource requirements by this container. */
 	// +optional
-	Resources *WorkerpoolResources `json:"resources,omitempty"`
+	Resources *CloudruninstanceResources `json:"resources,omitempty"`
 
 	/* Startup probe of application within the container. */
 	// +optional
-	StartupProbe *WorkerpoolStartupProbe `json:"startupProbe,omitempty"`
+	StartupProbe *CloudruninstanceStartupProbe `json:"startupProbe,omitempty"`
 
 	/* Volume to mount into the container's filesystem. */
 	// +optional
-	VolumeMounts []WorkerpoolVolumeMounts `json:"volumeMounts,omitempty"`
+	VolumeMounts []CloudruninstanceVolumeMounts `json:"volumeMounts,omitempty"`
 
 	/* Container's working directory. */
 	// +optional
 	WorkingDir *string `json:"workingDir,omitempty"`
 }
 
-type WorkerpoolEmptyDir struct {
+type CloudruninstanceEmptyDir struct {
 	/* The medium on which the data is stored. Acceptable values today is only MEMORY or none. When none, the default will currently be backed by memory but could change over time. +optional */
 	// +optional
 	Medium *string `json:"medium,omitempty"`
@@ -118,7 +118,7 @@ type WorkerpoolEmptyDir struct {
 	SizeLimit *string `json:"sizeLimit,omitempty"`
 }
 
-type WorkerpoolEnv struct {
+type CloudruninstanceEnv struct {
 	/* Required. Name of the environment variable. Must not exceed 32768 characters. */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -129,10 +129,10 @@ type WorkerpoolEnv struct {
 
 	/* Source for the environment variable's value. */
 	// +optional
-	ValueSource *WorkerpoolValueSource `json:"valueSource,omitempty"`
+	ValueSource *CloudruninstanceValueSource `json:"valueSource,omitempty"`
 }
 
-type WorkerpoolGcs struct {
+type CloudruninstanceGcs struct {
 	/* Cloud Storage Bucket name. */
 	// +optional
 	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
@@ -146,7 +146,7 @@ type WorkerpoolGcs struct {
 	ReadOnly *bool `json:"readOnly,omitempty"`
 }
 
-type WorkerpoolGrpc struct {
+type CloudruninstanceGrpc struct {
 	/* Optional. Port number of the gRPC service. Number must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
 	// +optional
 	Port *int32 `json:"port,omitempty"`
@@ -156,10 +156,10 @@ type WorkerpoolGrpc struct {
 	Service *string `json:"service,omitempty"`
 }
 
-type WorkerpoolHttpGet struct {
+type CloudruninstanceHttpGet struct {
 	/* Optional. Custom headers to set in the request. HTTP allows repeated headers. */
 	// +optional
-	HttpHeaders []WorkerpoolHttpHeaders `json:"httpHeaders,omitempty"`
+	HttpHeaders []CloudruninstanceHttpHeaders `json:"httpHeaders,omitempty"`
 
 	/* Optional. Path to access on the HTTP server. Defaults to '/'. */
 	// +optional
@@ -170,7 +170,7 @@ type WorkerpoolHttpGet struct {
 	Port *int32 `json:"port,omitempty"`
 }
 
-type WorkerpoolHttpHeaders struct {
+type CloudruninstanceHttpHeaders struct {
 	/* Required. The header field name */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -180,21 +180,7 @@ type WorkerpoolHttpHeaders struct {
 	Value *string `json:"value,omitempty"`
 }
 
-type WorkerpoolInstanceSplits struct {
-	/* Specifies percent of the instance split to this Revision. This defaults to zero if unspecified. */
-	// +optional
-	Percent *int32 `json:"percent,omitempty"`
-
-	/* Revision to which to assign this portion of instances, if split allocation is by revision. */
-	// +optional
-	Revision *string `json:"revision,omitempty"`
-
-	/* The allocation type for this instance split. */
-	// +optional
-	Type *string `json:"type,omitempty"`
-}
-
-type WorkerpoolItems struct {
+type CloudruninstanceItems struct {
 	/* Integer octal mode bits to use on this file, must be a value between 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be used. */
 	// +optional
 	Mode *int32 `json:"mode,omitempty"`
@@ -208,18 +194,18 @@ type WorkerpoolItems struct {
 	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
-type WorkerpoolLivenessProbe struct {
+type CloudruninstanceLivenessProbe struct {
 	/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
 	// +optional
 	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
 
 	/* Optional. GRPC specifies an action involving a gRPC port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
 	// +optional
-	Grpc *WorkerpoolGrpc `json:"grpc,omitempty"`
+	Grpc *CloudruninstanceGrpc `json:"grpc,omitempty"`
 
 	/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
 	// +optional
-	HttpGet *WorkerpoolHttpGet `json:"httpGet,omitempty"`
+	HttpGet *CloudruninstanceHttpGet `json:"httpGet,omitempty"`
 
 	/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
 	// +optional
@@ -231,14 +217,14 @@ type WorkerpoolLivenessProbe struct {
 
 	/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
 	// +optional
-	TcpSocket *WorkerpoolTcpSocket `json:"tcpSocket,omitempty"`
+	TcpSocket *CloudruninstanceTcpSocket `json:"tcpSocket,omitempty"`
 
 	/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
 	// +optional
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
-type WorkerpoolNetworkInterfaces struct {
+type CloudruninstanceNetworkInterfaces struct {
 	/* Optional. The VPC network that the Cloud Run resource will be able to send traffic to. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
@@ -252,7 +238,7 @@ type WorkerpoolNetworkInterfaces struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
-type WorkerpoolNfs struct {
+type CloudruninstanceNfs struct {
 	/* Path that is exported by the NFS server. */
 	// +optional
 	Path *string `json:"path,omitempty"`
@@ -266,13 +252,13 @@ type WorkerpoolNfs struct {
 	Server *string `json:"server,omitempty"`
 }
 
-type WorkerpoolNodeSelector struct {
+type CloudruninstanceNodeSelector struct {
 	/* Required. GPU accelerator type to attach to an instance. */
 	// +optional
 	Accelerator *string `json:"accelerator,omitempty"`
 }
 
-type WorkerpoolPorts struct {
+type CloudruninstancePorts struct {
 	/* Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536. */
 	// +optional
 	ContainerPort *int32 `json:"containerPort,omitempty"`
@@ -282,7 +268,7 @@ type WorkerpoolPorts struct {
 	Name *string `json:"name,omitempty"`
 }
 
-type WorkerpoolResources struct {
+type CloudruninstanceResources struct {
 	/* Determines whether CPU is only allocated during requests (true by default). However, if ResourceRequirements is set, the caller must explicitly set this field to true to preserve the default behavior. */
 	// +optional
 	CpuIdle *bool `json:"cpuIdle,omitempty"`
@@ -304,27 +290,21 @@ type WorkerpoolResources struct {
 	StartupCPUBoost *bool `json:"startupCPUBoost,omitempty"`
 }
 
-type WorkerpoolScaling struct {
-	/* Optional. The total number of instances in manual scaling mode. */
-	// +optional
-	ManualInstanceCount *int32 `json:"manualInstanceCount,omitempty"`
-}
-
-type WorkerpoolSecret struct {
+type CloudruninstanceSecret struct {
 	/* Integer representation of mode bits to use on created files by default. */
 	// +optional
 	DefaultMode *int32 `json:"defaultMode,omitempty"`
 
 	/* If unspecified, the volume will expose a file whose name is the secret, relative to VolumeMount.mount_path. */
 	// +optional
-	Items []WorkerpoolItems `json:"items,omitempty"`
+	Items []CloudruninstanceItems `json:"items,omitempty"`
 
 	/* Required. The name of the secret in Cloud Secret Manager. */
 	// +optional
 	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
-type WorkerpoolSecretKeyRef struct {
+type CloudruninstanceSecretKeyRef struct {
 	/* Required. The name of the secret in Cloud Secret Manager. */
 	// +optional
 	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
@@ -334,24 +314,18 @@ type WorkerpoolSecretKeyRef struct {
 	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
-type WorkerpoolServiceMesh struct {
-	/* The Mesh resource name. */
-	// +optional
-	MeshRef *v1alpha1.ResourceRef `json:"meshRef,omitempty"`
-}
-
-type WorkerpoolStartupProbe struct {
+type CloudruninstanceStartupProbe struct {
 	/* Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
 	// +optional
 	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
 
 	/* Optional. GRPC specifies an action involving a gRPC port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
 	// +optional
-	Grpc *WorkerpoolGrpc `json:"grpc,omitempty"`
+	Grpc *CloudruninstanceGrpc `json:"grpc,omitempty"`
 
 	/* Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
 	// +optional
-	HttpGet *WorkerpoolHttpGet `json:"httpGet,omitempty"`
+	HttpGet *CloudruninstanceHttpGet `json:"httpGet,omitempty"`
 
 	/* Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. */
 	// +optional
@@ -363,72 +337,26 @@ type WorkerpoolStartupProbe struct {
 
 	/* Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified. */
 	// +optional
-	TcpSocket *WorkerpoolTcpSocket `json:"tcpSocket,omitempty"`
+	TcpSocket *CloudruninstanceTcpSocket `json:"tcpSocket,omitempty"`
 
 	/* Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds. */
 	// +optional
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
 }
 
-type WorkerpoolTcpSocket struct {
+type CloudruninstanceTcpSocket struct {
 	/* Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort. */
 	// +optional
 	Port *int32 `json:"port,omitempty"`
 }
 
-type WorkerpoolTemplate struct {
-	/* Optional. Unstructured key value map that may be set by external tools to store and arbitrary metadata. */
-	// +optional
-	Annotations map[string]string `json:"annotations,omitempty"`
-
-	/* Holds list of the containers that defines the unit of execution for this Revision. */
-	// +optional
-	Containers []WorkerpoolContainers `json:"containers,omitempty"`
-
-	/* A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. */
-	// +optional
-	EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
-
-	/* Optional. The action to take if the encryption key is revoked. */
-	// +optional
-	EncryptionKeyRevocationAction *string `json:"encryptionKeyRevocationAction,omitempty"`
-
-	/* Optional. If encryption_key_revocation_action is SHUTDOWN, the duration before shutting down all instances. */
-	// +optional
-	EncryptionKeyShutdownDuration *string `json:"encryptionKeyShutdownDuration,omitempty"`
-
-	/* Optional. The node selector for the revision template. */
-	// +optional
-	NodeSelector *WorkerpoolNodeSelector `json:"nodeSelector,omitempty"`
-
-	/* Optional. The unique name for the revision. If this field is omitted, it will be automatically generated based on the WorkerPool name. */
-	// +optional
-	Revision *string `json:"revision,omitempty"`
-
-	/* Optional. Email address of the IAM service account associated with the revision of the service. */
-	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
-
-	/* Optional. Enables service mesh connectivity. */
-	// +optional
-	ServiceMesh *WorkerpoolServiceMesh `json:"serviceMesh,omitempty"`
-
-	/* Optional. A list of Volumes to make available to containers. */
-	// +optional
-	Volumes []WorkerpoolVolumes `json:"volumes,omitempty"`
-
-	/* Optional. VPC Access configuration to use for this Revision. */
-	// +optional
-	VpcAccess *WorkerpoolVpcAccess `json:"vpcAccess,omitempty"`
-}
-
-type WorkerpoolValueSource struct {
+type CloudruninstanceValueSource struct {
 	/* Selects a secret and a specific version from Cloud Secret Manager. */
 	// +optional
-	SecretKeyRef *WorkerpoolSecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *CloudruninstanceSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
-type WorkerpoolVolumeMounts struct {
+type CloudruninstanceVolumeMounts struct {
 	/* Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run */
 	// +optional
 	MountPath *string `json:"mountPath,omitempty"`
@@ -442,18 +370,18 @@ type WorkerpoolVolumeMounts struct {
 	SubPath *string `json:"subPath,omitempty"`
 }
 
-type WorkerpoolVolumes struct {
+type CloudruninstanceVolumes struct {
 	/* For Cloud SQL volumes, contains the specific instances that should be mounted. */
 	// +optional
-	CloudSQLInstance *WorkerpoolCloudSQLInstance `json:"cloudSQLInstance,omitempty"`
+	CloudSQLInstance *CloudruninstanceCloudSQLInstance `json:"cloudSQLInstance,omitempty"`
 
 	/* Ephemeral storage used as a shared volume. */
 	// +optional
-	EmptyDir *WorkerpoolEmptyDir `json:"emptyDir,omitempty"`
+	EmptyDir *CloudruninstanceEmptyDir `json:"emptyDir,omitempty"`
 
 	/* Persistent storage backed by a Google Cloud Storage bucket. */
 	// +optional
-	Gcs *WorkerpoolGcs `json:"gcs,omitempty"`
+	Gcs *CloudruninstanceGcs `json:"gcs,omitempty"`
 
 	/* Required. Volume's name. */
 	// +optional
@@ -461,14 +389,14 @@ type WorkerpoolVolumes struct {
 
 	/* For NFS Voumes, contains the path to the nfs Volume */
 	// +optional
-	Nfs *WorkerpoolNfs `json:"nfs,omitempty"`
+	Nfs *CloudruninstanceNfs `json:"nfs,omitempty"`
 
 	/* Secret represents a secret that should populate this volume. */
 	// +optional
-	Secret *WorkerpoolSecret `json:"secret,omitempty"`
+	Secret *CloudruninstanceSecret `json:"secret,omitempty"`
 }
 
-type WorkerpoolVpcAccess struct {
+type CloudruninstanceVpcAccess struct {
 	/* VPC Access connector name. */
 	// +optional
 	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
@@ -479,214 +407,135 @@ type WorkerpoolVpcAccess struct {
 
 	/* Optional. Direct VPC egress settings. Currently only single network interface is supported. */
 	// +optional
-	NetworkInterfaces []WorkerpoolNetworkInterfaces `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces []CloudruninstanceNetworkInterfaces `json:"networkInterfaces,omitempty"`
 }
 
-type RunWorkerPoolSpec struct {
-	/* Optional. Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. */
+type CloudRunInstanceSpec struct {
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* Optional. Settings for the Binary Authorization feature. */
 	// +optional
-	BinaryAuthorization *WorkerpoolBinaryAuthorization `json:"binaryAuthorization,omitempty"`
+	BinaryAuthorization *CloudruninstanceBinaryAuthorization `json:"binaryAuthorization,omitempty"`
 
-	/* Arbitrary identifier for the API client. */
 	// +optional
 	Client *string `json:"client,omitempty"`
 
-	/* Arbitrary version identifier for the API client. */
 	// +optional
 	ClientVersion *string `json:"clientVersion,omitempty"`
 
-	/* Optional. One or more custom audiences that you want this worker pool to support. Specify each custom audience as the full URL in a string. */
-	// +optional
-	CustomAudiences []string `json:"customAudiences,omitempty"`
+	Containers []CloudruninstanceContainers `json:"containers"`
 
-	/* User-provided description of the WorkerPool. This field currently has a 512-character limit. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Optional. Specifies how to distribute instances over a collection of Revisions belonging to the WorkerPool. If instance split is empty or not provided, defaults to 100% instances assigned to the latest `Ready` Revision. */
 	// +optional
-	InstanceSplits []WorkerpoolInstanceSplits `json:"instanceSplits,omitempty"`
+	EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
 
-	/* Optional. The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/terms/launch-stages). */
+	// +optional
+	EncryptionKeyRevocationAction *string `json:"encryptionKeyRevocationAction,omitempty"`
+
+	// +optional
+	EncryptionKeyShutdownDuration *string `json:"encryptionKeyShutdownDuration,omitempty"`
+
+	// +optional
+	GpuZonalRedundancyDisabled *bool `json:"gpuZonalRedundancyDisabled,omitempty"`
+
+	// +optional
+	IapEnabled *bool `json:"iapEnabled,omitempty"`
+
+	// +optional
+	Ingress *string `json:"ingress,omitempty"`
+
+	// +optional
+	InvokerIAMDisabled *bool `json:"invokerIAMDisabled,omitempty"`
+
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	// +optional
 	LaunchStage *string `json:"launchStage,omitempty"`
 
-	/* The location of this resource. */
-	Location string `json:"location"`
+	// +optional
+	Location *string `json:"location,omitempty"`
 
-	/* The project that this resource belongs to. */
+	// +optional
+	NodeSelector *CloudruninstanceNodeSelector `json:"nodeSelector,omitempty"`
+
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The RunWorkerPool name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. Specifies worker-pool-level scaling settings */
 	// +optional
-	Scaling *WorkerpoolScaling `json:"scaling,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* Required. The template used to create revisions for this WorkerPool. */
 	// +optional
-	Template *WorkerpoolTemplate `json:"template,omitempty"`
+	Volumes []CloudruninstanceVolumes `json:"volumes,omitempty"`
+
+	// +optional
+	VpcAccess *CloudruninstanceVpcAccess `json:"vpcAccess,omitempty"`
 }
 
-type WorkerpoolBuildInfoStatus struct {
-	/* Output only. Entry point of the function when the image is a Cloud Run function. */
+type CloudruninstanceContainerStatusesStatus struct {
 	// +optional
-	FunctionTarget *string `json:"functionTarget,omitempty"`
+	ImageDigest *string `json:"imageDigest,omitempty"`
 
-	/* Output only. Source code location of the image. */
 	// +optional
-	SourceLocation *string `json:"sourceLocation,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
-type WorkerpoolContainersStatus struct {
-	/* Output only. The build info of the container image. */
+type CloudruninstanceObservedStateStatus struct {
 	// +optional
-	BuildInfo *WorkerpoolBuildInfoStatus `json:"buildInfo,omitempty"`
-}
+	ContainerStatuses []CloudruninstanceContainerStatusesStatus `json:"containerStatuses,omitempty"`
 
-type WorkerpoolInstanceSplitStatusesStatus struct {
-	/* Specifies percent of the instance split to this Revision. */
-	// +optional
-	Percent *int32 `json:"percent,omitempty"`
-
-	/* Revision to which this instance split is assigned. */
-	// +optional
-	Revision *string `json:"revision,omitempty"`
-
-	/* The allocation type for this instance split. */
-	// +optional
-	Type *string `json:"type,omitempty"`
-}
-
-type WorkerpoolObservedConditionsStatus struct {
-	/* A reason for the execution condition. */
-	// +optional
-	ExecutionReason *string `json:"executionReason,omitempty"`
-
-	/* Last time the condition transitioned from one status to another. */
-	// +optional
-	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
-
-	/* Human readable message indicating details about the current status. */
-	// +optional
-	Message *string `json:"message,omitempty"`
-
-	/* A common (service-level) reason for this condition. */
-	// +optional
-	Reason *string `json:"reason,omitempty"`
-
-	/* A reason for the revision condition. */
-	// +optional
-	RevisionReason *string `json:"revisionReason,omitempty"`
-
-	/* How to interpret failures of this condition, one of Error, Warning, Info */
-	// +optional
-	Severity *string `json:"severity,omitempty"`
-
-	/* State of the condition. */
-	// +optional
-	State *string `json:"state,omitempty"`
-
-	/* type is used to communicate the status of the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting Types common to all resources include: * "Ready": True when the Resource is ready. */
-	// +optional
-	Type *string `json:"type,omitempty"`
-}
-
-type WorkerpoolObservedStateStatus struct {
-	/* Output only. The creation time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Email address of the authenticated creator. */
 	// +optional
 	Creator *string `json:"creator,omitempty"`
 
-	/* Output only. One or more custom audiences that you want this worker pool to support. */
-	// +optional
-	CustomAudiences []string `json:"customAudiences,omitempty"`
-
-	/* Output only. The deletion time. It is only populated as a response to a Delete request. */
 	// +optional
 	DeleteTime *string `json:"deleteTime,omitempty"`
 
-	/* Output only. A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
-	/* Output only. For a deleted resource, the time after which it will be permanently deleted. */
 	// +optional
 	ExpireTime *string `json:"expireTime,omitempty"`
 
-	/* Output only. A number that monotonically increases every time the user modifies the desired state. */
 	// +optional
 	Generation *int64 `json:"generation,omitempty"`
 
-	/* Output only. Detailed status information for corresponding instance splits. */
-	// +optional
-	InstanceSplitStatuses []WorkerpoolInstanceSplitStatusesStatus `json:"instanceSplitStatuses,omitempty"`
-
-	/* Output only. Email address of the last authenticated modifier. */
 	// +optional
 	LastModifier *string `json:"lastModifier,omitempty"`
 
-	/* Output only. Name of the last created revision. */
 	// +optional
-	LatestCreatedRevision *string `json:"latestCreatedRevision,omitempty"`
+	LogURI *string `json:"logURI,omitempty"`
 
-	/* Output only. Name of the latest revision that is serving traffic. */
-	// +optional
-	LatestReadyRevision *string `json:"latestReadyRevision,omitempty"`
-
-	/* Output only. The Conditions of all other associated sub-resources. They contain additional diagnostics information in case the WorkerPool does not reach its Serving state. */
-	// +optional
-	ObservedConditions []WorkerpoolObservedConditionsStatus `json:"observedConditions,omitempty"`
-
-	/* Output only. The generation of this WorkerPool currently serving traffic. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. Returns true if the WorkerPool is currently being acted upon by the system to bring it into the desired state. */
 	// +optional
 	Reconciling *bool `json:"reconciling,omitempty"`
 
-	/* Output only. Reserved for future use. */
 	// +optional
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 
-	/* Required. The template used to create revisions for this WorkerPool. */
 	// +optional
-	Template *WorkerpoolTemplateStatus `json:"template,omitempty"`
+	TerminalCondition *CloudruninstanceTerminalConditionStatus `json:"terminalCondition,omitempty"`
 
-	/* Output only. The Condition of this WorkerPool, containing its readiness status, and detailed error information in case it did not reach a serving state. */
-	// +optional
-	TerminalCondition *WorkerpoolTerminalConditionStatus `json:"terminalCondition,omitempty"`
-
-	/* Output only. Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
 
-	/* Output only. The last-modified time. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// +optional
+	Urls []string `json:"urls,omitempty"`
 }
 
-type WorkerpoolTemplateStatus struct {
-	/* Holds list of the containers that defines the unit of execution for this Revision. */
-	// +optional
-	Containers []WorkerpoolContainersStatus `json:"containers,omitempty"`
-
-	/* Output only. The unique name for the revision. */
-	// +optional
-	Revision *string `json:"revision,omitempty"`
-}
-
-type WorkerpoolTerminalConditionStatus struct {
+type CloudruninstanceTerminalConditionStatus struct {
 	/* A reason for the execution condition. */
 	// +optional
 	ExecutionReason *string `json:"executionReason,omitempty"`
@@ -720,26 +569,23 @@ type WorkerpoolTerminalConditionStatus struct {
 	Type *string `json:"type,omitempty"`
 }
 
-type RunWorkerPoolStatus struct {
+type CloudRunInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
-	   RunWorkerPool's current state. */
+	   CloudRunInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the RunWorkerPool resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *WorkerpoolObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *CloudruninstanceObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcprunworkerpool;gcprunworkerpools
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudruninstance;gcpcloudruninstances
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
@@ -748,25 +594,25 @@ type RunWorkerPoolStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// RunWorkerPool is the Schema for the run API
+// CloudRunInstance is the Schema for the run API
 // +k8s:openapi-gen=true
-type RunWorkerPool struct {
+type CloudRunInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   RunWorkerPoolSpec   `json:"spec,omitempty"`
-	Status RunWorkerPoolStatus `json:"status,omitempty"`
+	Spec   CloudRunInstanceSpec   `json:"spec,omitempty"`
+	Status CloudRunInstanceStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// RunWorkerPoolList contains a list of RunWorkerPool
-type RunWorkerPoolList struct {
+// CloudRunInstanceList contains a list of CloudRunInstance
+type CloudRunInstanceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []RunWorkerPool `json:"items"`
+	Items           []CloudRunInstance `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&RunWorkerPool{}, &RunWorkerPoolList{})
+	SchemeBuilder.Register(&CloudRunInstance{}, &CloudRunInstanceList{})
 }
