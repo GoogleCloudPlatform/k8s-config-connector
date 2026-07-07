@@ -25,64 +25,64 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &NetworkSecurityUrlListRef{}
+var _ refs.Ref = &NetworkSecurityURLListRef{}
 
-// NetworkSecurityUrlListRef defines the resource reference to NetworkSecurityUrlList, which "External" field
+// NetworkSecurityURLListRef defines the resource reference to NetworkSecurityURLList, which "External" field
 // holds the GCP identifier for the KRM object.
-type NetworkSecurityUrlListRef struct {
-	// A reference to an externally managed NetworkSecurityUrlList resource.
+type NetworkSecurityURLListRef struct {
+	// A reference to an externally managed NetworkSecurityURLList resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/urlLists/{{urlListID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a NetworkSecurityUrlList resource.
+	// The name of a NetworkSecurityURLList resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a NetworkSecurityUrlList resource.
+	// The namespace of a NetworkSecurityURLList resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&NetworkSecurityUrlListRef{})
+	refs.Register(&NetworkSecurityURLListRef{})
 }
 
-func (r *NetworkSecurityUrlListRef) GetGVK() schema.GroupVersionKind {
-	return NetworkSecurityUrlListGVK
+func (r *NetworkSecurityURLListRef) GetGVK() schema.GroupVersionKind {
+	return NetworkSecurityURLListGVK
 }
 
-func (r *NetworkSecurityUrlListRef) GetNamespacedName() types.NamespacedName {
+func (r *NetworkSecurityURLListRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *NetworkSecurityUrlListRef) GetExternal() string {
+func (r *NetworkSecurityURLListRef) GetExternal() string {
 	return r.External
 }
 
-func (r *NetworkSecurityUrlListRef) SetExternal(ref string) {
+func (r *NetworkSecurityURLListRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *NetworkSecurityUrlListRef) ValidateExternal(ref string) error {
-	id := &NetworkSecurityUrlListIdentity{}
+func (r *NetworkSecurityURLListRef) ValidateExternal(ref string) error {
+	id := &NetworkSecurityURLListIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *NetworkSecurityUrlListRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &NetworkSecurityUrlListIdentity{}
+func (r *NetworkSecurityURLListRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &NetworkSecurityURLListIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *NetworkSecurityUrlListRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *NetworkSecurityURLListRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromNetworkSecurityUrlListSpec(ctx, reader, u)
+		identity, err := getIdentityFromNetworkSecurityURLListSpec(ctx, reader, u)
 		if err != nil {
 			return ""
 		}

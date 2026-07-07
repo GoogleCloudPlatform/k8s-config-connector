@@ -125,5 +125,11 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityTLSInspectionPolicy{}).Name(),
 	}
 
+	NetworkSecurityURLListGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityURLList{}).Name(),
+	}
+
 	networksecurityAPIVersion = SchemeGroupVersion.String()
 )

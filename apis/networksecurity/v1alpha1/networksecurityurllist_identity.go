@@ -26,41 +26,41 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &NetworkSecurityUrlListIdentity{}
-	_ identity.Resource   = &NetworkSecurityUrlList{}
+	_ identity.IdentityV2 = &NetworkSecurityURLListIdentity{}
+	_ identity.Resource   = &NetworkSecurityURLList{}
 )
 
-var NetworkSecurityUrlListIdentityFormat = gcpurls.Template[NetworkSecurityUrlListIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/urlLists/{url_list}")
+var NetworkSecurityURLListIdentityFormat = gcpurls.Template[NetworkSecurityURLListIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/urlLists/{urlList}")
 
 // +k8s:deepcopy-gen=false
-type NetworkSecurityUrlListIdentity struct {
+type NetworkSecurityURLListIdentity struct {
 	Project  string
 	Location string
 	UrlList  string
 }
 
-func (i *NetworkSecurityUrlListIdentity) String() string {
-	return NetworkSecurityUrlListIdentityFormat.ToString(*i)
+func (i *NetworkSecurityURLListIdentity) String() string {
+	return NetworkSecurityURLListIdentityFormat.ToString(*i)
 }
 
-func (i *NetworkSecurityUrlListIdentity) FromExternal(ref string) error {
-	parsed, match, err := NetworkSecurityUrlListIdentityFormat.Parse(ref)
+func (i *NetworkSecurityURLListIdentity) FromExternal(ref string) error {
+	parsed, match, err := NetworkSecurityURLListIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of NetworkSecurityUrlList external=%q was not known (use %s): %w", ref, NetworkSecurityUrlListIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of NetworkSecurityURLList external=%q was not known (use %s): %w", ref, NetworkSecurityURLListIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of NetworkSecurityUrlList external=%q was not known (use %s)", ref, NetworkSecurityUrlListIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of NetworkSecurityURLList external=%q was not known (use %s)", ref, NetworkSecurityURLListIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *NetworkSecurityUrlListIdentity) Host() string {
-	return NetworkSecurityUrlListIdentityFormat.Host()
+func (i *NetworkSecurityURLListIdentity) Host() string {
+	return NetworkSecurityURLListIdentityFormat.Host()
 }
 
-func getIdentityFromNetworkSecurityUrlListSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkSecurityUrlListIdentity, error) {
+func getIdentityFromNetworkSecurityURLListSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkSecurityURLListIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -76,7 +76,7 @@ func getIdentityFromNetworkSecurityUrlListSpec(ctx context.Context, reader clien
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &NetworkSecurityUrlListIdentity{
+	identity := &NetworkSecurityURLListIdentity{
 		Project:  projectID,
 		Location: location,
 		UrlList:  resourceID,
@@ -84,21 +84,21 @@ func getIdentityFromNetworkSecurityUrlListSpec(ctx context.Context, reader clien
 	return identity, nil
 }
 
-func (obj *NetworkSecurityUrlList) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromNetworkSecurityUrlListSpec(ctx, reader, obj)
+func (obj *NetworkSecurityURLList) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromNetworkSecurityURLListSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		statusIdentity := &NetworkSecurityUrlListIdentity{}
+		statusIdentity := &NetworkSecurityURLListIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change NetworkSecurityUrlList identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change NetworkSecurityURLList identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

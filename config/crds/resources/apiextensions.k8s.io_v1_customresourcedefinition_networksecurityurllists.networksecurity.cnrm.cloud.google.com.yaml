@@ -16,8 +16,8 @@ spec:
   names:
     categories:
     - gcp
-    kind: NetworkSecurityUrlList
-    listKind: NetworkSecurityUrlListList
+    kind: NetworkSecurityURLList
+    listKind: NetworkSecurityURLListList
     plural: networksecurityurllists
     shortNames:
     - gcpnetworksecurityurllist
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NetworkSecurityUrlList is the Schema for the NetworkSecurityUrlList
+        description: NetworkSecurityURLList is the Schema for the NetworkSecurityURLList
           API
         properties:
           apiVersion:
@@ -61,7 +61,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkSecurityUrlListSpec defines the desired state of NetworkSecurityUrlList
+            description: NetworkSecurityURLListSpec defines the desired state of NetworkSecurityURLList
             properties:
               description:
                 description: Optional. Free-text description of the resource.
@@ -102,7 +102,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The NetworkSecurityUrlList name. If not given, the metadata.name
+                description: The NetworkSecurityURLList name. If not given, the metadata.name
                   will be used.
                 type: string
               values:
@@ -116,8 +116,8 @@ spec:
             - values
             type: object
           status:
-            description: NetworkSecurityUrlListStatus defines the config connector
-              machine state of NetworkSecurityUrlList
+            description: NetworkSecurityURLListStatus defines the config connector
+              machine state of NetworkSecurityURLList
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -146,7 +146,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the NetworkSecurityUrlList resource
+                description: A unique specifier for the NetworkSecurityURLList resource
                   in GCP.
                 type: string
               observedGeneration:
