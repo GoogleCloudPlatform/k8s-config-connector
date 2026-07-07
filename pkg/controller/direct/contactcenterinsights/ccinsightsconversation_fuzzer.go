@@ -62,6 +62,7 @@ func ccInsightsConversationFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".latest_analysis.request_time")
 	f.Unimplemented_NotYetTriaged(".latest_analysis.create_time")
 	f.Unimplemented_NotYetTriaged(".latest_analysis.analysis_result")
+	f.Unimplemented_NotYetTriaged(".latest_analysis.annotator_selector.summarization_config.summarization_model")
 
 	f.Unimplemented_NotYetTriaged(".data_source.dialogflow_source.dialogflow_conversation")
 

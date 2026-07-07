@@ -158,7 +158,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
-	cloud.google.com/go/contactcenterinsights v1.22.0 // indirect
 	cloud.google.com/go/edgenetwork v1.8.0 // indirect
 	cloud.google.com/go/memcache v1.16.0 // indirect
 	cloud.google.com/go/modelarmor v1.0.0 // indirect
