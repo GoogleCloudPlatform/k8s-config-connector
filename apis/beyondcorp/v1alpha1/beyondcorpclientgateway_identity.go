@@ -43,6 +43,10 @@ func (i *BeyondCorpClientGatewayIdentity) String() string {
 	return BeyondCorpClientGatewayIdentityFormat.ToString(*i)
 }
 
+func (i *BeyondCorpClientGatewayIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *BeyondCorpClientGatewayIdentity) FromExternal(ref string) error {
 	parsed, match, err := BeyondCorpClientGatewayIdentityFormat.Parse(ref)
 	if err != nil {
