@@ -134,6 +134,7 @@
 | cloudids.cnrm.cloud.google.com                 | CloudIDSEndpoint                                | True         | True        | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                 | CloudIOTDeviceRegistry                          | True         | False       | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                 | CloudIOTDevice                                  | True         | False       | False  | Terraform  | False       |
+| run.cnrm.cloud.google.com                      | CloudRunInstance                                | True         | False       | False  | Direct     | True        |
 | cloudscheduler.cnrm.cloud.google.com           | CloudSchedulerJob                               | False        | True        | False  | DCL        | False       |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceCloudControl             | True         | False       | False  | Direct     | True        |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceFramework                | True         | False       | False  | Direct     | True        |
@@ -403,6 +404,7 @@
 | kms.cnrm.cloud.google.com                      | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                      | KMSKeyRing                                      | False        | True        | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                      | KMSSecretCiphertext                             | True         | False       | False  | Terraform  | True        |
+| licensemanager.cnrm.cloud.google.com           | LicenseManagerConfiguration                     | True         | False       | False  | Direct     | True        |
 | livestream.cnrm.cloud.google.com               | LiveStreamAsset                                 | True         | False       | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                  | LoggingLink                                     | True         | True        | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                  | LoggingLogBucket                                | False        | True        | False  | DCL        | True        |
@@ -437,6 +439,7 @@
 | netapp.cnrm.cloud.google.com                   | NetAppBackupVault                               | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityHub                          | False        | True        | False  | DCL        | False       |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityInternalRange                | True         | False       | False  | Direct     | True        |
+| networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityMulticloudDataTransferConfig | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityRegionalEndpoint             | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityServiceConnectionPolicy      | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivitySpoke                        | False        | True        | False  | DCL        | False       |

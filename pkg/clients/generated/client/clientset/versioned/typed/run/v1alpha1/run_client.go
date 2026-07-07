@@ -31,12 +31,17 @@ import (
 
 type RunV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	CloudRunInstancesGetter
 	RunWorkerPoolsGetter
 }
 
 // RunV1alpha1Client is used to interact with features provided by the run.cnrm.cloud.google.com group.
 type RunV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *RunV1alpha1Client) CloudRunInstances(namespace string) CloudRunInstanceInterface {
+	return newCloudRunInstances(c, namespace)
 }
 
 func (c *RunV1alpha1Client) RunWorkerPools(namespace string) RunWorkerPoolInterface {

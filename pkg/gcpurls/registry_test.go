@@ -259,6 +259,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Vision
 		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
 
+		// Cloud Run
+		"//run.googleapis.com/projects/{}/locations/{}/instances/{}": true,
+
 		// Workflow Executions
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
 

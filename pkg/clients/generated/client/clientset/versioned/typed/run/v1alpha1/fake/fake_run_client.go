@@ -31,6 +31,10 @@ type FakeRunV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeRunV1alpha1) CloudRunInstances(namespace string) v1alpha1.CloudRunInstanceInterface {
+	return newFakeCloudRunInstances(c, namespace)
+}
+
 func (c *FakeRunV1alpha1) RunWorkerPools(namespace string) v1alpha1.RunWorkerPoolInterface {
 	return newFakeRunWorkerPools(c, namespace)
 }
