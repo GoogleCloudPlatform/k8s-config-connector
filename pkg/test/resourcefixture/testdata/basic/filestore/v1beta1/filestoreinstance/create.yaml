@@ -18,7 +18,7 @@ metadata:
   name: filestoreinstance-${uniqueId}
 spec:
   description: "Test instance"
-  location: us-central1-c
+  location: us-central1-b
   tier: PREMIUM
   fileShares:
   - capacityGb: 2560
