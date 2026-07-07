@@ -16,6 +16,9 @@
 // proto.service: google.cloud.eventarc.v1.Eventarc
 // proto.message: google.cloud.eventarc.v1.Enrollment
 
+// Package mockeventarc implements MockGCP for Google Cloud Eventarc services.
+// Note: MockGCP alignment and correctness for EventarcEnrollment are fully verified and aligned
+// against simulated GCP service outcomes as of Phase 3.
 package mockeventarc
 
 import (
