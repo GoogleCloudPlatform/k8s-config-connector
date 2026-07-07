@@ -1260,6 +1260,13 @@
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=configdeploymentgroups.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=configdeploymentgroups.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentUnits[].dependencies[]" is not set in unstructured objects
+[missing_field] crd=configdeploymentgroups.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentUnits[].deploymentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=configdeploymentgroups.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentUnits[].id" is not set in unstructured objects
+[missing_field] crd=configdeploymentgroups.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=configdeploymentgroups.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=configdeploymentgroups.config.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].boolValue" is not set in unstructured objects
 [missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].intValue" is not set in unstructured objects
 [missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].key" is not set in unstructured objects
