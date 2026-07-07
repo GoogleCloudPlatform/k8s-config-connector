@@ -9,3 +9,9 @@
   2. Restored and uncommented a standard `ListValue` structure in `model_types.go` matching the convention in other packages.
   3. Ran `make fmt` and updated the generated CRD manifests for both `VertexAITuningJob` and `AIPlatformModel` cleanly.
 - **Impact**: Ensures that any future direct resources added to the `aiplatform` package can be generated and compiled safely without breaking existing resources or generating out-of-date/pruned structures in `types.generated.go`.
+
+### 2026-07-06 Exposing Commented-Out Unreachable Sub-structures and References for VertexAIPipelineJob
+- **Context**: Implementing direct types for `VertexAIPipelineJob` under `apis/aiplatform/v1alpha1/`.
+- **Problem**: The nested sub-structures `PipelineJob.RuntimeConfig` (`PipelineJobRuntimeConfig`), `PscInterfaceConfig` (`PSCInterfaceConfig`), `DnsPeeringConfig` (`DNSPeeringConfig`), and several observed state sub-structures were commented out in `types.generated.go` as unreachable since they were not previously used by other resources in this service.
+- **Solution**: Explicitly defined `PipelineJobRuntimeConfig`, `PSCInterfaceConfig`, `DNSPeeringConfig`, and the `VertexAIPipelineJobObservedState` nested structures inside `vertexaipipelinejob_types.go`. This automatically allowed the code generator to recognize and map these structures. We also implemented proper reference types like `computev1beta1.ComputeNetworkRef`, `computev1alpha1.ComputeNetworkAttachmentRef`, and `refsv1beta1.IAMServiceAccountRef` for reference fields.
+- **Impact**: Enables flawless generation of deepcopy methods, CRD fields, and mappers for `VertexAIPipelineJob` while maintaining 100% clean pre-submit checks.

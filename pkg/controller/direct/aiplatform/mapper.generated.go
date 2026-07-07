@@ -27,6 +27,9 @@ import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -219,6 +222,66 @@ func Content_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
 	out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, Part_ToProto)
 	return out
 }
+func ContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.ContextObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContextObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ParentContexts = in.ParentContexts
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func ContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContextObservedState) *pb.Context {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ParentContexts = in.ParentContexts
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConfig) *krm.DNSPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSPeeringConfig{}
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	out.TargetProject = direct.LazyPtr(in.GetTargetProject())
+	if in.GetTargetNetwork() != "" {
+		out.TargetNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetTargetNetwork()}
+	}
+	return out
+}
+func DNSPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.DNSPeeringConfig) *pb.DnsPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsPeeringConfig{}
+	out.Domain = direct.ValueOf(in.Domain)
+	out.TargetProject = direct.ValueOf(in.TargetProject)
+	if in.TargetNetworkRef != nil {
+		out.TargetNetwork = in.TargetNetworkRef.External
+	}
+	return out
+}
 func DeployedModelRef_FromProto(mapCtx *direct.MapContext, in *pb.DeployedModelRef) *krm.DeployedModelRef {
 	if in == nil {
 		return nil
@@ -333,6 +396,42 @@ func ExecutableCode_ToProto(mapCtx *direct.MapContext, in *krm.ExecutableCode) *
 	out := &pb.ExecutableCode{}
 	out.Language = direct.Enum_ToProto[pb.ExecutableCode_Language](mapCtx, in.Language)
 	out.Code = direct.ValueOf(in.Code)
+	return out
+}
+func ExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.ExecutionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func ExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionObservedState) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }
 func ExplanationParameters_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krm.ExplanationParameters {
@@ -803,6 +902,28 @@ func PSCAutomationConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutomatio
 	// MISSING: ErrorMessage
 	return out
 }
+func PSCInterfaceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscInterfaceConfig) *krm.PSCInterfaceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCInterfaceConfig{}
+	if in.GetNetworkAttachment() != "" {
+		out.NetworkAttachmentRef = &krmcomputev1alpha1.ComputeNetworkAttachmentRef{External: in.GetNetworkAttachment()}
+	}
+	out.DNSPeeringConfigs = direct.Slice_FromProto(mapCtx, in.DnsPeeringConfigs, DNSPeeringConfig_FromProto)
+	return out
+}
+func PSCInterfaceConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCInterfaceConfig) *pb.PscInterfaceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscInterfaceConfig{}
+	if in.NetworkAttachmentRef != nil {
+		out.NetworkAttachment = in.NetworkAttachmentRef.External
+	}
+	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_ToProto)
+	return out
+}
 func Part_FromProto(mapCtx *direct.MapContext, in *pb.Part) *krm.Part {
 	if in == nil {
 		return nil
@@ -858,6 +979,174 @@ func Part_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_Text {
 		return nil
 	}
 	return &pb.Part_Text{Text: *in}
+}
+func PipelineJobDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJobDetail) *krm.PipelineJobDetailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineJobDetailObservedState{}
+	out.PipelineContext = ContextObservedState_FromProto(mapCtx, in.GetPipelineContext())
+	out.PipelineRunContext = ContextObservedState_FromProto(mapCtx, in.GetPipelineRunContext())
+	out.TaskDetails = direct.Slice_FromProto(mapCtx, in.TaskDetails, PipelineTaskDetailObservedState_FromProto)
+	return out
+}
+func PipelineJobDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobDetailObservedState) *pb.PipelineJobDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineJobDetail{}
+	out.PipelineContext = ContextObservedState_ToProto(mapCtx, in.PipelineContext)
+	out.PipelineRunContext = ContextObservedState_ToProto(mapCtx, in.PipelineRunContext)
+	out.TaskDetails = direct.Slice_ToProto(mapCtx, in.TaskDetails, PipelineTaskDetailObservedState_ToProto)
+	return out
+}
+func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob_RuntimeConfig) *krm.PipelineJobRuntimeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineJobRuntimeConfig{}
+	// MISSING: Parameters
+	out.GCSOutputDirectory = direct.LazyPtr(in.GetGcsOutputDirectory())
+	// MISSING: ParameterValues
+	out.FailurePolicy = direct.Enum_FromProto(mapCtx, in.GetFailurePolicy())
+	// MISSING: InputArtifacts
+	return out
+}
+func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobRuntimeConfig) *pb.PipelineJob_RuntimeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineJob_RuntimeConfig{}
+	// MISSING: Parameters
+	out.GcsOutputDirectory = direct.ValueOf(in.GCSOutputDirectory)
+	// MISSING: ParameterValues
+	out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
+	// MISSING: InputArtifacts
+	return out
+}
+func PipelineTaskDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail) *krm.PipelineTaskDetailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineTaskDetailObservedState{}
+	out.TaskID = direct.LazyPtr(in.GetTaskId())
+	out.ParentTaskID = direct.LazyPtr(in.GetParentTaskId())
+	out.TaskName = direct.LazyPtr(in.GetTaskName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.ExecutorDetail = PipelineTaskExecutorDetailObservedState_FromProto(mapCtx, in.GetExecutorDetail())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Execution = ExecutionObservedState_FromProto(mapCtx, in.GetExecution())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.PipelineTaskStatus = direct.Slice_FromProto(mapCtx, in.PipelineTaskStatus, PipelineTaskDetail_PipelineTaskStatusObservedState_FromProto)
+	// MISSING: Inputs
+	// MISSING: Outputs
+	out.TaskUniqueName = direct.LazyPtr(in.GetTaskUniqueName())
+	return out
+}
+func PipelineTaskDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskDetailObservedState) *pb.PipelineTaskDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineTaskDetail{}
+	out.TaskId = direct.ValueOf(in.TaskID)
+	out.ParentTaskId = direct.ValueOf(in.ParentTaskID)
+	out.TaskName = direct.ValueOf(in.TaskName)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.ExecutorDetail = PipelineTaskExecutorDetailObservedState_ToProto(mapCtx, in.ExecutorDetail)
+	out.State = direct.Enum_ToProto[pb.PipelineTaskDetail_State](mapCtx, in.State)
+	out.Execution = ExecutionObservedState_ToProto(mapCtx, in.Execution)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.PipelineTaskStatus = direct.Slice_ToProto(mapCtx, in.PipelineTaskStatus, PipelineTaskDetail_PipelineTaskStatusObservedState_ToProto)
+	// MISSING: Inputs
+	// MISSING: Outputs
+	out.TaskUniqueName = direct.ValueOf(in.TaskUniqueName)
+	return out
+}
+func PipelineTaskDetail_PipelineTaskStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail_PipelineTaskStatus) *krm.PipelineTaskDetail_PipelineTaskStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineTaskDetail_PipelineTaskStatusObservedState{}
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func PipelineTaskDetail_PipelineTaskStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskDetail_PipelineTaskStatusObservedState) *pb.PipelineTaskDetail_PipelineTaskStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineTaskDetail_PipelineTaskStatus{}
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.PipelineTaskDetail_State](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	return out
+}
+func PipelineTaskExecutorDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail) *krm.PipelineTaskExecutorDetailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineTaskExecutorDetailObservedState{}
+	out.ContainerDetail = PipelineTaskExecutorDetail_ContainerDetailObservedState_FromProto(mapCtx, in.GetContainerDetail())
+	out.CustomJobDetail = PipelineTaskExecutorDetail_CustomJobDetailObservedState_FromProto(mapCtx, in.GetCustomJobDetail())
+	return out
+}
+func PipelineTaskExecutorDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetailObservedState) *pb.PipelineTaskExecutorDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineTaskExecutorDetail{}
+	if oneof := PipelineTaskExecutorDetail_ContainerDetailObservedState_ToProto(mapCtx, in.ContainerDetail); oneof != nil {
+		out.Details = &pb.PipelineTaskExecutorDetail_ContainerDetail_{ContainerDetail: oneof}
+	}
+	if oneof := PipelineTaskExecutorDetail_CustomJobDetailObservedState_ToProto(mapCtx, in.CustomJobDetail); oneof != nil {
+		out.Details = &pb.PipelineTaskExecutorDetail_CustomJobDetail_{CustomJobDetail: oneof}
+	}
+	return out
+}
+func PipelineTaskExecutorDetail_ContainerDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail_ContainerDetail) *krm.PipelineTaskExecutorDetail_ContainerDetailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineTaskExecutorDetail_ContainerDetailObservedState{}
+	out.MainJob = direct.LazyPtr(in.GetMainJob())
+	out.PreCachingCheckJob = direct.LazyPtr(in.GetPreCachingCheckJob())
+	out.FailedMainJobs = in.FailedMainJobs
+	out.FailedPreCachingCheckJobs = in.FailedPreCachingCheckJobs
+	return out
+}
+func PipelineTaskExecutorDetail_ContainerDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetail_ContainerDetailObservedState) *pb.PipelineTaskExecutorDetail_ContainerDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineTaskExecutorDetail_ContainerDetail{}
+	out.MainJob = direct.ValueOf(in.MainJob)
+	out.PreCachingCheckJob = direct.ValueOf(in.PreCachingCheckJob)
+	out.FailedMainJobs = in.FailedMainJobs
+	out.FailedPreCachingCheckJobs = in.FailedPreCachingCheckJobs
+	return out
+}
+func PipelineTaskExecutorDetail_CustomJobDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskExecutorDetail_CustomJobDetail) *krm.PipelineTaskExecutorDetail_CustomJobDetailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineTaskExecutorDetail_CustomJobDetailObservedState{}
+	out.Job = direct.LazyPtr(in.GetJob())
+	out.FailedJobs = in.FailedJobs
+	return out
+}
+func PipelineTaskExecutorDetail_CustomJobDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PipelineTaskExecutorDetail_CustomJobDetailObservedState) *pb.PipelineTaskExecutorDetail_CustomJobDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineTaskExecutorDetail_CustomJobDetail{}
+	out.Job = direct.ValueOf(in.Job)
+	out.FailedJobs = in.FailedJobs
+	return out
 }
 func Port_FromProto(mapCtx *direct.MapContext, in *pb.Port) *krm.Port {
 	if in == nil {
@@ -1370,6 +1659,84 @@ func VertexAIFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.Labels = in.Labels
 	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx, in.DedicatedServingEndpoint)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+func VertexAIPipelineJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.VertexAIPipelineJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIPipelineJobObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.JobDetail = PipelineJobDetailObservedState_FromProto(mapCtx, in.GetJobDetail())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.TemplateMetadata = PipelineTemplateMetadata_FromProto(mapCtx, in.GetTemplateMetadata())
+	out.ScheduleName = direct.LazyPtr(in.GetScheduleName())
+	return out
+}
+func VertexAIPipelineJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIPipelineJobObservedState) *pb.PipelineJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineJob{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.PipelineState](mapCtx, in.State)
+	out.JobDetail = PipelineJobDetailObservedState_ToProto(mapCtx, in.JobDetail)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.TemplateMetadata = PipelineTemplateMetadata_ToProto(mapCtx, in.TemplateMetadata)
+	out.ScheduleName = direct.ValueOf(in.ScheduleName)
+	return out
+}
+func VertexAIPipelineJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.VertexAIPipelineJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIPipelineJobSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.PipelineSpec = direct.Struct_FromProto(mapCtx, in.GetPipelineSpec())
+	out.Labels = in.Labels
+	out.RuntimeConfig = PipelineJobRuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.ReservedIPRanges = in.ReservedIpRanges
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.TemplateURI = direct.LazyPtr(in.GetTemplateUri())
+	out.PreflightValidations = direct.LazyPtr(in.GetPreflightValidations())
+	return out
+}
+func VertexAIPipelineJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIPipelineJobSpec) *pb.PipelineJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineJob{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.PipelineSpec = direct.Struct_ToProto(mapCtx, in.PipelineSpec)
+	out.Labels = in.Labels
+	out.RuntimeConfig = PipelineJobRuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.ReservedIpRanges = in.ReservedIPRanges
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.TemplateUri = direct.ValueOf(in.TemplateURI)
+	out.PreflightValidations = direct.ValueOf(in.PreflightValidations)
 	return out
 }
 func VertexAISpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolObservedState {

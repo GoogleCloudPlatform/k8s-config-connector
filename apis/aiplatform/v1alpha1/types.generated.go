@@ -20,11 +20,76 @@
 // resource: VertexAISpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
 // resource: VertexAIFeatureOnlineStore:FeatureOnlineStore
+// resource: VertexAIPipelineJob:PipelineJob
 // resource: VertexAITuningJob:TuningJob
 
 package v1alpha1
 
 import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
+/* unreachable type Artifact
+// +kcc:proto=google.cloud.aiplatform.v1.Artifact
+type Artifact struct {
+
+	// User provided display name of the Artifact.
+	//  May be up to 128 Unicode characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The uniform resource identifier of the artifact file.
+	//  May be empty if there is no actual artifact file.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.uri
+	URI *string `json:"uri,omitempty"`
+
+	// An eTag used to perform consistent read-modify-write updates. If not set, a
+	//  blind "overwrite" update happens.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// The labels with user-defined metadata to organize your Artifacts.
+	//
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores and dashes. International characters are allowed.
+	//  No more than 64 user labels can be associated with one Artifact (System
+	//  labels are excluded).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The state of this Artifact. This is a property of the Artifact, and does
+	//  not imply or capture any ongoing process. This property is managed by
+	//  clients (such as Vertex AI Pipelines), and the system does not prescribe
+	//  or check the validity of state transitions.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.state
+	State *string `json:"state,omitempty"`
+
+	// The title of the schema describing the metadata.
+	//
+	//  Schema title and version is expected to be registered in earlier Create
+	//  Schema calls. And both are used together as unique identifiers to identify
+	//  schemas within the local metadata store.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.schema_title
+	SchemaTitle *string `json:"schemaTitle,omitempty"`
+
+	// The version of the schema in schema_name to use.
+	//
+	//  Schema title and version is expected to be registered in earlier Create
+	//  Schema calls. And both are used together as unique identifiers to identify
+	//  schemas within the local metadata store.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.schema_version
+	SchemaVersion *string `json:"schemaVersion,omitempty"`
+
+	// Properties of the Artifact.
+	//  Top level metadata keys' heading and trailing spaces will be trimmed.
+	//  The size of this field should not exceed 200KB.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.metadata
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
+
+	// Description of the Artifact
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.description
+	Description *string `json:"description,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.Blob
 type Blob struct {
@@ -899,6 +964,25 @@ type Part struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.video_metadata
 	VideoMetadata *VideoMetadata `json:"videoMetadata,omitempty"`
 }
+
+/* unreachable type PipelineJob_RuntimeConfig_InputArtifact
+// +kcc:proto=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.InputArtifact
+type PipelineJob_RuntimeConfig_InputArtifact struct {
+	// Artifact resource id from MLMD. Which is the last portion of an
+	//  artifact resource name:
+	//  `projects/{project}/locations/{location}/metadataStores/default/artifacts/{artifact_id}`.
+	//  The artifact must stay within the same project, location and default
+	//  metadatastore as the pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.InputArtifact.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
+}
+*/
+
+/* unreachable type PipelineTaskDetail_ArtifactList
+// +kcc:proto=google.cloud.aiplatform.v1.PipelineTaskDetail.ArtifactList
+type PipelineTaskDetail_ArtifactList struct {
+}
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.Port
 type Port struct {
