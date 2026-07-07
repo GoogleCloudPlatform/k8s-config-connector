@@ -82,6 +82,7 @@
 | bigquerymigration.cnrm.cloud.google.com        | BigQueryMigrationMigrationWorkflow                       | True         | False       | False  | Direct     | True        |
 | bigqueryreservation.cnrm.cloud.google.com      | BigQueryReservationAssignment                            | True         | True        | False  | Direct     | True        |
 | bigqueryreservation.cnrm.cloud.google.com      | BigQueryReservationCapacityCommitment                    | True         | False       | False  | Terraform  | True        |
+| bigqueryreservation.cnrm.cloud.google.com      | BigQueryReservationReservationGroup                      | True         | False       | False  | Direct     | True        |
 | bigqueryreservation.cnrm.cloud.google.com      | BigQueryReservationReservation                           | True         | True        | False  | Direct     | True        |
 | bigquery.cnrm.cloud.google.com                 | BigQueryRoutine                                          | False        | True        | False  | Terraform  | False       |
 | bigquery.cnrm.cloud.google.com                 | BigQueryTable                                            | False        | True        | False  | Terraform  | True        |
@@ -311,6 +312,7 @@
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSearchEngine                              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineServingConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSession                                   | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineUserStore                                 | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPConnection                                            | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPDeidentifyTemplate                                    | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                      | DLPDiscoveryConfig                                       | True         | False       | False  | Direct     | True        |
@@ -594,6 +596,7 @@
 | aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                         | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                                   | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                            | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAITensorboardExperiment                            | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAITensorboard                                      | True         | False       | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITrainingPipeline                                 | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITuningJob                                        | True         | False       | False  | Direct     | True        |

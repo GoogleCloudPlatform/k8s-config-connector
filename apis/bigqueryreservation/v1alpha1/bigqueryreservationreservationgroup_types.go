@@ -49,14 +49,6 @@ type BigQueryReservationReservationGroupStatus struct {
 
 	// A unique specifier for the BigQueryReservationReservationGroup resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigQueryReservationReservationGroupObservedState `json:"observedState,omitempty"`
-}
-
-// BigQueryReservationReservationGroupObservedState is the state of the BigQueryReservationReservationGroup resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.ReservationGroup
-type BigQueryReservationReservationGroupObservedState struct {
 }
 
 // +genclient
