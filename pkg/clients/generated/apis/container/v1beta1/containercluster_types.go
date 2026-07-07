@@ -159,6 +159,7 @@ type ClusterAutoProvisioningDefaults struct {
 	// +optional
 	OauthScopes []string `json:"oauthScopes,omitempty"`
 
+	/* IAMServiceAccountRef is the reference type for brownfield/legacy resources. It uses/normalizes to the Service Account email address in the "External" field for backwards compatibility. For newly created greenfield resources, please use ServiceAccountRef instead. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -782,6 +783,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	SandboxConfig *ClusterSandboxConfig `json:"sandboxConfig,omitempty"`
 
+	/* IAMServiceAccountRef is the reference type for brownfield/legacy resources. It uses/normalizes to the Service Account email address in the "External" field for backwards compatibility. For newly created greenfield resources, please use ServiceAccountRef instead. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
