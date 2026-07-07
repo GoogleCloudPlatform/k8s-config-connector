@@ -30,6 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// MirroringServer implements the pbv1.MirroringServer interface for mocking
+// Network Security Mirroring Endpoint Groups and Mirroring Deployments.
 type MirroringServer struct {
 	*MockService
 	pbv1.UnimplementedMirroringServer
