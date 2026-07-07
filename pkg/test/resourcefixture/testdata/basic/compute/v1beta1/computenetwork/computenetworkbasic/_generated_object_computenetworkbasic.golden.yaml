@@ -16,6 +16,7 @@ metadata:
 spec:
   autoCreateSubnetworks: false
   enableUlaInternalIpv6: true
+  networkProfile: projects/${projectId}/global/networkProfiles/default
   routingMode: GLOBAL
 status:
   conditions:

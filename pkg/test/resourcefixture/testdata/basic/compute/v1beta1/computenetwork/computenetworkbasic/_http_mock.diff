@@ -8,20 +8,24 @@
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks
 34a35
 >   "enableUlaInternalIpv6": false,
-36d36
+36c37
 <   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-69c69,70
+---
+>   "networkProfile": "projects/${projectId}/global/networkProfiles/default",
+69c70,71
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-99c100
+99c101
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-114a116
+114a117
 >   "enableUlaInternalIpv6": false,
-129c131,196
+118a122
+>   "networkProfile": "projects/${projectId}/global/networkProfiles/default",
+129c133,198
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
@@ -90,26 +94,28 @@
 > ---
 > 
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-133d199
+133d201
 <   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-166c232,233
+166c234,235
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-196c263
+196c265
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-211a279
+211a281
 >   "enableUlaInternalIpv6": true,
-212a281
+212a283
 >   "internalIpv6Range": "fd00:c00:0000:0:0:0:0:0/00",
-226c295
+215a287
+>   "networkProfile": "projects/${projectId}/global/networkProfiles/default",
+226c298
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-256c325,326
+256c328,329
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}

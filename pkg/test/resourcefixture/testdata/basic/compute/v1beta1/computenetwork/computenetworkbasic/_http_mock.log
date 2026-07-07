@@ -34,6 +34,7 @@ Content-Type: application/json
   "autoCreateSubnetworks": false,
   "enableUlaInternalIpv6": false,
   "name": "${networkID}",
+  "networkProfile": "projects/${projectId}/global/networkProfiles/default",
   "routingConfig": {
     "routingMode": "REGIONAL"
   }
@@ -118,6 +119,7 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "networkProfile": "projects/${projectId}/global/networkProfiles/default",
   "routingConfig": {
     "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
@@ -282,6 +284,7 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "networkProfile": "projects/${projectId}/global/networkProfiles/default",
   "routingConfig": {
     "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "GLOBAL"
