@@ -23,6 +23,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+export MAP_VALUE_TO_JSON=true
+
 go run . generate-types \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
@@ -32,7 +34,8 @@ go run . generate-types \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICustomJob:CustomJob
+    --resource VertexAICustomJob:CustomJob \
+    --resource VertexAICachedContent:CachedContent
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

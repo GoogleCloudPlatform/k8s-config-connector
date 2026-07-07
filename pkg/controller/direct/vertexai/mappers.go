@@ -238,3 +238,27 @@ func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) 
 	}
 	return out
 }
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling pb.Schema to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *pb.Schema {
+	if in == nil || len(in.Raw) == 0 {
+		return nil
+	}
+	out := &pb.Schema{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("unmarshalling json to pb.Schema: %v", err)
+		return nil
+	}
+	return out
+}

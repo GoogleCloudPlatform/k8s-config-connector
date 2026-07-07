@@ -1148,6 +1148,8 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.UInt64Value_FromProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_FromProto"
+	case "google.cloud.aiplatform.v1beta1.Schema":
+		return "Schema_FromProto"
 	case "google.rpc.Status":
 		return "direct.Status_FromProto"
 	}
@@ -1182,6 +1184,8 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.UInt64Value_ToProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_ToProto"
+	case "google.cloud.aiplatform.v1beta1.Schema":
+		return "Schema_ToProto"
 	case "google.rpc.Status":
 		return "direct.Status_ToProto"
 	}
