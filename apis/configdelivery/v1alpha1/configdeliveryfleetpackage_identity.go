@@ -43,6 +43,10 @@ func (i *ConfigDeliveryFleetPackageIdentity) String() string {
 	return ConfigDeliveryFleetPackageIdentityFormat.ToString(*i)
 }
 
+func (i *ConfigDeliveryFleetPackageIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *ConfigDeliveryFleetPackageIdentity) FromExternal(ref string) error {
 	parsed, match, err := ConfigDeliveryFleetPackageIdentityFormat.Parse(ref)
 	if err != nil {
