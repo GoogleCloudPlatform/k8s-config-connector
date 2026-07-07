@@ -125,6 +125,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}/{}/{}/{}": true,
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}//{}/{}":   true,
 
+		// Config Delivery
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}": true,
+
 		// Connectors
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
 

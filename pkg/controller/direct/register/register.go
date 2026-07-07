@@ -54,6 +54,8 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/colab"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/composer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/configdelivery"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/configdelivery/configdeliveryfleetpackage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/container"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datacatalog"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
