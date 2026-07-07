@@ -27,6 +27,7 @@ package networksecurity
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	networksecuritypb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
@@ -922,6 +923,62 @@ func NetworkSecurityClientTLSPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	out.ClientCertificate = CertificateProvider_v1beta1_ToProto(mapCtx, in.ClientCertificate)
 	// MISSING: ServerValidationCA
 	// (near miss): "ServerValidationCA" vs "ServerValidationCa"
+	return out
+}
+func NetworkSecurityDNSThreatDetectorObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DnsThreatDetector) *krmnetworksecurityv1alpha1.NetworkSecurityDNSThreatDetectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityDNSThreatDetectorObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: ExcludedNetworks
+	return out
+}
+func NetworkSecurityDNSThreatDetectorObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityDNSThreatDetectorObservedState) *pb.DnsThreatDetector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsThreatDetector{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: ExcludedNetworks
+	return out
+}
+func NetworkSecurityDNSThreatDetectorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DnsThreatDetector) *krmnetworksecurityv1alpha1.NetworkSecurityDNSThreatDetectorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityDNSThreatDetectorSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+
+	if v := in.GetExcludedNetworks(); len(v) != 0 {
+		for i := range v {
+			out.ExcludedNetworkRefs = append(out.ExcludedNetworkRefs, krmcomputerefs.ComputeNetworkRef{External: v[i]})
+		}
+	}
+
+	out.Provider = direct.Enum_FromProto(mapCtx, in.GetProvider())
+	return out
+}
+func NetworkSecurityDNSThreatDetectorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityDNSThreatDetectorSpec) *pb.DnsThreatDetector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsThreatDetector{}
+	// MISSING: Name
+	out.Labels = in.Labels
+
+	if v := in.ExcludedNetworkRefs; len(v) != 0 {
+		for i := range v {
+			out.ExcludedNetworks = append(out.ExcludedNetworks, v[i].External)
+		}
+	}
+
+	out.Provider = direct.Enum_ToProto[pb.DnsThreatDetector_Provider](mapCtx, in.Provider)
 	return out
 }
 func NetworkSecurityFirewallEndpointAssociationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpointAssociation) *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointAssociationObservedState {

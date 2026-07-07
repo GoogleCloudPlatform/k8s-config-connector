@@ -3074,6 +3074,12 @@
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.trustConfigRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.wellKnownRoots" is not set in unstructured objects
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.excludedNetworkRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networksecuritydnsthreatdetectors.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.provider" is not set in unstructured objects
 [missing_field] crd=networksecurityfirewallendpointassociations.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.tlsInspectionPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecurityfirewallendpoints.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.billingProjectID" is not set in unstructured objects
 [missing_field] crd=networksecurityfirewallendpoints.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

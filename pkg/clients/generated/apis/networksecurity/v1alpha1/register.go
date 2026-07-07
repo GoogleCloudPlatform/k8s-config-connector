@@ -71,6 +71,12 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityBackendAuthenticationConfig{}).Name(),
 	}
 
+	NetworkSecurityDNSThreatDetectorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityDNSThreatDetector{}).Name(),
+	}
+
 	NetworkSecurityFirewallEndpointGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
