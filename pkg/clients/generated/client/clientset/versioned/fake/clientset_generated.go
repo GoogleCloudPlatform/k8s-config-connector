@@ -363,6 +363,8 @@ import (
 	fakesecuresourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1/fake"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
 	fakesecuritycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1/fake"
+	securitycentermanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycentermanagement/v1alpha1"
+	fakesecuritycentermanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycentermanagement/v1alpha1/fake"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
 	fakeservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1/fake"
 	servicenetworkingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1alpha1"
@@ -1340,6 +1342,11 @@ func (c *Clientset) SecuresourcemanagerV1beta1() securesourcemanagerv1beta1.Secu
 // SecuritycenterV1alpha1 retrieves the SecuritycenterV1alpha1Client
 func (c *Clientset) SecuritycenterV1alpha1() securitycenterv1alpha1.SecuritycenterV1alpha1Interface {
 	return &fakesecuritycenterv1alpha1.FakeSecuritycenterV1alpha1{Fake: &c.Fake}
+}
+
+// SecuritycentermanagementV1alpha1 retrieves the SecuritycentermanagementV1alpha1Client
+func (c *Clientset) SecuritycentermanagementV1alpha1() securitycentermanagementv1alpha1.SecuritycentermanagementV1alpha1Interface {
+	return &fakesecuritycentermanagementv1alpha1.FakeSecuritycentermanagementV1alpha1{Fake: &c.Fake}
 }
 
 // ServicedirectoryV1beta1 retrieves the ServicedirectoryV1beta1Client
