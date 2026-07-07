@@ -1053,6 +1053,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
 
 			case schema.GroupKind{Group: "composer.cnrm.cloud.google.com", Kind: "ComposerEnvironment"}:
+			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsConversation"}:
 
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAddress"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendService"}:

@@ -44,6 +44,14 @@ func (i *CCInsightsConversationIdentity) String() string {
 	return CCInsightsConversationIdentityFormat.ToString(*i)
 }
 
+func (i *CCInsightsConversationIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func (i *CCInsightsConversationIdentity) ID() string {
+	return i.Conversation
+}
+
 func (i *CCInsightsConversationIdentity) FromExternal(ref string) error {
 	parsed, match, err := CCInsightsConversationIdentityFormat.Parse(ref)
 	if err != nil {

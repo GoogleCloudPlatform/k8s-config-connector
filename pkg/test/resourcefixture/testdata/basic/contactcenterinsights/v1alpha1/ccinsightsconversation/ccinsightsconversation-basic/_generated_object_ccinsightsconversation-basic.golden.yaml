@@ -1,0 +1,33 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsConversation
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ccinsightsconversation-basic
+  namespace: ${uniqueId}
+spec:
+  agentID: human-agent-02
+  labels:
+    env: test-basic-updated
+  languageCode: en-US
+  location: us-central1
+  medium: CHAT
+  projectRef:
+    external: ${projectId}
+  resourceID: ccinsightsconversation-${unique_id}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/conversations/ccinsightsconversation-${unique_id}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
