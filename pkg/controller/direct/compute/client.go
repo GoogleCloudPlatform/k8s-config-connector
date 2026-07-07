@@ -469,4 +469,3 @@ func (m *gcpClient) newNetworkEndpointGroupsClient(ctx context.Context) (*comput
 	}
 	return client, err
 }
-}
