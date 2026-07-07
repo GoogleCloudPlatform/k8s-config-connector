@@ -22,3 +22,5 @@
 package v1alpha1
 
 type CertificateManagerCertificateIssuanceConfigExpansion interface{}
+
+type CertificateManagerTrustConfigExpansion interface{}
