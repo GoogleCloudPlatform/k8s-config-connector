@@ -1,0 +1,10 @@
+apiVersion: clouderrorreporting.cnrm.cloud.google.com/v1beta1
+kind: ErrorReportingNotificationSettings
+metadata:
+  name: errorreportingnotificationsettings-${uniqueId}
+spec:
+  projectRef:
+    external: mock-project
+  notificationChannels:
+  - name: channel1-${uniqueId}
+  - name: channel2-${uniqueId}

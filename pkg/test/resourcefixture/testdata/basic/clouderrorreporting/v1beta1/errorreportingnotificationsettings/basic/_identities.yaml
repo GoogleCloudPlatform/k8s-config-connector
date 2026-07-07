@@ -1,0 +1,20 @@
+- caisURL: unknown
+  error: not yet supported
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringNotificationChannel
+  name: channel1-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringNotificationChannel
+  name: channel2-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: clouderrorreporting.cnrm.cloud.google.com
+  kind: ErrorReportingNotificationSettings
+  name: errorreportingnotificationsettings-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

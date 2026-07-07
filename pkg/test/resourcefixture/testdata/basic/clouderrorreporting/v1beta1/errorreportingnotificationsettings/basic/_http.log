@@ -1,0 +1,398 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "channel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "alice@example.com"
+  },
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "channel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "alice@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "channel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "alice@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "channel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "bob@example.com"
+  },
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "channel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "bob@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "channel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "bob@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://clouderrorreporting.googleapis.com/v1beta1/projects/${projectId}/locations/global/notificationSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings"
+}
+
+---
+
+PATCH https://clouderrorreporting.googleapis.com/v1beta1/projects/${projectId}/locations/global/notificationSettings?updateMask=notificationChannels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ]
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ]
+}
+
+---
+
+GET https://clouderrorreporting.googleapis.com/v1beta1/projects/${projectId}/locations/global/notificationSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ]
+}
+
+---
+
+PATCH https://clouderrorreporting.googleapis.com/v1beta1/projects/${projectId}/locations/global/notificationSettings?updateMask=notificationChannels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ]
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ]
+}
+
+---
+
+GET https://clouderrorreporting.googleapis.com/v1beta1/projects/${projectId}/locations/global/notificationSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ]
+}
+
+---
+
+PATCH https://clouderrorreporting.googleapis.com/v1beta1/projects/${projectId}/locations/global/notificationSettings?updateMask=notificationChannels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings"
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${projectId}/locations/global/notificationSettings"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "channel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "bob@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "channel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "alice@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

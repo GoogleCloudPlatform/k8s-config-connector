@@ -1,0 +1,17 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: channel1-${uniqueId}
+spec:
+  type: email
+  labels:
+    email_address: "alice@example.com"
+---
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: channel2-${uniqueId}
+spec:
+  type: email
+  labels:
+    email_address: "bob@example.com"
