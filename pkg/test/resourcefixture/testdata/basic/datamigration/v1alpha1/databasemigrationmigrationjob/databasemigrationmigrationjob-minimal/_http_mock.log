@@ -1,0 +1,149 @@
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = MigrationJob "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/CreateMigrationJob
+
+{
+  "migrationJob": {
+    "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+    "type": "ONE_TIME"
+  },
+  "migrationJobId": "databasemigrationmigrationjob-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.MigrationJob",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+    "state": "NOT_STARTED",
+    "type": "ONE_TIME",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+  "state": "NOT_STARTED",
+  "type": "ONE_TIME",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+  "state": "NOT_STARTED",
+  "type": "ONE_TIME",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/DeleteMigrationJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/migrationJobs/databasemigrationmigrationjob-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
