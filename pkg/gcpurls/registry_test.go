@@ -79,6 +79,13 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Apigee Registry
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
 
+		// APIHub
+		"//apihub.googleapis.com/projects/{}/locations/{}/apis/{}":                      true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}":               true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/externalApis/{}":              true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/plugins/{}":                   true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/runtimeProjectAttachments/{}": true,
+
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
 
@@ -125,8 +132,14 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}/{}/{}/{}": true,
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}//{}/{}":   true,
 
+		// Config Delivery
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}": true,
+
 		// Connectors
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
+
+		// Contact Center Insights
+		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/conversations/{}": true,
 
 		// Content Warehouse
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}": true,

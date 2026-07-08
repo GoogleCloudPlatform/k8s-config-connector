@@ -15,11 +15,21 @@
 package clouddeploy
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func lastSegment(s string) string {
+	if s == "" {
+		return ""
+	}
+	tokens := strings.Split(s, "/")
+	return tokens[len(tokens)-1]
+}
 
 func CloudDeployAutomationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Automation) *krm.CloudDeployAutomationSpec {
 	if in == nil {
@@ -128,7 +138,7 @@ func TargetAttribute_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.TargetA
 	}
 	out := &pb.TargetAttribute{}
 	if in.TargetRef != nil {
-		out.Id = in.TargetRef.External
+		out.Id = lastSegment(in.TargetRef.External)
 	}
 	if in.Labels != nil {
 		out.Labels = make(map[string]string)
@@ -191,7 +201,7 @@ func PromoteReleaseRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Prom
 	out.Id = direct.ValueOf(in.ID)
 	out.Wait = direct.Duration_ToProto(mapCtx, in.Wait)
 	if in.DestinationTargetRef != nil {
-		out.DestinationTargetId = in.DestinationTargetRef.External
+		out.DestinationTargetId = lastSegment(in.DestinationTargetRef.External)
 	}
 	out.DestinationPhase = direct.ValueOf(in.DestinationPhase)
 	return out
@@ -325,7 +335,7 @@ func TimedPromoteReleaseRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.TimedPromoteReleaseRule{}
 	out.Id = direct.ValueOf(in.ID)
 	if in.DestinationTargetRef != nil {
-		out.DestinationTargetId = in.DestinationTargetRef.External
+		out.DestinationTargetId = lastSegment(in.DestinationTargetRef.External)
 	}
 	out.Schedule = direct.ValueOf(in.Schedule)
 	out.TimeZone = direct.ValueOf(in.TimeZone)

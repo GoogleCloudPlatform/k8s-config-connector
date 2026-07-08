@@ -1,0 +1,21 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsPhraseMatcher
+metadata:
+  name: phrasematcher-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Updated Maximal Phrase Matcher ${uniqueId}"
+  versionTag: "v2"
+  type: ANY_OF
+  active: false
+  roleMatch: HUMAN_AGENT
+  phraseMatchRuleGroups:
+  - type: ALL_OF
+    phraseMatchRules:
+    - query: "hi"
+      negated: true
+      config:
+        exactMatchConfig:
+          caseSensitive: false

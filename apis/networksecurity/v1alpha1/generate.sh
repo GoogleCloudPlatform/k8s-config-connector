@@ -48,6 +48,7 @@ go run . generate-types \
   --resource NetworkSecuritySACRealm:SACRealm \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --resource NetworkSecurityFirewallEndpointAssociation:FirewallEndpointAssociation \
+  --resource NetworkSecurityGatewaySecurityPolicy:GatewaySecurityPolicy \
   --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
   --resource NetworkSecurityAuthzPolicy:AuthzPolicy \
   --proto-source-path ${PROTO_OUT}

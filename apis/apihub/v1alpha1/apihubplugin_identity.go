@@ -60,6 +60,10 @@ func (i *APIHubPluginIdentity) Host() string {
 	return APIHubPluginIdentityFormat.Host()
 }
 
+func (i *APIHubPluginIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func getIdentityFromAPIHubPluginSpec(ctx context.Context, reader client.Reader, obj client.Object) (*APIHubPluginIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

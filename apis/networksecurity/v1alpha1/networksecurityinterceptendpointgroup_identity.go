@@ -39,6 +39,10 @@ type NetworkSecurityInterceptEndpointGroupIdentity struct {
 	Interceptendpointgroup string
 }
 
+func (i *NetworkSecurityInterceptEndpointGroupIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *NetworkSecurityInterceptEndpointGroupIdentity) String() string {
 	return NetworkSecurityInterceptEndpointGroupIdentityFormat.ToString(*i)
 }

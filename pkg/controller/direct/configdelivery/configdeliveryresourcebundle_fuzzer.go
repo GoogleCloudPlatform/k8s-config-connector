@@ -39,5 +39,7 @@ func resourceBundleFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_Identity(".name")
 
+	f.Unimplemented_NotYetTriaged(".labels")
+
 	return f
 }

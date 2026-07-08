@@ -35,7 +35,7 @@
   name: container-cluster-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${TEST_DEPENDENT_ORG_PROJECT_ID}/serviceAccounts/sa-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: sa-${uniqueId}

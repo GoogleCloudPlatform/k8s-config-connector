@@ -43,6 +43,10 @@ func (i *CCInsightsPhraseMatcherIdentity) String() string {
 	return CCInsightsPhraseMatcherIdentityFormat.ToString(*i)
 }
 
+func (i *CCInsightsPhraseMatcherIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *CCInsightsPhraseMatcherIdentity) FromExternal(ref string) error {
 	parsed, match, err := CCInsightsPhraseMatcherIdentityFormat.Parse(ref)
 	if err != nil {

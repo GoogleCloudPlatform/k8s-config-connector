@@ -66,6 +66,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterScheduleServiceServer(grpcServer, &scheduleService{MockService: s})
 	pb.RegisterExampleStoreServiceServer(grpcServer, &exampleStoreService{MockService: s})
 	pb.RegisterFeatureOnlineStoreAdminServiceServer(grpcServer, &featureOnlineStoreAdminService{MockService: s})
+	pb.RegisterDeploymentResourcePoolServiceServer(grpcServer, &deploymentResourcePoolService{MockService: s})
 
 	// Also register under v1 name so that v1 gRPC clients can call it
 	desc := pb.FeatureOnlineStoreAdminService_ServiceDesc
@@ -89,6 +90,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewScheduleServiceClient(conn))
 	mux.AddService(pb.NewExampleStoreServiceClient(conn))
 	mux.AddService(pb.NewFeatureOnlineStoreAdminServiceClient(conn))
+	mux.AddService(pb.NewDeploymentResourcePoolServiceClient(conn))
 
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/ui/{prefix=**}/operations/{name}", conn)
