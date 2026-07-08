@@ -29,6 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 var ProjectGVK = schema.GroupVersionKind{
@@ -263,6 +264,14 @@ func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace st
 			return nil, fmt.Errorf("referenced Project %v not found", key)
 		}
 		return nil, fmt.Errorf("error reading referenced Project %v: %w", key, err)
+	}
+
+	projectResource, err := k8s.NewResource(project)
+	if err != nil {
+		return nil, err
+	}
+	if !k8s.IsResourceReady(projectResource) {
+		return nil, k8s.NewReferenceNotReadyError(project.GroupVersionKind(), types.NamespacedName{Namespace: project.GetNamespace(), Name: project.GetName()})
 	}
 
 	projectID, err := GetResourceID(project)

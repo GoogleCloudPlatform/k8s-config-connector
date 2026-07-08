@@ -26,6 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 // The Folder that contains this resource.
@@ -117,9 +118,21 @@ func ResolveFolder(ctx context.Context, reader client.Reader, src client.Object,
 		return nil, fmt.Errorf("error reading referenced Folder %v: %w", key, err)
 	}
 
-	folderID, err := GetResourceID(folder)
+	folderResource, err := k8s.NewResource(folder)
 	if err != nil {
 		return nil, err
+	}
+	if !k8s.IsResourceReady(folderResource) {
+		return nil, k8s.NewReferenceNotReadyError(folder.GroupVersionKind(), types.NamespacedName{Namespace: folder.GetNamespace(), Name: folder.GetName()})
+	}
+
+	folderID, _, _ := unstructured.NestedString(folder.Object, "status", "folderId")
+	if folderID == "" {
+		var err error
+		folderID, err = GetResourceID(folder)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &Folder{
