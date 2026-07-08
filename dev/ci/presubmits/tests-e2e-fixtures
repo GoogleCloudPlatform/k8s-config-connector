@@ -135,6 +135,7 @@ SKIP_TEST_APIGROUPS=(
     "secretmanager.cnrm.cloud.google.com"
     "securesourcemanager.cnrm.cloud.google.com"
     "securitycenter.cnrm.cloud.google.com"
+    "securitycentermanagement.cnrm.cloud.google.com"
     "servicedirectory.cnrm.cloud.google.com"
     "servicenetworking.cnrm.cloud.google.com"
     "serviceusage.cnrm.cloud.google.com"
