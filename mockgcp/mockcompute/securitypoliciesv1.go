@@ -82,6 +82,12 @@ func (s *SecurityPoliciesV1) Insert(ctx context.Context, req *pb.InsertSecurityP
 		if rule.Kind == nil {
 			rule.Kind = PtrTo("compute#securityPolicyRule")
 		}
+		if rule.Description == nil {
+			rule.Description = PtrTo("")
+		}
+		if rule.Preview == nil {
+			rule.Preview = PtrTo(false)
+		}
 	}
 
 	sort.Slice(obj.Rules, func(i, j int) bool {
@@ -129,6 +135,14 @@ func (s *SecurityPoliciesV1) Patch(ctx context.Context, req *pb.PatchSecurityPol
 	if patchObj.RecaptchaOptionsConfig != nil {
 		obj.RecaptchaOptionsConfig = patchObj.RecaptchaOptionsConfig
 	}
+	if patchObj.Rules != nil {
+		obj.Rules = patchObj.Rules
+	}
+	for _, rule := range obj.Rules {
+		if rule.Kind == nil {
+			rule.Kind = PtrTo("compute#securityPolicyRule")
+		}
+	}
 
 	obj.Fingerprint = PtrTo("abcdef0123A=")
 
@@ -139,7 +153,7 @@ func (s *SecurityPoliciesV1) Patch(ctx context.Context, req *pb.PatchSecurityPol
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("compute.securityPolicies.patch"),
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
@@ -477,6 +491,14 @@ func (s *RegionSecurityPoliciesV1) Patch(ctx context.Context, req *pb.PatchRegio
 	if patchObj.RecaptchaOptionsConfig != nil {
 		obj.RecaptchaOptionsConfig = patchObj.RecaptchaOptionsConfig
 	}
+	if patchObj.Rules != nil {
+		obj.Rules = patchObj.Rules
+	}
+	for _, rule := range obj.Rules {
+		if rule.Kind == nil {
+			rule.Kind = PtrTo("compute#securityPolicyRule")
+		}
+	}
 
 	obj.Fingerprint = PtrTo("abcdef0123A=")
 
@@ -487,7 +509,7 @@ func (s *RegionSecurityPoliciesV1) Patch(ctx context.Context, req *pb.PatchRegio
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("compute.securityPolicies.patch"),
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
