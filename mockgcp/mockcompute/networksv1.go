@@ -86,6 +86,13 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	if obj.AutoCreateSubnetworks == nil {
 		obj.AutoCreateSubnetworks = PtrTo(true)
 	}
+	if obj.NetworkProfile != nil {
+		val := *obj.NetworkProfile
+		if val != "" && !strings.HasPrefix(val, "https://") {
+			val = "https://www.googleapis.com/compute/v1/" + strings.TrimPrefix(val, "/")
+			obj.NetworkProfile = PtrTo(val)
+		}
+	}
 
 	if ValueOf(obj.EnableUlaInternalIpv6) && obj.InternalIpv6Range == nil {
 		obj.InternalIpv6Range = PtrTo("fd00:c00:0000:0:0:0:0:0/00")

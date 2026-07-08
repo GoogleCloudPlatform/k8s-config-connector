@@ -24,4 +24,6 @@ spec:
   routingMode: REGIONAL
   autoCreateSubnetworks: false
   enableUlaInternalIpv6: false
-  networkProfile: projects/${projectId}/global/networkProfiles/default
+  # Network profile does not support global routing mode.
+  # Use the url of an existing network profile
+  networkProfile: projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon

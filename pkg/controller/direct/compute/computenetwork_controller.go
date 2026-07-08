@@ -24,6 +24,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
@@ -397,6 +398,15 @@ func compareNetwork(ctx context.Context, actual, desired *computepb.Network) (*s
 
 	if direct.ValueOf(clonedDesired.EnableUlaInternalIpv6) && clonedDesired.InternalIpv6Range == nil {
 		clonedDesired.InternalIpv6Range = actual.InternalIpv6Range
+	}
+
+	// Convert partial url to full url before sending to GCP
+	if clonedDesired.NetworkProfile != nil {
+		val := *clonedDesired.NetworkProfile
+		if val != "" && !strings.HasPrefix(val, "https://") {
+			val = "https://www.googleapis.com/compute/v1/" + strings.TrimPrefix(val, "/")
+			clonedDesired.NetworkProfile = direct.PtrTo(val)
+		}
 	}
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())

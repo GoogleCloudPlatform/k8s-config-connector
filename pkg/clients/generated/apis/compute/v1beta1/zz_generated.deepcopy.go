@@ -5463,6 +5463,11 @@ func (in *ComputeNetworkSpec) DeepCopyInto(out *ComputeNetworkSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NetworkProfile != nil {
+		in, out := &in.NetworkProfile, &out.NetworkProfile
+		*out = new(string)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
