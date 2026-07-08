@@ -21,7 +21,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# We need a newer googleapis to get AuthzPolicy
+# We need a newer googleapis to get AuthzPolicy, TLSInspectionPolicy, and BackendAuthenticationConfig for shared multiversion mappers
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced" 
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 

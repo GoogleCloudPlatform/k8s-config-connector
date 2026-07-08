@@ -70,7 +70,7 @@ type NetworkSecurityTLSInspectionPolicySpec struct {
 }
 
 // NetworkSecurityTLSInspectionPolicyObservedState defines the observed state of NetworkSecurityTLSInspectionPolicy
-// +kcc:observedState:proto=google.cloud.networksecurity.v1.TlsInspectionPolicy
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.TlsInspectionPolicy
 type NetworkSecurityTLSInspectionPolicyObservedState struct {
 	// Output only. The time when the TLS inspection policy was created.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.TlsInspectionPolicy.create_time
