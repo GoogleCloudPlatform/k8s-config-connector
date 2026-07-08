@@ -8,7 +8,9 @@
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerGCPUserAccessBinding                 | True         | False       | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeterResource             | True         | True        | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com     | AccessContextManagerServicePerimeter                     | False        | True        | False  | Terraform  | True        |
+| agentregistry.cnrm.cloud.google.com            | AgentRegistryBinding                                     | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | AIPlatformModel                                          | True         | False       | False  | Direct     | True        |
+| aiplatform.cnrm.cloud.google.com               | AIPlatformPersistentResource                             | True         | False       | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBBackup                                            | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBCluster                                           | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                  | AlloyDBInstance                                          | True         | True        | False  | Direct     | True        |
@@ -33,6 +35,7 @@
 | apigee.cnrm.cloud.google.com                   | ApigeeSyncAuthorization                                  | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                   | APIHubAPI                                                | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubAttribute                                          | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                   | APIHubCuration                                           | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDependency                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDeployment                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubExternalAPI                                        | True         | False       | False  | Direct     | True        |
@@ -134,9 +137,12 @@
 | cloudids.cnrm.cloud.google.com                 | CloudIDSEndpoint                                         | True         | True        | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                 | CloudIOTDeviceRegistry                                   | True         | False       | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                 | CloudIOTDevice                                           | True         | False       | False  | Terraform  | False       |
+| cloudnumberregistry.cnrm.cloud.google.com      | CloudNumberRegistryIpamAdminScope                        | True         | False       | False  | Direct     | True        |
+| cloudnumberregistry.cnrm.cloud.google.com      | CloudNumberRegistryRegistryBook                          | True         | False       | False  | Direct     | True        |
 | cloudscheduler.cnrm.cloud.google.com           | CloudSchedulerJob                                        | False        | True        | False  | DCL        | False       |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceCloudControl                      | True         | False       | False  | Direct     | True        |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceFramework                         | True         | False       | False  | Direct     | True        |
+| cloudsupport.cnrm.cloud.google.com             | CloudSupportSupportEventSubscription                     | True         | False       | False  | Direct     | True        |
 | cloudtalentsolution.cnrm.cloud.google.com      | CloudTalentSolutionCompany                               | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                    | ColabRuntime                                             | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                    | ColabRuntimeTemplate                                     | True         | False       | False  | Direct     | True        |
@@ -249,12 +255,12 @@
 | dataform.cnrm.cloud.google.com                 | DataformTeamFolder                                       | True         | False       | False  | Direct     | True        |
 | datafusion.cnrm.cloud.google.com               | DataFusionInstance                                       | False        | True        | False  | DCL        | False       |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingAnnotationSpecSet                            | True         | False       | False  | Direct     | True        |
-| datalabeling.cnrm.cloud.google.com             | DataLabelingDataset                                      | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingEvaluationJob                                | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingInstruction                                  | True         | False       | False  | Direct     | True        |
 | datalineage.cnrm.cloud.google.com              | DataLineageProcess                                       | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                 | DataplexAspectType                                       | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                 | DataplexDataAttributeBinding                             | True         | False       | False  | Direct     | True        |
+| dataplex.cnrm.cloud.google.com                 | DataplexDataProduct                                      | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                 | DataplexDataScan                                         | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                 | DataplexDataTaxonomy                                     | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                 | DataplexEntryGroup                                       | True         | False       | False  | Direct     | True        |
@@ -427,6 +433,7 @@
 | metastore.cnrm.cloud.google.com                | MetastoreService                                         | True         | False       | False  | Direct     | True        |
 | migrationcenter.cnrm.cloud.google.com          | MigrationCenterGroup                                     | True         | False       | False  | Direct     | True        |
 | mlengine.cnrm.cloud.google.com                 | MLEngineModel                                            | True         | False       | False  | Terraform  | False       |
+| modelarmor.cnrm.cloud.google.com               | ModelArmorFloorSetting                                   | True         | False       | False  | Direct     | True        |
 | modelarmor.cnrm.cloud.google.com               | ModelArmorTemplate                                       | True         | False       | False  | Direct     | True        |
 | monitoring.cnrm.cloud.google.com               | MonitoringAlertPolicy                                    | False        | True        | False  | Terraform  | True        |
 | monitoring.cnrm.cloud.google.com               | MonitoringDashboard                                      | False        | True        | False  | Direct     | True        |
@@ -458,6 +465,7 @@
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityGatewaySecurityPolicy                     | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityInterceptDeployment                       | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityInterceptEndpointGroup                    | True         | False       | False  | Direct     | True        |
+| networksecurity.cnrm.cloud.google.com          | NetworkSecurityMirroringDeploymentGroup                  | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityMirroringDeployment                       | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityMirroringEndpointGroup                    | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityPartnerSSEGateway                         | True         | False       | False  | Direct     | True        |

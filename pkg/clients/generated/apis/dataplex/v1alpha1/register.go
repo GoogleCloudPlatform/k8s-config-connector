@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(DataplexDataAttributeBinding{}).Name(),
 	}
 
+	DataplexDataProductGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataplexDataProduct{}).Name(),
+	}
+
 	DataplexDataScanGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

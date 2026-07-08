@@ -25,6 +25,8 @@ type DataplexAspectTypeExpansion interface{}
 
 type DataplexDataAttributeBindingExpansion interface{}
 
+type DataplexDataProductExpansion interface{}
+
 type DataplexDataScanExpansion interface{}
 
 type DataplexDataTaxonomyExpansion interface{}
