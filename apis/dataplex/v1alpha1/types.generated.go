@@ -26,14 +26,15 @@
 // resource: DataplexAspectType:AspectType
 // resource: DataplexDataScan:DataScan
 // resource: DataplexMetadataJob:MetadataJob
+// resource: DataplexDataProduct:DataProduct
 
 package v1alpha1
 
 // +kcc:proto=google.cloud.dataplex.v1.AspectType.Authorization
 type AspectType_Authorization struct {
 	// Immutable. The IAM permission grantable on the EntryGroup to allow access
-	//  to instantiate Aspects of Dataplex owned AspectTypes, only settable for
-	//  Dataplex owned Types.
+	//  to instantiate Aspects of Dataplex Universal Catalog owned AspectTypes,
+	//  only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AspectType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
@@ -238,20 +239,88 @@ type DataDiscoverySpec_StorageConfig_JsonOptions struct {
 	TypeInferenceDisabled *bool `json:"typeInferenceDisabled,omitempty"`
 }
 
+/* unreachable type DataDocumentationResult
+// +kcc:proto=google.cloud.dataplex.v1.DataDocumentationResult
+type DataDocumentationResult struct {
+}
+*/
+
+/* unreachable type DataDocumentationResult_Field
+// +kcc:proto=google.cloud.dataplex.v1.DataDocumentationResult.Field
+type DataDocumentationResult_Field struct {
+}
+*/
+
+/* unreachable type DataDocumentationResult_Query
+// +kcc:proto=google.cloud.dataplex.v1.DataDocumentationResult.Query
+type DataDocumentationResult_Query struct {
+}
+*/
+
+/* unreachable type DataDocumentationResult_Schema
+// +kcc:proto=google.cloud.dataplex.v1.DataDocumentationResult.Schema
+type DataDocumentationResult_Schema struct {
+}
+*/
+
+/* unreachable type DataDocumentationResult_TableResult
+// +kcc:proto=google.cloud.dataplex.v1.DataDocumentationResult.TableResult
+type DataDocumentationResult_TableResult struct {
+}
+*/
+
+/* unreachable type DataDocumentationSpec
+// +kcc:proto=google.cloud.dataplex.v1.DataDocumentationSpec
+type DataDocumentationSpec struct {
+	// Optional. Whether to publish result to Dataplex Catalog.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationSpec.catalog_publishing_enabled
+	CatalogPublishingEnabled *bool `json:"catalogPublishingEnabled,omitempty"`
+
+	// Optional. Specifies which components of the data documentation to generate.
+	//  Any component that is required to generate the specified components will
+	//  also be generated. If no generation scope is specified, all available
+	//  documentation components will be generated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationSpec.generation_scopes
+	GenerationScopes []string `json:"generationScopes,omitempty"`
+}
+*/
+
+/* unreachable type DataProduct_AccessGroup
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.AccessGroup
+type DataProduct_AccessGroup struct {
+	// Required. Unique identifier of the access group within the data product.
+	//  User defined. Eg. "analyst", "developer", etc.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. User friendly display name of the access group.
+	//  Eg. "Analyst", "Developer", etc.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the access group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The principal entity associated with this access group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.principal
+	Principal *DataProduct_Principal `json:"principal,omitempty"`
+}
+*/
+
+/* unreachable type DataProduct_Principal
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.Principal
+type DataProduct_Principal struct {
+	// Optional. Email of the Google Group, as per
+	//  https://cloud.google.com/iam/docs/principals-overview#google-group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.Principal.google_group
+	GoogleGroup *string `json:"googleGroup,omitempty"`
+}
+*/
+
 /* unreachable type DataProfileResult
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult
 type DataProfileResult struct {
-	// The count of rows scanned.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.row_count
-	RowCount *int64 `json:"rowCount,omitempty"`
-
-	// The profile information per field.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.profile
-	Profile *DataProfileResult_Profile `json:"profile,omitempty"`
-
-	// The data scanned for this result.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.scanned_data
-	ScannedData *ScannedData `json:"scannedData,omitempty"`
 }
 */
 
@@ -261,59 +330,21 @@ type DataProfileResult_PostScanActionsResult_BigQueryExportResult struct {
 }
 */
 
+/* unreachable type DataProfileResult_Profile
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile
 type DataProfileResult_Profile struct {
-	// List of fields with structural and profile information for each field.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.fields
-	Fields []DataProfileResult_Profile_Field `json:"fields,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field
 type DataProfileResult_Profile_Field struct {
-	// The name of the field.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.name
-	Name *string `json:"name,omitempty"`
-
-	// The data type retrieved from the schema of the data source. For
-	//  instance, for a BigQuery native table, it is the [BigQuery Table
-	//  Schema](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema).
-	//  For a Dataplex Entity, it is the [Entity
-	//  Schema](https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3).
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.type
-	Type *string `json:"type,omitempty"`
-
-	// The mode of the field. Possible values include:
-	//
-	//  * REQUIRED, if it is a required field.
-	//  * NULLABLE, if it is an optional field.
-	//  * REPEATED, if it is a repeated field.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.mode
-	Mode *string `json:"mode,omitempty"`
-
-	// Profile information for the corresponding field.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.profile
-	Profile *DataProfileResult_Profile_Field_ProfileInfo `json:"profile,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo
 type DataProfileResult_Profile_Field_ProfileInfo struct {
-	// Ratio of rows with null value against total scanned rows.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.null_ratio
-	NullRatio *float64 `json:"nullRatio,omitempty"`
-
-	// Ratio of rows with distinct values against total scanned rows.
-	//  Not available for complex non-groupable field type, including RECORD,
-	//  ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.distinct_ratio
-	DistinctRatio *float64 `json:"distinctRatio,omitempty"`
-
-	// The list of top N non-null values, frequency and ratio with which
-	//  they occur in the scanned data. N is 10 or equal to the number of
-	//  distinct values in the field, whichever is smaller. Not available for
-	//  complex non-groupable field type, including RECORD, ARRAY, GEOGRAPHY,
-	//  and JSON, as well as fields with REPEATABLE mode.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.top_n_values
-	TopNValues []DataProfileResult_Profile_Field_ProfileInfo_TopNValue `json:"topNValues,omitempty"`
 
 	// String type field information.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.string_profile
@@ -327,112 +358,31 @@ type DataProfileResult_Profile_Field_ProfileInfo struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.double_profile
 	DoubleProfile *DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo `json:"doubleProfile,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo
 type DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfo struct {
-	// Average of non-null values in the scanned data. NaN, if the field
-	//  has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.average
-	Average *float64 `json:"average,omitempty"`
-
-	// Standard deviation of non-null values in the scanned data. NaN, if
-	//  the field has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.standard_deviation
-	StandardDeviation *float64 `json:"standardDeviation,omitempty"`
-
-	// Minimum of non-null values in the scanned data. NaN, if the field
-	//  has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.min
-	Min *float64 `json:"min,omitempty"`
-
-	// A quartile divides the number of data points into four parts, or
-	//  quarters, of more-or-less equal size. Three main quartiles used
-	//  are: The first quartile (Q1) splits off the lowest 25% of data from
-	//  the highest 75%. It is also known as the lower or 25th empirical
-	//  quartile, as 25% of the data is below this point. The second
-	//  quartile (Q2) is the median of a data set. So, 50% of the data lies
-	//  below this point. The third quartile (Q3) splits off the highest
-	//  25% of data from the lowest 75%. It is known as the upper or 75th
-	//  empirical quartile, as 75% of the data lies below this point.
-	//  Here, the quartiles is provided as an ordered list of quartile
-	//  values for the scanned data, occurring in order Q1, median, Q3.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.quartiles
-	Quartiles []float64 `json:"quartiles,omitempty"`
-
-	// Maximum of non-null values in the scanned data. NaN, if the field
-	//  has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.max
-	Max *float64 `json:"max,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo
 type DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfo struct {
-	// Average of non-null values in the scanned data. NaN, if the field
-	//  has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.average
-	Average *float64 `json:"average,omitempty"`
-
-	// Standard deviation of non-null values in the scanned data. NaN, if
-	//  the field has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.standard_deviation
-	StandardDeviation *float64 `json:"standardDeviation,omitempty"`
-
-	// Minimum of non-null values in the scanned data. NaN, if the field
-	//  has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.min
-	Min *int64 `json:"min,omitempty"`
-
-	// A quartile divides the number of data points into four parts, or
-	//  quarters, of more-or-less equal size. Three main quartiles used
-	//  are: The first quartile (Q1) splits off the lowest 25% of data from
-	//  the highest 75%. It is also known as the lower or 25th empirical
-	//  quartile, as 25% of the data is below this point. The second
-	//  quartile (Q2) is the median of a data set. So, 50% of the data lies
-	//  below this point. The third quartile (Q3) splits off the highest
-	//  25% of data from the lowest 75%. It is known as the upper or 75th
-	//  empirical quartile, as 75% of the data lies below this point.
-	//  Here, the quartiles is provided as an ordered list of approximate
-	//  quartile values for the scanned data, occurring in order Q1,
-	//  median, Q3.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.quartiles
-	Quartiles []int64 `json:"quartiles,omitempty"`
-
-	// Maximum of non-null values in the scanned data. NaN, if the field
-	//  has a NaN.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.max
-	Max *int64 `json:"max,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo
 type DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfo struct {
-	// Minimum length of non-null values in the scanned data.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo.min_length
-	MinLength *int64 `json:"minLength,omitempty"`
-
-	// Maximum length of non-null values in the scanned data.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo.max_length
-	MaxLength *int64 `json:"maxLength,omitempty"`
-
-	// Average length of non-null values in the scanned data.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo.average_length
-	AverageLength *float64 `json:"averageLength,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_Profile_Field_ProfileInfo_TopNValue
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue
 type DataProfileResult_Profile_Field_ProfileInfo_TopNValue struct {
-	// String value of a top N non-null value.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue.value
-	Value *string `json:"value,omitempty"`
-
-	// Count of the corresponding value in the scanned data.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue.count
-	Count *int64 `json:"count,omitempty"`
-
-	// Ratio of the corresponding value in the field against the total
-	//  number of rows in the scanned data.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue.ratio
-	Ratio *float64 `json:"ratio,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileSpec
 type DataProfileSpec struct {
@@ -447,10 +397,8 @@ type DataProfileSpec struct {
 	SamplingPercent *float32 `json:"samplingPercent,omitempty"`
 
 	// Optional. A filter applied to all rows in a single DataScan job.
-	//  The filter needs to be a valid SQL expression for a [WHERE clause in
-	//  GoogleSQL
-	//  syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause).
-	//
+	//  The filter needs to be a valid SQL expression for a WHERE clause in
+	//  BigQuery standard SQL syntax.
 	//  Example: col1 >= 0 AND col2 < 10
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileSpec.row_filter
 	RowFilter *string `json:"rowFilter,omitempty"`
@@ -472,6 +420,11 @@ type DataProfileSpec struct {
 	//  `include_fields` value.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileSpec.exclude_fields
 	ExcludeFields *DataProfileSpec_SelectedFields `json:"excludeFields,omitempty"`
+
+	// Optional. If set, the latest DataScan job result will be published as
+	//  Dataplex Universal Catalog metadata.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileSpec.catalog_publishing_enabled
+	CatalogPublishingEnabled *bool `json:"catalogPublishingEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileSpec.PostScanActions
@@ -498,16 +451,18 @@ type DataProfileSpec_SelectedFields struct {
 /* unreachable type DataQualityDimension
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityDimension
 type DataQualityDimension struct {
-	// Optional. The dimension name a rule belongs to. Custom dimension name is
-	//  supported with all uppercase letters and maximum length of 30 characters.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityDimension.name
-	Name *string `json:"name,omitempty"`
 }
 */
 
 /* unreachable type DataQualityResult
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityResult
 type DataQualityResult struct {
+}
+*/
+
+/* unreachable type DataQualityResult_AnomalyDetectionGeneratedAssets
+// +kcc:proto=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets
+type DataQualityResult_AnomalyDetectionGeneratedAssets struct {
 }
 */
 
@@ -579,10 +534,9 @@ type DataQualityRule struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.ignore_null
 	IgnoreNull *bool `json:"ignoreNull,omitempty"`
 
-	// Required. The dimension a rule belongs to. Results are also aggregated at
-	//  the dimension level. Supported dimensions are **["COMPLETENESS",
-	//  "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS", "FRESHNESS",
-	//  "VOLUME"]**
+	// Optional. The dimension a rule belongs to. Results are also aggregated at
+	//  the dimension level. Custom dimension name is supported with all uppercase
+	//  letters and maximum length of 30 characters.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.dimension
 	Dimension *string `json:"dimension,omitempty"`
 
@@ -615,6 +569,25 @@ type DataQualityRule struct {
 	//  Default is false.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.suspended
 	Suspended *bool `json:"suspended,omitempty"`
+
+	// Optional. Specifies the debug queries for this rule.
+	//  Currently, only one query is supported, but this may be expanded in the
+	//  future.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.debug_queries
+	DebugQueries []DataQualityRule_DebugQuery `json:"debugQueries,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.DebugQuery
+type DataQualityRule_DebugQuery struct {
+	// Optional. Specifies the description of the debug query.
+	//
+	//  * The maximum length is 1,024 characters.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.DebugQuery.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Specifies the SQL statement to be executed.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.DebugQuery.sql_statement
+	SQLStatement *string `json:"sqlStatement,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.RangeExpectation
@@ -716,6 +689,32 @@ type DataQualityRule_TableConditionExpectation struct {
 	SQLExpression *string `json:"sqlExpression,omitempty"`
 }
 
+/* unreachable type DataQualityRuleResult_DebugQueryResult
+// +kcc:proto=google.cloud.dataplex.v1.DataQualityRuleResult.DebugQueryResult
+type DataQualityRuleResult_DebugQueryResult struct {
+	// Specifies the name of the result. Available if provided with an explicit
+	//  alias using `[AS] alias`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRuleResult.DebugQueryResult.name
+	Name *string `json:"name,omitempty"`
+
+	// Indicates the data type of the result. For more information, see
+	//  [BigQuery data
+	//  types](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types).
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRuleResult.DebugQueryResult.type
+	Type *string `json:"type,omitempty"`
+
+	// Represents the value of the result as a string.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRuleResult.DebugQueryResult.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
+/* unreachable type DataQualityRuleResult_DebugQueryResultSet
+// +kcc:proto=google.cloud.dataplex.v1.DataQualityRuleResult.DebugQueryResultSet
+type DataQualityRuleResult_DebugQueryResultSet struct {
+}
+*/
+
 // +kcc:proto=google.cloud.dataplex.v1.DataQualitySpec
 type DataQualitySpec struct {
 	// Required. The list of rules to evaluate against a data source. At least one
@@ -745,6 +744,11 @@ type DataQualitySpec struct {
 	// Optional. Actions to take upon job completion.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualitySpec.post_scan_actions
 	PostScanActions *DataQualitySpec_PostScanActions `json:"postScanActions,omitempty"`
+
+	// Optional. If set, the latest DataScan job result will be published as
+	//  Dataplex Universal Catalog metadata.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualitySpec.catalog_publishing_enabled
+	CatalogPublishingEnabled *bool `json:"catalogPublishingEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.DataQualitySpec.PostScanActions
@@ -826,11 +830,17 @@ type DataScan_ExecutionStatus struct {
 	LatestJobCreateTime *string `json:"latestJobCreateTime,omitempty"`
 }
 
+/* unreachable type DataScanCatalogPublishingStatus
+// +kcc:proto=google.cloud.dataplex.v1.DataScanCatalogPublishingStatus
+type DataScanCatalogPublishingStatus struct {
+}
+*/
+
 // +kcc:proto=google.cloud.dataplex.v1.EntryType.Authorization
 type EntryType_Authorization struct {
 	// Immutable. The IAM permission grantable on the Entry Group to allow
-	//  access to instantiate Entries of Dataplex owned Entry Types, only
-	//  settable for Dataplex owned Types.
+	//  access to instantiate Entries of Dataplex Universal Catalog owned Entry
+	//  Types, only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
@@ -854,28 +864,20 @@ type Lake_MetastoreStatus struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
+/* unreachable type ScannedData
 // +kcc:proto=google.cloud.dataplex.v1.ScannedData
 type ScannedData struct {
 	// The range denoted by values of an incremental field
 	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.incremental_field
 	IncrementalField *ScannedData_IncrementalField `json:"incrementalField,omitempty"`
 }
+*/
 
+/* unreachable type ScannedData_IncrementalField
 // +kcc:proto=google.cloud.dataplex.v1.ScannedData.IncrementalField
 type ScannedData_IncrementalField struct {
-	// The field that contains values which monotonically increases over time
-	//  (e.g. a timestamp column).
-	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.field
-	Field *string `json:"field,omitempty"`
-
-	// Value that marks the start of the range.
-	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.start
-	Start *string `json:"start,omitempty"`
-
-	// Value that marks the end of the range.
-	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.end
-	End *string `json:"end,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec
 type Task_InfrastructureSpec struct {
@@ -992,6 +994,22 @@ type Trigger struct {
 	// The scan is scheduled to run periodically.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Trigger.schedule
 	Schedule *Trigger_Schedule `json:"schedule,omitempty"`
+
+	// The scan runs once, and does not create an associated ScanJob child
+	//  resource.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Trigger.one_time
+	OneTime *Trigger_OneTime `json:"oneTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Trigger.OneTime
+type Trigger_OneTime struct {
+	// Optional. Time to live for OneTime scans.
+	//  default value is 24 hours, minimum value is 0 seconds, and maximum value
+	//  is 365 days. The time is calculated from the data scan job completion
+	//  time. If value is set as 0 seconds, the scan will be immediately deleted
+	//  upon job completion, regardless of whether the job succeeded or failed.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Trigger.OneTime.ttl_after_scan_completion
+	TTLAfterScanCompletion *string `json:"ttlAfterScanCompletion,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Trigger.Schedule
@@ -1109,23 +1127,100 @@ type DataDiscoveryResultObservedState struct {
 	ScanStatistics *DataDiscoveryResult_ScanStatistics `json:"scanStatistics,omitempty"`
 }
 
+/* unreachable type DataDocumentationResultObservedState
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataDocumentationResult
+type DataDocumentationResultObservedState struct {
+	// Output only. Table result for insights.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.table_result
+	TableResult *DataDocumentationResult_TableResultObservedState `json:"tableResult,omitempty"`
+}
+*/
+
+/* unreachable type DataDocumentationResult_FieldObservedState
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataDocumentationResult.Field
+type DataDocumentationResult_FieldObservedState struct {
+	// Output only. The name of the column.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.Field.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Generated description for columns and fields.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.Field.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. Nested fields.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.Field.fields
+	Fields []DataDocumentationResult_FieldObservedState `json:"fields,omitempty"`
+}
+*/
+
+/* unreachable type DataDocumentationResult_QueryObservedState
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataDocumentationResult.Query
+type DataDocumentationResult_QueryObservedState struct {
+	// Output only. The SQL query string which can be executed.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.Query.sql
+	SQL *string `json:"sql,omitempty"`
+
+	// Output only. The description for the query.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.Query.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* unreachable type DataDocumentationResult_SchemaObservedState
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataDocumentationResult.Schema
+type DataDocumentationResult_SchemaObservedState struct {
+	// Output only. The list of columns.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.Schema.fields
+	Fields []DataDocumentationResult_FieldObservedState `json:"fields,omitempty"`
+}
+*/
+
+/* unreachable type DataDocumentationResult_TableResultObservedState
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataDocumentationResult.TableResult
+type DataDocumentationResult_TableResultObservedState struct {
+	// Output only. The service-qualified full resource name of the cloud
+	//  resource. Ex:
+	//  //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.TableResult.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Generated description of the table.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.TableResult.overview
+	Overview *string `json:"overview,omitempty"`
+
+	// Output only. Schema of the table with generated metadata of the columns
+	//  in the schema.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.TableResult.schema
+	Schema *DataDocumentationResult_SchemaObservedState `json:"schema,omitempty"`
+
+	// Output only. Sample SQL queries for the table.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataDocumentationResult.TableResult.queries
+	Queries []DataDocumentationResult_QueryObservedState `json:"queries,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult
 type DataProfileResultObservedState struct {
-	// The count of rows scanned.
+	// Output only. The count of rows scanned.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.row_count
 	RowCount *int64 `json:"rowCount,omitempty"`
 
-	// The profile information per field.
+	// Output only. The profile information per field.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.profile
-	Profile *DataProfileResult_Profile `json:"profile,omitempty"`
+	Profile *DataProfileResult_ProfileObservedState `json:"profile,omitempty"`
 
-	// The data scanned for this result.
+	// Output only. The data scanned for this result.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.scanned_data
-	ScannedData *ScannedData `json:"scannedData,omitempty"`
+	ScannedData *ScannedDataObservedState `json:"scannedData,omitempty"`
 
 	// Output only. The result of post scan actions.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.post_scan_actions_result
 	PostScanActionsResult *DataProfileResult_PostScanActionsResultObservedState `json:"postScanActionsResult,omitempty"`
+
+	// Output only. The status of publishing the data scan as Dataplex Universal
+	//  Catalog metadata.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.catalog_publishing_status
+	CatalogPublishingStatus *DataScanCatalogPublishingStatusObservedState `json:"catalogPublishingStatus,omitempty"`
 }
 
 /* unreachable type DataProfileResult_PostScanActionsResult_BigQueryExportResultObservedState
@@ -1138,6 +1233,194 @@ type DataProfileResult_PostScanActionsResult_BigQueryExportResultObservedState s
 	// Output only. Additional information about the BigQuery exporting.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.PostScanActionsResult.BigQueryExportResult.message
 	Message *string `json:"message,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile
+type DataProfileResult_ProfileObservedState struct {
+	// Output only. List of fields with structural and profile information for
+	//  each field.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.fields
+	Fields []DataProfileResult_Profile_FieldObservedState `json:"fields,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field
+type DataProfileResult_Profile_FieldObservedState struct {
+	// Output only. The name of the field.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The data type retrieved from the schema of the data
+	//  source. For instance, for a BigQuery native table, it is the [BigQuery
+	//  Table
+	//  Schema](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema).
+	//  For a Dataplex Universal Catalog Entity, it is the [Entity
+	//  Schema](https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3).
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. The mode of the field. Possible values include:
+	//
+	//  * REQUIRED, if it is a required field.
+	//  * NULLABLE, if it is an optional field.
+	//  * REPEATED, if it is a repeated field.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Output only. Profile information for the corresponding field.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.profile
+	Profile *DataProfileResult_Profile_Field_ProfileInfoObservedState `json:"profile,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo
+type DataProfileResult_Profile_Field_ProfileInfoObservedState struct {
+	// Output only. Ratio of rows with null value against total scanned
+	//  rows.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.null_ratio
+	NullRatio *float64 `json:"nullRatio,omitempty"`
+
+	// Output only. Ratio of rows with distinct values against total scanned
+	//  rows. Not available for complex non-groupable field type, including
+	//  RECORD, ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE
+	//  mode.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.distinct_ratio
+	DistinctRatio *float64 `json:"distinctRatio,omitempty"`
+
+	// Output only. The list of top N non-null values, frequency and ratio
+	//  with which they occur in the scanned data. N is 10 or equal to the
+	//  number of distinct values in the field, whichever is smaller. Not
+	//  available for complex non-groupable field type, including RECORD,
+	//  ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.top_n_values
+	TopNValues []DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState `json:"topNValues,omitempty"`
+
+	// String type field information.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.string_profile
+	StringProfile *DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState `json:"stringProfile,omitempty"`
+
+	// Integer type field information.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.integer_profile
+	IntegerProfile *DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState `json:"integerProfile,omitempty"`
+
+	// Double type field information.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.double_profile
+	DoubleProfile *DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState `json:"doubleProfile,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo
+type DataProfileResult_Profile_Field_ProfileInfo_DoubleFieldInfoObservedState struct {
+	// Output only. Average of non-null values in the scanned data. NaN,
+	//  if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.average
+	Average *float64 `json:"average,omitempty"`
+
+	// Output only. Standard deviation of non-null values in the scanned
+	//  data. NaN, if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.standard_deviation
+	StandardDeviation *float64 `json:"standardDeviation,omitempty"`
+
+	// Output only. Minimum of non-null values in the scanned data. NaN,
+	//  if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.min
+	Min *float64 `json:"min,omitempty"`
+
+	// Output only. A quartile divides the number of data points into four
+	//  parts, or quarters, of more-or-less equal size. Three main
+	//  quartiles used are: The first quartile (Q1) splits off the lowest
+	//  25% of data from the highest 75%. It is also known as the lower or
+	//  25th empirical quartile, as 25% of the data is below this point.
+	//  The second quartile (Q2) is the median of a data set. So, 50% of
+	//  the data lies below this point. The third quartile (Q3) splits off
+	//  the highest 25% of data from the lowest 75%. It is known as the
+	//  upper or 75th empirical quartile, as 75% of the data lies below
+	//  this point. Here, the quartiles is provided as an ordered list of
+	//  quartile values for the scanned data, occurring in order Q1,
+	//  median, Q3.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.quartiles
+	Quartiles []float64 `json:"quartiles,omitempty"`
+
+	// Output only. Maximum of non-null values in the scanned data. NaN,
+	//  if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo.max
+	Max *float64 `json:"max,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo
+type DataProfileResult_Profile_Field_ProfileInfo_IntegerFieldInfoObservedState struct {
+	// Output only. Average of non-null values in the scanned data. NaN,
+	//  if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.average
+	Average *float64 `json:"average,omitempty"`
+
+	// Output only. Standard deviation of non-null values in the scanned
+	//  data. NaN, if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.standard_deviation
+	StandardDeviation *float64 `json:"standardDeviation,omitempty"`
+
+	// Output only. Minimum of non-null values in the scanned data. NaN,
+	//  if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.min
+	Min *int64 `json:"min,omitempty"`
+
+	// Output only. A quartile divides the number of data points into four
+	//  parts, or quarters, of more-or-less equal size. Three main
+	//  quartiles used are: The first quartile (Q1) splits off the lowest
+	//  25% of data from the highest 75%. It is also known as the lower or
+	//  25th empirical quartile, as 25% of the data is below this point.
+	//  The second quartile (Q2) is the median of a data set. So, 50% of
+	//  the data lies below this point. The third quartile (Q3) splits off
+	//  the highest 25% of data from the lowest 75%. It is known as the
+	//  upper or 75th empirical quartile, as 75% of the data lies below
+	//  this point. Here, the quartiles is provided as an ordered list of
+	//  approximate quartile values for the scanned data, occurring in
+	//  order Q1, median, Q3.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.quartiles
+	Quartiles []int64 `json:"quartiles,omitempty"`
+
+	// Output only. Maximum of non-null values in the scanned data. NaN,
+	//  if the field has a NaN.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo.max
+	Max *int64 `json:"max,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo
+type DataProfileResult_Profile_Field_ProfileInfo_StringFieldInfoObservedState struct {
+	// Output only. Minimum length of non-null values in the scanned data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo.min_length
+	MinLength *int64 `json:"minLength,omitempty"`
+
+	// Output only. Maximum length of non-null values in the scanned data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo.max_length
+	MaxLength *int64 `json:"maxLength,omitempty"`
+
+	// Output only. Average length of non-null values in the scanned data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo.average_length
+	AverageLength *float64 `json:"averageLength,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue
+type DataProfileResult_Profile_Field_ProfileInfo_TopNValueObservedState struct {
+	// Output only. String value of a top N non-null value.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue.value
+	Value *string `json:"value,omitempty"`
+
+	// Output only. Count of the corresponding value in the scanned data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue.count
+	Count *int64 `json:"count,omitempty"`
+
+	// Output only. Ratio of the corresponding value in the field against
+	//  the total number of rows in the scanned data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.Profile.Field.ProfileInfo.TopNValue.ratio
+	Ratio *float64 `json:"ratio,omitempty"`
+}
+
+/* unreachable type DataQualityDimensionObservedState
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityDimension
+type DataQualityDimensionObservedState struct {
+	// Output only. The dimension name a rule belongs to. Custom dimension name is
+	//  supported with all uppercase letters and maximum length of 30 characters.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityDimension.name
+	Name *string `json:"name,omitempty"`
 }
 */
 
@@ -1177,11 +1460,50 @@ type DataQualityResultObservedState struct {
 
 	// Output only. The data scanned for this result.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.scanned_data
-	ScannedData *ScannedData `json:"scannedData,omitempty"`
+	ScannedData *ScannedDataObservedState `json:"scannedData,omitempty"`
 
 	// Output only. The result of post scan actions.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.post_scan_actions_result
 	PostScanActionsResult *DataQualityResult_PostScanActionsResultObservedState `json:"postScanActionsResult,omitempty"`
+
+	// Output only. The status of publishing the data scan as Dataplex Universal
+	//  Catalog metadata.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.catalog_publishing_status
+	CatalogPublishingStatus *DataScanCatalogPublishingStatusObservedState `json:"catalogPublishingStatus,omitempty"`
+
+	// Output only. The generated assets for anomaly detection.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.anomaly_detection_generated_assets
+	AnomalyDetectionGeneratedAssets *DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState `json:"anomalyDetectionGeneratedAssets,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets
+type DataQualityResult_AnomalyDetectionGeneratedAssetsObservedState struct {
+	// Output only. The result table for anomaly detection.
+	//  Format:
+	//  PROJECT_ID.DATASET_ID.TABLE_ID
+	//  If the result table is set at AnomalyDetectionAssets, the result table
+	//  here would be the same as the one set in the
+	//  AnomalyDetectionAssets.result_table.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets.result_table
+	ResultTable *string `json:"resultTable,omitempty"`
+
+	// Output only. The intermediate table for data anomaly detection.
+	//  Format:
+	//  PROJECT_ID.DATASET_ID.TABLE_ID
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets.data_intermediate_table
+	DataIntermediateTable *string `json:"dataIntermediateTable,omitempty"`
+
+	// Output only. The intermediate table for freshness anomaly detection.
+	//  Format:
+	//  PROJECT_ID.DATASET_ID.TABLE_ID
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets.freshness_intermediate_table
+	FreshnessIntermediateTable *string `json:"freshnessIntermediateTable,omitempty"`
+
+	// Output only. The intermediate table for volume anomaly detection.
+	//  Format:
+	//  PROJECT_ID.DATASET_ID.TABLE_ID
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.AnomalyDetectionGeneratedAssets.volume_intermediate_table
+	VolumeIntermediateTable *string `json:"volumeIntermediateTable,omitempty"`
 }
 
 /* unreachable type DataQualityResult_PostScanActionsResult_BigQueryExportResultObservedState
@@ -1196,3 +1518,42 @@ type DataQualityResult_PostScanActionsResult_BigQueryExportResultObservedState s
 	Message *string `json:"message,omitempty"`
 }
 */
+
+/* unreachable type DataQualityRuleResult_DebugQueryResultSetObservedState
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityRuleResult.DebugQueryResultSet
+type DataQualityRuleResult_DebugQueryResultSetObservedState struct {
+	// Output only. Contains all results. Up to 10 results can be returned.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRuleResult.DebugQueryResultSet.results
+	Results []DataQualityRuleResult_DebugQueryResult `json:"results,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataScanCatalogPublishingStatus
+type DataScanCatalogPublishingStatusObservedState struct {
+	// Output only. Execution state for publishing.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataScanCatalogPublishingStatus.state
+	State *string `json:"state,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.ScannedData
+type ScannedDataObservedState struct {
+	// The range denoted by values of an incremental field
+	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.incremental_field
+	IncrementalField *ScannedData_IncrementalFieldObservedState `json:"incrementalField,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.ScannedData.IncrementalField
+type ScannedData_IncrementalFieldObservedState struct {
+	// Output only. The field that contains values which monotonically increases
+	//  over time (e.g. a timestamp column).
+	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.field
+	Field *string `json:"field,omitempty"`
+
+	// Output only. Value that marks the start of the range.
+	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.start
+	Start *string `json:"start,omitempty"`
+
+	// Output only. Value that marks the end of the range.
+	// +kcc:proto:field=google.cloud.dataplex.v1.ScannedData.IncrementalField.end
+	End *string `json:"end,omitempty"`
+}
