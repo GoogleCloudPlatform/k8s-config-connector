@@ -1,0 +1,6 @@
+- caisURL: //datalabeling.googleapis.com/projects/${projectId}/annotationSpecSets/datalabelingannotationspecset-${uniqueId}
+  group: datalabeling.cnrm.cloud.google.com
+  kind: DataLabelingAnnotationSpecSet
+  name: datalabelingannotationspecset-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
