@@ -168,6 +168,10 @@ type TemplateTemplateMetadata struct {
 	// +optional
 	LogTemplateOperations *bool `json:"logTemplateOperations,omitempty"`
 
+	/* Optional. Specifies the modalities to scan. If empty, only text modality will be scanned. */
+	// +optional
+	Modalities []string `json:"modalities,omitempty"`
+
 	/* Optional. Metadata for multi language detection. */
 	// +optional
 	MultiLanguageDetection *TemplateMultiLanguageDetection `json:"multiLanguageDetection,omitempty"`

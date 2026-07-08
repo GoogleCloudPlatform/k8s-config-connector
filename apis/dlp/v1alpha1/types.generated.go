@@ -313,8 +313,8 @@ type DataProfileAction struct {
 	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.tag_resources
 	TagResources *DataProfileAction_TagResources `json:"tagResources,omitempty"`
 
-	// Publishes a portion of each profile to Dataplex Catalog with the aspect
-	//  type Sensitive Data Protection Profile.
+	// Publishes a portion of each profile to Dataplex Universal Catalog with
+	//  the aspect type Sensitive Data Protection Profile.
 	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.publish_to_dataplex_catalog
 	PublishToDataplexCatalog *DataProfileAction_PublishToDataplexCatalog `json:"publishToDataplexCatalog,omitempty"`
 }
@@ -343,7 +343,7 @@ type DataProfileAction_Export struct {
 	//     visible to queries by the time your topic receives the Pub/Sub
 	//     notification.
 	//   * The best practice is to use the same table for an entire organization
-	//     so that you can take advantage of the [provided Looker
+	//     so that you can take advantage of the [provided Data Studio
 	//     reports](https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#use_a_premade_report).
 	//     If you use VPC Service Controls to define security perimeters, then
 	//     you must use a separate table for each boundary.
@@ -394,11 +394,12 @@ type DataProfileAction_PublishToChronicle struct {
 
 // +kcc:proto=google.privacy.dlp.v2.DataProfileAction.PublishToDataplexCatalog
 type DataProfileAction_PublishToDataplexCatalog struct {
-	// Whether creating a Dataplex Catalog aspect for a profiled resource should
-	//  lower the risk of the profile for that resource. This also lowers the
-	//  data risk of resources at the lower levels of the resource hierarchy. For
-	//  example, reducing the data risk of a table data profile also reduces the
-	//  data risk of the constituent column data profiles.
+	// Whether creating a Dataplex Universal Catalog aspect for a profiled
+	//  resource should lower the risk of the profile for that resource. This
+	//  also lowers the data risk of resources at the lower levels of the
+	//  resource hierarchy. For example, reducing the data risk of a table data
+	//  profile also reduces the data risk of the constituent column data
+	//  profiles.
 	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.PublishToDataplexCatalog.lower_data_risk_to_low
 	LowerDataRiskToLow *bool `json:"lowerDataRiskToLow,omitempty"`
 }
@@ -450,7 +451,8 @@ type DataProfileAction_TagResources_TagCondition struct {
 type DataProfileAction_TagResources_TagValue struct {
 	// The namespaced name for the tag value to attach to resources. Must be
 	//  in the format `{parent_id}/{tag_key_short_name}/{short_name}`, for
-	//  example, "123456/environment/prod".
+	//  example, "123456/environment/prod" for an organization parent, or
+	//  "my-project/environment/prod" for a project parent.
 	// +kcc:proto:field=google.privacy.dlp.v2.DataProfileAction.TagResources.TagValue.namespaced_value
 	NamespacedValue *string `json:"namespacedValue,omitempty"`
 }
@@ -486,6 +488,15 @@ type DataProfilePubSubCondition_PubSubExpressions struct {
 
 // +kcc:proto=google.privacy.dlp.v2.DataSourceType
 type DataSourceType struct {
+	// A string that identifies the type of resource being profiled.
+	//  Current values:
+	//
+	//  * google/bigquery/table
+	//  * google/project
+	//  * google/sql/table
+	//  * google/gcs/bucket
+	// +kcc:proto:field=google.privacy.dlp.v2.DataSourceType.data_source
+	DataSource *string `json:"dataSource,omitempty"`
 }
 
 // +kcc:proto=google.privacy.dlp.v2.DatabaseResourceCollection
@@ -1050,6 +1061,19 @@ type FileStoreCollection struct {
 	//  against.
 	// +kcc:proto:field=google.privacy.dlp.v2.FileStoreCollection.include_regexes
 	IncludeRegexes *FileStoreRegexes `json:"includeRegexes,omitempty"`
+
+	// Optional. To be included in the collection, a resource must meet all of the
+	//  following requirements:
+	//
+	//   - If tag filters are provided, match all provided tag filters.
+	//   - If one or more patterns are specified, match at least one pattern.
+	//
+	//  For a resource to match the tag filters, the resource must have all of the
+	//  provided tags attached. Tags refer to Resource Manager tags bound to the
+	//  resource or its ancestors. For more information, see [Manage
+	//  schedules](https://cloud.google.com/sensitive-data-protection/docs/profile-project-cloud-storage#manage-schedules).
+	// +kcc:proto:field=google.privacy.dlp.v2.FileStoreCollection.include_tags
+	IncludeTags *TagFilters `json:"includeTags,omitempty"`
 }
 
 // +kcc:proto=google.privacy.dlp.v2.FileStoreRegex
@@ -1152,9 +1176,25 @@ type OtherCloudSingleResourceReference struct {
 
 // +kcc:proto=google.privacy.dlp.v2.ProcessingLocation
 type ProcessingLocation struct {
-	// Image processing will fall back using this configuration.
+	// Image processing falls back using this configuration.
 	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.image_fallback_location
 	ImageFallbackLocation *ProcessingLocation_ImageFallbackLocation `json:"imageFallbackLocation,omitempty"`
+
+	// Document processing falls back using this configuration.
+	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.document_fallback_location
+	DocumentFallbackLocation *ProcessingLocation_DocumentFallbackLocation `json:"documentFallbackLocation,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.ProcessingLocation.DocumentFallbackLocation
+type ProcessingLocation_DocumentFallbackLocation struct {
+	// Processing occurs in a multi-region that contains the current region
+	//  if available.
+	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.DocumentFallbackLocation.multi_region_processing
+	MultiRegionProcessing *ProcessingLocation_MultiRegionProcessing `json:"multiRegionProcessing,omitempty"`
+
+	// Processing occurs in the global region.
+	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.DocumentFallbackLocation.global_processing
+	GlobalProcessing *ProcessingLocation_GlobalProcessing `json:"globalProcessing,omitempty"`
 }
 
 // +kcc:proto=google.privacy.dlp.v2.ProcessingLocation.GlobalProcessing
@@ -1163,12 +1203,12 @@ type ProcessingLocation_GlobalProcessing struct {
 
 // +kcc:proto=google.privacy.dlp.v2.ProcessingLocation.ImageFallbackLocation
 type ProcessingLocation_ImageFallbackLocation struct {
-	// Processing will happen in a multi-region that contains the current region
+	// Processing occurs in a multi-region that contains the current region
 	//  if available.
 	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.ImageFallbackLocation.multi_region_processing
 	MultiRegionProcessing *ProcessingLocation_MultiRegionProcessing `json:"multiRegionProcessing,omitempty"`
 
-	// Processing will happen in the global region.
+	// Processing occurs in the global region.
 	// +kcc:proto:field=google.privacy.dlp.v2.ProcessingLocation.ImageFallbackLocation.global_processing
 	GlobalProcessing *ProcessingLocation_GlobalProcessing `json:"globalProcessing,omitempty"`
 }
@@ -1220,6 +1260,30 @@ type TableReference struct {
 	ProjectID *string `json:"projectID,omitempty"`
 }
 
+// +kcc:proto=google.privacy.dlp.v2.TagFilter
+type TagFilter struct {
+	// The namespaced name for the tag value. Must be in the format
+	//  `{parent_id}/{tag_key_short_name}/{short_name}`, for example,
+	//  "123456/environment/prod" for an organization parent, or
+	//  "my-project/environment/prod" for a project parent.
+	// +kcc:proto:field=google.privacy.dlp.v2.TagFilter.namespaced_tag_value
+	NamespacedTagValue *string `json:"namespacedTagValue,omitempty"`
+
+	// The namespaced name for the tag key. Must be in the format
+	//  `{parent_id}/{tag_key_short_name}`, for example, "123456/sensitive" for
+	//  an organization parent, or "my-project/sensitive" for a project parent.
+	// +kcc:proto:field=google.privacy.dlp.v2.TagFilter.namespaced_tag_key
+	NamespacedTagKey *string `json:"namespacedTagKey,omitempty"`
+}
+
+// +kcc:proto=google.privacy.dlp.v2.TagFilters
+type TagFilters struct {
+	// Required. A resource must match ALL of the specified tag filters to be
+	//  included in the collection.
+	// +kcc:proto:field=google.privacy.dlp.v2.TagFilters.tag_filters
+	TagFilters []TagFilter `json:"tagFilters,omitempty"`
+}
+
 // +kcc:proto=google.privacy.dlp.v2.VertexDatasetCollection
 type VertexDatasetCollection struct {
 	// The regex used to filter dataset resources.
@@ -1269,8 +1333,11 @@ type VertexDatasetRegexes struct {
 
 // +kcc:proto=google.privacy.dlp.v2.VertexDatasetResourceReference
 type VertexDatasetResourceReference struct {
-	// Required. The name of the dataset resource. If set within a project-level
+	// Required. The name of the Vertex AI resource. If set within a project-level
 	//  configuration, the specified resource must be within the project.
+	//  Examples:
+	//
+	//  * `projects/{project}/locations/{location}/datasets/{dataset}`
 	// +kcc:proto:field=google.privacy.dlp.v2.VertexDatasetResourceReference.dataset_resource_name
 	DatasetResourceName *string `json:"datasetResourceName,omitempty"`
 }
@@ -1291,27 +1358,10 @@ type ConnectionObservedState struct {
 }
 */
 
-// +kcc:observedstate:proto=google.privacy.dlp.v2.DataSourceType
-type DataSourceTypeObservedState struct {
-	// Output only. An identifying string to the type of resource being profiled.
-	//  Current values:
-	//
-	//  * google/bigquery/table
-	//  * google/project
-	//  * google/sql/table
-	//  * google/gcs/bucket
-	// +kcc:proto:field=google.privacy.dlp.v2.DataSourceType.data_source
-	DataSource *string `json:"dataSource,omitempty"`
-}
-
 /* found existing non-generated go type with proto tag "google.privacy.dlp.v2.DiscoveryConfig", skipping
 
 // +kcc:observedstate:proto=google.privacy.dlp.v2.DiscoveryConfig
 type DiscoveryConfigObservedState struct {
-	// Target to match against for determining what to scan and how frequently.
-	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.targets
-	Targets []DiscoveryTargetObservedState `json:"targets,omitempty"`
-
 	// Output only. A stream of errors encountered when the config was activated.
 	//  Repeated errors may result in the config automatically being paused. Output
 	//  only field. Will return the last 100 errors. Whenever the config is
@@ -1332,20 +1382,3 @@ type DiscoveryConfigObservedState struct {
 	LastRunTime *string `json:"lastRunTime,omitempty"`
 }
 */
-
-// +kcc:observedstate:proto=google.privacy.dlp.v2.DiscoveryTarget
-type DiscoveryTargetObservedState struct {
-	// Other clouds target for discovery. The first target to match a resource
-	//  will be the one applied.
-	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryTarget.other_cloud_target
-	OtherCloudTarget *OtherCloudDiscoveryTargetObservedState `json:"otherCloudTarget,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.privacy.dlp.v2.OtherCloudDiscoveryTarget
-type OtherCloudDiscoveryTargetObservedState struct {
-	// Required. The type of data profiles generated by this discovery target.
-	//  Supported values are:
-	//  * aws/s3/bucket
-	// +kcc:proto:field=google.privacy.dlp.v2.OtherCloudDiscoveryTarget.data_source_type
-	DataSourceType *DataSourceTypeObservedState `json:"dataSourceType,omitempty"`
-}

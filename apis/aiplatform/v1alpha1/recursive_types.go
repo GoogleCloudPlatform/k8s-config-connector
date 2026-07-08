@@ -109,3 +109,128 @@ type ExplanationParameters struct {
 	// OutputIndices is temporarily disabled due to CRD instability
 	// OutputIndices *ListValue `json:"outputIndices,omitempty"`
 }
+
+// +kcc:proto=google.cloud.aiplatform.v1.Schema
+type Schema struct {
+	// Optional. The type of the data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. The format of the data.
+	//  Supported formats:
+	//   for NUMBER type: "float", "double"
+	//   for INTEGER type: "int32", "int64"
+	//   for STRING type: "email", "byte", etc
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.format
+	Format *string `json:"format,omitempty"`
+
+	// Optional. The title of the Schema.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. The description of the data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Indicates if the value may be null.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.nullable
+	Nullable *bool `json:"nullable,omitempty"`
+
+	// Optional. Default value of the data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.default
+	Default *Value `json:"default,omitempty"`
+
+	// Optional. SCHEMA FIELDS FOR TYPE ARRAY
+	//  Schema of the elements of Type.ARRAY.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.items
+	// +kubebuilder:validation:XPreserveUnknownFields
+	// +kubebuilder:validation:Type=object
+	Items *Schema `json:"items,omitempty"`
+
+	// Optional. Minimum number of the elements for Type.ARRAY.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.min_items
+	MinItems *int64 `json:"minItems,omitempty"`
+
+	// Optional. Maximum number of the elements for Type.ARRAY.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.max_items
+	MaxItems *int64 `json:"maxItems,omitempty"`
+
+	// Optional. Possible values of the element of primitive type with enum
+	//  format. Examples:
+	//  1. We can define direction as :
+	//  {type:STRING, format:enum, enum:["EAST", NORTH", "SOUTH", "WEST"]}
+	//  2. We can define apartment number as :
+	//  {type:INTEGER, format:enum, enum:["101", "201", "301"]}
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.enum
+	Enum []string `json:"enum,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+	// Optional. The order of the properties.
+	//  Not a standard field in open api spec. Only used to support the order of
+	//  the properties.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.property_ordering
+	PropertyOrdering []string `json:"propertyOrdering,omitempty"`
+
+	// Optional. Required properties of Type.OBJECT.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.required
+	Required []string `json:"required,omitempty"`
+
+	// Optional. Minimum number of the properties for Type.OBJECT.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.min_properties
+	MinProperties *int64 `json:"minProperties,omitempty"`
+
+	// Optional. Maximum number of the properties for Type.OBJECT.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.max_properties
+	MaxProperties *int64 `json:"maxProperties,omitempty"`
+
+	// Optional. SCHEMA FIELDS FOR TYPE INTEGER and NUMBER
+	//  Minimum value of the Type.INTEGER and Type.NUMBER
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.minimum
+	Minimum *float64 `json:"minimum,omitempty"`
+
+	// Optional. Maximum value of the Type.INTEGER and Type.NUMBER
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.maximum
+	Maximum *float64 `json:"maximum,omitempty"`
+
+	// Optional. SCHEMA FIELDS FOR TYPE STRING
+	//  Minimum length of the Type.STRING
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.min_length
+	MinLength *int64 `json:"minLength,omitempty"`
+
+	// Optional. Maximum length of the Type.STRING
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.max_length
+	MaxLength *int64 `json:"maxLength,omitempty"`
+
+	// Optional. Pattern of the Type.STRING to restrict a string to a regular
+	//  expression.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.pattern
+	Pattern *string `json:"pattern,omitempty"`
+
+	// Optional. Example of the object. Will only populated when the object is the
+	//  root.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.example
+	Example *Value `json:"example,omitempty"`
+
+	// Optional. The value should be validated against any (one or more) of the
+	//  subschemas in the list.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.any_of
+	// +kubebuilder:validation:items:XPreserveUnknownFields
+	// +kubebuilder:validation:items:Type=object
+	AnyOf []Schema `json:"anyOf,omitempty"`
+
+	// Optional. Can either be a boolean or an object; controls the presence of
+	//  additional properties.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.additional_properties
+	AdditionalProperties *Value `json:"additionalProperties,omitempty"`
+
+	// Optional. Allows indirect references between schema nodes. The value should
+	//  be a valid reference to a child of the root `defs`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schema.ref
+	Ref *string `json:"ref,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ExactMatchSpec
+// +kubebuilder:validation:XPreserveUnknownFields
+type ExactMatchSpec struct {
+}

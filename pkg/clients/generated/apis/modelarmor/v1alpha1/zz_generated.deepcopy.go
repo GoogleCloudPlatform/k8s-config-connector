@@ -446,6 +446,11 @@ func (in *TemplateTemplateMetadata) DeepCopyInto(out *TemplateTemplateMetadata) 
 		*out = new(bool)
 		**out = **in
 	}
+	if in.Modalities != nil {
+		in, out := &in.Modalities, &out.Modalities
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	if in.MultiLanguageDetection != nil {
 		in, out := &in.MultiLanguageDetection, &out.MultiLanguageDetection
 		*out = new(TemplateMultiLanguageDetection)

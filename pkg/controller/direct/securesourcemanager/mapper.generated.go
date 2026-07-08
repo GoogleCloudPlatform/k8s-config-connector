@@ -66,6 +66,7 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	// MISSING: HTTPServiceAttachment
 	// MISSING: SSHServiceAttachment
 	// MISSING: PSCAllowedProjects
+	// MISSING: CustomHostConfig
 	return out
 }
 */
@@ -85,6 +86,7 @@ found existing non-generated mapping function "Instance_PrivateConfig_ToProto", 
 		// MISSING: HTTPServiceAttachment
 		// MISSING: SSHServiceAttachment
 		// MISSING: PSCAllowedProjects
+		// MISSING: CustomHostConfig
 		return out
 	}
 */
@@ -98,6 +100,7 @@ func Instance_PrivateConfigObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
 	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
 	// MISSING: PSCAllowedProjects
+	// MISSING: CustomHostConfig
 	return out
 }
 func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfigObservedState) *pb.Instance_PrivateConfig {
@@ -110,6 +113,7 @@ func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
 	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
 	// MISSING: PSCAllowedProjects
+	// MISSING: CustomHostConfig
 	return out
 }
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
@@ -228,6 +232,8 @@ func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Etag
 	// MISSING: Uris
 	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
+	// MISSING: ServiceAccount
+	// MISSING: ScanConfig
 	return out
 }
 func SecureSourceManagerRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerRepositorySpec) *pb.Repository {
@@ -246,5 +252,7 @@ func SecureSourceManagerRepositorySpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Etag
 	// MISSING: Uris
 	out.InitialConfig = Repository_InitialConfig_ToProto(mapCtx, in.InitialConfig)
+	// MISSING: ServiceAccount
+	// MISSING: ScanConfig
 	return out
 }

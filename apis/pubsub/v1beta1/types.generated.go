@@ -24,6 +24,46 @@
 
 package v1beta1
 
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+/* unreachable type AiInference
+// +kcc:proto=google.pubsub.v1.AIInference
+type AiInference struct {
+	// Required. An endpoint to a Vertex AI model of the form
+	//  `projects/{project}/locations/{location}/endpoints/{endpoint}` or
+	//  `projects/{project}/locations/{location}/publishers/{publisher}/models/{model}`.
+	//  Vertex AI API requests will be sent to this endpoint.
+	// +kcc:proto:field=google.pubsub.v1.AIInference.endpoint
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// Optional. Requests and responses can be any arbitrary JSON object.
+	// +kcc:proto:field=google.pubsub.v1.AIInference.unstructured_inference
+	UnstructuredInference *AiInference_UnstructuredInference `json:"unstructuredInference,omitempty"`
+
+	// Optional. The service account to use to make prediction requests against
+	//  endpoints. The resource creator or updater that specifies this field must
+	//  have `iam.serviceAccounts.actAs` permission on the service account. If not
+	//  specified, the Pub/Sub [service
+	//  agent](https://cloud.google.com/iam/docs/service-agents),
+	//  service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
+	// +kcc:proto:field=google.pubsub.v1.AIInference.service_account_email
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
+}
+*/
+
+/* unreachable type AiInference_UnstructuredInference
+// +kcc:proto=google.pubsub.v1.AIInference.UnstructuredInference
+type AiInference_UnstructuredInference struct {
+	// Optional. A parameters object to be included in each inference request.
+	//  The parameters object is combined with the data field of the Pub/Sub
+	//  message to form the inference request.
+	// +kcc:proto:field=google.pubsub.v1.AIInference.UnstructuredInference.parameters
+	Parameters apiextensionsv1.JSON `json:"parameters,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "BigQueryConfig", skipping
 
 // +kcc:proto=google.pubsub.v1.BigQueryConfig
@@ -69,6 +109,42 @@ type BigQueryConfig struct {
 	//  service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
 	// +kcc:proto:field=google.pubsub.v1.BigQueryConfig.service_account_email
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
+}
+*/
+
+/* unreachable type BigtableConfig
+// +kcc:proto=google.pubsub.v1.BigtableConfig
+type BigtableConfig struct {
+	// Optional. The unique name of the table to write messages to.
+	//
+	//  Values are of the form
+	//  `projects/<project>/instances/<instance>/tables/<table>`.
+	// +kcc:proto:field=google.pubsub.v1.BigtableConfig.table
+	Table *string `json:"table,omitempty"`
+
+	// Optional. The app profile to use for the Bigtable writes. If not specified,
+	//  the "default" application profile will be used. The app profile must use
+	//  single-cluster routing.
+	// +kcc:proto:field=google.pubsub.v1.BigtableConfig.app_profile_id
+	AppProfileID *string `json:"appProfileID,omitempty"`
+
+	// Optional. The service account to use to write to Bigtable. The subscription
+	//  creator or updater that specifies this field must have
+	//  `iam.serviceAccounts.actAs` permission on the service account. If not
+	//  specified, the Pub/Sub [service
+	//  agent](https://cloud.google.com/iam/docs/service-agents),
+	//  service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
+	// +kcc:proto:field=google.pubsub.v1.BigtableConfig.service_account_email
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
+
+	// Optional. When true, write the subscription name, message_id, publish_time,
+	//  attributes, and ordering_key to additional columns in the table under the
+	//  pubsub_metadata column family. The subscription name, message_id, and
+	//  publish_time fields are put in their own columns while all other message
+	//  properties (other than data) are written to a JSON object in the attributes
+	//  column.
+	// +kcc:proto:field=google.pubsub.v1.BigtableConfig.write_metadata
+	WriteMetadata *bool `json:"writeMetadata,omitempty"`
 }
 */
 
@@ -499,6 +575,12 @@ type MessageTransform struct {
 	// +kcc:proto:field=google.pubsub.v1.MessageTransform.javascript_udf
 	JavascriptUdf *JavaScriptUdf `json:"javascriptUdf,omitempty"`
 
+	// Optional. AI Inference. Specifies the Vertex AI endpoint that inference
+	//  requests built from the Pub/Sub message data and provided parameters will
+	//  be sent to.
+	// +kcc:proto:field=google.pubsub.v1.MessageTransform.ai_inference
+	AiInference *AiInference `json:"aiInference,omitempty"`
+
 	// Optional. This field is deprecated, use the `disabled` field to disable
 	//  transforms.
 	// +kcc:proto:field=google.pubsub.v1.MessageTransform.enabled
@@ -717,7 +799,7 @@ type Snapshot struct {
 
 // +kcc:proto=google.pubsub.v1.Subscription
 type Subscription struct {
-	// Required. The name of the subscription. It must have the format
+	// Required. Identifier. The name of the subscription. It must have the format
 	//  `"projects/{project}/subscriptions/{subscription}"`. `{subscription}` must
 	//  start with a letter, and contain only letters (`[A-Za-z]`), numbers
 	//  (`[0-9]`), dashes (`-`), underscores (`_`), periods (`.`), tildes (`~`),
@@ -746,6 +828,11 @@ type Subscription struct {
 	//  subscription, this field is used to configure it.
 	// +kcc:proto:field=google.pubsub.v1.Subscription.cloud_storage_config
 	CloudStorageConfig *CloudStorageConfig `json:"cloudStorageConfig,omitempty"`
+
+	// Optional. If delivery to Bigtable is used with this subscription, this
+	//  field is used to configure it.
+	// +kcc:proto:field=google.pubsub.v1.Subscription.bigtable_config
+	BigtableConfig *BigtableConfig `json:"bigtableConfig,omitempty"`
 
 	// Optional. The approximate amount of time (on a best-effort basis) Pub/Sub
 	//  waits for the subscriber to acknowledge receipt before resending the
@@ -865,6 +952,15 @@ type Subscription struct {
 	//  subscribers. Transforms are applied in the order specified.
 	// +kcc:proto:field=google.pubsub.v1.Subscription.message_transforms
 	MessageTransforms []MessageTransform `json:"messageTransforms,omitempty"`
+
+	// Optional. Input only. Immutable. Tag keys/values directly bound to this
+	//  resource. For example:
+	//    "123/environment": "production",
+	//    "123/costCenter": "marketing"
+	//  See https://docs.cloud.google.com/pubsub/docs/tags for more information on
+	//  using tags with Pub/Sub resources.
+	// +kcc:proto:field=google.pubsub.v1.Subscription.tags
+	Tags map[string]string `json:"tags,omitempty"`
 }
 */
 
@@ -889,7 +985,7 @@ type Subscription_AnalyticsHubSubscriptionInfo struct {
 
 // +kcc:proto=google.pubsub.v1.Topic
 type Topic struct {
-	// Required. The name of the topic. It must have the format
+	// Required. Identifier. The name of the topic. It must have the format
 	//  `"projects/{project}/topics/{topic}"`. `{topic}` must start with a letter,
 	//  and contain only letters (`[A-Za-z]`), numbers (`[0-9]`), dashes (`-`),
 	//  underscores (`_`), periods (`.`), tildes (`~`), plus (`+`) or percent
@@ -945,6 +1041,15 @@ type Topic struct {
 	//  Transforms are applied in the order specified.
 	// +kcc:proto:field=google.pubsub.v1.Topic.message_transforms
 	MessageTransforms []MessageTransform `json:"messageTransforms,omitempty"`
+
+	// Optional. Input only. Immutable. Tag keys/values directly bound to this
+	//  resource. For example:
+	//    "123/environment": "production",
+	//    "123/costCenter": "marketing"
+	//  See https://docs.cloud.google.com/pubsub/docs/tags for more information on
+	//  using tags with Pub/Sub resources.
+	// +kcc:proto:field=google.pubsub.v1.Topic.tags
+	Tags map[string]string `json:"tags,omitempty"`
 }
 */
 
@@ -955,6 +1060,16 @@ type BigQueryConfigObservedState struct {
 	// Output only. An output-only field that indicates whether or not the
 	//  subscription can receive messages.
 	// +kcc:proto:field=google.pubsub.v1.BigQueryConfig.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* unreachable type BigtableConfigObservedState
+// +kcc:observedstate:proto=google.pubsub.v1.BigtableConfig
+type BigtableConfigObservedState struct {
+	// Output only. An output-only field that indicates whether or not the
+	//  subscription can receive messages.
+	// +kcc:proto:field=google.pubsub.v1.BigtableConfig.state
 	State *string `json:"state,omitempty"`
 }
 */
@@ -1073,6 +1188,11 @@ type SubscriptionObservedState struct {
 	// +kcc:proto:field=google.pubsub.v1.Subscription.cloud_storage_config
 	CloudStorageConfig *CloudStorageConfigObservedState `json:"cloudStorageConfig,omitempty"`
 
+	// Optional. If delivery to Bigtable is used with this subscription, this
+	//  field is used to configure it.
+	// +kcc:proto:field=google.pubsub.v1.Subscription.bigtable_config
+	BigtableConfig *BigtableConfigObservedState `json:"bigtableConfig,omitempty"`
+
 	// Output only. Indicates the minimum duration for which a message is retained
 	//  after it is published to the subscription's topic. If this field is set,
 	//  messages published to the subscription's topic in the last
@@ -1088,7 +1208,7 @@ type SubscriptionObservedState struct {
 	State *string `json:"state,omitempty"`
 
 	// Output only. Information about the associated Analytics Hub subscription.
-	//  Only set if the subscritpion is created by Analytics Hub.
+	//  Only set if the subscription is created by Analytics Hub.
 	// +kcc:proto:field=google.pubsub.v1.Subscription.analytics_hub_subscription_info
 	AnalyticsHubSubscriptionInfo *Subscription_AnalyticsHubSubscriptionInfo `json:"analyticsHubSubscriptionInfo,omitempty"`
 }

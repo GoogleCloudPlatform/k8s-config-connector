@@ -54,6 +54,7 @@ func workstationclusterFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".domain_config")
 
 	f.UnimplementedFields.Insert(".labels")
 	f.UnimplementedFields.Insert(".reconciling")
@@ -61,6 +62,10 @@ func workstationclusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".conditions")
 	f.UnimplementedFields.Insert(".private_cluster_config.cluster_hostname")
 	f.UnimplementedFields.Insert(".private_cluster_config.service_attachment_uri")
+	f.UnimplementedFields.Insert(".gateway_config")
+	f.UnimplementedFields.Insert(".workstation_authorization_url")
+	f.UnimplementedFields.Insert(".tags")
+	f.UnimplementedFields.Insert(".workstation_launch_url")
 
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".private_cluster_config")

@@ -38,10 +38,62 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type GeneratorAgentActionSuggestions struct {
+	/* Optional. The suggested action for the agent. */
+	// +optional
+	AgentAction *string `json:"agentAction,omitempty"`
+}
+
+type GeneratorAgentCoachingSuggestion struct {
+	/* Optional. Suggested actions for the agent to take. */
+	// +optional
+	AgentActionSuggestions []GeneratorAgentActionSuggestions `json:"agentActionSuggestions,omitempty"`
+
+	/* Optional. Instructions applicable based on the current context. */
+	// +optional
+	ApplicableInstructions []GeneratorApplicableInstructions `json:"applicableInstructions,omitempty"`
+
+	/* Optional. Sample response for the Agent. */
+	// +optional
+	SampleResponses []GeneratorSampleResponses `json:"sampleResponses,omitempty"`
+}
+
+type GeneratorApplicableInstructions struct {
+	/* Optional. The action that human agent should take. For example, "apologize for the slow shipping". If the users only want to use agent coaching for intent detection, agent_action can be empty */
+	// +optional
+	AgentAction *string `json:"agentAction,omitempty"`
+
+	/* Optional. The condition of the instruction. For example, "the customer wants to cancel an order".  If the users want the instruction to be triggered unconditionally, the condition can be empty. */
+	// +optional
+	Condition *string `json:"condition,omitempty"`
+
+	/* Optional. The detailed description of this instruction. */
+	// +optional
+	DisplayDetails *string `json:"displayDetails,omitempty"`
+
+	/* Optional. Display name for the instruction. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Optional. The action that system should take. For example, "call GetOrderTime with order_number={order number provided by the customer}". If the users don't have plugins or don't want to trigger plugins, the system_action can be empty */
+	// +optional
+	SystemAction *string `json:"systemAction,omitempty"`
+
+	/* Optional. The event that should trigger this instruction. If UNSPECIFIED, the instruction triggering will be same as the generator's trigger_event. */
+	// +optional
+	TriggeringEvent *string `json:"triggeringEvent,omitempty"`
+}
+
 type GeneratorConversationContext struct {
 	/* Optional. List of message transcripts in the conversation. */
 	// +optional
 	MessageEntries []GeneratorMessageEntries `json:"messageEntries,omitempty"`
+}
+
+type GeneratorError struct {
+	/* Optional. The error message of the function. */
+	// +optional
+	Message *string `json:"message,omitempty"`
 }
 
 type GeneratorFewShotExamples struct {
@@ -111,6 +163,10 @@ type GeneratorMessageEntries struct {
 }
 
 type GeneratorOutput struct {
+	/* Optional. Suggestion to coach the agent. */
+	// +optional
+	AgentCoachingSuggestion *GeneratorAgentCoachingSuggestion `json:"agentCoachingSuggestion,omitempty"`
+
 	/* Optional. Free form suggestion. */
 	// +optional
 	FreeFormSuggestion *GeneratorFreeFormSuggestion `json:"freeFormSuggestion,omitempty"`
@@ -118,6 +174,16 @@ type GeneratorOutput struct {
 	/* Optional. Suggested summary. */
 	// +optional
 	SummarySuggestion *GeneratorSummarySuggestion `json:"summarySuggestion,omitempty"`
+
+	/* Optional. List of request and response for tool calls executed. */
+	// +optional
+	ToolCallInfo []GeneratorToolCallInfo `json:"toolCallInfo,omitempty"`
+}
+
+type GeneratorSampleResponses struct {
+	/* Optional. Sample response for Agent in text. */
+	// +optional
+	ResponseText *string `json:"responseText,omitempty"`
 }
 
 type GeneratorSummarizationContext struct {
@@ -172,6 +238,92 @@ type GeneratorSummarySuggestion struct {
 	/* Required. All the parts of generated summary. */
 	// +optional
 	SummarySections []GeneratorSummarySections `json:"summarySections,omitempty"`
+}
+
+type GeneratorToolCall struct {
+	/* Optional. The name of the tool's action associated with this call. */
+	// +optional
+	Action *string `json:"action,omitempty"`
+
+	/* Optional. The answer record associated with this tool call. */
+	// +optional
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+
+	/* Optional. CES app name for this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`. */
+	// +optional
+	CesApp *string `json:"cesApp,omitempty"`
+
+	/* Optional. CES tool name for this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`. */
+	// +optional
+	CesTool *string `json:"cesTool,omitempty"`
+
+	/* Optional. CES toolset name for this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`. */
+	// +optional
+	CesToolset *string `json:"cesToolset,omitempty"`
+
+	/* Optional. The action's input parameters. */
+	// +optional
+	InputParameters apiextensionsv1.JSON `json:"inputParameters,omitempty"`
+
+	/* Optional. The [tool][google.cloud.dialogflow.v2.Tool] associated with this call. Format: `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`. */
+	// +optional
+	Tool *string `json:"tool,omitempty"`
+
+	/* Optional. A human readable description of the tool. */
+	// +optional
+	ToolDisplayDetails *string `json:"toolDisplayDetails,omitempty"`
+
+	/* Optional. A human readable short name of the tool, to be shown on the UI. */
+	// +optional
+	ToolDisplayName *string `json:"toolDisplayName,omitempty"`
+}
+
+type GeneratorToolCallInfo struct {
+	/* Required. Request for a tool call. */
+	// +optional
+	ToolCall *GeneratorToolCall `json:"toolCall,omitempty"`
+
+	/* Required. Response for a tool call. */
+	// +optional
+	ToolCallResult *GeneratorToolCallResult `json:"toolCallResult,omitempty"`
+}
+
+type GeneratorToolCallResult struct {
+	/* Optional. The name of the tool's action associated with this call. */
+	// +optional
+	Action *string `json:"action,omitempty"`
+
+	/* Optional. The answer record associated with this tool call result. */
+	// +optional
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+
+	/* Optional. CES app name for this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`. */
+	// +optional
+	CesApp *string `json:"cesApp,omitempty"`
+
+	/* Optional. CES tool name for this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`. */
+	// +optional
+	CesTool *string `json:"cesTool,omitempty"`
+
+	/* Optional. CES toolset name for this call. Format: `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`. */
+	// +optional
+	CesToolset *string `json:"cesToolset,omitempty"`
+
+	/* Optional. Only populated if the response content is utf-8 encoded. */
+	// +optional
+	Content *string `json:"content,omitempty"`
+
+	/* Optional. The tool call's error. */
+	// +optional
+	Error *GeneratorError `json:"error,omitempty"`
+
+	/* Optional. Only populated if the response content is not utf-8 encoded. (by definition byte fields are base64 encoded). */
+	// +optional
+	RawContent *string `json:"rawContent,omitempty"`
+
+	/* Optional. The [tool][google.cloud.dialogflow.v2.Tool] associated with this call. Format: `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`. */
+	// +optional
+	Tool *string `json:"tool,omitempty"`
 }
 
 type DialogflowGeneratorSpec struct {

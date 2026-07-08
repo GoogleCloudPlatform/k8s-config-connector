@@ -27,6 +27,7 @@ import (
 
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
+	agentregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/agentregistry/v1alpha1"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
 	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
@@ -237,6 +238,7 @@ type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
 	AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface
+	AgentregistryV1alpha1() agentregistryv1alpha1.AgentregistryV1alpha1Interface
 	AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface
 	AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface
 	AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface
@@ -445,6 +447,7 @@ type Clientset struct {
 	*discovery.DiscoveryClient
 	accesscontextmanagerV1beta1     *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
 	accesscontextmanagerV1alpha1    *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
+	agentregistryV1alpha1           *agentregistryv1alpha1.AgentregistryV1alpha1Client
 	aiplatformV1alpha1              *aiplatformv1alpha1.AiplatformV1alpha1Client
 	aistreamsV1alpha1               *aistreamsv1alpha1.AistreamsV1alpha1Client
 	alloydbV1beta1                  *alloydbv1beta1.AlloydbV1beta1Client
@@ -656,6 +659,11 @@ func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.Ac
 // AccesscontextmanagerV1alpha1 retrieves the AccesscontextmanagerV1alpha1Client
 func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface {
 	return c.accesscontextmanagerV1alpha1
+}
+
+// AgentregistryV1alpha1 retrieves the AgentregistryV1alpha1Client
+func (c *Clientset) AgentregistryV1alpha1() agentregistryv1alpha1.AgentregistryV1alpha1Interface {
+	return c.agentregistryV1alpha1
 }
 
 // AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
@@ -1715,6 +1723,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.agentregistryV1alpha1, err = agentregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.aiplatformV1alpha1, err = aiplatformv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2542,6 +2554,7 @@ func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
 	cs.accesscontextmanagerV1alpha1 = accesscontextmanagerv1alpha1.New(c)
+	cs.agentregistryV1alpha1 = agentregistryv1alpha1.New(c)
 	cs.aiplatformV1alpha1 = aiplatformv1alpha1.New(c)
 	cs.aistreamsV1alpha1 = aistreamsv1alpha1.New(c)
 	cs.alloydbV1beta1 = alloydbv1beta1.New(c)

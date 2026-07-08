@@ -76,6 +76,8 @@ func networkServicesGatewayFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".ip_version")
 	f.Unimplemented_NotYetTriaged(".envoy_headers")
 	f.Unimplemented_NotYetTriaged(".routing_mode")
+	f.Unimplemented_NotYetTriaged(".all_ports")
+	f.Unimplemented_NotYetTriaged(".allow_global_access")
 
 	return f
 }

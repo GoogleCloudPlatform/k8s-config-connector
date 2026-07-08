@@ -40,9 +40,6 @@ type CloudSecurityComplianceFrameworkSpec struct {
 	// Optional. The description of the framework. The maximum length is 2000 characters.
 	Description *string `json:"description,omitempty"`
 
-	// Optional. The details of the cloud control groups included in the framework.
-	CloudControlGroupDetails []Framework_CloudControlGroupDetails `json:"cloudControlGroupDetails,omitempty"`
-
 	// Optional. The details of the cloud controls directly added without any grouping in the framework.
 	CloudControlDetails []CloudControlDetails `json:"cloudControlDetails,omitempty"`
 
@@ -74,9 +71,6 @@ type CloudSecurityComplianceFrameworkObservedState struct {
 
 	// Output only. The type of the framework. The default is TYPE_CUSTOM.
 	Type *string `json:"type,omitempty"`
-
-	// Optional. The details of the cloud control groups included in the framework.
-	CloudControlGroupDetails []Framework_CloudControlGroupDetailsObservedState `json:"cloudControlGroupDetails,omitempty"`
 
 	// Output only. cloud providers supported.
 	SupportedCloudProviders []string `json:"supportedCloudProviders,omitempty"`

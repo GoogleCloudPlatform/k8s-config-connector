@@ -94,6 +94,7 @@ func SaasServiceMgmtReleaseObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.Blueprint = BlueprintObservedState_FromProto(mapCtx, in.GetBlueprint())
 	out.InputVariables = direct.Slice_FromProto(mapCtx, in.InputVariables, UnitVariable_FromProto)
 	out.OutputVariables = direct.Slice_FromProto(mapCtx, in.OutputVariables, UnitVariable_FromProto)
+	// MISSING: ApplicationTemplateComponent
 	// MISSING: Labels
 	// MISSING: Annotations
 	out.Uid = direct.LazyPtr(in.GetUid())
@@ -111,6 +112,7 @@ func SaasServiceMgmtReleaseObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.Blueprint = BlueprintObservedState_ToProto(mapCtx, in.Blueprint)
 	out.InputVariables = direct.Slice_ToProto(mapCtx, in.InputVariables, UnitVariable_ToProto)
 	out.OutputVariables = direct.Slice_ToProto(mapCtx, in.OutputVariables, UnitVariable_ToProto)
+	// MISSING: ApplicationTemplateComponent
 	// MISSING: Labels
 	// MISSING: Annotations
 	out.Uid = direct.ValueOf(in.Uid)
@@ -129,6 +131,7 @@ func SaasServiceMgmtReleaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Rele
 	out.Blueprint = Blueprint_FromProto(mapCtx, in.GetBlueprint())
 	out.ReleaseRequirements = Release_ReleaseRequirements_FromProto(mapCtx, in.GetReleaseRequirements())
 	out.InputVariableDefaults = direct.Slice_FromProto(mapCtx, in.InputVariableDefaults, UnitVariable_FromProto)
+	// MISSING: ApplicationTemplateComponent
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out
@@ -143,6 +146,7 @@ func SaasServiceMgmtReleaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaasS
 	out.Blueprint = Blueprint_ToProto(mapCtx, in.Blueprint)
 	out.ReleaseRequirements = Release_ReleaseRequirements_ToProto(mapCtx, in.ReleaseRequirements)
 	out.InputVariableDefaults = direct.Slice_ToProto(mapCtx, in.InputVariableDefaults, UnitVariable_ToProto)
+	// MISSING: ApplicationTemplateComponent
 	// MISSING: Labels
 	// MISSING: Annotations
 	return out

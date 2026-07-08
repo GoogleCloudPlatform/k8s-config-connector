@@ -52,38 +52,6 @@ type FrameworkCloudControlDetails struct {
 	Parameters []FrameworkParameters `json:"parameters,omitempty"`
 }
 
-type FrameworkCloudControlGroup struct {
-	/* Required. The details of the cloud controls to be referred to in the framework. */
-	// +optional
-	CloudControlDetails []FrameworkCloudControlDetails `json:"cloudControlDetails,omitempty"`
-
-	/* Required. The name of the cloud control group in the format: “organizations/{organization}/locations/{location}/ cloudControlGroups/{cloud-control-group}” */
-	// +optional
-	CloudControlGroupRef *v1alpha1.ResourceRef `json:"cloudControlGroupRef,omitempty"`
-
-	/* Optional. The control identifier used to fetch the findings. This is same as the control report name. */
-	// +optional
-	ControlID *string `json:"controlID,omitempty"`
-
-	/* Optional. The industry-defined Control assciated with the cloud controls in this group. organizations/{organization}/locations/{location}/controls/{control_id} */
-	// +optional
-	ControlRef *v1alpha1.ResourceRef `json:"controlRef,omitempty"`
-
-	/* Optional. The description of the cloud control group.The maximum length is 2000 characters. */
-	// +optional
-	Description *string `json:"description,omitempty"`
-
-	/* Optional. Major revision of the cloud control group. */
-	// +optional
-	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
-}
-
-type FrameworkCloudControlGroupDetails struct {
-	/* The cloud control group included in the framework. */
-	// +optional
-	CloudControlGroup *FrameworkCloudControlGroup `json:"cloudControlGroup,omitempty"`
-}
-
 type FrameworkParameterValue struct {
 }
 
@@ -106,10 +74,6 @@ type CloudSecurityComplianceFrameworkSpec struct {
 	// +optional
 	CloudControlDetails []FrameworkCloudControlDetails `json:"cloudControlDetails,omitempty"`
 
-	/* Optional. The details of the cloud control groups included in the framework. */
-	// +optional
-	CloudControlGroupDetails []FrameworkCloudControlGroupDetails `json:"cloudControlGroupDetails,omitempty"`
-
 	/* Optional. The description of the framework. The maximum length is 2000 characters. */
 	// +optional
 	Description *string `json:"description,omitempty"`
@@ -129,23 +93,7 @@ type CloudSecurityComplianceFrameworkSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type FrameworkCloudControlGroupDetailsStatus struct {
-	/* The cloud control group included in the framework. */
-	// +optional
-	CloudControlGroup *FrameworkCloudControlGroupStatus `json:"cloudControlGroup,omitempty"`
-}
-
-type FrameworkCloudControlGroupStatus struct {
-	/* Optional. Output only. The type of the cloud control group. Default is TYPE_CUSTOM. */
-	// +optional
-	Type *string `json:"type,omitempty"`
-}
-
 type FrameworkObservedStateStatus struct {
-	/* Optional. The details of the cloud control groups included in the framework. */
-	// +optional
-	CloudControlGroupDetails []FrameworkCloudControlGroupDetailsStatus `json:"cloudControlGroupDetails,omitempty"`
-
 	/* Output only. Major revision of the framework incremented in ascending order. */
 	// +optional
 	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`

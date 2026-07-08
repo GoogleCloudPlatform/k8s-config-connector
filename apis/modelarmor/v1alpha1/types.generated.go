@@ -130,4 +130,9 @@ type Template_TemplateMetadata struct {
 	// Optional. Metadata for multi language detection.
 	// +kcc:proto:field=google.cloud.modelarmor.v1.Template.TemplateMetadata.multi_language_detection
 	MultiLanguageDetection *Template_TemplateMetadata_MultiLanguageDetection `json:"multiLanguageDetection,omitempty"`
+
+	// Optional. Specifies the modalities to scan.
+	//  If empty, only text modality will be scanned.
+	// +kcc:proto:field=google.cloud.modelarmor.v1.Template.TemplateMetadata.modalities
+	Modalities []string `json:"modalities,omitempty"`
 }

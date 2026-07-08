@@ -38,10 +38,280 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type VertexaituningjobAdditionalProperties struct {
+	/* Represents a boolean value. */
+	// +optional
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	/* Represents a null value. */
+	// +optional
+	NullValue *string `json:"nullValue,omitempty"`
+
+	/* Represents a double value. */
+	// +optional
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	/* Represents a string value. */
+	// +optional
+	StringValue *string `json:"stringValue,omitempty"`
+
+	/* Represents a structured value. */
+	// +optional
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+}
+
+type VertexaituningjobAnyOf struct {
+}
+
+type VertexaituningjobAutoMode struct {
+	/* The model routing preference. */
+	// +optional
+	ModelRoutingPreference *string `json:"modelRoutingPreference,omitempty"`
+}
+
+type VertexaituningjobAutoraterConfig struct {
+	/* Optional. The fully qualified name of the publisher model or tuned
+	autorater endpoint to use.
+
+	Publisher model format:
+	`projects/{project}/locations/{location}/publishers/* /models/*`
+
+	Tuned model endpoint format:
+	`projects/{project}/locations/{location}/endpoints/{endpoint}` */
+	// +optional
+	AutoraterModel *string `json:"autoraterModel,omitempty"`
+
+	/* Optional. Default is true. Whether to flip the candidate and baseline responses. This is only applicable to the pairwise metric. If enabled, also provide PairwiseMetricSpec.candidate_response_field_name and PairwiseMetricSpec.baseline_response_field_name. When rendering PairwiseMetricSpec.metric_prompt_template, the candidate and baseline fields will be flipped for half of the samples to reduce bias. */
+	// +optional
+	FlipEnabled *bool `json:"flipEnabled,omitempty"`
+
+	/* Optional. Configuration options for model generation and outputs. */
+	// +optional
+	GenerationConfig *VertexaituningjobGenerationConfig `json:"generationConfig,omitempty"`
+
+	/* Optional. Number of samples for each instance in the dataset. If not specified, the default is 4. Minimum value is 1, maximum value is 32. */
+	// +optional
+	SamplingCount *int32 `json:"samplingCount,omitempty"`
+}
+
+type VertexaituningjobBleuSpec struct {
+	/* Optional. Whether to use_effective_order to compute bleu score. */
+	// +optional
+	UseEffectiveOrder *bool `json:"useEffectiveOrder,omitempty"`
+}
+
+type VertexaituningjobComputationBasedMetricSpec struct {
+	/* Optional. A map of parameters for the metric, e.g. {"rouge_type": "rougeL"}. */
+	// +optional
+	Parameters apiextensionsv1.JSON `json:"parameters,omitempty"`
+
+	/* Required. The type of the computation based metric. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type VertexaituningjobCustomOutputFormatConfig struct {
+	/* Optional. Whether to return raw output. */
+	// +optional
+	ReturnRawOutput *bool `json:"returnRawOutput,omitempty"`
+}
+
+type VertexaituningjobDefault struct {
+	/* Represents a boolean value. */
+	// +optional
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	/* Represents a null value. */
+	// +optional
+	NullValue *string `json:"nullValue,omitempty"`
+
+	/* Represents a double value. */
+	// +optional
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	/* Represents a string value. */
+	// +optional
+	StringValue *string `json:"stringValue,omitempty"`
+
+	/* Represents a structured value. */
+	// +optional
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+}
+
 type VertexaituningjobEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
 	KmsKeyName *string `json:"kmsKeyName,omitempty"`
+}
+
+type VertexaituningjobEvaluationConfig struct {
+	/* Optional. Autorater config for evaluation. */
+	// +optional
+	AutoraterConfig *VertexaituningjobAutoraterConfig `json:"autoraterConfig,omitempty"`
+
+	/* Optional. Configuration options for inference generation and outputs. If not set, default generation parameters are used. */
+	// +optional
+	InferenceGenerationConfig *VertexaituningjobInferenceGenerationConfig `json:"inferenceGenerationConfig,omitempty"`
+
+	/* Required. The metrics used for evaluation. */
+	// +optional
+	Metrics []VertexaituningjobMetrics `json:"metrics,omitempty"`
+
+	/* Required. Config for evaluation output. */
+	// +optional
+	OutputConfig *VertexaituningjobOutputConfig `json:"outputConfig,omitempty"`
+}
+
+type VertexaituningjobExactMatchSpec struct {
+}
+
+type VertexaituningjobExample struct {
+	/* Represents a boolean value. */
+	// +optional
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	/* Represents a null value. */
+	// +optional
+	NullValue *string `json:"nullValue,omitempty"`
+
+	/* Represents a double value. */
+	// +optional
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	/* Represents a string value. */
+	// +optional
+	StringValue *string `json:"stringValue,omitempty"`
+
+	/* Represents a structured value. */
+	// +optional
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+}
+
+type VertexaituningjobGcsDestination struct {
+	/* Required. Google Cloud Storage URI to output directory. If the uri doesn't end with '/', a '/' will be automatically appended. The directory is created if it doesn't exist. */
+	// +optional
+	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
+}
+
+type VertexaituningjobGenerationConfig struct {
+	/* Optional. If enabled, audio timestamps will be included in the request to the model. This can be useful for synchronizing audio with other modalities in the response. */
+	// +optional
+	AudioTimestamp *bool `json:"audioTimestamp,omitempty"`
+
+	/* Optional. Number of candidates to generate. */
+	// +optional
+	CandidateCount *int32 `json:"candidateCount,omitempty"`
+
+	/* Optional. Frequency penalties. */
+	// +optional
+	FrequencyPenalty *float64 `json:"frequencyPenalty,omitempty"`
+
+	/* Optional. Config for image generation features. */
+	// +optional
+	ImageConfig *VertexaituningjobImageConfig `json:"imageConfig,omitempty"`
+
+	/* Optional. Logit probabilities. */
+	// +optional
+	Logprobs *int32 `json:"logprobs,omitempty"`
+
+	/* Optional. The maximum number of output tokens to generate per message. */
+	// +optional
+	MaxOutputTokens *int32 `json:"maxOutputTokens,omitempty"`
+
+	/* Optional. The token resolution at which input media content is sampled. This is used to control the trade-off between the quality of the response and the number of tokens used to represent the media. A higher resolution allows the model to perceive more detail, which can lead to a more nuanced response, but it will also use more tokens. This does not affect the image dimensions sent to the model. */
+	// +optional
+	MediaResolution *string `json:"mediaResolution,omitempty"`
+
+	/* Optional. Positive penalties. */
+	// +optional
+	PresencePenalty *float64 `json:"presencePenalty,omitempty"`
+
+	/* Optional. Output schema of the generated response. This is an alternative
+	to `response_schema` that accepts [JSON Schema](https://json-schema.org/).
+
+	If set, `response_schema` must be omitted, but `response_mime_type` is
+	required.
+
+	While the full JSON Schema may be sent, not all features are supported.
+	Specifically, only the following properties are supported:
+
+	- `$id`
+	- `$defs`
+	- `$ref`
+	- `$anchor`
+	- `type`
+	- `format`
+	- `title`
+	- `description`
+	- `enum` (for strings and numbers)
+	- `items`
+	- `prefixItems`
+	- `minItems`
+	- `maxItems`
+	- `minimum`
+	- `maximum`
+	- `anyOf`
+	- `oneOf` (interpreted the same as `anyOf`)
+	- `properties`
+	- `additionalProperties`
+	- `required`
+
+	The non-standard `propertyOrdering` property may also be set.
+
+	Cyclic references are unrolled to a limited degree and, as such, may only
+	be used within non-required properties. (Nullable properties are not
+	sufficient.) If `$ref` is set on a sub-schema, no other properties, except
+	for than those starting as a `$`, may be set. */
+	// +optional
+	ResponseJsonSchema *VertexaituningjobResponseJsonSchema `json:"responseJsonSchema,omitempty"`
+
+	/* Optional. If true, export the logprobs results in response. */
+	// +optional
+	ResponseLogprobs *bool `json:"responseLogprobs,omitempty"`
+
+	/* Optional. Output response mimetype of the generated candidate text. Supported mimetype: - `text/plain`: (default) Text output. - `application/json`: JSON response in the candidates. The model needs to be prompted to output the appropriate response type, otherwise the behavior is undefined. This is a preview feature. */
+	// +optional
+	ResponseMimeType *string `json:"responseMimeType,omitempty"`
+
+	/* Optional. The modalities of the response. The model will generate a response that includes all the specified modalities. For example, if this is set to `[TEXT, IMAGE]`, the response will include both text and an image. */
+	// +optional
+	ResponseModalities []string `json:"responseModalities,omitempty"`
+
+	/* Optional. The `Schema` object allows the definition of input and output data types. These types can be objects, but also primitives and arrays. Represents a select subset of an [OpenAPI 3.0 schema object](https://spec.openapis.org/oas/v3.0.3#schema). If set, a compatible response_mime_type must also be set. Compatible mimetypes: `application/json`: Schema for JSON response. */
+	// +optional
+	ResponseSchema *VertexaituningjobResponseSchema `json:"responseSchema,omitempty"`
+
+	/* Optional. Routing configuration. */
+	// +optional
+	RoutingConfig *VertexaituningjobRoutingConfig `json:"routingConfig,omitempty"`
+
+	/* Optional. Seed. */
+	// +optional
+	Seed *int32 `json:"seed,omitempty"`
+
+	/* Optional. The speech generation config. */
+	// +optional
+	SpeechConfig *VertexaituningjobSpeechConfig `json:"speechConfig,omitempty"`
+
+	/* Optional. Stop sequences. */
+	// +optional
+	StopSequences []string `json:"stopSequences,omitempty"`
+
+	/* Optional. Controls the randomness of predictions. */
+	// +optional
+	Temperature *float64 `json:"temperature,omitempty"`
+
+	/* Optional. Config for thinking features. An error will be returned if this field is set for models that don't support thinking. */
+	// +optional
+	ThinkingConfig *VertexaituningjobThinkingConfig `json:"thinkingConfig,omitempty"`
+
+	/* Optional. If specified, top-k sampling will be used. */
+	// +optional
+	TopK *float64 `json:"topK,omitempty"`
+
+	/* Optional. If specified, nucleus sampling will be used. */
+	// +optional
+	TopP *float64 `json:"topP,omitempty"`
 }
 
 type VertexaituningjobHyperParameters struct {
@@ -58,7 +328,514 @@ type VertexaituningjobHyperParameters struct {
 	LearningRateMultiplier *float64 `json:"learningRateMultiplier,omitempty"`
 }
 
+type VertexaituningjobImageConfig struct {
+	/* Optional. The desired aspect ratio for the generated images. The following
+	aspect ratios are supported:
+
+	"1:1"
+	"2:3", "3:2"
+	"3:4", "4:3"
+	"4:5", "5:4"
+	"9:16", "16:9"
+	"21:9" */
+	// +optional
+	AspectRatio *string `json:"aspectRatio,omitempty"`
+
+	/* Optional. The image output format for generated images. */
+	// +optional
+	ImageOutputOptions *VertexaituningjobImageOutputOptions `json:"imageOutputOptions,omitempty"`
+
+	/* Optional. Specifies the size of generated images. Supported values are `1K`, `2K`, `4K`. If not specified, the model will use default value `1K`. */
+	// +optional
+	ImageSize *string `json:"imageSize,omitempty"`
+
+	/* Optional. Controls whether the model can generate people. */
+	// +optional
+	PersonGeneration *string `json:"personGeneration,omitempty"`
+}
+
+type VertexaituningjobImageOutputOptions struct {
+	/* Optional. The compression quality of the output image. */
+	// +optional
+	CompressionQuality *int32 `json:"compressionQuality,omitempty"`
+
+	/* Optional. The image format that the output should be saved as. */
+	// +optional
+	MimeType *string `json:"mimeType,omitempty"`
+}
+
+type VertexaituningjobInferenceGenerationConfig struct {
+	/* Optional. If enabled, audio timestamps will be included in the request to the model. This can be useful for synchronizing audio with other modalities in the response. */
+	// +optional
+	AudioTimestamp *bool `json:"audioTimestamp,omitempty"`
+
+	/* Optional. Number of candidates to generate. */
+	// +optional
+	CandidateCount *int32 `json:"candidateCount,omitempty"`
+
+	/* Optional. Frequency penalties. */
+	// +optional
+	FrequencyPenalty *float64 `json:"frequencyPenalty,omitempty"`
+
+	/* Optional. Config for image generation features. */
+	// +optional
+	ImageConfig *VertexaituningjobImageConfig `json:"imageConfig,omitempty"`
+
+	/* Optional. Logit probabilities. */
+	// +optional
+	Logprobs *int32 `json:"logprobs,omitempty"`
+
+	/* Optional. The maximum number of output tokens to generate per message. */
+	// +optional
+	MaxOutputTokens *int32 `json:"maxOutputTokens,omitempty"`
+
+	/* Optional. The token resolution at which input media content is sampled. This is used to control the trade-off between the quality of the response and the number of tokens used to represent the media. A higher resolution allows the model to perceive more detail, which can lead to a more nuanced response, but it will also use more tokens. This does not affect the image dimensions sent to the model. */
+	// +optional
+	MediaResolution *string `json:"mediaResolution,omitempty"`
+
+	/* Optional. Positive penalties. */
+	// +optional
+	PresencePenalty *float64 `json:"presencePenalty,omitempty"`
+
+	/* Optional. Output schema of the generated response. This is an alternative
+	to `response_schema` that accepts [JSON Schema](https://json-schema.org/).
+
+	If set, `response_schema` must be omitted, but `response_mime_type` is
+	required.
+
+	While the full JSON Schema may be sent, not all features are supported.
+	Specifically, only the following properties are supported:
+
+	- `$id`
+	- `$defs`
+	- `$ref`
+	- `$anchor`
+	- `type`
+	- `format`
+	- `title`
+	- `description`
+	- `enum` (for strings and numbers)
+	- `items`
+	- `prefixItems`
+	- `minItems`
+	- `maxItems`
+	- `minimum`
+	- `maximum`
+	- `anyOf`
+	- `oneOf` (interpreted the same as `anyOf`)
+	- `properties`
+	- `additionalProperties`
+	- `required`
+
+	The non-standard `propertyOrdering` property may also be set.
+
+	Cyclic references are unrolled to a limited degree and, as such, may only
+	be used within non-required properties. (Nullable properties are not
+	sufficient.) If `$ref` is set on a sub-schema, no other properties, except
+	for than those starting as a `$`, may be set. */
+	// +optional
+	ResponseJsonSchema *VertexaituningjobResponseJsonSchema `json:"responseJsonSchema,omitempty"`
+
+	/* Optional. If true, export the logprobs results in response. */
+	// +optional
+	ResponseLogprobs *bool `json:"responseLogprobs,omitempty"`
+
+	/* Optional. Output response mimetype of the generated candidate text. Supported mimetype: - `text/plain`: (default) Text output. - `application/json`: JSON response in the candidates. The model needs to be prompted to output the appropriate response type, otherwise the behavior is undefined. This is a preview feature. */
+	// +optional
+	ResponseMimeType *string `json:"responseMimeType,omitempty"`
+
+	/* Optional. The modalities of the response. The model will generate a response that includes all the specified modalities. For example, if this is set to `[TEXT, IMAGE]`, the response will include both text and an image. */
+	// +optional
+	ResponseModalities []string `json:"responseModalities,omitempty"`
+
+	/* Optional. The `Schema` object allows the definition of input and output data types. These types can be objects, but also primitives and arrays. Represents a select subset of an [OpenAPI 3.0 schema object](https://spec.openapis.org/oas/v3.0.3#schema). If set, a compatible response_mime_type must also be set. Compatible mimetypes: `application/json`: Schema for JSON response. */
+	// +optional
+	ResponseSchema *VertexaituningjobResponseSchema `json:"responseSchema,omitempty"`
+
+	/* Optional. Routing configuration. */
+	// +optional
+	RoutingConfig *VertexaituningjobRoutingConfig `json:"routingConfig,omitempty"`
+
+	/* Optional. Seed. */
+	// +optional
+	Seed *int32 `json:"seed,omitempty"`
+
+	/* Optional. The speech generation config. */
+	// +optional
+	SpeechConfig *VertexaituningjobSpeechConfig `json:"speechConfig,omitempty"`
+
+	/* Optional. Stop sequences. */
+	// +optional
+	StopSequences []string `json:"stopSequences,omitempty"`
+
+	/* Optional. Controls the randomness of predictions. */
+	// +optional
+	Temperature *float64 `json:"temperature,omitempty"`
+
+	/* Optional. Config for thinking features. An error will be returned if this field is set for models that don't support thinking. */
+	// +optional
+	ThinkingConfig *VertexaituningjobThinkingConfig `json:"thinkingConfig,omitempty"`
+
+	/* Optional. If specified, top-k sampling will be used. */
+	// +optional
+	TopK *float64 `json:"topK,omitempty"`
+
+	/* Optional. If specified, nucleus sampling will be used. */
+	// +optional
+	TopP *float64 `json:"topP,omitempty"`
+}
+
+type VertexaituningjobItems struct {
+}
+
+type VertexaituningjobJudgeAutoraterConfig struct {
+	/* Optional. The fully qualified name of the publisher model or tuned
+	autorater endpoint to use.
+
+	Publisher model format:
+	`projects/{project}/locations/{location}/publishers/* /models/*`
+
+	Tuned model endpoint format:
+	`projects/{project}/locations/{location}/endpoints/{endpoint}` */
+	// +optional
+	AutoraterModel *string `json:"autoraterModel,omitempty"`
+
+	/* Optional. Default is true. Whether to flip the candidate and baseline responses. This is only applicable to the pairwise metric. If enabled, also provide PairwiseMetricSpec.candidate_response_field_name and PairwiseMetricSpec.baseline_response_field_name. When rendering PairwiseMetricSpec.metric_prompt_template, the candidate and baseline fields will be flipped for half of the samples to reduce bias. */
+	// +optional
+	FlipEnabled *bool `json:"flipEnabled,omitempty"`
+
+	/* Optional. Configuration options for model generation and outputs. */
+	// +optional
+	GenerationConfig *VertexaituningjobGenerationConfig `json:"generationConfig,omitempty"`
+
+	/* Optional. Number of samples for each instance in the dataset. If not specified, the default is 4. Minimum value is 1, maximum value is 32. */
+	// +optional
+	SamplingCount *int32 `json:"samplingCount,omitempty"`
+}
+
+type VertexaituningjobLlmBasedMetricSpec struct {
+	/* Optional. Optional additional configuration for the metric. */
+	// +optional
+	AdditionalConfig apiextensionsv1.JSON `json:"additionalConfig,omitempty"`
+
+	/* Optional. Optional configuration for the judge LLM (Autorater). */
+	// +optional
+	JudgeAutoraterConfig *VertexaituningjobJudgeAutoraterConfig `json:"judgeAutoraterConfig,omitempty"`
+
+	/* Required. Template for the prompt sent to the judge model. */
+	// +optional
+	MetricPromptTemplate *string `json:"metricPromptTemplate,omitempty"`
+
+	/* Dynamically generate rubrics using a predefined spec. */
+	// +optional
+	PredefinedRubricGenerationSpec *VertexaituningjobPredefinedRubricGenerationSpec `json:"predefinedRubricGenerationSpec,omitempty"`
+
+	/* Use a pre-defined group of rubrics associated with the input. Refers to a key in the rubric_groups map of EvaluationInstance. */
+	// +optional
+	RubricGroupKey *string `json:"rubricGroupKey,omitempty"`
+
+	/* Optional. System instructions for the judge model. */
+	// +optional
+	SystemInstruction *string `json:"systemInstruction,omitempty"`
+}
+
+type VertexaituningjobManualMode struct {
+	/* The model name to use. Only the public LLM models are accepted. e.g. 'gemini-1.5-pro-001'. */
+	// +optional
+	ModelName *string `json:"modelName,omitempty"`
+}
+
+type VertexaituningjobMetrics struct {
+	/* Optional. The aggregation metrics to use. */
+	// +optional
+	AggregationMetrics []string `json:"aggregationMetrics,omitempty"`
+
+	/* Spec for bleu metric. */
+	// +optional
+	BleuSpec *VertexaituningjobBleuSpec `json:"bleuSpec,omitempty"`
+
+	/* Spec for a computation based metric. */
+	// +optional
+	ComputationBasedMetricSpec *VertexaituningjobComputationBasedMetricSpec `json:"computationBasedMetricSpec,omitempty"`
+
+	/* Spec for exact match metric. */
+	// +optional
+	ExactMatchSpec *VertexaituningjobExactMatchSpec `json:"exactMatchSpec,omitempty"`
+
+	/* Spec for an LLM based metric. */
+	// +optional
+	LlmBasedMetricSpec *VertexaituningjobLlmBasedMetricSpec `json:"llmBasedMetricSpec,omitempty"`
+
+	/* Spec for pairwise metric. */
+	// +optional
+	PairwiseMetricSpec *VertexaituningjobPairwiseMetricSpec `json:"pairwiseMetricSpec,omitempty"`
+
+	/* Spec for pointwise metric. */
+	// +optional
+	PointwiseMetricSpec *VertexaituningjobPointwiseMetricSpec `json:"pointwiseMetricSpec,omitempty"`
+
+	/* The spec for a pre-defined metric. */
+	// +optional
+	PredefinedMetricSpec *VertexaituningjobPredefinedMetricSpec `json:"predefinedMetricSpec,omitempty"`
+
+	/* Spec for rouge metric. */
+	// +optional
+	RougeSpec *VertexaituningjobRougeSpec `json:"rougeSpec,omitempty"`
+}
+
+type VertexaituningjobMultiSpeakerVoiceConfig struct {
+	/* Required. A list of configurations for the voices of the speakers. Exactly two speaker voice configurations must be provided. */
+	// +optional
+	SpeakerVoiceConfigs []VertexaituningjobSpeakerVoiceConfigs `json:"speakerVoiceConfigs,omitempty"`
+}
+
+type VertexaituningjobOutputConfig struct {
+	/* Cloud storage destination for evaluation output. */
+	// +optional
+	GcsDestination *VertexaituningjobGcsDestination `json:"gcsDestination,omitempty"`
+}
+
+type VertexaituningjobPairwiseMetricSpec struct {
+	/* Optional. The field name of the baseline response. */
+	// +optional
+	BaselineResponseFieldName *string `json:"baselineResponseFieldName,omitempty"`
+
+	/* Optional. The field name of the candidate response. */
+	// +optional
+	CandidateResponseFieldName *string `json:"candidateResponseFieldName,omitempty"`
+
+	/* Optional. CustomOutputFormatConfig allows customization of metric output. When this config is set, the default output is replaced with the raw output string. If a custom format is chosen, the `pairwise_choice` and `explanation` fields in the corresponding metric result will be empty. */
+	// +optional
+	CustomOutputFormatConfig *VertexaituningjobCustomOutputFormatConfig `json:"customOutputFormatConfig,omitempty"`
+
+	/* Required. Metric prompt template for pairwise metric. */
+	// +optional
+	MetricPromptTemplate *string `json:"metricPromptTemplate,omitempty"`
+
+	/* Optional. System instructions for pairwise metric. */
+	// +optional
+	SystemInstruction *string `json:"systemInstruction,omitempty"`
+}
+
+type VertexaituningjobPointwiseMetricSpec struct {
+	/* Optional. CustomOutputFormatConfig allows customization of metric output. By default, metrics return a score and explanation. When this config is set, the default output is replaced with either: - The raw output string. - A parsed output based on a user-defined schema. If a custom format is chosen, the `score` and `explanation` fields in the corresponding metric result will be empty. */
+	// +optional
+	CustomOutputFormatConfig *VertexaituningjobCustomOutputFormatConfig `json:"customOutputFormatConfig,omitempty"`
+
+	/* Required. Metric prompt template for pointwise metric. */
+	// +optional
+	MetricPromptTemplate *string `json:"metricPromptTemplate,omitempty"`
+
+	/* Optional. System instructions for pointwise metric. */
+	// +optional
+	SystemInstruction *string `json:"systemInstruction,omitempty"`
+}
+
+type VertexaituningjobPrebuiltVoiceConfig struct {
+	/* The name of the prebuilt voice to use. */
+	// +optional
+	VoiceName *string `json:"voiceName,omitempty"`
+}
+
+type VertexaituningjobPredefinedMetricSpec struct {
+	/* Required. The name of a pre-defined metric, such as "instruction_following_v1" or "text_quality_v1". */
+	// +optional
+	MetricSpecName *string `json:"metricSpecName,omitempty"`
+
+	/* Optional. The parameters needed to run the pre-defined metric. */
+	// +optional
+	MetricSpecParameters apiextensionsv1.JSON `json:"metricSpecParameters,omitempty"`
+}
+
+type VertexaituningjobPredefinedRubricGenerationSpec struct {
+	/* Required. The name of a pre-defined metric, such as "instruction_following_v1" or "text_quality_v1". */
+	// +optional
+	MetricSpecName *string `json:"metricSpecName,omitempty"`
+
+	/* Optional. The parameters needed to run the pre-defined metric. */
+	// +optional
+	MetricSpecParameters apiextensionsv1.JSON `json:"metricSpecParameters,omitempty"`
+}
+
+type VertexaituningjobReplicatedVoiceConfig struct {
+	/* Optional. The mimetype of the voice sample. The only currently supported value is `audio/wav`. This represents 16-bit signed little-endian wav data, with a 24kHz sampling rate. `mime_type` will default to `audio/wav` if not set. */
+	// +optional
+	MimeType *string `json:"mimeType,omitempty"`
+
+	/* Optional. The sample of the custom voice. */
+	// +optional
+	VoiceSampleAudio *string `json:"voiceSampleAudio,omitempty"`
+}
+
+type VertexaituningjobResponseJsonSchema struct {
+	/* Represents a boolean value. */
+	// +optional
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	/* Represents a null value. */
+	// +optional
+	NullValue *string `json:"nullValue,omitempty"`
+
+	/* Represents a double value. */
+	// +optional
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	/* Represents a string value. */
+	// +optional
+	StringValue *string `json:"stringValue,omitempty"`
+
+	/* Represents a structured value. */
+	// +optional
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+}
+
+type VertexaituningjobResponseSchema struct {
+	/* Optional. Can either be a boolean or an object; controls the presence of additional properties. */
+	// +optional
+	AdditionalProperties *VertexaituningjobAdditionalProperties `json:"additionalProperties,omitempty"`
+
+	/* Optional. The value should be validated against any (one or more) of the subschemas in the list. */
+	// +optional
+	AnyOf []VertexaituningjobAnyOf `json:"anyOf,omitempty"`
+
+	/* Optional. Default value of the data. */
+	// +optional
+	Default *VertexaituningjobDefault `json:"default,omitempty"`
+
+	/* Optional. The description of the data. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Optional. Possible values of the element of primitive type with enum format. Examples: 1. We can define direction as : {type:STRING, format:enum, enum:["EAST", NORTH", "SOUTH", "WEST"]} 2. We can define apartment number as : {type:INTEGER, format:enum, enum:["101", "201", "301"]} */
+	// +optional
+	Enum []string `json:"enum,omitempty"`
+
+	/* Optional. Example of the object. Will only populated when the object is the root. */
+	// +optional
+	Example *VertexaituningjobExample `json:"example,omitempty"`
+
+	/* Optional. The format of the data. Supported formats: for NUMBER type: "float", "double" for INTEGER type: "int32", "int64" for STRING type: "email", "byte", etc */
+	// +optional
+	Format *string `json:"format,omitempty"`
+
+	/* Optional. SCHEMA FIELDS FOR TYPE ARRAY Schema of the elements of Type.ARRAY. */
+	// +optional
+	Items *VertexaituningjobItems `json:"items,omitempty"`
+
+	/* Optional. Maximum number of the elements for Type.ARRAY. */
+	// +optional
+	MaxItems *int64 `json:"maxItems,omitempty"`
+
+	/* Optional. Maximum length of the Type.STRING */
+	// +optional
+	MaxLength *int64 `json:"maxLength,omitempty"`
+
+	/* Optional. Maximum number of the properties for Type.OBJECT. */
+	// +optional
+	MaxProperties *int64 `json:"maxProperties,omitempty"`
+
+	/* Optional. Maximum value of the Type.INTEGER and Type.NUMBER */
+	// +optional
+	Maximum *float64 `json:"maximum,omitempty"`
+
+	/* Optional. Minimum number of the elements for Type.ARRAY. */
+	// +optional
+	MinItems *int64 `json:"minItems,omitempty"`
+
+	/* Optional. SCHEMA FIELDS FOR TYPE STRING Minimum length of the Type.STRING */
+	// +optional
+	MinLength *int64 `json:"minLength,omitempty"`
+
+	/* Optional. Minimum number of the properties for Type.OBJECT. */
+	// +optional
+	MinProperties *int64 `json:"minProperties,omitempty"`
+
+	/* Optional. SCHEMA FIELDS FOR TYPE INTEGER and NUMBER Minimum value of the Type.INTEGER and Type.NUMBER */
+	// +optional
+	Minimum *float64 `json:"minimum,omitempty"`
+
+	/* Optional. Indicates if the value may be null. */
+	// +optional
+	Nullable *bool `json:"nullable,omitempty"`
+
+	/* Optional. Pattern of the Type.STRING to restrict a string to a regular expression. */
+	// +optional
+	Pattern *string `json:"pattern,omitempty"`
+
+	/* Optional. The order of the properties. Not a standard field in open api spec. Only used to support the order of the properties. */
+	// +optional
+	PropertyOrdering []string `json:"propertyOrdering,omitempty"`
+
+	/* Optional. Allows indirect references between schema nodes. The value should be a valid reference to a child of the root `defs`. */
+	// +optional
+	Ref *string `json:"ref,omitempty"`
+
+	/* Optional. Required properties of Type.OBJECT. */
+	// +optional
+	Required []string `json:"required,omitempty"`
+
+	/* Optional. The title of the Schema. */
+	// +optional
+	Title *string `json:"title,omitempty"`
+
+	/* Optional. The type of the data. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type VertexaituningjobRougeSpec struct {
+	/* Optional. Supported rouge types are rougen[1-9], rougeL, and rougeLsum. */
+	// +optional
+	RougeType *string `json:"rougeType,omitempty"`
+
+	/* Optional. Whether to split summaries while using rougeLsum. */
+	// +optional
+	SplitSummaries *bool `json:"splitSummaries,omitempty"`
+
+	/* Optional. Whether to use stemmer to compute rouge score. */
+	// +optional
+	UseStemmer *bool `json:"useStemmer,omitempty"`
+}
+
+type VertexaituningjobRoutingConfig struct {
+	/* Automated routing. */
+	// +optional
+	AutoMode *VertexaituningjobAutoMode `json:"autoMode,omitempty"`
+
+	/* Manual routing. */
+	// +optional
+	ManualMode *VertexaituningjobManualMode `json:"manualMode,omitempty"`
+}
+
+type VertexaituningjobSpeakerVoiceConfigs struct {
+	/* Required. The name of the speaker. This should be the same as the speaker name used in the prompt. */
+	// +optional
+	Speaker *string `json:"speaker,omitempty"`
+
+	/* Required. The configuration for the voice of this speaker. */
+	// +optional
+	VoiceConfig *VertexaituningjobVoiceConfig `json:"voiceConfig,omitempty"`
+}
+
+type VertexaituningjobSpeechConfig struct {
+	/* Optional. The language code (ISO 639-1) for the speech synthesis. */
+	// +optional
+	LanguageCode *string `json:"languageCode,omitempty"`
+
+	/* The configuration for a multi-speaker text-to-speech request. This field is mutually exclusive with `voice_config`. */
+	// +optional
+	MultiSpeakerVoiceConfig *VertexaituningjobMultiSpeakerVoiceConfig `json:"multiSpeakerVoiceConfig,omitempty"`
+
+	/* The configuration for the voice to use. */
+	// +optional
+	VoiceConfig *VertexaituningjobVoiceConfig `json:"voiceConfig,omitempty"`
+}
+
 type VertexaituningjobSupervisedTuningSpec struct {
+	/* Optional. Evaluation Config for Tuning Job. */
+	// +optional
+	EvaluationConfig *VertexaituningjobEvaluationConfig `json:"evaluationConfig,omitempty"`
+
 	/* Optional. If set to true, disable intermediate checkpoints for SFT and only the last checkpoint will be exported. Otherwise, enable intermediate checkpoints for SFT. Default is false. */
 	// +optional
 	ExportLastCheckpointOnly *bool `json:"exportLastCheckpointOnly,omitempty"`
@@ -74,6 +851,30 @@ type VertexaituningjobSupervisedTuningSpec struct {
 	/* Optional. Cloud Storage path to file containing validation dataset for tuning. The dataset must be formatted as a JSONL file. */
 	// +optional
 	ValidationDatasetURI *string `json:"validationDatasetURI,omitempty"`
+}
+
+type VertexaituningjobThinkingConfig struct {
+	/* Indicates whether to include thoughts in the response. If true, thoughts are returned only when available. */
+	// +optional
+	IncludeThoughts *bool `json:"includeThoughts,omitempty"`
+
+	/* Optional. Indicates the thinking budget in tokens. This is only applied when enable_thinking is true. */
+	// +optional
+	ThinkingBudget *int32 `json:"thinkingBudget,omitempty"`
+
+	/* Optional. The number of thoughts tokens that the model should generate. */
+	// +optional
+	ThinkingLevel *string `json:"thinkingLevel,omitempty"`
+}
+
+type VertexaituningjobVoiceConfig struct {
+	/* The configuration for a prebuilt voice. */
+	// +optional
+	PrebuiltVoiceConfig *VertexaituningjobPrebuiltVoiceConfig `json:"prebuiltVoiceConfig,omitempty"`
+
+	/* Optional. The configuration for a replicated voice. This enables users to replicate a voice from an audio sample. */
+	// +optional
+	ReplicatedVoiceConfig *VertexaituningjobReplicatedVoiceConfig `json:"replicatedVoiceConfig,omitempty"`
 }
 
 type VertexAITuningJobSpec struct {
@@ -194,6 +995,16 @@ type VertexaituningjobExecutableCodeStatus struct {
 }
 
 type VertexaituningjobFileDataStatus struct {
+	/* Optional. Display name of the file data.
+
+	Used to provide a label or filename to distinguish file datas.
+
+	This field is only returned in PromptMessage for prompt management.
+	It is currently used in the Gemini GenerateContent calls only when server
+	side tools (code_execution, google_search, and url_context) are enabled. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
 	/* Required. URI. */
 	// +optional
 	FileURI *string `json:"fileURI,omitempty"`
@@ -204,19 +1015,31 @@ type VertexaituningjobFileDataStatus struct {
 }
 
 type VertexaituningjobFunctionCallStatus struct {
-	/* Optional. Required. The function parameters and values in JSON object format. See [FunctionDeclaration.parameters] for parameter details. */
+	/* Optional. The function parameters and values in JSON object format. See [FunctionDeclaration.parameters] for parameter details. */
 	// +optional
 	Args apiextensionsv1.JSON `json:"args,omitempty"`
 
-	/* Required. The name of the function to call. Matches [FunctionDeclaration.name]. */
+	/* Optional. The name of the function to call. Matches [FunctionDeclaration.name]. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+
+	/* Optional. The partial argument value of the function call. If provided, represents the arguments/fields that are streamed incrementally. */
+	// +optional
+	PartialArgs []VertexaituningjobPartialArgsStatus `json:"partialArgs,omitempty"`
+
+	/* Optional. Whether this is the last part of the FunctionCall. If true, another partial message for the current FunctionCall is expected to follow. */
+	// +optional
+	WillContinue *bool `json:"willContinue,omitempty"`
 }
 
 type VertexaituningjobFunctionResponseStatus struct {
 	/* Required. The name of the function to call. Matches [FunctionDeclaration.name] and [FunctionCall.name]. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+
+	/* Optional. Ordered `Parts` that constitute a function response. Parts may have different IANA MIME types. */
+	// +optional
+	Parts []VertexaituningjobPartsStatus `json:"parts,omitempty"`
 
 	/* Required. The function response in JSON object format. Use "output" key to specify function output and "error" key to specify error details (if any). If "output" and "error" keys are not specified, then whole "response" is treated as function output. */
 	// +optional
@@ -231,6 +1054,12 @@ type VertexaituningjobInlineDataStatus struct {
 	/* Required. The IANA standard MIME type of the source data. */
 	// +optional
 	MimeType *string `json:"mimeType,omitempty"`
+}
+
+type VertexaituningjobMediaResolutionStatus struct {
+	/* The tokenization quality used for given media. */
+	// +optional
+	Level *string `json:"level,omitempty"`
 }
 
 type VertexaituningjobObservedStateStatus struct {
@@ -275,46 +1104,40 @@ type VertexaituningjobObservedStateStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
+type VertexaituningjobPartialArgsStatus struct {
+	/* Optional. Represents a boolean value. */
+	// +optional
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	/* Required. A JSON Path (RFC 9535) to the argument being streamed. https://datatracker.ietf.org/doc/html/rfc9535. e.g. "$.foo.bar[0].data". */
+	// +optional
+	JsonPath *string `json:"jsonPath,omitempty"`
+
+	/* Optional. Represents a null value. */
+	// +optional
+	NullValue *string `json:"nullValue,omitempty"`
+
+	/* Optional. Represents a double value. */
+	// +optional
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	/* Optional. Represents a string value. */
+	// +optional
+	StringValue *string `json:"stringValue,omitempty"`
+
+	/* Optional. Whether this is not the last part of the same json_path. If true, another PartialArg message for the current json_path is expected to follow. */
+	// +optional
+	WillContinue *bool `json:"willContinue,omitempty"`
+}
+
 type VertexaituningjobPartsStatus struct {
-	/* Optional. Result of executing the [ExecutableCode]. */
-	// +optional
-	CodeExecutionResult *VertexaituningjobCodeExecutionResultStatus `json:"codeExecutionResult,omitempty"`
-
-	/* Optional. Code generated by the model that is meant to be executed. */
-	// +optional
-	ExecutableCode *VertexaituningjobExecutableCodeStatus `json:"executableCode,omitempty"`
-
-	/* Optional. URI based data. */
+	/* URI based data. */
 	// +optional
 	FileData *VertexaituningjobFileDataStatus `json:"fileData,omitempty"`
 
-	/* Optional. A predicted [FunctionCall] returned from the model that contains a string representing the [FunctionDeclaration.name] with the parameters and their values. */
-	// +optional
-	FunctionCall *VertexaituningjobFunctionCallStatus `json:"functionCall,omitempty"`
-
-	/* Optional. The result output of a [FunctionCall] that contains a string representing the [FunctionDeclaration.name] and a structured JSON object containing any output from the function call. It is used as context to the model. */
-	// +optional
-	FunctionResponse *VertexaituningjobFunctionResponseStatus `json:"functionResponse,omitempty"`
-
-	/* Optional. Inlined bytes data. */
+	/* Inline media bytes. */
 	// +optional
 	InlineData *VertexaituningjobInlineDataStatus `json:"inlineData,omitempty"`
-
-	/* Optional. Text part (can be code). */
-	// +optional
-	Text *string `json:"text,omitempty"`
-
-	/* Indicates if the part is thought from the model. */
-	// +optional
-	Thought *bool `json:"thought,omitempty"`
-
-	/* An opaque signature for the thought so it can be reused in subsequent requests. */
-	// +optional
-	ThoughtSignature *string `json:"thoughtSignature,omitempty"`
-
-	/* Optional. Video metadata. The metadata should only be specified while the video data is presented in inline_data or file_data. */
-	// +optional
-	VideoMetadata *VertexaituningjobVideoMetadataStatus `json:"videoMetadata,omitempty"`
 }
 
 type VertexaituningjobSupervisedTuningDataStatsStatus struct {
@@ -376,7 +1199,19 @@ type VertexaituningjobTunedModelStatus struct {
 	// +optional
 	Endpoint *string `json:"endpoint,omitempty"`
 
-	/* Output only. The resource name of the TunedModel. Format: `projects/{project}/locations/{location}/models/{model}`. */
+	/* Output only. The resource name of the TunedModel. Format:
+
+	`projects/{project}/locations/{location}/models/{model}@{version_id}`
+
+	When tuning from a base model, the version ID will be 1.
+
+	For continuous tuning, if the provided tuned_model_display_name is set and
+	different from parent model's display name, the tuned model will have a new
+	parent model with version 1. Otherwise the version id will be incremented
+	by 1 from the last version ID in the parent model. E.g.,
+
+	`projects/{project}/locations/{location}/models/{model}@{last_version_id +
+	1}` */
 	// +optional
 	Model *string `json:"model,omitempty"`
 }
@@ -518,6 +1353,10 @@ type VertexaituningjobVideoMetadataStatus struct {
 	/* Optional. The end offset of the video. */
 	// +optional
 	EndOffset *string `json:"endOffset,omitempty"`
+
+	/* Optional. The frame rate of the video sent to the model. If not specified, the default value is 1.0. The valid range is (0.0, 24.0]. */
+	// +optional
+	Fps *float64 `json:"fps,omitempty"`
 
 	/* Optional. The start offset of the video. */
 	// +optional

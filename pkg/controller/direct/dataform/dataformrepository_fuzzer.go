@@ -33,6 +33,8 @@ func repositoryFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.UnimplementedFields.Insert(".name")
 	fuzzer.UnimplementedFields.Insert(".labels")
 	fuzzer.UnimplementedFields.Insert(".git_remote_settings.token_status") // not supported by KCC anymore
+	fuzzer.UnimplementedFields.Insert(".git_remote_settings.git_repository_link")
+	fuzzer.UnimplementedFields.Insert(".git_remote_settings.effective_default_branch")
 	fuzzer.UnimplementedFields.Insert(".create_time")
 	fuzzer.UnimplementedFields.Insert(".data_encryption_state")
 	fuzzer.UnimplementedFields.Insert(".kms_key_name")

@@ -26,7 +26,7 @@ package v1beta1
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance
 type Instance struct {
-	// Optional. A unique identifier for an instance. The name should be of the
+	// Identifier. A unique identifier for an instance. The name should be of the
 	//  format:
 	//  `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
 	//
@@ -42,6 +42,10 @@ type Instance struct {
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Labels as key value pairs.
+	//  Keys and values can contain only lowercase letters, numeric characters,
+	//  underscores, and dashes.
+	//  For more information, see [Requirements for
+	//  labels](https://cloud.google.com/resource-manager/docs/best-practices-labels#label_encoding).
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
@@ -85,6 +89,35 @@ type Instance_PrivateConfig struct {
 	//  included in this list.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.psc_allowed_projects
 	PSCAllowedProjects []string `json:"pscAllowedProjects,omitempty"`
+
+	// Optional. Custom host config for the instance.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.custom_host_config
+	CustomHostConfig *Instance_PrivateConfig_CustomHostConfig `json:"customHostConfig,omitempty"`
+}
+*/
+
+/* unreachable type Instance_PrivateConfig_CustomHostConfig
+// +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig
+type Instance_PrivateConfig_CustomHostConfig struct {
+	// Required. The custom UI hostname for the instance, e.g.,
+	//  "git.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.html
+	HTML *string `json:"html,omitempty"`
+
+	// Required. The custom API hostname for the instance, e.g.,
+	//  "api.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.api
+	API *string `json:"api,omitempty"`
+
+	// Required. The custom git ssh hostname for the instance, e.g.,
+	//  "ssh.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.git_ssh
+	GitSSH *string `json:"gitSSH,omitempty"`
+
+	// Required. The custom git http hostname for the instance, e.g.,
+	//  "git.source.internal.mycompany.com"
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.CustomHostConfig.git_http
+	GitHTTP *string `json:"gitHTTP,omitempty"`
 }
 */
 
@@ -101,7 +134,7 @@ type Instance_WorkforceIdentityFederationConfig struct {
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository
 type Repository struct {
-	// Optional. A unique identifier for a repository. The name should be of the
+	// Identifier. A unique identifier for a repository. The name should be of the
 	//  format:
 	//  `projects/{project}/locations/{location_id}/repositories/{repository_id}`
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.name
@@ -130,6 +163,14 @@ type Repository struct {
 	// Input only. Initial configurations for the repository.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.initial_config
 	InitialConfig *Repository_InitialConfig `json:"initialConfig,omitempty"`
+
+	// Optional. Repository level service account (BYOSA).
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. Provides configuration for scanning.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.scan_config
+	ScanConfig *Repository_ScanConfig `json:"scanConfig,omitempty"`
 }
 */
 
@@ -275,6 +316,28 @@ type Repository_InitialConfig struct {
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.InitialConfig.readme
 	Readme *string `json:"readme,omitempty"`
 }
+
+/* unreachable type Repository_ScanConfig
+// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.ScanConfig
+type Repository_ScanConfig struct {
+	// Optional. Configuration for secret scanning.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.ScanConfig.secret_scan_config
+	SecretScanConfig *Repository_ScanConfig_SecretScanConfig `json:"secretScanConfig,omitempty"`
+}
+*/
+
+/* unreachable type Repository_ScanConfig_SecretScanConfig
+// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.ScanConfig.SecretScanConfig
+type Repository_ScanConfig_SecretScanConfig struct {
+	// Optional. Enables secret scanning for the repository.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.ScanConfig.SecretScanConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. The DLP inspect template to use for secret scanning.
+	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Repository.ScanConfig.SecretScanConfig.inspect_template
+	InspectTemplate *string `json:"inspectTemplate,omitempty"`
+}
+*/
 
 /* unreachable type Repository_UrIs
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
