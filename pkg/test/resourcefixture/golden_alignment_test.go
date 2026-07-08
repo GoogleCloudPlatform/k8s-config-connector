@@ -25,7 +25,23 @@ import (
 	"sort"
 	"strings"
 	"testing"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/yaml"
 )
+
+var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
+	{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:                             true,
+	{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAutoscaler"}:                          true,
+	{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRegionDiskResourcePolicyAttachment"}:  true,
+	{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessor"}:                     true,
+	{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:                                 true,
+	{Group: "iap.cnrm.cloud.google.com", Kind: "IAPSettings"}:                                    true,
+	{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDNSDomain"}: true,
+	{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucketAccessControl"}:                 true,
+	{Group: "storage.cnrm.cloud.google.com", Kind: "StorageFolder"}:                              true,
+}
 
 func TestGoldenLogAlignment(t *testing.T) {
 	rootDir := "testdata/basic"
@@ -43,11 +59,24 @@ func TestGoldenLogAlignment(t *testing.T) {
 			realLogPath := filepath.Join(path, "_http.log")
 			mockLogPath := filepath.Join(path, "_http_mock.log")
 
-			if fileExists(realLogPath) && fileExists(mockLogPath) {
-				relPath, _ := filepath.Rel(absRootDir, path)
-				t.Run(relPath, func(t *testing.T) {
-					compareLogs(t, realLogPath, mockLogPath)
-				})
+			if fileExists(realLogPath) {
+				createPath := filepath.Join(path, "create.yaml")
+				if fileExists(createPath) {
+					gvk, err := getGVKFromYAML(createPath)
+					if err == nil {
+						gk := gvk.GroupKind()
+						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
+							t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
+						}
+					}
+				}
+
+				if fileExists(mockLogPath) {
+					relPath, _ := filepath.Rel(absRootDir, path)
+					t.Run(relPath, func(t *testing.T) {
+						compareLogs(t, realLogPath, mockLogPath)
+					})
+				}
 			}
 		}
 
@@ -369,4 +398,16 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	if !reflect.DeepEqual(realObj, mockObj) {
 		t.Errorf("%s: JSON mismatch:\n  real: %s\n  mock: %s", context, realJSON, mockJSON)
 	}
+}
+
+func getGVKFromYAML(path string) (schema.GroupVersionKind, error) {
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		return schema.GroupVersionKind{}, err
+	}
+	var u unstructured.Unstructured
+	if err := yaml.Unmarshal(bytes, &u); err != nil {
+		return schema.GroupVersionKind{}, err
+	}
+	return u.GroupVersionKind(), nil
 }
