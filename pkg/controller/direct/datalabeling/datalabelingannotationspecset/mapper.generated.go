@@ -53,7 +53,7 @@ func Attempt_FromProto(mapCtx *direct.MapContext, in *pb.Attempt) *krm.Attempt {
 	}
 	out := &krm.Attempt{}
 	out.AttemptTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAttemptTime())
-	out.PartialFailures = direct.Slice_FromProto(mapCtx, in.PartialFailures, common.Status_FromProto)
+	out.PartialFailures = direct.Slice_FromProto(mapCtx, in.PartialFailures, direct.Status_FromProto)
 	return out
 }
 func Attempt_ToProto(mapCtx *direct.MapContext, in *krm.Attempt) *pb.Attempt {
@@ -62,7 +62,7 @@ func Attempt_ToProto(mapCtx *direct.MapContext, in *krm.Attempt) *pb.Attempt {
 	}
 	out := &pb.Attempt{}
 	out.AttemptTime = direct.StringTimestamp_ToProto(mapCtx, in.AttemptTime)
-	out.PartialFailures = direct.Slice_ToProto(mapCtx, in.PartialFailures, common.Status_ToProto)
+	out.PartialFailures = direct.Slice_ToProto(mapCtx, in.PartialFailures, direct.Status_ToProto)
 	return out
 }
 func BigQuerySource_FromProto(mapCtx *direct.MapContext, in *pb.BigQuerySource) *krm.BigQuerySource {
