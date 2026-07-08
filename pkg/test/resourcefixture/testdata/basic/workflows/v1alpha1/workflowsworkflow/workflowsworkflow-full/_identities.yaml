@@ -4,13 +4,13 @@
   name: serviceidentity-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/gsa-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: gsa-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/gsa-${uniqueId}-updated
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: gsa-${uniqueId}-updated

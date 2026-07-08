@@ -1129,6 +1129,11 @@ func (in *IAMServiceAccountStatus) DeepCopyInto(out *IAMServiceAccountStatus) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.Member != nil {
 		in, out := &in.Member, &out.Member
 		*out = new(string)

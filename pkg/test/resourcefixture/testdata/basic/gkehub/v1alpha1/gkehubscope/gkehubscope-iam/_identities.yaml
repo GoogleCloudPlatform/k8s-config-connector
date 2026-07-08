@@ -4,7 +4,7 @@
   name: gkehubscope-iam-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/sa-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: sa-${uniqueId}
