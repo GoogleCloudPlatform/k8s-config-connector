@@ -1,0 +1,196 @@
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks?%24alt=json%3Benum-encoding%3Dint&frameworkId=cscframework-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fglobal
+
+{
+  "category": [
+    4
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "1"
+    }
+  ],
+  "description": "Test description for maximal framework",
+  "displayName": "Test Framework Max ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    4
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "1"
+    }
+  ],
+  "description": "Test description for maximal framework",
+  "displayName": "Test Framework Max ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    4
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "1"
+    }
+  ],
+  "description": "Test description for maximal framework",
+  "displayName": "Test Framework Max ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+}
+
+---
+
+PATCH https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=category%2CcloudControlDetails%2Cdescription%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: framework.name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
+
+{
+  "category": [
+    4,
+    2
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "2"
+    }
+  ],
+  "description": "Test description for maximal framework updated",
+  "displayName": "Test Framework Max Updated ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    4,
+    2
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "2"
+    }
+  ],
+  "description": "Test description for maximal framework updated",
+  "displayName": "Test Framework Max Updated ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    4,
+    2
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "2"
+    }
+  ],
+  "description": "Test description for maximal framework updated",
+  "displayName": "Test Framework Max Updated ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}"
+}
+
+---
+
+DELETE https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cscframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcscframework-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

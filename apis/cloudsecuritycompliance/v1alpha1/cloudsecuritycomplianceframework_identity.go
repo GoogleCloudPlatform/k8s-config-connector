@@ -61,6 +61,10 @@ func (i *CloudSecurityComplianceFrameworkIdentity) Host() string {
 	return CloudSecurityComplianceFrameworkIdentityFormat.Host()
 }
 
+func (i *CloudSecurityComplianceFrameworkIdentity) ParentString() string {
+	return "organizations/" + i.Organization + "/locations/" + i.Location
+}
+
 func getIdentityFromCloudSecurityComplianceFrameworkSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CloudSecurityComplianceFrameworkIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

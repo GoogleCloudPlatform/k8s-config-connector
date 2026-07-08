@@ -139,7 +139,7 @@ type CloudControlDetails struct {
 	Parameters []Parameter `json:"parameters,omitempty"`
 }
 
-// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
+// kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
 type CloudControlGroup struct {
 	// Required. The name of the cloud control group in the format:
 	//  “organizations/{organization}/locations/{location}/
@@ -173,7 +173,7 @@ type CloudControlGroup struct {
 	ControlRef *CloudSecurityComplianceControlRef `json:"controlRef,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
+// kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
 type CloudControlGroupObservedState struct {
 	// Optional. Output only. The type of the cloud control group. Default is
 	//  TYPE_CUSTOM.
