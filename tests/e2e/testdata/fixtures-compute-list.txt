@@ -145,6 +145,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxycertificatemap-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxy-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxycertificatemanagercertificates
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetinstance
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetpool
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetsslproxy
