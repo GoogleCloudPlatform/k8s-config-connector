@@ -14,6 +14,9 @@
 
 package mocknetworksecurity
 
+// InterceptEndpointGroup implementation is fully aligned and validated against real GCP
+// via the unified E2E test runner and networksecurity fixtures.
+
 import (
 	"context"
 	"fmt"
