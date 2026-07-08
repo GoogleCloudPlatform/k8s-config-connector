@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeatureOnlineStore{}).Name(),
 	}
 
+	VertexAIPipelineJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIPipelineJob{}).Name(),
+	}
+
 	VertexAISpecialistPoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
