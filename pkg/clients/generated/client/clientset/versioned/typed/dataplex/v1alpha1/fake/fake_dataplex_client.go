@@ -39,6 +39,10 @@ func (c *FakeDataplexV1alpha1) DataplexDataAttributeBindings(namespace string) v
 	return newFakeDataplexDataAttributeBindings(c, namespace)
 }
 
+func (c *FakeDataplexV1alpha1) DataplexDataProducts(namespace string) v1alpha1.DataplexDataProductInterface {
+	return newFakeDataplexDataProducts(c, namespace)
+}
+
 func (c *FakeDataplexV1alpha1) DataplexDataScans(namespace string) v1alpha1.DataplexDataScanInterface {
 	return newFakeDataplexDataScans(c, namespace)
 }

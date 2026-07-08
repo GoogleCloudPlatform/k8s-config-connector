@@ -255,6 +255,7 @@
 | datalineage.cnrm.cloud.google.com             | DataLineageProcess                              | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexAspectType                              | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexDataAttributeBinding                    | True         | False       | False  | Direct     | True        |
+| dataplex.cnrm.cloud.google.com                | DataplexDataProduct                             | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexDataScan                                | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexDataTaxonomy                            | True         | False       | False  | Direct     | True        |
 | dataplex.cnrm.cloud.google.com                | DataplexEntryGroup                              | True         | False       | False  | Direct     | True        |
