@@ -249,7 +249,7 @@ def parse_data(config_file_path, apis_dir, crds_dir, direct_dir=None):
                 queue.append(dependent)
         queue.sort(key=lambda x: (-downstream_counts.get(x, 0), x))
 
-    for node in nodes:
+    for node in sorted(nodes):
         if node not in topo_order:
             topo_order[node] = order_index
             order_index += 1
