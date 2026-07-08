@@ -727,6 +727,121 @@ func TestKRMResourceMetadataToTFConfig(t *testing.T) {
 	}
 }
 
+func TestKRMResourceMetadataLabelsMerging(t *testing.T) {
+	tests := []struct {
+		name           string
+		metadataLabels map[string]string
+		spec           map[string]interface{}
+		rc             *corekccv1alpha1.ResourceConfig
+		expectedConfig map[string]interface{}
+	}{
+		{
+			name: "only metadata.labels",
+			metadataLabels: map[string]string{
+				"key1": "val1",
+			},
+			rc: &corekccv1alpha1.ResourceConfig{
+				MetadataMapping: corekccv1alpha1.MetadataMapping{
+					Labels: "map_key",
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"map_key": map[string]interface{}{
+					"key1":            "val1",
+					"managed-by-cnrm": "true",
+				},
+			},
+		},
+		{
+			name: "only spec.mapKey",
+			spec: map[string]interface{}{
+				"mapKey": map[string]interface{}{
+					"specKey": "specVal",
+				},
+			},
+			rc: &corekccv1alpha1.ResourceConfig{
+				MetadataMapping: corekccv1alpha1.MetadataMapping{
+					Labels: "map_key",
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"map_key": map[string]interface{}{
+					"specKey":         "specVal",
+					"managed-by-cnrm": "true",
+				},
+			},
+		},
+		{
+			name: "both set - additive merge",
+			metadataLabels: map[string]string{
+				"k8sKey": "k8sVal",
+			},
+			spec: map[string]interface{}{
+				"mapKey": map[string]interface{}{
+					"specKey": "specVal",
+				},
+			},
+			rc: &corekccv1alpha1.ResourceConfig{
+				MetadataMapping: corekccv1alpha1.MetadataMapping{
+					Labels: "map_key",
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"map_key": map[string]interface{}{
+					"k8sKey":          "k8sVal",
+					"specKey":         "specVal",
+					"managed-by-cnrm": "true",
+				},
+			},
+		},
+		{
+			name: "both set - conflict resolving in favor of spec",
+			metadataLabels: map[string]string{
+				"sharedKey": "k8sVal",
+			},
+			spec: map[string]interface{}{
+				"mapKey": map[string]interface{}{
+					"sharedKey": "specVal",
+				},
+			},
+			rc: &corekccv1alpha1.ResourceConfig{
+				MetadataMapping: corekccv1alpha1.MetadataMapping{
+					Labels: "map_key",
+				},
+			},
+			expectedConfig: map[string]interface{}{
+				"map_key": map[string]interface{}{
+					"sharedKey":       "specVal",
+					"managed-by-cnrm": "true",
+				},
+			},
+		},
+	}
+	smLoader := testservicemappingloader.NewForUnitTest()
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			testID := testvariable.NewUniqueID()
+			c := mgr.GetClient()
+			r := resourceSkeleton()
+			if tc.rc != nil {
+				r.ResourceConfig = *tc.rc
+			}
+			r.SetNamespace(testID)
+			r.SetLabels(tc.metadataLabels)
+			r.Spec = tc.spec
+			actual, _, err := KRMResourceToTFResourceConfig(r, c, smLoader)
+			if err != nil {
+				t.Fatalf("error convert to TF resource config: %v", err)
+			}
+			if !test.Equals(t, tc.expectedConfig, actual.Raw) {
+				t.Fatalf("expected: %v, actual %v", tc.expectedConfig, actual.Raw)
+			}
+		})
+	}
+}
+
 func TestKRMResourceToTFResourceHierarchicalReferencesAndContainers(t *testing.T) {
 	tests := []struct {
 		name                 string

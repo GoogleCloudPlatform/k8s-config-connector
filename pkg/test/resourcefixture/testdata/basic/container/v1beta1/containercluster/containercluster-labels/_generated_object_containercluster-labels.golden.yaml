@@ -13,6 +13,7 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
+    k8s-label-key: k8s-label-value
   name: containercluster-${uniqueId}
   namespace: ${uniqueId}
 spec:

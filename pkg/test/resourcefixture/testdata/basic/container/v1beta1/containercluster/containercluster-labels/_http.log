@@ -85,7 +85,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "pubsub": {}
     },
     "resourceLabels": {
-      "cluster-label-key": "cluster-label-value"
+      "cluster-label-key": "cluster-label-value",
+      "cnrm-test": "true",
+      "k8s-label-key": "k8s-label-value",
+      "managed-by-cnrm": "true"
     },
     "shieldedNodes": {
       "enabled": true
@@ -465,7 +468,10 @@ X-Xss-Protection: 0
     "channel": "REGULAR"
   },
   "resourceLabels": {
-    "cluster-label-key": "cluster-label-value"
+    "cluster-label-key": "cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -829,7 +835,10 @@ X-Xss-Protection: 0
     "channel": "REGULAR"
   },
   "resourceLabels": {
-    "cluster-label-key": "cluster-label-value"
+    "cluster-label-key": "cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -1193,7 +1202,10 @@ X-Xss-Protection: 0
     "channel": "REGULAR"
   },
   "resourceLabels": {
-    "cluster-label-key": "cluster-label-value"
+    "cluster-label-key": "cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -1557,7 +1569,10 @@ X-Xss-Protection: 0
     "channel": "REGULAR"
   },
   "resourceLabels": {
-    "cluster-label-key": "cluster-label-value"
+    "cluster-label-key": "cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -1583,7 +1598,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "labelFingerprint": "abcdef0123A=",
   "resourceLabels": {
     "another-label-key": "another-label-value",
-    "cluster-label-key": "updated-cluster-label-value"
+    "cluster-label-key": "updated-cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -1932,7 +1950,10 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "another-label-key": "another-label-value",
-    "cluster-label-key": "updated-cluster-label-value"
+    "cluster-label-key": "updated-cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -2297,7 +2318,10 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "another-label-key": "another-label-value",
-    "cluster-label-key": "updated-cluster-label-value"
+    "cluster-label-key": "updated-cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",
@@ -2662,7 +2686,10 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "another-label-key": "another-label-value",
-    "cluster-label-key": "updated-cluster-label-value"
+    "cluster-label-key": "updated-cluster-label-value",
+    "cnrm-test": "true",
+    "k8s-label-key": "k8s-label-value",
+    "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
     "mode": "BASIC",

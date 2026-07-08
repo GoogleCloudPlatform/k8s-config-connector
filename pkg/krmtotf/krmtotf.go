@@ -99,20 +99,32 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	}
 	if r.ResourceConfig.MetadataMapping.Labels != "" {
 		path := text.SnakeCaseToLowerCamelCase(r.ResourceConfig.MetadataMapping.Labels)
+		k8sLabels := label.ToJSONCompatibleFormat(label.NewGCPLabelsFromK8sLabels(r.GetLabels()))
+		var labels map[string]interface{}
 		val, exists := config[path]
-		hasValue := exists && val != nil
-		if hasValue {
-			if m, ok := val.(map[string]interface{}); ok && len(m) == 0 {
-				hasValue = false
-			} else if m, ok := val.(map[string]string); ok && len(m) == 0 {
-				hasValue = false
+		if exists && val != nil {
+			var userLabels map[string]interface{}
+			if m, ok := val.(map[string]interface{}); ok {
+				userLabels = m
+			} else if m, ok := val.(map[string]string); ok {
+				userLabels = make(map[string]interface{})
+				for k, v := range m {
+					userLabels[k] = v
+				}
 			}
+			mergedLabels := make(map[string]interface{})
+			for k, v := range k8sLabels {
+				mergedLabels[k] = v
+			}
+			for k, v := range userLabels {
+				mergedLabels[k] = v
+			}
+			labels = mergedLabels
+		} else {
+			labels = k8sLabels
 		}
-		if !hasValue {
-			labels := label.ToJSONCompatibleFormat(label.NewGCPLabelsFromK8sLabels(r.GetLabels()))
-			if err := setValue(config, path, labels); err != nil {
-				return nil, nil, fmt.Errorf("error mapping 'metadata.labels': %w", err)
-			}
+		if err := setValue(config, path, labels); err != nil {
+			return nil, nil, fmt.Errorf("error mapping 'metadata.labels': %w", err)
 		}
 	}
 	if r.ResourceConfig.Locationality != "" {
