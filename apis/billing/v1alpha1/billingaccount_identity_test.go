@@ -26,14 +26,16 @@ func TestBillingAccountIdentity_FromExternal(t *testing.T) {
 		want    *BillingAccountIdentity
 	}{
 		{
-			name: "valid reference",
+			// Verifies format: billingAccounts/{billingAccountID}
+			name: "valid reference (billingAccounts/{billingAccountID})",
 			ref:  "billingAccounts/012345-567890-ABCDEF",
 			want: &BillingAccountIdentity{
 				BillingAccount: "012345-567890-ABCDEF",
 			},
 		},
 		{
-			name: "raw ID format",
+			// Verifies format: {billingAccountID}
+			name: "raw ID format ({billingAccountID})",
 			ref:  "012345-567890-ABCDEF",
 			want: &BillingAccountIdentity{
 				BillingAccount: "012345-567890-ABCDEF",
