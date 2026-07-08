@@ -71,8 +71,8 @@ type ComputeNetworkSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Network.network_firewall_policy_enforcement_order
 	NetworkFirewallPolicyEnforcementOrder *string `json:"networkFirewallPolicyEnforcementOrder,omitempty"`
 
-	// Note: Since the NetworkProfile API only supports get and list, KCC does not manage this resource. 
-	// So we define this field as a standard string rather than a reference, even though the description 
+	// Note: Since the NetworkProfile API only supports get and list, KCC does not manage this resource.
+	// So we define this field as a standard string rather than a reference, even though the description
 	// notes that it expects a network profile url
 
 	// Immutable. A full or partial URL of the network profile to apply to this network.
