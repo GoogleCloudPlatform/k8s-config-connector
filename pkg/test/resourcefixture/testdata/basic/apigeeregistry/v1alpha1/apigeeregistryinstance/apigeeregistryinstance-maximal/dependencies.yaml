@@ -12,3 +12,15 @@ metadata:
 spec:
   keyRingRef:
     name: kmskeyring-${uniqueId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
+spec:
+  member: serviceAccount:service-${projectNumber}@gcp-sa-apigeeregistry.iam.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmscryptokey-${uniqueId}

@@ -81,7 +81,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("expected identity of type *krm.InstanceIdentity, got %T", identity)
 	}
 
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
@@ -182,6 +182,11 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	structuredreporting.ReportDiff(ctx, diffs)
+
+	// Update status with the actual GCP state before returning the immutability error
+	if err := a.updateStatus(ctx, updateOp, a.actual); err != nil {
+		log.Error(err, "error updating status of ApigeeRegistryInstance")
+	}
 
 	return fmt.Errorf("ApigeeRegistryInstance resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
 }

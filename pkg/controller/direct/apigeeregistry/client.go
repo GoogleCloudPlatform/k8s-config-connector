@@ -34,7 +34,7 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newProvisioningClient(ctx context.Context) (*api.ProvisioningClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (m *gcpClient) newProvisioningClient(ctx context.Context) (*api.Provisionin
 }
 
 func (m *gcpClient) newRegistryClient(ctx context.Context) (*api.RegistryClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
