@@ -21,4 +21,5 @@ spec:
   resourceID: ${forwardingRuleID}
   serviceDirectoryRegistrations:
   - namespace: goog-psc-${networkID}-${networkID}
-  target: {}
+  target:
+    googleAPIsBundle: all-apis

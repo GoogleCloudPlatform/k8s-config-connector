@@ -319,6 +319,8 @@ func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *direct.MapContext, in st
 		out.TargetVPNGatewayRef = &refs.ComputeTargetVPNGatewayRef{
 			External: in,
 		}
+	} else if in == "all-apis" || in == "vpc-sc" {
+		out.GoogleAPIsBundle = &in
 	}
 	return out
 }

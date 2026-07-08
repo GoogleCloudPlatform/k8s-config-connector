@@ -1,12 +1,12 @@
 19a20
 >   networkTier: PREMIUM
-21,23c22,24
-<   target:
+20a22,23
+>   serviceDirectoryRegistrations:
+>   - namespace: goog-psc-${networkID}-${networkID}
+22,23c25
 <     targetHTTPProxyRef:
 <       external: all-apis
 \ No newline at end of file
 ---
->   serviceDirectoryRegistrations:
->   - namespace: goog-psc-${networkID}-${networkID}
->   target: {}
+>     googleAPIsBundle: all-apis
 \ No newline at end of file
