@@ -324,6 +324,13 @@ def parse_data(config_file_path, apis_dir, crds_dir, direct_dir=None):
         if res['state'] != 'Completed' and any(res['steps'].values()):
             res['state'] = 'In Progress'
 
+    # Sequentially index all resources consecutively to remove gaps in sortOrder
+    sorted_kinds = sorted(resources.keys(), key=lambda k: resources[k].get('sortOrder', 9999))
+    current_order = 1
+    for kind in sorted_kinds:
+        resources[kind]['sortOrder'] = current_order
+        current_order += 1
+
     return list(resources.values())
 
 def create_default_resource(kind, group="unknown"):
