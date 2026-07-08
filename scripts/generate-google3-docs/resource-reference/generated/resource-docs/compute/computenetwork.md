@@ -77,6 +77,7 @@ enableUlaInternalIpv6: boolean
 internalIpv6Range: string
 mtu: integer
 networkFirewallPolicyEnforcementOrder: string
+networkProfile: string
 resourceID: string
 routingMode: string
 ```
@@ -161,6 +162,16 @@ the user can explicitly connect subnetwork resources.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Set the order that Firewall Rules and Firewall Policies are evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"].</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkProfile</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. A full or partial URL of the network profile to apply to this network. This field can be set only at resource creation time.</p>
         </td>
     </tr>
     <tr>
