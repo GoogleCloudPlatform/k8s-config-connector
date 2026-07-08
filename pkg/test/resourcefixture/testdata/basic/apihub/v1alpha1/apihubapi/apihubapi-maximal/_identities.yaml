@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: apihub.cnrm.cloud.google.com
+  kind: APIHubAPI
+  name: apihubapi-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
