@@ -57,6 +57,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityServer{MockService: s})
+	pbv1.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityV1Server{MockService: s})
 	pbv1.RegisterMirroringServer(grpcServer, &MirroringServer{MockService: s})
 	pbv1.RegisterInterceptServer(grpcServer, &InterceptServer{MockService: s})
 	pbv1.RegisterSSERealmServiceServer(grpcServer, &SSERealmServer{MockService: s})
@@ -70,6 +71,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	mux.AddService(pb.NewNetworkSecurityClient(conn))
+	mux.AddService(pbv1.NewNetworkSecurityClient(conn))
 	mux.AddService(pbv1.NewMirroringClient(conn))
 	mux.AddService(pbv1.NewInterceptClient(conn))
 	mux.AddService(pbv1.NewSSERealmServiceClient(conn))
