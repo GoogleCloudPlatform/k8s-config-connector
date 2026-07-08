@@ -32,6 +32,10 @@ for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
     # TODO: Fix these!
 
+    if [[ "${f}" == *"aiplatform"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
     if [[ "${f}" == *"backupdr"* ]]; then
         echo "Skipping ${f}"
         continue
@@ -44,11 +48,19 @@ for f in $(find apis -name "generate.sh" | sort); do
         echo "Skipping ${f}"
         continue
     fi
+    if [[ "${f}" == *"cloudsecuritycompliance"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
     if [[ "${f}" == *"composer"* ]]; then
         echo "Skipping ${f}"
         continue
     fi
     if [[ "${f}" == *"contentwarehouse"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"dataplex"* ]]; then
         echo "Skipping ${f}"
         continue
     fi
@@ -60,11 +72,19 @@ for f in $(find apis -name "generate.sh" | sort); do
         echo "Skipping ${f}"
         continue
     fi
+    if [[ "${f}" == *"dlp"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
     if [[ "${f}" == *"documentai"* ]]; then
         echo "Skipping ${f}"
         continue
     fi
     if [[ "${f}" == *"edgecontainer"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"firestore"* ]]; then
         echo "Skipping ${f}"
         continue
     fi
@@ -77,6 +97,10 @@ for f in $(find apis -name "generate.sh" | sort); do
         continue
     fi
     if [[ "${f}" == *"speech"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"sql"* ]]; then
         echo "Skipping ${f}"
         continue
     fi

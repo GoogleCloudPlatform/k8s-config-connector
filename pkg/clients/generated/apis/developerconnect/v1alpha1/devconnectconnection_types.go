@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type DevconnectconnectionAuthorizerCredential struct {
-	/* Required. A SecretManager resource containing the user token that authorizes the Developer Connect connection. Format: `projects/* /secrets/* /versions/*`. */
+	/* Required. A SecretManager resource containing the user token that authorizes the Developer Connect connection. Format: `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). */
 	// +optional
 	UserTokenSecretVersion *string `json:"userTokenSecretVersion,omitempty"`
 }
@@ -53,7 +53,7 @@ type DevconnectconnectionBitbucketCloudConfig struct {
 	// +optional
 	ReadAuthorizerCredential *DevconnectconnectionReadAuthorizerCredential `json:"readAuthorizerCredential,omitempty"`
 
-	/* Required. Immutable. SecretManager resource containing the webhook secret used to verify webhook events, formatted as `projects/* /secrets/* /versions/*`. This is used to validate and create webhooks. */
+	/* Required. Immutable. SecretManager resource containing the webhook secret used to verify webhook events, formatted as `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). This is used to validate and create webhooks. */
 	// +optional
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 
@@ -83,7 +83,7 @@ type DevconnectconnectionBitbucketDataCenterConfig struct {
 	// +optional
 	SslCACertificate *string `json:"sslCACertificate,omitempty"`
 
-	/* Required. Immutable. SecretManager resource containing the webhook secret used to verify webhook events, formatted as `projects/* /secrets/* /versions/*`. This is used to validate webhooks. */
+	/* Required. Immutable. SecretManager resource containing the webhook secret used to verify webhook events, formatted as `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). This is used to validate webhooks. */
 	// +optional
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 }
@@ -127,7 +127,11 @@ type DevconnectconnectionGithubEnterpriseConfig struct {
 	// +optional
 	HostURI *string `json:"hostURI,omitempty"`
 
-	/* Optional. SecretManager resource containing the private key of the GitHub App, formatted as `projects/* /secrets/* /versions/*`. */
+	/* Optional. Immutable. GitHub Enterprise organization in which the GitHub App is created. */
+	// +optional
+	Organization *string `json:"organization,omitempty"`
+
+	/* Optional. SecretManager resource containing the private key of the GitHub App, formatted as `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). */
 	// +optional
 	PrivateKeySecretVersion *string `json:"privateKeySecretVersion,omitempty"`
 
@@ -139,7 +143,7 @@ type DevconnectconnectionGithubEnterpriseConfig struct {
 	// +optional
 	SslCACertificate *string `json:"sslCACertificate,omitempty"`
 
-	/* Optional. SecretManager resource containing the webhook secret of the GitHub App, formatted as `projects/* /secrets/* /versions/*`. */
+	/* Optional. SecretManager resource containing the webhook secret of the GitHub App, formatted as `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). */
 	// +optional
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 }
@@ -153,7 +157,7 @@ type DevconnectconnectionGitlabConfig struct {
 	// +optional
 	ReadAuthorizerCredential *DevconnectconnectionReadAuthorizerCredential `json:"readAuthorizerCredential,omitempty"`
 
-	/* Required. Immutable. SecretManager resource containing the webhook secret of a GitLab project, formatted as `projects/* /secrets/* /versions/*`. This is used to validate webhooks. */
+	/* Required. Immutable. SecretManager resource containing the webhook secret of a GitLab project, formatted as `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). This is used to validate webhooks. */
 	// +optional
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 }
@@ -179,13 +183,13 @@ type DevconnectconnectionGitlabEnterpriseConfig struct {
 	// +optional
 	SslCACertificate *string `json:"sslCACertificate,omitempty"`
 
-	/* Required. Immutable. SecretManager resource containing the webhook secret of a GitLab project, formatted as `projects/* /secrets/* /versions/*`. This is used to validate webhooks. */
+	/* Required. Immutable. SecretManager resource containing the webhook secret of a GitLab project, formatted as `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). This is used to validate webhooks. */
 	// +optional
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 }
 
 type DevconnectconnectionReadAuthorizerCredential struct {
-	/* Required. A SecretManager resource containing the user token that authorizes the Developer Connect connection. Format: `projects/* /secrets/* /versions/*`. */
+	/* Required. A SecretManager resource containing the user token that authorizes the Developer Connect connection. Format: `projects/* /secrets/* /versions/*` or `projects/* /locations/* /secrets/* /versions/*` (if regional secrets are supported in that location). */
 	// +optional
 	UserTokenSecretVersion *string `json:"userTokenSecretVersion,omitempty"`
 }

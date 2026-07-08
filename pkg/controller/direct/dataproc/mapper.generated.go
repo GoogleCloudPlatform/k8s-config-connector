@@ -281,7 +281,9 @@ func ClusterConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ClusterCo
 		return nil
 	}
 	out := &krm.ClusterConfig{}
+	// MISSING: ClusterType
 	// MISSING: ClusterTier
+	// MISSING: Engine
 	// MISSING: ConfigBucket
 	if in.GetTempBucket() != "" {
 		out.TempBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetTempBucket()}
@@ -313,7 +315,9 @@ found existing non-generated mapping function "ClusterConfig_v1beta1_ToProto", s
 			return nil
 		}
 		out := &pb.ClusterConfig{}
+		// MISSING: ClusterType
 		// MISSING: ClusterTier
+		// MISSING: Engine
 		// MISSING: ConfigBucket
 		if in.TempBucketRef != nil {
 			out.TempBucket = in.TempBucketRef.External
@@ -341,7 +345,9 @@ func ClusterConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Clu
 		return nil
 	}
 	out := &krm.ClusterConfigStatus{}
+	// MISSING: ClusterType
 	// MISSING: ClusterTier
+	// MISSING: Engine
 	// MISSING: ConfigBucket
 	// MISSING: TempBucket
 	// MISSING: GCEClusterConfig
@@ -365,7 +371,9 @@ func ClusterConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Clus
 		return nil
 	}
 	out := &pb.ClusterConfig{}
+	// MISSING: ClusterType
 	// MISSING: ClusterTier
+	// MISSING: Engine
 	// MISSING: ConfigBucket
 	// MISSING: TempBucket
 	// MISSING: GCEClusterConfig
@@ -810,6 +818,9 @@ func ClusterLifecycleConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.AutoDeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAutoDeleteTime())
 	// MISSING: AutoDeleteTTL
 	// (near miss): "AutoDeleteTTL" vs "AutoDeleteTtl"
+	// MISSING: IdleStopTTL
+	// MISSING: AutoStopTime
+	// MISSING: AutoStopTTL
 	// MISSING: IdleStartTime
 	return out
 }
@@ -825,6 +836,9 @@ func ClusterLifecycleConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	}
 	// MISSING: AutoDeleteTTL
 	// (near miss): "AutoDeleteTTL" vs "AutoDeleteTtl"
+	// MISSING: IdleStopTTL
+	// MISSING: AutoStopTime
+	// MISSING: AutoStopTTL
 	// MISSING: IdleStartTime
 	return out
 }
@@ -836,6 +850,9 @@ func ClusterLifecycleConfigStatus_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: IdleDeleteTTL
 	// MISSING: AutoDeleteTime
 	// MISSING: AutoDeleteTTL
+	// MISSING: IdleStopTTL
+	// MISSING: AutoStopTime
+	// MISSING: AutoStopTTL
 	out.IdleStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetIdleStartTime())
 	return out
 }
@@ -847,6 +864,9 @@ func ClusterLifecycleConfigStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: IdleDeleteTTL
 	// MISSING: AutoDeleteTime
 	// MISSING: AutoDeleteTTL
+	// MISSING: IdleStopTTL
+	// MISSING: AutoStopTime
+	// MISSING: AutoStopTTL
 	out.IdleStartTime = direct.StringTimestamp_ToProto(mapCtx, in.IdleStartTime)
 	return out
 }
@@ -1507,6 +1527,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetWorkerConfig())
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_FromProto(mapCtx, in.GetSecondaryWorkerConfig())
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
@@ -1522,6 +1543,7 @@ func DataprocAutoscalingPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	out.WorkerConfig = InstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.WorkerConfig)
 	out.SecondaryWorkerConfig = SecondaryInstanceGroupAutoscalingPolicyConfig_v1beta1_ToProto(mapCtx, in.SecondaryWorkerConfig)
 	// MISSING: Labels
+	// MISSING: ClusterType
 	return out
 }
 
@@ -1534,6 +1556,7 @@ func DataprocBatchObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.Uuid = direct.LazyPtr(in.GetUuid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: PysparkNotebookBatch
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetRuntimeInfo())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
@@ -1554,6 +1577,7 @@ func DataprocBatchObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.Uuid = direct.ValueOf(in.Uuid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: PysparkNotebookBatch
 	out.RuntimeInfo = RuntimeInfoObservedState_v1alpha1_ToProto(mapCtx, in.RuntimeInfo)
 	out.State = direct.Enum_ToProto[pb.Batch_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
@@ -1576,6 +1600,7 @@ func DataprocBatchSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Batc
 	out.SparkBatch = SparkBatch_v1alpha1_FromProto(mapCtx, in.GetSparkBatch())
 	out.SparkRBatch = SparkRBatch_v1alpha1_FromProto(mapCtx, in.GetSparkRBatch())
 	out.SparkSQLBatch = SparkSQLBatch_v1alpha1_FromProto(mapCtx, in.GetSparkSqlBatch())
+	// MISSING: PysparkNotebookBatch
 	out.Labels = in.Labels
 	out.RuntimeConfig = RuntimeConfig_v1alpha1_FromProto(mapCtx, in.GetRuntimeConfig())
 	out.EnvironmentConfig = EnvironmentConfig_v1alpha1_FromProto(mapCtx, in.GetEnvironmentConfig())
@@ -1604,6 +1629,7 @@ found existing non-generated mapping function "DataprocBatchSpec_v1alpha1_ToProt
 		if oneof := SparkSQLBatch_v1alpha1_ToProto(mapCtx, in.SparkSQLBatch); oneof != nil {
 			out.BatchConfig = &pb.Batch_SparkSqlBatch{SparkSqlBatch: oneof}
 		}
+		// MISSING: PysparkNotebookBatch
 		out.Labels = in.Labels
 		out.RuntimeConfig = RuntimeConfig_v1alpha1_ToProto(mapCtx, in.RuntimeConfig)
 		out.EnvironmentConfig = EnvironmentConfig_v1alpha1_ToProto(mapCtx, in.EnvironmentConfig)
@@ -2056,6 +2082,7 @@ func ExecutionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Execut
 		out.StagingBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetStagingBucket()}
 	}
 	// MISSING: AuthenticationConfig
+	// MISSING: ResourceManagerTags
 	return out
 }
 */
@@ -2087,6 +2114,7 @@ found existing non-generated mapping function "ExecutionConfig_v1alpha1_ToProto"
 			out.StagingBucket = in.StagingBucketRef.External
 		}
 		// MISSING: AuthenticationConfig
+		// MISSING: ResourceManagerTags
 		return out
 	}
 */
@@ -3489,6 +3517,7 @@ func UsageMetrics_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetr
 	out.ShuffleStorageGBSeconds = direct.LazyPtr(in.GetShuffleStorageGbSeconds())
 	out.MilliAcceleratorSeconds = direct.LazyPtr(in.GetMilliAcceleratorSeconds())
 	out.AcceleratorType = direct.LazyPtr(in.GetAcceleratorType())
+	// MISSING: UpdateTime
 	return out
 }
 */
@@ -3503,6 +3532,7 @@ func UsageMetrics_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1a
 	out.ShuffleStorageGbSeconds = direct.ValueOf(in.ShuffleStorageGBSeconds)
 	out.MilliAcceleratorSeconds = direct.ValueOf(in.MilliAcceleratorSeconds)
 	out.AcceleratorType = direct.ValueOf(in.AcceleratorType)
+	// MISSING: UpdateTime
 	return out
 }
 */
@@ -3551,6 +3581,8 @@ func YarnApplication_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.YarnAp
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Progress = direct.LazyPtr(in.GetProgress())
 	out.TrackingURL = direct.LazyPtr(in.GetTrackingUrl())
+	// MISSING: VcoreSeconds
+	// MISSING: MemoryMbSeconds
 	return out
 }
 */
@@ -3565,6 +3597,8 @@ func YarnApplication_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataproc
 	out.State = direct.Enum_ToProto[pb.YarnApplication_State](mapCtx, in.State)
 	out.Progress = direct.ValueOf(in.Progress)
 	out.TrackingUrl = direct.ValueOf(in.TrackingURL)
+	// MISSING: VcoreSeconds
+	// MISSING: MemoryMbSeconds
 	return out
 }
 */

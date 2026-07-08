@@ -29,6 +29,40 @@ type Blueprint struct {
 	Package *string `json:"package,omitempty"`
 }
 
+/* unreachable type ComponentRef
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef
+type ComponentRef struct {
+	// Reference to the Composite ApplicationTemplate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef.composite_ref
+	CompositeRef *CompositeRef `json:"compositeRef,omitempty"`
+
+	// Name of the component in composite.Components
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef.component
+	Component *string `json:"component,omitempty"`
+
+	// Revision of the component.
+	//  If the component does not have a revision, this field will be explicitly
+	//  set to the revision of the composite ApplicationTemplate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef.revision
+	Revision *string `json:"revision,omitempty"`
+}
+*/
+
+/* unreachable type CompositeRef
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.CompositeRef
+type CompositeRef struct {
+	// Required. Reference to the ApplicationTemplate resource.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.CompositeRef.application_template
+	ApplicationTemplate *string `json:"applicationTemplate,omitempty"`
+
+	// Revision of the ApplicationTemplate to use.
+	//  Changes to revision will trigger manual resynchronization.
+	//  If empty, ApplicationTemplate will be ignored.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.CompositeRef.revision
+	Revision *string `json:"revision,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Release", skipping
 
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release
@@ -113,6 +147,46 @@ type BlueprintObservedState struct {
 	Version *string `json:"version,omitempty"`
 }
 
+/* unreachable type ComponentRefObservedState
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef
+type ComponentRefObservedState struct {
+	// Reference to the Composite ApplicationTemplate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef.composite_ref
+	CompositeRef *CompositeRefObservedState `json:"compositeRef,omitempty"`
+
+	// Name of the component in composite.Components
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef.component
+	Component *string `json:"component,omitempty"`
+
+	// Revision of the component.
+	//  If the component does not have a revision, this field will be explicitly
+	//  set to the revision of the composite ApplicationTemplate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ComponentRef.revision
+	Revision *string `json:"revision,omitempty"`
+}
+*/
+
+/* unreachable type CompositeRefObservedState
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.CompositeRef
+type CompositeRefObservedState struct {
+	// Required. Reference to the ApplicationTemplate resource.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.CompositeRef.application_template
+	ApplicationTemplate *string `json:"applicationTemplate,omitempty"`
+
+	// Revision of the ApplicationTemplate to use.
+	//  Changes to revision will trigger manual resynchronization.
+	//  If empty, ApplicationTemplate will be ignored.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.CompositeRef.revision
+	Revision *string `json:"revision,omitempty"`
+
+	// Output only. Reference to on-going AppTemplate import and replication
+	//  operation (i.e. the operation_id for the long-running operation). This
+	//  field is opaque for external usage.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.CompositeRef.sync_operation
+	SyncOperation *string `json:"syncOperation,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Release", skipping
 
 // +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release
@@ -131,6 +205,11 @@ type ReleaseObservedState struct {
 	//  and can be present with their values on the unit status
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.output_variables
 	OutputVariables []UnitVariable `json:"outputVariables,omitempty"`
+
+	// Output only. Reference to component and revision in a composite
+	//  ApplicationTemplate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.application_template_component
+	ApplicationTemplateComponent *ComponentRefObservedState `json:"applicationTemplateComponent,omitempty"`
 
 	// Output only. The unique identifier of the resource. UID is unique in the
 	//  time and space for this resource within the scope of the service. It is

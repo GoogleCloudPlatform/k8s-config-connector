@@ -23,6 +23,156 @@
 
 package v1alpha1
 
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+/* unreachable type AgentCoachingContext
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingContext
+type AgentCoachingContext struct {
+	// Optional. The overarching guidance for the agent coaching. This should be
+	//  set only for v1.5 and later versions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.overarching_guidance
+	OverarchingGuidance *string `json:"overarchingGuidance,omitempty"`
+
+	// Optional. Customized instructions for agent coaching.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.instructions
+	Instructions []AgentCoachingInstruction `json:"instructions,omitempty"`
+
+	// Optional. Version of the feature. If not set, default to latest version.
+	//  Current candidates are ["1.2"].
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.version
+	Version *string `json:"version,omitempty"`
+
+	// Optional. Output language code.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.output_language_code
+	OutputLanguageCode *string `json:"outputLanguageCode,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction
+type AgentCoachingInstruction struct {
+	// Optional. Display name for the instruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The detailed description of this instruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.display_details
+	DisplayDetails *string `json:"displayDetails,omitempty"`
+
+	// Optional. The condition of the instruction. For example, "the customer
+	//  wants to cancel an order".  If the users want the instruction to be
+	//  triggered unconditionally, the condition can be empty.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// Optional. The action that human agent should take. For example, "apologize
+	//  for the slow shipping". If the users only want to use agent coaching for
+	//  intent detection, agent_action can be empty
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.agent_action
+	AgentAction *string `json:"agentAction,omitempty"`
+
+	// Optional. The action that system should take. For example,
+	//  "call GetOrderTime with order_number={order number provided by the
+	//  customer}". If the users don't have plugins or don't want to trigger
+	//  plugins, the system_action can be empty
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.system_action
+	SystemAction *string `json:"systemAction,omitempty"`
+
+	// Optional. The event that should trigger this instruction.
+	//  If UNSPECIFIED, the instruction triggering will be same as the generator's
+	//  trigger_event.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.triggering_event
+	TriggeringEvent *string `json:"triggeringEvent,omitempty"`
+}
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResult
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult
+type AgentCoachingInstruction_DuplicateCheckResult struct {
+}
+*/
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestion
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestion struct {
+}
+*/
+
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion
+type AgentCoachingSuggestion struct {
+	// Optional. Instructions applicable based on the current context.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.applicable_instructions
+	ApplicableInstructions []AgentCoachingInstruction `json:"applicableInstructions,omitempty"`
+
+	// Optional. Suggested actions for the agent to take.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.agent_action_suggestions
+	AgentActionSuggestions []AgentCoachingSuggestion_AgentActionSuggestion `json:"agentActionSuggestions,omitempty"`
+
+	// Optional. Sample response for the Agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.sample_responses
+	SampleResponses []AgentCoachingSuggestion_SampleResponse `json:"sampleResponses,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion
+type AgentCoachingSuggestion_AgentActionSuggestion struct {
+	// Optional. The suggested action for the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion.agent_action
+	AgentAction *string `json:"agentAction,omitempty"`
+}
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResult
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult
+type AgentCoachingSuggestion_DuplicateCheckResult struct {
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestion
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestion struct {
+}
+*/
+
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse
+type AgentCoachingSuggestion_SampleResponse struct {
+	// Optional. Sample response for Agent in text.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse.response_text
+	ResponseText *string `json:"responseText,omitempty"`
+}
+
+/* unreachable type AgentCoachingSuggestion_Sources
+// +kcc:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.Sources
+type AgentCoachingSuggestion_Sources struct {
+}
+*/
+
+/* unreachable type CesAppSpec
+// +kcc:proto=google.cloud.dialogflow.v2.CesAppSpec
+type CesAppSpec struct {
+	// Optional. Format: `projects/<Project ID>/locations/<Location ID>/apps/<app
+	//  ID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesAppSpec.ces_app
+	CesApp *string `json:"cesApp,omitempty"`
+
+	// Optional. Indicates whether the app requires human confirmation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesAppSpec.confirmation_requirement
+	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
+}
+*/
+
+/* unreachable type CesToolSpec
+// +kcc:proto=google.cloud.dialogflow.v2.CesToolSpec
+type CesToolSpec struct {
+	// Optional. Format: `projects/<Project ID>/locations/<Location ID>/apps/<app
+	//  ID>/tools/<tool ID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesToolSpec.ces_tool
+	CesTool *string `json:"cesTool,omitempty"`
+
+	// Optional. Indicates whether the tool requires human confirmation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.CesToolSpec.confirmation_requirement
+	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.dialogflow.v2.ConversationContext
 type ConversationContext struct {
 	// Optional. List of message transcripts in the conversation.
@@ -92,6 +242,25 @@ type GeneratorSuggestion struct {
 	// Optional. Suggested summary.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.summary_suggestion
 	SummarySuggestion *SummarySuggestion `json:"summarySuggestion,omitempty"`
+
+	// Optional. Suggestion to coach the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.agent_coaching_suggestion
+	AgentCoachingSuggestion *AgentCoachingSuggestion `json:"agentCoachingSuggestion,omitempty"`
+
+	// Optional. List of request and response for tool calls executed.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.tool_call_info
+	ToolCallInfo []GeneratorSuggestion_ToolCallInfo `json:"toolCallInfo,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo
+type GeneratorSuggestion_ToolCallInfo struct {
+	// Required. Request for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call
+	ToolCall *ToolCall `json:"toolCall,omitempty"`
+
+	// Required. Response for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call_result
+	ToolCallResult *ToolCallResult `json:"toolCallResult,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.InferenceParameter
@@ -160,6 +329,20 @@ type MessageEntry struct {
 	CreateTime *string `json:"createTime,omitempty"`
 }
 
+/* unreachable type SuggestionDedupingConfig
+// +kcc:proto=google.cloud.dialogflow.v2.SuggestionDedupingConfig
+type SuggestionDedupingConfig struct {
+	// Optional. Whether to enable suggestion deduping.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SuggestionDedupingConfig.enable_deduping
+	EnableDeduping *bool `json:"enableDeduping,omitempty"`
+
+	// Optional. The threshold for similarity between two suggestions.
+	//  Acceptable value is [0.0, 1.0], default to 0.8
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SuggestionDedupingConfig.similarity_threshold
+	SimilarityThreshold *float32 `json:"similarityThreshold,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.dialogflow.v2.SummarizationContext
 type SummarizationContext struct {
 	// Optional. List of sections. Note it contains both predefined section sand
@@ -223,3 +406,322 @@ type SummarySuggestion_SummarySection struct {
 	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.summary
 	Summary *string `json:"summary,omitempty"`
 }
+
+// +kcc:proto=google.cloud.dialogflow.v2.ToolCall
+type ToolCall struct {
+	// Optional. The [tool][google.cloud.dialogflow.v2.Tool] associated with
+	//  this call. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.tool
+	Tool *string `json:"tool,omitempty"`
+
+	// Optional. CES tool name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.ces_tool
+	CesTool *string `json:"cesTool,omitempty"`
+
+	// Optional. CES toolset name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.ces_toolset
+	CesToolset *string `json:"cesToolset,omitempty"`
+
+	// Optional. CES app name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.ces_app
+	CesApp *string `json:"cesApp,omitempty"`
+
+	// Optional. A human readable short name of the tool, to be shown on the UI.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.tool_display_name
+	ToolDisplayName *string `json:"toolDisplayName,omitempty"`
+
+	// Optional. A human readable description of the tool.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.tool_display_details
+	ToolDisplayDetails *string `json:"toolDisplayDetails,omitempty"`
+
+	// Optional. The name of the tool's action associated with this call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.action
+	Action *string `json:"action,omitempty"`
+
+	// Optional. The action's input parameters.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.input_parameters
+	InputParameters apiextensionsv1.JSON `json:"inputParameters,omitempty"`
+
+	// Optional. The answer record associated with this tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.ToolCallResult
+type ToolCallResult struct {
+	// Optional. The [tool][google.cloud.dialogflow.v2.Tool] associated with
+	//  this call. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.tool
+	Tool *string `json:"tool,omitempty"`
+
+	// Optional. CES toolset name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.ces_toolset
+	CesToolset *string `json:"cesToolset,omitempty"`
+
+	// Optional. CES tool name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.ces_tool
+	CesTool *string `json:"cesTool,omitempty"`
+
+	// Optional. CES app name for this call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/apps/<AppID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.ces_app
+	CesApp *string `json:"cesApp,omitempty"`
+
+	// Optional. The name of the tool's action associated with this call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.action
+	Action *string `json:"action,omitempty"`
+
+	// The tool call's error.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.error
+	Error *ToolCallResult_Error `json:"error,omitempty"`
+
+	// Only populated if the response content is not utf-8 encoded.
+	//  (by definition byte fields are base64 encoded).
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.raw_content
+	RawContent []byte `json:"rawContent,omitempty"`
+
+	// Only populated if the response content is utf-8 encoded.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.content
+	Content *string `json:"content,omitempty"`
+
+	// Optional. The answer record associated with this tool call result.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.ToolCallResult.Error
+type ToolCallResult_Error struct {
+	// Optional. The error message of the function.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.Error.message
+	Message *string `json:"message,omitempty"`
+}
+
+/* unreachable type ToolsetTool
+// +kcc:proto=google.cloud.dialogflow.v2.ToolsetTool
+type ToolsetTool struct {
+	// Required. The name of the toolset to retrieve the schema for.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.toolset
+	Toolset *string `json:"toolset,omitempty"`
+
+	// Optional. The operationId field of the OpenAPI endpoint. The operationId
+	//  must be present in the toolset's definition.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.operation_id
+	OperationID *string `json:"operationID,omitempty"`
+
+	// Optional. Indicates whether the tool requires human confirmation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolsetTool.confirmation_requirement
+	ConfirmationRequirement *string `json:"confirmationRequirement,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingContextObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingContext
+type AgentCoachingContextObservedState struct {
+	// Optional. Customized instructions for agent coaching.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingContext.instructions
+	Instructions []AgentCoachingInstructionObservedState `json:"instructions,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstructionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction
+type AgentCoachingInstructionObservedState struct {
+	// Output only. Duplication check for the AgentCoachingInstruction.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.duplicate_check_result
+	DuplicateCheckResult *AgentCoachingInstruction_DuplicateCheckResultObservedState `json:"duplicateCheckResult,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResultObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult
+type AgentCoachingInstruction_DuplicateCheckResultObservedState struct {
+	// Output only. The duplicate suggestions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.duplicate_suggestions
+	DuplicateSuggestions []AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestionObservedState `json:"duplicateSuggestions,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingInstruction_DuplicateCheckResult_DuplicateSuggestionObservedState struct {
+	// Output only. The answer record id of the past duplicate suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+
+	// Output only. The index of the duplicate suggestion in the past
+	//  suggestion list.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion.suggestion_index
+	SuggestionIndex *int32 `json:"suggestionIndex,omitempty"`
+
+	// Output only. The similarity score of between the past and current
+	//  suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingInstruction.DuplicateCheckResult.DuplicateSuggestion.similarity_score
+	SimilarityScore *float32 `json:"similarityScore,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion
+type AgentCoachingSuggestionObservedState struct {
+	// Optional. Instructions applicable based on the current context.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.applicable_instructions
+	ApplicableInstructions []AgentCoachingInstructionObservedState `json:"applicableInstructions,omitempty"`
+
+	// Optional. Suggested actions for the agent to take.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.agent_action_suggestions
+	AgentActionSuggestions []AgentCoachingSuggestion_AgentActionSuggestionObservedState `json:"agentActionSuggestions,omitempty"`
+
+	// Optional. Sample response for the Agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.sample_responses
+	SampleResponses []AgentCoachingSuggestion_SampleResponseObservedState `json:"sampleResponses,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_AgentActionSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion
+type AgentCoachingSuggestion_AgentActionSuggestionObservedState struct {
+	// Output only. Sources for the agent action suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion.sources
+	Sources *AgentCoachingSuggestion_SourcesObservedState `json:"sources,omitempty"`
+
+	// Output only. Duplicate check result for the agent action suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.AgentActionSuggestion.duplicate_check_result
+	DuplicateCheckResult *AgentCoachingSuggestion_DuplicateCheckResultObservedState `json:"duplicateCheckResult,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResultObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult
+type AgentCoachingSuggestion_DuplicateCheckResultObservedState struct {
+	// Output only. The duplicate suggestions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.duplicate_suggestions
+	DuplicateSuggestions []AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestionObservedState `json:"duplicateSuggestions,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion
+type AgentCoachingSuggestion_DuplicateCheckResult_DuplicateSuggestionObservedState struct {
+	// Output only. The answer record id of the past duplicate suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+
+	// Output only. Sources for the suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.sources
+	Sources *AgentCoachingSuggestion_SourcesObservedState `json:"sources,omitempty"`
+
+	// Output only. The index of the duplicate suggestion in the past
+	//  suggestion list.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.suggestion_index
+	SuggestionIndex *int32 `json:"suggestionIndex,omitempty"`
+
+	// Output only. The similarity score of between the past and current
+	//  suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion.similarity_score
+	SimilarityScore *float32 `json:"similarityScore,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_SampleResponseObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse
+type AgentCoachingSuggestion_SampleResponseObservedState struct {
+	// Output only. Sources for the Sample Response.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse.sources
+	Sources *AgentCoachingSuggestion_SourcesObservedState `json:"sources,omitempty"`
+
+	// Output only. Duplicate check result for the sample response.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.SampleResponse.duplicate_check_result
+	DuplicateCheckResult *AgentCoachingSuggestion_DuplicateCheckResultObservedState `json:"duplicateCheckResult,omitempty"`
+}
+*/
+
+/* unreachable type AgentCoachingSuggestion_SourcesObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.AgentCoachingSuggestion.Sources
+type AgentCoachingSuggestion_SourcesObservedState struct {
+	// Output only. Source instruction indexes for the suggestion. This is the
+	//  index of the applicable_instructions field.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.AgentCoachingSuggestion.Sources.instruction_indexes
+	InstructionIndexes []int32 `json:"instructionIndexes,omitempty"`
+}
+*/
+
+/* unreachable type FewShotExampleObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.FewShotExample
+type FewShotExampleObservedState struct {
+	// Required. Example output of the model.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.output
+	Output *GeneratorSuggestionObservedState `json:"output,omitempty"`
+}
+*/
+
+/* unreachable type GeneratorSuggestionObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.GeneratorSuggestion
+type GeneratorSuggestionObservedState struct {
+	// Optional. Suggestion to coach the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.agent_coaching_suggestion
+	AgentCoachingSuggestion *AgentCoachingSuggestionObservedState `json:"agentCoachingSuggestion,omitempty"`
+
+	// Optional. List of request and response for tool calls executed.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.tool_call_info
+	ToolCallInfo []GeneratorSuggestion_ToolCallInfoObservedState `json:"toolCallInfo,omitempty"`
+}
+*/
+
+/* unreachable type GeneratorSuggestion_ToolCallInfoObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo
+type GeneratorSuggestion_ToolCallInfoObservedState struct {
+	// Required. Request for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call
+	ToolCall *ToolCallObservedState `json:"toolCall,omitempty"`
+
+	// Required. Response for a tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.ToolCallInfo.tool_call_result
+	ToolCallResult *ToolCallResultObservedState `json:"toolCallResult,omitempty"`
+}
+*/
+
+/* unreachable type SummarizationContextObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.SummarizationContext
+type SummarizationContextObservedState struct {
+	// Optional. List of few shot examples.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.few_shot_examples
+	FewShotExamples []FewShotExampleObservedState `json:"fewShotExamples,omitempty"`
+}
+*/
+
+/* unreachable type ToolCallObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.ToolCall
+type ToolCallObservedState struct {
+	// Output only. Create time of the tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. State of the tool call.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCall.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* unreachable type ToolCallResultObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2.ToolCallResult
+type ToolCallResultObservedState struct {
+	// Output only. Create time of the tool call result.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ToolCallResult.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+*/

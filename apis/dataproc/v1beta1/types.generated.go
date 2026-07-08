@@ -101,6 +101,11 @@ type AutoscalingPolicy struct {
 	//  associated with an autoscaling policy.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.labels
 	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The type of the clusters for which this autoscaling policy is to
+	//  be configured.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.cluster_type
+	ClusterType *string `json:"clusterType,omitempty"`
 }
 */
 
@@ -264,9 +269,17 @@ type Cluster struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.ClusterConfig
 type ClusterConfig struct {
+	// Optional. The type of the cluster.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.cluster_type
+	ClusterType *string `json:"clusterType,omitempty"`
+
 	// Optional. The cluster tier.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.cluster_tier
 	ClusterTier *string `json:"clusterTier,omitempty"`
+
+	// Optional. The cluster engine.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.engine
+	Engine *string `json:"engine,omitempty"`
 
 	// Optional. A Cloud Storage bucket used to stage job
 	//  dependencies, config files, and job driver console output.
@@ -789,7 +802,7 @@ type GKENodePoolConfig_GKENodeConfig struct {
 	//  (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek)
 	//  used to encrypt the boot disk attached to each node in the node pool.
 	//  Specify the key using the following format:
-	//  <code>projects/<var>KEY_PROJECT_ID</var>/locations/<var>LOCATION</var>/keyRings/<var>RING_NAME</var>/cryptoKeys/<var>KEY_NAME</var></code>.
+	//  `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig.boot_disk_kms_key
 	BootDiskKMSKey *string `json:"bootDiskKMSKey,omitempty"`
 
@@ -1278,6 +1291,28 @@ type LifecycleConfig struct {
 	//  [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
 	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.auto_delete_ttl
 	AutoDeleteTTL *string `json:"autoDeleteTTL,omitempty"`
+
+	// Optional. The duration to keep the cluster started while idling (when no
+	//  jobs are running). Passing this threshold will cause the cluster to be
+	//  stopped. Minimum value is 5 minutes; maximum value is 14 days (see JSON
+	//  representation of
+	//  [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.idle_stop_ttl
+	IdleStopTTL *string `json:"idleStopTTL,omitempty"`
+
+	// Optional. The time when cluster will be auto-stopped (see JSON
+	//  representation of
+	//  [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.auto_stop_time
+	AutoStopTime *string `json:"autoStopTime,omitempty"`
+
+	// Optional. The lifetime duration of the cluster. The cluster will be
+	//  auto-stopped at the end of this period, calculated from the time of
+	//  submission of the create or update cluster request. Minimum value is 10
+	//  minutes; maximum value is 14 days (see JSON representation of
+	//  [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.auto_stop_ttl
+	AutoStopTTL *string `json:"autoStopTTL,omitempty"`
 }
 */
 

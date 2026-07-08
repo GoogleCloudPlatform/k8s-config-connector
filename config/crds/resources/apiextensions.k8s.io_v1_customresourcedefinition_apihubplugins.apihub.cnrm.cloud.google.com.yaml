@@ -172,6 +172,17 @@ spec:
                           type: string
                         type: array
                     type: object
+                  uriValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is URL, URI or IP, like gs://bucket-name/object-name.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
             required:
             - displayName

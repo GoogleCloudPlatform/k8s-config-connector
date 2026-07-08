@@ -287,14 +287,15 @@ type WorkerpoolResources struct {
 	// +optional
 	CpuIdle *bool `json:"cpuIdle,omitempty"`
 
-	/* Only `memory` and `cpu` keys in the map are supported.
+	/* Only `memory`, `cpu` and `nvidia.com/gpu` keys in the map are supported.
 
 	<p>Notes:
 	* The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
 	CPU requires at least 2Gi of memory. For more information, go to
 	https://cloud.google.com/run/docs/configuring/cpu.
 	* For supported 'memory' values and syntax, go to
-	https://cloud.google.com/run/docs/configuring/memory-limits */
+	https://cloud.google.com/run/docs/configuring/memory-limits
+	* The only supported 'nvidia.com/gpu' value is '1'. */
 	// +optional
 	Limits map[string]string `json:"limits,omitempty"`
 
@@ -435,6 +436,10 @@ type WorkerpoolVolumeMounts struct {
 	/* Required. This must match the Name of a Volume. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+
+	/* Optional. Path within the volume from which the container's volume should be mounted. Defaults to "" (volume's root). */
+	// +optional
+	SubPath *string `json:"subPath,omitempty"`
 }
 
 type WorkerpoolVolumes struct {
