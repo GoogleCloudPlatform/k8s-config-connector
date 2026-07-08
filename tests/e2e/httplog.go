@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -33,10 +34,12 @@ type Normalizer struct {
 }
 
 func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
+	replacements := NewReplacements()
+	replacements.OperationIDs["operation-1234567890123-00000000-0000-0000-0000-000000000001"] = true
 	return &Normalizer{
 		uniqueID:     uniqueID,
 		project:      project,
-		Replacements: NewReplacements(),
+		Replacements: replacements,
 	}
 }
 
@@ -289,6 +292,16 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 
 func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 	events = RewriteUserAgent(events)
+
+	// Specific to Dataproc: normalize random UUIDs to a static value
+	uuidRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
+	for _, event := range events {
+		if strings.Contains(event.Request.URL, "dataproc.googleapis.com") {
+			for _, match := range uuidRegex.FindAllString(event.Response.Body, -1) {
+				x.Replacements.PathIDs[match] = "00000000-0000-0000-0000-000000000001"
+			}
+		}
+	}
 
 	// Find "easy" operations and resources by looking for fully-qualified methods
 	for _, event := range events {

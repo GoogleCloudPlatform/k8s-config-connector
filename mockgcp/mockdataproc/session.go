@@ -81,7 +81,7 @@ func (s *sessionControllerServer) CreateSession(ctx context.Context, req *pb.Cre
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
 		OperationType: pb.SessionOperationMetadata_CREATE,
@@ -116,11 +116,12 @@ func (s *sessionControllerServer) DeleteSession(ctx context.Context, req *pb.Del
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
 		OperationType: pb.SessionOperationMetadata_DELETE,
 		Description:   "Delete session",
+		SessionUuid:   deleted.Uuid,
 		CreateTime:    timestamppb.New(time.Now()),
 		DoneTime:      timestamppb.New(time.Now()),
 		Labels: map[string]string{
@@ -155,11 +156,12 @@ func (s *sessionControllerServer) TerminateSession(ctx context.Context, req *pb.
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
 		OperationType: pb.SessionOperationMetadata_TERMINATE,
 		Description:   "Terminate session",
+		SessionUuid:   obj.Uuid,
 		CreateTime:    timestamppb.New(time.Now()),
 		DoneTime:      timestamppb.New(time.Now()),
 		Labels: map[string]string{

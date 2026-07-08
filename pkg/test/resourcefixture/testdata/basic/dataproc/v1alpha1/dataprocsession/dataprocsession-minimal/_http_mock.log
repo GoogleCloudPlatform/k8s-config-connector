@@ -56,20 +56,29 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Create Session",
+    "description": "Create session",
     "doneTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": 1,
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -87,12 +96,21 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Create Session",
+    "description": "Create session",
     "doneTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": "CREATE",
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -106,10 +124,11 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "runtimeInfo": {},
     "state": "ACTIVE",
     "stateHistory": [
       {
-        "state": "ACTIVE",
+        "state": "CREATING",
         "stateStartTime": "2024-04-01T12:34:56.123456Z"
       }
     ],
@@ -148,10 +167,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+  "runtimeInfo": {},
   "state": 2,
   "stateHistory": [
     {
-      "state": 2,
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
@@ -181,19 +201,29 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Delete Session",
+    "description": "Delete session",
     "doneTime": "2024-04-01T12:34:56.123456Z",
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}"
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": 3,
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -211,11 +241,21 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Delete Session",
+    "description": "Delete session",
     "doneTime": "2024-04-01T12:34:56.123456Z",
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}"
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": "DELETE",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -229,10 +269,11 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "runtimeInfo": {},
     "state": "ACTIVE",
     "stateHistory": [
       {
-        "state": "ACTIVE",
+        "state": "CREATING",
         "stateStartTime": "2024-04-01T12:34:56.123456Z"
       }
     ],

@@ -27,10 +27,11 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    creator: test-user@google.com
+    creator: ${creatorID}
+    runtimeInfo: {}
     state: ACTIVE
     stateHistory:
-    - state: ACTIVE
+    - state: CREATING
       stateStartTime: "2024-04-01T12:34:56.123456Z"
     stateTime: "2024-04-01T12:34:56.123456Z"
     uuid: 00000000-0000-0000-0000-000000000001

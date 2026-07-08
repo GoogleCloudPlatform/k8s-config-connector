@@ -370,6 +370,16 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 		return
 	}
 
+	// Normalize any UUIDs to dummy UUID to align real and mock logs
+	uuidRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
+	realJSON = uuidRegex.ReplaceAllString(realJSON, "00000000-0000-0000-0000-000000000001")
+	mockJSON = uuidRegex.ReplaceAllString(mockJSON, "00000000-0000-0000-0000-000000000001")
+
+	// Remove doneTime to align LROs (mock LROs are done immediately, real are active)
+	doneTimeRegex := regexp.MustCompile(`\s*"doneTime":\s*"[^"]*",?\s*`)
+	realJSON = doneTimeRegex.ReplaceAllString(realJSON, "")
+	mockJSON = doneTimeRegex.ReplaceAllString(mockJSON, "")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
