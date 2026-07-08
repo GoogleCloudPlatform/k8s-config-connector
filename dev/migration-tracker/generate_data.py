@@ -20,6 +20,8 @@ import sys
 import yaml
 from collections import defaultdict
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def find_refs(schema, path=""):
     refs = set()
     if isinstance(schema, dict):
@@ -54,7 +56,9 @@ def get_implemented_types(apis_dir="../../apis"):
                         implemented_kinds[kind].append(filepath)
     return implemented_kinds
 
-def get_implemented_controllers(direct_dir="../../pkg/controller/direct"):
+def get_implemented_controllers(direct_dir=None):
+    if direct_dir is None:
+        direct_dir = os.path.join(SCRIPT_DIR, "../../pkg/controller/direct")
     implemented_controllers = set()
     if not os.path.exists(direct_dir):
         return implemented_controllers
@@ -64,7 +68,9 @@ def get_implemented_controllers(direct_dir="../../pkg/controller/direct"):
                 implemented_controllers.add(file)
     return implemented_controllers
 
-def build_dependency_graph(crds_dir="../../config/crds/resources"):
+def build_dependency_graph(crds_dir=None):
+    if crds_dir is None:
+        crds_dir = os.path.join(SCRIPT_DIR, "../../config/crds/resources")
     known_kinds = {}
     dependencies = defaultdict(set)
     crd_docs = []
@@ -123,12 +129,14 @@ def build_dependency_graph(crds_dir="../../config/crds/resources"):
 
     return dependencies, known_kinds
 
-def parse_data(config_file_path, apis_dir, crds_dir, direct_dir="../../pkg/controller/direct"):
+def parse_data(config_file_path, apis_dir, crds_dir, direct_dir=None):
+    if direct_dir is None:
+        direct_dir = os.path.join(SCRIPT_DIR, "../../pkg/controller/direct")
     resources = {}
     
     # Load existing data to preserve manual updates
     existing_resources = {}
-    data_json_path = 'data.json'
+    data_json_path = os.path.join(SCRIPT_DIR, 'data.json')
     if os.path.exists(data_json_path):
         try:
             with open(data_json_path, 'r') as f:
@@ -341,11 +349,12 @@ def create_default_resource(kind, group="unknown"):
     }
 
 if __name__ == "__main__":
-    config_path = '../../pkg/controller/resourceconfig/static_config.go'
-    apis_dir = '../../apis'
-    crds_dir = '../../config/crds/resources'
+    config_path = os.path.join(SCRIPT_DIR, '../../pkg/controller/resourceconfig/static_config.go')
+    apis_dir = os.path.join(SCRIPT_DIR, '../../apis')
+    crds_dir = os.path.join(SCRIPT_DIR, '../../config/crds/resources')
     data = parse_data(config_path, apis_dir, crds_dir)
     data = sorted(data, key=lambda x: x['kind'])
-    with open('data.json', 'w') as f:
+    output_path = os.path.join(SCRIPT_DIR, 'data.json')
+    with open(output_path, 'w') as f:
         json.dump(data, f, indent=2)
-    print(f"Generated data.json with {len(data)} resources.")
+    print(f"Generated data.json at {output_path} with {len(data)} resources.")
