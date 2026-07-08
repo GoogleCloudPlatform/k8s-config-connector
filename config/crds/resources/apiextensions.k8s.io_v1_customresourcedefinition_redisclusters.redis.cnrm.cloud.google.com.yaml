@@ -111,6 +111,157 @@ spec:
                       365 days. If not specified, the default value is 35 days.
                     type: string
                 type: object
+              clusterEndpoints:
+                description: Optional. A list of cluster endpoints.
+                items:
+                  properties:
+                    connections:
+                      description: A group of PSC connections. They are created in
+                        the same VPC network, one for each service attachment in the
+                        cluster.
+                      items:
+                        properties:
+                          pscAutoConnection:
+                            description: Detailed information of a PSC connection
+                              that is created through service connectivity automation.
+                            properties:
+                              networkRef:
+                                description: Required. The consumer network where
+                                  the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeNetwork resource. Should be in the format
+                                      "projects/{{projectID}}/global/networks/{{networkID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeNetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeNetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              projectID:
+                                description: Required. The consumer project_id where
+                                  the forwarding rule is created from.
+                                type: string
+                            required:
+                            - networkRef
+                            - projectID
+                            type: object
+                          pscConnection:
+                            description: Detailed information of a PSC connection
+                              that is created by the customer who owns the cluster.
+                            properties:
+                              address:
+                                description: Required. The IP allocated on the consumer
+                                  network for the PSC forwarding rule.
+                                type: string
+                              forwardingRuleRef:
+                                description: Required. The consumer side forwarding
+                                  rule.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeForwardingRule resource. Should be in
+                                      the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
+                                      or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeForwardingRule
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeForwardingRule
+                                      resource.
+                                    type: string
+                                type: object
+                              networkRef:
+                                description: Required. The consumer network where
+                                  the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeNetwork resource. Should be in the format
+                                      "projects/{{projectID}}/global/networks/{{networkID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeNetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeNetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              projectID:
+                                description: Optional. Project ID of the consumer
+                                  project where the forwarding rule is created in.
+                                type: string
+                              pscConnectionID:
+                                description: Required. The PSC connection id of the
+                                  forwarding rule connected to the service attachment.
+                                type: string
+                              serviceAttachment:
+                                description: Required. The service attachment which
+                                  is the target of the PSC connection, in the form
+                                  of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                type: string
+                            required:
+                            - address
+                            - forwardingRuleRef
+                            - networkRef
+                            - pscConnectionID
+                            - serviceAttachment
+                            type: object
+                        type: object
+                      type: array
+                      x-kubernetes-list-type: atomic
+                  type: object
+                type: array
+                x-kubernetes-list-type: atomic
               crossClusterReplicationConfig:
                 description: Optional. Cross cluster replication config.
                 properties:
@@ -462,6 +613,105 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  clusterEndpoints:
+                    description: Output only. A list of cluster endpoints.
+                    items:
+                      properties:
+                        connections:
+                          description: A group of PSC connections. They are created
+                            in the same VPC network, one for each service attachment
+                            in the cluster.
+                          items:
+                            properties:
+                              pscAutoConnection:
+                                description: Detailed information of a PSC connection
+                                  that is created through service connectivity automation.
+                                properties:
+                                  address:
+                                    description: Output only. The IP allocated on
+                                      the consumer network for the PSC forwarding
+                                      rule.
+                                    type: string
+                                  connectionType:
+                                    description: Output only. Type of the PSC connection.
+                                    type: string
+                                  forwardingRule:
+                                    description: 'Output only. The URI of the consumer
+                                      side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.'
+                                    type: string
+                                  network:
+                                    description: Required. The consumer network where
+                                      the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                    type: string
+                                  projectID:
+                                    description: Required. The consumer project_id
+                                      where the forwarding rule is created from.
+                                    type: string
+                                  pscConnectionID:
+                                    description: Output only. The PSC connection id
+                                      of the forwarding rule connected to the service
+                                      attachment.
+                                    type: string
+                                  pscConnectionStatus:
+                                    description: Output only. The status of the PSC
+                                      connection. Please note that this value is updated
+                                      periodically. Please use Private Service Connect
+                                      APIs for the latest status.
+                                    type: string
+                                  serviceAttachment:
+                                    description: Output only. The service attachment
+                                      which is the target of the PSC connection, in
+                                      the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                    type: string
+                                type: object
+                              pscConnection:
+                                description: Detailed information of a PSC connection
+                                  that is created by the customer who owns the cluster.
+                                properties:
+                                  address:
+                                    description: Output only. The IP allocated on
+                                      the consumer network for the PSC forwarding
+                                      rule.
+                                    type: string
+                                  connectionType:
+                                    description: Output only. Type of the PSC connection.
+                                    type: string
+                                  forwardingRule:
+                                    description: 'Output only. The URI of the consumer
+                                      side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.'
+                                    type: string
+                                  network:
+                                    description: Required. The consumer network where
+                                      the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                    type: string
+                                  projectID:
+                                    description: Optional. Project ID of the consumer
+                                      project where the forwarding rule is created
+                                      in.
+                                    type: string
+                                  pscConnectionID:
+                                    description: Output only. The PSC connection id
+                                      of the forwarding rule connected to the service
+                                      attachment.
+                                    type: string
+                                  pscConnectionStatus:
+                                    description: Output only. The status of the PSC
+                                      connection. Please note that this value is updated
+                                      periodically. To get the latest status of a
+                                      PSC connection, follow https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details.
+                                    type: string
+                                  serviceAttachment:
+                                    description: Required. The service attachment
+                                      which is the target of the PSC connection, in
+                                      the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                    type: string
+                                type: object
+                            type: object
+                          type: array
+                          x-kubernetes-list-type: atomic
+                      type: object
+                    type: array
+                    x-kubernetes-list-type: atomic
                   createTime:
                     description: Output only. The timestamp associated with the cluster
                       creation request.
@@ -639,14 +889,65 @@ spec:
                           description: Required. The IP allocated on the consumer
                             network for the PSC forwarding rule.
                           type: string
-                        forwardingRule:
-                          description: 'Required. The URI of the consumer side forwarding
-                            rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.'
-                          type: string
-                        network:
+                        forwardingRuleRef:
+                          description: Required. The consumer side forwarding rule.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed ComputeForwardingRule
+                                resource. Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
+                                or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeForwardingRule resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeForwardingRule
+                                resource.
+                              type: string
+                          type: object
+                        networkRef:
                           description: Required. The consumer network where the IP
                             address resides, in the form of projects/{project_id}/global/networks/{network_id}.
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed ComputeNetwork
+                                resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeNetwork resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeNetwork resource.
+                              type: string
+                          type: object
                         projectID:
                           description: Optional. Project ID of the consumer project
                             where the forwarding rule is created in.
@@ -659,6 +960,12 @@ spec:
                           description: Required. The service attachment which is the
                             target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
                           type: string
+                      required:
+                      - address
+                      - forwardingRuleRef
+                      - networkRef
+                      - pscConnectionID
+                      - serviceAttachment
                       type: object
                     type: array
                   pscServiceAttachments:
@@ -799,6 +1106,157 @@ spec:
                       365 days. If not specified, the default value is 35 days.
                     type: string
                 type: object
+              clusterEndpoints:
+                description: Optional. A list of cluster endpoints.
+                items:
+                  properties:
+                    connections:
+                      description: A group of PSC connections. They are created in
+                        the same VPC network, one for each service attachment in the
+                        cluster.
+                      items:
+                        properties:
+                          pscAutoConnection:
+                            description: Detailed information of a PSC connection
+                              that is created through service connectivity automation.
+                            properties:
+                              networkRef:
+                                description: Required. The consumer network where
+                                  the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeNetwork resource. Should be in the format
+                                      "projects/{{projectID}}/global/networks/{{networkID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeNetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeNetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              projectID:
+                                description: Required. The consumer project_id where
+                                  the forwarding rule is created from.
+                                type: string
+                            required:
+                            - networkRef
+                            - projectID
+                            type: object
+                          pscConnection:
+                            description: Detailed information of a PSC connection
+                              that is created by the customer who owns the cluster.
+                            properties:
+                              address:
+                                description: Required. The IP allocated on the consumer
+                                  network for the PSC forwarding rule.
+                                type: string
+                              forwardingRuleRef:
+                                description: Required. The consumer side forwarding
+                                  rule.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeForwardingRule resource. Should be in
+                                      the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
+                                      or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeForwardingRule
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeForwardingRule
+                                      resource.
+                                    type: string
+                                type: object
+                              networkRef:
+                                description: Required. The consumer network where
+                                  the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      ComputeNetwork resource. Should be in the format
+                                      "projects/{{projectID}}/global/networks/{{networkID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeNetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeNetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              projectID:
+                                description: Optional. Project ID of the consumer
+                                  project where the forwarding rule is created in.
+                                type: string
+                              pscConnectionID:
+                                description: Required. The PSC connection id of the
+                                  forwarding rule connected to the service attachment.
+                                type: string
+                              serviceAttachment:
+                                description: Required. The service attachment which
+                                  is the target of the PSC connection, in the form
+                                  of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                type: string
+                            required:
+                            - address
+                            - forwardingRuleRef
+                            - networkRef
+                            - pscConnectionID
+                            - serviceAttachment
+                            type: object
+                        type: object
+                      type: array
+                      x-kubernetes-list-type: atomic
+                  type: object
+                type: array
+                x-kubernetes-list-type: atomic
               crossClusterReplicationConfig:
                 description: Optional. Cross cluster replication config.
                 properties:
@@ -1150,6 +1608,105 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  clusterEndpoints:
+                    description: Output only. A list of cluster endpoints.
+                    items:
+                      properties:
+                        connections:
+                          description: A group of PSC connections. They are created
+                            in the same VPC network, one for each service attachment
+                            in the cluster.
+                          items:
+                            properties:
+                              pscAutoConnection:
+                                description: Detailed information of a PSC connection
+                                  that is created through service connectivity automation.
+                                properties:
+                                  address:
+                                    description: Output only. The IP allocated on
+                                      the consumer network for the PSC forwarding
+                                      rule.
+                                    type: string
+                                  connectionType:
+                                    description: Output only. Type of the PSC connection.
+                                    type: string
+                                  forwardingRule:
+                                    description: 'Output only. The URI of the consumer
+                                      side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.'
+                                    type: string
+                                  network:
+                                    description: Required. The consumer network where
+                                      the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                    type: string
+                                  projectID:
+                                    description: Required. The consumer project_id
+                                      where the forwarding rule is created from.
+                                    type: string
+                                  pscConnectionID:
+                                    description: Output only. The PSC connection id
+                                      of the forwarding rule connected to the service
+                                      attachment.
+                                    type: string
+                                  pscConnectionStatus:
+                                    description: Output only. The status of the PSC
+                                      connection. Please note that this value is updated
+                                      periodically. Please use Private Service Connect
+                                      APIs for the latest status.
+                                    type: string
+                                  serviceAttachment:
+                                    description: Output only. The service attachment
+                                      which is the target of the PSC connection, in
+                                      the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                    type: string
+                                type: object
+                              pscConnection:
+                                description: Detailed information of a PSC connection
+                                  that is created by the customer who owns the cluster.
+                                properties:
+                                  address:
+                                    description: Output only. The IP allocated on
+                                      the consumer network for the PSC forwarding
+                                      rule.
+                                    type: string
+                                  connectionType:
+                                    description: Output only. Type of the PSC connection.
+                                    type: string
+                                  forwardingRule:
+                                    description: 'Output only. The URI of the consumer
+                                      side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.'
+                                    type: string
+                                  network:
+                                    description: Required. The consumer network where
+                                      the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                    type: string
+                                  projectID:
+                                    description: Optional. Project ID of the consumer
+                                      project where the forwarding rule is created
+                                      in.
+                                    type: string
+                                  pscConnectionID:
+                                    description: Output only. The PSC connection id
+                                      of the forwarding rule connected to the service
+                                      attachment.
+                                    type: string
+                                  pscConnectionStatus:
+                                    description: Output only. The status of the PSC
+                                      connection. Please note that this value is updated
+                                      periodically. To get the latest status of a
+                                      PSC connection, follow https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details.
+                                    type: string
+                                  serviceAttachment:
+                                    description: Required. The service attachment
+                                      which is the target of the PSC connection, in
+                                      the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                    type: string
+                                type: object
+                            type: object
+                          type: array
+                          x-kubernetes-list-type: atomic
+                      type: object
+                    type: array
+                    x-kubernetes-list-type: atomic
                   createTime:
                     description: Output only. The timestamp associated with the cluster
                       creation request.
@@ -1327,14 +1884,65 @@ spec:
                           description: Required. The IP allocated on the consumer
                             network for the PSC forwarding rule.
                           type: string
-                        forwardingRule:
-                          description: 'Required. The URI of the consumer side forwarding
-                            rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.'
-                          type: string
-                        network:
+                        forwardingRuleRef:
+                          description: Required. The consumer side forwarding rule.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed ComputeForwardingRule
+                                resource. Should be in the format "projects/{{projectID}}/global/forwardingRules/{{forwardingRuleID}}"
+                                or "projects/{{projectID}}/regions/{{region}}/forwardingRules/{{forwardingRuleID}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeForwardingRule resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeForwardingRule
+                                resource.
+                              type: string
+                          type: object
+                        networkRef:
                           description: Required. The consumer network where the IP
                             address resides, in the form of projects/{project_id}/global/networks/{network_id}.
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed ComputeNetwork
+                                resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeNetwork resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeNetwork resource.
+                              type: string
+                          type: object
                         projectID:
                           description: Optional. Project ID of the consumer project
                             where the forwarding rule is created in.
@@ -1347,6 +1955,12 @@ spec:
                           description: Required. The service attachment which is the
                             target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
                           type: string
+                      required:
+                      - address
+                      - forwardingRuleRef
+                      - networkRef
+                      - pscConnectionID
+                      - serviceAttachment
                       type: object
                     type: array
                   pscServiceAttachments:

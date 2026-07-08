@@ -27,6 +27,10 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}
   observedGeneration: 2
   observedState:
+    clusterEndpoints:
+    - connections:
+      - {}
+      - {}
     createTime: "1970-01-01T00:00:00Z"
     discoveryEndpoints:
     - address: 10.11.12.13
@@ -38,15 +42,21 @@ status:
     preciseSizeGb: 130
     pscConnections:
     - address: 10.11.12.13
-      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
-      network: projects/${projectId}/global/networks/${networkID}
+      forwardingRuleRef:
+        external: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}
+      networkRef:
+        external: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
+      serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa
     - address: 10.11.12.13
-      forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
-      network: projects/${projectId}/global/networks/${networkID}
+      forwardingRuleRef:
+        external: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}
+      networkRef:
+        external: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
+      serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa
     pscServiceAttachments:
     - connectionType: CONNECTION_TYPE_DISCOVERY
       serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa

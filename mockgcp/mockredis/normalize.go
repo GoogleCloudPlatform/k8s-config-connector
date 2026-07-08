@@ -30,6 +30,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
 	replacements.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
 	replacements.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
+
+	replacements.ReplacePath(".clusterEndpoints[].connections[].pscAutoConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".clusterEndpoints[].connections[].pscAutoConnection.pscConnectionId", "${pscConnectionID}")
+	replacements.ReplacePath(".response.clusterEndpoints[].connections[].pscAutoConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".response.clusterEndpoints[].connections[].pscAutoConnection.pscConnectionId", "${pscConnectionID}")
+
 	replacements.ReplacePath(".encryptionInfo.lastUpdateTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".response.encryptionInfo.lastUpdateTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".response.uid", "0123456789abcdef")
@@ -47,6 +53,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".status.observedState.pscConnections[].pscConnectionID", "${pscConnectionID}")
 	replacements.ReplacePath(".status.observedState.pscConnections[].address", "10.11.12.13")
 	replacements.ReplacePath(".status.observedState.discoveryEndpoints[].address", "10.11.12.13")
+
+	replacements.ReplacePath(".status.observedState.clusterEndpoints[].connections[].pscAutoConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".status.observedState.clusterEndpoints[].connections[].pscAutoConnection.pscConnectionID", "${pscConnectionID}")
+
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.membership.primaryCluster.uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.primaryCluster.uid", "0123456789abcdef")
@@ -69,5 +79,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	if !strings.Contains(event.URL(), "redis.googleapis.com") {
+		return
+	}
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasSuffix(path, ".forwardingRule") || strings.HasSuffix(path, ".forwarding_rule") {
+			tokens := strings.Split(value, "/")
+			if len(tokens) == 11 && tokens[9] == "forwardingRules" {
+				if strings.HasPrefix(tokens[10], "ssc-auto-fr-") {
+					replacements.ReplaceStringValue(tokens[10], "${forwardingRule}")
+				}
+			}
+		}
+	})
 }

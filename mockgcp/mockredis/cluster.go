@@ -245,14 +245,47 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 				forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
 				pscConnection := &pb.PscConnection{
 					// The assigned addresses are (seemingly) not deterministic
-					Address:         fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
-					ForwardingRule:  fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
-					Network:         pscConfig.Network,
-					ProjectId:       network.Project.ID,
-					PscConnectionId: fmt.Sprintf("%d", pscConnectionID),
+					Address:           fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
+					ForwardingRule:    fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
+					Network:           pscConfig.Network,
+					ProjectId:         network.Project.ID,
+					PscConnectionId:   fmt.Sprintf("%d", pscConnectionID),
+					ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa", name.Project.Number, name.Location),
 				}
 				obj.PscConnections = append(obj.PscConnections, pscConnection)
 			}
+		}
+	}
+
+	if obj.ClusterEndpoints == nil {
+		for _, pscConfig := range obj.PscConfigs {
+			network, err := s.parseNetworkName(pscConfig.Network)
+			if err != nil {
+				return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", pscConfig.Network)
+			}
+			var connections []*pb.ConnectionDetail
+			for i := 0; i < 2; i++ {
+				pscConnectionID := time.Now().UnixNano() + int64(i)
+				forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
+				autoConn := &pb.PscAutoConnection{
+					PscConnectionId:     fmt.Sprintf("%d", pscConnectionID),
+					Address:             fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
+					ForwardingRule:      fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
+					ProjectId:           network.Project.ID,
+					Network:             pscConfig.Network,
+					ServiceAttachment:   fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa", name.Project.Number, name.Location),
+					PscConnectionStatus: pb.PscConnectionStatus_PSC_CONNECTION_STATUS_ACTIVE,
+					ConnectionType:      pb.ConnectionType_CONNECTION_TYPE_DISCOVERY,
+				}
+				connections = append(connections, &pb.ConnectionDetail{
+					Connection: &pb.ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: autoConn,
+					},
+				})
+			}
+			obj.ClusterEndpoints = append(obj.ClusterEndpoints, &pb.ClusterEndpoint{
+				Connections: connections,
+			})
 		}
 	}
 

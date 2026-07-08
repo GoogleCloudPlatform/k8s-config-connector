@@ -40,7 +40,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
 	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
 	f.UnimplementedFields.Insert(".gcs_source")
-	f.UnimplementedFields.Insert(".cluster_endpoints")
 	f.UnimplementedFields.Insert(".labels")
 	f.UnimplementedFields.Insert(".rotate_server_certificate")
 	f.UnimplementedFields.Insert(".server_ca_mode")
@@ -60,6 +59,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".maintenance_policy.weekly_maintenance_window")
 	f.SpecFields.Insert(".kms_key")
 	f.SpecFields.Insert(".cross_cluster_replication_config")
+	f.SpecFields.Insert(".cluster_endpoints")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
@@ -75,6 +75,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".maintenance_policy.update_time")
 	f.StatusFields.Insert(".encryption_info")
 	f.StatusFields.Insert(".cross_cluster_replication_config")
+	f.StatusFields.Insert(".cluster_endpoints")
 
 	return f
 }
