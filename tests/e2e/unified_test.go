@@ -852,6 +852,15 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						events.RemoveHTTPRequestHeader("X-Goog-Request-Params")
 					}
 
+					if fixture.GVK.Group != "pubsub.cnrm.cloud.google.com" {
+						events = events.KeepIf(func(e *test.LogEntry) bool {
+							if e.Request.Method == "GET" && strings.Contains(e.Request.URL, "pubsub.googleapis.com") && strings.Contains(e.Request.URL, ":getIamPolicy") {
+								return false
+							}
+							return true
+						})
+					}
+
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
 					if options.TestPause {
 						assertNoRequest(t, got, normalizers...)
