@@ -261,40 +261,64 @@ func PrettyPrintJSON[T any](t *testing.T, k T) string {
 	return string(encoded)
 }
 
-type httpEvent struct {
-	Method       string
-	URL          string
-	RequestBody  string
-	Status       string
-	ResponseBody string
-}
+func compareHTTPLogs(wantContent, gotContent string) error {
+	wantEvents := parseLog(wantContent)
+	gotEvents := parseLog(gotContent)
 
-func cleanURL(u string) string {
-	if protoIdx := strings.Index(u, "://"); protoIdx != -1 {
-		u = u[protoIdx+3:]
+	wantGrouped := make(map[string][]httpEvent)
+	for _, ev := range wantEvents {
+		key := extractResourceKey(ev.URL)
+		wantGrouped[key] = append(wantGrouped[key], ev)
 	}
-	if slashIdx := strings.Index(u, "/"); slashIdx != -1 {
-		u = u[slashIdx:]
-	}
-	return u
-}
 
-func extractResourceKey(urlPath string) string {
-	u := strings.Split(urlPath, "?")[0]
-	u = cleanURL(u)
-	segments := strings.Split(strings.Trim(u, "/"), "/")
-	if len(segments) == 0 {
-		return ""
+	gotGrouped := make(map[string][]httpEvent)
+	for _, ev := range gotEvents {
+		key := extractResourceKey(ev.URL)
+		gotGrouped[key] = append(gotGrouped[key], ev)
 	}
-	lastSeg := segments[len(segments)-1]
-	if colonIdx := strings.Index(lastSeg, ":"); colonIdx != -1 {
-		lastSeg = lastSeg[:colonIdx]
+
+	// Compare the groups
+	if len(wantGrouped) != len(gotGrouped) {
+		return fmt.Errorf("mismatch in number of target resources: want %d resources, got %d", len(wantGrouped), len(gotGrouped))
 	}
-	if len(segments) >= 2 {
-		prevSeg := segments[len(segments)-2]
-		return prevSeg + "/" + lastSeg
+
+	for key, wantEvs := range wantGrouped {
+		gotEvs, ok := gotGrouped[key]
+		if !ok {
+			return fmt.Errorf("resource %q not found in actual HTTP log", key)
+		}
+
+		if len(wantEvs) != len(gotEvs) {
+			return fmt.Errorf("resource %q: mismatched number of HTTP calls: want %d, got %d", key, len(wantEvs), len(gotEvs))
+		}
+
+		for i := 0; i < len(wantEvs); i++ {
+			w := wantEvs[i]
+			g := gotEvs[i]
+
+			if w.Method != g.Method {
+				return fmt.Errorf("resource %q call %d: method mismatch: want %q, got %q", key, i, w.Method, g.Method)
+			}
+			// Clean query parameters before comparing URLs
+			wURL := strings.Split(cleanURL(w.URL), "?")[0]
+			gURL := strings.Split(cleanURL(g.URL), "?")[0]
+			if wURL != gURL {
+				return fmt.Errorf("resource %q call %d: URL path mismatch: want %q, got %q", key, i, wURL, gURL)
+			}
+
+			// Compare request bodies
+			if err := compareJSONStrings(w.RequestBody, g.RequestBody); err != nil {
+				return fmt.Errorf("resource %q call %d request body: %w", key, i, err)
+			}
+
+			// Compare response bodies
+			if err := compareJSONStrings(w.ResponseBody, g.ResponseBody); err != nil {
+				return fmt.Errorf("resource %q call %d response body: %w", key, i, err)
+			}
+		}
 	}
-	return lastSeg
+
+	return nil
 }
 
 func parseLog(content string) []httpEvent {
@@ -360,64 +384,32 @@ func parseLog(content string) []httpEvent {
 	return events
 }
 
-func compareHTTPLogs(wantContent, gotContent string) error {
-	wantEvents := parseLog(wantContent)
-	gotEvents := parseLog(gotContent)
-
-	wantGrouped := make(map[string][]httpEvent)
-	for _, ev := range wantEvents {
-		key := extractResourceKey(ev.URL)
-		wantGrouped[key] = append(wantGrouped[key], ev)
+func extractResourceKey(urlPath string) string {
+	u := strings.Split(urlPath, "?")[0]
+	u = cleanURL(u)
+	segments := strings.Split(strings.Trim(u, "/"), "/")
+	if len(segments) == 0 {
+		return ""
 	}
-
-	gotGrouped := make(map[string][]httpEvent)
-	for _, ev := range gotEvents {
-		key := extractResourceKey(ev.URL)
-		gotGrouped[key] = append(gotGrouped[key], ev)
+	lastSeg := segments[len(segments)-1]
+	if colonIdx := strings.Index(lastSeg, ":"); colonIdx != -1 {
+		lastSeg = lastSeg[:colonIdx]
 	}
-
-	// Compare the groups
-	if len(wantGrouped) != len(gotGrouped) {
-		return fmt.Errorf("mismatch in number of target resources: want %d resources, got %d", len(wantGrouped), len(gotGrouped))
+	if len(segments) >= 2 {
+		prevSeg := segments[len(segments)-2]
+		return prevSeg + "/" + lastSeg
 	}
+	return lastSeg
+}
 
-	for key, wantEvs := range wantGrouped {
-		gotEvs, ok := gotGrouped[key]
-		if !ok {
-			return fmt.Errorf("resource %q not found in actual HTTP log", key)
-		}
-
-		if len(wantEvs) != len(gotEvs) {
-			return fmt.Errorf("resource %q: mismatched number of HTTP calls: want %d, got %d", key, len(wantEvs), len(gotEvs))
-		}
-
-		for i := 0; i < len(wantEvs); i++ {
-			w := wantEvs[i]
-			g := gotEvs[i]
-
-			if w.Method != g.Method {
-				return fmt.Errorf("resource %q call %d: method mismatch: want %q, got %q", key, i, w.Method, g.Method)
-			}
-			// Clean query parameters before comparing URLs
-			wURL := strings.Split(cleanURL(w.URL), "?")[0]
-			gURL := strings.Split(cleanURL(g.URL), "?")[0]
-			if wURL != gURL {
-				return fmt.Errorf("resource %q call %d: URL path mismatch: want %q, got %q", key, i, wURL, gURL)
-			}
-
-			// Compare request bodies
-			if err := compareJSONStrings(w.RequestBody, g.RequestBody); err != nil {
-				return fmt.Errorf("resource %q call %d request body: %w", key, i, err)
-			}
-
-			// Compare response bodies
-			if err := compareJSONStrings(w.ResponseBody, g.ResponseBody); err != nil {
-				return fmt.Errorf("resource %q call %d response body: %w", key, i, err)
-			}
-		}
+func cleanURL(u string) string {
+	if protoIdx := strings.Index(u, "://"); protoIdx != -1 {
+		u = u[protoIdx+3:]
 	}
-
-	return nil
+	if slashIdx := strings.Index(u, "/"); slashIdx != -1 {
+		u = u[slashIdx:]
+	}
+	return u
 }
 
 func compareJSONStrings(wantJSON, gotJSON string) error {
@@ -442,4 +434,12 @@ func compareJSONStrings(wantJSON, gotJSON string) error {
 		return fmt.Errorf("JSON mismatch:\n  diff: %s", cmp.Diff(wantObj, gotObj))
 	}
 	return nil
+}
+
+type httpEvent struct {
+	Method       string
+	URL          string
+	RequestBody  string
+	Status       string
+	ResponseBody string
 }
