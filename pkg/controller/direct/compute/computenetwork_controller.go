@@ -236,21 +236,71 @@ func (a *NetworkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	structuredreporting.ReportDiff(ctx, diffs)
 
-	req := &computepb.PatchNetworkRequest{
-		Project:         a.id.Project,
-		Network:         a.id.Network,
-		NetworkResource: a.desired,
-	}
-	op, err := a.gcpClient.Patch(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating ComputeNetwork %s: %w", a.id.String(), err)
-	}
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("compute ComputeNetwork %s waiting for update: %w", a.id.String(), err)
+	hasFieldDiff := func(fieldID string) bool {
+		for _, f := range diffs.Fields {
+			if f.ID == fieldID {
+				return true
+			}
+		}
+		return false
 	}
 
+	// Check immutables
+	if hasFieldDiff("network_profile") {
+		return fmt.Errorf("updating immutable field networkProfile in ComputeNetwork")
+	}
+	if hasFieldDiff("auto_create_subnetworks") {
+		return fmt.Errorf("updating immutable field autoCreateSubnetworks in ComputeNetwork")
+	}
+	if hasFieldDiff("mtu") {
+		return fmt.Errorf("updating immutable field mtu in ComputeNetwork")
+	}
+	if hasFieldDiff("internal_ipv6_range") {
+		return fmt.Errorf("updating immutable field internalIpv6Range in ComputeNetwork")
+	}
+
+	// GCP restricts certain combinations of field updates in a single request, particularly when changing ULA internal IPv6 fields.
+	// Sending unmodified or immutable fields in the request body will trigger
+	// The error "Other fields cannot be modified when changing ULA internal IPv6 fields."
+	// 1. ULA Internal IPv6 fields
+	if hasFieldDiff("enable_ula_internal_ipv6") {
+		patch := &computepb.Network{
+			EnableUlaInternalIpv6: a.desired.EnableUlaInternalIpv6,
+		}
+		req := &computepb.PatchNetworkRequest{
+			Project:         a.id.Project,
+			Network:         a.id.Network,
+			NetworkResource: patch,
+		}
+		op, err := a.gcpClient.Patch(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating ComputeNetwork %s (ULA): %w", a.id.String(), err)
+		}
+		if err := op.Wait(ctx); err != nil {
+			return fmt.Errorf("compute ComputeNetwork %s waiting for update (ULA): %w", a.id.String(), err)
+		}
+	}
+
+	// 2. Other mutable fields
+	if hasFieldDiff("routing_config") || hasFieldDiff("network_firewall_policy_enforcement_order") || hasFieldDiff("description") {
+		patch := &computepb.Network{
+			RoutingConfig:                         a.desired.RoutingConfig,
+			NetworkFirewallPolicyEnforcementOrder: a.desired.NetworkFirewallPolicyEnforcementOrder,
+			Description:                           a.desired.Description,
+		}
+		req := &computepb.PatchNetworkRequest{
+			Project:         a.id.Project,
+			Network:         a.id.Network,
+			NetworkResource: patch,
+		}
+		op, err := a.gcpClient.Patch(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating ComputeNetwork %s (routingConfig): %w", a.id.String(), err)
+		}
+		if err := op.Wait(ctx); err != nil {
+			return fmt.Errorf("compute ComputeNetwork %s waiting for update (routingConfig): %w", a.id.String(), err)
+		}
+	}
 	updated, err := a.gcpClient.Get(ctx, &computepb.GetNetworkRequest{
 		Project: a.id.Project,
 		Network: a.id.Network,
@@ -329,10 +379,25 @@ func compareNetwork(ctx context.Context, actual, desired *computepb.Network) (*s
 	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.Network) {
-		// No defaults need custom mapping, but we define pattern anyway
+		if obj.NetworkFirewallPolicyEnforcementOrder == nil {
+			obj.NetworkFirewallPolicyEnforcementOrder = direct.PtrTo("AFTER_CLASSIC_FIREWALL")
+		}
+		if obj.RoutingConfig == nil {
+			obj.RoutingConfig = &computepb.NetworkRoutingConfig{
+				RoutingMode: direct.PtrTo("REGIONAL"),
+			}
+		} else {
+			if obj.RoutingConfig.RoutingMode == nil {
+				obj.RoutingConfig.RoutingMode = direct.PtrTo("REGIONAL")
+			}
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	if direct.ValueOf(clonedDesired.EnableUlaInternalIpv6) && clonedDesired.InternalIpv6Range == nil {
+		clonedDesired.InternalIpv6Range = actual.InternalIpv6Range
+	}
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
