@@ -257,50 +257,6 @@ Vary: X-Origin
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
 POST https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -318,35 +274,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "version": 3
   }
 }
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.publisher"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -417,35 +344,6 @@ Vary: X-Origin
   "payload_format": "JSON_API_V1",
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/notificationConfigs/1",
   "topic": "//pubsub.googleapis.com/projects/${projectId}/topics/pubsubtopic-${uniqueId}"
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/pubsub.publisher"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
 }
 
 ---
@@ -541,19 +439,6 @@ Vary: X-Origin
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/notificationConfigs/1?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-204 No Content
-Content-Type: application/json
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-
----
-
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -596,6 +481,19 @@ Vary: X-Origin
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
 }
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/notificationConfigs/1?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
 
 ---
 
