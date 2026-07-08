@@ -15,7 +15,7 @@
 apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
 kind: APIHubAPI
 metadata:
-  name: apihubapi-${uniqueId}
+  name: api-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
