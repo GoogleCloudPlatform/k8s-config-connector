@@ -1,0 +1,9 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsPhraseMatcher
+metadata:
+  name: phrasematcher-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  type: ANY_OF
