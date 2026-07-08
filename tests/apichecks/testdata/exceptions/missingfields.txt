@@ -3182,7 +3182,6 @@
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.authEnabled" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.authString" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.authorizedNetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.connectMode" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.customerManagedKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.locationId" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.createTime" is not set in unstructured objects
@@ -3203,7 +3202,6 @@
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.redisVersion" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaCount" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedIpRange" is not set in unstructured objects
-[missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.secondaryIpRange" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.transitEncryptionMode" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.booleanPolicy.enforced" is not set in unstructured objects
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.listPolicy.allow.all" is not set in unstructured objects
