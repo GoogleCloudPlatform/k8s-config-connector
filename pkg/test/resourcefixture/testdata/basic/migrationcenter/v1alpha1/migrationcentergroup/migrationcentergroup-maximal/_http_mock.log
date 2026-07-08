@@ -13,11 +13,17 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Group \"projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Group \"projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -76,7 +82,6 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-
 {
   "done": true,
   "metadata": {
@@ -118,7 +123,6 @@ Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
-
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -187,7 +191,6 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-
 {
   "done": true,
   "metadata": {
@@ -230,7 +233,6 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "This is an updated maximal migration group description",
@@ -260,7 +262,6 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
@@ -288,7 +289,6 @@ Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
-
 
 {
   "done": true,
