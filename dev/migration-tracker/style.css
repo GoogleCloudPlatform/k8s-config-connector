@@ -798,6 +798,7 @@ tbody tr.row-expanded-details:hover {
 .badge.pr-sent { background-color: var(--google-yellow-light); color: var(--google-yellow); }
 .badge.not-started { background-color: var(--bg-hover); color: var(--text-secondary); }
 .badge.blocked { background-color: var(--google-red-light); color: var(--google-red); }
+.badge.deprecated { background-color: var(--bg-hover); color: var(--text-muted); border: 1px dashed var(--border-color); }
 
 /* Row Drawer details */
 .detail-toggle {

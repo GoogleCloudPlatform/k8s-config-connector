@@ -181,6 +181,8 @@ def parse_data(config_file_path, apis_dir, crds_dir, direct_dir=None):
                 resources[kind]['state'] = existing.get('state', resources[kind]['state'])
                 resources[kind]['notes'] = existing.get('notes', resources[kind]['notes'])
                 resources[kind]['mocksLastRefreshed'] = existing.get('mocksLastRefreshed', resources[kind]['mocksLastRefreshed'])
+                if 'edgeCases' in existing:
+                    resources[kind]['edgeCases'] = existing['edgeCases']
                 if 'steps' in existing:
                     for step, val in existing['steps'].items():
                         resources[kind]['steps'][step] = val
@@ -324,10 +326,25 @@ def parse_data(config_file_path, apis_dir, crds_dir, direct_dir=None):
         if res['state'] != 'Completed' and any(res['steps'].values()):
             res['state'] = 'In Progress'
 
-    # Sequentially index all resources consecutively to remove gaps in sortOrder
-    sorted_kinds = sorted(resources.keys(), key=lambda k: resources[k].get('sortOrder', 9999))
+    # Sequentially index all resources consecutively to remove gaps in sortOrder,
+    # and re-order sortOrder based on deprecation to place deprecated resources last
+    active_kinds = []
+    deprecated_kinds = []
+    for kind, res in resources.items():
+        is_deprecated = res.get('edgeCases', {}).get('gcpAPIDeprecated') == True
+        if is_deprecated:
+            deprecated_kinds.append(kind)
+        else:
+            active_kinds.append(kind)
+
+    active_kinds.sort(key=lambda k: resources[k].get('sortOrder', 9999))
+    deprecated_kinds.sort(key=lambda k: resources[k].get('sortOrder', 9999))
+
     current_order = 1
-    for kind in sorted_kinds:
+    for kind in active_kinds:
+        resources[kind]['sortOrder'] = current_order
+        current_order += 1
+    for kind in deprecated_kinds:
         resources[kind]['sortOrder'] = current_order
         current_order += 1
 
