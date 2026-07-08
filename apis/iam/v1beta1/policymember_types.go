@@ -31,6 +31,7 @@ type IAMPolicyMemberSpec struct {
 
 	// Immutable. The IAM identity to be bound to the role. Exactly one of
 	// 'member' or 'memberFrom' must be used.
+	// This supports all standard IAM member formats, such as `user:`, `serviceAccount:`, `group:`, `domain:`, etc.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="member is immutable"
 	Member Member `json:"member,omitempty"`
 
