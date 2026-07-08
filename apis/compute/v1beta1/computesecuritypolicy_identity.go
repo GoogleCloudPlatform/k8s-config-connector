@@ -58,7 +58,6 @@ func (i *ComputeSecurityPolicyIdentity) FromExternal(ref string) error {
 
 	if parsed, match, _ := ComputeGlobalSecurityPolicyIdentityFormat.Parse(ref); match {
 		*i = *parsed
-		i.Region = "global"
 		return nil
 	}
 	if parsed, match, _ := ComputeRegionalSecurityPolicyIdentityFormat.Parse(ref); match {
