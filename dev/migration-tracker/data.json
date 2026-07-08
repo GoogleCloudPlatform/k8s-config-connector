@@ -1575,7 +1575,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 300,
+    "sortOrder": 297,
     "downstreamCount": 4
   },
   {
@@ -1603,7 +1603,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 301,
+    "sortOrder": 298,
     "downstreamCount": 0
   },
   {
@@ -1899,7 +1899,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 302,
+    "sortOrder": 299,
     "downstreamCount": 4
   },
   {
@@ -2146,7 +2146,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 3,
-    "downstreamCount": 128
+    "downstreamCount": 129
   },
   {
     "group": "compute",
@@ -2587,7 +2587,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 303,
+    "sortOrder": 300,
     "downstreamCount": 0
   },
   {
@@ -4803,7 +4803,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 1,
-    "downstreamCount": 408
+    "downstreamCount": 409
   },
   {
     "group": "gkehub",
@@ -5152,7 +5152,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 6,
-    "downstreamCount": 54
+    "downstreamCount": 55
   },
   {
     "group": "iam",
@@ -5308,7 +5308,7 @@
       "gcpAPIDeprecated": true,
       "notes": "IAP Brand APIs are deprecated. Context can be found at https://docs.cloud.google.com/iap/docs/deprecations and https://docs.cloud.google.com/iap/docs/deprecations/migrate-oauth-client."
     },
-    "sortOrder": 304,
+    "sortOrder": 301,
     "downstreamCount": 1
   },
   {
@@ -6698,7 +6698,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 2,
-    "downstreamCount": 403
+    "downstreamCount": 404
   },
   {
     "group": "pubsublite",
@@ -6723,7 +6723,11 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 262,
+    "edgeCases": {
+      "gcpAPIDeprecated": true,
+      "notes": "Pub/Sub Lite is deprecated. Please find more details at https://docs.cloud.google.com/pubsub/lite/docs/release-notes#June_17_2024"
+    },
+    "sortOrder": 302,
     "downstreamCount": 0
   },
   {
@@ -6749,7 +6753,11 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 263,
+    "edgeCases": {
+      "gcpAPIDeprecated": true,
+      "notes": "Pub/Sub Lite is deprecated. Please find more details at https://docs.cloud.google.com/pubsub/lite/docs/release-notes#June_17_2024"
+    },
+    "sortOrder": 303,
     "downstreamCount": 0
   },
   {
@@ -6775,7 +6783,11 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 264,
+    "edgeCases": {
+      "gcpAPIDeprecated": true,
+      "notes": "Pub/Sub Lite is deprecated. Please find more details at https://docs.cloud.google.com/pubsub/lite/docs/release-notes#June_17_2024"
+    },
+    "sortOrder": 304,
     "downstreamCount": 0
   },
   {
@@ -6885,7 +6897,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 265,
+    "sortOrder": 262,
     "downstreamCount": 0
   },
   {
@@ -6912,7 +6924,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 266,
+    "sortOrder": 263,
     "downstreamCount": 0
   },
   {
@@ -6938,7 +6950,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 267,
+    "sortOrder": 264,
     "downstreamCount": 0
   },
   {
@@ -6965,7 +6977,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 268,
+    "sortOrder": 265,
     "downstreamCount": 0
   },
   {
@@ -6995,7 +7007,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 269,
+    "sortOrder": 266,
     "downstreamCount": 0
   },
   {
@@ -7023,7 +7035,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 270,
+    "sortOrder": 267,
     "downstreamCount": 0
   },
   {
@@ -7047,7 +7059,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 271,
+    "sortOrder": 268,
     "downstreamCount": 0
   },
   {
@@ -7071,7 +7083,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 272,
+    "sortOrder": 269,
     "downstreamCount": 0
   },
   {
@@ -7095,7 +7107,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 273,
+    "sortOrder": 270,
     "downstreamCount": 0
   },
   {
@@ -7149,7 +7161,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 274,
+    "sortOrder": 271,
     "downstreamCount": 0
   },
   {
@@ -7173,7 +7185,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 275,
+    "sortOrder": 272,
     "downstreamCount": 0
   },
   {
@@ -7197,7 +7209,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 276,
+    "sortOrder": 273,
     "downstreamCount": 0
   },
   {
@@ -7252,7 +7264,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 277,
+    "sortOrder": 274,
     "downstreamCount": 0
   },
   {
@@ -7306,7 +7318,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 278,
+    "sortOrder": 275,
     "downstreamCount": 0
   },
   {
@@ -7358,7 +7370,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 279,
+    "sortOrder": 276,
     "downstreamCount": 0
   },
   {
@@ -7384,7 +7396,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 280,
+    "sortOrder": 277,
     "downstreamCount": 0
   },
   {
@@ -7410,7 +7422,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 281,
+    "sortOrder": 278,
     "downstreamCount": 0
   },
   {
@@ -7515,7 +7527,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 282,
+    "sortOrder": 279,
     "downstreamCount": 0
   },
   {
@@ -7541,7 +7553,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 283,
+    "sortOrder": 280,
     "downstreamCount": 0
   },
   {
@@ -7567,7 +7579,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 284,
+    "sortOrder": 281,
     "downstreamCount": 0
   },
   {
@@ -7593,7 +7605,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 285,
+    "sortOrder": 282,
     "downstreamCount": 0
   },
   {
@@ -7619,7 +7631,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 286,
+    "sortOrder": 283,
     "downstreamCount": 0
   },
   {
@@ -7645,7 +7657,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 287,
+    "sortOrder": 284,
     "downstreamCount": 0
   },
   {
@@ -7671,7 +7683,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 288,
+    "sortOrder": 285,
     "downstreamCount": 0
   },
   {
@@ -7698,7 +7710,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 289,
+    "sortOrder": 286,
     "downstreamCount": 0
   },
   {
@@ -7725,7 +7737,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 290,
+    "sortOrder": 287,
     "downstreamCount": 0
   },
   {
@@ -7750,7 +7762,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 291,
+    "sortOrder": 288,
     "downstreamCount": 0
   },
   {
@@ -7802,7 +7814,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 292,
+    "sortOrder": 289,
     "downstreamCount": 0
   },
   {
@@ -7829,7 +7841,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 293,
+    "sortOrder": 290,
     "downstreamCount": 0
   },
   {
@@ -7857,7 +7869,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 294,
+    "sortOrder": 291,
     "downstreamCount": 0
   },
   {
@@ -7881,7 +7893,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 295,
+    "sortOrder": 292,
     "downstreamCount": 0
   },
   {
@@ -7905,7 +7917,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 296,
+    "sortOrder": 293,
     "downstreamCount": 0
   },
   {
@@ -7931,7 +7943,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 297,
+    "sortOrder": 294,
     "downstreamCount": 0
   },
   {
@@ -7957,7 +7969,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 298,
+    "sortOrder": 295,
     "downstreamCount": 0
   },
   {
@@ -7983,7 +7995,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 299,
+    "sortOrder": 296,
     "downstreamCount": 0
   }
 ]
