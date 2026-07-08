@@ -147,6 +147,7 @@ SKIP_TEST_APIGROUPS=(
     "tags.cnrm.cloud.google.com"
     "tpu.cnrm.cloud.google.com"
     "vertexai.cnrm.cloud.google.com"
+    "videostitcher.cnrm.cloud.google.com"
     "vmwareengine.cnrm.cloud.google.com"
     "vpcaccess.cnrm.cloud.google.com"
     "workflowexecutions.cnrm.cloud.google.com"
