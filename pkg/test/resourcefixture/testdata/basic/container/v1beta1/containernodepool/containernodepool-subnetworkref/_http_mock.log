@@ -699,7 +699,6 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
@@ -783,7 +782,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -1066,7 +1065,6 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
@@ -1150,7 +1148,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -1329,6 +1327,9 @@ X-Xss-Protection: 0
   "instanceGroupUrls": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
   ],
+  "locations": [
+    "us-central1-a"
+  ],
   "management": {
     "autoRepair": true,
     "autoUpgrade": true
@@ -1382,7 +1383,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
@@ -1458,6 +1459,9 @@ X-Xss-Protection: 0
   "instanceGroupUrls": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
   ],
+  "locations": [
+    "us-central1-a"
+  ],
   "management": {
     "autoRepair": true,
     "autoUpgrade": true
@@ -1511,7 +1515,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
@@ -1587,6 +1591,9 @@ X-Xss-Protection: 0
   "instanceGroupUrls": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
   ],
+  "locations": [
+    "us-central1-a"
+  ],
   "management": {
     "autoRepair": true,
     "autoUpgrade": true
@@ -1640,7 +1647,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
@@ -1715,6 +1722,9 @@ X-Xss-Protection: 0
   "initialNodeCount": 1,
   "instanceGroupUrls": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
+  ],
+  "locations": [
+    "us-central1-a"
   ],
   "management": {
     "autoRepair": true,
@@ -2039,6 +2049,71 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "initialNodeCount": 2,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
+      ],
+      "locations": [
+        "us-central1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "containernodepool-sample-${uniqueId}",
+      "networkConfig": {
+        "enablePrivateNodes": false,
+        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podRange": "containernodepool-sample-${uniqueId}-pods-12345678",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/containernodepool-sample-${uniqueId}",
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.30.5-gke.1014001"
+    },
+    {
+      "config": {
+        "bootDisk": {
+          "diskType": "pd-balanced",
+          "sizeGb": "100"
+        },
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false,
+          "maxParallelImagePulls": 2
+        },
+        "machineType": "e2-medium",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "resourceLabels": {
+          "goog-gke-node-pool-provisioning-model": "on-demand"
+        },
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {}
+      },
       "initialNodeCount": 1,
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
@@ -2056,7 +2131,6 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
@@ -2166,6 +2240,9 @@ X-Xss-Protection: 0
   "instanceGroupUrls": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
   ],
+  "locations": [
+    "us-central1-a"
+  ],
   "management": {
     "autoRepair": true,
     "autoUpgrade": true
@@ -2219,7 +2296,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
@@ -2295,6 +2372,9 @@ X-Xss-Protection: 0
   "instanceGroupUrls": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
   ],
+  "locations": [
+    "us-central1-a"
+  ],
   "management": {
     "autoRepair": true,
     "autoUpgrade": true
@@ -2348,7 +2428,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp",
@@ -2423,6 +2503,9 @@ X-Xss-Protection: 0
   "initialNodeCount": 2,
   "instanceGroupUrls": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-sample-${uniqueId}-grp"
+  ],
+  "locations": [
+    "us-central1-a"
   ],
   "management": {
     "autoRepair": true,
@@ -2761,7 +2844,6 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
@@ -2845,7 +2927,7 @@ X-Xss-Protection: 0
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -3128,7 +3210,6 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
         "podRange": "default-pool-pods-12345678",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
