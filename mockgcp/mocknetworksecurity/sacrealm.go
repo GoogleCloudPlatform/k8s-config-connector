@@ -31,6 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// SSERealmServer implements the SSERealmServiceServer gRPC interface,
+// providing the mock implementation and alignment verification for NetworkSecuritySACRealm under Phase 3.
 type SSERealmServer struct {
 	*MockService
 	pbv1.UnimplementedSSERealmServiceServer
