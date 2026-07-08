@@ -34,7 +34,13 @@ This skill guides you through implementing Phase 3 (MockGCP and Alignment) for a
   - **Volatile/Random Values**: For values like timestamps or etags that are functionally identical but structurally unpredictable, update `normalize.go` for the service.
   - **Critical Rule**: Always scope the `Previsit` normalization in `normalize.go` to ensure it only applies to your service URL (e.g. `strings.Contains(event.URL(), "<service_name>.googleapis.com")`) to prevent log corruption in unrelated services.
 - Iterate on running `hack/compare-mock "fixtures/^<testname>$"` and making incremental code updates until the HTTP logs match real GCP perfectly with clean, minimal diffs.
+- Once the logs align, run the comparison with `WRITE_GOLDEN_OUTPUT=1` against mock GCP to generate the `_http_mock.log` file:
+  ```bash
+  WRITE_GOLDEN_OUTPUT=1 RUN_E2E=1 E2E_GCP_TARGET=mock E2E_KUBE_TARGET=envtest go test -v ./tests/e2e -run "TestAllInSeries/fixtures/<testname>"
+  ```
+  Make sure both `_http.log` and `_http_mock.log` are present in the fixture directory.
 
 ### 4. Verify and Run Presubmits
 - Run local validation: `scripts/validate-prereqs.sh`.
 - Run the e2e fixtures presubmit: `./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>`.
+- Make sure to stage and commit both `_http.log` and `_http_mock.log` files in your Pull Request.
