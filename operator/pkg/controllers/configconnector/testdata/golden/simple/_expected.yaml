@@ -3684,6 +3684,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - saasservicemgmt.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - secretmanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3853,6 +3865,18 @@ rules:
   - delete
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - testing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5226,6 +5250,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - saasservicemgmt.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - secretmanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5339,6 +5371,14 @@ rules:
   - watch
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - testing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
