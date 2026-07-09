@@ -1,0 +1,579 @@
+931c931
+< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> GET projects/${projectId}/regions/us-central1/routers/${routerID}
+957c957
+< PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> PATCH projects/${projectId}/regions/us-central1/routers/${routerID}
+963d962
+<       "drainNatIps": [],
+968,969d966
+<       "icmpIdleTimeoutSec": 30,
+<       "logConfig": null,
+972d968
+<       "natIps": [],
+994,998c990
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1031c1023,1024
+< GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1062c1055
+< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> GET projects/${projectId}/regions/us-central1/routers/${routerID}
+1087d1079
+<       "icmpIdleTimeoutSec": 30,
+1110,1114c1102
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1124c1112
+< PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> PATCH projects/${projectId}/regions/us-central1/routers/${routerID}
+1130d1117
+<       "drainNatIps": [],
+1135,1136d1121
+<       "icmpIdleTimeoutSec": 30,
+<       "logConfig": null,
+1139d1123
+<       "natIps": [],
+1144a1129,1131
+>             ],
+>             "sourceNatDrainRanges": [
+>               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+1161,1165c1148
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1198c1181,1182
+< GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1229c1213
+< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> GET projects/${projectId}/regions/us-central1/routers/${routerID}
+1254d1237
+<       "icmpIdleTimeoutSec": 30,
+1261,1311d1243
+<             ]
+<           },
+<           "description": "private nat rule example",
+<           "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
+<           "ruleNumber": 100
+<         }
+<       ],
+<       "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
+<       "subnetworks": [
+<         {
+<           "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<           "sourceIpRangesToNat": [
+<             "ALL_IP_RANGES"
+<           ]
+<         }
+<       ],
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+<     }
+<   ],
+<   "network": "projects/${projectId}/global/networks/${networkID}",
+<   "region": "projects/${projectId}/regions/us-central1",
+<   "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
+< }
+< 
+< ---
+< 
+< PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+< Content-Type: application/json
+< 
+< {
+<   "nats": [
+<     {
+<       "drainNatIps": [],
+<       "enableEndpointIndependentMapping": false,
+<       "endpointTypes": [
+<         "ENDPOINT_TYPE_VM"
+<       ],
+<       "icmpIdleTimeoutSec": 30,
+<       "logConfig": null,
+<       "name": "computerouternat-${uniqueId}",
+<       "natIpAllocateOption": "USE_SHARED_RANGES",
+<       "natIps": [],
+<       "rules": [
+<         {
+<           "action": {
+<             "sourceNatActiveRanges": [
+<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+1331,1335c1263
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1337,1387c1265,1266
+<   ]
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "patch",
+<   "progress": 0,
+<   "region": "projects/${projectId}/regions/us-central1",
+<   "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${routerID}",
+<   "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "patch",
+<   "progress": 100,
+---
+>   ],
+>   "network": "projects/${projectId}/global/networks/${networkID}",
+1389,1394c1268
+<   "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${routerID}",
+<   "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
+<   "user": "user@example.com"
+---
+>   "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
+1399c1273
+< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> PUT projects/${projectId}/regions/us-central1/routers/${routerID}
+1402,1411d1275
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+1418,1456d1281
+<   "nats": [
+<     {
+<       "enableEndpointIndependentMapping": false,
+<       "endpointTypes": [
+<         "ENDPOINT_TYPE_VM"
+<       ],
+<       "icmpIdleTimeoutSec": 30,
+<       "name": "computerouternat-${uniqueId}",
+<       "rules": [
+<         {
+<           "action": {
+<             "sourceNatActiveRanges": [
+<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<             ],
+<             "sourceNatDrainRanges": [
+<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+<             ]
+<           },
+<           "description": "private nat rule example",
+<           "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
+<           "ruleNumber": 100
+<         }
+<       ],
+<       "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
+<       "subnetworks": [
+<         {
+<           "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<           "sourceIpRangesToNat": [
+<             "ALL_IP_RANGES"
+<           ]
+<         }
+<       ],
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+<     }
+<   ],
+1462,1470d1286
+< ---
+< 
+< PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+< Content-Type: application/json
+< 
+< {
+<   "nats": []
+< }
+< 
+1486c1302
+<   "operationType": "patch",
+---
+>   "operationType": "update",
+1499c1315,1316
+< GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1517c1334
+<   "operationType": "patch",
+---
+>   "operationType": "update",
+2128,2427d1944
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "autoCreateSubnetworks": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#network",
+<   "name": "${networkID}",
+<   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+<   "routingConfig": {
+<     "bgpBestPathSelectionMode": "LEGACY",
+<     "routingMode": "REGIONAL"
+<   },
+<   "selfLink": "projects/${projectId}/global/networks/${networkID}",
+<   "selfLinkWithId": "projects/${projectId}/global/networks/${networkID}"
+< }
+< 
+< ---
+< 
+< DELETE projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 0,
+<   "selfLink": "projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${networkID}",
+<   "targetLink": "projects/${projectId}/global/networks/${networkID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "autoCreateSubnetworks": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#network",
+<   "name": "${networkID}",
+<   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+<   "routingConfig": {
+<     "bgpBestPathSelectionMode": "LEGACY",
+<     "routingMode": "REGIONAL"
+<   },
+<   "selfLink": "projects/${projectId}/global/networks/${networkID}",
+<   "selfLinkWithId": "projects/${projectId}/global/networks/${networkID}"
+< }
+< 
+< ---
+< 
+< DELETE projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 0,
+<   "selfLink": "projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${networkID}",
+<   "targetLink": "projects/${projectId}/global/networks/${networkID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "autoCreateSubnetworks": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#network",
+<   "name": "${networkID}",
+<   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+<   "routingConfig": {
+<     "bgpBestPathSelectionMode": "LEGACY",
+<     "routingMode": "REGIONAL"
+<   },
+<   "selfLink": "projects/${projectId}/global/networks/${networkID}",
+<   "selfLinkWithId": "projects/${projectId}/global/networks/${networkID}"
+< }
+< 
+< ---
+< 
+< DELETE projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 0,
+<   "selfLink": "projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${networkID}",
+<   "targetLink": "projects/${projectId}/global/networks/${networkID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "autoCreateSubnetworks": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#network",
+<   "name": "${networkID}",
+<   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+<   "routingConfig": {
+<     "bgpBestPathSelectionMode": "LEGACY",
+<     "routingMode": "REGIONAL"
+<   },
+<   "selfLink": "projects/${projectId}/global/networks/${networkID}",
+<   "selfLinkWithId": "projects/${projectId}/global/networks/${networkID}"
+< }
+< 
+< ---
+< 
+< DELETE projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 0,
+<   "selfLink": "projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${networkID}",
+<   "targetLink": "projects/${projectId}/global/networks/${networkID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "autoCreateSubnetworks": false,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "kind": "compute#network",
+<   "name": "${networkID}",
+<   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+<   "routingConfig": {
+<     "bgpBestPathSelectionMode": "LEGACY",
+<     "routingMode": "REGIONAL"
+<   },
+<   "selfLink": "projects/${projectId}/global/networks/${networkID}",
+<   "selfLinkWithId": "projects/${projectId}/global/networks/${networkID}"
+< }
+< 
+< ---
+< 
+< DELETE projects/${projectId}/global/networks/${networkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "delete",
+<   "progress": 0,
+<   "selfLink": "projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${networkID}",
+<   "targetLink": "projects/${projectId}/global/networks/${networkID}",

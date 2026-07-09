@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+GET projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -27,7 +27,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+POST projects/${projectId}/global/networks?alt=json
 Content-Type: application/json
 
 {
@@ -56,17 +56,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -86,17 +86,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+GET projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -120,13 +120,13 @@ X-Xss-Protection: 0
     "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+GET projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -155,7 +155,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks?alt=json
+POST projects/${projectId}/regions/us-central1/subnetworks?alt=json
 Content-Type: application/json
 
 {
@@ -185,18 +185,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -216,18 +216,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+GET projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -251,19 +251,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "${subnetworkID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
-  "state": "READY"
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -292,7 +291,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
+POST projects/${projectId}/regions/us-central1/addresses?alt=json
 Content-Type: application/json
 
 {
@@ -322,18 +321,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -353,18 +352,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -385,20 +384,16 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+POST projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
 Content-Type: application/json
 
 {
@@ -420,19 +415,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -459,14 +460,14 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -495,7 +496,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers?alt=json
+POST projects/${projectId}/regions/us-central1/routers?alt=json
 Content-Type: application/json
 
 {
@@ -523,18 +524,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -554,18 +555,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -581,18 +582,17 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -621,7 +621,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
+POST projects/${projectId}/regions/us-central1/addresses?alt=json
 Content-Type: application/json
 
 {
@@ -651,18 +651,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -682,18 +682,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -714,20 +714,16 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+POST projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
 Content-Type: application/json
 
 {
@@ -749,19 +745,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -788,14 +790,14 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -824,7 +826,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
+POST projects/${projectId}/regions/us-central1/addresses?alt=json
 Content-Type: application/json
 
 {
@@ -854,18 +856,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -885,18 +887,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -917,20 +919,16 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+POST projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
 Content-Type: application/json
 
 {
@@ -952,19 +950,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -991,14 +995,14 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1014,18 +1018,17 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 {
@@ -1065,6 +1068,7 @@ Content-Type: application/json
       "tcpEstablishedIdleTimeoutSec": 1200,
       "tcpTimeWaitTimeoutSec": 120,
       "tcpTransitoryIdleTimeoutSec": 30,
+      "type": "PUBLIC",
       "udpIdleTimeoutSec": 30
     }
   ]
@@ -1087,18 +1091,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1118,18 +1122,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1145,14 +1149,11 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
   "nats": [
     {
-      "autoNetworkTier": "PREMIUM",
-      "effectiveTcpTimeWaitTimeoutSec": 120,
       "enableEndpointIndependentMapping": false,
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
@@ -1192,14 +1193,14 @@ X-Xss-Protection: 0
       "udpIdleTimeoutSec": 30
     }
   ],
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 {
@@ -1223,18 +1224,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1254,18 +1255,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "patch",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1292,14 +1293,14 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+DELETE projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1319,18 +1320,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1350,18 +1351,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1388,14 +1389,14 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+DELETE projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1415,18 +1416,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1446,18 +1447,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1473,18 +1474,17 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+DELETE projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1504,18 +1504,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1535,18 +1535,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${routerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+GET projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1573,14 +1573,14 @@ X-Xss-Protection: 0
   },
   "name": "${addressID}",
   "networkTier": "PREMIUM",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+DELETE projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1600,18 +1600,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1631,18 +1631,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+GET projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1666,19 +1666,18 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "${subnetworkID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
-  "state": "READY"
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+DELETE projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1698,18 +1697,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1729,18 +1728,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "projects/${projectId}/regions/us-central1",
+  "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+GET projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1764,13 +1763,13 @@ X-Xss-Protection: 0
     "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+DELETE projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1790,17 +1789,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+GET projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1820,10 +1819,10 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
