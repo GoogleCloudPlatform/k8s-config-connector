@@ -74,6 +74,7 @@ func ResolveFolderFromAnnotation(ctx context.Context, reader client.Reader, src 
 }
 
 // ResolveFolder will resolve a FolderRef to a Folder, with the FolderID.
+// Deprecated: ResolveFolder resolves a v1beta1.FolderRef. Use refs.ResolveFolder instead.
 func ResolveFolder(ctx context.Context, reader client.Reader, src client.Object, ref *FolderRef) (*Folder, error) {
 	if ref == nil {
 		return nil, nil

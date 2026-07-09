@@ -46,11 +46,15 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 }
 
 func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) *objectWalker {
+	// Note: Avoid adding service-specific normalization logic here if possible. Instead, prefer adding per-service normalization in e.g. mockcloudresourcemanager/normalize.go.
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
 	if folderID != "" {
 		replacements.PathIDs[folderID] = "${folderID}"
+	}
+	if testgcp.TestFolderID.Get() != "" {
+		replacements.PathIDs[testgcp.TestFolderID.Get()] = "${folderID}"
 	}
 
 	annotations := u.GetAnnotations()
