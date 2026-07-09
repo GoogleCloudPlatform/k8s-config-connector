@@ -38,16 +38,7 @@ Content-Type: application/json
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
-    "rule": [
-      {
-        "action": {
-          "type": "Delete"
-        },
-        "condition": {
-          "age": 7
-        }
-      }
-    ]
+    "rule": []
   },
   "location": "US",
   "name": "storagebucket-sample-${uniqueId}",
@@ -82,18 +73,6 @@ Vary: X-Origin
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": [
-      {
-        "action": {
-          "type": "Delete"
-        },
-        "condition": {
-          "age": 7
-        }
-      }
-    ]
   },
   "location": "US",
   "locationType": "multi-region",
@@ -143,18 +122,6 @@ Vary: X-Origin
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {
-    "rule": [
-      {
-        "action": {
-          "type": "Delete"
-        },
-        "condition": {
-          "age": 7
-        }
-      }
-    ]
-  },
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
@@ -185,9 +152,6 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true",
     "newkey": "newval"
-  },
-  "lifecycle": {
-    "rule": []
   },
   "versioning": {
     "enabled": true
