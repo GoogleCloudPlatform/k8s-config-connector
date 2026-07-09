@@ -253,6 +253,17 @@ func (a *BucketAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return err
 	}
 
+	if a.desiredObj.Spec.SoftDeletePolicy != nil && a.desiredObj.Spec.SoftDeletePolicy.RetentionDurationSeconds != nil {
+		desiredSeconds := int64(*a.desiredObj.Spec.SoftDeletePolicy.RetentionDurationSeconds)
+		var actualSeconds int64
+		if a.actualSoftDeletePolicy != nil {
+			actualSeconds = a.actualSoftDeletePolicy.RetentionDurationSeconds
+		}
+		if desiredSeconds != actualSeconds {
+			diffs.AddField("softDeletePolicy.retentionDurationSeconds", actualSeconds, desiredSeconds)
+		}
+	}
+
 	if !diffs.HasDiff() {
 		log.V(2).Info("no diff detected, skipping update", "name", a.id)
 		return a.updateStatus(ctx, updateOp, a.actual, a.actualSoftDeletePolicy)
@@ -357,6 +368,8 @@ func StorageBucketStatus_FromProto(mapCtx *direct.MapContext, latest *pb.Bucket,
 		}
 		if latestSoftDeletePolicy.EffectiveTime != "" {
 			status.ObservedState.SoftDeletePolicy.EffectiveTime = &latestSoftDeletePolicy.EffectiveTime
+		} else {
+			status.ObservedState.SoftDeletePolicy.EffectiveTime = direct.PtrTo("1970-01-01T00:00:00Z")
 		}
 		status.ObservedState.SoftDeletePolicy.RetentionDurationSeconds = &latestSoftDeletePolicy.RetentionDurationSeconds
 	}
