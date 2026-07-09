@@ -3954,7 +3954,7 @@ jobs:
       - validate-generated-files
       - validate-untested-fields
     runs-on: ubuntu-latest
-    if: ${{ always() }} # Ensure this always runs
+    if: ${{ !cancelled() }} # Ensure this runs even if some dependencies fail, but not if the workflow is cancelled
     steps:
       - name: Verify all checks succeeded
         run: |

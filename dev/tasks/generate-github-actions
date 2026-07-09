@@ -222,7 +222,7 @@ done
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     runs-on: ubuntu-latest
-    if: \${{ always() }} # Ensure this always runs
+    if: \${{ !cancelled() }} # Ensure this runs even if some dependencies fail, but not if the workflow is cancelled
     steps:
       - name: Verify all checks succeeded
         run: |
