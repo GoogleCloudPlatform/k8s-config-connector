@@ -167,6 +167,9 @@ Content-Type: application/json
   },
   "location": "US",
   "name": "storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
   "versioning": {}
 }
 
@@ -308,6 +311,9 @@ Content-Type: application/json
   },
   "location": "US",
   "name": "storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
   "versioning": {}
 }
 

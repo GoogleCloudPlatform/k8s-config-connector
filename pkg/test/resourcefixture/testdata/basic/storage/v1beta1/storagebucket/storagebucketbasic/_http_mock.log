@@ -46,6 +46,9 @@ Content-Type: application/json
   },
   "location": "US",
   "name": "storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
   "versioning": {}
 }
 
@@ -176,6 +179,9 @@ Content-Type: application/json
   },
   "location": "US",
   "name": "storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "0"
+  },
   "versioning": {
     "enabled": true
   }
@@ -304,8 +310,7 @@ Vary: X-Origin
   "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
+    "retentionDurationSeconds": "0"
   },
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
@@ -365,8 +370,7 @@ Vary: X-Origin
   "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
+    "retentionDurationSeconds": "0"
   },
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",

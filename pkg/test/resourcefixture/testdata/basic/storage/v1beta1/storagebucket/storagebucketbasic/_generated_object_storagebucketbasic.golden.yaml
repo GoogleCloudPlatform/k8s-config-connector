@@ -29,6 +29,8 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    softDeletePolicy:
+      retentionDurationSeconds: 0
   selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
   url: gs://storagebucket-sample-${uniqueId}

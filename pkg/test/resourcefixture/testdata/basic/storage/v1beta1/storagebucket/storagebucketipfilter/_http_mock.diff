@@ -1,0 +1,193 @@
+151,173d150
+<   "iamConfiguration": {
+<     "uniformBucketLevelAccess": {
+<       "enabled": false
+<     }
+<   },
+<   "ipFilter": {
+<     "allowAllServiceAgentAccess": true,
+<     "allowCrossOrgVpcs": false,
+<     "mode": "Enabled",
+<     "publicNetworkSource": {
+<       "allowedIpCidrRanges": [
+<         "8.8.8.8/32"
+<       ]
+<     },
+<     "vpcNetworkSources": [
+<       {
+<         "allowedIpCidrRanges": [
+<           "10.0.0.0/8"
+<         ],
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+<       }
+<     ]
+<   },
+196,199c173
+<   "storageClass": "STANDARD",
+<   "versioning": {
+<     "enabled": false
+<   }
+---
+>   "versioning": {}
+222,239d195
+<   "ipFilter": {
+<     "allowAllServiceAgentAccess": true,
+<     "allowCrossOrgVpcs": false,
+<     "mode": "Enabled",
+<     "publicNetworkSource": {
+<       "allowedIpCidrRanges": [
+<         "8.8.8.8/32"
+<       ]
+<     },
+<     "vpcNetworkSources": [
+<       {
+<         "allowedIpCidrRanges": [
+<           "10.0.0.0/8"
+<         ],
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+<       }
+<     ]
+<   },
+272,274c228
+<   "versioning": {
+<     "enabled": false
+<   }
+---
+>   "versioning": {}
+300,317d253
+<   "ipFilter": {
+<     "allowAllServiceAgentAccess": true,
+<     "allowCrossOrgVpcs": false,
+<     "mode": "Enabled",
+<     "publicNetworkSource": {
+<       "allowedIpCidrRanges": [
+<         "8.8.8.8/32"
+<       ]
+<     },
+<     "vpcNetworkSources": [
+<       {
+<         "allowedIpCidrRanges": [
+<           "10.0.0.0/8"
+<         ],
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+<       }
+<     ]
+<   },
+350,352c286
+<   "versioning": {
+<     "enabled": false
+<   }
+---
+>   "versioning": {}
+361,371c295,301
+<   "ipFilter": {
+<     "allowAllServiceAgentAccess": false,
+<     "allowCrossOrgVpcs": false,
+<     "mode": "Enabled",
+<     "publicNetworkSource": {
+<       "allowedIpCidrRanges": [
+<         "8.8.8.8/32",
+<         "9.9.9.9/32"
+<       ]
+<     },
+<     "vpcNetworkSources": [
+---
+>   "labels": {
+>     "cnrm-test": "true",
+>     "label-one": "value-one",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lifecycle": {
+>     "rule": [
+373,376c303,308
+<         "allowedIpCidrRanges": [
+<           "10.0.0.0/8"
+<         ],
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+---
+>         "action": {
+>           "type": "Delete"
+>         },
+>         "condition": {
+>           "age": 7
+>         }
+379c311,317
+<   }
+---
+>   },
+>   "location": "US",
+>   "name": "storagebucket-sample-${uniqueId}",
+>   "softDeletePolicy": {
+>     "retentionDurationSeconds": "604800"
+>   },
+>   "versioning": {}
+475,493d412
+<   "ipFilter": {
+<     "allowAllServiceAgentAccess": false,
+<     "allowCrossOrgVpcs": false,
+<     "mode": "Enabled",
+<     "publicNetworkSource": {
+<       "allowedIpCidrRanges": [
+<         "8.8.8.8/32",
+<         "9.9.9.9/32"
+<       ]
+<     },
+<     "vpcNetworkSources": [
+<       {
+<         "allowedIpCidrRanges": [
+<           "10.0.0.0/8"
+<         ],
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+<       }
+<     ]
+<   },
+529,531c448
+<   "versioning": {
+<     "enabled": false
+<   }
+---
+>   "versioning": {}
+557,575d473
+<   "ipFilter": {
+<     "allowAllServiceAgentAccess": false,
+<     "allowCrossOrgVpcs": false,
+<     "mode": "Enabled",
+<     "publicNetworkSource": {
+<       "allowedIpCidrRanges": [
+<         "8.8.8.8/32",
+<         "9.9.9.9/32"
+<       ]
+<     },
+<     "vpcNetworkSources": [
+<       {
+<         "allowedIpCidrRanges": [
+<           "10.0.0.0/8"
+<         ],
+<         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+<       }
+<     ]
+<   },
+608,628c506
+<   "versioning": {
+<     "enabled": false
+<   }
+< }
+< 
+< ---
+< 
+< GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+< {
+<   "kind": "storage#objects",
+<   "prefixes": [
+<     "testfolder",
+<     "testmanagedfolder"
+<   ]
+---
+>   "versioning": {}

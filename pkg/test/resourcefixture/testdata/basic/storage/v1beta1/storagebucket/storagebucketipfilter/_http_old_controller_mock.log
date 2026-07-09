@@ -148,6 +148,29 @@ POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&proj
 Content-Type: application/json
 
 {
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "allowCrossOrgVpcs": false,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "8.8.8.8/32"
+      ]
+    },
+    "vpcNetworkSources": [
+      {
+        "allowedIpCidrRanges": [
+          "10.0.0.0/8"
+        ],
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+      }
+    ]
+  },
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -170,7 +193,10 @@ Content-Type: application/json
   "softDeletePolicy": {
     "retentionDurationSeconds": "604800"
   },
-  "versioning": {}
+  "storageClass": "STANDARD",
+  "versioning": {
+    "enabled": false
+  }
 }
 
 200 OK
@@ -193,6 +219,24 @@ Vary: X-Origin
     }
   },
   "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "allowCrossOrgVpcs": false,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "8.8.8.8/32"
+      ]
+    },
+    "vpcNetworkSources": [
+      {
+        "allowedIpCidrRanges": [
+          "10.0.0.0/8"
+        ],
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+      }
+    ]
+  },
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
@@ -225,7 +269,9 @@ Vary: X-Origin
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
-  "versioning": {}
+  "versioning": {
+    "enabled": false
+  }
 }
 
 ---
@@ -251,6 +297,24 @@ Vary: X-Origin
     }
   },
   "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "allowCrossOrgVpcs": false,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "8.8.8.8/32"
+      ]
+    },
+    "vpcNetworkSources": [
+      {
+        "allowedIpCidrRanges": [
+          "10.0.0.0/8"
+        ],
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+      }
+    ]
+  },
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
@@ -283,7 +347,9 @@ Vary: X-Origin
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
-  "versioning": {}
+  "versioning": {
+    "enabled": false
+  }
 }
 
 ---
@@ -292,29 +358,25 @@ PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueI
 Content-Type: application/json
 
 {
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": [
+  "ipFilter": {
+    "allowAllServiceAgentAccess": false,
+    "allowCrossOrgVpcs": false,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "8.8.8.8/32",
+        "9.9.9.9/32"
+      ]
+    },
+    "vpcNetworkSources": [
       {
-        "action": {
-          "type": "Delete"
-        },
-        "condition": {
-          "age": 7
-        }
+        "allowedIpCidrRanges": [
+          "10.0.0.0/8"
+        ],
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
       }
     ]
-  },
-  "location": "US",
-  "name": "storagebucket-sample-${uniqueId}",
-  "softDeletePolicy": {
-    "retentionDurationSeconds": "604800"
-  },
-  "versioning": {}
+  }
 }
 
 200 OK
@@ -410,6 +472,25 @@ Vary: X-Origin
     }
   },
   "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": false,
+    "allowCrossOrgVpcs": false,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "8.8.8.8/32",
+        "9.9.9.9/32"
+      ]
+    },
+    "vpcNetworkSources": [
+      {
+        "allowedIpCidrRanges": [
+          "10.0.0.0/8"
+        ],
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+      }
+    ]
+  },
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
@@ -445,7 +526,9 @@ Vary: X-Origin
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
-  "versioning": {}
+  "versioning": {
+    "enabled": false
+  }
 }
 
 ---
@@ -471,6 +554,25 @@ Vary: X-Origin
     }
   },
   "id": "000000000000000000000",
+  "ipFilter": {
+    "allowAllServiceAgentAccess": false,
+    "allowCrossOrgVpcs": false,
+    "mode": "Enabled",
+    "publicNetworkSource": {
+      "allowedIpCidrRanges": [
+        "8.8.8.8/32",
+        "9.9.9.9/32"
+      ]
+    },
+    "vpcNetworkSources": [
+      {
+        "allowedIpCidrRanges": [
+          "10.0.0.0/8"
+        ],
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+      }
+    ]
+  },
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
@@ -503,7 +605,27 @@ Vary: X-Origin
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
-  "versioning": {}
+  "versioning": {
+    "enabled": false
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---
