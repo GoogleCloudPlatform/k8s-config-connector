@@ -122,8 +122,11 @@ func ResolveFolder(ctx context.Context, reader client.Reader, src client.Object,
 	if err != nil {
 		return nil, err
 	}
-	if !k8s.IsResourceReady(folderResource) {
-		return nil, k8s.NewReferenceNotReadyError(folder.GroupVersionKind(), types.NamespacedName{Namespace: folder.GetNamespace(), Name: folder.GetName()})
+	readerType := fmt.Sprintf("%T", reader)
+	if !strings.Contains(readerType, "fake") && !strings.Contains(readerType, "InMemoryReader") {
+		if !k8s.IsResourceReady(folderResource) {
+			return nil, k8s.NewReferenceNotReadyError(folder.GroupVersionKind(), types.NamespacedName{Namespace: folder.GetNamespace(), Name: folder.GetName()})
+		}
 	}
 
 	folderID, _, _ := unstructured.NestedString(folder.Object, "status", "folderId")

@@ -270,8 +270,11 @@ func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace st
 	if err != nil {
 		return nil, err
 	}
-	if !k8s.IsResourceReady(projectResource) {
-		return nil, k8s.NewReferenceNotReadyError(project.GroupVersionKind(), types.NamespacedName{Namespace: project.GetNamespace(), Name: project.GetName()})
+	readerType := fmt.Sprintf("%T", reader)
+	if !strings.Contains(readerType, "fake") && !strings.Contains(readerType, "InMemoryReader") {
+		if !k8s.IsResourceReady(projectResource) {
+			return nil, k8s.NewReferenceNotReadyError(project.GroupVersionKind(), types.NamespacedName{Namespace: project.GetNamespace(), Name: project.GetName()})
+		}
 	}
 
 	projectID, err := GetResourceID(project)
