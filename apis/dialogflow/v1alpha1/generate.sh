@@ -62,6 +62,16 @@ go run . generate-mapper \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
+# Generate mapper for Dialogflow v1/v2beta1 service (SipTrunk)
+go run . generate-mapper \
+  --service google.cloud.dialogflow.v2beta1 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk"
+
+mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go" || true
+rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/" || true
+sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go"
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
