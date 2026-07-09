@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}
 Content-Type: application/json
 
 404 Not Found
@@ -17,27 +17,23 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/securityPolicies/${securityPolicyID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/securityPolicies/${securityPolicyID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies
 Content-Type: application/json
 
 {
-  "adaptiveProtectionConfig": {
-    "layer7DdosDefenseConfig": {
-      "enable": true,
-      "ruleVisibility": "STANDARD"
-    }
-  },
+  "description": "A regional security policy",
   "name": "${securityPolicyID}",
+  "region": "us-central1",
   "rules": [
     {
       "action": "deny(403)",
@@ -50,21 +46,6 @@ Content-Type: application/json
         "versionedExpr": "SRC_IPS_V1"
       },
       "priority": 2147483647
-    },
-    {
-      "action": "allow",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "16.0.0.0/4",
-            "115.128.0.0/9",
-            "62.48.212.0/24"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "preview": true,
-      "priority": 1000000000
     }
   ]
 }
@@ -86,17 +67,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${securityPolicyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 
 200 OK
@@ -117,17 +99,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${securityPolicyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}
 Content-Type: application/json
 
 200 OK
@@ -141,18 +124,162 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "adaptiveProtectionConfig": {
-    "layer7DdosDefenseConfig": {
-      "enable": true,
-      "ruleVisibility": "STANDARD"
-    }
-  },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A regional security policy",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#securityPolicy",
   "labelFingerprint": "abcdef0123A=",
   "name": "${securityPolicyID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "rules": [
+    {
+      "action": "deny(403)",
+      "description": "",
+      "kind": "compute#securityPolicyRule",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": false,
+      "priority": 2147483647
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
+  "type": "CLOUD_ARMOR"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}
+Content-Type: application/json
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated regional security policy",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#securityPolicy",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${securityPolicyID}",
+  "region": "us-central1",
+  "rules": [
+    {
+      "action": "deny(403)",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "*"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "priority": 2147483647
+    },
+    {
+      "action": "allow",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "16.0.0.0/4"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": true,
+      "priority": 1000000000
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
+  "type": "CLOUD_ARMOR"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated regional security policy",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#securityPolicy",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${securityPolicyID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "rules": [
     {
       "action": "allow",
@@ -161,9 +288,7 @@ X-Xss-Protection: 0
       "match": {
         "config": {
           "srcIpRanges": [
-            "16.0.0.0/4",
-            "115.128.0.0/9",
-            "62.48.212.0/24"
+            "16.0.0.0/4"
           ]
         },
         "versionedExpr": "SRC_IPS_V1"
@@ -187,241 +312,13 @@ X-Xss-Protection: 0
       "priority": 2147483647
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
   "type": "CLOUD_ARMOR"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
-Content-Type: application/json
-
-{
-  "adaptiveProtectionConfig": {
-    "layer7DdosDefenseConfig": {
-      "enable": true,
-      "ruleVisibility": "STANDARD"
-    }
-  },
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "fingerprint": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "compute#securityPolicy",
-  "labelFingerprint": "abcdef0123A=",
-  "name": "${securityPolicyID}",
-  "rules": [
-    {
-      "action": "allow",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "*"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "priority": 2147483647
-    },
-    {
-      "action": "deny(502)",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "60.0.0.0/6"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "priority": 111111111
-    },
-    {
-      "action": "allow",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "63.0.0.0/8",
-            "61.128.0.0/10"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "priority": 555
-    },
-    {
-      "action": "deny(403)",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "145.4.56.4/30",
-            "63.63.63.63/32",
-            "4.5.4.0/24"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "priority": 0
-    }
-  ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
-  "type": "CLOUD_ARMOR"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "patch",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${securityPolicyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "patch",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${securityPolicyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "adaptiveProtectionConfig": {
-    "layer7DdosDefenseConfig": {
-      "enable": true,
-      "ruleVisibility": "STANDARD"
-    }
-  },
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "fingerprint": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "compute#securityPolicy",
-  "labelFingerprint": "abcdef0123A=",
-  "name": "${securityPolicyID}",
-  "rules": [
-    {
-      "action": "deny(403)",
-      "description": "",
-      "kind": "compute#securityPolicyRule",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "145.4.56.4/30",
-            "63.63.63.63/32",
-            "4.5.4.0/24"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "preview": false,
-      "priority": 0
-    },
-    {
-      "action": "deny(502)",
-      "description": "",
-      "kind": "compute#securityPolicyRule",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "60.0.0.0/6"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "preview": false,
-      "priority": 111111111
-    },
-    {
-      "action": "allow",
-      "description": "",
-      "kind": "compute#securityPolicyRule",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "*"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "preview": false,
-      "priority": 2147483647
-    },
-    {
-      "action": "allow",
-      "description": "",
-      "kind": "compute#securityPolicyRule",
-      "match": {
-        "config": {
-          "srcIpRanges": [
-            "63.0.0.0/8",
-            "61.128.0.0/10"
-          ]
-        },
-        "versionedExpr": "SRC_IPS_V1"
-      },
-      "preview": false,
-      "priority": 555
-    }
-  ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
-  "type": "CLOUD_ARMOR"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}
 Content-Type: application/json
 
 200 OK
@@ -441,17 +338,18 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${securityPolicyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 
 200 OK
@@ -472,10 +370,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${securityPolicyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/${securityPolicyID}",
   "user": "user@example.com"
 }

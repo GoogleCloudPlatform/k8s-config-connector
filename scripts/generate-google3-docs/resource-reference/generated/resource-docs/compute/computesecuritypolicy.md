@@ -93,6 +93,7 @@ recaptchaOptionsConfig:
     external: string
     name: string
     namespace: string
+region: string
 resourceID: string
 rule:
 - action: string
@@ -386,6 +387,16 @@ type: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The namespace of a RecaptchaEnterpriseKey resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>region</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Region represents the geographical location of the ComputeSecurityPolicy. Specify a region name or "global" for global resources.</p>
         </td>
     </tr>
     <tr>

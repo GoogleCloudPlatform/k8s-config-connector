@@ -46,6 +46,10 @@ type ComputeSecurityPolicySpec struct {
 	// The ComputeSecurityPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// Region represents the geographical location of the ComputeSecurityPolicy. Specify a region name or "global" for global resources.
+	// +optional
+	Region *string `json:"region,omitempty"`
+
 	// +kcc:proto:field=adaptive_protection_config
 	AdaptiveProtectionConfig *SecurityPolicyAdaptiveProtectionConfig `json:"adaptiveProtectionConfig,omitempty"`
 
