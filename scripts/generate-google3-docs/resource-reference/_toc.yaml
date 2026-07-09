@@ -149,6 +149,10 @@ toc:
   section:
   - title: "CloudDeployDeliveryPipeline"
     path: /config-connector/docs/reference/resource-docs/clouddeploy/clouddeploydeliverypipeline.md
+- title: "Cloud Error Reporting"
+  section:
+  - title: "ErrorReportingNotificationSettings"
+    path: /config-connector/docs/reference/resource-docs/clouderrorreporting/errorreportingnotificationsettings.md
 - title: "Cloud Quotas"
   section:
   - title: "APIQuotaAdjusterSettings"

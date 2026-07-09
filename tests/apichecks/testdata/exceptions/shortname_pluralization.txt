@@ -1,1 +1,2 @@
 [shortname_plural] crd=computeprojectmetadatas.compute.cnrm.cloud.google.com version=v1beta1: plural shortName "gcpcomputeprojectmetadatas" appears to have incorrect pluralization of "gcpcomputeprojectmetadata"
+[shortname_plural] crd=errorreportingnotificationsettings.clouderrorreporting.cnrm.cloud.google.com version=v1beta1: plural shortName "gcperrorreportingnotificationsettingslist" appears to have incorrect pluralization of "gcperrorreportingnotificationsettings"

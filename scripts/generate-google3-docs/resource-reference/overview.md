@@ -212,6 +212,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/clouddeploy/clouddeploydeliverypipeline.md">CloudDeployDeliveryPipeline</a></td>
 </tr>
 <tr>
+  <td><a href="/error-reporting/docs/">Error Reporting</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/clouderrorreporting/errorreportingnotificationsettings.md">ErrorReportingNotificationSettings</a></td>
+</tr>
+<tr>
   <td><a href="/quotas/docs/">Cloud Quotas</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md">APIQuotaAdjusterSettings</a></td>
 </tr>

@@ -10,12 +10,30 @@ title: "ErrorReportingNotificationSettings"
 </tr>
 </thead>
 <tbody>
-
+<tr>
+<td>Google Cloud Service Name</td>
+<td>Error Reporting</td>
+</tr>
+<tr>
+<td>Google Cloud Service Documentation</td>
+<td><a href="https://docs.cloud.google.com/error-reporting/docs/">https://docs.cloud.google.com/error-reporting/docs/</a></td>
+</tr>
+<tr>
+<td>Google Cloud REST Resource Name</td>
+<td>v1beta1.projects.locations.notificationSettings</td>
+</tr>
+<tr>
+<td>Google Cloud REST Resource Documentation</td>
+<td><a href="https://docs.cloud.google.com/error-reporting/reference/rest/v1beta1/projects.locations/getNotificationSettings">https://docs.cloud.google.com/error-reporting/reference/rest/v1beta1/projects.locations/getNotificationSettings</a></td>
+</tr>
 <tr>
 <td>Config Connector Resource Short Names</td>
 <td>errorreportingnotificationsettings<br>gcperrorreportingnotificationsettings<br>gcperrorreportingnotificationsettingslist</td>
 </tr>
-
+<tr>
+<td>Config Connector Service Name</td>
+<td>clouderrorreporting.googleapis.com</td>
+</tr>
 <tr>
 <td>Config Connector Resource Fully Qualified Name</td>
 <td>errorreportingnotificationsettings.clouderrorreporting.cnrm.cloud.google.com</td>

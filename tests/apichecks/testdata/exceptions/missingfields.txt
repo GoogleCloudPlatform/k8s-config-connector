@@ -1309,6 +1309,13 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuManagerPolicy" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.podPidsLimit" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.labels" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.bootDiskProfile.swapSizeGib" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.bootDiskProfile.swapSizePercent" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.dedicatedLocalSsdProfile.diskCount" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.enabled" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.encryptionConfig.disabled" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.ephemeralLocalSsdProfile.swapSizeGib" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.ephemeralLocalSsdProfile.swapSizePercent" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.localNvmeSsdBlockConfig.localSsdCount" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.localSsdCount" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.loggingVariant" is not set in unstructured objects
@@ -1388,7 +1395,11 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuManagerPolicy" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.podPidsLimit" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.labels" is not set in unstructured objects
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.cgroupMode" is not set in unstructured objects
+[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.bootDiskProfile.swapSizeGib" is not set in unstructured objects
+[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.dedicatedLocalSsdProfile.diskCount" is not set in unstructured objects
+[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.encryptionConfig.disabled" is not set in unstructured objects
+[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.ephemeralLocalSsdProfile.swapSizeGib" is not set in unstructured objects
+[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.swapConfig.ephemeralLocalSsdProfile.swapSizePercent" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.sysctls" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.localNvmeSsdBlockConfig.localSsdCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.localSsdCount" is not set in unstructured objects
@@ -2089,6 +2100,8 @@
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6Cidr[]" is not set in unstructured objects
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.vlanId" is not set in unstructured objects
+[missing_field] crd=errorreportingnotificationsettings.clouderrorreporting.cnrm.cloud.google.com version=v1beta1: field ".spec.notificationChannels[].external" is not set in unstructured objects
+[missing_field] crd=errorreportingnotificationsettings.clouderrorreporting.cnrm.cloud.google.com version=v1beta1: field ".spec.notificationChannels[].namespace" is not set in unstructured objects
 [missing_field] crd=essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=eventarctriggers.eventarc.cnrm.cloud.google.com version=v1beta1: field ".spec.channelRef" is not set; neither 'external' nor 'name' are set
@@ -3333,7 +3346,6 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscEnabled" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.locationPreference.followGaeApplication" is not set in unstructured objects
 [missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.password.value" is not set in unstructured objects
-[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.autoclass.enabled" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.bucketPolicyOnly" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.cors[].maxAgeSeconds" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.cors[].method[]" is not set in unstructured objects
@@ -3353,7 +3365,6 @@
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.noncurrentTimeBefore" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.numNewerVersions" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.withState" is not set in unstructured objects
-[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.logging.logBucket" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.logging.logObjectPrefix" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.publicAccessPrevention" is not set in unstructured objects
