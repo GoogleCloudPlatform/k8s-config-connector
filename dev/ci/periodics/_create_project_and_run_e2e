@@ -25,7 +25,7 @@ export E2E_GCP_TARGET=real
 
 # We don't want to fail on changes in the http.log,
 # because that happens e.g. whenever there's a new field in the upstream service.
-export ONLY_WARN_ON_GOLDEN_DIFFS=_http.log,_http.diff,_http_old_controller.log
+export ONLY_WARN_ON_GOLDEN_DIFFS=_http.log,_http.diff,_http_old_controller.log,_http_mock.log,_http_mock.diff,_http_old_controller_mock.log
 
 EXIT_CODE=0
 
