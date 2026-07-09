@@ -143,6 +143,7 @@ function getReadyToMigrate() {
 
     return resourceData.filter(r => {
         if (r.state === 'Completed') return false;
+        if (r.edgeCases && r.edgeCases.gcpAPIDeprecated === true) return false;
         
         // Unblocked if all dependencies are in Completed state or not tracked in data.json
         return r.dependencies.every(dep => {
@@ -154,9 +155,10 @@ function getReadyToMigrate() {
 }
 
 function updateStats() {
-    const total = resourceData.length;
-    const completed = resourceData.filter(r => r.state === 'Completed').length;
-    const inProgress = resourceData.filter(r => r.state === 'In Progress' || r.state === 'PR Sent').length;
+    const activeResources = resourceData.filter(r => !(r.edgeCases && r.edgeCases.gcpAPIDeprecated === true));
+    const total = activeResources.length;
+    const completed = activeResources.filter(r => r.state === 'Completed').length;
+    const inProgress = activeResources.filter(r => r.state === 'In Progress' || r.state === 'PR Sent').length;
     const readyCount = getReadyToMigrate().length;
     const adoptionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
 
@@ -169,9 +171,10 @@ function updateStats() {
 }
 
 function renderCharts() {
-    const directCount = resourceData.filter(r => r.controllerType === 'Direct').length;
-    const tfCount = resourceData.filter(r => r.controllerType === 'Terraform').length;
-    const dclCount = resourceData.filter(r => r.controllerType === 'DCL').length;
+    const activeResources = resourceData.filter(r => !(r.edgeCases && r.edgeCases.gcpAPIDeprecated === true));
+    const directCount = activeResources.filter(r => r.controllerType === 'Direct').length;
+    const tfCount = activeResources.filter(r => r.controllerType === 'Terraform').length;
+    const dclCount = activeResources.filter(r => r.controllerType === 'DCL').length;
     const totalCtrl = directCount + tfCount + dclCount;
 
     const directPct = totalCtrl > 0 ? Math.round((directCount / totalCtrl) * 100) : 0;
@@ -213,10 +216,10 @@ function renderCharts() {
     `;
 
     // 2. States Donut Conic-Gradient
-    const notStarted = resourceData.filter(r => r.state === 'Not Started').length;
-    const inProgress = resourceData.filter(r => r.state === 'In Progress').length;
-    const prSent = resourceData.filter(r => r.state === 'PR Sent').length;
-    const completed = resourceData.filter(r => r.state === 'Completed').length;
+    const notStarted = activeResources.filter(r => r.state === 'Not Started').length;
+    const inProgress = activeResources.filter(r => r.state === 'In Progress').length;
+    const prSent = activeResources.filter(r => r.state === 'PR Sent').length;
+    const completed = activeResources.filter(r => r.state === 'Completed').length;
     const totalStates = notStarted + inProgress + prSent + completed;
 
     const completedPct = totalStates > 0 ? Math.round((completed / totalStates) * 100) : 0;
@@ -389,13 +392,17 @@ function filterAndRenderTable() {
             return `<span class="dep-tag ${isBlocked ? 'blocking' : ''}" onclick="selectInExplorer('${d}')">${d}</span>`;
         }).join('') || '-';
 
+        const isDeprecated = row.edgeCases && row.edgeCases.gcpAPIDeprecated === true;
+        const kindDisplay = isDeprecated ? `<span style="text-decoration: line-through; color: var(--text-muted); font-style: italic;">${row.kind}</span>` : `<strong>${row.kind}</strong>`;
+        const deprecationBadge = isDeprecated ? `<span class="badge deprecated" title="${row.edgeCases.notes || ''}">GCP API Deprecated</span>` : '';
+
         tr.innerHTML = `
             <td>
                 <button class="detail-toggle" onclick="toggleRowDetails('${row.kind}')">
                     ${isExpanded ? '▼' : '▶'}
                 </button>
             </td>
-            <td><strong>${row.kind}</strong></td>
+            <td>${kindDisplay}</td>
             <td>${row.group}</td>
             <td>${row.sortOrder === 9999 ? '-' : row.sortOrder}</td>
             <td>${row.downstreamCount}</td>
@@ -403,7 +410,10 @@ function filterAndRenderTable() {
                 <div style="font-weight: 500;">${row.defaultController}</div>
                 <div style="font-size: 11px; color: var(--text-muted);">Supported: ${row.supportedControllers.join(', ')}</div>
             </td>
-            <td><span class="badge ${stateClass}">${row.state}</span></td>
+            <td>
+                <span class="badge ${stateClass}">${row.state}</span>
+                ${deprecationBadge}
+            </td>
             <td>${stepDots}</td>
             <td><div class="dependency-tags">${depsHtml}</div></td>
         `;
@@ -416,6 +426,18 @@ function filterAndRenderTable() {
             const downstream = downstreamMap[row.kind] || [];
             const downstreamTags = downstream.map(d => `<span class="dep-tag" onclick="selectInExplorer('${d}')">${d}</span>`).join('') || 'None';
 
+            let notesHtml = '';
+            if (row.notes) {
+                notesHtml = `<p><strong>Notes:</strong> <span>${row.notes}</span></p>`;
+            }
+            let edgeCaseNoteHtml = '';
+            if (row.edgeCases && row.edgeCases.notes) {
+                edgeCaseNoteHtml = `<p><strong>GCP API Deprecation Info:</strong> <span style="color: var(--google-red); font-weight: 500;">${row.edgeCases.notes}</span></p>`;
+            }
+            if (!row.notes && !edgeCaseNoteHtml) {
+                notesHtml = `<p><strong>Notes:</strong> <span style="color: var(--text-muted);">None</span></p>`;
+            }
+
             detailsTr.innerHTML = `
                 <td></td>
                 <td colspan="8">
@@ -423,7 +445,8 @@ function filterAndRenderTable() {
                         <div class="drawer-column">
                             <h4>Migration Notes</h4>
                             <p><strong>Mocks Last Refreshed:</strong> ${row.mocksLastRefreshed || 'Never'}</p>
-                            <p><strong>Notes:</strong> <span style="color: var(--google-red);">${row.notes || 'None'}</span></p>
+                            ${notesHtml}
+                            ${edgeCaseNoteHtml}
                         </div>
                         <div class="drawer-column">
                             <h4>Blocked Downstream Elements</h4>
