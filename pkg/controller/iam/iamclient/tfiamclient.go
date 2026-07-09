@@ -83,8 +83,11 @@ func (t *TFIAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1
 
 	// Report diff to structured-reporting subsystem
 	{
-		report := &structuredreporting.Diff{}
+		report := &structuredreporting.Diff{
+			Controller: k8s.ReconcilerTypeIAMPolicyMember,
+		}
 		u, err := resource.MarshalAsUnstructured()
+
 		if err != nil {
 			log := log.FromContext(ctx)
 			log.Error(err, "error reporting diff")

@@ -215,7 +215,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	eventsPhase1 := h.Events.GetHTTPEvents()
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase1))
-		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase1.log"), got, normalizers...)
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase1_legacy_create.log"), got, normalizers...)
 	}
 
 	t.Logf("Phase 2: Re-reconciling resource using %v (no-op update)...", oldController)
@@ -248,7 +248,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	eventsPhase2 := h.Events.GetHTTPEvents()[len(eventsPhase1):]
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase2))
-		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase2.log"), got, normalizers...)
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase2_legacy_re-reconciliation.log"), got, normalizers...)
 	}
 
 	t.Log("Phase 3: Migrating to Direct controller...")
@@ -301,7 +301,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	// Record HTTP log for Phase 3
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase3))
-		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase3.log"), got, normalizers...)
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase3_direct_takeover.log"), got, normalizers...)
 	}
 
 	t.Log("Phase 4: Re-reconciling resource using Direct controller (no-op update)...")
@@ -352,7 +352,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	// Record HTTP log for Phase 4
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase4))
-		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase4.log"), got, normalizers...)
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase4_direct_re-reconciliation.log"), got, normalizers...)
 	}
 
 	// Record raw structured diffs
@@ -384,6 +384,7 @@ func (l *migrationDiffListener) OnDiff(ctx context.Context, diff *structuredrepo
 
 	// Clone the diff because the underlying object might be modified
 	clone := &structuredreporting.Diff{
+		Controller:  diff.Controller,
 		IsNewObject: diff.IsNewObject,
 	}
 	if diff.Object != nil {
@@ -413,6 +414,7 @@ type rawDiffField struct {
 }
 
 type rawDiff struct {
+	Controller  string         `json:"controller,omitempty"`
 	IsNewObject bool           `json:"isNewObject"`
 	Resource    string         `json:"resource"`
 	Fields      []rawDiffField `json:"fields,omitempty"`
@@ -422,8 +424,10 @@ func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
 	var rawDiffs []rawDiff
 	for _, diff := range listener.diffs {
 		rd := rawDiff{
+			Controller:  string(diff.Controller),
 			IsNewObject: diff.IsNewObject,
 		}
+
 		if diff.Object != nil {
 			rd.Resource = fmt.Sprintf("%s/%s", diff.Object.GetKind(), diff.Object.GetName())
 		}

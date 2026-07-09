@@ -18,6 +18,7 @@ import (
 	"context"
 	"sort"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -25,6 +26,9 @@ import (
 // Diff allows reporting of a detected difference
 type Diff struct {
 	Object *unstructured.Unstructured
+
+	// Controller indicates the type of reconciler (e.g. direct, tf, dcl) reporting the diff
+	Controller k8s.ReconcilerType
 
 	// Fields contains field-level diffs
 	// Likely empty if NewObject is true
@@ -62,6 +66,11 @@ func (d *Diff) HasDiff() bool {
 
 // ReportDiff should be called by a controller when it detects diffs
 func ReportDiff(ctx context.Context, diff *Diff) {
+	if diff != nil && diff.Controller == "" {
+		if t, ok := GetReconcilerTypeFromContext(ctx); ok {
+			diff.Controller = t
+		}
+	}
 	if listener, ok := GetListenerFromContext(ctx); ok {
 		listener.OnDiff(ctx, diff)
 	}
@@ -70,6 +79,10 @@ func ReportDiff(ctx context.Context, diff *Diff) {
 func (d *Diff) AddDiff(other *Diff) *Diff {
 	if other == nil {
 		return d
+	}
+
+	if d.Controller == "" && other.Controller != "" {
+		d.Controller = other.Controller
 	}
 
 	for _, f := range other.Fields {

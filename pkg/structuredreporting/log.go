@@ -84,6 +84,7 @@ func (l *DebugLogListener) OnDiff(ctx context.Context, diffs *Diff) {
 	}
 
 	log.Info("structuredreporting OnDiff",
+		"diff.controller", diffs.Controller,
 		"diff.fields", diffFields,
 		"diff.isNewObject", diffs.IsNewObject,
 	)
@@ -123,6 +124,7 @@ func (l *LogFieldUpdates) OnDiff(ctx context.Context, diffs *Diff) {
 	log := log.FromContext(ctx)
 	if !diffs.IsNewObject {
 		log.Info("detected changes to fields; triggering update",
+			"controller", diffs.Controller,
 			"changedFields", diffs.FieldIDs(),
 		)
 	}
