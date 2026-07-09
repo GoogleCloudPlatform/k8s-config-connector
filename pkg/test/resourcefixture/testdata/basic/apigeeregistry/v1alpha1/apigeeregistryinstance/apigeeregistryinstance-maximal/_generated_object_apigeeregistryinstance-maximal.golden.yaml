@@ -1,0 +1,29 @@
+apiVersion: apigeeregistry.cnrm.cloud.google.com/v1alpha1
+kind: ApigeeRegistryInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: apigeeregistryinstance-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  config:
+    cmekKeyNameRef:
+      external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  resourceID: registryinst-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: error creating: creating ApigeeRegistryInstance
+      "projects/${projectId}/locations/us-central1/instances/registryinst-${uniqueId}":
+      rpc error: code = Unavailable desc = 502:Bad Gateway'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 1
