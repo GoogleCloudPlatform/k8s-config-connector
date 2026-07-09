@@ -366,7 +366,15 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 				if !forceDirect && os.Getenv("E2E_GCP_TARGET") != "vcr" {
 					h := &create.Harness{T: t}
-					h.AssertGoldenFileNotFound(filepath.Join(fixture.AbsoluteSourceDir, "_http_old_controller.log"))
+					targetGCP := os.Getenv("E2E_GCP_TARGET")
+					if targetGCP == "" {
+						targetGCP = "mock"
+					}
+					oldControllerLog := "_http_old_controller_mock.log"
+					if targetGCP == "real" {
+						oldControllerLog = "_http_old_controller.log"
+					}
+					h.AssertGoldenFileNotFound(filepath.Join(fixture.AbsoluteSourceDir, oldControllerLog))
 					h.AssertGoldenFileNotFound(filepath.Join(fixture.AbsoluteSourceDir, "_final_object_old_controller.golden.yaml"))
 					h.AssertGoldenFileNotFound(filepath.Join(fixture.AbsoluteSourceDir, "_exported_old_controller.golden.yaml"))
 				}
@@ -428,13 +436,6 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 			oldKey = "_http_old_controller.log"
 			newKey = "_http.log"
 			diffKey = "_http.diff"
-		} else {
-			mockPath := filepath.Join(dir, newKey)
-			if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-				oldKey = "_http_old_controller.log"
-				newKey = "_http.log"
-				diffKey = "_http.diff"
-			}
 		}
 
 		oldPath := filepath.Join(dir, oldKey)
@@ -870,14 +871,6 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 							key = "_http.log"
 							if options.FallbackToOldController {
 								key = "_http_old_controller.log"
-							}
-						} else {
-							mockPath := filepath.Join(fixture.AbsoluteSourceDir, key)
-							if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-								key = "_http.log"
-								if options.FallbackToOldController {
-									key = "_http_old_controller.log"
-								}
 							}
 						}
 						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, key)
