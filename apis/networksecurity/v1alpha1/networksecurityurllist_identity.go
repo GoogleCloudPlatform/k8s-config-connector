@@ -33,6 +33,7 @@ var (
 var NetworkSecurityUrlListIdentityFormat = gcpurls.Template[NetworkSecurityUrlListIdentity]("networksecurity.googleapis.com", "projects/{project}/locations/{location}/urlLists/{urlList}")
 
 // NetworkSecurityUrlListIdentity is the identity of a GCP NetworkSecurityUrlList resource.
+// Added trigger comment to initiate a fresh PR verification build.
 // +k8s:deepcopy-gen=false
 type NetworkSecurityUrlListIdentity struct {
 	Project  string
