@@ -32,6 +32,7 @@ import (
 type NetworksecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NetworkSecurityAddressGroupsGetter
+	NetworkSecurityAuthzPoliciesGetter
 	NetworkSecurityBackendAuthenticationConfigsGetter
 	NetworkSecurityFirewallEndpointAssociationsGetter
 	NetworkSecurityGatewaySecurityPoliciesGetter
@@ -52,6 +53,10 @@ type NetworksecurityV1alpha1Client struct {
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityAddressGroups(namespace string) NetworkSecurityAddressGroupInterface {
 	return newNetworkSecurityAddressGroups(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityAuthzPolicies(namespace string) NetworkSecurityAuthzPolicyInterface {
+	return newNetworkSecurityAuthzPolicies(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
