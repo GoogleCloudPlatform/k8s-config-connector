@@ -31,17 +31,7 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
-	{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:                             true,
-	{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAutoscaler"}:                          true,
-	{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRegionDiskResourcePolicyAttachment"}:  true,
-	{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessor"}:                     true,
-	{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:                                 true,
-	{Group: "iap.cnrm.cloud.google.com", Kind: "IAPSettings"}:                                    true,
-	{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDNSDomain"}: true,
-	{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucketAccessControl"}:                 true,
-	{Group: "storage.cnrm.cloud.google.com", Kind: "StorageFolder"}:                              true,
-}
+var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{}
 
 func TestGoldenLogAlignment(t *testing.T) {
 	rootDir := "testdata/basic"
