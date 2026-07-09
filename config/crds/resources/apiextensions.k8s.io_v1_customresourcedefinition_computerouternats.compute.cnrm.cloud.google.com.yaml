@@ -111,6 +111,13 @@ spec:
                   This is enabled by default. For more information see the [official
                   documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs).
                 type: boolean
+              endpointTypes:
+                description: 'Immutable. Specifies the endpoint Types supported by
+                  the NAT Gateway. Supported values include: ''ENDPOINT_TYPE_VM'',
+                  ''ENDPOINT_TYPE_SWG'', ''ENDPOINT_TYPE_MANAGED_PROXY_LB''.'
+                items:
+                  type: string
+                type: array
               icmpIdleTimeoutSec:
                 description: Timeout (in seconds) for ICMP connections. Defaults to
                   30s if not set.
@@ -259,6 +266,43 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        sourceNatActiveRangesRefs:
+                          description: A list of references to ComputeSubnetwork resources.
+                            Rules configured with these rules translate source IPs
+                            to the IP ranges of these subnetworks. This field is used
+                            for private NAT.
+                          items:
+                            description: ComputeSubnetworkRef is a reference to a
+                              GCP ComputeSubnetwork.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  ComputeSubnetwork resource. Should be in the format
+                                  "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
+                                type: string
+                              name:
+                                description: The name of a ComputeSubnetwork resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a ComputeSubnetwork
+                                  resource.
+                                type: string
+                            type: object
+                          type: array
                         sourceNatDrainIpsRefs:
                           description: A list of URLs of the IP resources to be drained.
                             These IPs must be valid static external IPs that have
@@ -294,6 +338,42 @@ spec:
                                 type: string
                               namespace:
                                 description: The namespace of a ComputeAddress resource.
+                                type: string
+                            type: object
+                          type: array
+                        sourceNatDrainRangesRefs:
+                          description: A list of references to ComputeSubnetwork resources.
+                            These IP ranges will be drained. This field is used for
+                            private NAT.
+                          items:
+                            description: ComputeSubnetworkRef is a reference to a
+                              GCP ComputeSubnetwork.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  ComputeSubnetwork resource. Should be in the format
+                                  "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
+                                type: string
+                              name:
+                                description: The name of a ComputeSubnetwork resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a ComputeSubnetwork
+                                  resource.
                                 type: string
                             type: object
                           type: array
@@ -406,6 +486,11 @@ spec:
                   Defaults to 30s if not set.
                 format: int64
                 type: integer
+              type:
+                description: 'Immutable. Indicates whether this NAT is used for public
+                  IP translation or private IP translation. Possible values: ["PUBLIC",
+                  "PRIVATE"].'
+                type: string
               udpIdleTimeoutSec:
                 description: Timeout (in seconds) for UDP connections. Defaults to
                   30s if not set.

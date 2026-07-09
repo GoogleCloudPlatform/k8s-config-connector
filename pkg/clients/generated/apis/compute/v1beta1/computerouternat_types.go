@@ -45,7 +45,13 @@ type RouternatAction struct {
 
 	/* A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT rule only. This field is used for public NAT. */
 	// +optional
+	SourceNatActiveRangesRefs []v1alpha1.ResourceRef `json:"sourceNatActiveRangesRefs,omitempty"`
+
+	// +optional
 	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
+
+	// +optional
+	SourceNatDrainRangesRefs []v1alpha1.ResourceRef `json:"sourceNatDrainRangesRefs,omitempty"`
 }
 
 type RouternatLogConfig struct {
@@ -114,6 +120,13 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	EnableEndpointIndependentMapping *bool `json:"enableEndpointIndependentMapping,omitempty"`
 
+	/* Immutable. Specifies the endpoint Types supported by the NAT Gateway.
+	Supported values include:
+	'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG',
+	'ENDPOINT_TYPE_MANAGED_PROXY_LB'. */
+	// +optional
+	EndpointTypes []string `json:"endpointTypes,omitempty"`
+
 	/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
 	// +optional
 	IcmpIdleTimeoutSec *int64 `json:"icmpIdleTimeoutSec,omitempty"`
@@ -130,8 +143,11 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	MinPortsPerVm *int64 `json:"minPortsPerVm,omitempty"`
 
-	/* How external IPs should be allocated for this NAT. Valid values are 'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
-	NatIpAllocateOption string `json:"natIpAllocateOption"`
+	/* How external IPs should be allocated for this NAT. Valid values are
+	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
+	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
+	// +optional
+	NatIpAllocateOption *string `json:"natIpAllocateOption,omitempty"`
 
 	/* NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY. */
 	// +optional
@@ -169,6 +185,13 @@ type ComputeRouterNATSpec struct {
 	/* Timeout (in seconds) for TCP transitory connections. Defaults to 30s if not set. */
 	// +optional
 	TcpTransitoryIdleTimeoutSec *int64 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
+
+	/* Immutable. Indicates whether this NAT is used for public or private IP translation.
+	If unspecified, it defaults to PUBLIC.
+	If 'PUBLIC' NAT used for public IP translation.
+	If 'PRIVATE' NAT used for private IP translation. Default value: "PUBLIC" Possible values: ["PUBLIC", "PRIVATE"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 
 	/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
 	// +optional

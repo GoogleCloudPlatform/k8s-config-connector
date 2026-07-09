@@ -6979,6 +6979,11 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.EndpointTypes != nil {
+		in, out := &in.EndpointTypes, &out.EndpointTypes
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	if in.IcmpIdleTimeoutSec != nil {
 		in, out := &in.IcmpIdleTimeoutSec, &out.IcmpIdleTimeoutSec
 		*out = new(int64)
@@ -6997,6 +7002,11 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 	if in.MinPortsPerVm != nil {
 		in, out := &in.MinPortsPerVm, &out.MinPortsPerVm
 		*out = new(int64)
+		**out = **in
+	}
+	if in.NatIpAllocateOption != nil {
+		in, out := &in.NatIpAllocateOption, &out.NatIpAllocateOption
+		*out = new(string)
 		**out = **in
 	}
 	if in.NatIps != nil {
@@ -7037,6 +7047,11 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 	if in.TcpTransitoryIdleTimeoutSec != nil {
 		in, out := &in.TcpTransitoryIdleTimeoutSec, &out.TcpTransitoryIdleTimeoutSec
 		*out = new(int64)
+		**out = **in
+	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
+		*out = new(string)
 		**out = **in
 	}
 	if in.UdpIdleTimeoutSec != nil {
@@ -14315,8 +14330,18 @@ func (in *RouternatAction) DeepCopyInto(out *RouternatAction) {
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
+	if in.SourceNatActiveRangesRefs != nil {
+		in, out := &in.SourceNatActiveRangesRefs, &out.SourceNatActiveRangesRefs
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
+	}
 	if in.SourceNatDrainIpsRefs != nil {
 		in, out := &in.SourceNatDrainIpsRefs, &out.SourceNatDrainIpsRefs
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
+	}
+	if in.SourceNatDrainRangesRefs != nil {
+		in, out := &in.SourceNatDrainRangesRefs, &out.SourceNatDrainRangesRefs
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}

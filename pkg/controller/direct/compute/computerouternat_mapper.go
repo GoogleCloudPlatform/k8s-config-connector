@@ -15,6 +15,8 @@
 package compute
 
 import (
+	"fmt"
+
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -56,6 +58,12 @@ func RouternatAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterN
 	for _, ip := range in.SourceNatDrainIps {
 		out.SourceNatDrainIpsRefs = append(out.SourceNatDrainIpsRefs, krm.ComputeAddressRef{External: ip})
 	}
+	for _, r := range in.SourceNatActiveRanges {
+		out.SourceNatActiveRangesRefs = append(out.SourceNatActiveRangesRefs, krm.ComputeSubnetworkRef{External: r})
+	}
+	for _, r := range in.SourceNatDrainRanges {
+		out.SourceNatDrainRangesRefs = append(out.SourceNatDrainRangesRefs, krm.ComputeSubnetworkRef{External: r})
+	}
 	return out
 }
 
@@ -73,6 +81,16 @@ func RouternatAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Routerna
 	for _, ref := range in.SourceNatDrainIpsRefs {
 		if ref.External != "" {
 			out.SourceNatDrainIps = append(out.SourceNatDrainIps, ref.External)
+		}
+	}
+	for _, ref := range in.SourceNatActiveRangesRefs {
+		if ref.External != "" {
+			out.SourceNatActiveRanges = append(out.SourceNatActiveRanges, ref.External)
+		}
+	}
+	for _, ref := range in.SourceNatDrainRangesRefs {
+		if ref.External != "" {
+			out.SourceNatDrainRanges = append(out.SourceNatDrainRanges, ref.External)
 		}
 	}
 	return out
@@ -186,6 +204,8 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 		val := int64(*in.UdpIdleTimeoutSec)
 		out.UdpIdleTimeoutSec = &val
 	}
+	out.Type = in.Type
+	out.EndpointTypes = in.EndpointTypes
 	return out
 }
 
@@ -215,8 +235,14 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 		val32 := int32(*in.MinPortsPerVm)
 		out.MinPortsPerVm = &val32
 	}
+	fmt.Printf("DEBUG MAPPER: in.NatIpAllocateOption = %q\n", in.NatIpAllocateOption)
 	if in.NatIpAllocateOption != "" {
 		out.NatIpAllocateOption = direct.LazyPtr(in.NatIpAllocateOption)
+	}
+	if out.NatIpAllocateOption != nil {
+		fmt.Printf("DEBUG MAPPER: out.NatIpAllocateOption = %q\n", *out.NatIpAllocateOption)
+	} else {
+		fmt.Println("DEBUG MAPPER: out.NatIpAllocateOption is NIL")
 	}
 	for _, ref := range in.NatIps {
 		if ref.External != "" {
@@ -244,5 +270,7 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 		val32 := int32(*in.UdpIdleTimeoutSec)
 		out.UdpIdleTimeoutSec = &val32
 	}
+	out.Type = in.Type
+	out.EndpointTypes = in.EndpointTypes
 	return out
 }

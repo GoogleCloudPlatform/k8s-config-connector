@@ -29,6 +29,22 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+func getPresentFields(ctx context.Context) map[string]bool {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil
+	}
+	values := md["x-gcp-present-fields"]
+	if len(values) == 0 {
+		return nil
+	}
+	presentFields := make(map[string]bool)
+	for _, val := range strings.Split(values[0], ",") {
+		presentFields[val] = true
+	}
+	return presentFields
+}
+
 type RoutersV1 struct {
 	*MockService
 	pb.UnimplementedRoutersServer
@@ -91,7 +107,6 @@ func (s *RoutersV1) Insert(ctx context.Context, req *pb.InsertRouterRequest) (*p
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 
 	s.populateRouter(obj)
-
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -125,8 +140,7 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 		return nil, err
 	}
 
-	hasInterfaces := req.GetRouterResource().Interfaces != nil
-	hasBgpPeers := req.GetRouterResource().BgpPeers != nil
+	reqResource := req.GetRouterResource()
 
 	hasNats := false
 	if md, ok := metadata.FromIncomingContext(ctx); ok {
@@ -142,20 +156,70 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 		hasNats = req.GetRouterResource().Nats != nil
 	}
 
-	proto.Merge(obj, req.GetRouterResource())
+	presentFields := getPresentFields(ctx)
 
-	if hasInterfaces {
-		obj.Interfaces = req.GetRouterResource().Interfaces
+	// Save repeated fields and clear them from reqResource so proto.Merge doesn't append them
+	reqNats := reqResource.Nats
+	reqResource.Nats = nil
+
+	reqInterfaces := reqResource.Interfaces
+	reqResource.Interfaces = nil
+
+	reqBgpPeers := reqResource.BgpPeers
+	reqResource.BgpPeers = nil
+
+	reqMd5 := reqResource.Md5AuthenticationKeys
+	reqResource.Md5AuthenticationKeys = nil
+
+	proto.Merge(obj, reqResource)
+
+	// Restore them in reqResource
+	reqResource.Nats = reqNats
+	reqResource.Interfaces = reqInterfaces
+	reqResource.BgpPeers = reqBgpPeers
+	reqResource.Md5AuthenticationKeys = reqMd5
+
+	// Manually replace repeated fields if present
+	hasNatsField := false
+	if presentFields != nil {
+		hasNatsField = presentFields["nats"]
+	} else {
+		hasNatsField = hasNats
 	}
-	if hasBgpPeers {
-		obj.BgpPeers = req.GetRouterResource().BgpPeers
+	if hasNatsField {
+		obj.Nats = reqNats
 	}
-	if hasNats {
-		obj.Nats = req.GetRouterResource().Nats
+	hasInterfacesField := false
+	if presentFields != nil {
+		hasInterfacesField = presentFields["interfaces"]
+	} else {
+		hasInterfacesField = reqInterfaces != nil
+	}
+	if hasInterfacesField {
+		obj.Interfaces = reqInterfaces
+	}
+
+	hasBgpPeersField := false
+	if presentFields != nil {
+		hasBgpPeersField = presentFields["bgp_peers"]
+	} else {
+		hasBgpPeersField = reqBgpPeers != nil
+	}
+	if hasBgpPeersField {
+		obj.BgpPeers = reqBgpPeers
+	}
+
+	hasMd5Field := false
+	if presentFields != nil {
+		hasMd5Field = presentFields["md5_authentication_keys"]
+	} else {
+		hasMd5Field = reqMd5 != nil
+	}
+	if hasMd5Field {
+		obj.Md5AuthenticationKeys = reqMd5
 	}
 
 	s.populateRouter(obj)
-
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -168,6 +232,46 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
+	})
+}
+
+func (s *RoutersV1) Update(ctx context.Context, req *pb.UpdateRouterRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/routers/" + req.GetRouter()
+	name, err := s.parseRouterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.Router{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	updated := proto.Clone(req.GetRouterResource()).(*pb.Router)
+	updated.SelfLink = existing.SelfLink
+	updated.CreationTimestamp = existing.CreationTimestamp
+	updated.Id = existing.Id
+	updated.Kind = existing.Kind
+	updated.Region = existing.Region
+
+	s.populateRouter(updated)
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      updated.Id,
+		TargetLink:    updated.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return updated, nil
 	})
 }
 
@@ -226,11 +330,15 @@ func (s *MockService) parseRouterName(name string) (*routerName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
-
 func (s *RoutersV1) populateRouter(obj *pb.Router) {
 	for _, iface := range obj.Interfaces {
 		if iface.IpVersion == nil {
 			iface.IpVersion = PtrTo("IPV4")
+		}
+	}
+	for _, nat := range obj.Nats {
+		if nat.Type == nil {
+			nat.Type = PtrTo("PUBLIC")
 		}
 	}
 }
