@@ -30,7 +30,7 @@ spec:
       ipRanges:
       - 172.217.14.238
       squashMode: ROOT_SQUASH
-  location: us-central1-c
+  location: us-central1-b
   networks:
   - networkRef:
       name: default
