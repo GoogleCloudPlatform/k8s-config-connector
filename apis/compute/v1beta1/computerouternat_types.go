@@ -29,6 +29,14 @@ type RouternatAction struct {
 	/* A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT rule only. This field is used for public NAT. */
 	// +optional
 	SourceNatDrainIpsRefs []ComputeAddressRef `json:"sourceNatDrainIpsRefs,omitempty"`
+
+	/* A list of references to ComputeSubnetwork resources. Rules configured with these rules translate source IPs to the IP ranges of these subnetworks. This field is used for private NAT. */
+	// +optional
+	SourceNatActiveRangesRefs []ComputeSubnetworkRef `json:"sourceNatActiveRangesRefs,omitempty"`
+
+	/* A list of references to ComputeSubnetwork resources. These IP ranges will be drained. This field is used for private NAT. */
+	// +optional
+	SourceNatDrainRangesRefs []ComputeSubnetworkRef `json:"sourceNatDrainRangesRefs,omitempty"`
 }
 
 type RouternatLogConfig struct {
@@ -182,6 +190,17 @@ type ComputeRouterNATSpec struct {
 	/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
 	// +optional
 	UdpIdleTimeoutSec *int64 `json:"udpIdleTimeoutSec,omitempty"`
+
+	/* Immutable. Indicates whether this NAT is used for public IP translation or private IP translation. Possible values: ["PUBLIC", "PRIVATE"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+
+	/* Immutable. Specifies the endpoint Types supported by the NAT Gateway.
+	Supported values include:
+	'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG',
+	'ENDPOINT_TYPE_MANAGED_PROXY_LB'. */
+	// +optional
+	EndpointTypes []string `json:"endpointTypes,omitempty"`
 }
 
 // ComputeRouterNATStatus defines the config connector machine state of ComputeRouterNAT

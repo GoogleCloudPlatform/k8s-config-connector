@@ -112,11 +112,9 @@ spec:
                   documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs).
                 type: boolean
               endpointTypes:
-                description: |-
-                  Immutable. Specifies the endpoint Types supported by the NAT Gateway.
-                  Supported values include:
-                        'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG',
-                        'ENDPOINT_TYPE_MANAGED_PROXY_LB'.
+                description: 'Immutable. Specifies the endpoint Types supported by
+                  the NAT Gateway. Supported values include: ''ENDPOINT_TYPE_VM'',
+                  ''ENDPOINT_TYPE_SWG'', ''ENDPOINT_TYPE_MANAGED_PROXY_LB''.'
                 items:
                   type: string
                 type: array
@@ -269,10 +267,13 @@ spec:
                             type: object
                           type: array
                         sourceNatActiveRangesRefs:
+                          description: A list of references to ComputeSubnetwork resources.
+                            Rules configured with these rules translate source IPs
+                            to the IP ranges of these subnetworks. This field is used
+                            for private NAT.
                           items:
-                            description: |-
-                              A list of URLs of the subnetworks used as source ranges for this NAT Rule.
-                              These subnetworks must have purpose set to PRIVATE_NAT. This field is used for private NAT.
+                            description: ComputeSubnetworkRef is a reference to a
+                              GCP ComputeSubnetwork.
                             oneOf:
                             - not:
                                 required:
@@ -289,15 +290,16 @@ spec:
                               - external
                             properties:
                               external:
-                                description: 'Allowed value: The `selfLink` field
-                                  of a `ComputeSubnetwork` resource.'
+                                description: A reference to an externally managed
+                                  ComputeSubnetwork resource. Should be in the format
+                                  "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
                                 type: string
                               name:
-                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                description: The name of a ComputeSubnetwork resource.
                                 type: string
                               namespace:
-                                description: 'Namespace of the referent. More info:
-                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                description: The namespace of a ComputeSubnetwork
+                                  resource.
                                 type: string
                             type: object
                           type: array
@@ -340,11 +342,12 @@ spec:
                             type: object
                           type: array
                         sourceNatDrainRangesRefs:
+                          description: A list of references to ComputeSubnetwork resources.
+                            These IP ranges will be drained. This field is used for
+                            private NAT.
                           items:
-                            description: |-
-                              A list of URLs of subnetworks representing source ranges to be drained.
-                              This is only supported on patch/update, and these subnetworks must have previously been used as active ranges in this NAT Rule.
-                              This field is used for private NAT.
+                            description: ComputeSubnetworkRef is a reference to a
+                              GCP ComputeSubnetwork.
                             oneOf:
                             - not:
                                 required:
@@ -361,15 +364,16 @@ spec:
                               - external
                             properties:
                               external:
-                                description: 'Allowed value: The `selfLink` field
-                                  of a `ComputeSubnetwork` resource.'
+                                description: A reference to an externally managed
+                                  ComputeSubnetwork resource. Should be in the format
+                                  "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
                                 type: string
                               name:
-                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                description: The name of a ComputeSubnetwork resource.
                                 type: string
                               namespace:
-                                description: 'Namespace of the referent. More info:
-                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                description: The namespace of a ComputeSubnetwork
+                                  resource.
                                 type: string
                             type: object
                           type: array
@@ -483,11 +487,9 @@ spec:
                 format: int64
                 type: integer
               type:
-                description: |-
-                  Immutable. Indicates whether this NAT is used for public or private IP translation.
-                  If unspecified, it defaults to PUBLIC.
-                  If 'PUBLIC' NAT used for public IP translation.
-                  If 'PRIVATE' NAT used for private IP translation. Default value: "PUBLIC" Possible values: ["PUBLIC", "PRIVATE"].
+                description: 'Immutable. Indicates whether this NAT is used for public
+                  IP translation or private IP translation. Possible values: ["PUBLIC",
+                  "PRIVATE"].'
                 type: string
               udpIdleTimeoutSec:
                 description: Timeout (in seconds) for UDP connections. Defaults to
@@ -495,6 +497,7 @@ spec:
                 format: int64
                 type: integer
             required:
+            - natIpAllocateOption
             - region
             - routerRef
             - sourceSubnetworkIpRangesToNat

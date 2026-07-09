@@ -3975,7 +3975,7 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 	// (near miss): "DrainNATIps" vs "DrainNatIps"
 	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
 	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
-	// MISSING: EndpointTypes
+	out.EndpointTypes = in.EndpointTypes
 	out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
 	out.LogConfig = RouternatLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
 	// MISSING: MaxPortsPerVM
@@ -3999,7 +3999,7 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 	// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
 	// MISSING: TCPTransitoryIdleTimeoutSec
 	// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
-	// MISSING: Type
+	out.Type = in.Type
 	// MISSING: UDPIdleTimeoutSec
 	// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
 	return out
@@ -4017,7 +4017,7 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	// (near miss): "DrainNATIps" vs "DrainNatIps"
 	out.EnableDynamicPortAllocation = in.EnableDynamicPortAllocation
 	out.EnableEndpointIndependentMapping = in.EnableEndpointIndependentMapping
-	// MISSING: EndpointTypes
+	out.EndpointTypes = in.EndpointTypes
 	out.IcmpIdleTimeoutSec = in.IcmpIdleTimeoutSec
 	out.LogConfig = RouternatLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
 	// MISSING: MaxPortsPerVM
@@ -4041,7 +4041,7 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	// (near miss): "TCPTimeWaitTimeoutSec" vs "TcpTimeWaitTimeoutSec"
 	// MISSING: TCPTransitoryIdleTimeoutSec
 	// (near miss): "TCPTransitoryIdleTimeoutSec" vs "TcpTransitoryIdleTimeoutSec"
-	// MISSING: Type
+	out.Type = in.Type
 	// MISSING: UDPIdleTimeoutSec
 	// (near miss): "UDPIdleTimeoutSec" vs "UdpIdleTimeoutSec"
 	return out

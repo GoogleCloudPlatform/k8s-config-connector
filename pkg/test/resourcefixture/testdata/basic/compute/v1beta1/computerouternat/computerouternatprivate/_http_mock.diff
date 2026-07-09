@@ -1,254 +1,128 @@
-931c931
-< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
----
-> GET projects/${projectId}/regions/us-central1/routers/${routerID}
-957c957
+931c931,957
 < PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
+> GET projects/${projectId}/regions/us-central1/routers/${routerID}
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "example router description",
+>   "id": "000000000000000000000",
+>   "kind": "compute#router",
+>   "name": "${routerID}",
+>   "network": "projects/${projectId}/global/networks/${networkID}",
+>   "region": "projects/${projectId}/regions/us-central1",
+>   "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
+> }
+> 
+> ---
+> 
 > PATCH projects/${projectId}/regions/us-central1/routers/${routerID}
-963d962
+937d962
 <       "drainNatIps": [],
-965,969d963
+939,943d963
 <       "endpointTypes": [
 <         "ENDPOINT_TYPE_VM"
 <       ],
 <       "icmpIdleTimeoutSec": 30,
 <       "logConfig": null,
-971d964
+946d965
 <       "natIps": [],
-974,978c967
-<           "action": {
-<             "sourceNatActiveRanges": [
-<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-<             ]
-<           },
----
->           "action": {},
-992,997c981
-<       ],
+968,972c987
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
 <       "type": "PRIVATE",
 <       "udpIdleTimeoutSec": 30
 ---
->       ]
-1030,1061c1014
+>       "type": "PRIVATE"
+1005c1020,1021
 < GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "endTime": "2024-04-01T12:34:56.123456Z",
-<   "id": "000000000000000000000",
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "operationType": "patch",
-<   "progress": 100,
-<   "region": "projects/${projectId}/regions/us-central1",
-<   "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "DONE",
-<   "targetId": "${routerID}",
-<   "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
-<   "user": "user@example.com"
-< }
-< 
-< ---
-< 
-< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET projects/${projectId}/regions/us-central1/operations/${operationID}
-1075,1213d1027
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "example router description",
-<   "id": "000000000000000000000",
-<   "kind": "compute#router",
-<   "name": "${routerID}",
-<   "nats": [
-<     {
-<       "autoNetworkTier": "PREMIUM",
-<       "enableEndpointIndependentMapping": false,
-<       "endpointTypes": [
-<         "ENDPOINT_TYPE_VM"
-<       ],
+> Content-Type: application/json
+1036c1052
+< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> GET projects/${projectId}/regions/us-central1/routers/${routerID}
+1062d1077
 <       "icmpIdleTimeoutSec": 30,
-<       "name": "computerouternat-${uniqueId}",
-<       "rules": [
-<         {
-<           "action": {
-<             "sourceNatActiveRanges": [
-<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-<             ]
-<           },
-<           "description": "private nat rule example",
-<           "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
-<           "ruleNumber": 100
-<         }
-<       ],
-<       "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
-<       "subnetworks": [
-<         {
-<           "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-<           "sourceIpRangesToNat": [
-<             "ALL_IP_RANGES"
-<           ]
-<         }
-<       ],
+1086,1090c1101
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
 <       "type": "PRIVATE",
 <       "udpIdleTimeoutSec": 30
-<     }
-<   ],
-<   "network": "projects/${projectId}/global/networks/${networkID}",
-<   "region": "projects/${projectId}/regions/us-central1",
-<   "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
-< }
-< 
-< ---
-< 
+---
+>       "type": "PRIVATE"
+1100c1111
 < PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
-< Content-Type: application/json
-< 
-< {
-<   "nats": [
-<     {
+---
+> PATCH projects/${projectId}/regions/us-central1/routers/${routerID}
+1106,1107d1116
 <       "autoNetworkTier": "PREMIUM",
 <       "drainNatIps": [],
-<       "enableEndpointIndependentMapping": false,
+1109,1113d1117
 <       "endpointTypes": [
 <         "ENDPOINT_TYPE_VM"
 <       ],
 <       "icmpIdleTimeoutSec": 30,
 <       "logConfig": null,
-<       "name": "computerouternat-${uniqueId}",
+1116d1119
 <       "natIps": [],
-<       "rules": [
-<         {
-<           "action": {
-<             "sourceNatActiveRanges": [
-<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-<             ],
-<             "sourceNatDrainRanges": [
-<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-<             ]
-<           },
-<           "description": "private nat rule example",
-<           "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
-<           "ruleNumber": 100
-<         }
-<       ],
-<       "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
-<       "subnetworks": [
-<         {
-<           "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-<           "sourceIpRangesToNat": [
-<             "ALL_IP_RANGES"
-<           ]
-<         }
-<       ],
+1141,1145c1144
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
 <       "type": "PRIVATE",
 <       "udpIdleTimeoutSec": 30
-<     }
-<   ]
-< }
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "id": "000000000000000000000",
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "operationType": "patch",
-<   "progress": 0,
-<   "region": "projects/${projectId}/regions/us-central1",
-<   "selfLink": "projects/${projectId}/regions/us-central1/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "RUNNING",
-<   "targetId": "${routerID}",
-<   "targetLink": "projects/${projectId}/regions/us-central1/routers/${routerID}",
-<   "user": "user@example.com"
-< }
-< 
-< ---
-< 
+---
+>       "type": "PRIVATE"
+1178c1177,1178
 < GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-1232c1046
+---
+> GET projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1209c1209
 < GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET projects/${projectId}/regions/us-central1/routers/${routerID}
-1258d1071
+1235d1234
 <       "icmpIdleTimeoutSec": 30,
-1262,1269c1075
-<           "action": {
-<             "sourceNatActiveRanges": [
-<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-<             ],
-<             "sourceNatDrainRanges": [
-<               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-<             ]
-<           },
----
->           "action": {},
-1284,1288c1090
+1262,1266c1261
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
 <       "type": "PRIVATE",
 <       "udpIdleTimeoutSec": 30
 ---
->       "type": "PUBLIC"
-1298c1100
+>       "type": "PRIVATE"
+1276c1271
 < PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > PATCH projects/${projectId}/regions/us-central1/routers/${routerID}
-1301,1303c1103
+1279,1281c1274
 < {
 <   "nats": []
 < }
 ---
 > {}
-1333c1133,1134
+1311c1304,1305
 < GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1704a1506,1533
+1360a1355,1390
 >   "nats": [
 >     {
 >       "autoNetworkTier": "PREMIUM",
@@ -257,9 +131,17 @@
 >         "ENDPOINT_TYPE_VM"
 >       ],
 >       "name": "computerouternat-${uniqueId}",
+>       "natIpAllocateOption": "USE_SHARED_RANGES",
 >       "rules": [
 >         {
->           "action": {},
+>           "action": {
+>             "sourceNatActiveRanges": [
+>               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+>             ],
+>             "sourceNatDrainRanges": [
+>               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+>             ]
+>           },
 >           "description": "private nat rule example",
 >           "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
 >           "ruleNumber": 100
@@ -274,6 +156,6 @@
 >           ]
 >         }
 >       ],
->       "type": "PUBLIC"
+>       "type": "PRIVATE"
 >     }
 >   ],

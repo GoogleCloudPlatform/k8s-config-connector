@@ -21,6 +21,7 @@ spec:
   routerRef:
     name: computerouter-${uniqueId}
   type: PRIVATE
+  natIpAllocateOption: USE_SHARED_RANGES
   sourceSubnetworkIpRangesToNat: LIST_OF_SUBNETWORKS
   subnetwork:
   - subnetworkRef:
