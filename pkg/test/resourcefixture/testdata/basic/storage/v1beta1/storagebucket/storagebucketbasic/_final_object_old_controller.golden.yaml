@@ -4,39 +4,25 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
+    newkey: newval
   name: storagebucket-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  ipFilter:
-    allowAllServiceAgentAccess: false
-    allowCrossOrgVpcs: false
-    mode: Enabled
-    publicNetworkSource:
-      allowedIpCidrRanges:
-      - 8.8.8.8/32
-      - 9.9.9.9/32
-    vpcNetworkSources:
-    - allowedIpCidrRanges:
-      - 10.0.0.0/8
-      networkRef:
-        name: ${networkID}
-  lifecycleRule:
-  - action:
-      type: Delete
-    condition:
-      age: 7
+  lifecycleRule: []
   location: US
+  resourceID: storagebucket-sample-${uniqueId}
   softDeletePolicy:
-    retentionDurationSeconds: 604800
+    retentionDurationSeconds: 0
   versioning:
-    enabled: false
+    enabled: true
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -44,10 +30,10 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3
   observedState:
     softDeletePolicy:
       effectiveTime: "1970-01-01T00:00:00Z"
-      retentionDurationSeconds: 604800
+      retentionDurationSeconds: 0
   selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
   url: gs://storagebucket-sample-${uniqueId}
