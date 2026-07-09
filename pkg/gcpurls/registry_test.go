@@ -165,9 +165,12 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":        true,
 
 		// Dialogflow
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":       true,
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}": true,
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/sipTrunks/{}":        true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/conversationDatasets/{}": true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":           true,
+		"//dialogflow.googleapis.com/projects/{}/knowledgeBases/{}":                    true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/knowledgeBases/{}":       true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}":     true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/sipTrunks/{}":            true,
 
 		// Discovery Engine
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":      true,
