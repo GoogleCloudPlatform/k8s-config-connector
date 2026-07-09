@@ -25,7 +25,7 @@ spec:
   nodeType: STANDARD_SMALL
   transitEncryptionMode: SERVER_AUTHENTICATION
   authorizationMode: IAM_AUTH
-  engineVersion: VALKEY_7_2
+  engineVersion: VALKEY_9_1
   engineConfigs:
     maxmemory-policy: volatile-ttl
   zoneDistributionConfig:
