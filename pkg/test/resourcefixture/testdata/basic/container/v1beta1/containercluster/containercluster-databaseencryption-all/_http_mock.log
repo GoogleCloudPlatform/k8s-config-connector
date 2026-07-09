@@ -794,7 +794,7 @@ X-Xss-Protection: 0
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_ENCRYPTED",
     "keyName": "projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}",
-    "state": "ENCRYPTED"
+    "state": "ALL_OBJECTS_ENCRYPTION_ENABLED"
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
@@ -1161,7 +1161,7 @@ X-Xss-Protection: 0
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_ENCRYPTED",
     "keyName": "projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}",
-    "state": "ENCRYPTED"
+    "state": "ALL_OBJECTS_ENCRYPTION_ENABLED"
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
@@ -1528,7 +1528,7 @@ X-Xss-Protection: 0
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_ENCRYPTED",
     "keyName": "projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}",
-    "state": "ENCRYPTED"
+    "state": "ALL_OBJECTS_ENCRYPTION_ENABLED"
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
@@ -1895,7 +1895,7 @@ X-Xss-Protection: 0
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_ENCRYPTED",
     "keyName": "projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}",
-    "state": "ENCRYPTED"
+    "state": "ALL_OBJECTS_ENCRYPTION_ENABLED"
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
@@ -2262,7 +2262,7 @@ X-Xss-Protection: 0
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_ENCRYPTED",
     "keyName": "projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/cryptokey-${uniqueId}",
-    "state": "ENCRYPTED"
+    "state": "ALL_OBJECTS_ENCRYPTION_ENABLED"
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
