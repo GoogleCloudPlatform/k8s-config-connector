@@ -26,6 +26,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/yaml"
@@ -54,9 +57,11 @@ func TestGoldenLogAlignment(t *testing.T) {
 				if fileExists(createPath) {
 					gvk, err := getGVKFromYAML(createPath)
 					if err == nil {
-						gk := gvk.GroupKind()
-						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
-							t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
+						if resourceconfig.IsControllerSupported(gvk, k8s.ReconcilerTypeDirect) {
+							gk := gvk.GroupKind()
+							if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
+								t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
+							}
 						}
 					}
 				}
