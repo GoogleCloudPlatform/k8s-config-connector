@@ -34,6 +34,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AntivirusOverride_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AntivirusOverride) *krmnetworksecurityv1alpha1.AntivirusOverride {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.AntivirusOverride{}
+	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func AntivirusOverride_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.AntivirusOverride) *pb.AntivirusOverride {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AntivirusOverride{}
+	out.Protocol = direct.Enum_ToProto[pb.Protocol](mapCtx, in.Protocol)
+	out.Action = direct.Enum_ToProto[pb.ThreatAction](mapCtx, in.Action)
+	return out
+}
 func AuthorizationPolicy_Rule_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.AuthorizationPolicy_Rule) *krm.AuthorizationPolicy_Rule {
 	if in == nil {
 		return nil
@@ -488,6 +506,46 @@ func CertificateProviderInstance_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &networksecuritypb.CertificateProviderInstance{}
 	out.PluginInstance = direct.ValueOf(in.PluginInstance)
+	return out
+}
+func CustomInterceptProfile_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomInterceptProfile) *krmnetworksecurityv1alpha1.CustomInterceptProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.CustomInterceptProfile{}
+	if in.GetInterceptEndpointGroup() != "" {
+		out.InterceptEndpointGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupRef{External: in.GetInterceptEndpointGroup()}
+	}
+	return out
+}
+func CustomInterceptProfile_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.CustomInterceptProfile) *pb.CustomInterceptProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomInterceptProfile{}
+	if in.InterceptEndpointGroupRef != nil {
+		out.InterceptEndpointGroup = in.InterceptEndpointGroupRef.External
+	}
+	return out
+}
+func CustomMirroringProfile_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomMirroringProfile) *krmnetworksecurityv1alpha1.CustomMirroringProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.CustomMirroringProfile{}
+	if in.GetMirroringEndpointGroup() != "" {
+		out.MirroringEndpointGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupRef{External: in.GetMirroringEndpointGroup()}
+	}
+	return out
+}
+func CustomMirroringProfile_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.CustomMirroringProfile) *pb.CustomMirroringProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomMirroringProfile{}
+	if in.MirroringEndpointGroupRef != nil {
+		out.MirroringEndpointGroup = in.MirroringEndpointGroupRef.External
+	}
 	return out
 }
 func GrpcEndpoint_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.GrpcEndpoint) *krm.GrpcEndpoint {
@@ -1194,6 +1252,28 @@ func NetworkSecurityMirroringEndpointGroupSpec_v1alpha1_ToProto(mapCtx *direct.M
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func NetworkSecurityTLSInspectionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TlsInspectionPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: CAPool
+	return out
+}
+func NetworkSecurityTLSInspectionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyObservedState) *pb.TlsInspectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TlsInspectionPolicy{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: CAPool
+	return out
+}
 func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TlsInspectionPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec {
 	if in == nil {
 		return nil
@@ -1201,8 +1281,6 @@ func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.Ma
 	out := &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: CAPool
 	if in.GetTrustConfig() != "" {
 		out.TrustConfigRef = &refsv1beta1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
@@ -1220,8 +1298,6 @@ func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapC
 	out := &pb.TlsInspectionPolicy{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: CAPool
 	if in.TrustConfigRef != nil {
 		out.TrustConfig = in.TrustConfigRef.External
@@ -1230,6 +1306,140 @@ func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.MinTlsVersion = direct.Enum_ToProto[pb.TlsInspectionPolicy_TlsVersion](mapCtx, in.MinTLSVersion)
 	out.TlsFeatureProfile = direct.Enum_ToProto[pb.TlsInspectionPolicy_Profile](mapCtx, in.TLSFeatureProfile)
 	out.CustomTlsFeatures = in.CustomTLSFeatures
+	return out
+}
+func SeverityOverride_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SeverityOverride) *krmnetworksecurityv1alpha1.SeverityOverride {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.SeverityOverride{}
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func SeverityOverride_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.SeverityOverride) *pb.SeverityOverride {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SeverityOverride{}
+	out.Severity = direct.Enum_ToProto[pb.Severity](mapCtx, in.Severity)
+	out.Action = direct.Enum_ToProto[pb.ThreatAction](mapCtx, in.Action)
+	return out
+}
+func ThreatOverride_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ThreatOverride) *krmnetworksecurityv1alpha1.ThreatOverride {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.ThreatOverride{}
+	out.ThreatID = direct.LazyPtr(in.GetThreatId())
+	// MISSING: Type
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func ThreatOverride_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.ThreatOverride) *pb.ThreatOverride {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ThreatOverride{}
+	out.ThreatId = direct.ValueOf(in.ThreatID)
+	// MISSING: Type
+	out.Action = direct.Enum_ToProto[pb.ThreatAction](mapCtx, in.Action)
+	return out
+}
+func ThreatOverrideObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ThreatOverride) *krmnetworksecurityv1alpha1.ThreatOverrideObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.ThreatOverrideObservedState{}
+	// MISSING: ThreatID
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	// MISSING: Action
+	return out
+}
+func ThreatOverrideObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.ThreatOverrideObservedState) *pb.ThreatOverride {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ThreatOverride{}
+	// MISSING: ThreatID
+	out.Type = direct.Enum_ToProto[pb.ThreatType](mapCtx, in.Type)
+	// MISSING: Action
+	return out
+}
+func ThreatPreventionProfile_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ThreatPreventionProfile) *krmnetworksecurityv1alpha1.ThreatPreventionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.ThreatPreventionProfile{}
+	out.SeverityOverrides = direct.Slice_FromProto(mapCtx, in.SeverityOverrides, SeverityOverride_v1alpha1_FromProto)
+	out.ThreatOverrides = direct.Slice_FromProto(mapCtx, in.ThreatOverrides, ThreatOverride_v1alpha1_FromProto)
+	out.AntivirusOverrides = direct.Slice_FromProto(mapCtx, in.AntivirusOverrides, AntivirusOverride_v1alpha1_FromProto)
+	return out
+}
+func ThreatPreventionProfile_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.ThreatPreventionProfile) *pb.ThreatPreventionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ThreatPreventionProfile{}
+	out.SeverityOverrides = direct.Slice_ToProto(mapCtx, in.SeverityOverrides, SeverityOverride_v1alpha1_ToProto)
+	out.ThreatOverrides = direct.Slice_ToProto(mapCtx, in.ThreatOverrides, ThreatOverride_v1alpha1_ToProto)
+	out.AntivirusOverrides = direct.Slice_ToProto(mapCtx, in.AntivirusOverrides, AntivirusOverride_v1alpha1_ToProto)
+	return out
+}
+func ThreatPreventionProfileObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ThreatPreventionProfile) *krmnetworksecurityv1alpha1.ThreatPreventionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.ThreatPreventionProfileObservedState{}
+	// MISSING: SeverityOverrides
+	out.ThreatOverrides = direct.Slice_FromProto(mapCtx, in.ThreatOverrides, ThreatOverrideObservedState_v1alpha1_FromProto)
+	// MISSING: AntivirusOverrides
+	return out
+}
+func ThreatPreventionProfileObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.ThreatPreventionProfileObservedState) *pb.ThreatPreventionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ThreatPreventionProfile{}
+	// MISSING: SeverityOverrides
+	out.ThreatOverrides = direct.Slice_ToProto(mapCtx, in.ThreatOverrides, ThreatOverrideObservedState_v1alpha1_ToProto)
+	// MISSING: AntivirusOverrides
+	return out
+}
+func URLFilter_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlFilter) *krmnetworksecurityv1alpha1.URLFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.URLFilter{}
+	out.FilteringAction = direct.Enum_FromProto(mapCtx, in.GetFilteringAction())
+	out.Urls = in.Urls
+	out.Priority = in.Priority
+	return out
+}
+func URLFilter_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.URLFilter) *pb.UrlFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlFilter{}
+	out.FilteringAction = direct.Enum_ToProto[pb.UrlFilter_UrlFilteringAction](mapCtx, in.FilteringAction)
+	out.Urls = in.Urls
+	out.Priority = in.Priority
+	return out
+}
+func URLFilteringProfile_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlFilteringProfile) *krmnetworksecurityv1alpha1.URLFilteringProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.URLFilteringProfile{}
+	out.URLFilters = direct.Slice_FromProto(mapCtx, in.UrlFilters, URLFilter_v1alpha1_FromProto)
+	return out
+}
+func URLFilteringProfile_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.URLFilteringProfile) *pb.UrlFilteringProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlFilteringProfile{}
+	out.UrlFilters = direct.Slice_ToProto(mapCtx, in.URLFilters, URLFilter_v1alpha1_ToProto)
 	return out
 }
 func ValidationCA_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.ValidationCA) *krm.ValidationCA {
