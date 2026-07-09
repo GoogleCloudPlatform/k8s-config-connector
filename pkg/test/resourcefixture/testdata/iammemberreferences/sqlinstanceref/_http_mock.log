@@ -428,26 +428,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
 POST https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -492,35 +472,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
 POST https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -531,27 +482,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "version": 1
   }
 }
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
