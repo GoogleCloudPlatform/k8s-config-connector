@@ -232,9 +232,15 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 
 			// Sort events by their RequestBody to ensure deterministic order for concurrent sibling operations
 			sort.SliceStable(realEvs, func(i, j int) bool {
+				if realEvs[i].RequestBody == realEvs[j].RequestBody {
+					return realEvs[i].URL < realEvs[j].URL
+				}
 				return realEvs[i].RequestBody < realEvs[j].RequestBody
 			})
 			sort.SliceStable(mockEvs, func(i, j int) bool {
+				if mockEvs[i].RequestBody == mockEvs[j].RequestBody {
+					return mockEvs[i].URL < mockEvs[j].URL
+				}
 				return mockEvs[i].RequestBody < mockEvs[j].RequestBody
 			})
 
