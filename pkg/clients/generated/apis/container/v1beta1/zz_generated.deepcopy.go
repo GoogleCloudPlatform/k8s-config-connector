@@ -1815,6 +1815,13 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 			(*out)[key] = val
 		}
 	}
+	if in.ResourceManagerTags != nil {
+		in, out := &in.ResourceManagerTags, &out.ResourceManagerTags
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.SandboxConfig != nil {
 		in, out := &in.SandboxConfig, &out.SandboxConfig
 		*out = new(ClusterSandboxConfig)
@@ -1901,6 +1908,13 @@ func (in *ClusterNodePoolAutoConfig) DeepCopyInto(out *ClusterNodePoolAutoConfig
 		in, out := &in.NetworkTags, &out.NetworkTags
 		*out = new(ClusterNetworkTags)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceManagerTags != nil {
+		in, out := &in.ResourceManagerTags, &out.ResourceManagerTags
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
 	}
 	return
 }
@@ -3950,6 +3964,13 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.ResourceLabels != nil {
 		in, out := &in.ResourceLabels, &out.ResourceLabels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.ResourceManagerTags != nil {
+		in, out := &in.ResourceManagerTags, &out.ResourceManagerTags
 		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val

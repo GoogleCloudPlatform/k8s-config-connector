@@ -391,6 +391,10 @@ type NodepoolNodeConfig struct {
 	// +optional
 	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
+	/* The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}. */
+	// +optional
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+
 	/* Immutable. Sandbox configuration for this node. */
 	// +optional
 	SandboxConfig *NodepoolSandboxConfig `json:"sandboxConfig,omitempty"`
