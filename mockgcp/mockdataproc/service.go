@@ -75,6 +75,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBatchControllerServer(grpcServer, &batchControllerServer{MockService: s})
 	pb.RegisterJobControllerServer(grpcServer, &jobControllerServer{MockService: s})
 	pb.RegisterSessionControllerServer(grpcServer, &sessionControllerServer{MockService: s})
+	pb.RegisterSessionTemplateControllerServer(grpcServer, &sessionTemplateControllerServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -89,6 +90,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewBatchControllerClient(conn))
 	mux.AddService(pb.NewJobControllerClient(conn))
 	mux.AddService(pb.NewSessionControllerClient(conn))
+	mux.AddService(pb.NewSessionTemplateControllerClient(conn))
 
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 

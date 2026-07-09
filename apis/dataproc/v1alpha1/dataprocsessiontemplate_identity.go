@@ -44,6 +44,10 @@ func (i *DataprocSessionTemplateIdentity) String() string {
 	return DataprocSessionTemplateIdentityFormat.ToString(*i)
 }
 
+func (i *DataprocSessionTemplateIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *DataprocSessionTemplateIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataprocSessionTemplateIdentityFormat.Parse(ref)
 	if err != nil {
