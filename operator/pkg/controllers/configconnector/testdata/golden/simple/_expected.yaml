@@ -1107,6 +1107,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: errorreportingnotificationsettings.clouderrorreporting.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com
 spec: (removed)
 ---
@@ -2652,6 +2660,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - clouderrorreporting.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudfunctions.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3672,6 +3692,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - saasservicemgmt.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - secretmanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3829,6 +3861,18 @@ rules:
   - delete
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - testing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4478,6 +4522,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - clouderrorreporting.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudfunctions.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5158,6 +5210,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - saasservicemgmt.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - secretmanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5263,6 +5323,14 @@ rules:
   - watch
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - testing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
