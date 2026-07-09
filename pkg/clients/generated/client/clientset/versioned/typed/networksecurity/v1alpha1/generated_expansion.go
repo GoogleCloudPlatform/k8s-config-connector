@@ -46,3 +46,5 @@ type NetworkSecuritySACRealmExpansion interface{}
 type NetworkSecuritySecurityProfileExpansion interface{}
 
 type NetworkSecurityTLSInspectionPolicyExpansion interface{}
+
+type NetworkSecurityUrlListExpansion interface{}

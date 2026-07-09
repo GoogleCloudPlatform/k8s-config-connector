@@ -44,6 +44,7 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecuritySACRealmsGetter
 	NetworkSecuritySecurityProfilesGetter
 	NetworkSecurityTLSInspectionPoliciesGetter
+	NetworkSecurityUrlListsGetter
 }
 
 // NetworksecurityV1alpha1Client is used to interact with features provided by the networksecurity.cnrm.cloud.google.com group.
@@ -101,6 +102,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecuritySecurityProfiles(namespac
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityTLSInspectionPolicies(namespace string) NetworkSecurityTLSInspectionPolicyInterface {
 	return newNetworkSecurityTLSInspectionPolicies(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityUrlLists(namespace string) NetworkSecurityUrlListInterface {
+	return newNetworkSecurityUrlLists(c, namespace)
 }
 
 // NewForConfig creates a new NetworksecurityV1alpha1Client for the given config.

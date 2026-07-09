@@ -24,3 +24,14 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-07-08] Implementing types and Identity for NetworkSecurityUrlList
+- **Context**: Implementing types, CRD, and Identity for `NetworkSecurityUrlList` (Issue #8740).
+- **Problem**: The new `NetworkSecurityUrlList` resource needed to be scaffolded, configured, and validated, including deepcopy generation and Golden Identity unit tests.
+- **Solution**: 
+  1. Updated `apis/networksecurity/v1alpha1/generate.sh` to include `NetworkSecurityUrlList:UrlList`.
+  2. Scaffolded the types, Identity (`networksecurityurllist_identity.go`), and Reference (`networksecurityurllist_reference.go`) files.
+  3. Regenerated KRM types and manifests using `dev/tasks/generate-types-and-mappers`.
+  4. Created unit tests in `networksecurityurllist_identity_test.go` and verified they pass perfectly, as well as generated golden outputs using `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/cli/powertools/cais/...`.
+- **Impact**: Provides full declarative support and identity mapping for the GCP UrlList resource under NetworkSecurity.
+

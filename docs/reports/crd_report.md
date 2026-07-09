@@ -446,6 +446,7 @@
 | networksecurity.cnrm.cloud.google.com         | NetworkSecuritySecurityProfile                  | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityServerTLSPolicy                  | False        | True        | False  | DCL        | False       |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityTLSInspectionPolicy              | True         | False       | False  | Direct     | True        |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityUrlList                          | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheKeyset                  | True         | False       | False  | Terraform  | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheOrigin                  | True         | False       | False  | Terraform  | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesEdgeCacheService                 | True         | False       | False  | Terraform  | True        |

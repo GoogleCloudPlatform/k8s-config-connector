@@ -1232,6 +1232,46 @@ func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.CustomTlsFeatures = in.CustomTLSFeatures
 	return out
 }
+func NetworkSecurityUrlListObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlList) *krmnetworksecurityv1alpha1.NetworkSecurityUrlListObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityUrlListObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkSecurityUrlListObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityUrlListObservedState) *pb.UrlList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlList{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkSecurityUrlListSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlList) *krmnetworksecurityv1alpha1.NetworkSecurityUrlListSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityUrlListSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Values = in.Values
+	return out
+}
+func NetworkSecurityUrlListSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityUrlListSpec) *pb.UrlList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlList{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Values = in.Values
+	return out
+}
 func ValidationCA_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.ValidationCA) *krm.ValidationCA {
 	if in == nil {
 		return nil

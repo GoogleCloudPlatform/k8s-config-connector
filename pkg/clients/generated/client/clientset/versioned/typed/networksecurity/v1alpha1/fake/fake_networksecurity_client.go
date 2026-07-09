@@ -83,6 +83,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityTLSInspectionPolicies(names
 	return newFakeNetworkSecurityTLSInspectionPolicies(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityUrlLists(namespace string) v1alpha1.NetworkSecurityUrlListInterface {
+	return newFakeNetworkSecurityUrlLists(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNetworksecurityV1alpha1) RESTClient() rest.Interface {
