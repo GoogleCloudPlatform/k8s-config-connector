@@ -118,10 +118,11 @@ func (m *storageBucketModel) AdapterForObject(ctx context.Context, op *directbas
 	desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	return &storageBucketAdapter{
-		gcpClient: gcpClient,
-		id:        id,
-		desired:   desiredPb,
-		reader:    reader,
+		gcpClient:  gcpClient,
+		id:         id,
+		desired:    desiredPb,
+		desiredKRM: obj,
+		reader:     reader,
 	}, nil
 }
 
@@ -131,11 +132,13 @@ func (m *storageBucketModel) AdapterForURL(ctx context.Context, url string) (dir
 }
 
 type storageBucketAdapter struct {
-	gcpClient *gcs.Service
-	id        *krm.StorageBucketIdentity
-	desired   *pb.Bucket
-	actual    *pb.Bucket
-	reader    client.Reader
+	gcpClient  *gcs.Service
+	id         *krm.StorageBucketIdentity
+	desired    *pb.Bucket
+	desiredKRM *krm.StorageBucket
+	actual     *pb.Bucket
+	actualRest *gcs.Bucket
+	reader     client.Reader
 }
 
 var _ directbase.Adapter = &storageBucketAdapter{}
@@ -191,6 +194,7 @@ func (a *storageBucketAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	a.actual = actual
+	a.actualRest = actualRest
 	return true, nil
 }
 
@@ -203,6 +207,14 @@ func (a *storageBucketAdapter) Create(ctx context.Context, createOp *directbase.
 		return err
 	}
 
+	if a.desiredKRM != nil && a.desiredKRM.Spec.SoftDeletePolicy != nil {
+		reqRest.SoftDeletePolicy = &gcs.BucketSoftDeletePolicy{}
+		if a.desiredKRM.Spec.SoftDeletePolicy.RetentionDurationSeconds != nil {
+			reqRest.SoftDeletePolicy.RetentionDurationSeconds = int64(*a.desiredKRM.Spec.SoftDeletePolicy.RetentionDurationSeconds)
+			reqRest.SoftDeletePolicy.ForceSendFields = []string{"RetentionDurationSeconds"}
+		}
+	}
+
 	createdRest, err := a.gcpClient.Buckets.Insert(a.id.Project, reqRest).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating StorageBucket %s: %w", a.id.Bucket, err)
@@ -212,6 +224,8 @@ func (a *storageBucketAdapter) Create(ctx context.Context, createOp *directbase.
 	if err != nil {
 		return err
 	}
+
+	a.actualRest = createdRest
 
 	log.V(2).Info("successfully created StorageBucket", "name", a.id.Bucket)
 	return a.updateStatus(ctx, createOp, created)
@@ -226,6 +240,17 @@ func (a *storageBucketAdapter) Update(ctx context.Context, updateOp *directbase.
 		return err
 	}
 
+	var oldRetentionSeconds, newRetentionSeconds int64
+	if a.actualRest != nil && a.actualRest.SoftDeletePolicy != nil {
+		oldRetentionSeconds = a.actualRest.SoftDeletePolicy.RetentionDurationSeconds
+	}
+	if a.desiredKRM != nil && a.desiredKRM.Spec.SoftDeletePolicy != nil && a.desiredKRM.Spec.SoftDeletePolicy.RetentionDurationSeconds != nil {
+		newRetentionSeconds = int64(*a.desiredKRM.Spec.SoftDeletePolicy.RetentionDurationSeconds)
+	}
+	if oldRetentionSeconds != newRetentionSeconds {
+		diffs.AddField("spec.softDeletePolicy.retentionDurationSeconds", oldRetentionSeconds, newRetentionSeconds)
+	}
+
 	latest := a.actual
 	if diffs.HasDiff() {
 		diffs.Object = updateOp.GetUnstructured()
@@ -234,6 +259,14 @@ func (a *storageBucketAdapter) Update(ctx context.Context, updateOp *directbase.
 		reqRest, err := protoToREST(a.desired)
 		if err != nil {
 			return err
+		}
+
+		if a.desiredKRM != nil && a.desiredKRM.Spec.SoftDeletePolicy != nil {
+			reqRest.SoftDeletePolicy = &gcs.BucketSoftDeletePolicy{}
+			if a.desiredKRM.Spec.SoftDeletePolicy.RetentionDurationSeconds != nil {
+				reqRest.SoftDeletePolicy.RetentionDurationSeconds = int64(*a.desiredKRM.Spec.SoftDeletePolicy.RetentionDurationSeconds)
+				reqRest.SoftDeletePolicy.ForceSendFields = []string{"RetentionDurationSeconds"}
+			}
 		}
 
 		updatedRest, err := a.gcpClient.Buckets.Patch(a.id.Bucket, reqRest).Context(ctx).Do()
@@ -246,6 +279,7 @@ func (a *storageBucketAdapter) Update(ctx context.Context, updateOp *directbase.
 			return err
 		}
 		latest = updated
+		a.actualRest = updatedRest
 		log.V(2).Info("successfully updated StorageBucket", "name", a.id.Bucket)
 	}
 
@@ -263,6 +297,11 @@ func (a *storageBucketAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	obj.Spec = direct.ValueOf(StorageBucketSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+	if a.actualRest != nil && a.actualRest.SoftDeletePolicy != nil {
+		obj.Spec.SoftDeletePolicy = &krm.StorageBucketSoftDeletePolicy{
+			RetentionDurationSeconds: direct.PtrTo(int(a.actualRest.SoftDeletePolicy.RetentionDurationSeconds)),
+		}
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -302,6 +341,15 @@ func (a *storageBucketAdapter) updateStatus(ctx context.Context, op directbase.O
 	}
 
 	status.ObservedState = &krm.StorageBucketObservedState{}
+
+	if a.actualRest != nil && a.actualRest.SoftDeletePolicy != nil {
+		status.ObservedState.SoftDeletePolicy = &krm.StorageBucketSoftDeletePolicyObservedState{
+			RetentionDurationSeconds: direct.PtrTo(a.actualRest.SoftDeletePolicy.RetentionDurationSeconds),
+		}
+		if a.actualRest.SoftDeletePolicy.EffectiveTime != "" {
+			status.ObservedState.SoftDeletePolicy.EffectiveTime = direct.PtrTo(a.actualRest.SoftDeletePolicy.EffectiveTime)
+		}
+	}
 
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
