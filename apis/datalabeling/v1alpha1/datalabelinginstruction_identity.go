@@ -42,6 +42,10 @@ func (i *DataLabelingInstructionIdentity) String() string {
 	return DataLabelingInstructionIdentityFormat.ToString(*i)
 }
 
+func (i *DataLabelingInstructionIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
 func (i *DataLabelingInstructionIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataLabelingInstructionIdentityFormat.Parse(ref)
 	if err != nil {

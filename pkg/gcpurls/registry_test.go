@@ -146,7 +146,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":        true,
 
 		// Data Labeling
-		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}": true,
+		"//datalabeling.googleapis.com/projects/{}/annotationSpecSets/{}": true,
+		"//datalabeling.googleapis.com/projects/{}/datasets/{}":           true,
+		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}":     true,
+		"//datalabeling.googleapis.com/projects/{}/instructions/{}":       true,
 
 		// Dataplex
 		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":           true,
