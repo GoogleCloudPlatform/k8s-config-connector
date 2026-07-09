@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/vertexai-pipelinejob-bucket-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: vertexai-pipelinejob-bucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: aiplatform.cnrm.cloud.google.com
+  kind: VertexAIPipelineJob
+  name: vertexaipipelinejob-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
