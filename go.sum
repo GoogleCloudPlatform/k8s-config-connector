@@ -758,6 +758,8 @@ cloud.google.com/go/gkehub v0.14.2/go.mod h1:iyjYH23XzAxSdhrbmfoQdePnlMj2EWcvnR+
 cloud.google.com/go/gkehub v0.14.3/go.mod h1:jAl6WafkHHW18qgq7kqcrXYzN08hXeK/Va3utN8VKg8=
 cloud.google.com/go/gkehub v0.14.4/go.mod h1:Xispfu2MqnnFt8rV/2/3o73SK1snL8s9dYJ9G2oQMfc=
 cloud.google.com/go/gkehub v0.14.5/go.mod h1:6bzqxM+a+vEH/h8W8ec4OJl4r36laxTs3A/fMNHJ0wA=
+cloud.google.com/go/gkehub v0.21.0 h1:Fvx6c94yYToZBlsYF7tBIt+LW1u6uY6WYK/h3Z6IZYI=
+cloud.google.com/go/gkehub v0.21.0/go.mod h1:xKePlMrI8LpKErzKMWdH/yQv+GDV60ypCNfTTdT+BN0=
 cloud.google.com/go/gkemulticloud v0.3.0/go.mod h1:7orzy7O0S+5kq95e4Hpn7RysVA7dPs8W/GgfUtsPbrA=
 cloud.google.com/go/gkemulticloud v0.4.0/go.mod h1:E9gxVBnseLWCk24ch+P9+B2CoDFJZTyIgLKSalC7tuI=
 cloud.google.com/go/gkemulticloud v0.5.0/go.mod h1:W0JDkiyi3Tqh0TJr//y19wyb1yf8llHVto2Htf2Ja3Y=

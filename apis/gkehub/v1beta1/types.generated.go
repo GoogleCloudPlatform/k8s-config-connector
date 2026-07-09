@@ -16,8 +16,9 @@
 // +generated:types
 // krm.group: gkehub.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.cloud.gkehub.v1beta
+// proto.service: google.cloud.gkehub.v1beta,google.cloud.gkehub.v1beta1
 // resource: GKEHubFeatureMembership:MembershipFeatureSpec
+// resource: GKEHubMembership:Membership
 
 package v1beta1
 
@@ -129,6 +130,52 @@ type HierarchyControllerConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.configmanagement.v1beta.MembershipSpec", skipping
+
+// +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec
+type MembershipSpec struct {
+	// Optional. Config Sync configuration for the cluster.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.config_sync
+	ConfigSync *ConfigSync `json:"configSync,omitempty"`
+
+	// Optional. Policy Controller configuration for the cluster.
+	//  Deprecated: Configuring Policy Controller through the configmanagement
+	//  feature is no longer recommended. Use the policycontroller feature instead.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.policy_controller
+	PolicyController *PolicyController `json:"policyController,omitempty"`
+
+	// Optional. Binauthz conifguration for the cluster. Deprecated: This field
+	//  will be ignored and should not be set.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.binauthz
+	Binauthz *BinauthzConfig `json:"binauthz,omitempty"`
+
+	// Optional. Hierarchy Controller configuration for the cluster.
+	//  Deprecated: Configuring Hierarchy Controller through the configmanagement
+	//  feature is no longer recommended. Use
+	//  https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.hierarchy_controller
+	HierarchyController *HierarchyControllerConfig `json:"hierarchyController,omitempty"`
+
+	// Optional. Version of ACM installed.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.version
+	Version *string `json:"version,omitempty"`
+
+	// Optional. The user-specified cluster name used by Config Sync
+	//  cluster-name-selector annotation or ClusterSelector, for applying configs
+	//  to only a subset of clusters. Omit this field if the cluster's fleet
+	//  membership name is used by Config Sync cluster-name-selector annotation or
+	//  ClusterSelector. Set this field if a name different from the cluster's
+	//  fleet membership name is used by Config Sync cluster-name-selector
+	//  annotation or ClusterSelector.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.cluster
+	Cluster *string `json:"cluster,omitempty"`
+
+	// Optional. Enables automatic Feature management.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.management
+	Management *string `json:"management,omitempty"`
+}
+*/
+
 /* unreachable type OciConfig
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.OciConfig
 type OciConfig struct {
@@ -222,6 +269,73 @@ type BundleInstallSpec struct {
 }
 */
 
+/* found existing non-generated go type "HubConfig", skipping
+
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.HubConfig
+type HubConfig struct {
+	// The install_spec represents the intended state specified by the
+	//  latest request that mutated install_spec in the feature spec,
+	//  not the lifecycle state of the
+	//  feature observed by the Hub feature controller
+	//  that is reported in the feature state.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.install_spec
+	InstallSpec *string `json:"installSpec,omitempty"`
+
+	// Sets the interval for Policy Controller Audit Scans (in seconds).
+	//  When set to 0, this disables audit functionality altogether.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.audit_interval_seconds
+	AuditIntervalSeconds *int64 `json:"auditIntervalSeconds,omitempty"`
+
+	// The set of namespaces that are excluded from Policy Controller checks.
+	//  Namespaces do not need to currently exist on the cluster.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.exemptable_namespaces
+	ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
+
+	// Enables the ability to use Constraint Templates that reference to objects
+	//  other than the object currently being evaluated.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.referential_rules_enabled
+	ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
+
+	// Logs all denies and dry run failures.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.log_denies_enabled
+	LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
+
+	// Enables the ability to mutate resources using Policy Controller.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.mutation_enabled
+	MutationEnabled *bool `json:"mutationEnabled,omitempty"`
+
+	// Monitoring specifies the configuration of monitoring.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.monitoring
+	Monitoring *MonitoringConfig `json:"monitoring,omitempty"`
+
+	// Specifies the desired policy content on the cluster
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.policy_content
+	PolicyContent *PolicyContentSpec `json:"policyContent,omitempty"`
+
+	// The maximum number of audit violations to be stored in a constraint.
+	//  If not set, the internal default (currently 20) will be used.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.constraint_violation_limit
+	ConstraintViolationLimit *int64 `json:"constraintViolationLimit,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.policycontroller.v1beta.MembershipSpec", skipping
+
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.MembershipSpec
+type MembershipSpec struct {
+	// Policy Controller configuration for the cluster.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.MembershipSpec.policy_controller_hub_config
+	PolicyControllerHubConfig *HubConfig `json:"policyControllerHubConfig,omitempty"`
+
+	// Version of Policy Controller installed.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.MembershipSpec.version
+	Version *string `json:"version,omitempty"`
+}
+*/
+
 /* unreachable type MonitoringConfig
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig
 type MonitoringConfig struct {
@@ -241,6 +355,32 @@ type PolicyContentSpec struct {
 	// Configures the installation of the Template Library.
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec.template_library
 	TemplateLibrary *TemplateLibraryConfig `json:"templateLibrary,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PolicyControllerDeploymentConfig", skipping
+
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig
+type PolicyControllerDeploymentConfig struct {
+	// Pod replica count.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.replica_count
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+
+	// Container resource requirements.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.container_resources
+	ContainerResources *ResourceRequirements `json:"containerResources,omitempty"`
+
+	// Pod anti-affinity enablement. Deprecated: use `pod_affinity` instead.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.pod_anti_affinity
+	PodAntiAffinity *bool `json:"podAntiAffinity,omitempty"`
+
+	// Pod tolerations of node taints.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.pod_tolerations
+	PodTolerations []PolicyControllerDeploymentConfig_Toleration `json:"podTolerations,omitempty"`
+
+	// Pod affinity configuration.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.pod_affinity
+	PodAffinity *string `json:"podAffinity,omitempty"`
 }
 */
 
@@ -311,6 +451,320 @@ type MembershipSpec struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.v1beta.MembershipFeatureSpec", skipping
+
+// +kcc:proto=google.cloud.gkehub.v1beta.MembershipFeatureSpec
+type MembershipFeatureSpec struct {
+	// Config Management-specific spec.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta.MembershipFeatureSpec.configmanagement
+	Configmanagement *MembershipSpec `json:"configmanagement,omitempty"`
+
+	// Anthos Service Mesh-specific spec
+	// +kcc:proto:field=google.cloud.gkehub.v1beta.MembershipFeatureSpec.mesh
+	Mesh *MembershipSpec `json:"mesh,omitempty"`
+
+	// Policy Controller spec.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta.MembershipFeatureSpec.policycontroller
+	Policycontroller *MembershipSpec `json:"policycontroller,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.ApplianceCluster
+type ApplianceCluster struct {
+	// Immutable. Self-link of the GCP resource for the Appliance Cluster. For
+	//  example:
+	//
+	//  //transferappliance.googleapis.com/projects/my-project/locations/us-west1-a/appliances/my-appliance
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.ApplianceCluster.resource_link
+	ResourceLink *string `json:"resourceLink,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.Authority
+type Authority struct {
+	// Optional. A JSON Web Token (JWT) issuer URI. `issuer` must start with
+	//  `https://` and be a valid URL with length <2000 characters.
+	//
+	//  If set, then Google will allow valid OIDC tokens from this issuer to
+	//  authenticate within the workload_identity_pool. OIDC discovery will be
+	//  performed on this URI to validate tokens from the issuer.
+	//
+	//  Clearing `issuer` disables Workload Identity. `issuer` cannot be directly
+	//  modified; it must be cleared (and Workload Identity disabled) before using
+	//  a new issuer (and re-enabling Workload Identity).
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Authority.issuer
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Optional. OIDC verification keys for this Membership in JWKS format (RFC
+	//  7517).
+	//
+	//  When this field is set, OIDC discovery will NOT be performed on `issuer`,
+	//  and instead OIDC tokens will be validated using this field.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Authority.oidc_jwks
+	OIDCJwks []byte `json:"oidcJwks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.EdgeCluster
+type EdgeCluster struct {
+	// Immutable. Self-link of the GCP resource for the Edge Cluster. For
+	//  example:
+	//
+	//  //edgecontainer.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.EdgeCluster.resource_link
+	ResourceLink *string `json:"resourceLink,omitempty"`
+}
+
+/* found existing non-generated go type "GKECluster", skipping
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.GkeCluster
+type GKECluster struct {
+	// Immutable. Self-link of the GCP resource for the GKE cluster. For example:
+	//
+	//      //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+	//
+	//  Zonal clusters are also supported.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.GkeCluster.resource_link
+	ResourceLink *string `json:"resourceLink,omitempty"`
+}
+*/
+
+/* unreachable type KubernetesMetadata
+// +kcc:proto=google.cloud.gkehub.v1beta1.KubernetesMetadata
+type KubernetesMetadata struct {
+}
+*/
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.KubernetesResource
+type KubernetesResource struct {
+	// Input only. The YAML representation of the Membership CR. This field is
+	//  ignored for GKE clusters where Hub can read the CR directly.
+	//
+	//  Callers should provide the CR that is currently present in the cluster
+	//  during CreateMembership or UpdateMembership, or leave this field empty if
+	//  none exists. The CR manifest is used to validate the cluster has not been
+	//  registered with another Membership.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesResource.membership_cr_manifest
+	MembershipCrManifest *string `json:"membershipCrManifest,omitempty"`
+
+	// Optional. Options for Kubernetes resource generation.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesResource.resource_options
+	ResourceOptions *ResourceOptions `json:"resourceOptions,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.v1beta1.Membership", skipping
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.Membership
+type Membership struct {
+
+	// Optional. GCP labels for this membership.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of this membership, limited to 63 characters.
+	//  Must match the regex: `[a-zA-Z0-9][a-zA-Z0-9_\-\.\ ]*`
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Endpoint information to reach this member.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.endpoint
+	Endpoint *MembershipEndpoint `json:"endpoint,omitempty"`
+
+	// Optional. How to identify workloads from this Membership.
+	//  See the documentation on Workload Identity for more details:
+	//  https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.authority
+	Authority *Authority `json:"authority,omitempty"`
+
+	// Optional. An externally-generated and managed ID for this Membership. This
+	//  ID may be modified after creation, but this is not recommended. For GKE
+	//  clusters, external_id is managed by the Hub API and updates will be
+	//  ignored.
+	//
+	//  The ID must match the regex: `[a-zA-Z0-9][a-zA-Z0-9_\-\.]*`
+	//
+	//  If this Membership represents a Kubernetes cluster, this value should be
+	//  set to the UID of the `kube-system` namespace object.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.external_id
+	ExternalID *string `json:"externalID,omitempty"`
+
+	// Optional. The infrastructure type this Membership is running on.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.infrastructure_type
+	InfrastructureType *string `json:"infrastructureType,omitempty"`
+
+	// Optional. The monitoring config information for this membership.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.monitoring_config
+	MonitoringConfig *MonitoringConfig `json:"monitoringConfig,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.MembershipEndpoint
+type MembershipEndpoint struct {
+	// Optional. Specific information for a GKE-on-GCP cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.gke_cluster
+	GKECluster *GKECluster `json:"gkeCluster,omitempty"`
+
+	// Optional. Specific information for a GKE On-Prem cluster. An onprem
+	//  user-cluster who has no resourceLink is not allowed to use this field, it
+	//  should have a nil "type" instead.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.on_prem_cluster
+	OnPremCluster *OnPremCluster `json:"onPremCluster,omitempty"`
+
+	// Optional. Specific information for a GKE Multi-Cloud cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.multi_cloud_cluster
+	MultiCloudCluster *MultiCloudCluster `json:"multiCloudCluster,omitempty"`
+
+	// Optional. Specific information for a Google Edge cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.edge_cluster
+	EdgeCluster *EdgeCluster `json:"edgeCluster,omitempty"`
+
+	// Optional. Specific information for a GDC Edge Appliance cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.appliance_cluster
+	ApplianceCluster *ApplianceCluster `json:"applianceCluster,omitempty"`
+
+	// Optional. The in-cluster Kubernetes Resources that should be applied for a
+	//  correctly registered cluster, in the steady state. These resources:
+	//
+	//    * Ensure that the cluster is exclusively registered to one and only one
+	//      Hub Membership.
+	//    * Propagate Workload Pool Information available in the Membership
+	//      Authority field.
+	//    * Ensure proper initial configuration of default Hub Features.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.kubernetes_resource
+	KubernetesResource *KubernetesResource `json:"kubernetesResource,omitempty"`
+}
+
+/* unreachable type MembershipState
+// +kcc:proto=google.cloud.gkehub.v1beta1.MembershipState
+type MembershipState struct {
+
+	// This field is never set by the Hub Service.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipState.description
+	Description *string `json:"description,omitempty"`
+
+	// This field is never set by the Hub Service.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipState.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.v1beta1.MonitoringConfig", skipping
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.MonitoringConfig
+type MonitoringConfig struct {
+	// Immutable. Project used to report Metrics
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MonitoringConfig.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Immutable. Location used to report Metrics
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MonitoringConfig.location
+	Location *string `json:"location,omitempty"`
+
+	// Immutable. Cluster name used to report metrics.
+	//  For Anthos on VMWare/Baremetal, it would be in format
+	//  `memberClusters/cluster_name`; And for Anthos on MultiCloud, it would be in
+	//  format
+	//  `{azureClusters, awsClusters}/cluster_name`.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MonitoringConfig.cluster
+	Cluster *string `json:"cluster,omitempty"`
+
+	// Kubernetes system metrics, if available, are written to this prefix.
+	//  This defaults to kubernetes.io for GKE, and kubernetes.io/anthos for Anthos
+	//  eventually. Noted: Anthos MultiCloud will have kubernetes.io prefix today
+	//  but will migration to be under kubernetes.io/anthos
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MonitoringConfig.kubernetes_metrics_prefix
+	KubernetesMetricsPrefix *string `json:"kubernetesMetricsPrefix,omitempty"`
+
+	// Immutable. Cluster hash, this is a unique string generated by google code,
+	//  which does not contain any PII, which we can use to reference the cluster.
+	//  This is expected to be created by the monitoring stack and persisted into
+	//  the Cluster object as well as to GKE-Hub.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MonitoringConfig.cluster_hash
+	ClusterHash *string `json:"clusterHash,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.MultiCloudCluster
+type MultiCloudCluster struct {
+	// Immutable. Self-link of the GCP resource for the GKE Multi-Cloud cluster.
+	//  For example:
+	//
+	//   //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/awsClusters/my-cluster
+	//   //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/azureClusters/my-cluster
+	//   //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/attachedClusters/my-cluster
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MultiCloudCluster.resource_link
+	ResourceLink *string `json:"resourceLink,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.OnPremCluster
+type OnPremCluster struct {
+	// Immutable. Self-link of the GCP resource for the GKE On-Prem cluster. For
+	//  example:
+	//
+	//   //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster
+	//   //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.OnPremCluster.resource_link
+	ResourceLink *string `json:"resourceLink,omitempty"`
+
+	// Immutable. Whether the cluster is an admin cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.OnPremCluster.admin_cluster
+	AdminCluster *bool `json:"adminCluster,omitempty"`
+
+	// Immutable. The on prem cluster's type.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.OnPremCluster.cluster_type
+	ClusterType *string `json:"clusterType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.ResourceManifest
+type ResourceManifest struct {
+	// YAML manifest of the resource.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.ResourceManifest.manifest
+	Manifest *string `json:"manifest,omitempty"`
+
+	// Whether the resource provided in the manifest is `cluster_scoped`.
+	//  If unset, the manifest is assumed to be namespace scoped.
+	//
+	//  This field is used for REST mapping when applying the resource in a
+	//  cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.ResourceManifest.cluster_scoped
+	ClusterScoped *bool `json:"clusterScoped,omitempty"`
+}
+
+/* found existing non-generated go type "ResourceOptions", skipping
+
+// +kcc:proto=google.cloud.gkehub.v1beta1.ResourceOptions
+type ResourceOptions struct {
+	// Optional. The Connect agent version to use for connect_resources. Defaults
+	//  to the latest GKE Connect version. The version must be a currently
+	//  supported version, obsolete versions will be rejected.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.ResourceOptions.connect_version
+	ConnectVersion *string `json:"connectVersion,omitempty"`
+
+	// Optional. Use `apiextensions/v1beta1` instead of `apiextensions/v1` for
+	//  CustomResourceDefinition resources.
+	//  This option should be set for clusters with Kubernetes apiserver versions
+	//  <1.16.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.ResourceOptions.v1beta1_crd
+	V1beta1Crd *bool `json:"v1beta1Crd,omitempty"`
+
+	// Optional. Major version of the Kubernetes cluster. This is only used to
+	//  determine which version to use for the CustomResourceDefinition resources,
+	//  `apiextensions/v1beta1` or`apiextensions/v1`.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.ResourceOptions.k8s_version
+	K8sVersion *string `json:"k8sVersion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.configmanagement.v1beta.MembershipSpec", skipping
+
+// +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec
+type MembershipSpecObservedState struct {
+	// Optional. Policy Controller configuration for the cluster.
+	//  Deprecated: Configuring Policy Controller through the configmanagement
+	//  feature is no longer recommended. Use the policycontroller feature instead.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.policy_controller
+	PolicyController *PolicyControllerObservedState `json:"policyController,omitempty"`
+}
+*/
+
 /* unreachable type PolicyControllerObservedState
 // +kcc:observedstate:proto=google.cloud.gkehub.configmanagement.v1beta.PolicyController
 type PolicyControllerObservedState struct {
@@ -319,3 +773,226 @@ type PolicyControllerObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.v1beta.MembershipFeatureSpec", skipping
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta.MembershipFeatureSpec
+type MembershipFeatureSpecObservedState struct {
+	// Config Management-specific spec.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta.MembershipFeatureSpec.configmanagement
+	Configmanagement *MembershipSpecObservedState `json:"configmanagement,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.Authority
+type AuthorityObservedState struct {
+	// Output only. The name of the workload identity pool in which `issuer` will
+	//  be recognized.
+	//
+	//  There is a single Workload Identity Pool per Hub that is shared
+	//  between all Memberships that belong to that Hub. For a Hub hosted in
+	//  {PROJECT_ID}, the workload pool format is `{PROJECT_ID}.hub.id.goog`,
+	//  although this is subject to change in newer versions of this API.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Authority.workload_identity_pool
+	WorkloadIdentityPool *string `json:"workloadIdentityPool,omitempty"`
+
+	// Output only. An identity provider that reflects the `issuer` in the
+	//  workload identity pool.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Authority.identity_provider
+	IdentityProvider *string `json:"identityProvider,omitempty"`
+}
+
+/* found existing non-generated go type "GKEClusterObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.GkeCluster
+type GKEClusterObservedState struct {
+	// Output only. If cluster_missing is set then it denotes that the GKE cluster
+	//  no longer exists in the GKE Control Plane.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.GkeCluster.cluster_missing
+	ClusterMissing *bool `json:"clusterMissing,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.KubernetesMetadata
+type KubernetesMetadataObservedState struct {
+	// Output only. Kubernetes API server version string as reported by
+	//  '/version'.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesMetadata.kubernetes_api_server_version
+	KubernetesAPIServerVersion *string `json:"kubernetesAPIServerVersion,omitempty"`
+
+	// Output only. Node providerID as reported by the first node in the list of
+	//  nodes on the Kubernetes endpoint. On Kubernetes platforms that support
+	//  zero-node clusters (like GKE-on-GCP), the node_count will be zero and the
+	//  node_provider_id will be empty.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesMetadata.node_provider_id
+	NodeProviderID *string `json:"nodeProviderID,omitempty"`
+
+	// Output only. Node count as reported by Kubernetes nodes resources.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesMetadata.node_count
+	NodeCount *int32 `json:"nodeCount,omitempty"`
+
+	// Output only. vCPU count as reported by Kubernetes nodes resources.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesMetadata.vcpu_count
+	VcpuCount *int32 `json:"vcpuCount,omitempty"`
+
+	// Output only. The total memory capacity as reported by the sum of all
+	//  Kubernetes nodes resources, defined in MB.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesMetadata.memory_mb
+	MemoryMb *int32 `json:"memoryMb,omitempty"`
+
+	// Output only. The time at which these details were last updated. This
+	//  update_time is different from the Membership-level update_time since
+	//  EndpointDetails are updated internally for API consumers.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesMetadata.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.KubernetesResource
+type KubernetesResourceObservedState struct {
+	// Output only. Additional Kubernetes resources that need to be applied to the
+	//  cluster after Membership creation, and after every update.
+	//
+	//  This field is only populated in the Membership returned from a successful
+	//  long-running operation from CreateMembership or UpdateMembership. It is not
+	//  populated during normal GetMembership or ListMemberships requests. To get
+	//  the resource manifest after the initial registration, the caller should
+	//  make a UpdateMembership call with an empty field mask.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesResource.membership_resources
+	MembershipResources []ResourceManifest `json:"membershipResources,omitempty"`
+
+	// Output only. The Kubernetes resources for installing the GKE Connect agent
+	//
+	//  This field is only populated in the Membership returned from a successful
+	//  long-running operation from CreateMembership or UpdateMembership. It is not
+	//  populated during normal GetMembership or ListMemberships requests. To get
+	//  the resource manifest after the initial registration, the caller should
+	//  make a UpdateMembership call with an empty field mask.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.KubernetesResource.connect_resources
+	ConnectResources []ResourceManifest `json:"connectResources,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.gkehub.v1beta1.Membership", skipping
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.Membership
+type MembershipObservedState struct {
+	// Output only. The full, unique name of this Membership resource in the
+	//  format `projects/* /locations/* /memberships/{membership_id}`, set during
+	//  creation.
+	//
+	//  `membership_id` must be a valid RFC 1123 compliant DNS label:
+	//
+	//    1. At most 63 characters in length
+	//    2. It must consist of lower case alphanumeric characters or `-`
+	//    3. It must start and end with an alphanumeric character
+	//
+	//  Which can be expressed as the regex: `[a-z0-9]([-a-z0-9]*[a-z0-9])?`,
+	//  with a maximum length of 63 characters.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Endpoint information to reach this member.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.endpoint
+	Endpoint *MembershipEndpointObservedState `json:"endpoint,omitempty"`
+
+	// Output only. State of the Membership resource.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.state
+	State *MembershipStateObservedState `json:"state,omitempty"`
+
+	// Optional. How to identify workloads from this Membership.
+	//  See the documentation on Workload Identity for more details:
+	//  https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.authority
+	Authority *AuthorityObservedState `json:"authority,omitempty"`
+
+	// Output only. When the Membership was created.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. When the Membership was last updated.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. When the Membership was deleted.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Output only. For clusters using Connect, the timestamp of the most recent
+	//  connection established with Google Cloud. This time is updated every
+	//  several minutes, not continuously. For clusters that do not use GKE
+	//  Connect, or that have never connected successfully, this field will be
+	//  unset.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.last_connection_time
+	LastConnectionTime *string `json:"lastConnectionTime,omitempty"`
+
+	// Output only. Google-generated UUID for this resource. This is unique across
+	//  all Membership resources. If a Membership resource is deleted and another
+	//  resource with the same name is created, it gets a different unique_id.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.Membership.unique_id
+	UniqueID *string `json:"uniqueID,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.MembershipEndpoint
+type MembershipEndpointObservedState struct {
+	// Optional. Specific information for a GKE-on-GCP cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.gke_cluster
+	GKECluster *GKEClusterObservedState `json:"gkeCluster,omitempty"`
+
+	// Optional. Specific information for a GKE On-Prem cluster. An onprem
+	//  user-cluster who has no resourceLink is not allowed to use this field, it
+	//  should have a nil "type" instead.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.on_prem_cluster
+	OnPremCluster *OnPremClusterObservedState `json:"onPremCluster,omitempty"`
+
+	// Optional. Specific information for a GKE Multi-Cloud cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.multi_cloud_cluster
+	MultiCloudCluster *MultiCloudClusterObservedState `json:"multiCloudCluster,omitempty"`
+
+	// Output only. Useful Kubernetes-specific metadata.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.kubernetes_metadata
+	KubernetesMetadata *KubernetesMetadataObservedState `json:"kubernetesMetadata,omitempty"`
+
+	// Optional. The in-cluster Kubernetes Resources that should be applied for a
+	//  correctly registered cluster, in the steady state. These resources:
+	//
+	//    * Ensure that the cluster is exclusively registered to one and only one
+	//      Hub Membership.
+	//    * Propagate Workload Pool Information available in the Membership
+	//      Authority field.
+	//    * Ensure proper initial configuration of default Hub Features.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipEndpoint.kubernetes_resource
+	KubernetesResource *KubernetesResourceObservedState `json:"kubernetesResource,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.MembershipState
+type MembershipStateObservedState struct {
+	// Output only. The current state of the Membership resource.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipState.code
+	Code *string `json:"code,omitempty"`
+
+	// This field is never set by the Hub Service.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipState.description
+	Description *string `json:"description,omitempty"`
+
+	// This field is never set by the Hub Service.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MembershipState.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.MultiCloudCluster
+type MultiCloudClusterObservedState struct {
+	// Output only. If cluster_missing is set then it denotes that
+	//  API(gkemulticloud.googleapis.com) resource for this GKE Multi-Cloud cluster
+	//  no longer exists.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.MultiCloudCluster.cluster_missing
+	ClusterMissing *bool `json:"clusterMissing,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta1.OnPremCluster
+type OnPremClusterObservedState struct {
+	// Output only. If cluster_missing is set then it denotes that
+	//  API(gkeonprem.googleapis.com) resource for this GKE On-Prem cluster no
+	//  longer exists.
+	// +kcc:proto:field=google.cloud.gkehub.v1beta1.OnPremCluster.cluster_missing
+	ClusterMissing *bool `json:"clusterMissing,omitempty"`
+}

@@ -25,12 +25,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types \
-  --service google.cloud.gkehub.v1beta --api-version gkehub.cnrm.cloud.google.com/v1beta1 \
-  --resource GKEHubFeatureMembership:MembershipFeatureSpec
+  --service google.cloud.gkehub.v1beta,google.cloud.gkehub.v1beta1 \
+  --api-version gkehub.cnrm.cloud.google.com/v1beta1 \
+  --resource GKEHubFeatureMembership:MembershipFeatureSpec \
+  --resource GKEHubMembership:Membership \
+  --include-skipped-output
 
-# NOTYET - not yet using proto
-# go run . generate-mapper \
-#   --service google.cloud.gkehub.v1beta --api-version gkehub.cnrm.cloud.google.com/v1beta1
+go run . generate-mapper \
+  --service google.cloud.gkehub.v1beta1 \
+  --api-version gkehub.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
 
 # NOTYET - not yet following full pattern
 

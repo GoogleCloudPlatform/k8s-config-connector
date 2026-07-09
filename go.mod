@@ -51,6 +51,7 @@ require (
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/geminidataanalytics v1.3.0
 	cloud.google.com/go/gkebackup v1.13.0
+	cloud.google.com/go/gkehub v0.21.0
 	cloud.google.com/go/gkemulticloud v1.11.0
 	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.17.0
