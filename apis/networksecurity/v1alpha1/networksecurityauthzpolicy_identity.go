@@ -43,6 +43,10 @@ func (i *NetworkSecurityAuthzPolicyIdentity) String() string {
 	return NetworkSecurityAuthzPolicyIdentityFormat.ToString(*i)
 }
 
+func (i *NetworkSecurityAuthzPolicyIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *NetworkSecurityAuthzPolicyIdentity) FromExternal(ref string) error {
 	parsed, match, err := NetworkSecurityAuthzPolicyIdentityFormat.Parse(ref)
 	if err != nil {

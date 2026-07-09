@@ -1,0 +1,12 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityAuthzPolicy
+metadata:
+  name: authzpolicy-min-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  action: ALLOW
+  target:
+    resources:
+      - external: projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule

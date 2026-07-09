@@ -1,0 +1,38 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityAuthzPolicy
+metadata:
+  labels:
+    gcp-label: updated-value
+  name: authzpolicy-max-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  description: "Updated test authorization policy"
+  action: ALLOW
+  target:
+    loadBalancingScheme: INTERNAL_MANAGED
+    resources:
+      - external: projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule
+  httpRules:
+    - from:
+        sources:
+          - ipBlocks:
+              - prefix: "10.0.0.0"
+                length: 24
+            principals:
+              - principalSelector: CLIENT_CERT_URI_SAN
+                principal:
+                  exact: "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+      to:
+        operations:
+          - hosts:
+              - exact: "example.com"
+                ignoreCase: true
+            paths:
+              - prefix: "/v2"
+            methods:
+              - GET
+              - POST
+      when: "request.time < timestamp('2026-12-31T23:59:59Z')"
+  policyProfile: REQUEST_AUTHZ
