@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -23,18 +23,14 @@ spec:
     imageType: WINDOWS_LTSC_CONTAINERD
     windowsNodeConfig:
       osVersion: OS_2022
-  resourceID: nodepool-sample-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: 'Update call failed: error applying desired state: summary: error creating
+      NodePool: googleapi: Error 400: Invalid value at ''node_pool.config.windows_node_config.os_version''
+      (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion),
+      "OS_2022", invalid'
+    reason: UpdateFailed
+    status: "False"
     type: Ready
-  instanceGroupUrls:
-  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-nodepool-sample-${uniqueId}-grp
-  managedInstanceGroupUrls:
-  - https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
-  observedGeneration: 2
-  observedState:
-    version: 1.30.5-gke.1014001
+  observedGeneration: 1
