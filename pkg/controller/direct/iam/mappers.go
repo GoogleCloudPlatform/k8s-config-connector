@@ -220,3 +220,37 @@ func DenyRule_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DenyRule) *pb.D
 	out.DenialCondition = Expr_ToProto(mapCtx, in.DenialCondition)
 	return out
 }
+
+func IAMServiceAccountStatus_FromProto(mapCtx *direct.MapContext, in *adminpb.ServiceAccount) *krm.IAMServiceAccountStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IAMServiceAccountStatus{}
+	if in.GetEmail() != "" {
+		out.Email = direct.LazyPtr(in.GetEmail())
+		out.Member = direct.LazyPtr("serviceAccount:" + in.GetEmail())
+	}
+	if in.GetName() != "" {
+		out.Name = direct.LazyPtr(in.GetName())
+		out.ExternalRef = direct.LazyPtr(in.GetName())
+	}
+	if in.GetUniqueId() != "" {
+		out.UniqueId = direct.LazyPtr(in.GetUniqueId())
+	}
+	return out
+}
+
+func IAMServiceAccountStatus_ToProto(mapCtx *direct.MapContext, in *krm.IAMServiceAccountStatus) *adminpb.ServiceAccount {
+	if in == nil {
+		return nil
+	}
+	out := &adminpb.ServiceAccount{}
+	out.Email = direct.ValueOf(in.Email)
+	if in.Name != nil {
+		out.Name = *in.Name
+	} else if in.ExternalRef != nil {
+		out.Name = *in.ExternalRef
+	}
+	out.UniqueId = direct.ValueOf(in.UniqueId)
+	return out
+}
