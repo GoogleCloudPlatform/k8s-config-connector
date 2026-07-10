@@ -30,7 +30,13 @@ When you are ready to send your changes as a Pull Request, use the provided `sen
    ./.gemini/skills/send-pr/scripts/send-pr.sh --title "Brief PR Title" --body /root/.gemini/tmp/k8s-config-connector/pr-body.txt --labels "overseer,area/direct"
    ```
 
-3. **What the Script Does**:
+3. **MANDATORY PRE-PUSH VALIDATION**:
+   - Before running `send-pr.sh` or pushing any commit, always verify your changes locally using the authoritative presubmit scripts:
+     1. Run `make fmt && go vet ./...`.
+     2. Run `./dev/ci/presubmits/unit-tests` (validates all package unit tests and golden log alignment).
+     3. Run `./dev/ci/presubmits/tests-e2e-fixtures-<service>` when modifying a resource controller or fixture.
+
+4. **What the Script Does**:
    - Runs `make fmt` to ensure the code is properly formatted.
    - Checks if `make fmt` introduced any git diffs or if there are any uncommitted changes. If there are, it will *stop the push* and require you to commit the formatting changes first.
    - Pushes the current branch to `origin` (`git push --set-upstream origin <branch>`).
