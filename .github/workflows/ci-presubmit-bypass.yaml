@@ -37,5 +37,5 @@ jobs:
         run: echo "Bypassing presubmit checks for documentation or experiment-only changes."
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  group: ${{ github.workflow }}-bypass-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
