@@ -1285,6 +1285,8 @@ spec:
             group: resourcemanager.cnrm.cloud.google.com
     - name: google_compute_network
       kind: ComputeNetwork
+      mutableButUnreadableFields:
+        - delete_default_routes_on_create
       metadataMapping:
         name: name
       resourceID:
