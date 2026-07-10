@@ -431,13 +431,13 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "selfLink": "projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceID}",
-  "targetLink": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "user": "user@example.com",
-  "zone": "projects/${projectId}/zones/us-central1-a"
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -463,13 +463,13 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "selfLink": "projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceID}",
-  "targetLink": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "user": "user@example.com",
-  "zone": "projects/${projectId}/zones/us-central1-a"
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -996,13 +996,13 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "selfLink": "projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceID}",
-  "targetLink": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "user": "user@example.com",
-  "zone": "projects/${projectId}/zones/us-central1-a"
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -1028,13 +1028,13 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "selfLink": "projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceID}",
-  "targetLink": "projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instances/${instanceID}",
   "user": "user@example.com",
-  "zone": "projects/${projectId}/zones/us-central1-a"
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
