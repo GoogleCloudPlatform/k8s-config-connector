@@ -38,6 +38,16 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type InternalrangeAllocationOptions struct {
+	/* Optional. Allocation strategy. Not setting this field when the allocation is requested means an implementation defined strategy is used. */
+	// +optional
+	AllocationStrategy *string `json:"allocationStrategy,omitempty"`
+
+	/* Optional. This field must be set only when allocation_strategy is set to RANDOM_FIRST_N_AVAILABLE. The value should be the maximum expected parallelism of range creation requests issued to the same space of peered networks. */
+	// +optional
+	FirstAvailableRangesLookupSize *int32 `json:"firstAvailableRangesLookupSize,omitempty"`
+}
+
 type InternalrangeMigration struct {
 	/* Immutable. Resource path as an URI of the source resource, for example a subnet. The project for the source resource should match the project for the InternalRange. An example: /projects/{project}/regions/{region}/subnetworks/{subnet} */
 	// +optional
@@ -49,6 +59,10 @@ type InternalrangeMigration struct {
 }
 
 type NetworkConnectivityInternalRangeSpec struct {
+	/* Optional. Range auto-allocation options, may be set only when auto-allocation is selected by not setting ip_cidr_range (and setting prefix_length). */
+	// +optional
+	AllocationOptions *InternalrangeAllocationOptions `json:"allocationOptions,omitempty"`
+
 	/* A description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
