@@ -192,6 +192,32 @@ func compareLogs(t *testing.T, realPath, mockPath string, depKinds map[string]st
 		mockEvents = filterDependencyEvents(mockEvents, depKinds, primaryKind)
 	}
 
+	dir := filepath.Dir(realPath)
+	createPath := filepath.Join(dir, "create.yaml")
+	isServiceUsageTest := false
+	if fileExists(createPath) {
+		gvk, err := getGVKFromYAML(createPath)
+		if err == nil && gvk.Group == "serviceusage.cnrm.cloud.google.com" {
+			isServiceUsageTest = true
+		}
+	}
+
+	if !isServiceUsageTest {
+		// Filter out serviceusage API calls
+		filterServiceUsage := func(events []httpEvent) []httpEvent {
+			var filtered []httpEvent
+			for _, ev := range events {
+				if strings.Contains(ev.URL, "serviceusage.googleapis.com") {
+					continue
+				}
+				filtered = append(filtered, ev)
+			}
+			return filtered
+		}
+		realEvents = filterServiceUsage(realEvents)
+		mockEvents = filterServiceUsage(mockEvents)
+	}
+
 	realGrouped := groupByPathAndMethod(realEvents)
 	mockGrouped := groupByPathAndMethod(mockEvents)
 

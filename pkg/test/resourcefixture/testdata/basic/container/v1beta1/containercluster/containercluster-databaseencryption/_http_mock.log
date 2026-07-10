@@ -456,7 +456,9 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "etag": "abcdef0123A="
+}
 
 ---
 
@@ -498,6 +500,7 @@ X-Xss-Protection: 0
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
   ],
+  "etag": "abcdef0123A=",
   "version": 1
 }
 
@@ -525,6 +528,7 @@ X-Xss-Protection: 0
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
   ],
+  "etag": "abcdef0123A=",
   "version": 1
 }
 
@@ -3212,6 +3216,7 @@ X-Xss-Protection: 0
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
   ],
+  "etag": "abcdef0123A=",
   "version": 1
 }
 
@@ -3239,6 +3244,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "version": 1
 }
 
@@ -3258,6 +3264,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "etag": "abcdef0123A=",
   "version": 1
 }
 

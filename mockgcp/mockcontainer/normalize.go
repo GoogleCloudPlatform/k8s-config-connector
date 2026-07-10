@@ -32,8 +32,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Cluster
 	{
 		replacements.ReplacePath(".clusterIpv4Cidr", "10.112.0.0/14")
-
-		replacements.ReplacePath(".clusterIpv4Cidr", "10.112.0.0/14")
 		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4Cidr", "10.112.0.0/14")
 		replacements.ReplacePath(".ipAllocationPolicy.clusterIpv4CidrBlock", "10.112.0.0/14")
 
@@ -41,27 +39,68 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
 
-		replacements.RemovePath(".addonsConfig.dnsCacheConfig")
-		replacements.RemovePath(".addonsConfig.nodeReadinessConfig")
-		replacements.RemovePath(".controlPlaneEgress")
-		replacements.RemovePath(".nodeCreationConfig")
-		replacements.RemovePath(".nodePoolAutoConfig")
-		replacements.RemovePath(".networkConfig.defaultSnatStatus")
-		replacements.RemovePath(".privateCluster")
-		replacements.RemovePath(".nodeConfig.nodeImageConfig")
-		replacements.RemovePath(".nodePools[].config.nodeImageConfig")
-		replacements.RemovePath(".nodePools[].networkConfig.networkTierConfig")
-		replacements.RemovePath(".nodePools[].locations")
-		replacements.RemovePath(".nodePools[].etag")
-		replacements.RemovePath(".nodePools[].selfLink")
-		replacements.RemovePath(".anonymousAuthenticationConfig")
-		replacements.RemovePath(".ipAllocationPolicy.clusterSecondaryRangeName")
-		replacements.RemovePath(".ipAllocationPolicy.defaultPodIpv4RangeUtilization")
-		replacements.RemovePath(".ipAllocationPolicy.networkTierConfig")
-		replacements.RemovePath(".master")
-		replacements.RemovePath(".etag")
-		replacements.RemovePath(".locations")
-		replacements.RemovePath(".networkConfig.networkTierConfig")
+		replacements.TransformObject("", func(m map[string]any) {
+			isGKEResource := func(obj map[string]any) bool {
+				name, _ := obj["name"].(string)
+				if strings.Contains(name, "/clusters/") || strings.Contains(name, "/nodePools/") {
+					return true
+				}
+				selfLink, _ := obj["selfLink"].(string)
+				if strings.Contains(selfLink, "/clusters/") || strings.Contains(selfLink, "/nodePools/") {
+					return true
+				}
+				return false
+			}
+
+			if !isGKEResource(m) {
+				return
+			}
+
+			delete(m, "etag")
+			delete(m, "locations")
+			delete(m, "controlPlaneEgress")
+			delete(m, "nodeCreationConfig")
+			delete(m, "nodePoolAutoConfig")
+			delete(m, "privateCluster")
+			delete(m, "anonymousAuthenticationConfig")
+			delete(m, "master")
+
+			if addonsConfig, ok := m["addonsConfig"].(map[string]any); ok {
+				delete(addonsConfig, "dnsCacheConfig")
+				delete(addonsConfig, "nodeReadinessConfig")
+			}
+
+			if networkConfig, ok := m["networkConfig"].(map[string]any); ok {
+				delete(networkConfig, "defaultSnatStatus")
+				delete(networkConfig, "networkTierConfig")
+			}
+
+			if ipAllocationPolicy, ok := m["ipAllocationPolicy"].(map[string]any); ok {
+				delete(ipAllocationPolicy, "clusterSecondaryRangeName")
+				delete(ipAllocationPolicy, "defaultPodIpv4RangeUtilization")
+				delete(ipAllocationPolicy, "networkTierConfig")
+			}
+
+			if nodeConfig, ok := m["nodeConfig"].(map[string]any); ok {
+				delete(nodeConfig, "nodeImageConfig")
+			}
+
+			if nodePools, ok := m["nodePools"].([]any); ok {
+				for _, np := range nodePools {
+					if npMap, ok := np.(map[string]any); ok {
+						delete(npMap, "etag")
+						delete(npMap, "selfLink")
+						delete(npMap, "locations")
+						if config, ok := npMap["config"].(map[string]any); ok {
+							delete(config, "nodeImageConfig")
+						}
+						if networkConfig, ok := npMap["networkConfig"].(map[string]any); ok {
+							delete(networkConfig, "networkTierConfig")
+						}
+					}
+				}
+			}
+		})
 	}
 }
 
