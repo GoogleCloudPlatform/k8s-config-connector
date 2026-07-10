@@ -60,10 +60,7 @@ type certificateAuthorityModel struct {
 var _ directbase.Model = &certificateAuthorityModel{}
 
 type certificateAuthorityAdapter struct {
-	projectID              string
-	location               string
-	caPoolID               string
-	certificateAuthorityID string
+	id *krm.PrivateCACertificateAuthorityIdentity
 
 	desired  *pb.CertificateAuthority
 	actual   *pb.CertificateAuthority
@@ -105,12 +102,9 @@ func (m *certificateAuthorityModel) AdapterForObject(ctx context.Context, op *di
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	return &certificateAuthorityAdapter{
-		projectID:              id.Project,
-		location:               id.Location,
-		caPoolID:               id.CAPool,
-		certificateAuthorityID: id.CertificateAuthority,
-		desired:                desired,
-		caClient:               caClient,
+		id:       id,
+		desired:  desired,
+		caClient: caClient,
 	}, nil
 }
 
@@ -128,12 +122,16 @@ func (m *certificateAuthorityModel) AdapterForURL(ctx context.Context, url strin
 			return nil, err
 		}
 
+		id := &krm.PrivateCACertificateAuthorityIdentity{
+			Project:              tokens[1],
+			Location:             tokens[3],
+			CAPool:               tokens[5],
+			CertificateAuthority: tokens[7],
+		}
+
 		return &certificateAuthorityAdapter{
-			projectID:              tokens[1],
-			location:               tokens[3],
-			caPoolID:               tokens[5],
-			certificateAuthorityID: tokens[7],
-			caClient:               caClient,
+			id:       id,
+			caClient: caClient,
 		}, nil
 	}
 
@@ -143,10 +141,10 @@ func (m *certificateAuthorityModel) AdapterForURL(ctx context.Context, url strin
 // Delete implements the Adapter interface.
 func (a *certificateAuthorityAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting PrivateCACertificateAuthority", "name", a.fullyQualifiedName())
+	log.V(2).Info("deleting PrivateCACertificateAuthority", "name", a.id.String())
 
 	req := &pb.DeleteCertificateAuthorityRequest{
-		Name:                     a.fullyQualifiedName(),
+		Name:                     a.id.String(),
 		IgnoreActiveCertificates: true,
 		SkipGracePeriod:          true,
 		IgnoreDependentResources: true,
@@ -154,40 +152,40 @@ func (a *certificateAuthorityAdapter) Delete(ctx context.Context, deleteOp *dire
 	op, err := a.caClient.DeleteCertificateAuthority(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			log.V(2).Info("skipping delete for non-existent PrivateCACertificateAuthority, assuming it was already deleted", "name", a.fullyQualifiedName())
+			log.V(2).Info("skipping delete for non-existent PrivateCACertificateAuthority, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting PrivateCACertificateAuthority %s: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting PrivateCACertificateAuthority %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully initiated delete for PrivateCACertificateAuthority", "name", a.fullyQualifiedName())
+	log.V(2).Info("successfully initiated delete for PrivateCACertificateAuthority", "name", a.id.String())
 
 	_, err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete PrivateCACertificateAuthority %s: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting delete PrivateCACertificateAuthority %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully completed delete for PrivateCACertificateAuthority", "name", a.fullyQualifiedName())
+	log.V(2).Info("successfully completed delete for PrivateCACertificateAuthority", "name", a.id.String())
 	return true, nil
 }
 
 // Create implements the Adapter interface.
 func (a *certificateAuthorityAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating PrivateCACertificateAuthority", "id", a.fullyQualifiedName())
+	log.V(2).Info("creating PrivateCACertificateAuthority", "id", a.id.String())
 
 	req := &pb.CreateCertificateAuthorityRequest{
-		Parent:                 a.fullyQualifiedParentName(),
-		CertificateAuthorityId: a.certificateAuthorityID,
+		Parent:                 a.id.ParentString(),
+		CertificateAuthorityId: a.id.CertificateAuthority,
 		CertificateAuthority:   a.desired,
 	}
 	op, err := a.caClient.CreateCertificateAuthority(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating PrivateCACertificateAuthority %s: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("creating PrivateCACertificateAuthority %s: %w", a.id.String(), err)
 	}
 	_, err = op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("waiting PrivateCACertificateAuthority %s creation: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("waiting PrivateCACertificateAuthority %s creation: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created PrivateCACertificateAuthority", "name", a.fullyQualifiedName())
+	log.V(2).Info("successfully created PrivateCACertificateAuthority", "name", a.id.String())
 
 	// Fetch fully-populated resource before calling updateStatus
 	latest, err := a.getLatest(ctx)
@@ -201,7 +199,7 @@ func (a *certificateAuthorityAdapter) Create(ctx context.Context, createOp *dire
 // Update implements the Adapter interface.
 func (a *certificateAuthorityAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating PrivateCACertificateAuthority", "name", a.fullyQualifiedName())
+	log.V(2).Info("updating PrivateCACertificateAuthority", "name", a.id.String())
 
 	diffs, updateMask, err := comparePrivateCACertificateAuthority(ctx, a.actual, a.desired)
 	if err != nil {
@@ -213,20 +211,20 @@ func (a *certificateAuthorityAdapter) Update(ctx context.Context, updateOp *dire
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
-		a.desired.Name = a.fullyQualifiedName()
+		a.desired.Name = a.id.String()
 		req := &pb.UpdateCertificateAuthorityRequest{
 			UpdateMask:           updateMask,
 			CertificateAuthority: a.desired,
 		}
 		op, err := a.caClient.UpdateCertificateAuthority(ctx, req)
 		if err != nil {
-			return fmt.Errorf("updating PrivateCACertificateAuthority %s: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("updating PrivateCACertificateAuthority %s: %w", a.id.String(), err)
 		}
 		_, err = op.Wait(ctx)
 		if err != nil {
-			return fmt.Errorf("waiting update PrivateCACertificateAuthority %s: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("waiting update PrivateCACertificateAuthority %s: %w", a.id.String(), err)
 		}
-		log.V(2).Info("successfully updated PrivateCACertificateAuthority", "name", a.fullyQualifiedName())
+		log.V(2).Info("successfully updated PrivateCACertificateAuthority", "name", a.id.String())
 
 		latest, err = a.getLatest(ctx)
 		if err != nil {
@@ -251,10 +249,10 @@ func (a *certificateAuthorityAdapter) Export(ctx context.Context) (*unstructured
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = refsv1alpha1.ProjectRef{Name: a.projectID}
-	obj.Spec.Location = a.location
+	obj.Spec.ProjectRef = refsv1alpha1.ProjectRef{Name: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	obj.Spec.CaPoolRef = privatecarefs.PrivateCACAPoolRef{
-		External: fmt.Sprintf("projects/%s/locations/%s/caPools/%s", a.projectID, a.location, a.caPoolID),
+		External: a.id.ParentString(),
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -291,7 +289,7 @@ func (a *certificateAuthorityAdapter) updateStatus(ctx context.Context, op direc
 
 // Find implements the Adapter interface.
 func (a *certificateAuthorityAdapter) Find(ctx context.Context) (bool, error) {
-	if a.certificateAuthorityID == "" {
+	if a.id == nil || a.id.CertificateAuthority == "" {
 		return false, nil
 	}
 
@@ -310,19 +308,11 @@ func (a *certificateAuthorityAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *certificateAuthorityAdapter) getLatest(ctx context.Context) (*pb.CertificateAuthority, error) {
 	req := &pb.GetCertificateAuthorityRequest{
-		Name: a.fullyQualifiedName(),
+		Name: a.id.String(),
 	}
 	resp, err := a.caClient.GetCertificateAuthority(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
-}
-
-func (a *certificateAuthorityAdapter) fullyQualifiedName() string {
-	return fmt.Sprintf("projects/%s/locations/%s/caPools/%s/certificateAuthorities/%s", a.projectID, a.location, a.caPoolID, a.certificateAuthorityID)
-}
-
-func (a *certificateAuthorityAdapter) fullyQualifiedParentName() string {
-	return fmt.Sprintf("projects/%s/locations/%s/caPools/%s", a.projectID, a.location, a.caPoolID)
 }
