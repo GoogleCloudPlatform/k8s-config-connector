@@ -249,9 +249,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -267,7 +265,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -391,9 +390,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -409,7 +406,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -434,11 +432,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found",
+        "message": "The resource '${ipAddress}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found"
+    "message": "The resource '${ipAddress}' was not found"
   }
 }
 
@@ -482,7 +480,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -514,81 +512,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "address": "8.8.8.8",
-  "addressType": "INTERNAL",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "id": "000000000000000000000",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
-  "networkTier": "PREMIUM",
-  "purpose": "GCE_ENDPOINT",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -624,9 +548,81 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
+  "status": "RESERVED",
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -651,11 +647,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found",
+        "message": "The resource '${ipAddress}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found"
+    "message": "The resource '${ipAddress}' was not found"
   }
 }
 
@@ -699,7 +695,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -731,81 +727,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "address": "8.8.8.8",
-  "addressType": "INTERNAL",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "id": "000000000000000000000",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
-  "networkTier": "PREMIUM",
-  "purpose": "GCE_ENDPOINT",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -841,9 +763,81 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
+  "status": "RESERVED",
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -868,11 +862,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found",
+        "message": "The resource '${ipAddress}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found"
+    "message": "The resource '${ipAddress}' was not found"
   }
 }
 
@@ -916,7 +910,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -948,81 +942,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "address": "8.8.8.8",
-  "addressType": "INTERNAL",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "id": "000000000000000000000",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
-  "networkTier": "PREMIUM",
-  "purpose": "GCE_ENDPOINT",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -1058,9 +978,81 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
+  "status": "RESERVED",
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -1085,11 +1077,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found",
+        "message": "The resource '${ipAddress}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/addresses/${addressID}' was not found"
+    "message": "The resource '${ipAddress}' was not found"
   }
 }
 
@@ -1133,7 +1125,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -1165,81 +1157,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "address": "8.8.8.8",
-  "addressType": "INTERNAL",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "id": "000000000000000000000",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
-  "networkTier": "PREMIUM",
-  "purpose": "GCE_ENDPOINT",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-  "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -1275,9 +1193,81 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
+  "status": "RESERVED",
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -1533,9 +1523,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -1551,7 +1539,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -1605,12 +1594,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "create"
   },
@@ -1639,7 +1626,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "create"
   },
@@ -1712,12 +1698,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "update"
   },
@@ -1746,7 +1730,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "update"
   },
@@ -1856,12 +1839,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "create"
   },
@@ -1892,7 +1873,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "create"
   },
@@ -1903,9 +1883,13 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
-    "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -1916,7 +1900,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}-2",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -1927,7 +1911,7 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -1957,8 +1941,6 @@ X-Xss-Protection: 0
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": true,
-    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
     "shardCount": 1,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -2034,7 +2016,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2068,7 +2050,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2098,9 +2080,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2108,18 +2091,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -2183,9 +2159,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2197,18 +2174,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -2274,7 +2244,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2308,7 +2278,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2338,9 +2308,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2348,18 +2319,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -2423,9 +2387,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2437,18 +2402,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -2514,7 +2472,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2548,7 +2506,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2578,9 +2536,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2588,18 +2547,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -2663,9 +2615,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2677,18 +2630,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -2754,7 +2700,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2788,7 +2734,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "createRegionPscForwardingRule",
+  "operationType": "insert",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -2818,9 +2764,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2828,18 +2775,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -2903,9 +2843,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2917,18 +2858,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -2953,9 +2887,13 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": 1
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
-  "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -2966,7 +2904,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}-2",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -2977,7 +2915,7 @@ X-Xss-Protection: 0
         {
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3007,8 +2945,6 @@ X-Xss-Protection: 0
     }
   ],
   "replicaCount": 0,
-  "satisfiesPzi": true,
-  "serverCaMode": 0,
   "shardCount": 1,
   "state": 2,
   "transitEncryptionMode": 1,
@@ -3039,9 +2975,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3053,18 +2990,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -3086,9 +3016,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3100,18 +3031,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -3130,7 +3054,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
           "pscAutoConnection": {
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}-2",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3141,7 +3065,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
         {
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3157,8 +3081,8 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
             "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "pscConnectionId": "${pscConnectionId}",
-            "serviceAttachment": "projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+            "pscConnectionId": "0",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -3166,8 +3090,8 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
             "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "pscConnectionId": "${pscConnectionId}",
-            "serviceAttachment": "projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+            "pscConnectionId": "0",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -3187,12 +3111,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "update"
   },
@@ -3223,7 +3145,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "update"
   },
@@ -3234,9 +3155,13 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
-    "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -3247,7 +3172,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}-2",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -3258,7 +3183,7 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -3316,8 +3241,6 @@ X-Xss-Protection: 0
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": true,
-    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
     "shardCount": 1,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -3352,9 +3275,13 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": 1
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
-  "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -3365,7 +3292,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}-2",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3376,7 +3303,7 @@ X-Xss-Protection: 0
         {
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3434,8 +3361,6 @@ X-Xss-Protection: 0
     }
   ],
   "replicaCount": 0,
-  "satisfiesPzi": true,
-  "serverCaMode": 0,
   "shardCount": 1,
   "state": 2,
   "transitEncryptionMode": 1,
@@ -3466,9 +3391,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3480,18 +3406,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -3513,9 +3432,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3527,18 +3447,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -3560,9 +3473,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3574,18 +3488,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -3607,9 +3514,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3621,18 +3529,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -3651,7 +3552,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
           "pscAutoConnection": {
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}-2",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3662,7 +3563,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
         {
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -3678,8 +3579,8 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
             "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "pscConnectionId": "${pscConnectionId}",
-            "serviceAttachment": "projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+            "pscConnectionId": "0",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -3687,8 +3588,8 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
             "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "pscConnectionId": "${pscConnectionId}",
-            "serviceAttachment": "projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+            "pscConnectionId": "0",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -3700,8 +3601,8 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
             "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "pscConnectionId": "${pscConnectionId}",
-            "serviceAttachment": "projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+            "pscConnectionId": "0",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
           }
         },
         {
@@ -3709,8 +3610,8 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
             "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
             "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "pscConnectionId": "${pscConnectionId}",
-            "serviceAttachment": "projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+            "pscConnectionId": "0",
+            "serviceAttachment": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
           }
         }
       ]
@@ -3730,12 +3631,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "update"
   },
@@ -3766,7 +3665,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "update"
   },
@@ -3777,9 +3675,13 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
-    "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -3790,7 +3692,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}-2",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -3801,7 +3703,7 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -3887,8 +3789,6 @@ X-Xss-Protection: 0
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": true,
-    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
     "shardCount": 1,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -3923,9 +3823,13 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": 1
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
-  "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -3936,7 +3840,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}-2",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -3947,7 +3851,7 @@ X-Xss-Protection: 0
         {
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -4033,8 +3937,6 @@ X-Xss-Protection: 0
     }
   ],
   "replicaCount": 0,
-  "satisfiesPzi": true,
-  "serverCaMode": 0,
   "shardCount": 1,
   "state": 2,
   "transitEncryptionMode": 1,
@@ -4062,7 +3964,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
           "pscAutoConnection": {
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}-2",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -4073,7 +3975,7 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-ce
         {
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -4097,12 +3999,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "update"
   },
@@ -4133,7 +4033,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "update"
   },
@@ -4144,9 +4043,13 @@ X-Xss-Protection: 0
     "automatedBackupConfig": {
       "automatedBackupMode": "DISABLED"
     },
+    "availableMaintenanceVersions": [
+      "MEMORYSTORE_20260313_01_02",
+      "MEMORYSTORE_20260313_01_03"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
-    "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -4157,7 +4060,7 @@ X-Xss-Protection: 0
             "pscAutoConnection": {
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}-2",
+              "ipAddress": "${ipAddress}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "port": 6379,
               "projectId": "${projectId}",
@@ -4168,7 +4071,7 @@ X-Xss-Protection: 0
           {
             "pscAutoConnection": {
               "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-              "ipAddress": "${ipAddress}",
+              "ipAddress": "${ipAddress}-2",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionId}",
@@ -4198,8 +4101,6 @@ X-Xss-Protection: 0
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": true,
-    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
     "shardCount": 1,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -4231,9 +4132,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -4245,18 +4147,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -4281,7 +4176,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4315,7 +4210,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4345,9 +4240,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -4359,18 +4255,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -4395,7 +4284,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4429,7 +4318,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4459,9 +4348,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -4473,18 +4363,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2"
 }
 
 ---
@@ -4509,7 +4392,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4543,7 +4426,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4573,9 +4456,10 @@ X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
+  "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
-  "attachedExtensions": [],
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -4587,18 +4471,11 @@ X-Xss-Protection: 0
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
-  "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "serviceDirectoryRegistrations": [
-    {
-      "namespace": "goog-psc-default"
-    }
-  ],
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/pbc297b158e68adfap-tp/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
+  "target": "projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}"
 }
 
 ---
@@ -4623,7 +4500,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4657,7 +4534,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "deleteRegionPscForwardingRule",
+  "operationType": "delete",
   "progress": 100,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -4690,9 +4567,13 @@ X-Xss-Protection: 0
   "automatedBackupConfig": {
     "automatedBackupMode": 1
   },
+  "availableMaintenanceVersions": [
+    "MEMORYSTORE_20260313_01_02",
+    "MEMORYSTORE_20260313_01_03"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
-  "effectiveMaintenanceVersion": "MEMORYSTORE_20260608_00_00",
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260313_01_02",
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -4703,7 +4584,7 @@ X-Xss-Protection: 0
           "pscAutoConnection": {
             "connectionType": 1,
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}-2",
+            "ipAddress": "${ipAddress}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "port": 6379,
             "projectId": "${projectId}",
@@ -4714,7 +4595,7 @@ X-Xss-Protection: 0
         {
           "pscAutoConnection": {
             "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}",
-            "ipAddress": "${ipAddress}",
+            "ipAddress": "${ipAddress}-2",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionId}",
@@ -4744,8 +4625,6 @@ X-Xss-Protection: 0
     }
   ],
   "replicaCount": 0,
-  "satisfiesPzi": true,
-  "serverCaMode": 0,
   "shardCount": 1,
   "state": 2,
   "transitEncryptionMode": 1,
@@ -4775,12 +4654,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "delete"
   },
@@ -4811,7 +4688,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}",
     "verb": "delete"
   },
@@ -4868,12 +4744,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "delete"
   },
@@ -4902,7 +4776,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "delete"
   },
@@ -4929,9 +4802,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -4947,7 +4818,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -5046,9 +4918,9 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -5079,7 +4951,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5111,7 +4983,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5147,9 +5019,9 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -5180,7 +5052,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5212,7 +5084,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5248,9 +5120,9 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -5281,7 +5153,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5313,7 +5185,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5349,9 +5221,9 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "status": "RESERVED",
-  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 ---
@@ -5382,7 +5254,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5414,7 +5286,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/${ipAddress}",
   "user": "user@example.com"
 }
 
@@ -5435,9 +5307,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -5453,7 +5323,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -5537,9 +5408,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -5555,7 +5424,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
