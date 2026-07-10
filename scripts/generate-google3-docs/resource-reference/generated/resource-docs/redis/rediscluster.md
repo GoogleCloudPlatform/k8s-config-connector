@@ -66,6 +66,18 @@ automatedBackupConfig:
       nanos: integer
       seconds: integer
   retention: string
+clusterEndpoints:
+- connections:
+  - pscAutoConnection:
+      networkRef:
+        external: string
+        name: string
+        namespace: string
+      projectRef:
+        external: string
+        kind: string
+        name: string
+        namespace: string
 crossClusterReplicationConfig:
   clusterRole: string
   primaryCluster:
@@ -226,6 +238,146 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. A list of cluster endpoints.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Detailed information of a PSC connection that is created through service connectivity automation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.networkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Required. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.networkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.networkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.networkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeNetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.projectRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Required. The consumer project_id where the forwarding rule is created from.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.projectRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.projectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `Project` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterEndpoints[].connections[].pscAutoConnection.projectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -800,6 +952,15 @@ conditions:
 externalRef: string
 observedGeneration: integer
 observedState:
+  clusterEndpoints:
+  - connections:
+    - pscAutoConnection:
+        address: string
+        connectionType: string
+        forwardingRule: string
+        pscConnectionID: string
+        pscConnectionStatus: string
+        serviceAttachment: string
   createTime: string
   crossClusterReplicationConfig:
     membership:
@@ -928,6 +1089,83 @@ observedState:
         <td>
             <p><code class="apitype">object</code></p>
             <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. A list of cluster endpoints.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[].pscAutoConnection</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Detailed information of a PSC connection that is created through service connectivity automation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[].pscAutoConnection.address</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The IP allocated on the consumer network for the PSC forwarding rule.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[].pscAutoConnection.connectionType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Type of the PSC connection.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[].pscAutoConnection.forwardingRule</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[].pscAutoConnection.pscConnectionID</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The PSC connection id of the forwarding rule connected to the service attachment.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[].pscAutoConnection.pscConnectionStatus</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The status of the PSC connection. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterEndpoints[].connections[].pscAutoConnection.serviceAttachment</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.</p>
         </td>
     </tr>
     <tr>

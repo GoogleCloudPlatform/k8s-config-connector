@@ -180,7 +180,6 @@ type Cluster_StateInfo_UpdateInfo struct {
 	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
 }
 
-/* unreachable type ClusterEndpoint
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterEndpoint
 type ClusterEndpoint struct {
 	// A group of PSC connections. They are created in the same VPC network, one
@@ -188,7 +187,6 @@ type ClusterEndpoint struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterEndpoint.connections
 	Connections []ConnectionDetail `json:"connections,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicy struct {
@@ -252,7 +250,8 @@ type ClusterWeeklyMaintenanceWindow struct {
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 
-/* unreachable type ConnectionDetail
+/* found existing non-generated go type "ConnectionDetail", skipping
+
 // +kcc:proto=google.cloud.redis.cluster.v1.ConnectionDetail
 type ConnectionDetail struct {
 	// Detailed information of a PSC connection that is created through
@@ -316,7 +315,8 @@ type EncryptionInfo struct {
 }
 */
 
-/* unreachable type PSCAutoConnection
+/* found existing non-generated go type "PSCAutoConnection", skipping
+
 // +kcc:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnection struct {
 
@@ -340,6 +340,8 @@ type PSCConfig struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConfig.network
 	Network *string `json:"network,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.PscConnection", skipping
 
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
 type PSCConnection struct {
@@ -375,6 +377,7 @@ type PSCConnection struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.service_attachment
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
+*/
 
 /* unreachable type PSCServiceAttachment
 // +kcc:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
@@ -752,7 +755,6 @@ type ClusterObservedState struct {
 }
 */
 
-/* unreachable type ClusterEndpointObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterEndpoint
 type ClusterEndpointObservedState struct {
 	// A group of PSC connections. They are created in the same VPC network, one
@@ -760,7 +762,6 @@ type ClusterEndpointObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterEndpoint.connections
 	Connections []ConnectionDetailObservedState `json:"connections,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicyObservedState struct {
@@ -788,7 +789,8 @@ type ClusterMaintenanceScheduleObservedState struct {
 	EndTime *string `json:"endTime,omitempty"`
 }
 
-/* unreachable type ConnectionDetailObservedState
+/* found existing non-generated go type "ConnectionDetailObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ConnectionDetail
 type ConnectionDetailObservedState struct {
 	// Detailed information of a PSC connection that is created through
@@ -902,7 +904,6 @@ type EncryptionInfoObservedState struct {
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }
 
-/* unreachable type PSCAutoConnectionObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnectionObservedState struct {
 	// Output only. The PSC connection id of the forwarding rule connected to the
@@ -937,9 +938,9 @@ type PSCAutoConnectionObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
-*/
 
-/* unreachable type PSCConnectionObservedState
+/* found existing non-generated go type "PSCConnectionObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscConnection
 type PSCConnectionObservedState struct {
 	// Output only. The status of the PSC connection.

@@ -70,6 +70,38 @@ func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapCont
 	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
 	return out
 }
+func ClusterEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.ClusterEndpoint) *krm.ClusterEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterEndpoint{}
+	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, ConnectionDetail_FromProto)
+	return out
+}
+func ClusterEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.ClusterEndpoint) *pb.ClusterEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterEndpoint{}
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, ConnectionDetail_ToProto)
+	return out
+}
+func ClusterEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ClusterEndpoint) *krm.ClusterEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ClusterEndpointObservedState{}
+	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, ConnectionDetailObservedState_FromProto)
+	return out
+}
+func ClusterEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ClusterEndpointObservedState) *pb.ClusterEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ClusterEndpoint{}
+	out.Connections = direct.Slice_ToProto(mapCtx, in.Connections, ConnectionDetailObservedState_ToProto)
+	return out
+}
 func ClusterMaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.ClusterMaintenancePolicy) *krm.ClusterMaintenancePolicy {
 	if in == nil {
 		return nil
@@ -234,6 +266,46 @@ func Cluster_StateInfo_UpdateInfo_ToProto(mapCtx *direct.MapContext, in *krm.Clu
 	out := &pb.Cluster_StateInfo_UpdateInfo{}
 	out.TargetShardCount = in.TargetShardCount
 	out.TargetReplicaCount = in.TargetReplicaCount
+	return out
+}
+func ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionDetail) *krm.ConnectionDetail {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionDetail{}
+	out.PSCAutoConnection = PSCAutoConnection_FromProto(mapCtx, in.GetPscAutoConnection())
+	// MISSING: PSCConnection
+	return out
+}
+func ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionDetail) *pb.ConnectionDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionDetail{}
+	if oneof := PSCAutoConnection_ToProto(mapCtx, in.PSCAutoConnection); oneof != nil {
+		out.Connection = &pb.ConnectionDetail_PscAutoConnection{PscAutoConnection: oneof}
+	}
+	// MISSING: PSCConnection
+	return out
+}
+func ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionDetail) *krm.ConnectionDetailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConnectionDetailObservedState{}
+	out.PSCAutoConnection = PSCAutoConnectionObservedState_FromProto(mapCtx, in.GetPscAutoConnection())
+	// MISSING: PSCConnection
+	return out
+}
+func ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConnectionDetailObservedState) *pb.ConnectionDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectionDetail{}
+	if oneof := PSCAutoConnectionObservedState_ToProto(mapCtx, in.PSCAutoConnection); oneof != nil {
+		out.Connection = &pb.ConnectionDetail_PscAutoConnection{PscAutoConnection: oneof}
+	}
+	// MISSING: PSCConnection
 	return out
 }
 func CrossClusterReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossClusterReplicationConfig) *krm.CrossClusterReplicationConfig {
@@ -570,6 +642,36 @@ found existing non-generated mapping function "InstanceWeeklyMaintenanceWindow_T
 		return out
 	}
 */
+func PSCAutoConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krm.PSCAutoConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCAutoConnectionObservedState{}
+	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
+	out.Address = direct.LazyPtr(in.GetAddress())
+	out.ForwardingRule = direct.LazyPtr(in.GetForwardingRule())
+	// MISSING: ProjectID
+	// MISSING: Network
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	out.PSCConnectionStatus = direct.Enum_FromProto(mapCtx, in.GetPscConnectionStatus())
+	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
+	return out
+}
+func PSCAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutoConnectionObservedState) *pb.PscAutoConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscAutoConnection{}
+	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
+	out.Address = direct.ValueOf(in.Address)
+	out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
+	// MISSING: ProjectID
+	// MISSING: Network
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	out.PscConnectionStatus = direct.Enum_ToProto[pb.PscConnectionStatus](mapCtx, in.PSCConnectionStatus)
+	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
+	return out
+}
 func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
 	if in == nil {
 		return nil
@@ -586,11 +688,13 @@ func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConf
 	out.Network = direct.ValueOf(in.Network)
 	return out
 }
-func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnection {
+
+/* found existing non-generated mapping function "PSCConnectionObservedState_FromProto", skipping
+func PSCConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnectionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PSCConnection{}
+	out := &krm.PSCConnectionObservedState{}
 	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
 	out.Address = direct.LazyPtr(in.GetAddress())
 	out.ForwardingRule = direct.LazyPtr(in.GetForwardingRule())
@@ -601,21 +705,27 @@ func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *k
 	// MISSING: ConnectionType
 	return out
 }
-func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb.PscConnection {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "PSCConnectionObservedState_ToProto", skipping
+
+	func PSCConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnectionObservedState) *pb.PscConnection {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PscConnection{}
+		out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
+		out.Address = direct.ValueOf(in.Address)
+		out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
+		out.ProjectId = direct.ValueOf(in.ProjectID)
+		out.Network = direct.ValueOf(in.Network)
+		out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+		// MISSING: PSCConnectionStatus
+		// MISSING: ConnectionType
+		return out
 	}
-	out := &pb.PscConnection{}
-	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
-	out.Address = direct.ValueOf(in.Address)
-	out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.Network = direct.ValueOf(in.Network)
-	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
-	// MISSING: PSCConnectionStatus
-	// MISSING: ConnectionType
-	return out
-}
+*/
 func PSCServiceAttachmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscServiceAttachment) *krm.PSCServiceAttachmentObservedState {
 	if in == nil {
 		return nil
@@ -647,14 +757,14 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.SizeGB = in.SizeGb
 	out.DiscoveryEndpoints = direct.Slice_FromProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpointObservedState_FromProto)
-	out.PSCConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PSCConnection_FromProto)
+	out.PSCConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PSCConnectionObservedState_FromProto)
 	out.StateInfo = Cluster_StateInfo_FromProto(mapCtx, in.GetStateInfo())
 	out.PreciseSizeGB = in.PreciseSizeGb
 	out.CrossClusterReplicationConfig = CrossClusterReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossClusterReplicationConfig())
 	out.MaintenancePolicy = ClusterMaintenancePolicyObservedState_FromProto(mapCtx, in.GetMaintenancePolicy())
 	out.MaintenanceSchedule = ClusterMaintenanceScheduleObservedState_FromProto(mapCtx, in.GetMaintenanceSchedule())
 	out.PSCServiceAttachments = direct.Slice_FromProto(mapCtx, in.PscServiceAttachments, PSCServiceAttachmentObservedState_FromProto)
-	// MISSING: ClusterEndpoints
+	out.ClusterEndpoints = direct.Slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpointObservedState_FromProto)
 	// MISSING: BackupCollection
 	out.EncryptionInfo = EncryptionInfoObservedState_FromProto(mapCtx, in.GetEncryptionInfo())
 	return out
@@ -672,14 +782,14 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 	out.Uid = direct.ValueOf(in.Uid)
 	out.SizeGb = in.SizeGB
 	out.DiscoveryEndpoints = direct.Slice_ToProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpointObservedState_ToProto)
-	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PSCConnections, PSCConnection_ToProto)
+	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PSCConnections, PSCConnectionObservedState_ToProto)
 	out.StateInfo = Cluster_StateInfo_ToProto(mapCtx, in.StateInfo)
 	out.PreciseSizeGb = in.PreciseSizeGB
 	out.CrossClusterReplicationConfig = CrossClusterReplicationConfigObservedState_ToProto(mapCtx, in.CrossClusterReplicationConfig)
 	out.MaintenancePolicy = ClusterMaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
 	out.MaintenanceSchedule = ClusterMaintenanceScheduleObservedState_ToProto(mapCtx, in.MaintenanceSchedule)
 	out.PscServiceAttachments = direct.Slice_ToProto(mapCtx, in.PSCServiceAttachments, PSCServiceAttachmentObservedState_ToProto)
-	// MISSING: ClusterEndpoints
+	out.ClusterEndpoints = direct.Slice_ToProto(mapCtx, in.ClusterEndpoints, ClusterEndpointObservedState_ToProto)
 	// MISSING: BackupCollection
 	out.EncryptionInfo = EncryptionInfoObservedState_ToProto(mapCtx, in.EncryptionInfo)
 	return out
@@ -706,7 +816,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	out.CrossClusterReplicationConfig = CrossClusterReplicationConfig_FromProto(mapCtx, in.GetCrossClusterReplicationConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.MaintenancePolicy = ClusterMaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
-	// MISSING: ClusterEndpoints
+	out.ClusterEndpoints = direct.Slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_FromProto)
 	// MISSING: BackupCollection
 	if in.GetKmsKey() != "" {
 		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
@@ -737,7 +847,7 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	out.CrossClusterReplicationConfig = CrossClusterReplicationConfig_ToProto(mapCtx, in.CrossClusterReplicationConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.MaintenancePolicy = ClusterMaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
-	// MISSING: ClusterEndpoints
+	out.ClusterEndpoints = direct.Slice_ToProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ToProto)
 	// MISSING: BackupCollection
 	if in.KMSKeyRef != nil {
 		out.KmsKey = in.KMSKeyRef.External

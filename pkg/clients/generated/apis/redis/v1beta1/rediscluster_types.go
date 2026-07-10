@@ -58,6 +58,18 @@ type ClusterAutomatedBackupConfig struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
+type ClusterClusterEndpoints struct {
+	/* A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
+	// +optional
+	Connections []ClusterConnections `json:"connections,omitempty"`
+}
+
+type ClusterConnections struct {
+	/* Detailed information of a PSC connection that is created through service connectivity automation. */
+	// +optional
+	PscAutoConnection *ClusterPscAutoConnection `json:"pscAutoConnection,omitempty"`
+}
+
 type ClusterCrossClusterReplicationConfig struct {
 	/* The role of the cluster in cross cluster replication. */
 	// +optional
@@ -107,6 +119,16 @@ type ClusterPrimaryCluster struct {
 	/* The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id> */
 	// +optional
 	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+}
+
+type ClusterPscAutoConnection struct {
+	/* Required. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Required. The consumer project_id where the forwarding rule is created from. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type ClusterPscConfigs struct {
@@ -177,6 +199,10 @@ type RedisClusterSpec struct {
 	// +optional
 	AutomatedBackupConfig *ClusterAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 
+	/* Optional. A list of cluster endpoints. */
+	// +optional
+	ClusterEndpoints []ClusterClusterEndpoints `json:"clusterEndpoints,omitempty"`
+
 	/* Optional. Cross cluster replication config. */
 	// +optional
 	CrossClusterReplicationConfig *ClusterCrossClusterReplicationConfig `json:"crossClusterReplicationConfig,omitempty"`
@@ -234,6 +260,18 @@ type RedisClusterSpec struct {
 	/* Optional. This config will be used to determine how the customer wants us to distribute cluster resources within the region. */
 	// +optional
 	ZoneDistributionConfig *ClusterZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
+}
+
+type ClusterClusterEndpointsStatus struct {
+	/* A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
+	// +optional
+	Connections []ClusterConnectionsStatus `json:"connections,omitempty"`
+}
+
+type ClusterConnectionsStatus struct {
+	/* Detailed information of a PSC connection that is created through service connectivity automation. */
+	// +optional
+	PscAutoConnection *ClusterPscAutoConnectionStatus `json:"pscAutoConnection,omitempty"`
 }
 
 type ClusterCrossClusterReplicationConfigStatus struct {
@@ -331,6 +369,10 @@ type ClusterMembershipStatus struct {
 }
 
 type ClusterObservedStateStatus struct {
+	/* Optional. A list of cluster endpoints. */
+	// +optional
+	ClusterEndpoints []ClusterClusterEndpointsStatus `json:"clusterEndpoints,omitempty"`
+
 	/* Output only. The timestamp associated with the cluster creation request. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -392,6 +434,32 @@ type ClusterPrimaryClusterStatus struct {
 	/* Output only. The unique identifier of the remote cluster. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
+}
+
+type ClusterPscAutoConnectionStatus struct {
+	/* Output only. The IP allocated on the consumer network for the PSC forwarding rule. */
+	// +optional
+	Address *string `json:"address,omitempty"`
+
+	/* Output only. Type of the PSC connection. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
+	// +optional
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	/* Output only. The PSC connection id of the forwarding rule connected to the service attachment. */
+	// +optional
+	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	/* Output only. The status of the PSC connection. Please note that this value is updated periodically. Please use Private Service Connect APIs for the latest status. */
+	// +optional
+	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
+	/* Output only. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 type ClusterPscConfigStatus struct {

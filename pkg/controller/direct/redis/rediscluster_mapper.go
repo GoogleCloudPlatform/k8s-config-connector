@@ -123,6 +123,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	out.RedisConfigs = in.RedisConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	out.ClusterEndpoints = direct.Slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_FromProto)
 	out.MaintenancePolicy = ClusterMaintenancePolicy_FromProto(mapCtx, in.GetMaintenancePolicy())
 	if in.GetKmsKey() != "" {
 		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
@@ -149,9 +150,65 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.MaintenancePolicy = ClusterMaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
+	out.ClusterEndpoints = direct.Slice_ToProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ToProto)
 	if in.KMSKeyRef != nil {
 		out.KmsKey = &in.KMSKeyRef.External
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	return out
+}
+
+func PSCAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krm.PSCAutoConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCAutoConnection{}
+	if in.GetProjectId() != "" {
+		out.ProjectRef = &refs.ProjectRef{External: in.GetProjectId()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	return out
+}
+func PSCAutoConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutoConnection) *pb.PscAutoConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscAutoConnection{}
+	if in.ProjectRef != nil {
+		out.ProjectId = in.ProjectRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	return out
+}
+
+func PSCConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCConnectionObservedState{}
+	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
+	out.Address = direct.LazyPtr(in.GetAddress())
+	out.ForwardingRule = direct.LazyPtr(in.GetForwardingRule())
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	return out
+}
+
+func PSCConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnectionObservedState) *pb.PscConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConnection{}
+	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
+	out.Address = direct.ValueOf(in.Address)
+	out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.Network = direct.ValueOf(in.Network)
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	return out
 }
