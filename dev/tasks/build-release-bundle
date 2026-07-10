@@ -117,7 +117,6 @@ BLOCKED_KINDS=(
     "CertificateManagerTrustConfig"
     "ArtifactRegistryVPCSCConfig"
     "NetworkSecurityUrlList"
-    "NetworkSecurityTLSInspectionPolicy"
     "NetworkSecurityGatewaySecurityPolicy"
     "ConnectorsConnection"
     "ApigeeRegistryInstance"
