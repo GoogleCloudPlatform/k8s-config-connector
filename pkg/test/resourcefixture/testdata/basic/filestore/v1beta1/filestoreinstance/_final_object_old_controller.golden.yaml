@@ -3,10 +3,11 @@ kind: FilestoreInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -32,6 +33,7 @@ spec:
       name: default
   projectRef:
     external: ${projectId}
+  resourceID: filestoreinstance-${uniqueId}
   tier: PREMIUM
 status:
   conditions:
@@ -41,6 +43,5 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  externalRef: projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 3
   state: READY
