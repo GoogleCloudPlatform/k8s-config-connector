@@ -341,6 +341,8 @@ type PSCConfig struct {
 	Network *string `json:"network,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.PscConnection", skipping
+
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
 type PSCConnection struct {
 	// Required. The PSC connection id of the forwarding rule connected to the
@@ -375,6 +377,7 @@ type PSCConnection struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscConnection.service_attachment
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
+*/
 
 /* unreachable type PSCServiceAttachment
 // +kcc:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
@@ -939,7 +942,8 @@ type PSCAutoConnectionObservedState struct {
 }
 */
 
-/* unreachable type PSCConnectionObservedState
+/* found existing non-generated go type "PSCConnectionObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscConnection
 type PSCConnectionObservedState struct {
 	// Output only. The status of the PSC connection.
