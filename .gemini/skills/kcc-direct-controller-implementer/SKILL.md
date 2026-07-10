@@ -93,8 +93,9 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
     - Runs `make fmt` and `make vet`.
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
-7.  **Validation & Last-Mile Tests**:
-    Run the following tests to ensure CI compliance:
+7.  **Validation & Last-Mile Tests (MANDATORY PRE-PUSH VERIFICATION)**:
+    Run the following tests locally to ensure 100% CI compliance before pushing:
+    - **Service E2E Presubmit (CRITICAL PRE-PUSH CHECK)**: Run the exact matching GitHub Actions presubmit script `dev/ci/presubmits/tests-e2e-fixtures-<service>` with `WRITE_GOLDEN_OUTPUT=0` (default check mode) to confirm all E2E fixtures pass 100% cleanly without golden file diffs or false updates. Never commit or push code without this passing cleanly.
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
     - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-direct`
     - **Schema Integrity**: `go test ./pkg/crd/template/...`

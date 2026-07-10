@@ -30,13 +30,19 @@ When you are ready to send your changes as a Pull Request, use the provided `sen
    ./.gemini/skills/send-pr/scripts/send-pr.sh --title "Brief PR Title" --body /root/.gemini/tmp/k8s-config-connector/pr-body.txt --labels "overseer,area/direct"
    ```
 
-3. **What the Script Does**:
+3. **MANDATORY PRE-PUSH VERIFICATION**:
+   - **CRITICAL**: Before running `send-pr.sh` or pushing any branch to GitHub, identify the corresponding presubmit script in `dev/ci/presubmits/` (e.g., `dev/ci/presubmits/tests-e2e-fixtures-<service>`).
+   - Run the presubmit script locally with `WRITE_GOLDEN_OUTPUT=0` to ensure **100% clean PASS** without any unexpected diffs or failures.
+   - Run `make fmt && go vet ./...`.
+   - Never push or create/edit a PR unless the matching presubmit script completes with a clean `PASS`.
+
+4. **What the Script Does**:
    - Runs `make fmt` to ensure the code is properly formatted.
    - Checks if `make fmt` introduced any git diffs or if there are any uncommitted changes. If there are, it will *stop the push* and require you to commit the formatting changes first.
    - Pushes the current branch to `origin` (`git push --set-upstream origin <branch>`).
    - Uses the `gh` tool to create a new PR or update the existing PR if one is already open for this branch.
 
-4. **Handling Failures**:
+5. **Handling Failures**:
    - If the script fails because `make fmt` introduced changes, you should add and commit those changes:
      ```bash
      git add .
