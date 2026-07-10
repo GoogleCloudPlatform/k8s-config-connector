@@ -56,7 +56,11 @@ git push --force-with-lease origin <HEAD_BRANCH>
    gh pr checkout <PR_NUMBER>
    ```
 2. **Apply the Fix**: Run the presubmit script, edit the code to address approver comments, or complete the rebase.
-3. **Validate**: Always run `make fmt` and `go vet ./...` to ensure formatting and basic compilation are clean.
+3. **Validate**:
+   - Always run authoritative presubmit scripts before pushing:
+     1. Run `make fmt` and `go vet ./...`.
+     2. Run `./dev/ci/presubmits/unit-tests` to ensure all package unit tests and golden log alignments pass.
+     3. Run `./dev/ci/presubmits/tests-e2e-fixtures-<service>` if you modified resource controller logic or fixtures.
 4. **Commit and Push**:
    ```bash
    git add .
