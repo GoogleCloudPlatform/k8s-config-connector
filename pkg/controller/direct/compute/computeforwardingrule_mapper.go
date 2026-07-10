@@ -164,7 +164,11 @@ func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krm.IpAddress{}
-	out.Ip = direct.LazyPtr(in)
+	if strings.Contains(in, "/addresses/") || strings.HasPrefix(in, "projects/") {
+		out.AddressRef = &krm.ComputeAddressRef{External: in}
+	} else {
+		out.Ip = direct.LazyPtr(in)
+	}
 	return out
 }
 
@@ -315,6 +319,8 @@ func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *direct.MapContext, in st
 		out.TargetVPNGatewayRef = &refs.ComputeTargetVPNGatewayRef{
 			External: in,
 		}
+	} else if in == "all-apis" || in == "vpc-sc" {
+		out.GoogleAPIsBundle = &in
 	}
 	return out
 }
