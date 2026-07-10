@@ -259,6 +259,20 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 				continue
 			}
 
+			// Do not attempt to update immutable fields if desired left them unspecified.
+			if path == "node_type" && desired.NodeType == memorystorepb.Instance_NODE_TYPE_UNSPECIFIED {
+				log.V(2).Info("skipping update for node_type since desired value is unspecified", "name", a.id)
+				continue
+			}
+			if path == "mode" && desired.Mode == memorystorepb.Instance_MODE_UNSPECIFIED {
+				log.V(2).Info("skipping update for mode since desired value is unspecified", "name", a.id)
+				continue
+			}
+			if path == "zone_distribution_config" && desired.ZoneDistributionConfig == nil {
+				log.V(2).Info("skipping update for zone_distribution_config since desired value is unspecified", "name", a.id)
+				continue
+			}
+
 			updateMask := &fieldmaskpb.FieldMask{
 				Paths: []string{path},
 			}
@@ -354,6 +368,26 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 	}
 
 	maskedActual = populateDefaults(maskedActual)
+
+	// If desired leaves immutable / optional default fields unspecified, inherit existing actual values to avoid false diffs on immutable/default fields.
+	if maskedActual != nil {
+		if desired.NodeType == memorystorepb.Instance_NODE_TYPE_UNSPECIFIED && maskedActual.NodeType != memorystorepb.Instance_NODE_TYPE_UNSPECIFIED {
+			desired.NodeType = maskedActual.NodeType
+		}
+		if desired.Mode == memorystorepb.Instance_MODE_UNSPECIFIED && maskedActual.Mode != memorystorepb.Instance_MODE_UNSPECIFIED {
+			desired.Mode = maskedActual.Mode
+		}
+		if desired.ZoneDistributionConfig == nil && maskedActual.ZoneDistributionConfig != nil {
+			desired.ZoneDistributionConfig = maskedActual.ZoneDistributionConfig
+		}
+		if desired.AuthorizationMode == memorystorepb.Instance_AUTHORIZATION_MODE_UNSPECIFIED && maskedActual.AuthorizationMode != memorystorepb.Instance_AUTHORIZATION_MODE_UNSPECIFIED {
+			desired.AuthorizationMode = maskedActual.AuthorizationMode
+		}
+		if desired.TransitEncryptionMode == memorystorepb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED && maskedActual.TransitEncryptionMode != memorystorepb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+			desired.TransitEncryptionMode = maskedActual.TransitEncryptionMode
+		}
+	}
+
 	desired = populateDefaults(proto.CloneOf(desired))
 
 	// If CrossInstanceReplicationConfig is unspecified, use the actual value as default
