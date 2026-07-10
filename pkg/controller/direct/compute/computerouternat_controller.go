@@ -88,7 +88,7 @@ func (m *routerNATModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 
 	mapCtx := &direct.MapContext{}
 	desired := obj.DeepCopy()
-	resource := ComputeRouterNATSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeRouterNATSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -330,7 +330,7 @@ func (a *RouterNATAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 	obj := &krm.ComputeRouterNAT{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ComputeRouterNATSpec_v1beta1_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ComputeRouterNATSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -432,7 +432,7 @@ func (a *RouterNATAdapter) updateStatus(ctx context.Context, op directbase.Opera
 }
 
 func compareComputeRouterNAT(ctx context.Context, actual, desired *computepb.RouterNat) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, ComputeRouterNATSpec_v1beta1_FromProto, ComputeRouterNATSpec_v1beta1_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, ComputeRouterNATSpec_FromProto, ComputeRouterNATSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
