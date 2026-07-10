@@ -137,6 +137,8 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 				obj.TargetCidrRange = patch.TargetCidrRange
 			case "usage":
 				obj.Usage = patch.Usage
+			case "allocation_options":
+				obj.AllocationOptions = patch.AllocationOptions
 			default:
 				log.Info("unsupported update_mask", "req", req)
 				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock", path)

@@ -56,6 +56,22 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 				}
 			}
 		}
+	})
+
+	transformInternalRange := func(m map[string]any) {
+		if m["prefixLength"] != nil && m["ipCidrRange"] != nil {
+			if cidr, ok := m["ipCidrRange"].(string); ok {
+				parts := strings.Split(cidr, "/")
+				if len(parts) == 2 && strings.HasPrefix(parts[0], "10.0.") {
+					m["ipCidrRange"] = "10.0.1.0/" + parts[1]
+				}
+			}
+		}
+	}
+	replacements.TransformObject("", transformInternalRange)
+	replacements.TransformObject(".response", transformInternalRange)
+
+	replacements.TransformObject("", func(m map[string]any) {
 		if !isNetworkConnectivityOperation(m) {
 			return
 		}
