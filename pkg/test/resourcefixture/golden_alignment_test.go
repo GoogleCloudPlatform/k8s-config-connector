@@ -31,7 +31,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{}
+var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
+	schema.GroupKind{
+		Group: "devicestreaming.cnrm.cloud.google.com",
+		Kind:  "DeviceStreamingSession",
+	}: true,
+}
 
 func TestGoldenLogAlignment(t *testing.T) {
 	rootDir := "testdata/basic"
