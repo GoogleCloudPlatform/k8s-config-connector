@@ -1,0 +1,10 @@
+apiVersion: devicestreaming.cnrm.cloud.google.com/v1alpha1
+kind: DeviceStreamingSession
+metadata:
+  name: devicestreamingsession-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  androidDevice:
+    androidModelID: "Pixel8"
+    androidVersionID: "34"
