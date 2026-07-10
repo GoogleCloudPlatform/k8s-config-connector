@@ -59,7 +59,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmetastore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmodelarmor"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsublite"
@@ -135,7 +134,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mocksecretmanager.New(env, storage))
 	services = append(services, mockspanner.New(env, storage))
 	services = append(services, mockpubsublite.New(env, storage))
-	services = append(services, mocknetworkconnectivity.New(env, storage))
 	services = append(services, mockprivilegedaccessmanager.New(env, storage))
 	services = append(services, mocksecuresourcemanager.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
