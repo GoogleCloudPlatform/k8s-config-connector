@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -102,8 +103,21 @@ func (m *modelLoggingLogExclusion) AdapterForObject(ctx context.Context, op *dir
 }
 
 func (m *modelLoggingLogExclusion) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.LoggingLogExclusionIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LoggingLogExclusionAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type LoggingLogExclusionAdapter struct {
@@ -209,13 +223,25 @@ func (a *LoggingLogExclusionAdapter) Export(ctx context.Context) (*unstructured.
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Exclusion)
+
+	if a.id.Project != "" {
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	} else if a.id.Folder != "" {
+		obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Folder}
+	} else if a.id.Organization != "" {
+		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Organization}
+	} else if a.id.BillingAccount != "" {
+		obj.Spec.BillingAccountRef = &refs.BillingAccountRef{External: a.id.BillingAccount}
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Exclusion)
 	u.SetGroupVersionKind(krm.LoggingLogExclusionGVK)
 	return u, nil
 }
