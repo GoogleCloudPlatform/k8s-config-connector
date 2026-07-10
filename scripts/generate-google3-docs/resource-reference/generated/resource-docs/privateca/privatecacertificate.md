@@ -154,7 +154,7 @@ subjectMode: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable.</p>
+            <p>Immutable. Required. The PrivateCACAPool that includes this Certificate.</p>
         </td>
     </tr>
     <tr>
@@ -164,9 +164,7 @@ subjectMode: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The ca_pool for the resource
-
-Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (format: `projects/{{project}}/locations/{{location}}/caPools/{{name}}`).</p>
+            <p>A reference to an externally managed PrivateCACAPool resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/caPools/{{caPoolID}}".</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +174,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PrivateCACAPool resource.</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +184,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PrivateCACAPool resource.</p>
         </td>
     </tr>
     <tr>
@@ -196,7 +194,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable.</p>
+            <p>Immutable. Optional. The PrivateCACertificateAuthority that issued this Certificate.</p>
         </td>
     </tr>
     <tr>
@@ -206,9 +204,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The certificate authority for the resource
-
-Allowed value: The Google Cloud resource name of a `PrivateCACertificateAuthority` resource (format: `projects/{{project}}/locations/{{location}}/caPools/{{ca_pool}}/certificateAuthorities/{{name}}`).</p>
+            <p>A reference to an externally managed PrivateCACertificateAuthority resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/caPools/{{caPool}}/certificateAuthorities/{{certificateAuthorityID}}".</p>
         </td>
     </tr>
     <tr>
@@ -218,7 +214,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACertificateAuthorit
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PrivateCACertificateAuthority resource.</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +224,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACertificateAuthorit
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PrivateCACertificateAuthority resource.</p>
         </td>
     </tr>
     <tr>
@@ -238,7 +234,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACertificateAuthorit
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable.</p>
+            <p>Immutable. Optional. The PrivateCACertificateTemplate used to issue this Certificate.</p>
         </td>
     </tr>
     <tr>
@@ -248,9 +244,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACertificateAuthorit
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The resource name for a CertificateTemplate used to issue this certificate, in the format `projects/*/locations/*/certificateTemplates/*`. If this is specified, the caller must have the necessary permission to use this template. If this is omitted, no template will be used. This template must be in the same location as the Certificate.
-
-Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource.</p>
+            <p>A reference to an externally managed PrivateCACertificateTemplate resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateTemplates/{{certificateTemplateID}}".</p>
         </td>
     </tr>
     <tr>
@@ -260,7 +254,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a PrivateCACertificateTemplate resource.</p>
         </td>
     </tr>
     <tr>
@@ -270,7 +264,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a PrivateCACertificateTemplate resource.</p>
         </td>
     </tr>
     <tr>
@@ -280,7 +274,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Immutable. A description of the certificate and key that does not require X.509 or ASN.1.</p>
+            <p>Immutable. Optional. A description of the certificate and key that does not require X.509 or ASN.1.</p>
         </td>
     </tr>
     <tr>
@@ -290,7 +284,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Optional. The public key that corresponds to this config. This is, for example, used when issuing Certificates, but not when creating a self-signed CertificateAuthority or CertificateAuthority CSR.</p>
+            <p>Immutable. Optional. The public key that corresponds to this config.</p>
         </td>
     </tr>
     <tr>
@@ -340,7 +334,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The "common name" of the subject.</p>
+            <p>The "common name" of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -350,7 +344,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The country code of the subject.</p>
+            <p>The country code of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -360,7 +354,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The locality or city of the subject.</p>
+            <p>The locality or city of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -370,7 +364,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The organization of the subject.</p>
+            <p>The organization of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -380,7 +374,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The organizational_unit of the subject.</p>
+            <p>The organizational_unit of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -390,7 +384,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The postal code of the subject.</p>
+            <p>The postal code of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -400,7 +394,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The province, territory, or regional state of the subject.</p>
+            <p>The province, territory, or regional state of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -410,7 +404,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The street address of the subject.</p>
+            <p>The street address of the subject.</p>
         </td>
     </tr>
     <tr>
@@ -430,7 +424,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid, fully-qualified host names.</p>
+            <p>Immutable. Optional. Contains only valid, fully-qualified host names.</p>
         </td>
     </tr>
     <tr>
@@ -450,7 +444,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid RFC 2822 E-mail addresses.</p>
+            <p>Immutable. Optional. Contains only valid RFC 2822 E-mail addresses.</p>
         </td>
     </tr>
     <tr>
@@ -470,7 +464,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.</p>
+            <p>Immutable. Optional. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.</p>
         </td>
     </tr>
     <tr>
@@ -490,7 +484,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Contains only valid RFC 3986 URIs.</p>
+            <p>Immutable. Optional. Contains only valid RFC 3986 URIs.</p>
         </td>
     </tr>
     <tr>
@@ -540,7 +534,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error).</p>
+            <p>Immutable. Optional. Indicates whether or not this extension is critical.</p>
         </td>
     </tr>
     <tr>
@@ -630,7 +624,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>Immutable. Optional. Refers to the "path length constraint" in Basic Constraints extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail.</p>
+            <p>Immutable. Optional. Refers to the "path length constraint" in Basic Constraints extension.</p>
         </td>
     </tr>
     <tr>
@@ -670,7 +664,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Describes high-level ways in which a key may be used.</p>
+            <p>Immutable. Optional. Describes high-level ways in which a key may be used.</p>
         </td>
     </tr>
     <tr>
@@ -680,7 +674,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to sign certificates.</p>
+            <p>Immutable. Optional. The key may be used to sign certificates.</p>
         </td>
     </tr>
     <tr>
@@ -690,7 +684,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".</p>
+            <p>Immutable. Optional. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".</p>
         </td>
     </tr>
     <tr>
@@ -700,7 +694,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used sign certificate revocation lists.</p>
+            <p>Immutable. Optional. The key may be used sign certificate revocation lists.</p>
         </td>
     </tr>
     <tr>
@@ -710,7 +704,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to encipher data.</p>
+            <p>Immutable. Optional. The key may be used to encipher data.</p>
         </td>
     </tr>
     <tr>
@@ -720,7 +714,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to decipher only.</p>
+            <p>Immutable. Optional. The key may be used to decipher only.</p>
         </td>
     </tr>
     <tr>
@@ -730,7 +724,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used for digital signatures.</p>
+            <p>Immutable. Optional. The key may be used for digital signatures.</p>
         </td>
     </tr>
     <tr>
@@ -740,7 +734,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to encipher only.</p>
+            <p>Immutable. Optional. The key may be used to encipher only.</p>
         </td>
     </tr>
     <tr>
@@ -750,7 +744,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used in a key agreement protocol.</p>
+            <p>Immutable. Optional. The key may be used in a key agreement protocol.</p>
         </td>
     </tr>
     <tr>
@@ -760,7 +754,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. The key may be used to encipher other keys.</p>
+            <p>Immutable. Optional. The key may be used to encipher other keys.</p>
         </td>
     </tr>
     <tr>
@@ -770,7 +764,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Detailed scenarios in which a key may be used.</p>
+            <p>Immutable. Optional. Detailed scenarios in which a key may be used.</p>
         </td>
     </tr>
     <tr>
@@ -780,7 +774,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.</p>
+            <p>Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.</p>
         </td>
     </tr>
     <tr>
@@ -790,7 +784,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".</p>
+            <p>Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".</p>
         </td>
     </tr>
     <tr>
@@ -800,7 +794,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".</p>
+            <p>Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".</p>
         </td>
     </tr>
     <tr>
@@ -810,7 +804,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".</p>
+            <p>Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".</p>
         </td>
     </tr>
     <tr>
@@ -820,7 +814,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.</p>
+            <p>Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.</p>
         </td>
     </tr>
     <tr>
@@ -830,7 +824,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".</p>
+            <p>Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".</p>
         </td>
     </tr>
     <tr>
@@ -840,7 +834,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Immutable. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.</p>
+            <p>Immutable. Optional. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.</p>
         </td>
     </tr>
     <tr>
@@ -920,7 +914,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Required. Immutable. The desired lifetime of a certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate. Note that the lifetime may be truncated if it would extend past the life of any certificate authority in the issuing chain.</p>
+            <p>Immutable. Required. The desired lifetime of a certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate.</p>
         </td>
     </tr>
     <tr>
@@ -930,7 +924,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The location for the resource</p>
+            <p>Immutable. The location for the resource.</p>
         </td>
     </tr>
     <tr>
@@ -940,7 +934,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Immutable. A pem-encoded X.509 certificate signing request (CSR).</p>
+            <p>Immutable. Optional. A pem-encoded X.509 certificate signing request (CSR).</p>
         </td>
     </tr>
     <tr>
@@ -950,7 +944,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. The Project that this resource belongs to.</p>
+            <p>Immutable. Required. The Project that this resource belongs to.</p>
         </td>
     </tr>
     <tr>
@@ -960,9 +954,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -972,7 +964,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -982,7 +974,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -1002,7 +994,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Immutable. Specifies how the Certificate's identity fields are to be decided. If this is omitted, the `DEFAULT` subject mode will be used. Possible values: SUBJECT_REQUEST_MODE_UNSPECIFIED, DEFAULT, REFLECTED_SPIFFE</p>
+            <p>Immutable. Optional. Specifies how the Certificate's identity fields are to be decided.</p>
         </td>
     </tr>
 </tbody>
@@ -1128,7 +1120,7 @@ updateTime: string
         <td><code>certificateDescription.aiaIssuingCertificateUrls</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Describes lists of issuer CA certificate URLs that appear in the "Authority Information Access" extension in the certificate.</p>
+            <p>Optional. Describes lists of issuer CA certificate URLs that appear in the "Authority Information Access" extension in the certificate.</p>
         </td>
     </tr>
     <tr>
@@ -1142,7 +1134,7 @@ updateTime: string
         <td><code>certificateDescription.authorityKeyId</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Identifies the subject_key_id of the parent certificate, per https://tools.ietf.org/html/rfc5280#section-4.2.1.1</p>
+            <p>Optional. Identifies the subject_key_id of the parent certificate, per https://tools.ietf.org/html/rfc5280#section-4.2.1.1.</p>
         </td>
     </tr>
     <tr>
@@ -1156,21 +1148,21 @@ updateTime: string
         <td><code>certificateDescription.certFingerprint</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The hash of the x.509 certificate.</p>
+            <p>Optional. The hash of the x.509 certificate.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.certFingerprint.sha256Hash</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate.</p>
+            <p>Optional. The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.crlDistributionPoints</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Describes a list of locations to obtain CRL information, i.e. the DistributionPoint.fullName described by https://tools.ietf.org/html/rfc5280#section-4.2.1.13</p>
+            <p>Optional. Describes a list of locations to obtain CRL information, i.e. the DistributionPoint.fullName described by https://tools.ietf.org/html/rfc5280#section-4.2.1.13.</p>
         </td>
     </tr>
     <tr>
@@ -1184,133 +1176,133 @@ updateTime: string
         <td><code>certificateDescription.publicKey</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The public key that corresponds to an issued certificate.</p>
+            <p>Optional. The public key that corresponds to an issued certificate.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.publicKey.format</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The format of the public key. Possible values: KEY_FORMAT_UNSPECIFIED, PEM</p>
+            <p>Optional. The format of the public key. Possible values: KEY_FORMAT_UNSPECIFIED, PEM.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.publicKey.key</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. A public key. The padding and encoding must match with the `KeyFormat` value specified for the `format` field.</p>
+            <p>Optional. A public key. The padding and encoding must match with the `KeyFormat` value specified for the `format` field.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Describes some of the values in a certificate that are related to the subject and lifetime.</p>
+            <p>Optional. Describes some of the values in a certificate that are related to the subject and lifetime.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.hexSerialNumber</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The serial number encoded in lowercase hexadecimal.</p>
+            <p>Optional. The serial number encoded in lowercase hexadecimal.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.lifetime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>For convenience, the actual lifetime of an issued certificate.</p>
+            <p>Optional. For convenience, the actual lifetime of an issued certificate.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.notAfterTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to 'not_before_time' + 'lifetime' - 1 second.</p>
+            <p>Optional. The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to 'not_before_time' + 'lifetime' - 1 second.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.notBeforeTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time at which the certificate becomes valid.</p>
+            <p>Optional. The time at which the certificate becomes valid.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Contains distinguished name fields such as the common name, location and / organization.</p>
+            <p>Optional. Contains distinguished name fields such as the common name, location and / organization.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.commonName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The "common name" of the subject.</p>
+            <p>Optional. The "common name" of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.countryCode</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The country code of the subject.</p>
+            <p>Optional. The country code of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.locality</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The locality or city of the subject.</p>
+            <p>Optional. The locality or city of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.organization</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The organization of the subject.</p>
+            <p>Optional. The organization of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.organizationalUnit</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The organizational_unit of the subject.</p>
+            <p>Optional. The organizational_unit of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.postalCode</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The postal code of the subject.</p>
+            <p>Optional. The postal code of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.province</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The province, territory, or regional state of the subject.</p>
+            <p>Optional. The province, territory, or regional state of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subject.streetAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The street address of the subject.</p>
+            <p>Optional. The street address of the subject.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subjectAltName</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The subject alternative name fields.</p>
+            <p>Optional. The subject alternative name fields.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subjectAltName.customSans</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Contains additional subject alternative name values.</p>
+            <p>Optional. Contains additional subject alternative name values.</p>
         </td>
     </tr>
     <tr>
@@ -1324,21 +1316,21 @@ updateTime: string
         <td><code>certificateDescription.subjectDescription.subjectAltName.customSans[].critical</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error).</p>
+            <p>Optional. Indicates whether or not this extension is critical.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subjectAltName.customSans[].objectId</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The OID for this X.509 extension.</p>
+            <p>Optional. The OID for this X.509 extension.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subjectAltName.customSans[].objectId.objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path. The most significant parts of the path come first.</p>
         </td>
     </tr>
     <tr>
@@ -1352,14 +1344,14 @@ updateTime: string
         <td><code>certificateDescription.subjectDescription.subjectAltName.customSans[].value</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The value of this X.509 extension.</p>
+            <p>Optional. The value of this X.509 extension.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.subjectDescription.subjectAltName.dnsNames</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Contains only valid, fully-qualified host names.</p>
+            <p>Optional. Contains only valid, fully-qualified host names.</p>
         </td>
     </tr>
     <tr>
@@ -1373,7 +1365,7 @@ updateTime: string
         <td><code>certificateDescription.subjectDescription.subjectAltName.emailAddresses</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Contains only valid RFC 2822 E-mail addresses.</p>
+            <p>Optional. Contains only valid RFC 2822 E-mail addresses.</p>
         </td>
     </tr>
     <tr>
@@ -1387,7 +1379,7 @@ updateTime: string
         <td><code>certificateDescription.subjectDescription.subjectAltName.ipAddresses</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.</p>
+            <p>Optional. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.</p>
         </td>
     </tr>
     <tr>
@@ -1401,7 +1393,7 @@ updateTime: string
         <td><code>certificateDescription.subjectDescription.subjectAltName.uris</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Contains only valid RFC 3986 URIs.</p>
+            <p>Optional. Contains only valid RFC 3986 URIs.</p>
         </td>
     </tr>
     <tr>
@@ -1415,7 +1407,7 @@ updateTime: string
         <td><code>certificateDescription.subjectKeyId</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Provides a means of identifiying certificates that contain a particular public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2.</p>
+            <p>Optional. Provides a means of identifying certificates that contain a particular public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2.</p>
         </td>
     </tr>
     <tr>
@@ -1429,7 +1421,7 @@ updateTime: string
         <td><code>certificateDescription.x509Description</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Describes some of the technical X.509 fields in a certificate.</p>
+            <p>Optional. Describes some of the technical X.509 fields in a certificate.</p>
         </td>
     </tr>
     <tr>
@@ -1450,21 +1442,21 @@ updateTime: string
         <td><code>certificateDescription.x509Description.additionalExtensions[].critical</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error).</p>
+            <p>Optional. Indicates whether or not this extension is critical.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.additionalExtensions[].objectId</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Required. The OID for this X.509 extension.</p>
+            <p>Optional. The OID for this X.509 extension.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.additionalExtensions[].objectId.objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path. The most significant parts of the path come first.</p>
         </td>
     </tr>
     <tr>
@@ -1478,7 +1470,7 @@ updateTime: string
         <td><code>certificateDescription.x509Description.additionalExtensions[].value</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. The value of this X.509 extension.</p>
+            <p>Optional. The value of this X.509 extension.</p>
         </td>
     </tr>
     <tr>
@@ -1527,126 +1519,126 @@ updateTime: string
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Describes high-level ways in which a key may be used.</p>
+            <p>Optional. Describes high-level ways in which a key may be used.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.certSign</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used to sign certificates.</p>
+            <p>Optional. The key may be used to sign certificates.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.contentCommitment</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".</p>
+            <p>Optional. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.crlSign</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used sign certificate revocation lists.</p>
+            <p>Optional. The key may be used sign certificate revocation lists.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.dataEncipherment</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used to encipher data.</p>
+            <p>Optional. The key may be used to encipher data.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.decipherOnly</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used to decipher only.</p>
+            <p>Optional. The key may be used to decipher only.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.digitalSignature</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used for digital signatures.</p>
+            <p>Optional. The key may be used for digital signatures.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.encipherOnly</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used to encipher only.</p>
+            <p>Optional. The key may be used to encipher only.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.keyAgreement</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used in a key agreement protocol.</p>
+            <p>Optional. The key may be used in a key agreement protocol.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.keyEncipherment</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>The key may be used to encipher other keys.</p>
+            <p>Optional. The key may be used to encipher other keys.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Detailed scenarios in which a key may be used.</p>
+            <p>Optional. Detailed scenarios in which a key may be used.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.clientAuth</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.</p>
+            <p>Optional. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.codeSigning</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".</p>
+            <p>Optional. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.emailProtection</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".</p>
+            <p>Optional. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.ocspSigning</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".</p>
+            <p>Optional. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.serverAuth</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.</p>
+            <p>Optional. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.timeStamping</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".</p>
+            <p>Optional. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.unknownExtendedKeyUsages</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.</p>
+            <p>Optional. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.</p>
         </td>
     </tr>
     <tr>
@@ -1660,7 +1652,7 @@ updateTime: string
         <td><code>certificateDescription.x509Description.keyUsage.unknownExtendedKeyUsages[].objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path. The most significant parts of the path come first.</p>
         </td>
     </tr>
     <tr>
@@ -1688,7 +1680,7 @@ updateTime: string
         <td><code>certificateDescription.x509Description.policyIds[].objectIdPath</code></td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>Required. The parts of an OID path. The most significant parts of the path come first.</p>
+            <p>Optional. The parts of an OID path. The most significant parts of the path come first.</p>
         </td>
     </tr>
     <tr>
@@ -1702,7 +1694,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the PrivateCACertificate's current state.</p>
         </td>
     </tr>
     <tr>
@@ -1800,14 +1792,14 @@ updateTime: string
         <td><code>revocationDetails.revocationState</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Indicates why a Certificate was revoked. Possible values: REVOCATION_REASON_UNSPECIFIED, KEY_COMPROMISE, CERTIFICATE_AUTHORITY_COMPROMISE, AFFILIATION_CHANGED, SUPERSEDED, CESSATION_OF_OPERATION, CERTIFICATE_HOLD, PRIVILEGE_WITHDRAWN, ATTRIBUTE_AUTHORITY_COMPROMISE</p>
+            <p>Optional. Indicates why a Certificate was revoked. Possible values: REVOCATION_REASON_UNSPECIFIED, KEY_COMPROMISE, CERTIFICATE_AUTHORITY_COMPROMISE, AFFILIATION_CHANGED, SUPERSEDED, CESSATION_OF_OPERATION, CERTIFICATE_HOLD, PRIVILEGE_WITHDRAWN, ATTRIBUTE_AUTHORITY_COMPROMISE</p>
         </td>
     </tr>
     <tr>
         <td><code>revocationDetails.revocationTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time at which this Certificate was revoked.</p>
+            <p>Optional. The time at which this Certificate was revoked.</p>
         </td>
     </tr>
     <tr>
