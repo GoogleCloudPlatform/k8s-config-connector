@@ -147,6 +147,9 @@ func (m *ServeMux) addMetadata(ctx context.Context, r *http.Request) metadata.MD
 	if v != nil {
 		md["path"] = v.(string)
 	}
+	if presentFields := r.Context().Value("present-fields"); presentFields != nil {
+		md["x-gcp-present-fields"] = presentFields.(string)
+	}
 	return metadata.New(md)
 }
 
