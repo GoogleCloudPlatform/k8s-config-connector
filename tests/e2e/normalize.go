@@ -1124,6 +1124,15 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+		for _, event := range events {
+			for i, ua := range event.Request.Header["User-Agent"] {
+				if !strings.HasSuffix(ua, "(mockgcp)") {
+					event.Request.Header["User-Agent"][i] = ua + " (mockgcp)"
+				}
+			}
+		}
+	}
 	// Remove header in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
