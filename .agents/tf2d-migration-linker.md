@@ -1,7 +1,7 @@
 ---
 name: Migration Issue Linker
 description: Identifies related TF-to-Direct migration issues for the same resource and links them together via comments to ensure a clear context chain.
-schedule: "@daily"
+schedule: "never"
 ---
 
 <!--
