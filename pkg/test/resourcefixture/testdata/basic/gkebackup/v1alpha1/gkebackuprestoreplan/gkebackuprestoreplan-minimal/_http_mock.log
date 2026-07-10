@@ -1430,6 +1430,7 @@ X-Xss-Protection: 0
   "cluster": "projects/${projectId}/locations/us-central1/clusters/containercluster-minimal-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-minimal-${uniqueId}",
   "restoreConfig": {
     "allNamespaces": true,
@@ -1564,6 +1565,7 @@ X-Xss-Protection: 0
   "cluster": "projects/${projectId}/locations/us-central1/clusters/containercluster-minimal-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/restorePlans/gkebackuprestoreplan-minimal-${uniqueId}",
   "restoreConfig": {
     "allNamespaces": true,
@@ -1667,6 +1669,7 @@ X-Xss-Protection: 0
   "cluster": "projects/${projectId}/locations/us-central1/clusters/containercluster-minimal-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "test dependent backup plan",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/backupPlans/gkebackupbackupplan-minimal-${uniqueId}",
   "rpoRiskLevel": 2,
   "rpoRiskReason": "No schedule is defined. Opt in RPO schedule for better protection.",
