@@ -162,7 +162,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "ipFilter": {
     "allowAllServiceAgentAccess": true,
     "allowCrossOrgVpcs": false,
-    "mode": "Enabled",
+    "mode": "Disabled",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
         "8.8.8.8/32"
@@ -173,7 +173,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "allowedIpCidrRanges": [
           "10.0.0.0/8"
         ],
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+        "network": "projects/${projectId}/global/networks/${networkID}"
       }
     ]
   },
@@ -228,7 +228,7 @@ Vary: X-Origin
   "ipFilter": {
     "allowAllServiceAgentAccess": true,
     "allowCrossOrgVpcs": false,
-    "mode": "Enabled",
+    "mode": "Disabled",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
         "8.8.8.8/32"
@@ -239,7 +239,7 @@ Vary: X-Origin
         "allowedIpCidrRanges": [
           "10.0.0.0/8"
         ],
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+        "network": "projects/${projectId}/global/networks/${networkID}"
       }
     ]
   },
@@ -307,7 +307,7 @@ Vary: X-Origin
   "ipFilter": {
     "allowAllServiceAgentAccess": true,
     "allowCrossOrgVpcs": false,
-    "mode": "Enabled",
+    "mode": "Disabled",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
         "8.8.8.8/32"
@@ -318,7 +318,7 @@ Vary: X-Origin
         "allowedIpCidrRanges": [
           "10.0.0.0/8"
         ],
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+        "network": "projects/${projectId}/global/networks/${networkID}"
       }
     ]
   },
@@ -369,7 +369,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "ipFilter": {
     "allowAllServiceAgentAccess": false,
     "allowCrossOrgVpcs": false,
-    "mode": "Enabled",
+    "mode": "Disabled",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
         "8.8.8.8/32",
@@ -381,7 +381,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "allowedIpCidrRanges": [
           "10.0.0.0/8"
         ],
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+        "network": "projects/${projectId}/global/networks/${networkID}"
       }
     ]
   }
@@ -483,7 +483,7 @@ Vary: X-Origin
   "ipFilter": {
     "allowAllServiceAgentAccess": false,
     "allowCrossOrgVpcs": false,
-    "mode": "Enabled",
+    "mode": "Disabled",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
         "8.8.8.8/32",
@@ -495,7 +495,7 @@ Vary: X-Origin
         "allowedIpCidrRanges": [
           "10.0.0.0/8"
         ],
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+        "network": "projects/${projectId}/global/networks/${networkID}"
       }
     ]
   },
@@ -566,7 +566,7 @@ Vary: X-Origin
   "ipFilter": {
     "allowAllServiceAgentAccess": false,
     "allowCrossOrgVpcs": false,
-    "mode": "Enabled",
+    "mode": "Disabled",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
         "8.8.8.8/32",
@@ -578,7 +578,7 @@ Vary: X-Origin
         "allowedIpCidrRanges": [
           "10.0.0.0/8"
         ],
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+        "network": "projects/${projectId}/global/networks/${networkID}"
       }
     ]
   },
@@ -631,11 +631,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
+  "kind": "storage#objects"
 }
 
 ---
