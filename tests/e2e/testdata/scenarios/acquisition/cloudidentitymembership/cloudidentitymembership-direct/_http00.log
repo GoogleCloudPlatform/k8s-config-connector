@@ -62,6 +62,9 @@ X-Xss-Protection: 0
   "additionalGroupKeys": [
     {
       "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+    },
+    {
+      "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}.test-google-a.com"
     }
   ],
   "createTime": "2024-04-01T12:34:56.123456Z",

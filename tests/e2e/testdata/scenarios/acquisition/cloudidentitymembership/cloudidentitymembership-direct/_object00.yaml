@@ -31,4 +31,5 @@ status:
   observedState:
     additionalGroupKeys:
     - id: ${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}
+    - id: ${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}.test-google-a.com
   updateTime: "1970-01-01T00:00:00Z"

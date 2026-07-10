@@ -243,23 +243,21 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 			// format: gke-cluster-sample-<something>-nodepool-sample-<uniqueid>-grp
 			// or gke-cluster-sample-<something>-default-pool-<something>-grp
 			// Normalize to: gke-containercluster-abcdef-<nodepool-suffix>-grp
-			reNodePoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
-			s = reNodePoolIGM.ReplaceAllStringFunc(s, func(match string) string {
-				submatches := reNodePoolIGM.FindStringSubmatch(match)
-				return "instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
+			reGKEIGM := regexp.MustCompile(`instanceGroupManagers/gke-([a-z0-9\-]+)-grp`)
+			s = reGKEIGM.ReplaceAllStringFunc(s, func(match string) string {
+				if strings.Contains(match, "default-pool") {
+					return "instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+				}
+				return "instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp"
 			})
 
-			reNodePoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
-			s = reNodePoolIG.ReplaceAllStringFunc(s, func(match string) string {
-				submatches := reNodePoolIG.FindStringSubmatch(match)
-				return "instanceGroups/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
+			reGKEIG := regexp.MustCompile(`instanceGroups/gke-([a-z0-9\-]+)-grp`)
+			s = reGKEIG.ReplaceAllStringFunc(s, func(match string) string {
+				if strings.Contains(match, "default-pool") {
+					return "instanceGroups/gke-containercluster-abcdef-default-pool-grp"
+				}
+				return "instanceGroups/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp"
 			})
-
-			reDefaultPoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-default-pool(-[a-z0-9]+)?-grp`)
-			s = reDefaultPoolIGM.ReplaceAllString(s, "instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp")
-
-			reDefaultPoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-default-pool(-[a-z0-9]+)?-grp`)
-			s = reDefaultPoolIG.ReplaceAllString(s, "instanceGroups/gke-containercluster-abcdef-default-pool-grp")
 
 			// Normalize GKE versions (e.g. 1.35.5-gke.1163012 -> 1.30.5-gke.1014001)
 			reGKEVersion := regexp.MustCompile(`\b\d+\.\d+\.\d+-gke\.\d+\b`)
