@@ -146,6 +146,17 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			}
 			return
 		}
+		if error.Code == http.StatusForbidden {
+			error.Status = ""
+			error.Errors = []httpmux.ErrorResponseDetails{
+				{
+					Domain:  "global",
+					Reason:  "forbidden",
+					Message: error.Message,
+				},
+			}
+			return
+		}
 	}
 
 	return httpmux.FilterBodyOn204(mux)

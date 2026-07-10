@@ -32,6 +32,17 @@ type objects struct {
 func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (*pb.Objects, error) {
 	// A stub implementation, just to support deletion (for now)
 
+	name, err := s.parseBucketName("buckets/" + req.GetBucket())
+	if err == nil {
+		fqn := name.String()
+		obj := &pb.Bucket{}
+		if err := s.storage.Get(ctx, fqn, obj); err == nil {
+			if obj.GetIpFilter().GetMode() == "Enabled" {
+				return nil, status.Errorf(codes.PermissionDenied, "There is an IP filtering condition that is preventing access to the resource.")
+			}
+		}
+	}
+
 	httpmux.SetExpiresHeader(ctx, time.Now())
 
 	ret := &pb.Objects{}
