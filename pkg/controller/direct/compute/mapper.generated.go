@@ -28,6 +28,7 @@ import (
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krmnetworkconnectivitynetworkconnectivityrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -5286,7 +5287,9 @@ func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.PrivateIPV6GoogleAccess = in.PrivateIpv6GoogleAccess
 	out.Purpose = in.Purpose
 	out.Region = in.Region
-	// MISSING: ReservedInternalRange
+	if in.GetReservedInternalRange() != "" {
+		out.ReservedInternalRangeRef = &krmnetworkconnectivitynetworkconnectivityrefs.NetworkConnectivityInternalRangeRef{External: in.GetReservedInternalRange()}
+	}
 	out.Role = in.Role
 	out.SecondaryIPRanges = direct.Slice_FromProto(mapCtx, in.SecondaryIpRanges, SubnetworkSecondaryRange_v1beta1_FromProto)
 	// MISSING: SelfLink
@@ -5325,7 +5328,9 @@ func ComputeSubnetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	out.PrivateIpv6GoogleAccess = in.PrivateIPV6GoogleAccess
 	out.Purpose = in.Purpose
 	out.Region = in.Region
-	// MISSING: ReservedInternalRange
+	if in.ReservedInternalRangeRef != nil {
+		out.ReservedInternalRange = &in.ReservedInternalRangeRef.External
+	}
 	out.Role = in.Role
 	out.SecondaryIpRanges = direct.Slice_ToProto(mapCtx, in.SecondaryIPRanges, SubnetworkSecondaryRange_v1beta1_ToProto)
 	// MISSING: SelfLink
@@ -8460,7 +8465,9 @@ func SubnetworkSecondaryRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krm.SubnetworkSecondaryRange{}
 	out.IPCIDRRange = in.IpCidrRange
 	out.RangeName = in.RangeName
-	// MISSING: ReservedInternalRange
+	if in.GetReservedInternalRange() != "" {
+		out.ReservedInternalRangeRef = &krmnetworkconnectivitynetworkconnectivityrefs.NetworkConnectivityInternalRangeRef{External: in.GetReservedInternalRange()}
+	}
 	return out
 }
 func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkSecondaryRange) *pb.SubnetworkSecondaryRange {
@@ -8470,7 +8477,9 @@ func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.SubnetworkSecondaryRange{}
 	out.IpCidrRange = in.IPCIDRRange
 	out.RangeName = in.RangeName
-	// MISSING: ReservedInternalRange
+	if in.ReservedInternalRangeRef != nil {
+		out.ReservedInternalRange = &in.ReservedInternalRangeRef.External
+	}
 	return out
 }
 

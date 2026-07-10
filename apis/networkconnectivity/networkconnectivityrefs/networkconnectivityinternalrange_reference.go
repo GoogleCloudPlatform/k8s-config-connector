@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package networkconnectivityrefs
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -25,69 +27,85 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &InternalRangeRef{}
+var NetworkConnectivityInternalRangeGVK = schema.GroupVersionKind{
+	Group:   "networkconnectivity.cnrm.cloud.google.com",
+	Version: "v1alpha1",
+	Kind:    "NetworkConnectivityInternalRange",
+}
 
-// InternalRangeRef is a reference to a NetworkConnectivityInternalRange.
-type InternalRangeRef struct {
+var (
+	_ refs.Ref         = &NetworkConnectivityInternalRangeRef{}
+	_ refs.ExternalRef = &NetworkConnectivityInternalRangeRef{}
+)
+
+type NetworkConnectivityInternalRangeRef struct {
 	// A reference to an externally managed NetworkConnectivityInternalRange resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/internalRanges/{{internalrangeID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a NetworkConnectivityInternalRange resource.
+	// The name field of a NetworkConnectivityInternalRange resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a NetworkConnectivityInternalRange resource.
+	// The namespace field of a NetworkConnectivityInternalRange resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&InternalRangeRef{}, &NetworkConnectivityInternalRange{})
+	kccscheme.RegisterRef(&NetworkConnectivityInternalRangeRef{}, NetworkConnectivityInternalRangeGVK)
 }
 
-func (r *InternalRangeRef) GetGVK() schema.GroupVersionKind {
+func (r *NetworkConnectivityInternalRangeRef) GetGVK() schema.GroupVersionKind {
 	return NetworkConnectivityInternalRangeGVK
 }
 
-func (r *InternalRangeRef) GetNamespacedName() types.NamespacedName {
+func (r *NetworkConnectivityInternalRangeRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *InternalRangeRef) GetExternal() string {
+func (r *NetworkConnectivityInternalRangeRef) GetExternal() string {
 	return r.External
 }
 
-func (r *InternalRangeRef) SetExternal(ref string) {
+func (r *NetworkConnectivityInternalRangeRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *InternalRangeRef) ValidateExternal(ref string) error {
-	id := &InternalRangeIdentity{}
+func (r *NetworkConnectivityInternalRangeRef) ValidateExternal(ref string) error {
+	id := &NetworkConnectivityInternalRangeIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *InternalRangeRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &InternalRangeIdentity{}
+func (r *NetworkConnectivityInternalRangeRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &NetworkConnectivityInternalRangeIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}
 	return id, nil
 }
 
-func (r *InternalRangeRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *NetworkConnectivityInternalRangeRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromInternalRangeSpec(ctx, reader, u)
+		resourceID, err := refs.GetResourceID(u)
 		if err != nil {
 			return ""
 		}
-		return identity.String()
+		location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+		if location == "" {
+			return ""
+		}
+		projectID, err := refs.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		return fmt.Sprintf("projects/%s/locations/%s/internalRanges/%s", projectID, location, resourceID)
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

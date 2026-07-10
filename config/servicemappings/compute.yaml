@@ -2412,6 +2412,20 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: reservedInternalRangeRef
+          tfField: reserved_internal_range
+          gvk:
+            kind: NetworkConnectivityInternalRange
+            version: v1alpha1
+            group: networkconnectivity.cnrm.cloud.google.com
+          targetField: externalRef
+        - key: secondaryIpRange.reservedInternalRangeRef
+          tfField: secondary_ip_range.reserved_internal_range
+          gvk:
+            kind: NetworkConnectivityInternalRange
+            version: v1alpha1
+            group: networkconnectivity.cnrm.cloud.google.com
+          targetField: externalRef
       containers:
         - type: project
           tfField: project

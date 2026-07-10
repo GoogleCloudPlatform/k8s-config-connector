@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1beta1"
 	apisrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
@@ -7767,6 +7768,11 @@ func (in *ComputeSubnetworkSpec) DeepCopyInto(out *ComputeSubnetworkSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ReservedInternalRangeRef != nil {
+		in, out := &in.ReservedInternalRangeRef, &out.ReservedInternalRangeRef
+		*out = new(networkconnectivityrefs.NetworkConnectivityInternalRangeRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -13834,6 +13840,11 @@ func (in *SubnetworkSecondaryRange) DeepCopyInto(out *SubnetworkSecondaryRange) 
 	if in.RangeName != nil {
 		in, out := &in.RangeName, &out.RangeName
 		*out = new(string)
+		**out = **in
+	}
+	if in.ReservedInternalRangeRef != nil {
+		in, out := &in.ReservedInternalRangeRef, &out.ReservedInternalRangeRef
+		*out = new(networkconnectivityrefs.NetworkConnectivityInternalRangeRef)
 		**out = **in
 	}
 }

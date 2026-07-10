@@ -12,23 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package networkconnectivityrefs_test
 
 import (
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 )
 
-func TestInternalRangeIdentity_FromExternal(t *testing.T) {
+func TestNetworkConnectivityInternalRangeIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *InternalRangeIdentity
+		want    *networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/locations/us-central1/internalRanges/my-internal-range",
-			want: &InternalRangeIdentity{
+			want: &networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity{
 				Project:       "my-project",
 				Location:      "us-central1",
 				InternalRange: "my-internal-range",
@@ -42,7 +44,7 @@ func TestInternalRangeIdentity_FromExternal(t *testing.T) {
 		{
 			name: "full url",
 			ref:  "https://networkconnectivity.googleapis.com/projects/my-project/locations/us-central1/internalRanges/my-internal-range",
-			want: &InternalRangeIdentity{
+			want: &networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity{
 				Project:       "my-project",
 				Location:      "us-central1",
 				InternalRange: "my-internal-range",
@@ -52,7 +54,7 @@ func TestInternalRangeIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &InternalRangeIdentity{}
+			i := &networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)

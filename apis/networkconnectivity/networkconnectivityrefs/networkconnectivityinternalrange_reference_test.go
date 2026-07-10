@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1_test
+package networkconnectivityrefs_test
 
 import (
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 )
 
-func TestInternalRangeRef_ValidateExternal(t *testing.T) {
+func TestNetworkConnectivityInternalRangeRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
@@ -55,9 +55,9 @@ func TestInternalRangeRef_ValidateExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &v1alpha1.InternalRangeRef{}
+			r := &networkconnectivityrefs.NetworkConnectivityInternalRangeRef{}
 			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
-				t.Errorf("InternalRangeRef.ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NetworkConnectivityInternalRangeRef.ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

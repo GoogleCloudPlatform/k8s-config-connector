@@ -128,6 +128,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslcertificate/re
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslpolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslpolicy/computesslpolicy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork/computesubnetwork
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork/reservedinternalrange
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetgrpcproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/globaltargethttpproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/regionaltargethttpproxy

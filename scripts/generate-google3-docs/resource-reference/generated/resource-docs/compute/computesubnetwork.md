@@ -106,11 +106,19 @@ privateIpGoogleAccess: boolean
 privateIpv6GoogleAccess: string
 purpose: string
 region: string
+reservedInternalRangeRef:
+  external: string
+  name: string
+  namespace: string
 resourceID: string
 role: string
 secondaryIpRange:
 - ipCidrRange: string
   rangeName: string
+  reservedInternalRangeRef:
+    external: string
+    name: string
+    namespace: string
 stackType: string
 ```
 
@@ -134,11 +142,11 @@ stackType: string
     <tr>
         <td>
             <p><code>ipCidrRange</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported.</p>
+            <p>The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. Field is optional when 'reservedInternalRangeRef' is defined, otherwise required.</p>
         </td>
     </tr>
     <tr>
@@ -303,6 +311,46 @@ stackType: string
     </tr>
     <tr>
         <td>
+            <p><code>reservedInternalRangeRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Immutable. The reference to the reserved internal range.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservedInternalRangeRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed NetworkConnectivityInternalRange resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/internalRanges/{{internalrangeID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservedInternalRangeRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name field of a NetworkConnectivityInternalRange resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservedInternalRangeRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace field of a NetworkConnectivityInternalRange resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>resourceID</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -344,11 +392,11 @@ stackType: string
     <tr>
         <td>
             <p><code>secondaryIpRange[].ipCidrRange</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. The range can be any range listed in the Valid ranges list.</p>
+            <p>The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. Field is optional when 'reservedInternalRangeRef' is defined, otherwise required. The range can be any range listed in the Valid ranges list.</p>
         </td>
     </tr>
     <tr>
@@ -359,6 +407,46 @@ stackType: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The name associated with this subnetwork secondary range, used when adding an alias IP range to a VM instance. The name must be 1-63 characters long, and comply with RFC1035. The name must be unique within the subnetwork.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryIpRange[].reservedInternalRangeRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The reference to the reserved internal range.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryIpRange[].reservedInternalRangeRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed NetworkConnectivityInternalRange resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/internalRanges/{{internalrangeID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryIpRange[].reservedInternalRangeRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name field of a NetworkConnectivityInternalRange resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryIpRange[].reservedInternalRangeRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace field of a NetworkConnectivityInternalRange resource.</p>
         </td>
     </tr>
     <tr>
