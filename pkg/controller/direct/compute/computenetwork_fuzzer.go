@@ -40,6 +40,7 @@ func computeNetworkFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".internal_ipv6_range")
 	f.SpecField(".mtu")
 	f.SpecField(".network_firewall_policy_enforcement_order")
+	f.SpecField(".network_profile")
 	f.SpecField(".routing_config.routing_mode")
 
 	// Status fields
@@ -57,7 +58,6 @@ func computeNetworkFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".firewall_policy")
 	f.Unimplemented_NotYetTriaged(".id")
 	f.Unimplemented_NotYetTriaged(".kind")
-	f.Unimplemented_NotYetTriaged(".network_profile")
 	f.Unimplemented_NotYetTriaged(".params")
 	f.Unimplemented_NotYetTriaged(".peerings")
 	f.Unimplemented_NotYetTriaged(".self_link_with_id")

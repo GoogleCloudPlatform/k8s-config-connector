@@ -4115,6 +4115,11 @@ func (in *ComputeNetworkSpec) DeepCopyInto(out *ComputeNetworkSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NetworkProfile != nil {
+		in, out := &in.NetworkProfile, &out.NetworkProfile
+		*out = new(string)
+		**out = **in
+	}
 	if in.RoutingMode != nil {
 		in, out := &in.RoutingMode, &out.RoutingMode
 		*out = new(string)

@@ -31,6 +31,11 @@ This skill guides an automated agent through adding a missing field to a GCP res
 4. **Run `generate.sh`**
    - Run the code generator script (e.g., `./apis/group/vX/generate.sh` or the global `dev/tasks/generate-types-and-mappers`) to regenerate CRDs and other boilerplate.
 
+4b. **Verify Fuzzer with Focused Tests**
+   - To quickly verify that your mappers and fuzzer mapping logic are correct and round-trip successfully, run focused fuzzer tests using the `FOCUS` environment variable:
+     `FOCUS=MyResourceKind go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`
+     *(For example: `FOCUS=ComputeNetwork go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`)*
+
 5. **Create a Test**
    - Find existing tests under `pkg/test/resourcefixture/testdata/basic/group/version/kind/`.
    - If the new field can be added to an existing test without conflict, do so.

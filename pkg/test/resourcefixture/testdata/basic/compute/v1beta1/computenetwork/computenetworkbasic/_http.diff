@@ -8,20 +8,49 @@
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks
 34a35
 >   "enableUlaInternalIpv6": false,
-36d36
+36c37
 <   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-69c69,70
+---
+>   "networkProfile": "projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon",
+69c70,71
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-99c100
+99c101,197
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-129c130,195
-< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
----
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "autoCreateSubnetworks": false,
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "id": "000000000000000000000",
+>   "kind": "compute#network",
+>   "name": "${networkID}",
+>   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+>   "networkProfile": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon",
+>   "routingConfig": {
+>     "bgpBestPathSelectionMode": "LEGACY",
+>     "routingMode": "REGIONAL"
+>   },
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+>   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+> }
+> 
+> ---
+> 
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
 > Content-Type: application/json
 > 
@@ -87,27 +116,18 @@
 > 
 > ---
 > 
-> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-133d198
-<   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-166c231,232
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
----
-> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
-> Content-Type: application/json
-196c262
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
----
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-211a278
+114a213
 >   "enableUlaInternalIpv6": true,
-212a280
->   "internalIpv6Range": "fd20:c69:8a20:0:0:0:0:0/48",
-226c294
+115a215
+>   "internalIpv6Range": "fd20:eb5:88a:0:0:0:0:0/48",
+118a219
+>   "networkProfile": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon",
+129c230
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-256c324,325
+159c260,261
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
