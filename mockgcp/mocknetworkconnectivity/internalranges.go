@@ -137,7 +137,7 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 				obj.TargetCidrRange = patch.TargetCidrRange
 			case "usage":
 				obj.Usage = patch.Usage
-			case "allocation_options":
+			case "allocation_options", "allocationOptions":
 				obj.AllocationOptions = patch.AllocationOptions
 			default:
 				log.Info("unsupported update_mask", "req", req)

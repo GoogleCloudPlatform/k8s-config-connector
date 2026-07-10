@@ -208,6 +208,10 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 		report.AddField("peering", a.actual.Peering, resource.Peering)
 		paths = append(paths, "peering")
 	}
+	if desired.Spec.AllocationOptions != nil && !reflect.DeepEqual(resource.AllocationOptions, a.actual.AllocationOptions) {
+		report.AddField("allocation_options", a.actual.AllocationOptions, resource.AllocationOptions)
+		paths = append(paths, "allocationOptions")
+	}
 	if desired.Spec.PrefixLength != nil && !reflect.DeepEqual(resource.PrefixLength, a.actual.PrefixLength) {
 		report.AddField("prefix_length", a.actual.PrefixLength, resource.PrefixLength)
 		paths = append(paths, "prefixLength")

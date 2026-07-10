@@ -252,7 +252,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}?alt=json&prettyPrint=false&updateMask=description%2CprefixLength
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}?alt=json&prettyPrint=false&updateMask=description%2CallocationOptions%2CprefixLength
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -318,7 +318,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
     "allocationOptions": {
       "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
-      "firstAvailableRangesLookupSize": 3
+      "firstAvailableRangesLookupSize": 5
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description with allocation options",
@@ -347,7 +347,7 @@ X-Xss-Protection: 0
 {
   "allocationOptions": {
     "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
-    "firstAvailableRangesLookupSize": 3
+    "firstAvailableRangesLookupSize": 5
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description with allocation options",
