@@ -368,6 +368,7 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 	}
 
 	maskedActual = populateDefaults(maskedActual)
+	desired = proto.CloneOf(desired)
 
 	// If desired leaves immutable / optional default fields unspecified, inherit existing actual values to avoid false diffs on immutable/default fields.
 	if maskedActual != nil {
@@ -388,7 +389,7 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 		}
 	}
 
-	desired = populateDefaults(proto.CloneOf(desired))
+	desired = populateDefaults(desired)
 
 	// If CrossInstanceReplicationConfig is unspecified, use the actual value as default
 	if desired.CrossInstanceReplicationConfig == nil {
