@@ -353,7 +353,7 @@ spec:
                 properties:
                   clusterRegion:
                     description: Output only. The region where this cluster runs.
-                      For EKS clusters, this is a AWS region. For AKS clusters, this
+                      For EKS clusters, this is an AWS region. For AKS clusters, this
                       is an Azure region.
                     type: string
                   createTime:

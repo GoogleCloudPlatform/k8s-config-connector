@@ -137,7 +137,7 @@ type GKEMulticloudAttachedClusterStatus struct {
 // +kcc:observedstate:proto=google.cloud.gkemulticloud.v1.AttachedCluster
 type GKEMulticloudAttachedClusterObservedState struct {
 	// Output only. The region where this cluster runs.
-	//  For EKS clusters, this is a AWS region. For AKS clusters,
+	//  For EKS clusters, this is an AWS region. For AKS clusters,
 	//  this is an Azure region.
 	// +optional
 	ClusterRegion *string `json:"clusterRegion,omitempty"`
