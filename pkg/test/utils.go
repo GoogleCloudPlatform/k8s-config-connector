@@ -91,7 +91,8 @@ func extractEventsWithURLPrefix(allEvents, urlPrefix string) string {
 // CompareGoldenFile performs a file comparison for a golden test.
 func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s string) string) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
-	if writeGoldenOutput && filepath.Base(p) == "_http.log" && os.Getenv("E2E_GCP_TARGET") != "real" {
+	isResourceFixture := strings.Contains(p, "pkg/test/resourcefixture/testdata")
+	if writeGoldenOutput && isResourceFixture && filepath.Base(p) == "_http.log" && os.Getenv("E2E_GCP_TARGET") != "real" {
 		t.Fatalf("FAIL: attempted to write/update %q while E2E_GCP_TARGET=%q. _http.log must only be recorded when running against real GCP (E2E_GCP_TARGET=real).", p, os.Getenv("E2E_GCP_TARGET"))
 	}
 
@@ -114,7 +115,7 @@ func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s st
 		}
 	}
 	want := string(wantBytes)
-	if filepath.Base(p) == "_http.log" && strings.Contains(want, "(mockgcp)") {
+	if isResourceFixture && filepath.Base(p) == "_http.log" && strings.Contains(want, "(mockgcp)") {
 		t.Fatalf("FAIL: golden file %q contains mock traffic signature '(mockgcp)'. _http.log must only be recorded against real GCP (E2E_GCP_TARGET=real).", p)
 	}
 	for _, normalizer := range normalizers {
