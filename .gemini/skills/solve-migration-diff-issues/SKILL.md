@@ -3,10 +3,10 @@
 This skill guides an automated agent through diagnosing, explaining, and fixing "takeover diff" issues when migrating a Kubernetes controller in KCC from Terraform/DCL to the Direct approach. 
 
 The migration test (`TestMigrationToDirect`) executes in four distinct phases:
-* **Phase 1 (Legacy Create):** Provisions the initial resource using the legacy (TF or DCL) controller, recording API traffic to `_http_migration_phase1.log`.
-* **Phase 2 (Legacy Re-reconcile):** Applies a no-op annotation (`re-reconcile-legacy-v1`) while the legacy controller is still active to test re-reconciliation behavior and record any unexpected legacy traffic or diffs to `_http_migration_phase2.log`. (Note: if the legacy controller makes no API requests during re-reconciliation, `_http_migration_phase2.log` will not be created or will remain empty).
-* **Phase 3 (Direct Takeover):** Applies the `reconciler: direct` annotation to force the Direct controller to adopt the resource. During this takeover, the Direct controller must adopt the resource with a clean **0-write no-op reconciliation**, recording read-only verification traffic to `_http_migration_phase3.log`. Any diff detected during this phase is considered a bug.
-* **Phase 4 (Direct Re-reconcile):** Applies another no-op annotation (`re-reconcile-direct-v1`) while the Direct controller is active to verify re-reconciliation behavior. The Direct controller must perform a clean **0-write no-op reconciliation**, recording read-only verification traffic to `_http_migration_phase4.log`.
+* **Phase 1 (Legacy Create):** Provisions the initial resource using the legacy (TF or DCL) controller, recording API traffic to `_http_migration_phase1_legacy_create.log`.
+* **Phase 2 (Legacy Re-reconcile):** Applies a no-op annotation (`re-reconcile-legacy-v1`) while the legacy controller is still active to test re-reconciliation behavior and record any unexpected legacy traffic or diffs to `_http_migration_phase2_legacy_re-reconciliation.log`. (Note: if the legacy controller makes no API requests during re-reconciliation, `_http_migration_phase2_legacy_re-reconciliation.log` will not be created or will remain empty).
+* **Phase 3 (Direct Takeover):** Applies the `reconciler: direct` annotation to force the Direct controller to adopt the resource. During this takeover, the Direct controller must adopt the resource with a clean **0-write no-op reconciliation**, recording read-only verification traffic to `_http_migration_phase3_direct_takeover.log`. Any diff detected during this phase is considered a bug.
+* **Phase 4 (Direct Re-reconcile):** Applies another no-op annotation (`re-reconcile-direct-v1`) while the Direct controller is active to verify re-reconciliation behavior. The Direct controller must perform a clean **0-write no-op reconciliation**, recording read-only verification traffic to `_http_migration_phase4_direct_re-reconciliation.log`.
 
 ---
 
