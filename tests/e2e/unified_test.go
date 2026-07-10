@@ -428,13 +428,6 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 			oldKey = "_http_old_controller.log"
 			newKey = "_http.log"
 			diffKey = "_http.diff"
-		} else {
-			mockPath := filepath.Join(dir, newKey)
-			if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-				oldKey = "_http_old_controller.log"
-				newKey = "_http.log"
-				diffKey = "_http.diff"
-			}
 		}
 
 		oldPath := filepath.Join(dir, oldKey)
@@ -870,14 +863,6 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 							key = "_http.log"
 							if options.FallbackToOldController {
 								key = "_http_old_controller.log"
-							}
-						} else {
-							mockPath := filepath.Join(fixture.AbsoluteSourceDir, key)
-							if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-								key = "_http.log"
-								if options.FallbackToOldController {
-									key = "_http_old_controller.log"
-								}
 							}
 						}
 						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, key)
