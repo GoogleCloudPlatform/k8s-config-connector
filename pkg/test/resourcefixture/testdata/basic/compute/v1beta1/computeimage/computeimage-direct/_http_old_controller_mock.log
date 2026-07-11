@@ -444,6 +444,42 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "diskSizeGb": "500",
+  "id": "000000000000000000000",
+  "kind": "compute#image",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one"
+  },
+  "name": "${imageID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+  "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+  "sourceDiskId": "${diskID}",
+  "sourceType": "RAW",
+  "status": "READY",
+  "storageLocations": [
+    "us"
+  ]
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
 Content-Type: application/json
 
