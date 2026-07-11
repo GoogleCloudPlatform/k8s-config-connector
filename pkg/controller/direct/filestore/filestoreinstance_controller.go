@@ -17,7 +17,9 @@ package filestore
 import (
 	"context"
 	"fmt"
+	"maps"
 	"sort"
+	"strings"
 
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -174,6 +176,24 @@ func (a *filestoreInstanceAdapter) buildDesired(ctx context.Context, u *unstruct
 		return nil, mapCtx.Err()
 	}
 
+	// Apply default values from DCL schema
+	for _, fs := range desired.FileShares {
+		for _, opt := range fs.NfsExportOptions {
+			if opt.AccessMode == pb.NfsExportOptions_ACCESS_MODE_UNSPECIFIED {
+				opt.AccessMode = pb.NfsExportOptions_READ_WRITE
+			}
+			if opt.SquashMode == pb.NfsExportOptions_SQUASH_MODE_UNSPECIFIED {
+				opt.SquashMode = pb.NfsExportOptions_NO_ROOT_SQUASH
+			}
+		}
+	}
+
+	for _, net := range desired.Networks {
+		if len(net.Modes) == 0 {
+			net.Modes = []pb.NetworkConfig_AddressMode{pb.NetworkConfig_MODE_IPV4}
+		}
+	}
+
 	labels := label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 	if labels == nil {
 		labels = make(map[string]string)
@@ -321,12 +341,7 @@ func fillUnsetFields(desired, maskedActual *pb.Instance) {
 		desired.Description = maskedActual.Description
 	}
 	if desired.Labels == nil && maskedActual.Labels != nil {
-		desired.Labels = make(map[string]string)
-	}
-	for k, v := range maskedActual.Labels {
-		if _, exists := desired.Labels[k]; !exists {
-			desired.Labels[k] = v
-		}
+		desired.Labels = maps.Clone(maskedActual.Labels)
 	}
 	for _, df := range desired.FileShares {
 		for _, af := range maskedActual.FileShares {
@@ -343,21 +358,34 @@ func fillUnsetFields(desired, maskedActual *pb.Instance) {
 			}
 		}
 	}
-	for i, dn := range desired.Networks {
-		if i < len(maskedActual.Networks) {
-			an := maskedActual.Networks[i]
-			if dn.Network == "" {
-				dn.Network = an.Network
-			}
-			if len(dn.Modes) == 0 {
-				dn.Modes = an.Modes
-			}
-			if dn.ReservedIpRange == "" {
-				dn.ReservedIpRange = an.ReservedIpRange
-			}
-			if dn.ConnectMode == pb.NetworkConfig_CONNECT_MODE_UNSPECIFIED {
-				dn.ConnectMode = an.ConnectMode
+	for _, dn := range desired.Networks {
+		for _, an := range maskedActual.Networks {
+			if isSameNetwork(dn.Network, an.Network) {
+				an.Network = dn.Network
+
+				if len(dn.Modes) == 0 {
+					dn.Modes = an.Modes
+				}
+				if dn.ReservedIpRange == "" {
+					dn.ReservedIpRange = an.ReservedIpRange
+				}
+				if dn.ConnectMode == pb.NetworkConfig_CONNECT_MODE_UNSPECIFIED {
+					dn.ConnectMode = an.ConnectMode
+				}
 			}
 		}
 	}
+}
+
+func isSameNetwork(a, b string) bool {
+	if a == b {
+		return true
+	}
+	if a == "" || b == "" {
+		return false
+	}
+	if strings.HasSuffix(a, "/"+b) || strings.HasSuffix(b, "/"+a) {
+		return true
+	}
+	return false
 }
