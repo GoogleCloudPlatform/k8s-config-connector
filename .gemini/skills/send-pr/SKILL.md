@@ -1,17 +1,27 @@
 ---
 name: send-pr
-description: Provides tools and instructions for sending Pull Requests (PRs), particularly from automated agents like codebot-robot. Use this skill when you need to send or update a PR, format code before pushing, or interact with github via the `gh` tool.
+description: CRITICAL: MUST be used whenever sending a PR, updating an existing PR, or pushing any commit to a remote branch. Provides instructions and pre-push checks (`dev/tasks/validate-and-push`) before pushing or interacting with GitHub via `gh`.
 ---
 
-# Send PR
+# Send PR & Safe Remote Push
 
 ## Overview
 
-This skill simplifies the process of creating and updating Pull Requests (PRs) in the `k8s-config-connector` repository. It provides a standard script that handles formatting checks, git pushing, and the `gh` tool interaction to create or edit PRs safely.
+This skill mandates strict pre-push presubmit validation (`dev/tasks/validate-and-push`) whenever creating or updating a Pull Request (PR) or pushing any commit to a remote branch in `k8s-config-connector`.
 
-## Workflow: Creating or Updating a PR
+## Workflow: Automated Git Hooks & Pre-Push Presubmit Checks
 
-When you are ready to send your changes as a Pull Request, use the provided `send-pr.sh` script.
+To ensure that even local terminal sessions running direct `git push` commands are protected against unvalidated pushes, configure repository git hooks once by running:
+```bash
+./dev/tasks/install-git-hooks   # or: make setup-hooks
+```
+Once installed, Git's `pre-push` hook (`dev/git-hooks/pre-push`) automatically intercepts any `git push` and runs canonical pre-push presubmits (`make fmt`, `go vet ./...`, `validate-generated-files`, and `unit-tests`).
+
+Alternatively, or in environments where hooks are not configured, explicitly push via the automated helper script:
+```bash
+./dev/tasks/validate-and-push origin <branch-name>
+```
+`validate-and-push` sequentially runs all presubmits and will only execute `git push` if all checks exit cleanly (`0`).
 
 1. **Write the PR Body**:
    Create a temporary markdown file containing the body/description of your PR. Make sure to reference the issue you are solving (e.g., `Fixes #1234`).
