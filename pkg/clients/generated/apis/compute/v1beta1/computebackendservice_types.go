@@ -224,7 +224,29 @@ type BackendserviceConnectTimeout struct {
 }
 
 type BackendserviceConnectionTrackingPolicy struct {
-	/* Specifies connection persistence when backends are unhealthy. The default value is DEFAULT_FOR_PROTOCOL. If set to DEFAULT_FOR_PROTOCOL, the existing connections persist on unhealthy backends only for connection-oriented protocols (TCP and SCTP) and only if the Tracking Mode is PER_CONNECTION (default tracking mode) or the Session Affinity is configured for 5-tuple. They do not persist for UDP. If set to NEVER_PERSIST, after a backend becomes unhealthy, the existing connections on the unhealthy backend are never persisted on the unhealthy backend. They are always diverted to newly selected healthy backends (unless all backends are unhealthy). If set to ALWAYS_PERSIST, existing connections always persist on unhealthy backends regardless of protocol and session affinity. It is generally not recommended to use this mode overriding the default. For more details, see [Connection Persistence for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence) and [Connection Persistence for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#connection-persistence). Check the ConnectionPersistenceOnUnhealthyBackends enum for the list of possible values. */
+	/* Specifies connection persistence when backends are unhealthy. The default
+	value is DEFAULT_FOR_PROTOCOL.
+
+	If set to DEFAULT_FOR_PROTOCOL, the existing connections
+	persist on unhealthy backends only for connection-oriented protocols
+	(TCP and SCTP) and only if the Tracking Mode isPER_CONNECTION (default tracking mode) or the Session
+	Affinity is configured for 5-tuple. They do not persist forUDP.
+
+	If set to NEVER_PERSIST, after a backend becomes unhealthy,
+	the existing connections on the unhealthy backend are never persisted on
+	the unhealthy backend. They are always diverted to newly selected healthy
+	backends (unless all backends are unhealthy).
+
+	If set to ALWAYS_PERSIST, existing connections always
+	persist on unhealthy backends regardless of protocol and session
+	affinity. It is generally not recommended to use this mode overriding the
+	default.
+
+	For more details, see [Connection Persistence for Network Load
+	Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence)
+	and [Connection Persistence for Internal TCP/UDP Load
+	Balancing](https://cloud.google.com/load-balancing/docs/internal#connection-persistence).
+	Check the ConnectionPersistenceOnUnhealthyBackends enum for the list of possible values. */
 	// +optional
 	ConnectionPersistenceOnUnhealthyBackends *string `json:"connectionPersistenceOnUnhealthyBackends,omitempty"`
 
@@ -232,11 +254,36 @@ type BackendserviceConnectionTrackingPolicy struct {
 	// +optional
 	EnableStrongAffinity *bool `json:"enableStrongAffinity,omitempty"`
 
-	/* Specifies how long to keep a Connection Tracking entry while there is no matching traffic (in seconds). For internal passthrough Network Load Balancers: - The minimum (default) is 10 minutes and the maximum is 16 hours. - It can be set only if Connection Tracking is less than 5-tuple (i.e. Session Affinity is CLIENT_IP_NO_DESTINATION, CLIENT_IP or CLIENT_IP_PROTO, and Tracking Mode is PER_SESSION). For external passthrough Network Load Balancers the default is 60 seconds. This option is not available publicly. */
+	/* Specifies how long to keep a Connection Tracking entry while there is no
+	matching traffic (in seconds).
+
+	For internal passthrough Network Load Balancers:
+
+	- The minimum (default) is 10 minutes and the maximum is 16 hours.
+	- It can be set only if Connection Tracking is less than 5-tuple
+	(i.e. Session Affinity is CLIENT_IP_NO_DESTINATION,CLIENT_IP or CLIENT_IP_PROTO, and Tracking
+	Mode is PER_SESSION).
+
+	For external passthrough Network Load Balancers the default is 60
+	seconds. This option is not available publicly. */
 	// +optional
 	IdleTimeoutSec *int32 `json:"idleTimeoutSec,omitempty"`
 
-	/* Specifies the key used for connection tracking. There are two options: - PER_CONNECTION: This is the default mode. The Connection Tracking is performed as per the Connection Key (default Hash Method) for the specific protocol. - PER_SESSION: The Connection Tracking is performed as per the configured Session Affinity. It matches the configured Session Affinity. For more details, see [Tracking Mode for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode) and [Tracking Mode for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#tracking-mode). Check the TrackingMode enum for the list of possible values. */
+	/* Specifies the key used for connection tracking. There are two
+	options:
+
+	- PER_CONNECTION: This is the default mode. The Connection
+	Tracking is performed as per the Connection Key (default Hash Method) for
+	the specific protocol.
+	- PER_SESSION: The Connection Tracking is performed as per
+	the configured Session Affinity. It matches the configured Session
+	Affinity.
+
+	For more details, see [Tracking Mode for Network Load
+	Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode)
+	and [Tracking Mode for Internal TCP/UDP Load
+	Balancing](https://cloud.google.com/load-balancing/docs/internal#tracking-mode).
+	Check the TrackingMode enum for the list of possible values. */
 	// +optional
 	TrackingMode *string `json:"trackingMode,omitempty"`
 }
@@ -265,7 +312,9 @@ type BackendserviceCustomPolicy struct {
 }
 
 type BackendserviceFailoverPolicy struct {
-	/* This can be set to true only if the protocol is TCP. The default is false. */
+	/* This can be set to true if the protocol isTCP, UDP, or UNSPECIFIED.
+
+	The default is false. */
 	// +optional
 	DisableConnectionDrainOnFailover *bool `json:"disableConnectionDrainOnFailover,omitempty"`
 
@@ -273,7 +322,7 @@ type BackendserviceFailoverPolicy struct {
 	// +optional
 	DropTrafficIfUnhealthy *bool `json:"dropTrafficIfUnhealthy,omitempty"`
 
-	/* The value of the field must be in the range [0, 1]. If the value is 0, the load balancer performs a failover when the number of healthy primary VMs equals zero. For all other values, the load balancer performs a failover when the total number of healthy primary VMs is less than this ratio. For load balancers that have configurable failover: [Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview). */
+	/* The value of the field must be in the range[0, 1]. If the value is 0, the load balancer performs a failover when the number of healthy primary VMs equals zero. For all other values, the load balancer performs a failover when the total number of healthy primary VMs is less than this ratio. For load balancers that have configurable failover: [Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal/failover-overview) and [external TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview). */
 	// +optional
 	FailoverRatio *float64 `json:"failoverRatio,omitempty"`
 }
