@@ -1,17 +1,21 @@
 ---
 name: send-pr
-description: Provides tools and instructions for sending Pull Requests (PRs), particularly from automated agents like codebot-robot. Use this skill when you need to send or update a PR, format code before pushing, or interact with github via the `gh` tool.
+description: CRITICAL: MUST be used whenever sending a PR, updating an existing PR, or pushing any commit to a remote branch. Provides instructions and pre-push checks (`dev/tasks/validate-and-push`) before pushing or interacting with GitHub via `gh`.
 ---
 
-# Send PR
+# Send PR & Safe Remote Push
 
 ## Overview
 
-This skill simplifies the process of creating and updating Pull Requests (PRs) in the `k8s-config-connector` repository. It provides a standard script that handles formatting checks, git pushing, and the `gh` tool interaction to create or edit PRs safely.
+This skill mandates strict pre-push presubmit validation (`dev/tasks/validate-and-push`) whenever creating or updating a Pull Request (PR) or pushing any commit to a remote branch in `k8s-config-connector`.
 
-## Workflow: Creating or Updating a PR
+## Workflow: Updating an Existing PR or Pushing to a Remote Branch
 
-When you are ready to send your changes as a Pull Request, use the provided `send-pr.sh` script.
+Before pushing to any remote branch (`git push ...`), you MUST run the automated pre-push validation script:
+```bash
+./dev/tasks/validate-and-push origin <branch-name>
+```
+`validate-and-push` sequentially runs `make fmt`, `go vet ./...`, `./dev/ci/presubmits/validate-generated-files`, and `./dev/ci/presubmits/unit-tests`. It will only execute `git push` if all local authoritative presubmits exit cleanly (`0`).
 
 1. **Write the PR Body**:
    Create a temporary markdown file containing the body/description of your PR. Make sure to reference the issue you are solving (e.g., `Fixes #1234`).

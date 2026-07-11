@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+echo "=== Step 1/4: Running make fmt ==="
+make fmt
+
+echo "=== Step 2/4: Running go vet ./... ==="
+go vet ./...
+
+echo "=== Step 3/4: Running dev/ci/presubmits/validate-generated-files ==="
+./dev/ci/presubmits/validate-generated-files
+
+echo "=== Step 4/4: Running dev/ci/presubmits/unit-tests ==="
+./dev/ci/presubmits/unit-tests
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "ERROR: Working directory is not clean after validation steps. Uncommitted changes detected:"
+  git status --short
+  echo "Please commit or stage these changes before pushing."
+  exit 1
+fi
+
+echo "All presubmit checks passed cleanly!"
+
+if [[ $# -gt 0 ]]; then
+  echo "Pushing changes: git push $*"
+  git push "$@"
+else
+  BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+  echo "Pushing current branch ${BRANCH} to origin: git push origin ${BRANCH}"
+  git push origin "${BRANCH}"
+fi
