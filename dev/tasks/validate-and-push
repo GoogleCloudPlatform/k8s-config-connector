@@ -20,6 +20,12 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+VALIDATE_ONLY=0
+if [[ "${1:-}" == "--validate-only" || "${1:-}" == "-v" ]]; then
+  VALIDATE_ONLY=1
+  shift
+fi
+
 echo "=== Step 1/4: Running make fmt ==="
 make fmt
 
@@ -41,6 +47,11 @@ fi
 
 echo "All presubmit checks passed cleanly!"
 
+if [[ "${VALIDATE_ONLY}" == "1" ]]; then
+  echo "Validation-only mode (--validate-only) requested. Skipping git push."
+  exit 0
+fi
+
 if [[ $# -gt 0 ]]; then
   echo "Pushing changes: git push $*"
   git push "$@"
@@ -49,3 +60,4 @@ else
   echo "Pushing current branch ${BRANCH} to origin: git push origin ${BRANCH}"
   git push origin "${BRANCH}"
 fi
+

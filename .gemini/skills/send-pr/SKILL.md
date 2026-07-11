@@ -9,13 +9,19 @@ description: CRITICAL: MUST be used whenever sending a PR, updating an existing 
 
 This skill mandates strict pre-push presubmit validation (`dev/tasks/validate-and-push`) whenever creating or updating a Pull Request (PR) or pushing any commit to a remote branch in `k8s-config-connector`.
 
-## Workflow: Updating an Existing PR or Pushing to a Remote Branch
+## Workflow: Automated Git Hooks & Pre-Push Presubmit Checks
 
-Before pushing to any remote branch (`git push ...`), you MUST run the automated pre-push validation script:
+To ensure that even local terminal sessions running direct `git push` commands are protected against unvalidated pushes, configure repository git hooks once by running:
+```bash
+./dev/tasks/install-git-hooks   # or: make setup-hooks
+```
+Once installed, Git's `pre-push` hook (`dev/git-hooks/pre-push`) automatically intercepts any `git push` and runs canonical pre-push presubmits (`make fmt`, `go vet ./...`, `validate-generated-files`, and `unit-tests`).
+
+Alternatively, or in environments where hooks are not configured, explicitly push via the automated helper script:
 ```bash
 ./dev/tasks/validate-and-push origin <branch-name>
 ```
-`validate-and-push` sequentially runs `make fmt`, `go vet ./...`, `./dev/ci/presubmits/validate-generated-files`, and `./dev/ci/presubmits/unit-tests`. It will only execute `git push` if all local authoritative presubmits exit cleanly (`0`).
+`validate-and-push` sequentially runs all presubmits and will only execute `git push` if all checks exit cleanly (`0`).
 
 1. **Write the PR Body**:
    Create a temporary markdown file containing the body/description of your PR. Make sure to reference the issue you are solving (e.g., `Fixes #1234`).
