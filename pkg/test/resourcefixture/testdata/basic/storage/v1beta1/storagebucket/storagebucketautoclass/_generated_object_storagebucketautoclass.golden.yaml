@@ -12,17 +12,15 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-one
-    newkey: newval
-  name: storagebucket-sample-${uniqueId}
+  name: storagebucket-autoclass-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  lifecycleRule: []
+  autoclass:
+    enabled: true
+    terminalStorageClass: ARCHIVE
   location: US
-  resourceID: storagebucket-sample-${uniqueId}
-  softDeletePolicy:
-    retentionDurationSeconds: 604800
-  versioning:
-    enabled: false
+  resourceID: storagebucket-autoclass-${uniqueId}
+  uniformBucketLevelAccess: true
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -36,5 +34,5 @@ status:
       effectiveTime: "1970-01-01T00:00:00Z"
       retentionDurationSeconds: 604800
     storageClass: STANDARD
-  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
-  url: gs://storagebucket-sample-${uniqueId}
+  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}
+  url: gs://storagebucket-autoclass-${uniqueId}

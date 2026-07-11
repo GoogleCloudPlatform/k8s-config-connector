@@ -8,21 +8,20 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-one
-    newkey: newval
-  name: storagebucket-sample-${uniqueId}
+    label-two: value-two
+  name: storagebucket-acdisabled-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  lifecycleRule: []
-  location: US
-  resourceID: storagebucket-sample-${uniqueId}
-  softDeletePolicy:
-    retentionDurationSeconds: 604800
-  versioning:
+  autoclass:
     enabled: false
+    terminalStorageClass: NEARLINE
+  location: US
+  resourceID: storagebucket-acdisabled-${uniqueId}
+  uniformBucketLevelAccess: true
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -30,11 +29,11 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 3
+  observedGeneration: 2
   observedState:
     softDeletePolicy:
       effectiveTime: "1970-01-01T00:00:00Z"
       retentionDurationSeconds: 604800
     storageClass: STANDARD
-  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
-  url: gs://storagebucket-sample-${uniqueId}
+  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}
+  url: gs://storagebucket-acdisabled-${uniqueId}

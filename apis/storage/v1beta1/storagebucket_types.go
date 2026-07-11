@@ -105,6 +105,10 @@ type StorageBucketAutoclass struct {
 	/* While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
 	// +required
 	Enabled *bool `json:"enabled"`
+
+	/* The storage class that objects in the bucket eventually transition to if they are not read for a certain length of time. Supported values include: NEARLINE, ARCHIVE. */
+	// +optional
+	TerminalStorageClass *string `json:"terminalStorageClass,omitempty"`
 }
 
 type StorageBucketCors struct {
@@ -248,6 +252,9 @@ type StorageBucketStatus struct {
 type StorageBucketObservedState struct {
 	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
 	SoftDeletePolicy *StorageBucketSoftDeletePolicyObservedState `json:"softDeletePolicy,omitempty"`
+
+	/* The Storage Class of the bucket as observed in GCP. */
+	StorageClass *string `json:"storageClass,omitempty"`
 }
 
 type StorageBucketSoftDeletePolicyObservedState struct {

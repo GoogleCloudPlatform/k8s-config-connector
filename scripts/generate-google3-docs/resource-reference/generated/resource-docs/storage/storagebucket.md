@@ -98,6 +98,7 @@ the objects within a storage bucket before issuing the delete command.
 ```yaml
 autoclass:
   enabled: boolean
+  terminalStorageClass: string
 bucketPolicyOnly: boolean
 cors:
 - maxAgeSeconds: integer
@@ -195,6 +196,16 @@ website:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoclass.terminalStorageClass</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The storage class that objects in the bucket eventually transition to if they are not read for a certain length of time. Supported values include: NEARLINE, ARCHIVE.</p>
         </td>
     </tr>
     <tr>
@@ -946,6 +957,7 @@ observedState:
   softDeletePolicy:
     effectiveTime: string
     retentionDurationSeconds: integer
+  storageClass: string
 selfLink: string
 url: string
 ```
@@ -1039,6 +1051,13 @@ url: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.storageClass</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The Storage Class of the bucket as observed in GCP.</p>
         </td>
     </tr>
     <tr>
