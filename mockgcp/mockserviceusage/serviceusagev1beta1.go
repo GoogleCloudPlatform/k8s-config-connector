@@ -93,5 +93,9 @@ func (s *ServiceUsageV1Beta1) GenerateServiceIdentity(ctx context.Context, req *
 	op.Done = true
 	op.Result = response
 
+	if err := s.storage.Update(ctx, op.Name, op); err != nil {
+		return nil, err
+	}
+
 	return op, nil
 }
