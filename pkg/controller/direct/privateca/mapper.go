@@ -15,6 +15,8 @@
 package privateca
 
 import (
+	"fmt"
+
 	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/kmsrefs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
@@ -741,12 +743,20 @@ func PrivateCACertificateAuthorityStatus_FromProto(mapCtx *direct.MapContext, in
 	out.AccessUrls = CertificateAuthority_AccessUrls_FromProto(mapCtx, in.GetAccessUrls())
 	out.CaCertificateDescriptions = direct.Slice_FromProto(mapCtx, in.GetCaCertificateDescriptions(), CertificateDescription_FromProto)
 	if in.GetConfig() != nil {
-		out.Config = &krm.CertificateAuthority_ConfigStatus{}
-		out.Config.PublicKey = PublicKey_FromProto(mapCtx, in.GetConfig().GetPublicKey())
-		if in.GetConfig().GetX509Config() != nil {
-			out.Config.X509Config = &krm.CertificateAuthority_X509ConfigStatus{
+		var configStatus krm.CertificateAuthority_ConfigStatus
+		hasConfig := false
+		if pubKey := PublicKey_FromProto(mapCtx, in.GetConfig().GetPublicKey()); pubKey != nil {
+			configStatus.PublicKey = pubKey
+			hasConfig = true
+		}
+		if in.GetConfig().GetX509Config() != nil && len(in.GetConfig().GetX509Config().GetAiaOcspServers()) > 0 {
+			configStatus.X509Config = &krm.CertificateAuthority_X509ConfigStatus{
 				AiaOcspServers: in.GetConfig().GetX509Config().GetAiaOcspServers(),
 			}
+			hasConfig = true
+		}
+		if hasConfig {
+			out.Config = &configStatus
 		}
 	}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -1297,6 +1307,72 @@ func int32To64Slice(in []int32) []int64 {
 	return out
 }
 
+func CertificateDescription_KeyID_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription_KeyId) *krm.CertificateDescription_KeyID {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateDescription_KeyID{}
+	out.KeyId = direct.LazyPtr(in.GetKeyId())
+	return out
+}
+
+func CertificateDescription_KeyID_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription_KeyID) *pb.CertificateDescription_KeyId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription_KeyId{}
+	out.KeyId = direct.ValueOf(in.KeyId)
+	return out
+}
+
+func CertificateDescription_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription) *krm.CertificateDescription {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateDescription{}
+	out.SubjectDescription = CertificateDescription_SubjectDescription_FromProto(mapCtx, in.GetSubjectDescription())
+	out.X509Description = CertificateDescription_X509Description_FromProto(mapCtx, in.GetX509Description())
+	out.PublicKey = PublicKey_FromProto(mapCtx, in.GetPublicKey())
+	out.SubjectKeyId = CertificateDescription_KeyID_FromProto(mapCtx, in.GetSubjectKeyId())
+	out.AuthorityKeyId = CertificateDescription_KeyID_FromProto(mapCtx, in.GetAuthorityKeyId())
+	out.CrlDistributionPoints = in.GetCrlDistributionPoints()
+	out.AiaIssuingCertificateUrls = in.GetAiaIssuingCertificateUrls()
+	out.CertFingerprint = CertificateDescription_CertificateFingerprint_FromProto(mapCtx, in.GetCertFingerprint())
+	return out
+}
+
+func CertificateDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription) *pb.CertificateDescription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription{}
+	out.SubjectDescription = CertificateDescription_SubjectDescription_ToProto(mapCtx, in.SubjectDescription)
+	out.X509Description = CertificateDescription_X509Description_ToProto(mapCtx, in.X509Description)
+	out.PublicKey = PublicKey_ToProto(mapCtx, in.PublicKey)
+	out.SubjectKeyId = CertificateDescription_KeyID_ToProto(mapCtx, in.SubjectKeyId)
+	out.AuthorityKeyId = CertificateDescription_KeyID_ToProto(mapCtx, in.AuthorityKeyId)
+	out.CrlDistributionPoints = in.CrlDistributionPoints
+	out.AiaIssuingCertificateUrls = in.AiaIssuingCertificateUrls
+	out.CertFingerprint = CertificateDescription_CertificateFingerprint_ToProto(mapCtx, in.CertFingerprint)
+	return out
+}
+
+func CertificateDescription_SubjectDescription_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription_SubjectDescription) *krm.CertificateDescription_SubjectDescription {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateDescription_SubjectDescription{}
+	out.Subject = Subject_FromProto(mapCtx, in.GetSubject())
+	out.SubjectAltName = SubjectAltNamesStatus_FromProto(mapCtx, in.GetSubjectAltName())
+	out.HexSerialNumber = direct.LazyPtr(in.GetHexSerialNumber())
+	if in.GetLifetime() != nil {
+		seconds := in.GetLifetime().GetSeconds()
+		lifetimeStr := fmt.Sprintf("%ds", seconds)
+		out.Lifetime = &lifetimeStr
+	}
+	return out
+}
+
 func int64To32Slice(in []int64) []int32 {
 	if in == nil {
 		return nil
@@ -1305,5 +1381,17 @@ func int64To32Slice(in []int64) []int32 {
 	for i, v := range in {
 		out[i] = int32(v)
 	}
+	return out
+}
+
+func CertificateDescription_SubjectDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription_SubjectDescription) *pb.CertificateDescription_SubjectDescription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription_SubjectDescription{}
+	out.Subject = Subject_ToProto(mapCtx, in.Subject)
+	out.SubjectAltName = SubjectAltNamesStatus_ToProto(mapCtx, in.SubjectAltName)
+	out.HexSerialNumber = direct.ValueOf(in.HexSerialNumber)
+	out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
 	return out
 }

@@ -132,8 +132,6 @@ func (a *certificateAuthorityAdapter) Delete(ctx context.Context, deleteOp *dire
 	req := &pb.DeleteCertificateAuthorityRequest{
 		Name:                     a.id.String(),
 		IgnoreActiveCertificates: true,
-		SkipGracePeriod:          true,
-		IgnoreDependentResources: true,
 	}
 	op, err := a.caClient.DeleteCertificateAuthority(ctx, req)
 	if err != nil {
