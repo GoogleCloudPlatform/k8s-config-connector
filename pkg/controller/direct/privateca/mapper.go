@@ -909,8 +909,10 @@ func CertificateAdditionalExtensions_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.X509Extension{}
-	out.ObjectId = &pb.ObjectId{
-		ObjectIdPath: int64To32Slice(in.ObjectId.ObjectIdPath),
+	if in.ObjectId.ObjectIdPath != nil {
+		out.ObjectId = &pb.ObjectId{
+			ObjectIdPath: int64To32Slice(in.ObjectId.ObjectIdPath),
+		}
 	}
 	out.Critical = direct.ValueOf(in.Critical)
 	out.Value = []byte(in.Value)
@@ -958,9 +960,11 @@ func CertificateCaOptions_FromProto(mapCtx *direct.MapContext, in *pb.X509Parame
 		return nil
 	}
 	out := &krm.CertificateCaOptions{}
-	out.IsCa = direct.LazyPtr(in.GetIsCa())
+	if in.IsCa != nil {
+		out.IsCa = direct.PtrTo(*in.IsCa)
+	}
 	if in.MaxIssuerPathLength != nil {
-		out.MaxIssuerPathLength = direct.LazyPtr(int64(in.GetMaxIssuerPathLength()))
+		out.MaxIssuerPathLength = direct.PtrTo(int64(*in.MaxIssuerPathLength))
 	}
 	return out
 }
@@ -971,15 +975,15 @@ func CertificateCaOptions_ToProto(mapCtx *direct.MapContext, in *krm.Certificate
 	}
 	out := &pb.X509Parameters_CaOptions{}
 	if in.IsCa != nil {
-		out.IsCa = direct.LazyPtr(direct.ValueOf(in.IsCa))
+		out.IsCa = direct.PtrTo(direct.ValueOf(in.IsCa))
 	} else if in.NonCa != nil && direct.ValueOf(in.NonCa) {
-		out.IsCa = direct.LazyPtr(false)
+		out.IsCa = direct.PtrTo(false)
 	}
 
 	if in.MaxIssuerPathLength != nil {
-		out.MaxIssuerPathLength = direct.LazyPtr(int32(direct.ValueOf(in.MaxIssuerPathLength)))
+		out.MaxIssuerPathLength = direct.PtrTo(int32(direct.ValueOf(in.MaxIssuerPathLength)))
 	} else if in.ZeroMaxIssuerPathLength != nil && direct.ValueOf(in.ZeroMaxIssuerPathLength) {
-		out.MaxIssuerPathLength = direct.LazyPtr(int32(0))
+		out.MaxIssuerPathLength = direct.PtrTo(int32(0))
 	}
 	return out
 }
@@ -1073,9 +1077,15 @@ func CertificateCertificateDescriptionStatus_FromProto(mapCtx *direct.MapContext
 		sd := in.GetSubjectDescription()
 		out.SubjectDescription = &krm.CertificateSubjectDescriptionStatus{
 			HexSerialNumber: direct.LazyPtr(sd.GetHexSerialNumber()),
-			Lifetime:        direct.LazyPtr(sd.GetLifetime().String()),
-			NotAfterTime:    direct.StringTimestamp_FromProto(mapCtx, sd.GetNotAfterTime()),
-			NotBeforeTime:   direct.StringTimestamp_FromProto(mapCtx, sd.GetNotBeforeTime()),
+		}
+		if sd.Lifetime != nil {
+			out.SubjectDescription.Lifetime = direct.StringDuration_FromProto(mapCtx, sd.Lifetime)
+		}
+		if sd.NotAfterTime != nil {
+			out.SubjectDescription.NotAfterTime = direct.StringTimestamp_FromProto(mapCtx, sd.NotAfterTime)
+		}
+		if sd.NotBeforeTime != nil {
+			out.SubjectDescription.NotBeforeTime = direct.StringTimestamp_FromProto(mapCtx, sd.NotBeforeTime)
 		}
 		if sd.GetSubject() != nil {
 			subj := sd.GetSubject()
@@ -1099,12 +1109,16 @@ func CertificateCertificateDescriptionStatus_FromProto(mapCtx *direct.MapContext
 				Uris:           san.GetUris(),
 			}
 			for _, cs := range san.GetCustomSans() {
+				var objID *krm.CertificateObjectIdStatus
+				if cs.ObjectId != nil {
+					objID = &krm.CertificateObjectIdStatus{
+						ObjectIdPath: int32To64Slice(cs.GetObjectId().GetObjectIdPath()),
+					}
+				}
 				out.SubjectDescription.SubjectAltName.CustomSans = append(out.SubjectDescription.SubjectAltName.CustomSans, krm.CertificateCustomSansStatus{
 					Critical: direct.LazyPtr(cs.GetCritical()),
 					Value:    direct.LazyPtr(string(cs.GetValue())),
-					ObjectId: &krm.CertificateObjectIdStatus{
-						ObjectIdPath: int32To64Slice(cs.GetObjectId().GetObjectIdPath()),
-					},
+					ObjectId: objID,
 				})
 			}
 		}
@@ -1120,9 +1134,12 @@ func CertificateCertificateDescriptionStatus_FromProto(mapCtx *direct.MapContext
 			AiaOcspServers: x509.GetAiaOcspServers(),
 		}
 		if x509.GetCaOptions() != nil {
-			out.X509Description.CaOptions = &krm.CertificateCaOptionsStatus{
-				IsCa:                direct.LazyPtr(x509.GetCaOptions().GetIsCa()),
-				MaxIssuerPathLength: direct.LazyPtr(int64(x509.GetCaOptions().GetMaxIssuerPathLength())),
+			out.X509Description.CaOptions = &krm.CertificateCaOptionsStatus{}
+			if x509.GetCaOptions().IsCa != nil {
+				out.X509Description.CaOptions.IsCa = direct.PtrTo(*x509.GetCaOptions().IsCa)
+			}
+			if x509.GetCaOptions().MaxIssuerPathLength != nil {
+				out.X509Description.CaOptions.MaxIssuerPathLength = direct.PtrTo(int64(*x509.GetCaOptions().MaxIssuerPathLength))
 			}
 		}
 		if x509.GetKeyUsage() != nil {
@@ -1165,12 +1182,16 @@ func CertificateCertificateDescriptionStatus_FromProto(mapCtx *direct.MapContext
 			})
 		}
 		for _, ext := range x509.GetAdditionalExtensions() {
+			var objID *krm.CertificateObjectIdStatus
+			if ext.ObjectId != nil {
+				objID = &krm.CertificateObjectIdStatus{
+					ObjectIdPath: int32To64Slice(ext.GetObjectId().GetObjectIdPath()),
+				}
+			}
 			out.X509Description.AdditionalExtensions = append(out.X509Description.AdditionalExtensions, krm.CertificateAdditionalExtensionsStatus{
 				Critical: direct.LazyPtr(ext.GetCritical()),
 				Value:    direct.LazyPtr(string(ext.GetValue())),
-				ObjectId: &krm.CertificateObjectIdStatus{
-					ObjectIdPath: int32To64Slice(ext.GetObjectId().GetObjectIdPath()),
-				},
+				ObjectId: objID,
 			})
 		}
 	}
@@ -1199,6 +1220,163 @@ func PrivateCACertificateStatus_ToProto(mapCtx *direct.MapContext, in *krm.Priva
 		return nil
 	}
 	out := &pb.Certificate{}
+	out.CertificateDescription = CertificateCertificateDescriptionStatus_ToProto(mapCtx, in.CertificateDescription)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	if in.IssuerCertificateAuthority != nil {
+		out.IssuerCertificateAuthority = *in.IssuerCertificateAuthority
+	}
+	if in.PemCertificate != nil {
+		out.PemCertificate = *in.PemCertificate
+	}
+	out.PemCertificateChain = in.PemCertificateChain
+	out.RevocationDetails = CertificateRevocationDetailsStatus_ToProto(mapCtx, in.RevocationDetails)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func CertificateCertificateDescriptionStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateCertificateDescriptionStatus) *pb.CertificateDescription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription{}
+	out.AiaIssuingCertificateUrls = in.AiaIssuingCertificateUrls
+	if in.AuthorityKeyId != nil {
+		out.AuthorityKeyId = &pb.CertificateDescription_KeyId{
+			KeyId: direct.ValueOf(in.AuthorityKeyId.KeyId),
+		}
+	}
+	if in.CertFingerprint != nil {
+		out.CertFingerprint = &pb.CertificateDescription_CertificateFingerprint{
+			Sha256Hash: direct.ValueOf(in.CertFingerprint.Sha256Hash),
+		}
+	}
+	out.CrlDistributionPoints = in.CrlDistributionPoints
+	if in.PublicKey != nil {
+		out.PublicKey = &pb.PublicKey{
+			Format: direct.Enum_ToProto[pb.PublicKey_KeyFormat](mapCtx, in.PublicKey.Format),
+			Key:    []byte(direct.ValueOf(in.PublicKey.Key)),
+		}
+	}
+	if in.SubjectDescription != nil {
+		sd := in.SubjectDescription
+		out.SubjectDescription = &pb.CertificateDescription_SubjectDescription{
+			HexSerialNumber: direct.ValueOf(sd.HexSerialNumber),
+			NotBeforeTime:   direct.StringTimestamp_ToProto(mapCtx, sd.NotBeforeTime),
+			NotAfterTime:    direct.StringTimestamp_ToProto(mapCtx, sd.NotAfterTime),
+		}
+		if sd.Lifetime != nil {
+			out.SubjectDescription.Lifetime = direct.StringDuration_ToProto(mapCtx, sd.Lifetime)
+		}
+		if sd.Subject != nil {
+			subj := sd.Subject
+			out.SubjectDescription.Subject = &pb.Subject{
+				CommonName:         direct.ValueOf(subj.CommonName),
+				CountryCode:        direct.ValueOf(subj.CountryCode),
+				Locality:           direct.ValueOf(subj.Locality),
+				Organization:       direct.ValueOf(subj.Organization),
+				OrganizationalUnit: direct.ValueOf(subj.OrganizationalUnit),
+				PostalCode:         direct.ValueOf(subj.PostalCode),
+				Province:           direct.ValueOf(subj.Province),
+				StreetAddress:      direct.ValueOf(subj.StreetAddress),
+			}
+		}
+		if sd.SubjectAltName != nil {
+			san := sd.SubjectAltName
+			out.SubjectDescription.SubjectAltName = &pb.SubjectAltNames{
+				DnsNames:       san.DnsNames,
+				EmailAddresses: san.EmailAddresses,
+				IpAddresses:    san.IpAddresses,
+				Uris:           san.Uris,
+			}
+			for _, cs := range san.CustomSans {
+				var objID *pb.ObjectId
+				if cs.ObjectId != nil {
+					objID = &pb.ObjectId{
+						ObjectIdPath: int64To32Slice(cs.ObjectId.ObjectIdPath),
+					}
+				}
+				out.SubjectDescription.SubjectAltName.CustomSans = append(out.SubjectDescription.SubjectAltName.CustomSans, &pb.X509Extension{
+					Critical: direct.ValueOf(cs.Critical),
+					Value:    []byte(direct.ValueOf(cs.Value)),
+					ObjectId: objID,
+				})
+			}
+		}
+	}
+	if in.SubjectKeyId != nil {
+		out.SubjectKeyId = &pb.CertificateDescription_KeyId{
+			KeyId: direct.ValueOf(in.SubjectKeyId.KeyId),
+		}
+	}
+	if in.X509Description != nil {
+		x509 := in.X509Description
+		out.X509Description = &pb.X509Parameters{
+			AiaOcspServers: x509.AiaOcspServers,
+		}
+		if x509.CaOptions != nil {
+			out.X509Description.CaOptions = &pb.X509Parameters_CaOptions{}
+			if x509.CaOptions.IsCa != nil {
+				isCa := direct.ValueOf(x509.CaOptions.IsCa)
+				out.X509Description.CaOptions.IsCa = &isCa
+			}
+			if x509.CaOptions.MaxIssuerPathLength != nil {
+				maxLen := int32(direct.ValueOf(x509.CaOptions.MaxIssuerPathLength))
+				out.X509Description.CaOptions.MaxIssuerPathLength = &maxLen
+			}
+		}
+		if x509.KeyUsage != nil {
+			ku := x509.KeyUsage
+			out.X509Description.KeyUsage = &pb.KeyUsage{}
+			if ku.BaseKeyUsage != nil {
+				bku := ku.BaseKeyUsage
+				out.X509Description.KeyUsage.BaseKeyUsage = &pb.KeyUsage_KeyUsageOptions{
+					CertSign:          direct.ValueOf(bku.CertSign),
+					ContentCommitment: direct.ValueOf(bku.ContentCommitment),
+					CrlSign:           direct.ValueOf(bku.CrlSign),
+					DataEncipherment:  direct.ValueOf(bku.DataEncipherment),
+					DecipherOnly:      direct.ValueOf(bku.DecipherOnly),
+					DigitalSignature:  direct.ValueOf(bku.DigitalSignature),
+					EncipherOnly:      direct.ValueOf(bku.EncipherOnly),
+					KeyAgreement:      direct.ValueOf(bku.KeyAgreement),
+					KeyEncipherment:   direct.ValueOf(bku.KeyEncipherment),
+				}
+			}
+			if ku.ExtendedKeyUsage != nil {
+				eku := ku.ExtendedKeyUsage
+				out.X509Description.KeyUsage.ExtendedKeyUsage = &pb.KeyUsage_ExtendedKeyUsageOptions{
+					ClientAuth:      direct.ValueOf(eku.ClientAuth),
+					CodeSigning:     direct.ValueOf(eku.CodeSigning),
+					EmailProtection: direct.ValueOf(eku.EmailProtection),
+					OcspSigning:     direct.ValueOf(eku.OcspSigning),
+					ServerAuth:      direct.ValueOf(eku.ServerAuth),
+					TimeStamping:    direct.ValueOf(eku.TimeStamping),
+				}
+			}
+			for _, ueku := range ku.UnknownExtendedKeyUsages {
+				out.X509Description.KeyUsage.UnknownExtendedKeyUsages = append(out.X509Description.KeyUsage.UnknownExtendedKeyUsages, &pb.ObjectId{
+					ObjectIdPath: int64To32Slice(ueku.ObjectIdPath),
+				})
+			}
+		}
+		for _, pol := range x509.PolicyIds {
+			out.X509Description.PolicyIds = append(out.X509Description.PolicyIds, &pb.ObjectId{
+				ObjectIdPath: int64To32Slice(pol.ObjectIdPath),
+			})
+		}
+		for _, ext := range x509.AdditionalExtensions {
+			var objID *pb.ObjectId
+			if ext.ObjectId != nil {
+				objID = &pb.ObjectId{
+					ObjectIdPath: int64To32Slice(ext.ObjectId.ObjectIdPath),
+				}
+			}
+			out.X509Description.AdditionalExtensions = append(out.X509Description.AdditionalExtensions, &pb.X509Extension{
+				Critical: direct.ValueOf(ext.Critical),
+				Value:    []byte(direct.ValueOf(ext.Value)),
+				ObjectId: objID,
+			})
+		}
+	}
 	return out
 }
 
