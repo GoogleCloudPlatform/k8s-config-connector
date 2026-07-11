@@ -1,0 +1,302 @@
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = resourceAllowance "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}" not found
+
+{}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/CreateResourceAllowance
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "resourceAllowance": {
+    "labels": {
+      "cnrm-test": "true",
+      "gcp-label": "value",
+      "managed-by-cnrm": "true"
+    },
+    "notifications": [
+      {
+        "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
+      }
+    ],
+    "usageResourceAllowance": {
+      "spec": {
+        "limit": {
+          "calendarPeriod": "MONTH",
+          "limit": 200
+        },
+        "type": "cpu-core-hour"
+      }
+    }
+  },
+  "resourceAllowanceId": "batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "value",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "notifications": [
+    {
+      "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
+    }
+  ],
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "calendarPeriod": "MONTH",
+        "limit": 200
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 200
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "value",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "notifications": [
+    {
+      "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
+    }
+  ],
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "calendarPeriod": "MONTH",
+        "limit": 200
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 200
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/UpdateResourceAllowance
+
+{
+  "resourceAllowance": {
+    "labels": {
+      "cnrm-test": "true",
+      "gcp-label": "updated-value",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+    "notifications": [
+      {
+        "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
+      }
+    ],
+    "usageResourceAllowance": {
+      "spec": {
+        "limit": {
+          "calendarPeriod": "MONTH",
+          "limit": 300
+        },
+        "type": "cpu-core-hour"
+      }
+    }
+  }
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "updated-value",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "notifications": [
+    {
+      "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
+    }
+  ],
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "calendarPeriod": "MONTH",
+        "limit": 300
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 300
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "updated-value",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "notifications": [
+    {
+      "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
+    }
+  ],
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "calendarPeriod": "MONTH",
+        "limit": 300
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 300
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "updated-value",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "notifications": [
+    {
+      "pubsubTopic": "projects/${projectId}/topics/topic-${uniqueId}"
+    }
+  ],
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "calendarPeriod": "MONTH",
+        "limit": 300
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 300
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/DeleteResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.batch.v1alpha.OperationMetadata",
+    "apiVersion": "v1alpha",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}/operations/${operationID}"
+}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = resourceAllowance "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}" not found
+
+{}
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = resourceAllowance "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}" not found
+
+{}
+

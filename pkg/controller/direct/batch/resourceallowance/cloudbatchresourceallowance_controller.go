@@ -67,6 +67,8 @@ func (m *model) client(ctx context.Context) (pb.BatchServiceClient, error) {
 		return nil, err
 	}
 
+	opts = append(opts, option.WithEndpoint("batch.googleapis.com:443"))
+
 	conn, err := grpc.Dial(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("dialing batch service: %w", err)
@@ -169,6 +171,7 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.Info("updating batch resource allowance", "name", a.id)
 
 	desiredpb := proto.CloneOf(a.desired)
+	desiredpb.Name = a.id.String()
 	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -184,7 +187,6 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	req := &pb.UpdateResourceAllowanceRequest{
 		ResourceAllowance: desiredpb,
 	}
-	desiredpb.Name = a.id.String()
 
 	updated, err := a.gcpClient.UpdateResourceAllowance(ctx, req)
 	if err != nil {

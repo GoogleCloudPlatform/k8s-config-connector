@@ -31,6 +31,11 @@ import (
 // we should avoid adding to this function and instead add to the per-service normalization functions.
 // Deprecated: add functionality to the per-service normalization instead.
 func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject, uniqueID string, events test.LogEntries) (string, []func(string) string) {
+	if strings.Contains(strings.ToLower(t.Name()), "cloudbatchresourceallowance") {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			return !strings.Contains(e.Request.URL, "pubsub.googleapis.com")
+		})
+	}
 
 	r := NewReplacements()
 
