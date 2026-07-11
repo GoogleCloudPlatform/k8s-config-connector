@@ -105,8 +105,21 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *modelEnvironment) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.NotebooksEnvironmentIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &EnvironmentAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type EnvironmentAdapter struct {
@@ -197,15 +210,17 @@ func (a *EnvironmentAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
 	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Environment)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
+	u.Object = uObj
+	u.SetName(a.id.Environment)
 	u.SetGroupVersionKind(krm.NotebooksEnvironmentGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 
