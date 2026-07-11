@@ -1,19 +1,19 @@
-931c931
-< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+934c934
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> GET projects/${projectId}/regions/us-central1/routers/${routerID}
-957c957
-< PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+960c960
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> PATCH projects/${projectId}/regions/us-central1/routers/${routerID}
-963d962
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+966d965
 <       "drainNatIps": [],
-968,969d966
+971,972d969
 <       "icmpIdleTimeoutSec": 30,
 <       "logConfig": null,
-972d968
+975d971
 <       "natIps": [],
-994,998c990
+997,1001c993
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -21,18 +21,18 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1031c1023,1024
-< GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+1034c1026,1027
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
-> GET projects/${projectId}/regions/us-central1/operations/${operationID}
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1062c1055
-< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+1065c1058
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> GET projects/${projectId}/regions/us-central1/routers/${routerID}
-1088d1080
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1091d1083
 <       "icmpIdleTimeoutSec": 30,
-1112,1116c1104
+1115,1119c1107
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -40,19 +40,21 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1126c1114
-< PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+1129c1117
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> PATCH projects/${projectId}/regions/us-central1/routers/${routerID}
-1132,1133d1119
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1135,1138d1122
 <       "autoNetworkTier": "PREMIUM",
 <       "drainNatIps": [],
-1138,1139d1123
+<       "effectiveTcpTimeWaitTimeoutSec": 120,
+<       "enableDynamicPortAllocation": false,
+1143,1144d1126
 <       "icmpIdleTimeoutSec": 30,
 <       "logConfig": null,
-1142d1125
+1147d1128
 <       "natIps": [],
-1167,1171c1150
+1172,1176c1153
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -60,18 +62,18 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1204c1183,1184
-< GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+1209c1186,1187
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
-> GET projects/${projectId}/regions/us-central1/operations/${operationID}
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1235c1215
-< GET projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+1240c1218
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> GET projects/${projectId}/regions/us-central1/routers/${routerID}
-1261d1240
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1266d1243
 <       "icmpIdleTimeoutSec": 30,
-1288,1292c1267
+1293,1297c1270
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -79,11 +81,11 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1302c1277
-< PATCH projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+1307c1280
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> PUT projects/${projectId}/regions/us-central1/routers/${routerID}
-1306c1281,1288
+> PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1311c1284,1291
 <   "nats": []
 ---
 >   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -91,19 +93,19 @@
 >   "id": "000000000000000000000",
 >   "kind": "compute#router",
 >   "name": "${routerID}",
->   "network": "projects/${projectId}/global/networks/${networkID}",
->   "region": "projects/${projectId}/regions/us-central1",
->   "selfLink": "projects/${projectId}/regions/us-central1/routers/${routerID}"
-1324c1306
+>   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+>   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
+1329c1309
 <   "operationType": "patch",
 ---
 >   "operationType": "update",
-1337c1319,1320
-< GET projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+1342c1322,1323
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
-> GET projects/${projectId}/regions/us-central1/operations/${operationID}
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1355c1338
+1360c1341
 <   "operationType": "patch",
 ---
 >   "operationType": "update",

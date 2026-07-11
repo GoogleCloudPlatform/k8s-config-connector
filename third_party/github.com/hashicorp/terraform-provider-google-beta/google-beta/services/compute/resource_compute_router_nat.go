@@ -1919,7 +1919,7 @@ func expandNestedComputeRouterNatRulesActionSourceNatActiveRanges(v interface{},
 		if raw == nil {
 			return nil, fmt.Errorf("Invalid value for source_nat_active_ranges: nil")
 		}
-		f, err := tpgresource.ParseRegionalFieldValue("subnetworks", raw.(string), "project", "region", "zone", d, config, true)
+		f, err := tpgresource.ParseRegionalFieldValue("subnetworks", raw.(string), "project", "region", "zone", d, config, false)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid value for source_nat_active_ranges: %s", err)
 		}
@@ -1936,7 +1936,7 @@ func expandNestedComputeRouterNatRulesActionSourceNatDrainRanges(v interface{}, 
 		if raw == nil {
 			return nil, fmt.Errorf("Invalid value for source_nat_drain_ranges: nil")
 		}
-		f, err := tpgresource.ParseRegionalFieldValue("subnetworks", raw.(string), "project", "region", "zone", d, config, true)
+		f, err := tpgresource.ParseRegionalFieldValue("subnetworks", raw.(string), "project", "region", "zone", d, config, false)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid value for source_nat_drain_ranges: %s", err)
 		}
