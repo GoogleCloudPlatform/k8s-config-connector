@@ -17,6 +17,7 @@ package billingbudgets
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/billing/budgets/apiv1"
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
@@ -24,6 +25,7 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -102,7 +104,21 @@ func (m *modelBillingBudgetsBudget) AdapterForObject(ctx context.Context, op *di
 }
 
 func (m *modelBillingBudgetsBudget) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.BillingBudgetsBudgetIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &BillingBudgetsBudgetAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type BillingBudgetsBudgetAdapter struct {
@@ -147,6 +163,13 @@ func (a *BillingBudgetsBudgetAdapter) Create(ctx context.Context, createOp *dire
 		return fmt.Errorf("creating BillingBudgetsBudget %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created BillingBudgetsBudget", "name", a.id)
+
+	// Since the ID is server-generated, write it back to spec.resourceID.
+	parts := strings.Split(created.Name, "/")
+	resourceID := parts[len(parts)-1]
+	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
+		return err
+	}
 
 	return a.updateStatus(ctx, createOp, created)
 }
@@ -202,13 +225,18 @@ func (a *BillingBudgetsBudgetAdapter) Export(ctx context.Context) (*unstructured
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.BillingAccountRef = &refs.BillingAccountRef{
+		External: "billingAccounts/" + a.id.BillingAccount,
+	}
+	obj.Spec.ResourceID = direct.LazyPtr("billingAccounts/" + a.id.BillingAccount + "/budgets/" + a.id.Budget)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Budget)
 	u.SetGroupVersionKind(krm.BillingBudgetsBudgetGVK)
 	return u, nil
 }

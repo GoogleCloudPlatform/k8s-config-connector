@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -82,6 +83,11 @@ func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.
 		return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
 	}
 	billingAccount := billingIdentity.BillingAccount
+
+	if strings.Contains(resourceID, "/") {
+		parts := strings.Split(resourceID, "/")
+		resourceID = parts[len(parts)-1]
+	}
 
 	identity := &BillingBudgetsBudgetIdentity{
 		BillingAccount: billingAccount,

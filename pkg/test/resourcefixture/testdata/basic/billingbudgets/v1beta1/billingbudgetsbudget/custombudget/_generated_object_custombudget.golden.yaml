@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: billingbudgetsbudget-${uniqueId}
@@ -32,6 +32,7 @@ spec:
         day: 2
         month: 2
         year: 2141
+  resourceID: ${billingAccountBudgetId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -40,4 +41,4 @@ status:
     status: "True"
     type: Ready
   etag: abcdef123456
-  observedGeneration: 2
+  observedGeneration: 3

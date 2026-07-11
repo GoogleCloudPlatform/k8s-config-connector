@@ -81,6 +81,14 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		return replacements.ApplyReplacements(s)
 	})
 
+	notificationChannelRegex := regexp.MustCompile(`/notificationChannels/(\d+)`)
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.Contains(s, "/notificationChannels/") {
+			s = notificationChannelRegex.ReplaceAllString(s, "/notificationChannels/${notificationChannelID}")
+		}
+		return s
+	})
+
 	visitor.removePaths.Insert(".metadata.creationTimestamp")
 	visitor.removePaths.Insert(".metadata.managedFields")
 	visitor.removePaths.Insert(".metadata.resourceVersion")
@@ -1080,6 +1088,12 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		case ".spec.resourceID":
 			if u.GetKind() == "RecaptchaEnterpriseKey" {
 				replacement.PathIDs[s] = "${keyID}"
+			}
+		case ".spec.allUpdatesRule.monitoringNotificationChannels[].external":
+			if strings.Contains(s, "/notificationChannels/") {
+				parts := strings.Split(s, "/notificationChannels/")
+				id := parts[len(parts)-1]
+				replacement.PathIDs[id] = "${notificationChannelID}"
 			}
 		}
 		return s
