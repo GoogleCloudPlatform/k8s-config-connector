@@ -44,6 +44,7 @@ func eventarcChannelConnectionFuzzer() fuzztesting.KRMFuzzer {
 
 	// Unimplemented fields
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".labels")
 
 	return f
 }
