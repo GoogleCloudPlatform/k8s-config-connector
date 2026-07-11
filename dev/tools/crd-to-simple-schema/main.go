@@ -390,6 +390,9 @@ func walk(s *apiextensionsv1.JSONSchemaProps) any {
 		for k, v := range s.Properties {
 			val := v
 			m[k] = walk(&val)
+			if val.Description == "" {
+				m["_no_description."+k] = "true"
+			}
 		}
 		for _, req := range s.Required {
 			m["_required."+req] = "true"

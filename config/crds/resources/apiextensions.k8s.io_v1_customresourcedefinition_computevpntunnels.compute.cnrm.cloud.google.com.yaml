@@ -196,17 +196,6 @@ spec:
               sharedSecret:
                 description: Immutable. Shared secret used to set the secure session
                   between the Cloud VPN gateway and the peer VPN gateway.
-                oneOf:
-                - not:
-                    required:
-                    - valueFrom
-                  required:
-                  - value
-                - not:
-                    required:
-                    - value
-                  required:
-                  - valueFrom
                 properties:
                   value:
                     description: Value of the field. Cannot be used if 'valueFrom'
