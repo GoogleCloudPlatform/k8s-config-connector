@@ -656,7 +656,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -693,7 +693,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -819,7 +819,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -856,7 +856,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -874,7 +874,7 @@ Content-Type: application/json
     "allUpdatesRule": {
       "disableDefaultIamRecipients": false,
       "monitoringNotificationChannels": [
-        "projects/${projectId}/notificationChannels/"
+        "projects/${projectId}/notificationChannels/${notificationChannelID}"
       ],
       "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
       "schemaVersion": "1.0"
@@ -927,7 +927,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -985,96 +985,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1163,7 +1074,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1252,7 +1163,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1341,7 +1252,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1430,7 +1341,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1519,7 +1430,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1608,7 +1519,7 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1697,7 +1608,96 @@ X-Xss-Protection: 0
 {
   "allUpdatesRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": "MONTH",
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "labels": {
+      "label-one": [
+        "value-one"
+      ]
+    },
+    "projects": [
+      "projects/project-1-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "sample-budget",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
+  "thresholdRules": [
+    {
+      "spendBasis": "CURRENT_SPEND",
+      "thresholdPercent": 0.5
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-1-${uniqueId}",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "project-1-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allUpdatesRule": {
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1778,7 +1778,7 @@ Content-Type: application/json
     "allUpdatesRule": {
       "disableDefaultIamRecipients": true,
       "monitoringNotificationChannels": [
-        "projects/${projectId}/notificationChannels/"
+        "projects/${projectId}/notificationChannels/${notificationChannelID}"
       ],
       "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
       "schemaVersion": "1.0"
@@ -1833,7 +1833,7 @@ X-Xss-Protection: 0
   "allUpdatesRule": {
     "disableDefaultIamRecipients": true,
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1892,97 +1892,7 @@ X-Xss-Protection: 0
   "allUpdatesRule": {
     "disableDefaultIamRecipients": true,
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "nanos": 1
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "YEAR",
-    "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ],
-      "label-two": [
-        "value-two"
-      ]
-    },
-    "projects": [
-      "projects/project-2-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "updated-sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "FORECASTED_SPEND",
-      "thresholdPercent": 0.6
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-2-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-2-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "disableDefaultIamRecipients": true,
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
     "schemaVersion": "1.0"
@@ -2072,7 +1982,97 @@ X-Xss-Protection: 0
   "allUpdatesRule": {
     "disableDefaultIamRecipients": true,
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "nanos": 1
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": "YEAR",
+    "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
+    "labels": {
+      "label-one": [
+        "value-one"
+      ],
+      "label-two": [
+        "value-two"
+      ]
+    },
+    "projects": [
+      "projects/project-2-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "updated-sample-budget",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
+  "thresholdRules": [
+    {
+      "spendBasis": "FORECASTED_SPEND",
+      "thresholdPercent": 0.6
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-2-${uniqueId}",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "project-2-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allUpdatesRule": {
+    "disableDefaultIamRecipients": true,
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
     "schemaVersion": "1.0"
@@ -2212,7 +2212,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -2306,7 +2306,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",

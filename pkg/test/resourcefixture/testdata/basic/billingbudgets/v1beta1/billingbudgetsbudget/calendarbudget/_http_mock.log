@@ -656,7 +656,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -693,7 +693,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -819,7 +819,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -856,7 +856,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -921,7 +921,7 @@ Content-Type: application/json
   "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}",
   "notificationsRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -974,7 +974,7 @@ X-Xss-Protection: 0
   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
   "notificationsRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1032,7 +1032,7 @@ X-Xss-Protection: 0
   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
   "notificationsRule": {
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1080,7 +1080,7 @@ Content-Type: application/json
   "notificationsRule": {
     "disableDefaultIamRecipients": true,
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1134,7 +1134,7 @@ X-Xss-Protection: 0
   "notificationsRule": {
     "disableDefaultIamRecipients": true,
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1193,7 +1193,7 @@ X-Xss-Protection: 0
   "notificationsRule": {
     "disableDefaultIamRecipients": true,
     "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/"
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
     ],
     "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
     "schemaVersion": "1.0"
@@ -1252,7 +1252,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",
@@ -1346,7 +1346,7 @@ X-Xss-Protection: 0
       "mutateTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "name": "projects/${projectId}/notificationChannels/",
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
   "type": "email",
   "userLabels": {
     "cnrm-test": "true",

@@ -6,7 +6,7 @@ spec:
   allUpdatesRule:
     disableDefaultIamRecipients: true
     monitoringNotificationChannels:
-    - external: projects/${projectId}/notificationChannels/
+    - external: projects/${projectId}/notificationChannels/${notificationChannelID}
     pubsubTopicRef:
       external: projects/${projectId}/topics/pubsubtopic-2-${uniqueId}
     schemaVersion: "1.0"

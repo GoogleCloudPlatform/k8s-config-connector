@@ -58,6 +58,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		if n > 2 && tokens[n-2] == "dashboards" {
 			replacements.ReplaceStringValue(tokens[n-1], "${dashboardID}")
 		}
+		if n > 2 && tokens[n-2] == "notificationChannels" {
+			replacements.ReplaceStringValue(tokens[n-1], "${notificationChannelID}")
+		}
+		if n > 2 && tokens[n-2] == "alertPolicies" {
+			replacements.ReplaceStringValue(tokens[n-1], "${alertPolicyID}")
+		}
 	}
 
 	event.VisitResponseStringValues(func(path string, value string) {

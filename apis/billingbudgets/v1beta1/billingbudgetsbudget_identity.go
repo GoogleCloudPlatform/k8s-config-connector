@@ -66,6 +66,14 @@ func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.
 		return nil, err
 	}
 
+	if strings.Contains(resourceID, "/") {
+		id := &BillingBudgetsBudgetIdentity{}
+		if err := id.FromExternal(resourceID); err != nil {
+			return nil, err
+		}
+		return id, nil
+	}
+
 	if budget.Spec.BillingAccountRef == nil {
 		return nil, fmt.Errorf("spec.billingAccountRef is required")
 	}
@@ -83,11 +91,6 @@ func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.
 		return nil, fmt.Errorf("parsing billingAccountRef.external=%q: %w", billingRef.External, err)
 	}
 	billingAccount := billingIdentity.BillingAccount
-
-	if strings.Contains(resourceID, "/") {
-		parts := strings.Split(resourceID, "/")
-		resourceID = parts[len(parts)-1]
-	}
 
 	identity := &BillingBudgetsBudgetIdentity{
 		BillingAccount: billingAccount,

@@ -164,7 +164,12 @@ func (a *BillingBudgetsBudgetAdapter) Create(ctx context.Context, createOp *dire
 	}
 	log.V(2).Info("successfully created BillingBudgetsBudget", "name", a.id)
 
-	// Since the ID is server-generated, write it back to spec.resourceID.
+	// Since the budget ID is server-generated, we need to write it back to
+	// KRM. Normally we would not write a server-generated ID to spec, and
+	// would instead write it to status.externalRef. However, the legacy schema of
+	// BillingBudgetsBudget does not support status.externalRef or status.name,
+	// so we write it to spec.resourceID to ensure the object remains reconcilable in-place
+	// and supports resource identity across reconciliation cycles.
 	parts := strings.Split(created.Name, "/")
 	resourceID := parts[len(parts)-1]
 	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
