@@ -113,7 +113,7 @@ func (in *ApigeeRegistryAPISpec) DeepCopyInto(out *ApigeeRegistryAPISpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -326,7 +326,7 @@ func (in *ApigeeRegistryArtifactSpec) DeepCopyInto(out *ApigeeRegistryArtifactSp
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -515,7 +515,7 @@ func (in *ApigeeRegistryInstanceSpec) DeepCopyInto(out *ApigeeRegistryInstanceSp
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {

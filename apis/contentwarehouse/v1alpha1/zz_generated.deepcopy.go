@@ -285,7 +285,7 @@ func (in *ContentWarehouseDocumentSpec) DeepCopyInto(out *ContentWarehouseDocume
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -439,7 +439,7 @@ func (in *ContentWarehouseRuleSetSpec) DeepCopyInto(out *ContentWarehouseRuleSet
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -610,7 +610,7 @@ func (in *ContentWarehouseSchemaSpec) DeepCopyInto(out *ContentWarehouseSchemaSp
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {

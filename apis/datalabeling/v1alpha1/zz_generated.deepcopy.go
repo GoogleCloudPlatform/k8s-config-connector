@@ -266,7 +266,7 @@ func (in *DataLabelingAnnotationSpecSetSpec) DeepCopyInto(out *DataLabelingAnnot
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -439,7 +439,7 @@ func (in *DataLabelingDatasetSpec) DeepCopyInto(out *DataLabelingDatasetSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -615,7 +615,7 @@ func (in *DataLabelingEvaluationJobSpec) DeepCopyInto(out *DataLabelingEvaluatio
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -794,7 +794,7 @@ func (in *DataLabelingInstructionSpec) DeepCopyInto(out *DataLabelingInstruction
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {

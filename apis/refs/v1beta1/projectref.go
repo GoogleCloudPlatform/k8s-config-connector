@@ -42,7 +42,7 @@ func init() {
 }
 
 // The Project that this resource belongs to.
-type ProjectRef struct {
+type ProjectRefDeprecated struct {
 	/* The `projectID` field of a project, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `Project` resource. */
@@ -54,22 +54,24 @@ type ProjectRef struct {
 	Kind string `json:"kind,omitempty"`
 }
 
-func (r *ProjectRef) GetGVK() schema.GroupVersionKind {
+type ProjectRef = ProjectRefDeprecated
+
+func (r *ProjectRefDeprecated) GetGVK() schema.GroupVersionKind {
 	return ProjectGVK
 }
 
-func (r *ProjectRef) GetNamespacedName() types.NamespacedName {
+func (r *ProjectRefDeprecated) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *ProjectRef) GetExternal() string {
+func (r *ProjectRefDeprecated) GetExternal() string {
 	return r.External
 }
 
-func (r *ProjectRef) SetExternal(ref string) {
+func (r *ProjectRefDeprecated) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
@@ -324,7 +326,7 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj runtime.Obj
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", u.GetKind(), u.GetNamespace(), u.GetName())
 }
 
-func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *ProjectRefDeprecated) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	// No status.externalRef, so can't use default method
 	// return Normalize(ctx, reader, r, defaultNamespace)
 
@@ -338,7 +340,7 @@ func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaul
 }
 
 // ValidateExternal validates that the provided external reference is valid.
-func (r *ProjectRef) ValidateExternal(ref string) error {
+func (r *ProjectRefDeprecated) ValidateExternal(ref string) error {
 	id := &ProjectIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
@@ -346,7 +348,7 @@ func (r *ProjectRef) ValidateExternal(ref string) error {
 	return nil
 }
 
-func (r *ProjectRef) ParseExternalToIdentity() (identity.Identity, error) {
+func (r *ProjectRefDeprecated) ParseExternalToIdentity() (identity.Identity, error) {
 	id := &ProjectIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err

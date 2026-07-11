@@ -178,7 +178,7 @@ func (in *IAMDenyPolicySpec) DeepCopyInto(out *IAMDenyPolicySpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.FolderRef != nil {

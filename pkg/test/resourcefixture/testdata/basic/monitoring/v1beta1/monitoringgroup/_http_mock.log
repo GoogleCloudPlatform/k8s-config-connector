@@ -1,211 +1,26 @@
-POST https://monitoring.googleapis.com/v3/projects/${projectId}/groups?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GRPC /google.monitoring.v3.GroupService/GetGroup
 
 {
-  "displayName": "MonitoringGroup",
-  "filter": "resource.metadata.region=europe-west2"
+  "name": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "MonitoringGroup",
-  "filter": "resource.metadata.region=europe-west2",
-  "name": "projects/${projectId}/groups/${groupID}"
-}
-
----
-
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "MonitoringGroup",
-  "filter": "resource.metadata.region=europe-west2",
-  "name": "projects/${projectId}/groups/${groupID}"
-}
-
----
-
-POST https://monitoring.googleapis.com/v3/projects/${projectId}/groups?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-{
-  "displayName": "MonitoringSubGroup",
-  "filter": "resource.metadata.region=europe-west2",
-  "parentName": "projects/${projectId}/groups/${groupID}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "MonitoringSubGroup",
-  "filter": "resource.metadata.region=europe-west2",
-  "name": "projects/${projectId}/groups/${groupID}",
-  "parentName": "projects/${projectId}/groups/${groupID}"
-}
-
----
-
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "MonitoringSubGroup",
-  "filter": "resource.metadata.region=europe-west2",
-  "name": "projects/${projectId}/groups/${groupID}",
-  "parentName": "projects/${projectId}/groups/${groupID}"
-}
-
----
-
-PUT https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-{
-  "displayName": "MonitoringSubGroup2",
-  "filter": "resource.metadata.region=europe-west2",
-  "parentName": "projects/${projectId}/groups/${groupID}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "MonitoringSubGroup2",
-  "filter": "resource.metadata.region=europe-west2",
-  "name": "projects/${projectId}/groups/${groupID}",
-  "parentName": "projects/${projectId}/groups/${groupID}"
-}
-
----
-
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "MonitoringSubGroup2",
-  "filter": "resource.metadata.region=europe-west2",
-  "name": "projects/${projectId}/groups/${groupID}",
-  "parentName": "projects/${projectId}/groups/${groupID}"
-}
-
----
-
-DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-${uniqueId}'.
 
 {}
 
 ---
 
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+GRPC /google.monitoring.v3.GroupService/CreateGroup
 
 {
-  "error": {
-    "code": 404,
-    "message": "Could not find group definition for '${groupID}'.",
-    "status": "NOT_FOUND"
-  }
+  "group": {
+    "displayName": "MonitoringGroup",
+    "filter": "resource.metadata.region=europe-west2"
+  },
+  "name": "projects/${projectId}"
 }
 
----
-
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "displayName": "MonitoringGroup",
@@ -215,42 +30,116 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GRPC /google.monitoring.v3.GroupService/GetGroup
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
 
 {}
 
 ---
 
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+GRPC /google.monitoring.v3.GroupService/CreateGroup
 
 {
-  "error": {
-    "code": 404,
-    "message": "Could not find group definition for '${groupID}'.",
-    "status": "NOT_FOUND"
-  }
+  "group": {
+    "displayName": "MonitoringSubGroup",
+    "filter": "resource.metadata.region=europe-west2",
+    "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+  },
+  "name": "projects/${projectId}"
 }
+
+OK
+
+{
+  "displayName": "MonitoringSubGroup",
+  "filter": "resource.metadata.region=europe-west2",
+  "name": "projects/${projectId}/groups/${groupID}",
+  "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+}
+
+---
+
+GRPC /google.monitoring.v3.GroupService/GetGroup
+
+{
+  "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
+
+{}
+
+---
+
+GRPC /google.monitoring.v3.GroupService/CreateGroup
+
+{
+  "group": {
+    "displayName": "MonitoringSubGroup2",
+    "filter": "resource.metadata.region=europe-west2",
+    "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+  },
+  "name": "projects/${projectId}"
+}
+
+OK
+
+{
+  "displayName": "MonitoringSubGroup2",
+  "filter": "resource.metadata.region=europe-west2",
+  "name": "projects/${projectId}/groups/${groupID}",
+  "parentName": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+}
+
+---
+
+GRPC /google.monitoring.v3.GroupService/GetGroup
+
+{
+  "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
+
+{}
+
+---
+
+GRPC /google.monitoring.v3.GroupService/GetGroup
+
+{
+  "name": "projects/${projectId}/groups/monitoringgroup-subgroup-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-subgroup-${uniqueId}'.
+
+{}
+
+---
+
+GRPC /google.monitoring.v3.GroupService/GetGroup
+
+{
+  "name": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-${uniqueId}'.
+
+{}
+
+---
+
+GRPC /google.monitoring.v3.GroupService/GetGroup
+
+{
+  "name": "projects/${projectId}/groups/monitoringgroup-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Could not find group definition for 'monitoringgroup-${uniqueId}'.
+
+{}

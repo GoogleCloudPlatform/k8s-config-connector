@@ -315,7 +315,7 @@ func (in *NotebooksEnvironmentSpec) DeepCopyInto(out *NotebooksEnvironmentSpec) 
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -499,7 +499,7 @@ func (in *NotebooksExecutionSpec) DeepCopyInto(out *NotebooksExecutionSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {

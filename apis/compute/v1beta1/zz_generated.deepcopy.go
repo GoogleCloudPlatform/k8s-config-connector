@@ -13442,7 +13442,7 @@ func (in *ShareSettingsProjectConfig) DeepCopyInto(out *ShareSettingsProjectConf
 	*out = *in
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }

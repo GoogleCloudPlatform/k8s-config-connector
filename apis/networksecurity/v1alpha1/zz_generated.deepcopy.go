@@ -896,7 +896,7 @@ func (in *NetworkSecurityAddressGroupSpec) DeepCopyInto(out *NetworkSecurityAddr
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1300,7 +1300,7 @@ func (in *NetworkSecurityBackendAuthenticationConfigSpec) DeepCopyInto(out *Netw
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1486,7 +1486,7 @@ func (in *NetworkSecurityFirewallEndpointAssociationSpec) DeepCopyInto(out *Netw
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1841,7 +1841,7 @@ func (in *NetworkSecurityInterceptDeploymentSpec) DeepCopyInto(out *NetworkSecur
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -2049,7 +2049,7 @@ func (in *NetworkSecurityInterceptEndpointGroupSpec) DeepCopyInto(out *NetworkSe
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -2235,7 +2235,7 @@ func (in *NetworkSecurityMirroringDeploymentSpec) DeepCopyInto(out *NetworkSecur
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -2445,7 +2445,7 @@ func (in *NetworkSecurityMirroringEndpointGroupSpec) DeepCopyInto(out *NetworkSe
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -2641,7 +2641,7 @@ func (in *NetworkSecurityPartnerSSERealmSpec) DeepCopyInto(out *NetworkSecurityP
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -2822,7 +2822,7 @@ func (in *NetworkSecuritySACRealmSpec) DeepCopyInto(out *NetworkSecuritySACRealm
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -3008,7 +3008,7 @@ func (in *NetworkSecuritySecurityProfileSpec) DeepCopyInto(out *NetworkSecurityS
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {

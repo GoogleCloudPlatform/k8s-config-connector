@@ -419,7 +419,7 @@ func (in *Endpoint) DeepCopyInto(out *Endpoint) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -1333,7 +1333,7 @@ func (in *NetworkManagementConnectivityTestSpec) DeepCopyInto(out *NetworkManage
 	}
 	if in.RelatedProjects != nil {
 		in, out := &in.RelatedProjects, &out.RelatedProjects
-		*out = make([]v1beta1.ProjectRef, len(*in))
+		*out = make([]v1beta1.ProjectRefDeprecated, len(*in))
 		copy(*out, *in)
 	}
 	if in.Labels != nil {
@@ -1405,7 +1405,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }

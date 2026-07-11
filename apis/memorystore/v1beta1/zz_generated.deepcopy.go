@@ -808,7 +808,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -928,7 +928,7 @@ func (in *PscAutoConnection) DeepCopyInto(out *PscAutoConnection) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.NetworkRef != nil {

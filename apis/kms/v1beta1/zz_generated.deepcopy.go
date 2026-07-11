@@ -239,12 +239,12 @@ func (in *KMSAutokeyConfigSpec) DeepCopyInto(out *KMSAutokeyConfigSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.KeyProjectRef != nil {
 		in, out := &in.KeyProjectRef, &out.KeyProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.KeyProjectResolutionMode != nil {
@@ -737,7 +737,7 @@ func (in *KMSKeyHandleSpec) DeepCopyInto(out *KMSKeyHandleSpec) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {

@@ -125,7 +125,7 @@ func (in *AppEngineParent) DeepCopyInto(out *AppEngineParent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ApplicationRef != nil {
@@ -160,7 +160,7 @@ func (in *AppEngineRef) DeepCopyInto(out *AppEngineRef) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ApplicationRef != nil {
@@ -260,7 +260,7 @@ func (in *ComputeServiceParent) DeepCopyInto(out *ComputeServiceParent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Region != nil {
@@ -290,7 +290,7 @@ func (in *ComputeServiceRef) DeepCopyInto(out *ComputeServiceRef) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Region != nil {
@@ -610,7 +610,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ProjectWebRef != nil {
@@ -645,7 +645,7 @@ func (in *ProjectParent) DeepCopyInto(out *ProjectParent) {
 	*out = *in
 	if in.Ref != nil {
 		in, out := &in.Ref, &out.Ref
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -665,7 +665,7 @@ func (in *ProjectWebParent) DeepCopyInto(out *ProjectWebParent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }
@@ -685,7 +685,7 @@ func (in *ProjectWebRef) DeepCopyInto(out *ProjectWebRef) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }

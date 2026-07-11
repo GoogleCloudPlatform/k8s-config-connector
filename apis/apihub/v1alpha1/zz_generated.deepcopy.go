@@ -165,7 +165,7 @@ func (in *APIHubAPISpec) DeepCopyInto(out *APIHubAPISpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -426,7 +426,7 @@ func (in *APIHubDeploymentSpec) DeepCopyInto(out *APIHubDeploymentSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -640,7 +640,7 @@ func (in *APIHubExternalAPISpec) DeepCopyInto(out *APIHubExternalAPISpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -846,7 +846,7 @@ func (in *APIHubInstanceSpec) DeepCopyInto(out *APIHubInstanceSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1047,7 +1047,7 @@ func (in *APIHubPluginSpec) DeepCopyInto(out *APIHubPluginSpec) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1206,7 +1206,7 @@ func (in *APIHubRuntimeProjectAttachmentSpec) DeepCopyInto(out *APIHubRuntimePro
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1216,7 +1216,7 @@ func (in *APIHubRuntimeProjectAttachmentSpec) DeepCopyInto(out *APIHubRuntimePro
 	}
 	if in.RuntimeProjectRef != nil {
 		in, out := &in.RuntimeProjectRef, &out.RuntimeProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 }

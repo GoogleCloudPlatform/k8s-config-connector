@@ -351,7 +351,7 @@ func (in *DevConnectAccountConnectorSpec) DeepCopyInto(out *DevConnectAccountCon
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -539,7 +539,7 @@ func (in *DevConnectConnectionSpec) DeepCopyInto(out *DevConnectConnectionSpec) 
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -764,7 +764,7 @@ func (in *DevConnectInsightsConfigSpec) DeepCopyInto(out *DevConnectInsightsConf
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(v1beta1.ProjectRefDeprecated)
 		**out = **in
 	}
 	if in.Location != nil {
