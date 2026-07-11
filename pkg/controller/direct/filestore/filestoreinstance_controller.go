@@ -17,13 +17,11 @@ package filestore
 import (
 	"context"
 	"fmt"
-	"sort"
+	"strings"
 
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -231,18 +229,69 @@ func (a *filestoreInstanceAdapter) Update(ctx context.Context, updateOp *directb
 		return err
 	}
 
-	paths, updateMask, err := compareFilestoreInstance(ctx, a.actual, desired)
+	first := true
+	normalize := func(ctx context.Context, pbObj *pb.Instance) error {
+		if first {
+			pbObj.Labels = desired.Labels
+			first = false
+		} else {
+			pbObj.Labels = a.actual.Labels
+		}
+
+		// Merge any unset fields in Networks and FileShares from actual to avoid false diffs on immutable fields
+		for _, dn := range pbObj.Networks {
+			for _, an := range a.actual.Networks {
+				if isSameNetwork(dn.Network, an.Network) {
+					dn.Network = an.Network
+
+					if len(dn.Modes) == 0 {
+						dn.Modes = an.Modes
+					}
+					if dn.ReservedIpRange == "" {
+						dn.ReservedIpRange = an.ReservedIpRange
+					}
+					if dn.ConnectMode == pb.NetworkConfig_CONNECT_MODE_UNSPECIFIED {
+						dn.ConnectMode = an.ConnectMode
+					}
+				}
+			}
+		}
+
+		for _, df := range pbObj.FileShares {
+			for _, af := range a.actual.FileShares {
+				if df.Name == af.Name {
+					if df.CapacityGb == 0 {
+						df.CapacityGb = af.CapacityGb
+					}
+					if df.Source == nil {
+						df.Source = af.Source
+					}
+					if len(df.NfsExportOptions) == 0 {
+						df.NfsExportOptions = af.NfsExportOptions
+					}
+				}
+			}
+		}
+
+		return nil
+	}
+
+	diff, updateMask, err := common.CompareBrownfieldSpec(
+		ctx,
+		&a.desiredKRM.Spec,
+		a.actual,
+		FilestoreInstanceSpec_FromProto,
+		FilestoreInstanceSpec_ToProto,
+		normalize,
+	)
 	if err != nil {
 		return fmt.Errorf("comparing actual and desired FilestoreInstance: %w", err)
 	}
 
 	var latest *pb.Instance
-	if len(paths) > 0 {
-		report := &structuredreporting.Diff{Object: u}
-		for _, path := range paths.UnsortedList() {
-			report.AddField(path, nil, nil)
-		}
-		structuredreporting.ReportDiff(ctx, report)
+	if updateMask != nil && len(updateMask.Paths) > 0 {
+		diff.Object = u
+		structuredreporting.ReportDiff(ctx, diff)
 
 		req := &pb.UpdateInstanceRequest{
 			Instance:   desired,
@@ -281,83 +330,15 @@ func (a *filestoreInstanceAdapter) updateStatus(ctx context.Context, op directba
 	return op.UpdateStatus(ctx, status, nil)
 }
 
-func compareFilestoreInstance(ctx context.Context, actual, desired *pb.Instance) (sets.Set[string], *fieldmaskpb.FieldMask, error) {
-	var maskedActual *pb.Instance
-	{
-		mapCtx := &direct.MapContext{}
-		spec := FilestoreInstanceSpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
-		maskedActual = FilestoreInstanceSpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
-		}
+func isSameNetwork(a, b string) bool {
+	if a == b {
+		return true
 	}
-
-	fillUnsetFields(desired, maskedActual)
-
-	maskedActual.Name = desired.Name
-
-	paths, err := common.CompareProtoMessage(desired, maskedActual, common.BasicDiff)
-	if err != nil {
-		return nil, nil, err
+	if a == "" || b == "" {
+		return false
 	}
-
-	if len(paths) == 0 {
-		return nil, nil, nil
+	if strings.HasSuffix(a, "/"+b) || strings.HasSuffix(b, "/"+a) {
+		return true
 	}
-
-	pathsList := paths.UnsortedList()
-	sort.Strings(pathsList)
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: pathsList,
-	}
-	return paths, updateMask, nil
-}
-
-func fillUnsetFields(desired, maskedActual *pb.Instance) {
-	if desired.Description == "" {
-		desired.Description = maskedActual.Description
-	}
-	if desired.Labels == nil && maskedActual.Labels != nil {
-		desired.Labels = make(map[string]string)
-	}
-	for k, v := range maskedActual.Labels {
-		if _, exists := desired.Labels[k]; !exists {
-			desired.Labels[k] = v
-		}
-	}
-	for _, df := range desired.FileShares {
-		for _, af := range maskedActual.FileShares {
-			if df.Name == af.Name {
-				if df.CapacityGb == 0 {
-					df.CapacityGb = af.CapacityGb
-				}
-				if df.Source == nil {
-					df.Source = af.Source
-				}
-				if len(df.NfsExportOptions) == 0 {
-					df.NfsExportOptions = af.NfsExportOptions
-				}
-			}
-		}
-	}
-	for i, dn := range desired.Networks {
-		if i < len(maskedActual.Networks) {
-			an := maskedActual.Networks[i]
-			if dn.Network == "" {
-				dn.Network = an.Network
-			}
-			if len(dn.Modes) == 0 {
-				dn.Modes = an.Modes
-			}
-			if dn.ReservedIpRange == "" {
-				dn.ReservedIpRange = an.ReservedIpRange
-			}
-			if dn.ConnectMode == pb.NetworkConfig_CONNECT_MODE_UNSPECIFIED {
-				dn.ConnectMode = an.ConnectMode
-			}
-		}
-	}
+	return false
 }
