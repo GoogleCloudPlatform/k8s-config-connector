@@ -10,7 +10,7 @@
   name: privatecacertificateauthority-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificates/privatecacertificate-${uniqueId}
   group: privateca.cnrm.cloud.google.com
   kind: PrivateCACertificate
   name: privatecacertificate-${uniqueId}
