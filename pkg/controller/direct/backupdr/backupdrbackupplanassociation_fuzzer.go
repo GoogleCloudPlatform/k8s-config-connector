@@ -33,6 +33,23 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto, BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto,
 	)
 
+	// Field Comparison Documentation:
+	//
+	// KRM Spec Field                     | Protobuf Field            | Fuzzer Status
+	// -----------------------------------|---------------------------|-------------------------------------------------------
+	// spec.resourceType                  | .resource_type            | f.SpecField
+	// spec.backupPlanRef                 | .backup_plan              | f.SpecField
+	// spec.resource                      | .resource                 | f.Unimplemented_Identity (requires conditional URL formatting)
+	// (metadata/resourceID)              | .name                     | f.Unimplemented_Identity (GCP resource name)
+	//
+	// KRM ObservedState (Status) Field   | Protobuf Field            | Fuzzer Status
+	// -----------------------------------|---------------------------|-------------------------------------------------------
+	// status.observedState.createTime    | .create_time              | f.StatusField
+	// status.observedState.updateTime    | .update_time              | f.StatusField
+	// status.observedState.state         | .state                    | f.StatusField
+	// status.observedState.rulesConfig   | .rules_config_info        | f.StatusField
+	// status.observedState.dataSource    | .data_source              | f.StatusField
+
 	f.SpecField(".resource_type")
 	f.SpecField(".backup_plan")
 
@@ -47,7 +64,6 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_id")
-	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
 	f.Unimplemented_NotYetTriaged(".cloud_sql_instance_backup_plan_association_properties")
 	f.Unimplemented_NotYetTriaged(".resource_properties")
 
