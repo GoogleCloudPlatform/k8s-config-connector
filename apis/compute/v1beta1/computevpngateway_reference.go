@@ -96,7 +96,7 @@ func (r *ComputeVPNGatewayRef) Normalize(ctx context.Context, reader client.Read
 			trimmed := apirefs.TrimComputeURIPrefix(selfLink)
 			id := &ComputeVPNGatewayIdentity{}
 			if err := id.FromExternal(trimmed); err == nil {
-				return trimmed
+				return id.String()
 			}
 		}
 		return ""
