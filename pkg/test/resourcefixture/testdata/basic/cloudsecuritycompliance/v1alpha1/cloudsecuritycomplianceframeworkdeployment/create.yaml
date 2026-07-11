@@ -1,0 +1,19 @@
+apiVersion: cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1
+kind: CloudSecurityComplianceFrameworkDeployment
+metadata:
+  name: cloudsecuritycomplianceframeworkdeployment-${uniqueId}
+spec:
+  organizationRef:
+    external: "organizations/123456789"
+  location: global
+  description: "A basic framework deployment"
+  framework:
+    frameworkRef:
+      external: "organizations/123456789/locations/global/frameworks/my-framework"
+  cloudControlMetadata:
+  - cloudControlDetails:
+      cloudControlRef:
+        external: "organizations/123456789/locations/global/cloudControls/my-control"
+    enforcementMode: "PREVENTIVE"
+  targetResourceConfig:
+    existingTargetResource: "organizations/123456789"

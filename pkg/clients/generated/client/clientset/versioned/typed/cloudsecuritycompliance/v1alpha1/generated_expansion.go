@@ -25,4 +25,6 @@ type CloudSecurityComplianceCloudControlExpansion interface{}
 
 type CloudSecurityComplianceFrameworkExpansion interface{}
 
+type CloudSecurityComplianceFrameworkDeploymentExpansion interface{}
+
 type CloudSecurityFrameworkExpansion interface{}

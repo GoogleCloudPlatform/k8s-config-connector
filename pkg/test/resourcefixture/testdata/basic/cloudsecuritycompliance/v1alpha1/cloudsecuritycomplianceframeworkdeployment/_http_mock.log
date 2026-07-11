@@ -1,0 +1,158 @@
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F123456789%2Flocations%2Fglobal%2FframeworkDeployments%2Fcloudsecuritycomplianceframeworkdeployment-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudsecuritycompliance.googleapis.com/v1/organizations/123456789/locations/global/frameworkDeployments?%24alt=json%3Benum-encoding%3Dint&frameworkDeploymentId=cloudsecuritycomplianceframeworkdeployment-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F123456789%2Flocations%2Fglobal
+
+{
+  "cloudControlMetadata": [
+    {
+      "cloudControlDetails": {
+        "name": "organizations/123456789/locations/global/cloudControls/my-control"
+      },
+      "enforcementMode": 1
+    }
+  ],
+  "description": "A basic framework deployment",
+  "framework": {
+    "framework": "organizations/123456789/locations/global/frameworks/my-framework"
+  },
+  "targetResourceConfig": {
+    "existingTargetResource": "organizations/123456789"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "organizations/123456789/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment",
+    "cloudControlMetadata": [
+      {
+        "cloudControlDetails": {
+          "name": "organizations/123456789/locations/global/cloudControls/my-control"
+        },
+        "enforcementMode": 1
+      }
+    ],
+    "description": "A basic framework deployment",
+    "framework": {
+      "framework": "organizations/123456789/locations/global/frameworks/my-framework"
+    },
+    "name": "organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}",
+    "targetResourceConfig": {
+      "existingTargetResource": "organizations/123456789"
+    }
+  }
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F123456789%2Flocations%2Fglobal%2FframeworkDeployments%2Fcloudsecuritycomplianceframeworkdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudControlMetadata": [
+    {
+      "cloudControlDetails": {
+        "name": "organizations/123456789/locations/global/cloudControls/my-control"
+      },
+      "enforcementMode": 1
+    }
+  ],
+  "description": "A basic framework deployment",
+  "framework": {
+    "framework": "organizations/123456789/locations/global/frameworks/my-framework"
+  },
+  "name": "organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}",
+  "targetResourceConfig": {
+    "existingTargetResource": "organizations/123456789"
+  }
+}
+
+---
+
+DELETE https://cloudsecuritycompliance.googleapis.com/v1/organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F123456789%2Flocations%2Fglobal%2FframeworkDeployments%2Fcloudsecuritycomplianceframeworkdeployment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.cloudsecuritycompliance.v1.FrameworkDeployment",
+    "cloudControlMetadata": [
+      {
+        "cloudControlDetails": {
+          "name": "organizations/123456789/locations/global/cloudControls/my-control"
+        },
+        "enforcementMode": 1
+      }
+    ],
+    "description": "A basic framework deployment",
+    "framework": {
+      "framework": "organizations/123456789/locations/global/frameworks/my-framework"
+    },
+    "name": "organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}",
+    "targetResourceConfig": {
+      "existingTargetResource": "organizations/123456789"
+    }
+  }
+}

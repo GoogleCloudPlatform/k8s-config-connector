@@ -1,0 +1,6 @@
+- caisURL: //cloudsecuritycompliance.googleapis.com/organizations/123456789/locations/global/frameworkDeployments/cloudsecuritycomplianceframeworkdeployment-${uniqueId}
+  group: cloudsecuritycompliance.cnrm.cloud.google.com
+  kind: CloudSecurityComplianceFrameworkDeployment
+  name: cloudsecuritycomplianceframeworkdeployment-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
