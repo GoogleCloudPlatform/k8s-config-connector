@@ -20,3 +20,14 @@ We implemented export support for `ComputeAddress` (GVK: `compute.cnrm.cloud.goo
    - `computeaddressipcollection-direct`
 
 All tests pass perfectly!
+
+### New Observations & Alignment
+During comprehensive testing, we observed that when E2E tests run both legacy and direct scenario runs in series, the direct controller failed to reconcile updates (e.g. adding labels) due to a strict, non-aligned drift detection in `compareAddress()`.
+1. **Server-allocated fields (like `Address` and `Purpose`)**: When the user's YAML did not specify an address or a purpose, Google Cloud (or mockgcp) automatically allocated them. `compareAddress()` interpreted this as the user trying to change the server-allocated value to `nil`/empty, resulting in `ComputeAddress is immutable and cannot be updated` reconciliation failures.
+2. **URL Canonicalization**: Resource reference URLs (like `Network` and `Subnetwork`) returned from mockgcp had the full HTTP prefix, while KCC used relative paths. This also created a false-positive diff.
+
+**Solution**:
+- Updated `compareAddress()` in `computeaddress_controller.go` to automatically copy server-allocated/generated values (`Address` and `Purpose`) from `actual` to `clonedDesired` if they were not explicitly specified.
+- Integrated `refs.TrimComputeURIPrefix()` inside `populateDefaults` to canonicalize both `Network` and `Subnetwork` URLs before comparing.
+- This allowed updates to succeed flawlessly in the direct controller scenario, ensuring both `_final_object.diff` and `_exported_object.diff` aligned beautifully with the legacy controller outputs.
+

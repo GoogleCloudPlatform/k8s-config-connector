@@ -36,6 +36,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -434,6 +435,13 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 
 	clonedDesired := proto.CloneOf(desired)
 
+	if clonedDesired.Address == nil {
+		clonedDesired.Address = actual.Address
+	}
+	if clonedDesired.Purpose == nil {
+		clonedDesired.Purpose = actual.Purpose
+	}
+
 	populateDefaults := func(obj *pb.Address) {
 		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
 		if obj.AddressType == nil {
@@ -444,6 +452,14 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 		}
 		if obj.NetworkTier == nil {
 			obj.NetworkTier = direct.PtrTo("PREMIUM")
+		}
+		if obj.Network != nil {
+			trimmed := refs.TrimComputeURIPrefix(*obj.Network)
+			obj.Network = &trimmed
+		}
+		if obj.Subnetwork != nil {
+			trimmed := refs.TrimComputeURIPrefix(*obj.Subnetwork)
+			obj.Subnetwork = &trimmed
 		}
 	}
 	populateDefaults(maskedActual)

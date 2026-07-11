@@ -1,117 +1,124 @@
-61c61
+1,61c1
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "autoCreateSubnetworks": true,
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "Default network for the project",
+<   "id": "000000000000000000000",
+<   "kind": "compute#network",
+<   "name": "${subnetworkID}",
+<   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "fingerprint": "abcdef0123A=",
+<   "gatewayAddress": "10.0.0.1",
+<   "id": "000000000000000000000",
+<   "ipCidrRange": "10.128.0.0/20",
+<   "kind": "compute#subnetwork",
+<   "name": "${subnetworkID}",
+<   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+<   "privateIpGoogleAccess": false,
+<   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+<   "purpose": "PRIVATE",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+<   "stackType": "IPV4_ONLY",
+<   "state": "READY"
+< }
+< 
+< ---
+< 
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-90c90
+90c30
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses
-101d100
+101d40
 <   "region": "projects/${projectId}/global/regions/us-central1",
-133c132,133
+133c72,73
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-164,234c164
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "address": "8.8.8.8",
-<   "addressType": "INTERNAL",
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test address",
-<   "id": "000000000000000000000",
-<   "kind": "compute#address",
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   },
-<   "name": "${addressID}",
-<   "networkTier": "PREMIUM",
-<   "purpose": "GCE_ENDPOINT",
-<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-<   "status": "RESERVED",
-<   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-< }
-< 
-< ---
-< 
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
-< Content-Type: application/json
-< 
-< {
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   }
-< }
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "id": "000000000000000000000",
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "progress": 0,
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "DONE"
-< }
-< 
-< ---
-< 
+164c104
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-270,342c200
+200c140
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
-< Content-Type: application/json
-< 
-< {
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}?alt=json
+202a143,152
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+204,208c154,162
 <   "labelFingerprint": "abcdef0123A=",
 <   "labels": {
 <     "cnrm-test": "true",
-<     "managed-by-cnrm": "true",
-<     "test-label": "updated-value"
+<     "managed-by-cnrm": "true"
 <   }
-< }
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "id": "000000000000000000000",
+---
+>   "autoCreateSubnetworks": true,
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "Default network for the project",
+>   "id": "000000000000000000000",
+>   "kind": "compute#network",
+>   "name": "${subnetworkID}",
+>   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+>   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+210a165,169
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+> Content-Type: application/json
+> 
+221a181,183
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "fingerprint": "abcdef0123A=",
+>   "gatewayAddress": "10.0.0.1",
+223,229c185,195
 <   "insertTime": "2024-04-01T12:34:56.123456Z",
 <   "kind": "compute#operation",
 <   "name": "${operationID}",
@@ -119,51 +126,35 @@
 <   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
 <   "startTime": "2024-04-01T12:34:56.123456Z",
 <   "status": "DONE"
-< }
-< 
-< ---
-< 
+---
+>   "ipCidrRange": "10.128.0.0/20",
+>   "kind": "compute#subnetwork",
+>   "name": "${subnetworkID}",
+>   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
+>   "privateIpGoogleAccess": false,
+>   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+>   "purpose": "PRIVATE",
+>   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+>   "stackType": "IPV4_ONLY",
+>   "state": "READY"
+234c200
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "address": "8.8.8.8",
-<   "addressType": "INTERNAL",
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test address",
-<   "id": "000000000000000000000",
-<   "kind": "compute#address",
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true",
-<     "test-label": "updated-value"
-<   },
-<   "name": "${addressID}",
-<   "networkTier": "PREMIUM",
-<   "purpose": "GCE_ENDPOINT",
-<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
-<   "status": "RESERVED",
-<   "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-< }
-< 
-< ---
-< 
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+270c236
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}/setLabels
+305c271
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
+342c308
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
-373c231,232
+373c339,340
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}

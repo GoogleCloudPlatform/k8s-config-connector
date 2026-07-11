@@ -13,81 +13,46 @@
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-130,198c132
-< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "address": "8.8.8.8",
-<   "addressType": "INTERNAL",
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test global address",
-<   "id": "000000000000000000000",
-<   "kind": "compute#address",
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   },
-<   "name": "${addressID}",
-<   "network": "projects/${projectId}/global/networks/${networkID}",
-<   "prefixLength": 16,
-<   "purpose": "VPC_PEERING",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
-< }
-< 
-< ---
-< 
-< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels?alt=json
-< Content-Type: application/json
-< 
-< {
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   }
-< }
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "id": "000000000000000000000",
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "progress": 0,
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "DONE"
-< }
-< 
-< ---
-< 
+130c132
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
-216a151
+148a151
 >   "ipVersion": "IPV4",
-232,302c167
+164c167
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels
+171c174,175
+<     "managed-by-cnrm": "true"
+---
+>     "managed-by-cnrm": "true",
+>     "test-label": "updated-value"
+198c202
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+212,254d215
+<   "address": "8.8.8.8",
+<   "addressType": "INTERNAL",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "a test global address",
+<   "id": "000000000000000000000",
+<   "kind": "compute#address",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "${addressID}",
+<   "network": "projects/${projectId}/global/networks/${networkID}",
+<   "prefixLength": 16,
+<   "purpose": "VPC_PEERING",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+< }
+< 
+< ---
+< 
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels?alt=json
 < Content-Type: application/json
 < 
@@ -111,57 +76,17 @@
 < X-Xss-Protection: 0
 < 
 < {
-<   "id": "000000000000000000000",
-<   "insertTime": "2024-04-01T12:34:56.123456Z",
-<   "kind": "compute#operation",
-<   "name": "${operationID}",
-<   "progress": 0,
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-<   "startTime": "2024-04-01T12:34:56.123456Z",
-<   "status": "DONE"
-< }
-< 
-< ---
-< 
+267c228
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
-< Content-Type: application/json
-< 
-< 200 OK
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "address": "8.8.8.8",
-<   "addressType": "INTERNAL",
-<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-<   "description": "a test global address",
-<   "id": "000000000000000000000",
-<   "kind": "compute#address",
-<   "labelFingerprint": "abcdef0123A=",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true",
-<     "test-label": "updated-value"
-<   },
-<   "name": "${addressID}",
-<   "network": "projects/${projectId}/global/networks/${networkID}",
-<   "prefixLength": 16,
-<   "purpose": "VPC_PEERING",
-<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
-< }
-< 
-< ---
-< 
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
+285a247
+>   "ipVersion": "IPV4",
+302c264
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}
-332c197,198
+332c294,295
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
