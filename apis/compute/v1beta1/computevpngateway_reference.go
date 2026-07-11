@@ -19,6 +19,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -93,9 +94,22 @@ func (r *ComputeVPNGatewayRef) Normalize(ctx context.Context, reader client.Read
 		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
 		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
 		if selfLink != "" {
-			return apirefs.TrimComputeURIPrefix(selfLink)
+			trimmed := apirefs.TrimComputeURIPrefix(selfLink)
+			id := &ComputeVPNGatewayIdentity{}
+			if err := id.FromExternal(trimmed); err == nil {
+				return trimmed
+			}
 		}
-		return ""
+
+		obj, err := common.ToStructuredType[*ComputeVPNGateway](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromComputeVPNGatewaySpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
