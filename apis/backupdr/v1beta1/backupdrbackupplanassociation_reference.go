@@ -16,17 +16,15 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &BackupPlanAssociationRef{}
+var _ refs.Ref = &BackupPlanAssociationRef{}
 
 // BackupPlanAssociationRef is a reference to a BackupDRBackupPlanAssociation.
 type BackupPlanAssociationRef struct {
@@ -41,42 +39,56 @@ type BackupPlanAssociationRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BackupDRBackupPlanAssociation.
-// If the "External" is given in the other resource's spec.BackupDRBackupPlanAssociationRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BackupDRBackupPlanAssociation object from the cluster.
-func (r *BackupPlanAssociationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BackupDRBackupPlanAssociationGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseBackupPlanAssociationExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&BackupPlanAssociationRef{}, &BackupDRBackupPlanAssociation{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *BackupPlanAssociationRef) GetGVK() schema.GroupVersionKind {
+	return BackupDRBackupPlanAssociationGVK
+}
+
+func (r *BackupPlanAssociationRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BackupDRBackupPlanAssociationGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BackupDRBackupPlanAssociationGVK, key, err)
+}
+
+func (r *BackupPlanAssociationRef) GetExternal() string {
+	return r.External
+}
+
+func (r *BackupPlanAssociationRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *BackupPlanAssociationRef) ValidateExternal(ref string) error {
+	id := &BackupPlanAssociationIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	return nil
+}
+
+func (r *BackupPlanAssociationRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &BackupPlanAssociationIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	return id, nil
+}
+
+func (r *BackupPlanAssociationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
+}
+
+// NormalizedExternal provision the "External" value.
+// Kept for backward compatibility with older callers.
+func (r *BackupPlanAssociationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	r.External = actualExternalRef
 	return r.External, nil
 }
