@@ -62,7 +62,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			replacements.ReplaceStringValue(tokens[n-1], "${notificationChannelID}")
 		}
 		if n > 2 && tokens[n-2] == "alertPolicies" {
-			replacements.ReplaceStringValue(tokens[n-1], "${alertPolicyID}")
+			replacements.ReplaceStringValue(tokens[n-1], "${alertPolicyId}")
 		}
 	}
 
