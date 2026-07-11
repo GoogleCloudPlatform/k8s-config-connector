@@ -37,3 +37,39 @@ func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb
 	out.LogSeverity = direct.Enum_ToProto[pb.LoggingConfig_LogSeverity](mapCtx, in.LogSeverity)
 	return out
 }
+
+func EventarcEnrollmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Enrollment) *krm.EventarcEnrollmentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcEnrollmentSpec{}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CELMatch = direct.LazyPtr(in.GetCelMatch())
+	if in.GetMessageBus() != "" {
+		out.MessageBusRef = &krm.EventarcMessageBusRef{External: in.GetMessageBus()}
+	}
+	if in.GetDestination() != "" {
+		out.DestinationRef = &krm.EventarcPipelineRef{External: in.GetDestination()}
+	}
+	return out
+}
+
+func EventarcEnrollmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcEnrollmentSpec) *pb.Enrollment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Enrollment{}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CelMatch = direct.ValueOf(in.CELMatch)
+	if in.MessageBusRef != nil {
+		out.MessageBus = in.MessageBusRef.External
+	}
+	if in.DestinationRef != nil {
+		out.Destination = in.DestinationRef.External
+	}
+	return out
+}

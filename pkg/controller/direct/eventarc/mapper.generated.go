@@ -109,6 +109,47 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	return out
 }
+
+/* found existing non-generated mapping function "EventarcChannelObservedState_PubsubTopic_ToProto", skipping
+func EventarcChannelObservedState_PubsubTopic_ToProto(mapCtx *direct.MapContext, in *string) *pb.Channel_PubsubTopic {
+	if in == nil {
+		return nil
+	}
+	return &pb.Channel_PubsubTopic{PubsubTopic: *in}
+}
+*/
+
+/* found existing non-generated mapping function "EventarcChannelSpec_FromProto", skipping
+func EventarcChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *krm.EventarcChannelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcChannelSpec{}
+	// MISSING: Name
+	if in.GetProvider() != "" {
+		out.ProviderRef = &krmconnectorv1.ProviderRef{External: in.GetProvider()}
+	}
+	// MISSING: CryptoKeyName
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "EventarcChannelSpec_ToProto", skipping
+
+	func EventarcChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelSpec) *pb.Channel {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Channel{}
+		// MISSING: Name
+		if in.ProviderRef != nil {
+			out.Provider = in.ProviderRef.External
+		}
+		// MISSING: CryptoKeyName
+		return out
+	}
+*/
 func EventarcEnrollmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Enrollment) *krm.EventarcEnrollmentObservedState {
 	if in == nil {
 		return nil
@@ -135,6 +176,8 @@ func EventarcEnrollmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: CelMatch
 	return out
 }
+
+/* found existing non-generated mapping function "EventarcEnrollmentSpec_FromProto", skipping
 func EventarcEnrollmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Enrollment) *krm.EventarcEnrollmentSpec {
 	if in == nil {
 		return nil
@@ -154,25 +197,31 @@ func EventarcEnrollmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Enrollme
 	}
 	return out
 }
-func EventarcEnrollmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcEnrollmentSpec) *pb.Enrollment {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "EventarcEnrollmentSpec_ToProto", skipping
+
+	func EventarcEnrollmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcEnrollmentSpec) *pb.Enrollment {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Enrollment{}
+		// MISSING: Name
+		out.Labels = in.Labels
+		out.Annotations = in.Annotations
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		// MISSING: CelMatch
+		// (near miss): "CelMatch" vs "CELMatch"
+		if in.MessageBusRef != nil {
+			out.MessageBus = in.MessageBusRef.External
+		}
+		if in.DestinationRef != nil {
+			out.Destination = in.DestinationRef.External
+		}
+		return out
 	}
-	out := &pb.Enrollment{}
-	// MISSING: Name
-	out.Labels = in.Labels
-	out.Annotations = in.Annotations
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: CelMatch
-	// (near miss): "CelMatch" vs "CELMatch"
-	if in.MessageBusRef != nil {
-		out.MessageBus = in.MessageBusRef.External
-	}
-	if in.DestinationRef != nil {
-		out.Destination = in.DestinationRef.External
-	}
-	return out
-}
+*/
 func EventarcGoogleAPISourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleApiSource) *krm.EventarcGoogleAPISourceObservedState {
 	if in == nil {
 		return nil
@@ -249,3 +298,27 @@ func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: CryptoKeyName
 	return out
 }
+
+/* found existing non-generated mapping function "EventarcGoogleChannelConfigSpec_FromProto", skipping
+func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krm.EventarcGoogleChannelConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcGoogleChannelConfigSpec{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "EventarcGoogleChannelConfigSpec_ToProto", skipping
+func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleChannelConfig{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	return out
+}
+*/
