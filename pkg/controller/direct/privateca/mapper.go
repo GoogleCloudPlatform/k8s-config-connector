@@ -1370,6 +1370,8 @@ func CertificateDescription_SubjectDescription_FromProto(mapCtx *direct.MapConte
 		lifetimeStr := fmt.Sprintf("%ds", seconds)
 		out.Lifetime = &lifetimeStr
 	}
+	out.NotAfterTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNotAfterTime())
+	out.NotBeforeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNotBeforeTime())
 	return out
 }
 
@@ -1393,5 +1395,7 @@ func CertificateDescription_SubjectDescription_ToProto(mapCtx *direct.MapContext
 	out.SubjectAltName = SubjectAltNamesStatus_ToProto(mapCtx, in.SubjectAltName)
 	out.HexSerialNumber = direct.ValueOf(in.HexSerialNumber)
 	out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
+	out.NotAfterTime = direct.StringTimestamp_ToProto(mapCtx, in.NotAfterTime)
+	out.NotBeforeTime = direct.StringTimestamp_ToProto(mapCtx, in.NotBeforeTime)
 	return out
 }
