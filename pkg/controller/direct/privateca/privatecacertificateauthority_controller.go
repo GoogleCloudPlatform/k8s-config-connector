@@ -17,7 +17,6 @@ package privateca
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	api "cloud.google.com/go/security/privateca/apiv1"
 	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
@@ -109,33 +108,20 @@ func (m *certificateAuthorityModel) AdapterForObject(ctx context.Context, op *di
 }
 
 func (m *certificateAuthorityModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// Format is //privateca.googleapis.com/projects/PROJECT_ID/locations/LOCATION/caPools/CA_POOL_ID/certificateAuthorities/CERTIFICATE_AUTHORITY_ID
-
-	if !strings.HasPrefix(url, "//privateca.googleapis.com/") {
+	id := &krm.PrivateCACertificateAuthorityIdentity{}
+	if err := id.FromExternal(url); err != nil {
 		return nil, nil
 	}
 
-	tokens := strings.Split(strings.TrimPrefix(url, "//privateca.googleapis.com/"), "/")
-	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "caPools" && tokens[6] == "certificateAuthorities" {
-		caClient, err := m.newCertificateAuthorityClient(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		id := &krm.PrivateCACertificateAuthorityIdentity{
-			Project:              tokens[1],
-			Location:             tokens[3],
-			CAPool:               tokens[5],
-			CertificateAuthority: tokens[7],
-		}
-
-		return &certificateAuthorityAdapter{
-			id:       id,
-			caClient: caClient,
-		}, nil
+	caClient, err := m.newCertificateAuthorityClient(ctx)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, nil
+	return &certificateAuthorityAdapter{
+		id:       id,
+		caClient: caClient,
+	}, nil
 }
 
 // Delete implements the Adapter interface.
@@ -188,7 +174,10 @@ func (a *certificateAuthorityAdapter) Create(ctx context.Context, createOp *dire
 	log.V(2).Info("successfully created PrivateCACertificateAuthority", "name", a.id.String())
 
 	// Fetch fully-populated resource before calling updateStatus
-	latest, err := a.getLatest(ctx)
+	getLatestReq := &pb.GetCertificateAuthorityRequest{
+		Name: a.id.String(),
+	}
+	latest, err := a.caClient.GetCertificateAuthority(ctx, getLatestReq)
 	if err != nil {
 		return err
 	}
@@ -226,7 +215,10 @@ func (a *certificateAuthorityAdapter) Update(ctx context.Context, updateOp *dire
 		}
 		log.V(2).Info("successfully updated PrivateCACertificateAuthority", "name", a.id.String())
 
-		latest, err = a.getLatest(ctx)
+		getLatestReq := &pb.GetCertificateAuthorityRequest{
+			Name: a.id.String(),
+		}
+		latest, err = a.caClient.GetCertificateAuthority(ctx, getLatestReq)
 		if err != nil {
 			return err
 		}
@@ -293,7 +285,10 @@ func (a *certificateAuthorityAdapter) Find(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	latest, err := a.getLatest(ctx)
+	req := &pb.GetCertificateAuthorityRequest{
+		Name: a.id.String(),
+	}
+	latest, err := a.caClient.GetCertificateAuthority(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -304,15 +299,4 @@ func (a *certificateAuthorityAdapter) Find(ctx context.Context) (bool, error) {
 	a.actual = latest
 
 	return true, nil
-}
-
-func (a *certificateAuthorityAdapter) getLatest(ctx context.Context) (*pb.CertificateAuthority, error) {
-	req := &pb.GetCertificateAuthorityRequest{
-		Name: a.id.String(),
-	}
-	resp, err := a.caClient.GetCertificateAuthority(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
