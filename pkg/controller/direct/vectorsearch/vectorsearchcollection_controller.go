@@ -25,7 +25,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/vectorsearch/apiv1"
@@ -259,7 +258,7 @@ func compareCollection(ctx context.Context, actual, desired *pb.Collection) (*st
 	clonedActual.CreateTime = desired.CreateTime
 	clonedActual.UpdateTime = desired.UpdateTime
 
-	return tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), clonedActual.ProtoReflect())
+	return common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), clonedActual.ProtoReflect())
 }
 
 func VectorSearchCollectionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Collection) *krm.VectorSearchCollectionStatus {
