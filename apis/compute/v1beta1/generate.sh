@@ -71,6 +71,7 @@ go run . generate-types \
   --resource ComputeVPNTunnel:VpnTunnel \
   --resource ComputeInterconnectAttachment:InterconnectAttachment \
   --resource ComputePacketMirroring:PacketMirroring \
+  --resource ComputeServiceAttachment:ServiceAttachment \
   --include-skipped-output
 
 go run . generate-mapper \
