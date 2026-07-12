@@ -298,6 +298,18 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		}
 		return s
 	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".notificationChannels[]") || strings.HasSuffix(path, ".notificationChannels[].external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "notificationChannels":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${notificationChannelID}")
+				}
+			}
+		}
+		return s
+	})
 
 	// Specific to EssentialContactContact
 	visitor.replacePaths[".validateTime"] = mockgcpregistry.PlaceholderTimestamp

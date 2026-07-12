@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -41,7 +42,7 @@ type MonitoringAlertPolicyRef struct {
 }
 
 func init() {
-	refs.Register(&MonitoringAlertPolicyRef{}, nil)
+	refs.Register(&MonitoringAlertPolicyRef{}, &MonitoringAlertPolicy{})
 }
 
 func (r *MonitoringAlertPolicyRef) GetGVK() schema.GroupVersionKind {
@@ -83,7 +84,11 @@ func (r *MonitoringAlertPolicyRef) ParseExternalToIdentity() (identity.Identity,
 
 func (r *MonitoringAlertPolicyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromMonitoringAlertPolicySpec(ctx, reader, u)
+		typedObj, err := common.ToStructuredType[*MonitoringAlertPolicy](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromMonitoringAlertPolicySpec(ctx, reader, typedObj)
 		if err != nil {
 			return ""
 		}

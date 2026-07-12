@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //monitoring.googleapis.com/projects/${projectId}/alertPolicies/
   group: monitoring.cnrm.cloud.google.com
   kind: MonitoringAlertPolicy
   name: monitoringalertpolicy-${uniqueId}
