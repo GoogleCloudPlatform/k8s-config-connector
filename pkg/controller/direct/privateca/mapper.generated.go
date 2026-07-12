@@ -270,19 +270,19 @@ func CertificateConfig_SubjectConfig_FromProto(mapCtx *direct.MapContext, in *pb
 }
 */
 
-/*
-found existing non-generated mapping function "CertificateConfig_SubjectConfig_ToProto", skipping
-
-	func CertificateConfig_SubjectConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateConfig_SubjectConfig) *pb.CertificateConfig_SubjectConfig {
-		if in == nil {
-			return nil
-		}
-		out := &pb.CertificateConfig_SubjectConfig{}
-		out.Subject = Subject_ToProto(mapCtx, in.Subject)
-		out.SubjectAltName = SubjectAltNames_ToProto(mapCtx, in.SubjectAltName)
-		return out
+/* found existing non-generated mapping function "CertificateConfig_SubjectConfig_ToProto", skipping
+func CertificateConfig_SubjectConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateConfig_SubjectConfig) *pb.CertificateConfig_SubjectConfig {
+	if in == nil {
+		return nil
 	}
+	out := &pb.CertificateConfig_SubjectConfig{}
+	out.Subject = Subject_ToProto(mapCtx, in.Subject)
+	out.SubjectAltName = SubjectAltNames_ToProto(mapCtx, in.SubjectAltName)
+	return out
+}
 */
+
+/* found existing non-generated mapping function "CertificateDescription_FromProto", skipping
 func CertificateDescription_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription) *krm.CertificateDescription {
 	if in == nil {
 		return nil
@@ -301,24 +301,30 @@ func CertificateDescription_FromProto(mapCtx *direct.MapContext, in *pb.Certific
 	// MISSING: TbsCertificateDigest
 	return out
 }
-func CertificateDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription) *pb.CertificateDescription {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "CertificateDescription_ToProto", skipping
+
+	func CertificateDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription) *pb.CertificateDescription {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CertificateDescription{}
+		out.SubjectDescription = CertificateDescription_SubjectDescription_ToProto(mapCtx, in.SubjectDescription)
+		out.X509Description = CertificateDescription_X509Description_ToProto(mapCtx, in.X509Description)
+		out.PublicKey = PublicKey_ToProto(mapCtx, in.PublicKey)
+		// MISSING: SubjectKeyID
+		// (near miss): "SubjectKeyID" vs "SubjectKeyId"
+		// MISSING: AuthorityKeyID
+		// (near miss): "AuthorityKeyID" vs "AuthorityKeyId"
+		out.CrlDistributionPoints = in.CrlDistributionPoints
+		out.AiaIssuingCertificateUrls = in.AiaIssuingCertificateUrls
+		out.CertFingerprint = CertificateDescription_CertificateFingerprint_ToProto(mapCtx, in.CertFingerprint)
+		// MISSING: TbsCertificateDigest
+		return out
 	}
-	out := &pb.CertificateDescription{}
-	out.SubjectDescription = CertificateDescription_SubjectDescription_ToProto(mapCtx, in.SubjectDescription)
-	out.X509Description = CertificateDescription_X509Description_ToProto(mapCtx, in.X509Description)
-	out.PublicKey = PublicKey_ToProto(mapCtx, in.PublicKey)
-	// MISSING: SubjectKeyID
-	// (near miss): "SubjectKeyID" vs "SubjectKeyId"
-	// MISSING: AuthorityKeyID
-	// (near miss): "AuthorityKeyID" vs "AuthorityKeyId"
-	out.CrlDistributionPoints = in.CrlDistributionPoints
-	out.AiaIssuingCertificateUrls = in.AiaIssuingCertificateUrls
-	out.CertFingerprint = CertificateDescription_CertificateFingerprint_ToProto(mapCtx, in.CertFingerprint)
-	// MISSING: TbsCertificateDigest
-	return out
-}
+*/
 func CertificateDescription_CertificateFingerprint_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription_CertificateFingerprint) *krm.CertificateDescription_CertificateFingerprint {
 	if in == nil {
 		return nil
@@ -335,6 +341,8 @@ func CertificateDescription_CertificateFingerprint_ToProto(mapCtx *direct.MapCon
 	out.Sha256Hash = direct.ValueOf(in.Sha256Hash)
 	return out
 }
+
+/* found existing non-generated mapping function "CertificateDescription_KeyID_FromProto", skipping
 func CertificateDescription_KeyID_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription_KeyId) *krm.CertificateDescription_KeyID {
 	if in == nil {
 		return nil
@@ -344,6 +352,9 @@ func CertificateDescription_KeyID_FromProto(mapCtx *direct.MapContext, in *pb.Ce
 	// (near miss): "KeyID" vs "KeyId"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "CertificateDescription_KeyID_ToProto", skipping
 func CertificateDescription_KeyID_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription_KeyID) *pb.CertificateDescription_KeyId {
 	if in == nil {
 		return nil
@@ -353,6 +364,9 @@ func CertificateDescription_KeyID_ToProto(mapCtx *direct.MapContext, in *krm.Cer
 	// (near miss): "KeyID" vs "KeyId"
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "CertificateDescription_SubjectDescription_FromProto", skipping
 func CertificateDescription_SubjectDescription_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription_SubjectDescription) *krm.CertificateDescription_SubjectDescription {
 	if in == nil {
 		return nil
@@ -366,19 +380,25 @@ func CertificateDescription_SubjectDescription_FromProto(mapCtx *direct.MapConte
 	out.NotAfterTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNotAfterTime())
 	return out
 }
-func CertificateDescription_SubjectDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription_SubjectDescription) *pb.CertificateDescription_SubjectDescription {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "CertificateDescription_SubjectDescription_ToProto", skipping
+
+	func CertificateDescription_SubjectDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription_SubjectDescription) *pb.CertificateDescription_SubjectDescription {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CertificateDescription_SubjectDescription{}
+		out.Subject = Subject_ToProto(mapCtx, in.Subject)
+		out.SubjectAltName = SubjectAltNamesStatus_ToProto(mapCtx, in.SubjectAltName)
+		out.HexSerialNumber = direct.ValueOf(in.HexSerialNumber)
+		out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
+		out.NotBeforeTime = direct.StringTimestamp_ToProto(mapCtx, in.NotBeforeTime)
+		out.NotAfterTime = direct.StringTimestamp_ToProto(mapCtx, in.NotAfterTime)
+		return out
 	}
-	out := &pb.CertificateDescription_SubjectDescription{}
-	out.Subject = Subject_ToProto(mapCtx, in.Subject)
-	out.SubjectAltName = SubjectAltNamesStatus_ToProto(mapCtx, in.SubjectAltName)
-	out.HexSerialNumber = direct.ValueOf(in.HexSerialNumber)
-	out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
-	out.NotBeforeTime = direct.StringTimestamp_ToProto(mapCtx, in.NotBeforeTime)
-	out.NotAfterTime = direct.StringTimestamp_ToProto(mapCtx, in.NotAfterTime)
-	return out
-}
+*/
 func CertificateExtensionConstraints_FromProto(mapCtx *direct.MapContext, in *pb.CertificateExtensionConstraints) *krm.CertificateExtensionConstraints {
 	if in == nil {
 		return nil
