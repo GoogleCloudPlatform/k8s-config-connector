@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: computebackendservice-kompanion-${uniqueId}

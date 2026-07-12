@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,24 +16,29 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ComputeBackendServiceRef{}
-var ComputeBackendServiceGVK = GroupVersion.WithKind("ComputeBackendService")
+var ComputeBackendServiceGVK = schema.GroupVersionKind{
+	Group:   "compute.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "ComputeBackendService",
+}
+
+var _ refs.Ref = &ComputeBackendServiceRef{}
+var _ refs.ExternalNormalizer = &ComputeBackendServiceRef{}
 
 // ComputeBackendServiceRef is a reference to a ComputeBackendService.
 type ComputeBackendServiceRef struct {
-	// For backward compatibility, we are not enforcing the external format.
-
-	// The value of an externally managed ComputeBackendService resource.
+	// A reference to an externally managed ComputeBackendService resource.
+	// Should be in the format "projects/{{projectID}}/global/backendServices/{{backendservice}}" or "projects/{{projectID}}/regions/{{location}}/backendServices/{{backendservice}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeBackendService resource.
@@ -43,57 +48,67 @@ type ComputeBackendServiceRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ComputeBackendService.
-// If the "External" is given in the other resource's spec.ComputeBackendServiceRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeBackendService object from the cluster.
-func (r *ComputeBackendServiceRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeBackendServiceGVK.Kind)
-	}
-	// From given External
-	// For backward compatibility, we are not validating the external format.
-	// todo(yuhou): validate external when it's referenced by a pure direct resource
-	if r.External != "" {
-		return r.External, nil
-	}
+func init() {
+	refs.Register(&ComputeBackendServiceRef{}, &ComputeBackendService{})
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *ComputeBackendServiceRef) GetGVK() schema.GroupVersionKind {
+	return ComputeBackendServiceGVK
+}
+
+func (r *ComputeBackendServiceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeBackendServiceGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+}
+
+func (r *ComputeBackendServiceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ComputeBackendServiceRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ComputeBackendServiceRef) ValidateExternal(ref string) error {
+	id := &ComputeBackendServiceIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ComputeBackendServiceRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeBackendServiceIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *ComputeBackendServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*ComputeBackendService](u)
+		if err != nil {
+			return ""
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeBackendServiceGVK, key, err)
+		identity, err := getIdentityFromComputeBackendServiceSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
 
-	// targetField: self_link
-	// See compute servicemappings for details
-	// todo(yuhou): use externalRef for resource that managed by direct controller
-	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
-	if err == nil && selfLink != "" {
-		r.External = selfLink
-		return r.External, nil
-	}
-
-	// Fallback to manual construction of the selfLink (e.g. for offline CAIS powertools tests)
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return "", fmt.Errorf("cannot resolve project ID for referenced %s %v: %w", u.GetKind(), key, err)
-	}
-	location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
-	if location == "" {
-		location = "global"
-	}
-	name := u.GetName()
-	if location == "global" {
-		r.External = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/backendServices/%s", projectID, name)
-	} else {
-		r.External = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/backendServices/%s", projectID, location, name)
+// NormalizedExternal is a deprecated method that assigns and returns the "External" field.
+// Deprecated: Use Normalize instead.
+func (r *ComputeBackendServiceRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
 	return r.External, nil
 }
