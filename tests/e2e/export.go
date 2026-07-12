@@ -169,6 +169,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringAlertPolicy"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACertificateAuthority"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:
 		exportURI = resolveCAISURI(h, obj)
 

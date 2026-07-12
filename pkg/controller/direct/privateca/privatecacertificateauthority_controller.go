@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -239,8 +240,9 @@ func (a *certificateAuthorityAdapter) Export(ctx context.Context) (*unstructured
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = refsv1alpha1.ProjectRef{Name: a.id.Project}
+	obj.Spec.ProjectRef = refsv1alpha1.ProjectRef{External: a.id.Project}
 	obj.Spec.Location = a.id.Location
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.CertificateAuthority)
 	obj.Spec.CaPoolRef = privatecarefs.PrivateCACAPoolRef{
 		External: a.id.ParentString(),
 	}
@@ -249,8 +251,11 @@ func (a *certificateAuthorityAdapter) Export(ctx context.Context) (*unstructured
 		return nil, err
 	}
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.CertificateAuthority)
 	u.SetGroupVersionKind(krm.PrivateCACertificateAuthorityGVK)
+
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
