@@ -1,0 +1,212 @@
+51,52c51
+< POST https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+55,64c54
+<   "displayName": "tcp-uptime-check",
+<   "period": "60s",
+<   "resourceGroup": {
+<     "groupId": "${groupID}",
+<     "resourceType": "INSTANCE"
+<   },
+<   "tcpCheck": {
+<     "port": 80
+<   },
+<   "timeout": "30s"
+---
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+67,75c57
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+77,90c59
+< {
+<   "checkerType": "STATIC_IP_CHECKERS",
+<   "displayName": "tcp-uptime-check",
+<   "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+<   "period": "60s",
+<   "resourceGroup": {
+<     "groupId": "${groupID}",
+<     "resourceType": "INSTANCE"
+<   },
+<   "tcpCheck": {
+<     "port": 80
+<   },
+<   "timeout": "30s"
+< }
+---
+> {}
+94,95c63
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/CreateUptimeCheckConfig
+97,105c65,79
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "parent": "projects/${projectId}",
+>   "uptimeCheckConfig": {
+>     "displayName": "tcp-uptime-check",
+>     "resourceGroup": {
+>       "resourceType": "INSTANCE"
+>     },
+>     "tcpCheck": {
+>       "port": 80
+>     },
+>     "timeout": "30s"
+>   }
+> }
+> 
+> OK
+111d84
+<   "period": "60s",
+113d85
+<     "groupId": "${groupID}",
+124,125c96
+< PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName%2Ctimeout
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+128,134c99
+<   "displayName": "updated-tcp-uptime-check",
+<   "name": "projects/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+<   "period": "60s",
+<   "tcpCheck": {
+<     "port": 80
+<   },
+<   "timeout": "45s"
+---
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+137,145c102
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+147,160c104
+< {
+<   "checkerType": "STATIC_IP_CHECKERS",
+<   "displayName": "updated-tcp-uptime-check",
+<   "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+<   "period": "60s",
+<   "resourceGroup": {
+<     "groupId": "${groupID}",
+<     "resourceType": "INSTANCE"
+<   },
+<   "tcpCheck": {
+<     "port": 80
+<   },
+<   "timeout": "45s"
+< }
+---
+> {}
+164,165c108
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/CreateUptimeCheckConfig
+167,175c110,124
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "parent": "projects/${projectId}",
+>   "uptimeCheckConfig": {
+>     "displayName": "updated-tcp-uptime-check",
+>     "resourceGroup": {
+>       "resourceType": "INSTANCE"
+>     },
+>     "tcpCheck": {
+>       "port": 80
+>     },
+>     "timeout": "45s"
+>   }
+> }
+> 
+> OK
+181d129
+<   "period": "60s",
+183d130
+<     "groupId": "${groupID}",
+194,195c141
+< DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+197,205c143,147
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+---
+> {
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+211,212c153
+< GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+< Content-Type: application/json
+---
+> GRPC /google.monitoring.v3.UptimeCheckService/GetUptimeCheckConfig
+214,229c155,156
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Config not found for check ${uptimeCheckConfigID} in project ${projectId}",
+<     "status": "NOT_FOUND"
+<   }
+---
+> {
+>   "name": "projects/${projectId}/uptimeCheckConfigs/monitoringuptimecheckconfig-${uniqueId}"
+230a158,161
+> 
+> error: rpc error: code = NotFound desc = Config not found for check monitoringuptimecheckconfig-${uniqueId} in project ${projectId}
+> 
+> {}
