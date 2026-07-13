@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -30,7 +31,7 @@ var (
 	_ identity.Resource   = &SQLAdminBackup{}
 )
 
-var SQLAdminBackupIdentityFormat = gcpurls.Template[SQLAdminBackupIdentity]("sqladmin.googleapis.com", "projects/{project}/backups/{backup}")
+var SQLAdminBackupIdentityFormat = gcpurls.Template[SQLAdminBackupIdentity]("cloudsql.googleapis.com", "projects/{project}/backups/{backup}")
 
 // +k8s:deepcopy-gen=false
 type SQLAdminBackupIdentity struct {
@@ -43,6 +44,7 @@ func (i *SQLAdminBackupIdentity) String() string {
 }
 
 func (i *SQLAdminBackupIdentity) FromExternal(ref string) error {
+	ref = strings.Replace(ref, "sqladmin.googleapis.com", "cloudsql.googleapis.com", 1)
 	parsed, match, err := SQLAdminBackupIdentityFormat.Parse(ref)
 	if err != nil {
 		return fmt.Errorf("format of SQLAdminBackup external=%q was not known (use %s): %w", ref, SQLAdminBackupIdentityFormat.CanonicalForm(), err)

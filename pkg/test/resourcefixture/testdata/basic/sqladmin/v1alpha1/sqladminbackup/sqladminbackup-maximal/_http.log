@@ -389,6 +389,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 {
   "backupKind": "PHYSICAL",
   "description": "This is a maximal backup taken on demand",
+  "diskEncryptionConfiguration": {
+    "kind": "sql#diskEncryptionConfiguration",
+    "kmsKeyName": "projects/${gcpProject}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/key-${uniqueId}"
+  },
   "instance": "projects/${projectId}locations/us-central1/instances/sqlinstance-dep-${uniqueId}",
   "location": "us-central1",
   "status": "SQL_BACKUP_RUN_STATUS_UNSPECIFIED",
@@ -468,6 +472,10 @@ X-Xss-Protection: 0
 {
   "backupKind": "PHYSICAL",
   "description": "This is a maximal backup taken on demand",
+  "diskEncryptionConfiguration": {
+    "kind": "sql#diskEncryptionConfiguration",
+    "kmsKeyName": "projects/${gcpProject}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/key-${uniqueId}"
+  },
   "endTime": "2024-04-01T12:34:56.123456Z",
   "enqueuedTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
@@ -499,6 +507,10 @@ X-Xss-Protection: 0
     {
       "backupKind": "PHYSICAL",
       "description": "This is a maximal backup taken on demand",
+      "diskEncryptionConfiguration": {
+        "kind": "sql#diskEncryptionConfiguration",
+        "kmsKeyName": "projects/${gcpProject}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/key-${uniqueId}"
+      },
       "endTime": "2024-04-01T12:34:56.123456Z",
       "enqueuedTime": "2024-04-01T12:34:56.123456Z",
       "id": "000000000000000000000",

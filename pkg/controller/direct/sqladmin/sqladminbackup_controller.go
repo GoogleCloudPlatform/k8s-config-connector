@@ -122,6 +122,14 @@ func (m *backupModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	}
 	obj.Spec.InstanceRef.External = resolvedInstance.String()
 
+	if obj.Spec.DiskEncryptionConfiguration != nil && obj.Spec.DiskEncryptionConfiguration.KMSKeyRef != nil {
+		resolvedKMSKey, err := refsv1beta1.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.DiskEncryptionConfiguration.KMSKeyRef)
+		if err != nil {
+			return nil, fmt.Errorf("resolving KMSCryptoKeyRef: %w", err)
+		}
+		obj.Spec.DiskEncryptionConfiguration.KMSKeyRef.External = resolvedKMSKey.External
+	}
+
 	project := resolvedInstance.ProjectID
 	instance := resolvedInstance.SQLInstanceName
 

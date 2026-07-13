@@ -12,6 +12,9 @@ metadata:
 spec:
   backupKind: PHYSICAL
   description: This is a maximal backup taken on demand
+  diskEncryptionConfiguration:
+    kmsKeyRef:
+      external: projects/${gcpProject}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/key-${uniqueId}
   instanceRef:
     name: sqlinstance-dep-${uniqueId}
   location: us-central1
