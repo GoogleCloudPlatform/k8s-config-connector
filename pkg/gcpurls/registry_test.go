@@ -185,6 +185,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":          true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}/rules/{}": true,
 
+		// Enterprise Knowledge Graph
+		"//enterpriseknowledgegraph.googleapis.com/projects/{}/locations/{}/entityReconciliationJobs/{}": true,
+
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
