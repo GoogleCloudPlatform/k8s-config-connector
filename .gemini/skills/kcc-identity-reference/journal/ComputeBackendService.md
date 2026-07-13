@@ -21,5 +21,6 @@ Migrated `ComputeBackendService` to the `IdentityV2` and `refs.Ref` pattern.
    - This caused `TestRegisteredTemplatesMatchCAI` to fail.
    - We successfully registered the new template `"//compute.googleapis.com/projects/{}/regions/{}/backendServices/{}"` as an exception in the `ignoredTemplates` map in `pkg/gcpurls/registry_test.go`.
 
-4. **Preserving Backward Compatibility:**
+4. **Preserving Backward Compatibility & Absolute URL Prefixing:**
    - To prevent compilation and behavioral regressions across other resources and packages (e.g. `ComputeBackendServiceSignedURLKey`, `IAPSettings`) that still call `.NormalizedExternal` directly on `ComputeBackendServiceRef`, we kept the deprecated `NormalizedExternal` method and had it internally delegate to the new, canonical `Normalize` method.
+   - For Compute resources, the GCP APIs (and recorded HTTP logs) expect references to start with the fully-qualified absolute URL prefix `https://www.googleapis.com/compute/v1/`. We updated the `Normalize` method of `ComputeBackendServiceRef` to automatically prepend the absolute URL prefix if the reference starts with `projects/` to guarantee repository-wide consistency and prevent test differences in referencing controllers (such as `TargetTcpProxy` or `ForwardingRule`).
