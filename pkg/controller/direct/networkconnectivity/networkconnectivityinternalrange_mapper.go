@@ -21,6 +21,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AllocationOptions_FromProto(mapCtx *direct.MapContext, in *pb.AllocationOptions) *krm.AllocationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationOptions{}
+	out.AllocationStrategy = direct.LazyPtr(in.GetAllocationStrategy())
+	out.FirstAvailableRangesLookupSize = direct.LazyPtr(in.GetFirstAvailableRangesLookupSize())
+	return out
+}
+func AllocationOptions_ToProto(mapCtx *direct.MapContext, in *krm.AllocationOptions) *pb.AllocationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationOptions{}
+	out.AllocationStrategy = direct.ValueOf(in.AllocationStrategy)
+	out.FirstAvailableRangesLookupSize = direct.ValueOf(in.FirstAvailableRangesLookupSize)
+	return out
+}
 func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migration {
 	if in == nil {
 		return nil
@@ -64,6 +82,7 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krm.NetworkConnectivityInternalRangeSpec{}
+	out.AllocationOptions = AllocationOptions_FromProto(mapCtx, in.GetAllocationOptions())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.IPCIDRRange = direct.LazyPtr(in.GetIpCidrRange())
 	out.Labels = in.Labels
@@ -83,6 +102,7 @@ func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &pb.InternalRange{}
+	out.AllocationOptions = AllocationOptions_ToProto(mapCtx, in.AllocationOptions)
 	out.Description = direct.ValueOf(in.Description)
 	out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
 	out.Labels = in.Labels

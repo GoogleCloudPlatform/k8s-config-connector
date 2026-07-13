@@ -62,7 +62,8 @@ type Any struct {
 }
 */
 
-/* unreachable type AllocationOptions
+/* found existing non-generated go type "AllocationOptions", skipping
+
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AllocationOptions
 type AllocationOptions struct {
 	// Optional. Allocation strategy Not setting this field when the allocation is requested means an implementation defined strategy is used.
