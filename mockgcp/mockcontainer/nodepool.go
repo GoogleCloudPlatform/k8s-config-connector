@@ -352,10 +352,22 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	update := proto.CloneOf(req)
 	update.Name = ""
+	update.NodePoolId = ""
+	update.ProjectId = ""
+	update.Zone = ""
+	update.ClusterId = ""
 
 	if update.Taints != nil {
 		obj.Config.Taints = update.GetTaints().Taints
 		update.Taints = nil
+	}
+
+	if update.KubeletConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.KubeletConfig = update.GetKubeletConfig()
+		update.KubeletConfig = nil
 	}
 
 	// TODO: Support more updates!
@@ -371,6 +383,9 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	op := &pb.Operation{
 		Zone:       name.Location,
 		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	if req.GetKubeletConfig() != nil {
+		op.OperationType = pb.Operation_UPGRADE_NODES
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil

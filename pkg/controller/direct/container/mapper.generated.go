@@ -1383,10 +1383,10 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
 	out.PodPidsLimit = direct.LazyPtr(in.GetPodPidsLimit())
 	// MISSING: InsecureKubeletReadonlyPortEnabled
-	// MISSING: ImageGcLowThresholdPercent
-	// MISSING: ImageGcHighThresholdPercent
-	// MISSING: ImageMinimumGcAge
-	// MISSING: ImageMaximumGcAge
+	out.ImageGcLowThresholdPercent = direct.LazyPtr(in.GetImageGcLowThresholdPercent())
+	out.ImageGcHighThresholdPercent = direct.LazyPtr(in.GetImageGcHighThresholdPercent())
+	out.ImageMinimumGcAge = direct.LazyPtr(in.GetImageMinimumGcAge())
+	out.ImageMaximumGcAge = direct.LazyPtr(in.GetImageMaximumGcAge())
 	// MISSING: ContainerLogMaxSize
 	// MISSING: ContainerLogMaxFiles
 	// MISSING: AllowedUnsafeSysctls
@@ -1415,10 +1415,10 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
 		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
 		// MISSING: InsecureKubeletReadonlyPortEnabled
-		// MISSING: ImageGcLowThresholdPercent
-		// MISSING: ImageGcHighThresholdPercent
-		// MISSING: ImageMinimumGcAge
-		// MISSING: ImageMaximumGcAge
+		out.ImageGcLowThresholdPercent = direct.ValueOf(in.ImageGcLowThresholdPercent)
+		out.ImageGcHighThresholdPercent = direct.ValueOf(in.ImageGcHighThresholdPercent)
+		out.ImageMinimumGcAge = direct.ValueOf(in.ImageMinimumGcAge)
+		out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
 		// MISSING: ContainerLogMaxSize
 		// MISSING: ContainerLogMaxFiles
 		// MISSING: AllowedUnsafeSysctls

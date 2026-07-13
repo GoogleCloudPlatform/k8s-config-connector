@@ -323,6 +323,10 @@ nodeConfig:
     cpuCfsQuota: boolean
     cpuCfsQuotaPeriod: string
     cpuManagerPolicy: string
+    imageGcHighThresholdPercent: integer
+    imageGcLowThresholdPercent: integer
+    imageMaximumGcAge: string
+    imageMinimumGcAge: string
     podPidsLimit: integer
   labels:
     string: string
@@ -2900,6 +2904,46 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p>Control the CPU management policy on the node.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.imageGcHighThresholdPercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Percent of disk usage after which image garbage collection is always run.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.imageGcLowThresholdPercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.imageMaximumGcAge</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Maximum age an image can be unused before it is garbage collected.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.imageMinimumGcAge</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Minimum age for an unused image before it is garbage collected.</p>
         </td>
     </tr>
     <tr>
