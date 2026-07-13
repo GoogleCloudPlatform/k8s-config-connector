@@ -1174,6 +1174,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+	if strings.Contains(t.Name(), "/dnsauthorization") {
+		visitor.removePaths.Insert(".metadata.requestedCancellation")
+		visitor.removePaths.Insert(".metadata.endTime")
+		visitor.removePaths.Insert(".response.metadata.requestedCancellation")
+		visitor.removePaths.Insert(".response.metadata.endTime")
+	}
 
 	if !strings.Contains(t.Name(), "/containercluster") && !strings.Contains(t.Name(), "/containernodepool") {
 		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {

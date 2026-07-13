@@ -15,3 +15,4 @@ spec:
   projectRef:
     name: ${projectId}
   resourceID: certificatemanagerdnsauthorization${uniqueId}
+  type: FIXED_RECORD
