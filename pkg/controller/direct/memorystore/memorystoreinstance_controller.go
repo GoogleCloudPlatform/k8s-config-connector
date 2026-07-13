@@ -459,32 +459,41 @@ func connectionsMatch(desired, actual *memorystorepb.Instance_ConnectionDetail) 
 	if desired == nil || actual == nil {
 		return desired == actual
 	}
+
 	desiredPsc := desired.GetPscAutoConnection()
 	actualPsc := actual.GetPscAutoConnection()
 	if desiredPsc == nil || actualPsc == nil {
 		return desiredPsc == actualPsc
 	}
+
 	if desiredPsc.GetProjectId() != "" && desiredPsc.GetProjectId() != actualPsc.GetProjectId() {
 		return false
 	}
+
 	if desiredPsc.GetNetwork() != "" && desiredPsc.GetNetwork() != actualPsc.GetNetwork() {
 		return false
 	}
+
 	if desiredPsc.GetPscConnectionId() != "" && desiredPsc.GetPscConnectionId() != actualPsc.GetPscConnectionId() {
 		return false
 	}
+
 	if desiredPsc.GetIpAddress() != "" && desiredPsc.GetIpAddress() != actualPsc.GetIpAddress() {
 		return false
 	}
+
 	if desiredPsc.GetForwardingRule() != "" && desiredPsc.GetForwardingRule() != actualPsc.GetForwardingRule() {
 		return false
 	}
+
 	if desiredPsc.GetServiceAttachment() != "" && desiredPsc.GetServiceAttachment() != actualPsc.GetServiceAttachment() {
 		return false
 	}
+
 	if desiredPsc.GetPort() != 0 && desiredPsc.GetPort() != actualPsc.GetPort() {
 		return false
 	}
+
 	return true
 }
 
