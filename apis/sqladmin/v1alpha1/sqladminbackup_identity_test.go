@@ -41,8 +41,16 @@ func TestSQLAdminBackupIdentity_FromExternal(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "full url",
+			name: "full url with sqladmin.googleapis.com",
 			ref:  "https://sqladmin.googleapis.com/projects/my-project/backups/my-backup",
+			want: &SQLAdminBackupIdentity{
+				Project: "my-project",
+				Backup:  "my-backup",
+			},
+		},
+		{
+			name: "full url with cloudsql.googleapis.com",
+			ref:  "https://cloudsql.googleapis.com/projects/my-project/backups/my-backup",
 			want: &SQLAdminBackupIdentity{
 				Project: "my-project",
 				Backup:  "my-backup",

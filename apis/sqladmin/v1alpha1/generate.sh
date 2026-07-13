@@ -21,6 +21,9 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+# Note: google.cloud.sql.v1beta4 is used because the Cloud SQL REST/protobuf API 
+# is defined under v1beta4 (sqladmin.googleapis.com/v1beta4) and there is no 
+# dedicated v1 service definition in googleapis.
 go run . generate-types \
   --service google.cloud.sql.v1beta4 \
   --api-version sqladmin.cnrm.cloud.google.com/v1alpha1 \
