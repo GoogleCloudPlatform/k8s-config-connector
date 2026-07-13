@@ -48,7 +48,7 @@ func (s *OSConfigServer) GetGuestPolicy(ctx context.Context, req *pb.GetGuestPol
 	obj := &pb.GuestPolicy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "GuestPolicy %s not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
 		}
 		return nil, err
 	}
@@ -57,12 +57,22 @@ func (s *OSConfigServer) GetGuestPolicy(ctx context.Context, req *pb.GetGuestPol
 }
 
 func (s *OSConfigServer) ListGuestPolicies(ctx context.Context, req *pb.ListGuestPoliciesRequest) (*pb.ListGuestPoliciesResponse, error) {
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 2 || tokens[0] != "projects" {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid parent %q", req.Parent)
+	}
+	project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+	if err != nil {
+		return nil, err
+	}
+	parentWithNumber := fmt.Sprintf("projects/%d", project.Number)
+
 	var resources []*pb.GuestPolicy
 	kind := (&pb.GuestPolicy{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
 		gp := obj.(*pb.GuestPolicy)
 		// Match parent/project prefix
-		if strings.HasPrefix(gp.Name, req.Parent+"/") {
+		if strings.HasPrefix(gp.Name, parentWithNumber+"/guestPolicies/") {
 			resources = append(resources, gp)
 		}
 		return nil
@@ -132,6 +142,9 @@ func (s *OSConfigServer) DeleteGuestPolicy(ctx context.Context, req *pb.DeleteGu
 
 	oldObj := &pb.GuestPolicy{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 
@@ -150,13 +163,13 @@ type guestPolicyName struct {
 }
 
 func (n *guestPolicyName) String() string {
-	return fmt.Sprintf("projects/%s/guestPolicies/%s", n.Project.ID, n.GuestPolicy)
+	return fmt.Sprintf("projects/%d/guestPolicies/%s", n.Project.Number, n.GuestPolicy)
 }
 
 func (s *MockService) parseGuestPolicyName(name string) (*guestPolicyName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "guestPolicies" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

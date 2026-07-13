@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "GuestPolicy projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId} not found",
+    "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -247,7 +247,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An OSConfigGuestPolicy for testing.",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
   "packageRepositories": [
     {
       "apt": {
@@ -436,7 +436,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An OSConfigGuestPolicy for testing.",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
   "packageRepositories": [
     {
       "apt": {
@@ -775,7 +775,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An OSConfigGuestPolicy for testing.",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
   "packageRepositories": [
     {
       "apt": {
@@ -943,7 +943,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An OSConfigGuestPolicy for testing.",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
   "packageRepositories": [
     {
       "apt": {
@@ -1094,7 +1094,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "GuestPolicy projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId} not found",
+    "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
 }
