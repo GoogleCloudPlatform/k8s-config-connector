@@ -775,7 +775,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 
 	if strings.Contains(t.Name(), "osconfig") {
 		events = events.KeepIf(func(e *test.LogEntry) bool {
-			return strings.Contains(e.Request.URL, "osconfig.googleapis.com")
+			return strings.Contains(e.Request.URL, "osconfig.googleapis.com") || strings.Contains(e.Request.URL, "google.cloud.osconfig")
 		})
 	}
 

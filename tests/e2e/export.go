@@ -166,6 +166,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebooksEnvironment"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "osconfig.cnrm.cloud.google.com", Kind: "OSConfigGuestPolicy"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringAlertPolicy"}:
 		exportURI = resolveCAISURI(h, obj)
 
