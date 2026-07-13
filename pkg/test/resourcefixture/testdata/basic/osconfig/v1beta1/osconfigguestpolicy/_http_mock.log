@@ -1,0 +1,1100 @@
+GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies?alt=json&guestPolicyId=osconfigguestpolicy-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+{
+  "assignment": {
+    "groupLabels": [
+      {
+        "labels": {
+          "app": "old",
+          "env": "prod"
+        }
+      },
+      {
+        "labels": {
+          "app": "old",
+          "env": "staging"
+        }
+      }
+    ],
+    "instances": [
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance1-${uniqueId}",
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance2-${uniqueId}"
+    ],
+    "osTypes": [
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "debian",
+        "osVersion": "10"
+      },
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "windows",
+        "osVersion": "10.0.14393"
+      }
+    ],
+    "zones": [
+      "us-central1-a"
+    ]
+  },
+  "description": "An OSConfigGuestPolicy for testing.",
+  "name": "osconfigguestpolicy-${uniqueId}",
+  "packageRepositories": [
+    {
+      "apt": {
+        "archiveType": "DEB",
+        "components": [
+          "main"
+        ],
+        "distribution": "aiy-debian-buster",
+        "gpgKey": "https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg",
+        "uri": "https://packages.cloud.google.com/apt"
+      }
+    },
+    {
+      "yum": {
+        "baseUrl": "https://packages.cloud.google.com/yum/repos/liamtest",
+        "displayName": "Liam Test",
+        "gpgKeys": [
+          "https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+          "https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg"
+        ],
+        "id": "liamtest"
+      }
+    }
+  ],
+  "packages": [
+    {
+      "desiredState": "INSTALLED",
+      "manager": "APT",
+      "name": "add-apt-key"
+    },
+    {
+      "desiredState": "REMOVED",
+      "manager": "YUM",
+      "name": "ssl"
+    },
+    {
+      "desiredState": "UPDATED",
+      "manager": "ANY",
+      "name": "ansible-doc"
+    }
+  ],
+  "recipes": [
+    {
+      "artifacts": [
+        {
+          "allowInsecure": true,
+          "id": "ansible",
+          "remote": {
+            "uri": "https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz"
+          }
+        }
+      ],
+      "desiredState": "INSTALLED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "ansible",
+            "destination": "/installbackups/ansible",
+            "overwrite": true,
+            "permissions": "555"
+          }
+        },
+        {
+          "archiveExtraction": {
+            "artifactId": "ansible",
+            "destination": "/var/ansible/",
+            "type": "TAR_GZIP"
+          }
+        }
+      ],
+      "name": "newest-ansible",
+      "version": "1.0.0.1"
+    },
+    {
+      "artifacts": [
+        {
+          "allowInsecure": false,
+          "gcs": {
+            "bucket": "storagebucket1-${uniqueId}",
+            "generation": 1829485032948520,
+            "object": "latest/prod"
+          },
+          "id": "web-app"
+        }
+      ],
+      "desiredState": "UPDATED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "overwrite": false,
+            "permissions": "777"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0
+            ],
+            "args": [
+              "prodcompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "name": "prod-web-app",
+      "updateSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "755"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0,
+              4
+            ],
+            "args": [
+              "updatecompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "version": "2.5.27"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assignment": {
+    "groupLabels": [
+      {
+        "labels": {
+          "app": "old",
+          "env": "prod"
+        }
+      },
+      {
+        "labels": {
+          "app": "old",
+          "env": "staging"
+        }
+      }
+    ],
+    "instances": [
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance1-${uniqueId}",
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance2-${uniqueId}"
+    ],
+    "osTypes": [
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "debian",
+        "osVersion": "10"
+      },
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "windows",
+        "osVersion": "10.0.14393"
+      }
+    ],
+    "zones": [
+      "us-central1-a"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An OSConfigGuestPolicy for testing.",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "packageRepositories": [
+    {
+      "apt": {
+        "archiveType": "DEB",
+        "components": [
+          "main"
+        ],
+        "distribution": "aiy-debian-buster",
+        "gpgKey": "https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg",
+        "uri": "https://packages.cloud.google.com/apt"
+      }
+    },
+    {
+      "yum": {
+        "baseUrl": "https://packages.cloud.google.com/yum/repos/liamtest",
+        "displayName": "Liam Test",
+        "gpgKeys": [
+          "https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+          "https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg"
+        ],
+        "id": "liamtest"
+      }
+    }
+  ],
+  "packages": [
+    {
+      "desiredState": "INSTALLED",
+      "manager": "APT",
+      "name": "add-apt-key"
+    },
+    {
+      "desiredState": "REMOVED",
+      "manager": "YUM",
+      "name": "ssl"
+    },
+    {
+      "desiredState": "UPDATED",
+      "manager": "ANY",
+      "name": "ansible-doc"
+    }
+  ],
+  "recipes": [
+    {
+      "artifacts": [
+        {
+          "allowInsecure": true,
+          "id": "ansible",
+          "remote": {
+            "uri": "https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz"
+          }
+        }
+      ],
+      "desiredState": "INSTALLED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "ansible",
+            "destination": "/installbackups/ansible",
+            "overwrite": true,
+            "permissions": "555"
+          }
+        },
+        {
+          "archiveExtraction": {
+            "artifactId": "ansible",
+            "destination": "/var/ansible/",
+            "type": "TAR_GZIP"
+          }
+        }
+      ],
+      "name": "newest-ansible",
+      "version": "1.0.0.1"
+    },
+    {
+      "artifacts": [
+        {
+          "gcs": {
+            "bucket": "storagebucket1-${uniqueId}",
+            "generation": "1829485032948520",
+            "object": "latest/prod"
+          },
+          "id": "web-app"
+        }
+      ],
+      "desiredState": "UPDATED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "777"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0
+            ],
+            "args": [
+              "prodcompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "name": "prod-web-app",
+      "updateSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "755"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0,
+              4
+            ],
+            "args": [
+              "updatecompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "version": "2.5.27"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assignment": {
+    "groupLabels": [
+      {
+        "labels": {
+          "app": "old",
+          "env": "prod"
+        }
+      },
+      {
+        "labels": {
+          "app": "old",
+          "env": "staging"
+        }
+      }
+    ],
+    "instances": [
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance1-${uniqueId}",
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance2-${uniqueId}"
+    ],
+    "osTypes": [
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "debian",
+        "osVersion": "10"
+      },
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "windows",
+        "osVersion": "10.0.14393"
+      }
+    ],
+    "zones": [
+      "us-central1-a"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An OSConfigGuestPolicy for testing.",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "packageRepositories": [
+    {
+      "apt": {
+        "archiveType": "DEB",
+        "components": [
+          "main"
+        ],
+        "distribution": "aiy-debian-buster",
+        "gpgKey": "https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg",
+        "uri": "https://packages.cloud.google.com/apt"
+      }
+    },
+    {
+      "yum": {
+        "baseUrl": "https://packages.cloud.google.com/yum/repos/liamtest",
+        "displayName": "Liam Test",
+        "gpgKeys": [
+          "https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+          "https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg"
+        ],
+        "id": "liamtest"
+      }
+    }
+  ],
+  "packages": [
+    {
+      "desiredState": "INSTALLED",
+      "manager": "APT",
+      "name": "add-apt-key"
+    },
+    {
+      "desiredState": "REMOVED",
+      "manager": "YUM",
+      "name": "ssl"
+    },
+    {
+      "desiredState": "UPDATED",
+      "manager": "ANY",
+      "name": "ansible-doc"
+    }
+  ],
+  "recipes": [
+    {
+      "artifacts": [
+        {
+          "allowInsecure": true,
+          "id": "ansible",
+          "remote": {
+            "uri": "https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz"
+          }
+        }
+      ],
+      "desiredState": "INSTALLED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "ansible",
+            "destination": "/installbackups/ansible",
+            "overwrite": true,
+            "permissions": "555"
+          }
+        },
+        {
+          "archiveExtraction": {
+            "artifactId": "ansible",
+            "destination": "/var/ansible/",
+            "type": "TAR_GZIP"
+          }
+        }
+      ],
+      "name": "newest-ansible",
+      "version": "1.0.0.1"
+    },
+    {
+      "artifacts": [
+        {
+          "gcs": {
+            "bucket": "storagebucket1-${uniqueId}",
+            "generation": "1829485032948520",
+            "object": "latest/prod"
+          },
+          "id": "web-app"
+        }
+      ],
+      "desiredState": "UPDATED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "777"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0
+            ],
+            "args": [
+              "prodcompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "name": "prod-web-app",
+      "updateSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "755"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0,
+              4
+            ],
+            "args": [
+              "updatecompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "version": "2.5.27"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+{
+  "assignment": {
+    "groupLabels": [
+      {
+        "labels": {
+          "app": "new",
+          "env": "prod"
+        }
+      },
+      {
+        "labels": {
+          "app": "new",
+          "env": "staging"
+        }
+      }
+    ],
+    "instances": [
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance2-${uniqueId}"
+    ],
+    "osTypes": [
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "debian",
+        "osVersion": "10"
+      },
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "windows",
+        "osVersion": "10.0.14393"
+      }
+    ],
+    "zones": [
+      "us-central1-a"
+    ]
+  },
+  "description": "An OSConfigGuestPolicy for testing.",
+  "etag": "abcdef0123A=",
+  "name": "osconfigguestpolicy-${uniqueId}",
+  "packageRepositories": [
+    {
+      "apt": {
+        "archiveType": "DEB",
+        "components": [
+          "main"
+        ],
+        "distribution": "aiy-debian-buster",
+        "gpgKey": "https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg",
+        "uri": "https://packages.cloud.google.com/apt"
+      }
+    },
+    {
+      "yum": {
+        "baseUrl": "https://packages.cloud.google.com/yum/repos/liamtest",
+        "displayName": "Liam Test",
+        "gpgKeys": [
+          "https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+          "https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg"
+        ],
+        "id": "liamtest"
+      }
+    }
+  ],
+  "packages": [
+    {
+      "desiredState": "INSTALLED",
+      "manager": "APT",
+      "name": "add-apt-key"
+    },
+    {
+      "desiredState": "REMOVED",
+      "manager": "YUM",
+      "name": "ssl"
+    },
+    {
+      "desiredState": "UPDATED",
+      "manager": "ANY",
+      "name": "ansible-doc"
+    }
+  ],
+  "recipes": [
+    {
+      "artifacts": [
+        {
+          "allowInsecure": true,
+          "id": "ansible",
+          "remote": {
+            "uri": "https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz"
+          }
+        }
+      ],
+      "desiredState": "INSTALLED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "ansible",
+            "destination": "/installbackups/ansible",
+            "overwrite": true,
+            "permissions": "555"
+          }
+        },
+        {
+          "archiveExtraction": {
+            "artifactId": "ansible",
+            "destination": "/var/ansible/",
+            "type": "TAR_GZIP"
+          }
+        }
+      ],
+      "name": "newest-ansible",
+      "version": "1.0.0.1"
+    },
+    {
+      "artifacts": [
+        {
+          "allowInsecure": false,
+          "gcs": {
+            "bucket": "storagebucket2-${uniqueId}",
+            "generation": 1829485032948555,
+            "object": "latest/prod"
+          },
+          "id": "web-app"
+        }
+      ],
+      "desiredState": "UPDATED",
+      "name": "prod-web-app",
+      "updateSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "755"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0,
+              4
+            ],
+            "args": [
+              "updatecompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "version": "2.5.28"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assignment": {
+    "groupLabels": [
+      {
+        "labels": {
+          "app": "new",
+          "env": "prod"
+        }
+      },
+      {
+        "labels": {
+          "app": "new",
+          "env": "staging"
+        }
+      }
+    ],
+    "instances": [
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance2-${uniqueId}"
+    ],
+    "osTypes": [
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "debian",
+        "osVersion": "10"
+      },
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "windows",
+        "osVersion": "10.0.14393"
+      }
+    ],
+    "zones": [
+      "us-central1-a"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An OSConfigGuestPolicy for testing.",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "packageRepositories": [
+    {
+      "apt": {
+        "archiveType": "DEB",
+        "components": [
+          "main"
+        ],
+        "distribution": "aiy-debian-buster",
+        "gpgKey": "https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg",
+        "uri": "https://packages.cloud.google.com/apt"
+      }
+    },
+    {
+      "yum": {
+        "baseUrl": "https://packages.cloud.google.com/yum/repos/liamtest",
+        "displayName": "Liam Test",
+        "gpgKeys": [
+          "https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+          "https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg"
+        ],
+        "id": "liamtest"
+      }
+    }
+  ],
+  "packages": [
+    {
+      "desiredState": "INSTALLED",
+      "manager": "APT",
+      "name": "add-apt-key"
+    },
+    {
+      "desiredState": "REMOVED",
+      "manager": "YUM",
+      "name": "ssl"
+    },
+    {
+      "desiredState": "UPDATED",
+      "manager": "ANY",
+      "name": "ansible-doc"
+    }
+  ],
+  "recipes": [
+    {
+      "artifacts": [
+        {
+          "allowInsecure": true,
+          "id": "ansible",
+          "remote": {
+            "uri": "https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz"
+          }
+        }
+      ],
+      "desiredState": "INSTALLED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "ansible",
+            "destination": "/installbackups/ansible",
+            "overwrite": true,
+            "permissions": "555"
+          }
+        },
+        {
+          "archiveExtraction": {
+            "artifactId": "ansible",
+            "destination": "/var/ansible/",
+            "type": "TAR_GZIP"
+          }
+        }
+      ],
+      "name": "newest-ansible",
+      "version": "1.0.0.1"
+    },
+    {
+      "artifacts": [
+        {
+          "gcs": {
+            "bucket": "storagebucket2-${uniqueId}",
+            "generation": "1829485032948555",
+            "object": "latest/prod"
+          },
+          "id": "web-app"
+        }
+      ],
+      "desiredState": "UPDATED",
+      "name": "prod-web-app",
+      "updateSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "755"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0,
+              4
+            ],
+            "args": [
+              "updatecompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "version": "2.5.28"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assignment": {
+    "groupLabels": [
+      {
+        "labels": {
+          "app": "new",
+          "env": "prod"
+        }
+      },
+      {
+        "labels": {
+          "app": "new",
+          "env": "staging"
+        }
+      }
+    ],
+    "instances": [
+      "projects/${projectId}/zones/us-central1-a/instances/computeinstance2-${uniqueId}"
+    ],
+    "osTypes": [
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "debian",
+        "osVersion": "10"
+      },
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "windows",
+        "osVersion": "10.0.14393"
+      }
+    ],
+    "zones": [
+      "us-central1-a"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An OSConfigGuestPolicy for testing.",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+  "packageRepositories": [
+    {
+      "apt": {
+        "archiveType": "DEB",
+        "components": [
+          "main"
+        ],
+        "distribution": "aiy-debian-buster",
+        "gpgKey": "https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg",
+        "uri": "https://packages.cloud.google.com/apt"
+      }
+    },
+    {
+      "yum": {
+        "baseUrl": "https://packages.cloud.google.com/yum/repos/liamtest",
+        "displayName": "Liam Test",
+        "gpgKeys": [
+          "https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+          "https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg"
+        ],
+        "id": "liamtest"
+      }
+    }
+  ],
+  "packages": [
+    {
+      "desiredState": "INSTALLED",
+      "manager": "APT",
+      "name": "add-apt-key"
+    },
+    {
+      "desiredState": "REMOVED",
+      "manager": "YUM",
+      "name": "ssl"
+    },
+    {
+      "desiredState": "UPDATED",
+      "manager": "ANY",
+      "name": "ansible-doc"
+    }
+  ],
+  "recipes": [
+    {
+      "artifacts": [
+        {
+          "allowInsecure": true,
+          "id": "ansible",
+          "remote": {
+            "uri": "https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz"
+          }
+        }
+      ],
+      "desiredState": "INSTALLED",
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "ansible",
+            "destination": "/installbackups/ansible",
+            "overwrite": true,
+            "permissions": "555"
+          }
+        },
+        {
+          "archiveExtraction": {
+            "artifactId": "ansible",
+            "destination": "/var/ansible/",
+            "type": "TAR_GZIP"
+          }
+        }
+      ],
+      "name": "newest-ansible",
+      "version": "1.0.0.1"
+    },
+    {
+      "artifacts": [
+        {
+          "gcs": {
+            "bucket": "storagebucket2-${uniqueId}",
+            "generation": "1829485032948555",
+            "object": "latest/prod"
+          },
+          "id": "web-app"
+        }
+      ],
+      "desiredState": "UPDATED",
+      "name": "prod-web-app",
+      "updateSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "755"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0,
+              4
+            ],
+            "args": [
+              "updatecompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
+      "version": "2.5.28"
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
