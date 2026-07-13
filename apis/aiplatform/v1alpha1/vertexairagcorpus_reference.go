@@ -29,9 +29,10 @@ import (
 )
 
 var (
-	VertexAIIndexGVK         = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIIndex"}
-	VertexAIIndexEndpointGVK = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIIndexEndpoint"}
-	VertexAIEndpointGVK      = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIEndpoint"}
+	VertexAIIndexGVK                = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIIndex"}
+	VertexAIIndexEndpointGVK        = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIIndexEndpoint"}
+	VertexAIEndpointGVK             = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIEndpoint"}
+	DiscoveryEngineServingConfigGVK = schema.GroupVersionKind{Group: "discoveryengine.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DiscoveryEngineServingConfig"}
 )
 
 // VertexAIRagCorpusRef is a reference to a GCP VertexAIRagCorpus.
@@ -289,4 +290,55 @@ func (r *VertexAIEndpointRef) Normalize(ctx context.Context, reader client.Reade
 
 func init() {
 	refs.Register(&VertexAIRagCorpusRef{}, &VertexAIRagCorpus{})
+}
+
+// DiscoveryEngineServingConfigRef is a reference to a DiscoveryEngineServingConfig.
+type DiscoveryEngineServingConfigRef struct {
+	// A reference to an externally managed DiscoveryEngineServingConfig resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collection}}/engines/{{engineID}}/servingConfigs/{{servingConfigID}}"
+	// or "projects/{{projectID}}/locations/{{location}}/collections/{{collection}}/dataStores/{{dataStoreID}}/servingConfigs/{{servingConfigID}}".
+	External string `json:"external,omitempty"`
+
+	// The name of a DiscoveryEngineServingConfig resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a DiscoveryEngineServingConfig resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
+var _ refs.Ref = &DiscoveryEngineServingConfigRef{}
+
+func (r *DiscoveryEngineServingConfigRef) GetGVK() schema.GroupVersionKind {
+	return DiscoveryEngineServingConfigGVK
+}
+
+func (r *DiscoveryEngineServingConfigRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *DiscoveryEngineServingConfigRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DiscoveryEngineServingConfigRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *DiscoveryEngineServingConfigRef) ValidateExternal(ref string) error {
+	if !strings.HasPrefix(ref, "projects/") {
+		return fmt.Errorf("external reference format %q is not known; expected projects/<project>/locations/<location>/collections/<collection>/engines/<engine>/servingConfigs/<serving_config> or projects/<project>/locations/<location>/collections/<collection>/dataStores/<data_store>/servingConfigs/<serving_config>", ref)
+	}
+	return nil
+}
+
+func (r *DiscoveryEngineServingConfigRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		return ""
+	}
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

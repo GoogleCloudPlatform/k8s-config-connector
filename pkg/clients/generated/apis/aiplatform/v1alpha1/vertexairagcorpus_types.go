@@ -126,9 +126,9 @@ type VertexairagcorpusVectorDbConfig struct {
 }
 
 type VertexairagcorpusVertexAiSearchConfig struct {
-	/* Vertex AI Search Serving Config resource full name. For example, `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}` or `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config}`. */
+	/* Vertex AI Search Serving Config resource. */
 	// +optional
-	ServingConfig *string `json:"servingConfig,omitempty"`
+	ServingConfigRef *v1alpha1.ResourceRef `json:"servingConfigRef,omitempty"`
 }
 
 type VertexairagcorpusVertexPredictionEndpoint struct {
@@ -226,7 +226,7 @@ type VertexairagcorpusVectorDbConfigStatus struct {
 type VertexairagcorpusVertexPredictionEndpointStatus struct {
 	/* Required. The endpoint resource name. */
 	// +optional
-	EndpointRef *v1alpha1.ResourceRef `json:"endpointRef,omitempty"`
+	Endpoint *string `json:"endpoint,omitempty"`
 }
 
 type VertexAIRagCorpusStatus struct {
@@ -248,7 +248,7 @@ type VertexAIRagCorpusStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexairagcorpus;gcpvertexairagcorpuss
+// +kubebuilder:resource:categories=gcp,shortName=gcpvertexairagcorpus;gcpvertexairagcorpora
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
