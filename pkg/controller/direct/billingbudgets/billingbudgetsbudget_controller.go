@@ -17,7 +17,6 @@ package billingbudgets
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	gcp "cloud.google.com/go/billing/budgets/apiv1"
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
@@ -170,9 +169,7 @@ func (a *BillingBudgetsBudgetAdapter) Create(ctx context.Context, createOp *dire
 	// BillingBudgetsBudget does not support status.externalRef or status.name,
 	// so we write it to spec.resourceID to ensure the object remains reconcilable in-place
 	// and supports resource identity across reconciliation cycles.
-	parts := strings.Split(created.Name, "/")
-	resourceID := parts[len(parts)-1]
-	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
+	if err := createOp.SetSpecResourceID(ctx, created.Name); err != nil {
 		return err
 	}
 

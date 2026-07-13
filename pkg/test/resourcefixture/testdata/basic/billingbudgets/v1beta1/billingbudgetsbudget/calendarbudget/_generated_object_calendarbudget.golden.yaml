@@ -43,7 +43,7 @@ spec:
     - services/0245-C3C9-3864
     subaccounts: []
   displayName: updated-sample-budget
-  resourceID: ${billingAccountBudgetId}
+  resourceID: billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}
   thresholdRules:
   - spendBasis: FORECASTED_SPEND
     thresholdPercent: 0.6
