@@ -2169,16 +2169,6 @@ type TuningDataStats struct {
 }
 */
 
-// +kcc:proto=google.cloud.aiplatform.v1.VertexAiSearchConfig
-type VertexAiSearchConfig struct {
-	// Vertex AI Search Serving Config resource full name. For example,
-	//  `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}`
-	//  or
-	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config}`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAiSearchConfig.serving_config
-	ServingConfig *string `json:"servingConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.VideoMetadata
 type VideoMetadata struct {
 	// Optional. The start offset of the video.

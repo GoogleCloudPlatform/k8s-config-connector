@@ -21,7 +21,7 @@ spec:
     plural: vertexairagcorpora
     shortNames:
     - gcpvertexairagcorpus
-    - gcpvertexairagcorpuss
+    - gcpvertexairagcorpora
     singular: vertexairagcorpus
   preserveUnknownFields: false
   scope: Namespaced
@@ -337,11 +337,36 @@ spec:
               vertexAiSearchConfig:
                 description: Optional. Immutable. The config for the Vertex AI Search.
                 properties:
-                  servingConfig:
-                    description: Vertex AI Search Serving Config resource full name.
-                      For example, `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}`
-                      or `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config}`.
-                    type: string
+                  servingConfigRef:
+                    description: Vertex AI Search Serving Config resource.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed DiscoveryEngineServingConfig
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collection}}/engines/{{engineID}}/servingConfigs/{{servingConfigID}}"
+                          or "projects/{{projectID}}/locations/{{location}}/collections/{{collection}}/dataStores/{{dataStoreID}}/servingConfigs/{{servingConfigID}}".
+                        type: string
+                      name:
+                        description: The name of a DiscoveryEngineServingConfig resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a DiscoveryEngineServingConfig
+                          resource.
+                        type: string
+                    type: object
                 type: object
             required:
             - location
@@ -427,36 +452,9 @@ spec:
                               non-1P fine-tuned text embedding models are currently
                               not supported. This is used for dense vector search.
                             properties:
-                              endpointRef:
+                              endpoint:
                                 description: Required. The endpoint resource name.
-                                oneOf:
-                                - not:
-                                    required:
-                                    - external
-                                  required:
-                                  - name
-                                - not:
-                                    anyOf:
-                                    - required:
-                                      - name
-                                    - required:
-                                      - namespace
-                                  required:
-                                  - external
-                                properties:
-                                  external:
-                                    description: A reference to an externally managed
-                                      VertexAIEndpoint resource. Should be in the
-                                      format "projects/{{projectID}}/locations/{{location}}/endpoints/{{endpointID}}".
-                                    type: string
-                                  name:
-                                    description: The name of a VertexAIEndpoint resource.
-                                    type: string
-                                  namespace:
-                                    description: The namespace of a VertexAIEndpoint
-                                      resource.
-                                    type: string
-                                type: object
+                                type: string
                             type: object
                         type: object
                     type: object
