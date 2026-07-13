@@ -85,32 +85,6 @@ type RedisClusterSpec struct {
 
 	// Optional. Cross cluster replication config.
 	CrossClusterReplicationConfig *CrossClusterReplicationConfig `json:"crossClusterReplicationConfig,omitempty"`
-
-	// Optional. A list of cluster endpoints.
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.cluster_endpoints
-	// +optional
-	// +listType=atomic
-	ClusterEndpoints []ClusterEndpoint `json:"clusterEndpoints,omitempty"`
-}
-
-// +kcc:proto=google.cloud.redis.cluster.v1.ConnectionDetail
-type ConnectionDetail struct {
-	// Detailed information of a PSC connection that is created through
-	//  service connectivity automation.
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.ConnectionDetail.psc_auto_connection
-	PSCAutoConnection *PSCAutoConnection `json:"pscAutoConnection,omitempty"`
-}
-
-type PSCAutoConnection struct {
-	// Required. The consumer project_id where the forwarding rule is created
-	//  from.
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.project_id
-	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
-
-	// Required. The consumer network where the IP address resides, in the form of
-	//  projects/{project_id}/global/networks/{network_id}.
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.network
-	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
 type PscConfigSpec struct {
@@ -170,12 +144,6 @@ type RedisClusterObservedState struct {
 	//  connect to the cluster. Currently only one discovery endpoint is supported.
 	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
 
-	// Optional. A list of cluster endpoints.
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.cluster_endpoints
-	// +optional
-	// +listType=atomic
-	ClusterEndpoints []ClusterEndpointObservedState `json:"clusterEndpoints,omitempty"`
-
 	// Output only. PSC connections for discovery of the cluster topology and
 	//  accessing the cluster.
 	PSCConnections []PSCConnectionObservedState `json:"pscConnections,omitempty"`
@@ -214,14 +182,6 @@ type CrossClusterReplicationConfig_RemoteClusterObservedState struct {
 	// Output only. The unique identifier of the remote cluster.
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster.uid
 	Uid *string `json:"uid,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ConnectionDetail
-type ConnectionDetailObservedState struct {
-	// Detailed information of a PSC connection that is created through
-	//  service connectivity automation.
-	// +kcc:proto:field=google.cloud.redis.cluster.v1.ConnectionDetail.psc_auto_connection
-	PSCAutoConnection *PSCAutoConnectionObservedState `json:"pscAutoConnection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
