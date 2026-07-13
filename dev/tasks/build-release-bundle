@@ -113,7 +113,6 @@ BLOCKED_KINDS=(
     "VertexAIFeatureOnlineStore"
     "VertexAIFeatureGroup"
     "SecretManagerRegionalSecret"
-    "EventarcEnrollment"
     "CertificateManagerTrustConfig"
     "ArtifactRegistryVPCSCConfig"
     "NetworkSecurityUrlList"
