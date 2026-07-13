@@ -72,6 +72,7 @@ func AdditionalIPRangesConfig_FromProto(mapCtx *direct.MapContext, in *pb.Additi
 		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.PodIPV4RangeNames = in.PodIpv4RangeNames
+	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
 	return out
 }
 func AdditionalIPRangesConfig_ToProto(mapCtx *direct.MapContext, in *krm.AdditionalIPRangesConfig) *pb.AdditionalIPRangesConfig {
@@ -83,6 +84,7 @@ func AdditionalIPRangesConfig_ToProto(mapCtx *direct.MapContext, in *krm.Additio
 		out.Subnetwork = in.SubnetworkRef.External
 	}
 	out.PodIpv4RangeNames = in.PodIPV4RangeNames
+	out.Status = direct.Enum_ToProto[pb.AdditionalIPRangesConfig_Status](mapCtx, in.Status)
 	return out
 }
 func AdditionalNodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdditionalNodeNetworkConfig) *krm.AdditionalNodeNetworkConfig {
@@ -204,6 +206,11 @@ func AddonsConfig_FromProto(mapCtx *direct.MapContext, in *pb.AddonsConfig) *krm
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
+	// MISSING: PodSnapshotConfig
+	// MISSING: SlurmOperatorConfig
+	// MISSING: SliceControllerConfig
+	// MISSING: AgentSandboxConfig
+	// MISSING: NodeReadinessConfig
 	return out
 }
 func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.AddonsConfig {
@@ -231,6 +238,11 @@ func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.A
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
+	// MISSING: PodSnapshotConfig
+	// MISSING: SlurmOperatorConfig
+	// MISSING: SliceControllerConfig
+	// MISSING: AgentSandboxConfig
+	// MISSING: NodeReadinessConfig
 	return out
 }
 func AdvancedDatapathObservabilityConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedDatapathObservabilityConfig) *krm.AdvancedDatapathObservabilityConfig {
@@ -336,6 +348,7 @@ func ClusterAutoscaling_FromProto(mapCtx *direct.MapContext, in *pb.ClusterAutos
 	// MISSING: AutoprovisioningNodePoolDefaults
 	// MISSING: AutoprovisioningLocations
 	// MISSING: DefaultComputeClassConfig
+	// MISSING: AutopilotGeneralProfile
 	return out
 }
 func ClusterAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutoscaling) *pb.ClusterAutoscaling {
@@ -349,6 +362,7 @@ func ClusterAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.ClusterAutosc
 	// MISSING: AutoprovisioningNodePoolDefaults
 	// MISSING: AutoprovisioningLocations
 	// MISSING: DefaultComputeClassConfig
+	// MISSING: AutopilotGeneralProfile
 	return out
 }
 func ClusterAutoscaling_AutoProvisioningDefaults_FromProto(mapCtx *direct.MapContext, in *pb.AutoprovisioningNodePoolDefaults) *krm.ClusterAutoscaling_AutoProvisioningDefaults {
@@ -478,6 +492,12 @@ func ClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: RbacBindingConfig
 	// MISSING: GKEAutoUpgradeConfig
 	// MISSING: AnonymousAuthenticationConfig
+	// MISSING: ScheduleUpgradeConfig
+	// MISSING: SecretSyncConfig
+	// MISSING: ManagedOpentelemetryConfig
+	// MISSING: ControlPlaneEgress
+	// MISSING: ManagedMachineLearningDiagnosticsConfig
+	// MISSING: NodeCreationConfig
 	return out
 }
 func ClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ClusterObservedState) *pb.Cluster {
@@ -563,6 +583,12 @@ func ClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ClusterObse
 	// MISSING: RbacBindingConfig
 	// MISSING: GKEAutoUpgradeConfig
 	// MISSING: AnonymousAuthenticationConfig
+	// MISSING: ScheduleUpgradeConfig
+	// MISSING: SecretSyncConfig
+	// MISSING: ManagedOpentelemetryConfig
+	// MISSING: ControlPlaneEgress
+	// MISSING: ManagedMachineLearningDiagnosticsConfig
+	// MISSING: NodeCreationConfig
 	return out
 }
 func ConfidentialNodes_FromProto(mapCtx *direct.MapContext, in *pb.ConfidentialNodes) *krm.ConfidentialNodes {
@@ -689,6 +715,12 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: RbacBindingConfig
 	// MISSING: GKEAutoUpgradeConfig
 	// MISSING: AnonymousAuthenticationConfig
+	// MISSING: ScheduleUpgradeConfig
+	// MISSING: SecretSyncConfig
+	// MISSING: ManagedOpentelemetryConfig
+	// MISSING: ControlPlaneEgress
+	// MISSING: ManagedMachineLearningDiagnosticsConfig
+	// MISSING: NodeCreationConfig
 	return out
 }
 */
@@ -782,6 +814,12 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 	// MISSING: RbacBindingConfig
 	// MISSING: GKEAutoUpgradeConfig
 	// MISSING: AnonymousAuthenticationConfig
+	// MISSING: ScheduleUpgradeConfig
+	// MISSING: SecretSyncConfig
+	// MISSING: ManagedOpentelemetryConfig
+	// MISSING: ControlPlaneEgress
+	// MISSING: ManagedMachineLearningDiagnosticsConfig
+	// MISSING: NodeCreationConfig
 	return out
 }
 */
@@ -813,6 +851,8 @@ func ContainerNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodePool)
 	// MISSING: Etag
 	out.QueuedProvisioning = NodePoolQueuedProvisioning_FromProto(mapCtx, in.GetQueuedProvisioning())
 	// MISSING: BestEffortProvisioning
+	// MISSING: NodeDrainConfig
+	// MISSING: MaintenancePolicy
 	return out
 }
 */
@@ -846,6 +886,8 @@ found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", s
 		// MISSING: Etag
 		out.QueuedProvisioning = NodePoolQueuedProvisioning_ToProto(mapCtx, in.QueuedProvisioning)
 		// MISSING: BestEffortProvisioning
+		// MISSING: NodeDrainConfig
+		// MISSING: MaintenancePolicy
 		return out
 	}
 */
@@ -892,6 +934,9 @@ func ControlPlaneEndpointsConfig_DNSEndpointConfig_FromProto(mapCtx *direct.MapC
 	out := &krm.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
 	// MISSING: Endpoint
 	out.AllowExternalTraffic = in.AllowExternalTraffic
+	// MISSING: EnableK8sTokensViaDNS
+	// (near miss): "EnableK8sTokensViaDNS" vs "EnableK8STokensViaDNS"
+	// MISSING: EnableK8sCertsViaDNS
 	return out
 }
 func ControlPlaneEndpointsConfig_DNSEndpointConfig_ToProto(mapCtx *direct.MapContext, in *krm.ControlPlaneEndpointsConfig_DNSEndpointConfig) *pb.ControlPlaneEndpointsConfig_DNSEndpointConfig {
@@ -901,6 +946,9 @@ func ControlPlaneEndpointsConfig_DNSEndpointConfig_ToProto(mapCtx *direct.MapCon
 	out := &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
 	// MISSING: Endpoint
 	out.AllowExternalTraffic = in.AllowExternalTraffic
+	// MISSING: EnableK8sTokensViaDNS
+	// (near miss): "EnableK8sTokensViaDNS" vs "EnableK8STokensViaDNS"
+	// MISSING: EnableK8sCertsViaDNS
 	return out
 }
 func ControlPlaneEndpointsConfig_IPEndpointsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig_IPEndpointsConfig) *krm.ControlPlaneEndpointsConfig_IPEndpointsConfig {
@@ -1000,6 +1048,8 @@ func DNSEndpointConfigStatus_FromProto(mapCtx *direct.MapContext, in *pb.Control
 	out := &krm.DNSEndpointConfigStatus{}
 	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
 	// MISSING: AllowExternalTraffic
+	// MISSING: EnableK8sTokensViaDNS
+	// MISSING: EnableK8sCertsViaDNS
 	return out
 }
 func DNSEndpointConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.DNSEndpointConfigStatus) *pb.ControlPlaneEndpointsConfig_DNSEndpointConfig {
@@ -1009,6 +1059,8 @@ func DNSEndpointConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.DNSEndpo
 	out := &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
 	out.Endpoint = direct.ValueOf(in.Endpoint)
 	// MISSING: AllowExternalTraffic
+	// MISSING: EnableK8sTokensViaDNS
+	// MISSING: EnableK8sCertsViaDNS
 	return out
 }
 func DailyMaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.DailyMaintenanceWindow) *krm.DailyMaintenanceWindow {
@@ -1300,6 +1352,7 @@ func IPAllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.IPAllocation
 	// MISSING: DefaultPodIPV4RangeUtilization
 	out.AdditionalIPRangesConfigs = direct.Slice_FromProto(mapCtx, in.AdditionalIpRangesConfigs, AdditionalIPRangesConfig_FromProto)
 	// MISSING: AutoIpamConfig
+	// MISSING: NetworkTierConfig
 	return out
 }
 func IPAllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.IPAllocationPolicy) *pb.IPAllocationPolicy {
@@ -1329,6 +1382,7 @@ func IPAllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.IPAllocationP
 	// MISSING: DefaultPodIPV4RangeUtilization
 	out.AdditionalIpRangesConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalIPRangesConfigs, AdditionalIPRangesConfig_ToProto)
 	// MISSING: AutoIpamConfig
+	// MISSING: NetworkTierConfig
 	return out
 }
 func IdentityServiceConfig_FromProto(mapCtx *direct.MapContext, in *pb.IdentityServiceConfig) *krm.IdentityServiceConfig {
@@ -1396,6 +1450,9 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	// MISSING: EvictionMaxPodGracePeriodSeconds
 	// MISSING: MaxParallelImagePulls
 	// MISSING: SingleProcessOomKill
+	// MISSING: CrashLoopBackOff
+	// MISSING: ShutdownGracePeriodSeconds
+	// MISSING: ShutdownGracePeriodCriticalPodsSeconds
 	return out
 }
 */
@@ -1428,6 +1485,9 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		// MISSING: EvictionMaxPodGracePeriodSeconds
 		// MISSING: MaxParallelImagePulls
 		// MISSING: SingleProcessOomKill
+		// MISSING: CrashLoopBackOff
+		// MISSING: ShutdownGracePeriodSeconds
+		// MISSING: ShutdownGracePeriodCriticalPodsSeconds
 		return out
 	}
 */
@@ -1441,6 +1501,10 @@ func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig
 	// MISSING: Hugepages
 	// MISSING: TransparentHugepageEnabled
 	// MISSING: TransparentHugepageDefrag
+	// MISSING: CustomNodeInit
+	// MISSING: SwapConfig
+	// MISSING: NodeKernelModuleLoading
+	// MISSING: AccurateTimeConfig
 	return out
 }
 func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig) *pb.LinuxNodeConfig {
@@ -1453,6 +1517,10 @@ func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig)
 	// MISSING: Hugepages
 	// MISSING: TransparentHugepageEnabled
 	// MISSING: TransparentHugepageDefrag
+	// MISSING: CustomNodeInit
+	// MISSING: SwapConfig
+	// MISSING: NodeKernelModuleLoading
+	// MISSING: AccurateTimeConfig
 	return out
 }
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
@@ -1477,6 +1545,7 @@ func MaintenanceExclusionOptions_FromProto(mapCtx *direct.MapContext, in *pb.Mai
 	}
 	out := &krm.MaintenanceExclusionOptions{}
 	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
+	// MISSING: EndTimeBehavior
 	return out
 }
 
@@ -1489,6 +1558,7 @@ found existing non-generated mapping function "MaintenanceExclusionOptions_ToPro
 		}
 		out := &pb.MaintenanceExclusionOptions{}
 		out.Scope = direct.Enum_ToProto[pb.MaintenanceExclusionOptions_Scope](mapCtx, in.Scope)
+		// MISSING: EndTimeBehavior
 		return out
 	}
 */
@@ -1499,6 +1569,7 @@ func MaintenancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePo
 	out := &krm.MaintenancePolicy{}
 	// MISSING: Window
 	// MISSING: ResourceVersion
+	// MISSING: DisruptionBudget
 	return out
 }
 func MaintenancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicy) *pb.MaintenancePolicy {
@@ -1508,6 +1579,7 @@ func MaintenancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePol
 	out := &pb.MaintenancePolicy{}
 	// MISSING: Window
 	// MISSING: ResourceVersion
+	// MISSING: DisruptionBudget
 	return out
 }
 func MaintenancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaintenancePolicy) *krm.MaintenancePolicyObservedState {
@@ -1517,6 +1589,7 @@ func MaintenancePolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.MaintenancePolicyObservedState{}
 	out.Window = MaintenanceWindowObservedState_FromProto(mapCtx, in.GetWindow())
 	// MISSING: ResourceVersion
+	// MISSING: DisruptionBudget
 	return out
 }
 func MaintenancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MaintenancePolicyObservedState) *pb.MaintenancePolicy {
@@ -1526,6 +1599,7 @@ func MaintenancePolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.M
 	out := &pb.MaintenancePolicy{}
 	out.Window = MaintenanceWindowObservedState_ToProto(mapCtx, in.Window)
 	// MISSING: ResourceVersion
+	// MISSING: DisruptionBudget
 	return out
 }
 func MaintenanceWindowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krm.MaintenanceWindowObservedState {
@@ -1535,6 +1609,7 @@ func MaintenanceWindowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.MaintenanceWindowObservedState{}
 	out.DailyMaintenanceWindow = DailyMaintenanceWindowObservedState_FromProto(mapCtx, in.GetDailyMaintenanceWindow())
 	// MISSING: RecurringWindow
+	// MISSING: RecurringMaintenanceWindow
 	// MISSING: MaintenanceExclusions
 	return out
 }
@@ -1547,6 +1622,7 @@ func MaintenanceWindowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.M
 		out.Policy = &pb.MaintenanceWindow_DailyMaintenanceWindow{DailyMaintenanceWindow: oneof}
 	}
 	// MISSING: RecurringWindow
+	// MISSING: RecurringMaintenanceWindow
 	// MISSING: MaintenanceExclusions
 	return out
 }
@@ -1758,6 +1834,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	}
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())
+	// MISSING: NodeImageConfig
 	out.Labels = in.Labels
 	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
 	out.Tags = in.Tags
@@ -1794,11 +1871,14 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	// MISSING: SecondaryBootDisks
 	// MISSING: StoragePools
 	// MISSING: SecondaryBootDiskUpdateStrategy
+	// MISSING: GpuDirectConfig
 	// MISSING: MaxRunDuration
 	// MISSING: LocalSsdEncryptionMode
 	// MISSING: EffectiveCgroupMode
 	// MISSING: FlexStart
 	// MISSING: BootDisk
+	// MISSING: ConsolidationDelay
+	// MISSING: TaintConfig
 	return out
 }
 */
@@ -1820,6 +1900,7 @@ found existing non-generated mapping function "NodeConfig_ToProto", skipping
 		}
 		out.Metadata = in.Metadata
 		out.ImageType = direct.ValueOf(in.ImageType)
+		// MISSING: NodeImageConfig
 		out.Labels = in.Labels
 		out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
 		out.Tags = in.Tags
@@ -1856,11 +1937,14 @@ found existing non-generated mapping function "NodeConfig_ToProto", skipping
 		// MISSING: SecondaryBootDisks
 		// MISSING: StoragePools
 		// MISSING: SecondaryBootDiskUpdateStrategy
+		// MISSING: GpuDirectConfig
 		// MISSING: MaxRunDuration
 		// MISSING: LocalSsdEncryptionMode
 		// MISSING: EffectiveCgroupMode
 		// MISSING: FlexStart
 		// MISSING: BootDisk
+		// MISSING: ConsolidationDelay
+		// MISSING: TaintConfig
 		return out
 	}
 */
@@ -1945,6 +2029,8 @@ func NodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeNetworkCo
 	if in.GetSubnetwork() != "" {
 		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
+	// MISSING: NetworkTierConfig
+	// MISSING: AcceleratorNetworkProfile
 	return out
 }
 func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkConfig) *pb.NodeNetworkConfig {
@@ -1966,6 +2052,8 @@ func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkCon
 	if in.SubnetworkRef != nil {
 		out.Subnetwork = in.SubnetworkRef.External
 	}
+	// MISSING: NetworkTierConfig
+	// MISSING: AcceleratorNetworkProfile
 	return out
 }
 func NodePoolAutoConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolAutoConfig) *krm.NodePoolAutoConfig {
@@ -2068,6 +2156,7 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	}
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())
+	// MISSING: NodeImageConfig
 	out.Labels = in.Labels
 	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
 	out.Tags = in.Tags
@@ -2104,11 +2193,14 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	// MISSING: SecondaryBootDisks
 	// MISSING: StoragePools
 	// MISSING: SecondaryBootDiskUpdateStrategy
+	// MISSING: GpuDirectConfig
 	// MISSING: MaxRunDuration
 	// MISSING: LocalSsdEncryptionMode
 	// MISSING: EffectiveCgroupMode
 	// MISSING: FlexStart
 	// MISSING: BootDisk
+	// MISSING: ConsolidationDelay
+	// MISSING: TaintConfig
 	return out
 }
 func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
@@ -2125,6 +2217,7 @@ func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeC
 	}
 	out.Metadata = in.Metadata
 	out.ImageType = direct.ValueOf(in.ImageType)
+	// MISSING: NodeImageConfig
 	out.Labels = in.Labels
 	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
 	out.Tags = in.Tags
@@ -2161,11 +2254,14 @@ func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeC
 	// MISSING: SecondaryBootDisks
 	// MISSING: StoragePools
 	// MISSING: SecondaryBootDiskUpdateStrategy
+	// MISSING: GpuDirectConfig
 	// MISSING: MaxRunDuration
 	// MISSING: LocalSsdEncryptionMode
 	// MISSING: EffectiveCgroupMode
 	// MISSING: FlexStart
 	// MISSING: BootDisk
+	// MISSING: ConsolidationDelay
+	// MISSING: TaintConfig
 	return out
 }
 func NodePoolQueuedProvisioning_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_QueuedProvisioning) *krm.NodePoolQueuedProvisioning {

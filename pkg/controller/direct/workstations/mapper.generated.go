@@ -37,8 +37,13 @@ func WorkstationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.ControlPlaneIP = direct.LazyPtr(in.GetControlPlaneIp())
+	// MISSING: DomainConfig
 	out.Degraded = direct.LazyPtr(in.GetDegraded())
 	// MISSING: Conditions
+	// MISSING: Tags
+	// MISSING: GatewayConfig
+	// MISSING: WorkstationAuthorizationURL
+	// MISSING: WorkstationLaunchURL
 	return out
 }
 */
@@ -57,8 +62,13 @@ func WorkstationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
 	out.Etag = direct.ValueOf(in.Etag)
 	out.ControlPlaneIp = direct.ValueOf(in.ControlPlaneIP)
+	// MISSING: DomainConfig
 	out.Degraded = direct.ValueOf(in.Degraded)
 	// MISSING: Conditions
+	// MISSING: Tags
+	// MISSING: GatewayConfig
+	// MISSING: WorkstationAuthorizationURL
+	// MISSING: WorkstationLaunchURL
 	return out
 }
 */
@@ -80,7 +90,12 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.PrivateClusterConfig = WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx, in.GetPrivateClusterConfig())
+	// MISSING: DomainConfig
 	// MISSING: Conditions
+	// MISSING: Tags
+	// MISSING: GatewayConfig
+	// MISSING: WorkstationAuthorizationURL
+	// MISSING: WorkstationLaunchURL
 	return out
 }
 */
@@ -102,7 +117,12 @@ func WorkstationClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstati
 		out.Subnetwork = in.SubnetworkRef.External
 	}
 	out.PrivateClusterConfig = WorkstationCluster_PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig)
+	// MISSING: DomainConfig
 	// MISSING: Conditions
+	// MISSING: Tags
+	// MISSING: GatewayConfig
+	// MISSING: WorkstationAuthorizationURL
+	// MISSING: WorkstationLaunchURL
 	return out
 }
 */
@@ -149,9 +169,15 @@ func WorkstationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: MaxUsableWorkstations
 	out.Host = WorkstationConfig_HostObservedState_FromProto(mapCtx, in.GetHost())
+	// MISSING: EphemeralDirectories
 	out.Degraded = direct.LazyPtr(in.GetDegraded())
 	// MISSING: Conditions
+	// MISSING: EnableAuditAgent
+	// MISSING: DisableTCPConnections
+	// MISSING: AllowedPorts
+	// MISSING: GrantWorkstationAdminRoleOnCreate
 	return out
 }
 */
@@ -170,9 +196,15 @@ func WorkstationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
 	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: MaxUsableWorkstations
 	out.Host = WorkstationConfig_HostObservedState_ToProto(mapCtx, in.Host)
+	// MISSING: EphemeralDirectories
 	out.Degraded = direct.ValueOf(in.Degraded)
 	// MISSING: Conditions
+	// MISSING: EnableAuditAgent
+	// MISSING: DisableTCPConnections
+	// MISSING: AllowedPorts
+	// MISSING: GrantWorkstationAdminRoleOnCreate
 	return out
 }
 */
@@ -191,13 +223,19 @@ func WorkstationConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstati
 	out.Labels = in.Labels
 	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
 	out.RunningTimeout = direct.StringDuration_FromProto(mapCtx, in.GetRunningTimeout())
+	// MISSING: MaxUsableWorkstations
 	out.Host = WorkstationConfig_Host_FromProto(mapCtx, in.GetHost())
 	out.PersistentDirectories = direct.Slice_FromProto(mapCtx, in.PersistentDirectories, WorkstationConfig_PersistentDirectory_FromProto)
+	// MISSING: EphemeralDirectories
 	out.Container = WorkstationConfig_Container_FromProto(mapCtx, in.GetContainer())
 	out.EncryptionKey = WorkstationConfig_CustomerEncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
 	out.ReadinessChecks = direct.Slice_FromProto(mapCtx, in.ReadinessChecks, WorkstationConfig_ReadinessCheck_FromProto)
 	out.ReplicaZones = in.ReplicaZones
 	// MISSING: Conditions
+	// MISSING: EnableAuditAgent
+	// MISSING: DisableTCPConnections
+	// MISSING: AllowedPorts
+	// MISSING: GrantWorkstationAdminRoleOnCreate
 	return out
 }
 */
@@ -216,13 +254,19 @@ func WorkstationConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workstatio
 	out.Labels = in.Labels
 	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
 	out.RunningTimeout = direct.StringDuration_ToProto(mapCtx, in.RunningTimeout)
+	// MISSING: MaxUsableWorkstations
 	out.Host = WorkstationConfig_Host_ToProto(mapCtx, in.Host)
 	out.PersistentDirectories = direct.Slice_ToProto(mapCtx, in.PersistentDirectories, WorkstationConfig_PersistentDirectory_ToProto)
+	// MISSING: EphemeralDirectories
 	out.Container = WorkstationConfig_Container_ToProto(mapCtx, in.Container)
 	out.EncryptionKey = WorkstationConfig_CustomerEncryptionKey_ToProto(mapCtx, in.EncryptionKey)
 	out.ReadinessChecks = direct.Slice_ToProto(mapCtx, in.ReadinessChecks, WorkstationConfig_ReadinessCheck_ToProto)
 	out.ReplicaZones = in.ReplicaZones
 	// MISSING: Conditions
+	// MISSING: EnableAuditAgent
+	// MISSING: DisableTCPConnections
+	// MISSING: AllowedPorts
+	// MISSING: GrantWorkstationAdminRoleOnCreate
 	return out
 }
 */
@@ -350,6 +394,12 @@ func WorkstationConfig_Host_GceInstance_FromProto(mapCtx *direct.MapContext, in 
 	out.ShieldedInstanceConfig = WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
 	out.ConfidentialInstanceConfig = WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_FromProto(mapCtx, in.GetConfidentialInstanceConfig())
 	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
+	// MISSING: Accelerators
+	// MISSING: BoostConfigs
+	// MISSING: DisableSSH
+	// MISSING: VMTags
+	// MISSING: StartupScriptURI
+	// MISSING: InstanceMetadata
 	return out
 }
 */
@@ -373,6 +423,12 @@ func WorkstationConfig_Host_GceInstance_ToProto(mapCtx *direct.MapContext, in *k
 	out.ShieldedInstanceConfig = WorkstationConfig_Host_GceInstance_GceShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
 	out.ConfidentialInstanceConfig = WorkstationConfig_Host_GceInstance_GceConfidentialInstanceConfig_ToProto(mapCtx, in.ConfidentialInstanceConfig)
 	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
+	// MISSING: Accelerators
+	// MISSING: BoostConfigs
+	// MISSING: DisableSSH
+	// MISSING: VMTags
+	// MISSING: StartupScriptURI
+	// MISSING: InstanceMetadata
 	return out
 }
 */
@@ -394,6 +450,12 @@ func WorkstationConfig_Host_GceInstanceObservedState_FromProto(mapCtx *direct.Ma
 	// MISSING: ShieldedInstanceConfig
 	// MISSING: ConfidentialInstanceConfig
 	// MISSING: BootDiskSizeGB
+	// MISSING: Accelerators
+	// MISSING: BoostConfigs
+	// MISSING: DisableSSH
+	// MISSING: VMTags
+	// MISSING: StartupScriptURI
+	// MISSING: InstanceMetadata
 	return out
 }
 */
@@ -415,6 +477,12 @@ func WorkstationConfig_Host_GceInstanceObservedState_ToProto(mapCtx *direct.MapC
 	// MISSING: ShieldedInstanceConfig
 	// MISSING: ConfidentialInstanceConfig
 	// MISSING: BootDiskSizeGB
+	// MISSING: Accelerators
+	// MISSING: BoostConfigs
+	// MISSING: DisableSSH
+	// MISSING: VMTags
+	// MISSING: StartupScriptURI
+	// MISSING: InstanceMetadata
 	return out
 }
 */
@@ -475,6 +543,7 @@ func WorkstationConfig_PersistentDirectory_FromProto(mapCtx *direct.MapContext, 
 	out := &krm.WorkstationConfig_PersistentDirectory{}
 	// MISSING: GCEPD
 	// (near miss): "GCEPD" vs "GcePD"
+	// MISSING: GCEHd
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
 	return out
 }
@@ -488,6 +557,7 @@ func WorkstationConfig_PersistentDirectory_ToProto(mapCtx *direct.MapContext, in
 	out := &pb.WorkstationConfig_PersistentDirectory{}
 	// MISSING: GCEPD
 	// (near miss): "GCEPD" vs "GcePD"
+	// MISSING: GCEHd
 	out.MountPath = direct.ValueOf(in.MountPath)
 	return out
 }
@@ -500,10 +570,12 @@ func WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_FromProto(m
 	}
 	out := &krm.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk{}
 	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
+	// MISSING: MaxSizeGB
 	out.FSType = direct.LazyPtr(in.GetFsType())
 	out.DiskType = direct.LazyPtr(in.GetDiskType())
 	out.SourceSnapshot = direct.LazyPtr(in.GetSourceSnapshot())
 	out.ReclaimPolicy = direct.Enum_FromProto(mapCtx, in.GetReclaimPolicy())
+	// MISSING: ArchiveTimeout
 	return out
 }
 */
@@ -515,10 +587,12 @@ func WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_ToProto(map
 	}
 	out := &pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk{}
 	out.SizeGb = direct.ValueOf(in.SizeGB)
+	// MISSING: MaxSizeGB
 	out.FsType = direct.ValueOf(in.FSType)
 	out.DiskType = direct.ValueOf(in.DiskType)
 	out.SourceSnapshot = direct.ValueOf(in.SourceSnapshot)
 	out.ReclaimPolicy = direct.Enum_ToProto[pb.WorkstationConfig_PersistentDirectory_GceRegionalPersistentDisk_ReclaimPolicy](mapCtx, in.ReclaimPolicy)
+	// MISSING: ArchiveTimeout
 	return out
 }
 */
@@ -562,8 +636,13 @@ func WorkstationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workst
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: PersistentDirectories
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Host = direct.LazyPtr(in.GetHost())
+	// MISSING: Env
+	// MISSING: KMSKey
+	// MISSING: SourceWorkstation
+	// MISSING: RuntimeHost
 	return out
 }
 */
@@ -583,8 +662,13 @@ func WorkstationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Worksta
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
 	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: PersistentDirectories
 	out.State = direct.Enum_ToProto[pb.Workstation_State](mapCtx, in.State)
 	out.Host = direct.ValueOf(in.Host)
+	// MISSING: Env
+	// MISSING: KMSKey
+	// MISSING: SourceWorkstation
+	// MISSING: RuntimeHost
 	return out
 }
 */
@@ -601,6 +685,11 @@ func WorkstationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstation) *k
 	// MISSING: Reconciling
 	out.Annotations = in.Annotations
 	out.Labels = in.Labels
+	// MISSING: PersistentDirectories
+	// MISSING: Env
+	// MISSING: KMSKey
+	// MISSING: SourceWorkstation
+	// MISSING: RuntimeHost
 	return out
 }
 */
@@ -617,6 +706,11 @@ func WorkstationSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkstationSpec)
 	// MISSING: Reconciling
 	out.Annotations = in.Annotations
 	out.Labels = in.Labels
+	// MISSING: PersistentDirectories
+	// MISSING: Env
+	// MISSING: KMSKey
+	// MISSING: SourceWorkstation
+	// MISSING: RuntimeHost
 	return out
 }
 */

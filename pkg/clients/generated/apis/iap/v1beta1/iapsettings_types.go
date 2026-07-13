@@ -166,6 +166,14 @@ type SettingsGcipSettings struct {
 }
 
 type SettingsOauthSettings struct {
+	/* Optional. OAuth 2.0 client ID used in the OAuth flow. This allows for client sharing. The risks of client sharing are outlined here: https://cloud.google.com/iap/docs/sharing-oauth-clients#risks. */
+	// +optional
+	ClientID *string `json:"clientID,omitempty"`
+
+	/* Optional. Input only. OAuth secret paired with client ID. */
+	// +optional
+	ClientSecret *string `json:"clientSecret,omitempty"`
+
 	/* Domain hint to send as hd=? parameter in OAuth request flow. Enables redirect to primary IDP by skipping Google's login screen. https://developers.google.com/identity/protocols/OpenIDConnect#hd-param Note: IAP does not verify that the id token's hd claim matches this value since access behavior is managed by IAM policies. */
 	// +optional
 	LoginHint *string `json:"loginHint,omitempty"`

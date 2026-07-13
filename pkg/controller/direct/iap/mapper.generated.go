@@ -431,6 +431,9 @@ func OAuthSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OAuthSet
 	}
 	out := &krmiapv1alpha1.OAuthSettings{}
 	out.LoginHint = direct.StringValue_FromProto(mapCtx, in.GetLoginHint())
+	// MISSING: ClientID
+	// MISSING: ClientSecret
+	// MISSING: ClientSecretSha256
 	out.ProgrammaticClients = in.ProgrammaticClients
 	return out
 }
@@ -440,6 +443,9 @@ func OAuthSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiapv1alpha
 	}
 	out := &pb.OAuthSettings{}
 	out.LoginHint = direct.StringValue_ToProto(mapCtx, in.LoginHint)
+	// MISSING: ClientID
+	// MISSING: ClientSecret
+	// MISSING: ClientSecretSha256
 	out.ProgrammaticClients = in.ProgrammaticClients
 	return out
 }
@@ -449,6 +455,9 @@ func OAuthSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.OAuthSett
 	}
 	out := &krm.OAuthSettings{}
 	out.LoginHint = direct.StringValue_FromProto(mapCtx, in.GetLoginHint())
+	out.ClientID = direct.StringValue_FromProto(mapCtx, in.GetClientId())
+	out.ClientSecret = direct.StringValue_FromProto(mapCtx, in.GetClientSecret())
+	// MISSING: ClientSecretSha256
 	out.ProgrammaticClients = in.ProgrammaticClients
 	return out
 }
@@ -458,6 +467,9 @@ func OAuthSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.OAuthSetti
 	}
 	out := &pb.OAuthSettings{}
 	out.LoginHint = direct.StringValue_ToProto(mapCtx, in.LoginHint)
+	out.ClientId = direct.StringValue_ToProto(mapCtx, in.ClientID)
+	out.ClientSecret = direct.StringValue_ToProto(mapCtx, in.ClientSecret)
+	// MISSING: ClientSecretSha256
 	out.ProgrammaticClients = in.ProgrammaticClients
 	return out
 }

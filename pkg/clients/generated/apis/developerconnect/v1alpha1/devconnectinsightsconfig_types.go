@@ -43,7 +43,7 @@ type DevconnectinsightsconfigArtifactConfigs struct {
 	// +optional
 	GoogleArtifactAnalysis *DevconnectinsightsconfigGoogleArtifactAnalysis `json:"googleArtifactAnalysis,omitempty"`
 
-	/* Optional. Set if the artifact is stored in Artifact regsitry. */
+	/* Optional. Set if the artifact is stored in Artifact registry. */
 	// +optional
 	GoogleArtifactRegistry *DevconnectinsightsconfigGoogleArtifactRegistry `json:"googleArtifactRegistry,omitempty"`
 
@@ -88,6 +88,20 @@ type DevConnectInsightsConfigSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type DevconnectinsightsconfigAppHubServiceStatus struct {
+	/* Required. Output only. Immutable. The name of the App Hub Service. Format: `projects/{project}/locations/{location}/applications/{application}/services/{service}`. */
+	// +optional
+	ApphubService *string `json:"apphubService,omitempty"`
+
+	/* Output only. The criticality of the App Hub Service. */
+	// +optional
+	Criticality *string `json:"criticality,omitempty"`
+
+	/* Output only. The environment of the App Hub Service. */
+	// +optional
+	Environment *string `json:"environment,omitempty"`
+}
+
 type DevconnectinsightsconfigAppHubWorkloadStatus struct {
 	/* Output only. The criticality of the App Hub Workload. */
 	// +optional
@@ -122,6 +136,12 @@ type DevconnectinsightsconfigGkeWorkloadStatus struct {
 	Deployment *string `json:"deployment,omitempty"`
 }
 
+type DevconnectinsightsconfigGoogleCloudRunStatus struct {
+	/* Required. Immutable. The name of the Cloud Run service. Format: `projects/{project}/locations/{location}/services/{service}`. */
+	// +optional
+	ServiceURI *string `json:"serviceURI,omitempty"`
+}
+
 type DevconnectinsightsconfigObservedStateStatus struct {
 	/* Output only. [Output only] Create timestamp */
 	// +optional
@@ -149,6 +169,10 @@ type DevconnectinsightsconfigObservedStateStatus struct {
 }
 
 type DevconnectinsightsconfigRuntimeConfigsStatus struct {
+	/* Output only. App Hub Service. */
+	// +optional
+	AppHubService *DevconnectinsightsconfigAppHubServiceStatus `json:"appHubService,omitempty"`
+
 	/* Output only. App Hub Workload. */
 	// +optional
 	AppHubWorkload *DevconnectinsightsconfigAppHubWorkloadStatus `json:"appHubWorkload,omitempty"`
@@ -156,6 +180,10 @@ type DevconnectinsightsconfigRuntimeConfigsStatus struct {
 	/* Output only. Google Kubernetes Engine runtime. */
 	// +optional
 	GkeWorkload *DevconnectinsightsconfigGkeWorkloadStatus `json:"gkeWorkload,omitempty"`
+
+	/* Output only. Cloud Run runtime. */
+	// +optional
+	GoogleCloudRun *DevconnectinsightsconfigGoogleCloudRunStatus `json:"googleCloudRun,omitempty"`
 
 	/* Output only. The state of the Runtime. */
 	// +optional
