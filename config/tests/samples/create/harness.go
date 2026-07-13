@@ -1121,6 +1121,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "datastream.cnrm.cloud.google.com", Kind: "DatastreamPrivateConnection"}:
 			case schema.GroupKind{Group: "datastream.cnrm.cloud.google.com", Kind: "DatastreamRoute"}:
 
+			case schema.GroupKind{Group: "datamigration.cnrm.cloud.google.com", Kind: "DatabaseMigrationMigrationJob"}:
+
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexEntryGroup"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexEntryType"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexLake"}:

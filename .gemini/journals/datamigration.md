@@ -17,3 +17,9 @@
 - **Problem**: The proto service for `datamigration` is actually `google.cloud.clouddms.v1`. Specifying `google.cloud.datamigration.v1` in `generate-types` results in a message not found error.
 - **Solution**: Set the `--service` flag to `google.cloud.clouddms.v1` while configuring `--api-version` to `datamigration.cnrm.cloud.google.com/v1alpha1`. This correctly pulls the `PrivateConnection` proto and compiles everything under the correct API group directory `apis/datamigration/v1alpha1/`.
 - **Impact**: Helps next agents realize that DMS / Data Migration Service maps internally to `clouddms` protos in GCP googleapis.
+
+### [2026-07-08] Direct Controller Implementation for DatabaseMigrationMigrationJob
+- **Context**: Implementing the direct controller and E2E fixtures for `DatabaseMigrationMigrationJob`.
+- **Problem**: When using `m.config.RESTClientOptions()` and initializing `gcp.NewDataMigrationClient(ctx, opts...)`, the client creation fails with `WithHTTPClient is incompatible with gRPC dial options` because the GCP DataMigrationClient is gRPC-based, but `RESTClientOptions()` returns HTTP options. Additionally, MockGCP skipped the test because the `datamigration.cnrm.cloud.google.com` group was not listed in `harness.go`.
+- **Solution**: Use `m.config.GRPCClientOptions()` to get proper gRPC options for client initialization, and add the `DatabaseMigrationMigrationJob` GVK to the supported list in `config/tests/samples/create/harness.go` to enable MockGCP testing.
+- **Impact**: Ensures that all DMS controllers using the gRPC-based official client can initialize cleanly, and enables proper MockGCP verification of DatabaseMigration resources.

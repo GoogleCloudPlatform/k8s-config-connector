@@ -43,6 +43,10 @@ func (i *DatabaseMigrationMigrationJobIdentity) String() string {
 	return DatabaseMigrationMigrationJobIdentityFormat.ToString(*i)
 }
 
+func (i *DatabaseMigrationMigrationJobIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *DatabaseMigrationMigrationJobIdentity) FromExternal(ref string) error {
 	parsed, match, err := DatabaseMigrationMigrationJobIdentityFormat.Parse(ref)
 	if err != nil {
