@@ -27,6 +27,8 @@ type NetworkSecurityAuthzPolicyExpansion interface{}
 
 type NetworkSecurityBackendAuthenticationConfigExpansion interface{}
 
+type NetworkSecurityFirewallEndpointExpansion interface{}
+
 type NetworkSecurityFirewallEndpointAssociationExpansion interface{}
 
 type NetworkSecurityGatewaySecurityPolicyExpansion interface{}
@@ -44,5 +46,7 @@ type NetworkSecurityPartnerSSERealmExpansion interface{}
 type NetworkSecuritySACRealmExpansion interface{}
 
 type NetworkSecuritySecurityProfileExpansion interface{}
+
+type NetworkSecuritySecurityProfileGroupExpansion interface{}
 
 type NetworkSecurityTLSInspectionPolicyExpansion interface{}

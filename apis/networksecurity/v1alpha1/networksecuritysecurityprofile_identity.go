@@ -60,6 +60,10 @@ func (i *NetworkSecuritySecurityProfileIdentity) Host() string {
 	return NetworkSecuritySecurityProfileIdentityFormat.Host()
 }
 
+func (i *NetworkSecuritySecurityProfileIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromNetworkSecuritySecurityProfileSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkSecuritySecurityProfileIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

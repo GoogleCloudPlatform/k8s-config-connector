@@ -34,6 +34,7 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecurityAddressGroupsGetter
 	NetworkSecurityAuthzPoliciesGetter
 	NetworkSecurityBackendAuthenticationConfigsGetter
+	NetworkSecurityFirewallEndpointsGetter
 	NetworkSecurityFirewallEndpointAssociationsGetter
 	NetworkSecurityGatewaySecurityPoliciesGetter
 	NetworkSecurityInterceptDeploymentsGetter
@@ -43,6 +44,7 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecurityPartnerSSERealmsGetter
 	NetworkSecuritySACRealmsGetter
 	NetworkSecuritySecurityProfilesGetter
+	NetworkSecuritySecurityProfileGroupsGetter
 	NetworkSecurityTLSInspectionPoliciesGetter
 }
 
@@ -61,6 +63,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityAuthzPolicies(namespace s
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
 	return newNetworkSecurityBackendAuthenticationConfigs(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpoints(namespace string) NetworkSecurityFirewallEndpointInterface {
+	return newNetworkSecurityFirewallEndpoints(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpointAssociations(namespace string) NetworkSecurityFirewallEndpointAssociationInterface {
@@ -97,6 +103,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecuritySACRealms(namespace strin
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecuritySecurityProfiles(namespace string) NetworkSecuritySecurityProfileInterface {
 	return newNetworkSecuritySecurityProfiles(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecuritySecurityProfileGroups(namespace string) NetworkSecuritySecurityProfileGroupInterface {
+	return newNetworkSecuritySecurityProfileGroups(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityTLSInspectionPolicies(namespace string) NetworkSecurityTLSInspectionPolicyInterface {
