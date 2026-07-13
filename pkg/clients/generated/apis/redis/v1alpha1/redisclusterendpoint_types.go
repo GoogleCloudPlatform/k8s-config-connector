@@ -51,24 +51,8 @@ type ClusterendpointConnections struct {
 }
 
 type ClusterendpointPscConnection struct {
-	/* Required. The IP allocated on the consumer network for the PSC forwarding rule. */
-	AddressRef v1alpha1.ResourceRef `json:"addressRef"`
-
 	/* Required. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
 	ForwardingRuleRef v1alpha1.ResourceRef `json:"forwardingRuleRef"`
-
-	/* Required. The consumer network where the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
-
-	/* Optional. Project ID of the consumer project where the forwarding rule is created in. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
-
-	/* Required. The PSC connection id of the forwarding rule connected to the service attachment. */
-	PscConnectionID string `json:"pscConnectionID"`
-
-	/* Required. The service attachment which is the target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}. */
-	ServiceAttachmentRef v1alpha1.ResourceRef `json:"serviceAttachmentRef"`
 }
 
 type RedisClusterEndpointSpec struct {

@@ -19,7 +19,6 @@ import (
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
 	krmredisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -165,24 +164,9 @@ func ClusterEndpoint_PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.P
 		return nil
 	}
 	out := &krmredisv1alpha1.ClusterEndpoint_PSCConnection{}
-	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
-	if in.GetAddress() != "" {
-		out.AddressRef = &krmcomputev1beta1.ComputeAddressRef{External: in.GetAddress()}
-	}
 	if in.GetForwardingRule() != "" {
 		out.ForwardingRuleRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
-	if in.GetProjectId() != "" {
-		out.ProjectRef = &refsv1beta1.ProjectRef{External: in.GetProjectId()}
-	}
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	if in.GetServiceAttachment() != "" {
-		out.ServiceAttachmentRef = &refsv1beta1.ComputeServiceAttachmentRef{External: in.GetServiceAttachment()}
-	}
-	// MISSING: PSCConnectionStatus
-	// MISSING: ConnectionType
 	return out
 }
 func ClusterEndpoint_PSCConnection_ToProto(mapCtx *direct.MapContext, in *krmredisv1alpha1.ClusterEndpoint_PSCConnection) *pb.PscConnection {
@@ -190,23 +174,8 @@ func ClusterEndpoint_PSCConnection_ToProto(mapCtx *direct.MapContext, in *krmred
 		return nil
 	}
 	out := &pb.PscConnection{}
-	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
-	if in.AddressRef != nil {
-		out.Address = in.AddressRef.External
-	}
 	if in.ForwardingRuleRef != nil {
 		out.ForwardingRule = in.ForwardingRuleRef.External
 	}
-	if in.ProjectRef != nil {
-		out.ProjectId = in.ProjectRef.External
-	}
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	if in.ServiceAttachmentRef != nil {
-		out.ServiceAttachment = in.ServiceAttachmentRef.External
-	}
-	// MISSING: PSCConnectionStatus
-	// MISSING: ConnectionType
 	return out
 }

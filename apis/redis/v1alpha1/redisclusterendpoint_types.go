@@ -15,10 +15,8 @@
 package v1alpha1
 
 import (
-	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -57,31 +55,10 @@ type ClusterEndpoint_ConnectionDetail struct {
 }
 
 type ClusterEndpoint_PSCConnection struct {
-	// Required. The PSC connection id of the forwarding rule connected to the
-	//  service attachment.
-	PSCConnectionID *string `json:"pscConnectionID"`
-
-	// Required. The IP allocated on the consumer network for the PSC forwarding
-	//  rule.
-	AddressRef *computev1beta1.ComputeAddressRef `json:"addressRef"`
-
 	// Required. The URI of the consumer side forwarding rule.
 	//  Example:
 	//  projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
 	ForwardingRuleRef *computev1beta1.ForwardingRuleRef `json:"forwardingRuleRef"`
-
-	// Optional. Project ID of the consumer project where the forwarding rule is
-	//  created in.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
-
-	// Required. The consumer network where the IP address resides, in the form of
-	//  projects/{project_id}/global/networks/{network_id}.
-	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
-
-	// Required. The service attachment which is the target of the PSC connection,
-	//  in the form of
-	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
-	ServiceAttachmentRef *refsv1beta1.ComputeServiceAttachmentRef `json:"serviceAttachmentRef"`
 }
 
 // RedisClusterEndpointStatus defines the config connector machine state of RedisClusterEndpoint
