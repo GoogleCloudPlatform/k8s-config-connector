@@ -215,7 +215,7 @@ OK
         }
       },
       "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -228,7 +228,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -240,7 +240,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -261,7 +261,7 @@ OK
         }
       },
       "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -274,7 +274,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -306,7 +306,7 @@ GRPC /google.monitoring.v3.AlertPolicyService/UpdateAlertPolicy
     ],
     "displayName": "Test SQL Alert Policy Hourly",
     "enabled": true,
-    "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+    "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -345,7 +345,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -357,7 +357,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -390,7 +390,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -402,7 +402,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -435,7 +435,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -447,7 +447,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -480,7 +480,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -492,7 +492,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/DeleteAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
