@@ -67,11 +67,16 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterExampleStoreServiceServer(grpcServer, &exampleStoreService{MockService: s})
 	pb.RegisterFeatureOnlineStoreAdminServiceServer(grpcServer, &featureOnlineStoreAdminService{MockService: s})
 	pb.RegisterDeploymentResourcePoolServiceServer(grpcServer, &deploymentResourcePoolService{MockService: s})
+	pb.RegisterPipelineServiceServer(grpcServer, &pipelineService{MockService: s})
 
 	// Also register under v1 name so that v1 gRPC clients can call it
 	desc := pb.FeatureOnlineStoreAdminService_ServiceDesc
 	desc.ServiceName = "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService"
 	grpcServer.RegisterService(&desc, &featureOnlineStoreAdminService{MockService: s})
+
+	descPipeline := pb.PipelineService_ServiceDesc
+	descPipeline.ServiceName = "google.cloud.aiplatform.v1.PipelineService"
+	grpcServer.RegisterService(&descPipeline, &pipelineService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -91,6 +96,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewExampleStoreServiceClient(conn))
 	mux.AddService(pb.NewFeatureOnlineStoreAdminServiceClient(conn))
 	mux.AddService(pb.NewDeploymentResourcePoolServiceClient(conn))
+	mux.AddService(pb.NewPipelineServiceClient(conn))
 
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/ui/{prefix=**}/operations/{name}", conn)
