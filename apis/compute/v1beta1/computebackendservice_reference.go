@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"context"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -101,7 +102,13 @@ func (r *ComputeBackendServiceRef) Normalize(ctx context.Context, reader client.
 		}
 		return identity.String()
 	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	if err := refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback); err != nil {
+		return err
+	}
+	if r.External != "" && !strings.HasPrefix(r.External, "https://") && strings.HasPrefix(r.External, "projects/") {
+		r.External = "https://www.googleapis.com/compute/v1/" + r.External
+	}
+	return nil
 }
 
 // NormalizedExternal is a deprecated method that assigns and returns the "External" field.
