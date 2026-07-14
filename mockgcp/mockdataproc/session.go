@@ -71,23 +71,32 @@ func (s *sessionControllerServer) CreateSession(ctx context.Context, req *pb.Cre
 	obj.Creator = "test-user@google.com"
 	obj.StateHistory = []*pb.Session_SessionStateHistory{
 		{
-			State:          pb.Session_ACTIVE,
+			State:          pb.Session_CREATING,
 			StateStartTime: timestamppb.New(now),
 		},
 	}
+	obj.RuntimeInfo = &pb.RuntimeInfo{}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
-		OperationType: pb.SessionOperationMetadata_SESSION_OPERATION_TYPE_UNSPECIFIED,
-		Description:   "Create Session",
+		OperationType: pb.SessionOperationMetadata_CREATE,
+		Description:   "Create session",
 		SessionUuid:   obj.Uuid,
 		CreateTime:    timestamppb.New(now),
 		DoneTime:      timestamppb.New(now),
+		Labels: map[string]string{
+			"cnrm-test":                       "true",
+			"goog-dataproc-drz-resource-uuid": "session-" + obj.Uuid,
+			"goog-dataproc-location":          name.Location,
+			"goog-dataproc-session-id":        name.Session,
+			"goog-dataproc-session-uuid":      obj.Uuid,
+			"managed-by-cnrm":                 "true",
+		},
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return obj, nil
@@ -107,13 +116,22 @@ func (s *sessionControllerServer) DeleteSession(ctx context.Context, req *pb.Del
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
-		OperationType: pb.SessionOperationMetadata_SESSION_OPERATION_TYPE_UNSPECIFIED,
-		Description:   "Delete Session",
+		OperationType: pb.SessionOperationMetadata_DELETE,
+		Description:   "Delete session",
+		SessionUuid:   deleted.Uuid,
 		CreateTime:    timestamppb.New(time.Now()),
 		DoneTime:      timestamppb.New(time.Now()),
+		Labels: map[string]string{
+			"cnrm-test":                       "true",
+			"goog-dataproc-drz-resource-uuid": "session-" + deleted.Uuid,
+			"goog-dataproc-location":          name.Location,
+			"goog-dataproc-session-id":        name.Session,
+			"goog-dataproc-session-uuid":      deleted.Uuid,
+			"managed-by-cnrm":                 "true",
+		},
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return deleted, nil
@@ -138,13 +156,22 @@ func (s *sessionControllerServer) TerminateSession(ctx context.Context, req *pb.
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
-		OperationType: pb.SessionOperationMetadata_SESSION_OPERATION_TYPE_UNSPECIFIED,
-		Description:   "Terminate Session",
+		OperationType: pb.SessionOperationMetadata_TERMINATE,
+		Description:   "Terminate session",
+		SessionUuid:   obj.Uuid,
 		CreateTime:    timestamppb.New(time.Now()),
 		DoneTime:      timestamppb.New(time.Now()),
+		Labels: map[string]string{
+			"cnrm-test":                       "true",
+			"goog-dataproc-drz-resource-uuid": "session-" + obj.Uuid,
+			"goog-dataproc-location":          name.Location,
+			"goog-dataproc-session-id":        name.Session,
+			"goog-dataproc-session-uuid":      obj.Uuid,
+			"managed-by-cnrm":                 "true",
+		},
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return obj, nil

@@ -136,8 +136,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
 	// Specific to Dataproc
-	{
+	if u.GroupVersionKind().Group == "dataproc.cnrm.cloud.google.com" {
 		visitor.ReplacePath(".status.clusterUuid", "${clusterUuid}")
+		visitor.ReplacePath(".status.observedState.uuid", "00000000-0000-0000-0000-000000000001")
 		visitor.ReplacePath(".status.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".status.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
@@ -150,6 +151,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.stateTime"] = mockgcpregistry.PlaceholderTimestamp
 		visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
 		visitor.replacePaths[".status.observedState.status.stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.creator"] = "${creatorID}"
 		visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
 	}
 

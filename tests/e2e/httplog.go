@@ -33,10 +33,11 @@ type Normalizer struct {
 }
 
 func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
+	replacements := NewReplacements()
 	return &Normalizer{
 		uniqueID:     uniqueID,
 		project:      project,
-		Replacements: NewReplacements(),
+		Replacements: replacements,
 	}
 }
 
