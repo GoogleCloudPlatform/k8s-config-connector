@@ -1160,6 +1160,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - jobs.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - kms.cnrm.cloud.google.com
   resources:
   - '*'
