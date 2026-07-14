@@ -61,11 +61,16 @@ type SubnetworkLogConfig struct {
 }
 
 type SubnetworkSecondaryIpRange struct {
-	/* The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. The range can be any range listed in the Valid ranges list. */
-	IpCidrRange string `json:"ipCidrRange"`
+	/* The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. Field is optional when 'reservedInternalRangeRef' is defined, otherwise required. The range can be any range listed in the Valid ranges list. */
+	// +optional
+	IpCidrRange *string `json:"ipCidrRange,omitempty"`
 
 	/* The name associated with this subnetwork secondary range, used when adding an alias IP range to a VM instance. The name must be 1-63 characters long, and comply with RFC1035. The name must be unique within the subnetwork. */
 	RangeName string `json:"rangeName"`
+
+	/* The reference to the reserved internal range. */
+	// +optional
+	ReservedInternalRangeRef *v1alpha1.ResourceRef `json:"reservedInternalRangeRef,omitempty"`
 }
 
 type ComputeSubnetworkSpec struct {
@@ -73,8 +78,9 @@ type ComputeSubnetworkSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. */
-	IpCidrRange string `json:"ipCidrRange"`
+	/* The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. Field is optional when 'reservedInternalRangeRef' is defined, otherwise required. */
+	// +optional
+	IpCidrRange *string `json:"ipCidrRange,omitempty"`
 
 	/* The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"]. */
 	// +optional
@@ -101,6 +107,10 @@ type ComputeSubnetworkSpec struct {
 
 	/* Immutable. The GCP region for this subnetwork. */
 	Region string `json:"region"`
+
+	/* Immutable. The reference to the reserved internal range. */
+	// +optional
+	ReservedInternalRangeRef *v1alpha1.ResourceRef `json:"reservedInternalRangeRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

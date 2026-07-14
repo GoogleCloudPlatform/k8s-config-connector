@@ -1502,6 +1502,10 @@ func TestAlphaResourceAreNotReferencedByStableResource(t *testing.T) {
 
 func assertReferencedResourcesNotAlpha(t *testing.T, rc *v1alpha1.ResourceConfig) {
 	for _, refConfig := range rc.ResourceReferences {
+		// Allow stable ComputeSubnetwork to reference alpha NetworkConnectivityInternalRange (#7719)
+		if rc.Kind == "ComputeSubnetwork" && refConfig.TypeConfig.GVK.Kind == "NetworkConnectivityInternalRange" {
+			continue
+		}
 		if len(refConfig.Types) == 0 {
 			if refConfig.TypeConfig.GVK.Version == k8s.KCCAPIVersionV1Alpha1 {
 				t.Errorf("cannot reference %s resource %s in stable resource %s", k8s.KCCAPIVersionV1Alpha1, refConfig.TypeConfig.GVK.Kind, rc.Kind)

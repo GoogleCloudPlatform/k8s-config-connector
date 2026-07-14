@@ -27,5 +27,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}
   observedGeneration: 2
   observedState: {}

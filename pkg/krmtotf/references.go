@@ -47,10 +47,9 @@ func GetReferencedResource(r *Resource, typeConfig corekccv1alpha1.TypeConfig,
 	}
 
 	rc, err := smLoader.GetResourceConfig(u)
-	if err != nil {
-		return nil, fmt.Errorf("error getting ResourceConfig for referenced resource %v: %w", r.GetName(), err)
+	if err == nil && rc != nil {
+		rsrc.ResourceConfig = *rc
 	}
-	rsrc.ResourceConfig = *rc
 	return rsrc, nil
 }
 
