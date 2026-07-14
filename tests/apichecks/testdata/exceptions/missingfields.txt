@@ -3357,7 +3357,6 @@
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.requesterPays" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.retentionPolicy.isLocked" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.retentionPolicy.retentionPeriod" is not set in unstructured objects
-[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.storageClass" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.website.mainPageSuffix" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.website.notFoundPage" is not set in unstructured objects
 [missing_field] crd=storagedefaultobjectaccesscontrols.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.object" is not set in unstructured objects

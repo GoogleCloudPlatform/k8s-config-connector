@@ -337,6 +337,11 @@ func (in *BucketObservedStateStatus) DeepCopyInto(out *BucketObservedStateStatus
 		*out = new(BucketSoftDeletePolicyStatus)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.StorageClass != nil {
+		in, out := &in.StorageClass, &out.StorageClass
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

@@ -293,6 +293,10 @@ type BucketObservedStateStatus struct {
 	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
 	// +optional
 	SoftDeletePolicy *BucketSoftDeletePolicyStatus `json:"softDeletePolicy,omitempty"`
+
+	/* The Storage Class of the bucket as observed in GCP. */
+	// +optional
+	StorageClass *string `json:"storageClass,omitempty"`
 }
 
 type BucketSoftDeletePolicyStatus struct {
