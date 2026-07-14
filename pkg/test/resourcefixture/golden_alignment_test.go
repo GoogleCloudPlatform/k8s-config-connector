@@ -99,6 +99,15 @@ func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 		if ev.Method == "GET" {
 			continue // Skip GET entirely
 		}
+		if ev.Method == "GRPC" {
+			parts := strings.Split(ev.URL, "/")
+			if len(parts) > 0 {
+				methodName := parts[len(parts)-1]
+				if strings.HasPrefix(methodName, "Get") || strings.HasPrefix(methodName, "List") {
+					continue // Skip read-only GRPC calls entirely
+				}
+			}
+		}
 		basePath := strings.Split(cleanURL(ev.URL), "?")[0]
 		if _, ok := grouped[basePath]; !ok {
 			grouped[basePath] = make(map[string][]httpEvent)
