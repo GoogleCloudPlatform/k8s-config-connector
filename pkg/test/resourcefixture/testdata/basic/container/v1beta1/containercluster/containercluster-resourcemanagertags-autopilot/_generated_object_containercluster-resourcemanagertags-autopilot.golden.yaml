@@ -23,9 +23,6 @@ spec:
   location: us-central1-a
   networkRef:
     name: ${networkID}
-  nodeConfig:
-    resourceManagerTags:
-      tagKeys/123: tagValues/789
   nodePoolAutoConfig:
     resourceManagerTags:
       tagKeys/123: tagValues/789

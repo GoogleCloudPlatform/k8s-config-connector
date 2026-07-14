@@ -120,10 +120,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -347,23 +343,14 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "networkConfig": {},
     "networkPolicy": {},
     "nodeConfig": {
-      "loggingConfig": {
-        "variantConfig": {
-          "variant": "DEFAULT"
-        }
-      },
-      "resourceManagerTags": {
-        "tags": {
-          "tagKeys/123": "tagValues/456"
-        }
-      }
-    },
-    "nodePoolAutoConfig": {
-      "resourceManagerTags": {
-        "tags": {
-          "tagKeys/123": "tagValues/456"
-        }
-      }
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/devstorage.read_only",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring",
+        "https://www.googleapis.com/auth/service.management.readonly",
+        "https://www.googleapis.com/auth/servicecontrol",
+        "https://www.googleapis.com/auth/trace.append"
+      ]
     },
     "notificationConfig": {
       "pubsub": {}
@@ -623,11 +610,6 @@ X-Xss-Protection: 0
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
-    "loggingConfig": {
-      "variantConfig": {
-        "variant": "DEFAULT"
-      }
-    },
     "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -643,11 +625,6 @@ X-Xss-Protection: 0
     "resourceLabels": {
       "goog-gke-node-pool-provisioning-model": "on-demand"
     },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
-    },
     "serviceAccount": "default",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
@@ -657,11 +634,6 @@ X-Xss-Protection: 0
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false
-    },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
     }
   },
   "nodePoolDefaults": {
@@ -691,11 +663,6 @@ X-Xss-Protection: 0
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "loggingConfig": {
-          "variantConfig": {
-            "variant": "DEFAULT"
-          }
-        },
         "machineType": "e2-medium",
         "metadata": {
           "disable-legacy-endpoints": "true"
@@ -710,11 +677,6 @@ X-Xss-Protection: 0
         ],
         "resourceLabels": {
           "goog-gke-node-pool-provisioning-model": "on-demand"
-        },
-        "resourceManagerTags": {
-          "tags": {
-            "tagKeys/123": "tagValues/456"
-          }
         },
         "serviceAccount": "default",
         "shieldedInstanceConfig": {
@@ -1014,11 +976,6 @@ X-Xss-Protection: 0
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
-    "loggingConfig": {
-      "variantConfig": {
-        "variant": "DEFAULT"
-      }
-    },
     "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -1034,11 +991,6 @@ X-Xss-Protection: 0
     "resourceLabels": {
       "goog-gke-node-pool-provisioning-model": "on-demand"
     },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
-    },
     "serviceAccount": "default",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
@@ -1048,11 +1000,6 @@ X-Xss-Protection: 0
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false
-    },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
     }
   },
   "nodePoolDefaults": {
@@ -1082,11 +1029,6 @@ X-Xss-Protection: 0
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "loggingConfig": {
-          "variantConfig": {
-            "variant": "DEFAULT"
-          }
-        },
         "machineType": "e2-medium",
         "metadata": {
           "disable-legacy-endpoints": "true"
@@ -1101,11 +1043,6 @@ X-Xss-Protection: 0
         ],
         "resourceLabels": {
           "goog-gke-node-pool-provisioning-model": "on-demand"
-        },
-        "resourceManagerTags": {
-          "tags": {
-            "tagKeys/123": "tagValues/456"
-          }
         },
         "serviceAccount": "default",
         "shieldedInstanceConfig": {
@@ -1405,11 +1342,6 @@ X-Xss-Protection: 0
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
-    "loggingConfig": {
-      "variantConfig": {
-        "variant": "DEFAULT"
-      }
-    },
     "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -1425,11 +1357,6 @@ X-Xss-Protection: 0
     "resourceLabels": {
       "goog-gke-node-pool-provisioning-model": "on-demand"
     },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
-    },
     "serviceAccount": "default",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
@@ -1439,11 +1366,6 @@ X-Xss-Protection: 0
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false
-    },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
     }
   },
   "nodePoolDefaults": {
@@ -1473,11 +1395,6 @@ X-Xss-Protection: 0
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "loggingConfig": {
-          "variantConfig": {
-            "variant": "DEFAULT"
-          }
-        },
         "machineType": "e2-medium",
         "metadata": {
           "disable-legacy-endpoints": "true"
@@ -1492,11 +1409,6 @@ X-Xss-Protection: 0
         ],
         "resourceLabels": {
           "goog-gke-node-pool-provisioning-model": "on-demand"
-        },
-        "resourceManagerTags": {
-          "tags": {
-            "tagKeys/123": "tagValues/456"
-          }
         },
         "serviceAccount": "default",
         "shieldedInstanceConfig": {
@@ -1796,11 +1708,6 @@ X-Xss-Protection: 0
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
-    "loggingConfig": {
-      "variantConfig": {
-        "variant": "DEFAULT"
-      }
-    },
     "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -1816,11 +1723,6 @@ X-Xss-Protection: 0
     "resourceLabels": {
       "goog-gke-node-pool-provisioning-model": "on-demand"
     },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
-    },
     "serviceAccount": "default",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
@@ -1830,11 +1732,6 @@ X-Xss-Protection: 0
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false
-    },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
     }
   },
   "nodePoolDefaults": {
@@ -1864,11 +1761,6 @@ X-Xss-Protection: 0
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "loggingConfig": {
-          "variantConfig": {
-            "variant": "DEFAULT"
-          }
-        },
         "machineType": "e2-medium",
         "metadata": {
           "disable-legacy-endpoints": "true"
@@ -1883,11 +1775,6 @@ X-Xss-Protection: 0
         ],
         "resourceLabels": {
           "goog-gke-node-pool-provisioning-model": "on-demand"
-        },
-        "resourceManagerTags": {
-          "tags": {
-            "tagKeys/123": "tagValues/456"
-          }
         },
         "serviceAccount": "default",
         "shieldedInstanceConfig": {
@@ -2028,68 +1915,6 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-{
-  "update": {
-    "desiredNodePoolAutoConfigResourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/789"
-      }
-    }
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "${operationID}",
-  "operationType": "UPDATE_CLUSTER",
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
-  "zone": "us-central1-a"
-}
-
----
-
-GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "name": "${operationID}",
-  "operationType": "UPDATE_CLUSTER",
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
-  "zone": "us-central1-a"
-}
-
----
-
 GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
@@ -2258,11 +2083,6 @@ X-Xss-Protection: 0
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
-    "loggingConfig": {
-      "variantConfig": {
-        "variant": "DEFAULT"
-      }
-    },
     "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -2278,11 +2098,6 @@ X-Xss-Protection: 0
     "resourceLabels": {
       "goog-gke-node-pool-provisioning-model": "on-demand"
     },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
-    },
     "serviceAccount": "default",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
@@ -2292,11 +2107,6 @@ X-Xss-Protection: 0
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false
-    },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/789"
-      }
     }
   },
   "nodePoolDefaults": {
@@ -2325,11 +2135,6 @@ X-Xss-Protection: 0
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
-        },
-        "loggingConfig": {
-          "variantConfig": {
-            "variant": "DEFAULT"
-          }
         },
         "machineType": "e2-medium",
         "metadata": {
@@ -2477,6 +2282,36 @@ X-Xss-Protection: 0
     "type": "OPPORTUNISTIC"
   },
   "zone": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  ]
 }
 
 ---
@@ -2518,6 +2353,37 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
@@ -2550,9 +2416,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2565,21 +2430,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoCreateSubnetworks": false,
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-  ]
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
 }
 
 ---
@@ -2611,68 +2474,6 @@ X-Xss-Protection: 0
   "status": "DONE",
   "targetId": "${subnetworkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "user": "user@example.com"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -2846,11 +2647,6 @@ X-Xss-Protection: 0
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
-    "loggingConfig": {
-      "variantConfig": {
-        "variant": "DEFAULT"
-      }
-    },
     "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -2866,11 +2662,6 @@ X-Xss-Protection: 0
     "resourceLabels": {
       "goog-gke-node-pool-provisioning-model": "on-demand"
     },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
-    },
     "serviceAccount": "default",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
@@ -2880,11 +2671,6 @@ X-Xss-Protection: 0
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false
-    },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/789"
-      }
     }
   },
   "nodePoolDefaults": {
@@ -2913,11 +2699,6 @@ X-Xss-Protection: 0
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
-        },
-        "loggingConfig": {
-          "variantConfig": {
-            "variant": "DEFAULT"
-          }
         },
         "machineType": "e2-medium",
         "metadata": {
@@ -3237,11 +3018,6 @@ X-Xss-Protection: 0
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
-    "loggingConfig": {
-      "variantConfig": {
-        "variant": "DEFAULT"
-      }
-    },
     "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
@@ -3257,11 +3033,6 @@ X-Xss-Protection: 0
     "resourceLabels": {
       "goog-gke-node-pool-provisioning-model": "on-demand"
     },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/456"
-      }
-    },
     "serviceAccount": "default",
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
@@ -3271,11 +3042,6 @@ X-Xss-Protection: 0
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false
-    },
-    "resourceManagerTags": {
-      "tags": {
-        "tagKeys/123": "tagValues/789"
-      }
     }
   },
   "nodePoolDefaults": {
@@ -3304,11 +3070,6 @@ X-Xss-Protection: 0
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
-        },
-        "loggingConfig": {
-          "variantConfig": {
-            "variant": "DEFAULT"
-          }
         },
         "machineType": "e2-medium",
         "metadata": {

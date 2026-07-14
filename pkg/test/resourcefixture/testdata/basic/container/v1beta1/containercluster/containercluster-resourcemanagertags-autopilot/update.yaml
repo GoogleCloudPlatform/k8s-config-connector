@@ -26,9 +26,6 @@ spec:
   ipAllocationPolicy:
     clusterIpv4CidrBlock: /20
     servicesIpv4CidrBlock: /20
-  nodeConfig:
-    resourceManagerTags:
-      tagKeys/123: tagValues/789
   nodePoolAutoConfig:
     resourceManagerTags:
       tagKeys/123: tagValues/789

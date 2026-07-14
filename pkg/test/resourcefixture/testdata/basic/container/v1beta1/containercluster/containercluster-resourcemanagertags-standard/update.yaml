@@ -28,7 +28,4 @@ spec:
     servicesIpv4CidrBlock: /20
   nodeConfig:
     resourceManagerTags:
-      tagKeys/123: tagValues/456
-  nodePoolAutoConfig:
-    resourceManagerTags:
-      tagKeys/123: tagValues/456
+      tagKeys/123: tagValues/789
