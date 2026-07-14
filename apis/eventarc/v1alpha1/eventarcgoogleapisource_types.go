@@ -73,6 +73,7 @@ type EventarcGoogleAPISourceSpec struct {
 	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.eventarc.v1.LoggingConfig
 type LoggingConfig struct {
 	// Optional. The minimum severity of logs that will be sent to
 	// Stackdriver/Platform Telemetry. Logs at severity >= this value will be
