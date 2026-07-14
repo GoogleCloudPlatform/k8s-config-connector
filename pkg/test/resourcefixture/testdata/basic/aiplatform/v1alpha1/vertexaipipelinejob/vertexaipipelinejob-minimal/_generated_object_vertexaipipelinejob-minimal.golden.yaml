@@ -55,6 +55,6 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     endTime: "1970-01-01T00:00:00Z"
     name: projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-minimal-${uniqueId}
-    startTime: "2024-04-01T12:34:56.123456Z"
+    startTime: "1970-01-01T00:00:00Z"
     state: PIPELINE_STATE_SUCCEEDED
     updateTime: "1970-01-01T00:00:00Z"
