@@ -213,7 +213,6 @@ BLOCKED_KINDS=(
     "DataplexDataTaxonomy"
     "DataplexGlossary"
     "DataplexMetadataFeed"
-    "DataplexMetadataJob"
     "DataprocSessionTemplate"
     "DevConnectAccountConnector"
     "DevConnectInsightsConfig"
