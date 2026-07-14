@@ -29,11 +29,8 @@ cd ${REPO_ROOT}
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running unit tests..."
-# Configure isolated gcloud configuration directory with dummy project ID to avoid ECP / token refresh errors on GCE workstations
-export CLOUDSDK_CONFIG=$(mktemp -d)
-mkdir -p "${CLOUDSDK_CONFIG}/configurations"
-echo -e "[core]\nproject = foobar" > "${CLOUDSDK_CONFIG}/configurations/config_default"
-
+# A dummy default project id is required for a few unit test cases
+gcloud config set project foobar --quiet
 
 # Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
 unset VALIDATE_URLS
