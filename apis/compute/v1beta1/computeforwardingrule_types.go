@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
@@ -91,6 +92,10 @@ type Target struct {
 	// +optional
 	MemorystoreInstanceServiceAttachment *MemorystoreInstanceServiceAttachment `json:"memorystoreInstanceServiceAttachment,omitempty"`
 
+	// Target a serviceAttachment for a Redis Cluster.
+	// +optional
+	RedisClusterServiceAttachment *RedisClusterServiceAttachment `json:"redisClusterServiceAttachment,omitempty"`
+
 	// +optional
 	ServiceAttachmentRef *refsv1beta1.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
 
@@ -119,10 +124,26 @@ type Target struct {
 type MemorystoreInstanceServiceAttachment struct {
 	// A reference to a MemorystoreInstance resource.
 	// +required
-	MemorystoreInstanceRef *refs.MemorystoreInstanceRef `json:"memorystoreInstanceRef,omitempty"`
+	MemorystoreInstanceRef *refs.MemorystoreInstanceRef `json:"memorystoreInstanceRef"`
 
 	// The connection type of the serviceAttachment.
 	// A memorystore instance has multiple serviceAttachments, each with a different connection type.
+	// Use connectionType to control which serviceAttachment to target.
+	// The empty value matches a serviceAttachment with an empty connectionType.
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+}
+
+// RedisClusterServiceAttachment defines the resource reference to the GCP identifier
+// for the ServiceAttachment managed by the RedisCluster pointed by the RedisClusterRef.
+// +k8s:deepcopy-gen=true
+type RedisClusterServiceAttachment struct {
+	// A reference to a RedisCluster resource.
+	// +required
+	RedisClusterRef *redisv1beta1.RedisClusterRef `json:"redisClusterRef"`
+
+	// The connection type of the serviceAttachment.
+	// A redis cluster has multiple serviceAttachments, each with a different connection type.
 	// Use connectionType to control which serviceAttachment to target.
 	// The empty value matches a serviceAttachment with an empty connectionType.
 	// +optional

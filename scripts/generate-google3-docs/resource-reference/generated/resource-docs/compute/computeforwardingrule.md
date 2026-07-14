@@ -131,6 +131,12 @@ target:
       external: string
       name: string
       namespace: string
+  redisClusterServiceAttachment:
+    connectionType: string
+    redisClusterRef:
+      external: string
+      name: string
+      namespace: string
   serviceAttachmentRef:
     external: string
     name: string
@@ -875,6 +881,66 @@ subnetwork must be specified.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>The namespace of a MemorystoreInstance resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.redisClusterServiceAttachment</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Target a serviceAttachment for a Redis Cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.redisClusterServiceAttachment.connectionType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The connection type of the serviceAttachment. A redis cluster has multiple serviceAttachments, each with a different connection type. Use connectionType to control which serviceAttachment to target. The empty value matches a serviceAttachment with an empty connectionType.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.redisClusterServiceAttachment.redisClusterRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>A reference to a RedisCluster resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.redisClusterServiceAttachment.redisClusterRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed RedisCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.redisClusterServiceAttachment.redisClusterRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a RedisCluster resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.redisClusterServiceAttachment.redisClusterRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a RedisCluster resource.</p>
         </td>
     </tr>
     <tr>

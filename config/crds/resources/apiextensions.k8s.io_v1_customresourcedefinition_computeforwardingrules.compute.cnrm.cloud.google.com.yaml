@@ -519,6 +519,47 @@ spec:
                     required:
                     - memorystoreInstanceRef
                     type: object
+                  redisClusterServiceAttachment:
+                    description: Target a serviceAttachment for a Redis Cluster.
+                    properties:
+                      connectionType:
+                        description: The connection type of the serviceAttachment.
+                          A redis cluster has multiple serviceAttachments, each with
+                          a different connection type. Use connectionType to control
+                          which serviceAttachment to target. The empty value matches
+                          a serviceAttachment with an empty connectionType.
+                        type: string
+                      redisClusterRef:
+                        description: A reference to a RedisCluster resource.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed RedisCluster
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                            type: string
+                          name:
+                            description: The name of a RedisCluster resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a RedisCluster resource.
+                            type: string
+                        type: object
+                    required:
+                    - redisClusterRef
+                    type: object
                   serviceAttachmentRef:
                     oneOf:
                     - not:
