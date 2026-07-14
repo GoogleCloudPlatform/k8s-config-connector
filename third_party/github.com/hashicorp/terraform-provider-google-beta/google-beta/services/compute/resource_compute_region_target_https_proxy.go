@@ -635,17 +635,21 @@ func expandComputeRegionTargetHttpsProxyRegion(v interface{}, d tpgresource.Terr
 }
 
 func expandComputeRegionTargetHttpsProxyCertificateManagerCertificates(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if v == nil {
+		return nil, nil
+	}
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
 		if raw == nil {
-			continue
+			return nil, fmt.Errorf("Invalid value for certificate_manager_certificates: nil")
 		}
-		f, err := tpgresource.ParseRegionalFieldValue("certificates", raw.(string), "project", "region", "zone", d, config, true)
-		if err == nil {
-			req = append(req, f.RelativeLink())
-		} else if strings.HasPrefix(raw.(string), "//certificatemanager.googleapis.com/") {
-			// If it's a full self link (which starts with //certificatemanager.googleapis.com/), keep it
+		if strings.HasPrefix(raw.(string), "//") || strings.HasPrefix(raw.(string), "https://") {
+			// Any full URL will be passed to the API request (regardless of the resource type). This is to allow self_links of CertificateManagerCeritificate resources.
+			// If the full URL is an invalid reference, that should be handled by the API.
+			req = append(req, raw.(string))
+		} else if reg, _ := regexp.Compile("projects/(.*)/locations/(.*)/certificates/(.*)"); reg.MatchString(raw.(string)) {
+			// If the input is the id pattern of CertificateManagerCertificate resource, a prefix will be added to construct the full URL before constructing the API request.
 			self_link := "https://certificatemanager.googleapis.com/v1/" + raw.(string)
 			req = append(req, self_link)
 		} else {
@@ -656,21 +660,7 @@ func expandComputeRegionTargetHttpsProxyCertificateManagerCertificates(v interfa
 }
 
 func flattenComputeRegionTargetHttpsProxyCertificateManagerCertificates(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
-	if v == nil {
-		return nil
-	}
-	l := v.([]interface{})
-	out := make([]interface{}, 0, len(l))
-	for _, raw := range l {
-		if raw == nil {
-			continue
-		}
-		val := raw.(string)
-		// Convert it back to format KCC expects (relative or full link)
-		val = strings.TrimPrefix(val, "https://certificatemanager.googleapis.com/v1/")
-		out = append(out, val)
-	}
-	return out
+	return v
 }
 
 func resourceComputeRegionTargetHttpsProxyEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
