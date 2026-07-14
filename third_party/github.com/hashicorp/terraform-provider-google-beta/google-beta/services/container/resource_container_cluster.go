@@ -3703,6 +3703,42 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			log.Printf("[INFO] GKE cluster %s: image type has been updated to %s", d.Id(), it)
 		}
+
+		if d.HasChange("node_config.0.resource_manager_tags") {
+			rmtags := d.Get("node_config.0.resource_manager_tags")
+			req := &container.UpdateNodePoolRequest{
+				Name: "default-pool",
+				ResourceManagerTags: expandResourceManagerTags(rmtags),
+			}
+			if req.ResourceManagerTags == nil {
+				req.ResourceManagerTags = &container.ResourceManagerTags{
+					Tags: make(map[string]string),
+				}
+			}
+
+			updateF := func() error {
+				name := containerClusterFullName(project, location, clusterName)
+				nodePoolName := name + "/nodePools/default-pool"
+				clusterNodePoolsUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Update(nodePoolName, req)
+				if config.UserProjectOverride {
+					clusterNodePoolsUpdateCall.Header().Add("X-Goog-User-Project", project)
+				}
+				op, err := clusterNodePoolsUpdateCall.Do()
+				if err != nil {
+					return err
+				}
+
+				// Wait until it's updated
+				return ContainerOperationWait(config, op, project, location, "updating GKE default node pool resource manager tags", userAgent, d.Timeout(schema.TimeoutUpdate))
+			}
+
+			// Call update serially.
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+				return err
+			}
+
+			log.Printf("[INFO] GKE cluster %s: default node pool resource manager tags have been updated", d.Id())
+		}
 	}
 
 	if d.HasChange("notification_config") {
