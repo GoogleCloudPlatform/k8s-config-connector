@@ -396,11 +396,87 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 		desired.CrossInstanceReplicationConfig = maskedActual.CrossInstanceReplicationConfig
 	}
 
+	// Align actual endpoints/connections with desired when desired is a subset of actual.
+	alignEndpointsWithDesired(maskedActual, desired)
+
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
 	}
 	return diffs, nil
+}
+
+// alignEndpointsWithDesired aligns actual endpoints with desired when desired is a subset of actual.
+// It matches each desired endpoint to a corresponding actual endpoint and retains only matched endpoints
+// in actual so that unmanaged server-generated extra endpoints do not trigger false drift.
+func alignEndpointsWithDesired(actual, desired *memorystorepb.Instance) {
+	if len(desired.Endpoints) == 0 {
+		actual.Endpoints = nil
+		return
+	}
+
+	alignedEndpoints := make([]*memorystorepb.Instance_InstanceEndpoint, 0, len(desired.Endpoints))
+
+	for _, desiredEndpoint := range desired.Endpoints {
+		for _, actualEndpoint := range actual.Endpoints {
+			if isConnectionSubset(desiredEndpoint.GetConnections(), actualEndpoint.GetConnections()) {
+				matchedEndpoint := &memorystorepb.Instance_InstanceEndpoint{
+					Connections: desiredEndpoint.Connections,
+				}
+				alignedEndpoints = append(alignedEndpoints, matchedEndpoint)
+				break
+			}
+		}
+	}
+
+	if len(alignedEndpoints) == len(desired.Endpoints) {
+		actual.Endpoints = alignedEndpoints
+	}
+}
+
+// isConnectionSubset checks if every desired connection is matched by at least one actual connection.
+func isConnectionSubset(desiredConnections, actualConnections []*memorystorepb.Instance_ConnectionDetail) bool {
+	for _, desiredConn := range desiredConnections {
+		matched := false
+
+		for _, actualConn := range actualConnections {
+			if connectionsMatch(desiredConn, actualConn) {
+				matched = true
+				break
+			}
+		}
+
+		if !matched {
+			return false
+		}
+	}
+
+	return true
+}
+
+// connectionsMatch checks if all specified fields in a desired connection match an actual connection.
+func connectionsMatch(desired, actual *memorystorepb.Instance_ConnectionDetail) bool {
+	if desired == nil || actual == nil {
+		return desired == actual
+	}
+
+	desiredPsc := desired.GetPscAutoConnection()
+	actualPsc := actual.GetPscAutoConnection()
+	if desiredPsc == nil || actualPsc == nil {
+		return desiredPsc == actualPsc
+	}
+
+	// Only match against project and network since CRD implementation uses project and network refs.
+	// So no PSC fields will be present in the desired spec.
+	if desiredPsc.GetProjectId() != "" && desiredPsc.GetProjectId() != actualPsc.GetProjectId() {
+		return false
+	}
+
+	if desiredPsc.GetNetwork() != "" && desiredPsc.GetNetwork() != actualPsc.GetNetwork() {
+		return false
+	}
+
+	return true
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
