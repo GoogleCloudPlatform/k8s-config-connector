@@ -58,20 +58,6 @@ jobs:
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
 
-
-  build-images:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v6
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
-      - uses: ./dev/actions/cache-go
-      - name: "dev/tasks/build-images"
-        run: |
-          dev/tasks/build-images
-    env:
-      PROJECT_ID: cnrm-test
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true

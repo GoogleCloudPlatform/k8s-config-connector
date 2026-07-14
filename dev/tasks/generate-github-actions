@@ -155,7 +155,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
-    if [[ "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
+    if [[ "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" || "${name}" == "build-images" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner

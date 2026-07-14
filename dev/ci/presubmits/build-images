@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/build-images' to fix.</hint_for_agent>"
+  # Ensure vendor directory cleanup even on failure
+  rm -rf "${REPO_ROOT}/vendor"
+}
+trap on_error ERR
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+if [[ -z "${IMAGE_PREFIX:-}" ]]; then
+  IMAGE_PREFIX=""
+fi
+
+if [[ -z "${IMAGE_TAG:-}" ]]; then
+  EXACT_TAG=$(git describe --tags --exact-match 2>/dev/null || true)
+  if [[ -n "${EXACT_TAG}" ]]; then
+    IMAGE_TAG="${EXACT_TAG}"
+    # If there is a github/ prefix (as there is in our internal mirror), remove it
+    IMAGE_TAG=${IMAGE_TAG#github/}
+    # Remove the prefixed "v" if it exists
+    IMAGE_TAG=${IMAGE_TAG#v}
+  else
+    IMAGE_TAG=$(git rev-parse --short=7 HEAD)
+  fi
+fi
+export IMAGE_TAG
+echo "Building images with tag: ${IMAGE_TAG} in CI (FAST MODE via Host-Vendored caching)"
+
+export BUILDER_IMG=${IMAGE_PREFIX}builder:${IMAGE_TAG}
+export CONTROLLER_IMG=${IMAGE_PREFIX}controller:${IMAGE_TAG}
+export RECORDER_IMG=${IMAGE_PREFIX}recorder:${IMAGE_TAG}
+export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${IMAGE_TAG}
+export DELETION_DEFENDER_IMG=${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}
+export UNMANAGED_DETECTOR_IMG=${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}
+export CONFIG_CONNECTOR_IMG=${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}
+
+export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
+
+# 1. Create vendor folder on host using the warmed Go module cache.
+# We set GOWORK=off to avoid workspace mode errors during vendoring.
+echo "Vendoring Go modules on host..."
+GOWORK=off go mod vendor
+
+# 2. Run the actual Dockerfile builds, verifying their correctness
+echo "Building main KCC controller images using actual Dockerfiles..."
+make docker-build
+
+echo "Building operator image using actual Dockerfile..."
+make -C operator docker-build
+
+# 3. Clean up the local vendor directory on the host so the repository remains clean
+echo "Cleaning up host vendor directory..."
+rm -rf vendor
+
+echo "CI build of images completed successfully!"

@@ -37,6 +37,9 @@ COPY scripts/ scripts/
 COPY go.mod  go.mod
 COPY go.sum  go.sum
 
+# Optionally copy vendor folder if it exists on the host
+COPY vendo[r]/ vendor/
+
 # Generate channel manifests
 RUN dev/tasks/generate-channels
 
@@ -45,9 +48,9 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/Goog
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
 
 # Generate licenses
-RUN go mod vendor -o temp-vendor # So we can load license files
-RUN go run scripts/generate-third-party-licenses/main.go
-RUN rm -rf temp-vendor
+RUN if [ ! -d "vendor" ]; then go mod vendor -o temp-vendor; else cp -r vendor temp-vendor; fi && \
+    go run scripts/generate-third-party-licenses/main.go && \
+    rm -rf temp-vendor
 
 # Prepare a directory containing the binaries and other artifacts, and
 # configure any required permissions

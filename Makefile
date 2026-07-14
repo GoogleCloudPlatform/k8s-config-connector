@@ -178,7 +178,11 @@ docker-build: docker-build-manager docker-build-recorder docker-build-webhook do
 # build all the binaries into the builder docker image
 .PHONY: docker-build-builder
 docker-build-builder:
-	$(DOCKER_BUILD) . -f build/builder/Dockerfile -t ${BUILDER_IMG}
+	@if [ -z "$$(docker images -q ${BUILDER_IMG})" ]; then \
+		$(DOCKER_BUILD) . -f build/builder/Dockerfile -t ${BUILDER_IMG}; \
+	else \
+		echo "Builder image ${BUILDER_IMG} already exists, skipping build"; \
+	fi
 
 # Build the manager docker image
 .PHONY: docker-build-manager
