@@ -27,7 +27,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/devicestreaming/apiv1"
@@ -42,30 +41,6 @@ import (
 
 func init() {
 	registry.RegisterModel(krm.DeviceStreamingSessionGVK, NewModel)
-	fuzztesting.RegisterKRMFuzzer(fuzzer())
-}
-
-func fuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.DeviceSession{},
-		mapper.DeviceStreamingSessionSpec_FromProto, mapper.DeviceStreamingSessionSpec_ToProto,
-		mapper.DeviceStreamingSessionObservedState_FromProto, mapper.DeviceStreamingSessionObservedState_ToProto,
-	)
-
-	f.Unimplemented_Identity(".name")
-	f.Unimplemented_NotYetTriaged(".expiration")
-
-	f.SpecField(".ttl")
-	f.SpecField(".expire_time")
-	f.SpecField(".android_device")
-
-	f.StatusField(".display_name")
-	f.StatusField(".state")
-	f.StatusField(".state_histories")
-	f.StatusField(".inactivity_timeout")
-	f.StatusField(".create_time")
-	f.StatusField(".active_start_time")
-
-	return f
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
