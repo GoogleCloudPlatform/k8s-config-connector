@@ -1,0 +1,82 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  labels:
+    label-one: "value-one"
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/state-into-spec: absent
+  name: alloydbcluster-${uniqueId}
+spec:
+  automatedBackupPolicy:
+    backupWindow: 7200s
+    enabled: false
+    encryptionConfig:
+      kmsKeyNameRef:
+        name: kmscryptokey-1-${uniqueId}
+    labels:
+      source: kcc-test
+    location: us-central1
+    timeBasedRetention:
+      retentionPeriod: 86400s
+    weeklySchedule:
+      daysOfWeek: [MONDAY]
+      startTimes:
+          # startTime must be a full clock and API returns error:
+          # "one of the weekly schedule's start times is not aligned on hours"
+          # if minutes, seconds and nanos are not all 0s
+        - hours: 4
+          minutes: 0
+          seconds: 0
+          nanos: 0
+  # clusterType cannot be updated from PRIMARY to SECONDARY
+  # clusterType can be updated from SECONDARY to PRIMARY when it has a secondary
+  # AlloyDBInstance
+  clusterType: PRIMARY
+  continuousBackupConfig:
+    enabled: false
+    encryptionConfig:
+      kmsKeyNameRef:
+        name: kmscryptokey-1-${uniqueId}
+    recoveryWindowDays: 10
+  deletionPolicy: DEFAULT
+  displayName: A test alloyDB cluster
+  encryptionConfig:
+    kmsKeyNameRef: # kmsKeyNameRef is an immutable field blocked by KCC
+      name: kmscryptokey-1-${uniqueId}
+  initialUser:
+    user: postgres
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: secret-1-${uniqueId}
+          key: password
+  location: us-central1
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+      - day: TUESDAY
+        startTime:
+          hours: 10
+          minutes: 9
+          seconds: 8
+          nanos: 7
+  networkConfig:
+    allocatedIpRange: test-range-1  # allocatedIpRange is an immutable field blocked by API
+    networkRef:
+      name: computenetwork-${uniqueId}
+  projectRef:
+    external: ${projectId}

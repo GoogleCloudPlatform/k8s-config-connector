@@ -1,0 +1,17 @@
+6,7d5
+<     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"FORCE"}}'
+<     cnrm.cloud.google.com/observed-secret-versions: (removed)
+12c10
+<   generation: 3
+---
+>   generation: 2
+29d26
+<   resourceID: alloydbcluster-2-${uniqueId}
+54a52
+>   externalRef: projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}
+56c54
+<   observedGeneration: 3
+---
+>   observedGeneration: 2
+58a57
+>     databaseVersion: POSTGRES_16
