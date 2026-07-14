@@ -131,9 +131,9 @@ type ToolConnectorSpec struct {
 }
 
 type ToolDataStoreConnections struct {
-	/* The full name of the referenced data store. Formats: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}` `projects/{project}/locations/{location}/dataStores/{data_store}` */
+	/* The referenced DiscoveryEngineDataStore resource. */
 	// +optional
-	DataStore *string `json:"dataStore,omitempty"`
+	DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
 
 	/* The type of the connected data store. */
 	// +optional
@@ -175,9 +175,9 @@ type ToolEntityOperation struct {
 }
 
 type ToolExtensionSpec struct {
-	/* Required. The full name of the referenced vertex extension. Formats: `projects/{project}/locations/{location}/extensions/{extension}` */
+	/* The referenced VertexAIExtension resource. */
 	// +optional
-	Name *string `json:"name,omitempty"`
+	ExtensionRef *v1alpha1.ResourceRef `json:"extensionRef,omitempty"`
 }
 
 type ToolFallbackPrompt struct {

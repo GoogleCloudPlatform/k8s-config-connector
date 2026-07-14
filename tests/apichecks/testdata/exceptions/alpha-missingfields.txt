@@ -2370,13 +2370,13 @@
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.endUserAuthConfig.oauth2JwtBearerConfig.issuer" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.endUserAuthConfig.oauth2JwtBearerConfig.subject" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorSpec.name" is not set in unstructured objects
-[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreSpec.dataStoreConnections[].dataStore" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreSpec.dataStoreConnections[].dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreSpec.dataStoreConnections[].dataStoreType" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreSpec.dataStoreConnections[].documentProcessingMode" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreSpec.fallbackPrompt" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionSpec.name" is not set in unstructured objects
+[missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionSpec.extensionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.functionSpec.inputSchema" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.functionSpec.outputSchema" is not set in unstructured objects
 [missing_field] crd=dialogflowtools.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.openAPISpec.authentication.apiKeyConfig.apiKey" is not set in unstructured objects

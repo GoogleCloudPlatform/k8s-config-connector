@@ -23,26 +23,6 @@ package v1alpha1
 
 import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.DataStoreConnection
-type DataStoreConnection struct {
-	// The type of the connected data store.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.DataStoreConnection.data_store_type
-	DataStoreType *string `json:"dataStoreType,omitempty"`
-
-	// The full name of the referenced data store.
-	//  Formats:
-	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
-	//  `projects/{project}/locations/{location}/dataStores/{data_store}`
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.DataStoreConnection.data_store
-	DataStore *string `json:"dataStore,omitempty"`
-
-	// The document processing mode for the data store connection. Should only be
-	//  set for PUBLIC_WEB and UNSTRUCTURED data stores. If not set it is
-	//  considered as DOCUMENTS, as this is the legacy mode.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.DataStoreConnection.document_processing_mode
-	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.Authentication
 type Tool_Authentication struct {
 	// Config for API key auth.
@@ -185,17 +165,6 @@ type Tool_ConnectorTool_Action_EntityOperation struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.DataStoreTool
-type Tool_DataStoreTool struct {
-	// Required. List of data stores to search.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Tool.DataStoreTool.data_store_connections
-	DataStoreConnections []DataStoreConnection `json:"dataStoreConnections,omitempty"`
-
-	// Required. Fallback prompt configurations to use.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Tool.DataStoreTool.fallback_prompt
-	FallbackPrompt *Tool_DataStoreTool_FallbackPrompt `json:"fallbackPrompt,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.DataStoreTool.FallbackPrompt
 type Tool_DataStoreTool_FallbackPrompt struct {
 }
@@ -231,15 +200,6 @@ type Tool_EndUserAuthConfig_OAUTH2JwtBearerConfig struct {
 	// Required. Client key value or parameter name to pass it through.
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Tool.EndUserAuthConfig.Oauth2JwtBearerConfig.client_key
 	ClientKey *string `json:"clientKey,omitempty"`
-}
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.ExtensionTool
-type Tool_ExtensionTool struct {
-	// Required. The full name of the referenced vertex extension.
-	//  Formats:
-	//  `projects/{project}/locations/{location}/extensions/{extension}`
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Tool.ExtensionTool.name
-	Name *string `json:"name,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.FunctionTool

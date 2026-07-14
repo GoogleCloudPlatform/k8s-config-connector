@@ -173,11 +173,36 @@ spec:
                     description: Required. List of data stores to search.
                     items:
                       properties:
-                        dataStore:
-                          description: 'The full name of the referenced data store.
-                            Formats: `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
-                            `projects/{project}/locations/{location}/dataStores/{data_store}`'
-                          type: string
+                        dataStoreRef:
+                          description: The referenced DiscoveryEngineDataStore resource.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed DiscoveryEngineDataStore
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                              type: string
+                            name:
+                              description: The name of a DiscoveryEngineDataStore
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a DiscoveryEngineDataStore
+                                resource.
+                              type: string
+                          type: object
                         dataStoreType:
                           description: The type of the connected data store.
                           type: string
@@ -204,10 +229,34 @@ spec:
               extensionSpec:
                 description: Vertex extension tool specification.
                 properties:
-                  name:
-                    description: 'Required. The full name of the referenced vertex
-                      extension. Formats: `projects/{project}/locations/{location}/extensions/{extension}`'
-                    type: string
+                  extensionRef:
+                    description: The referenced VertexAIExtension resource.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed VertexAIExtension
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/extensions/{{extensionID}}".
+                        type: string
+                      name:
+                        description: The name of a VertexAIExtension resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a VertexAIExtension resource.
+                        type: string
+                    type: object
                 type: object
               functionSpec:
                 description: Client side executed function specification.

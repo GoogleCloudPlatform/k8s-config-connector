@@ -14,6 +14,7 @@
 [naming_violation] file=apis/datamigration/v1alpha1/connectionprofile_reference.go prefix=connectionprofile (expected a valid resource kind prefix)
 [naming_violation] file=apis/dataplex/v1alpha1/dataattribute_reference.go prefix=dataattribute (expected a valid resource kind prefix)
 [naming_violation] file=apis/dataplex/v1alpha1/entity_reference.go prefix=entity (expected a valid resource kind prefix)
+[naming_violation] file=apis/dialogflow/v1alpha1/vertexaiextension_reference.go prefix=vertexaiextension (expected a valid resource kind prefix)
 [naming_violation] file=apis/firestore/v1alpha1/collectiongroup_identity.go prefix=collectiongroup (expected a valid resource kind prefix)
 [naming_violation] file=apis/gkehub/v1alpha1/shared_types.go prefix=shared (expected a valid resource kind prefix)
 [naming_violation] file=apis/iam/v1beta1/krm_types.go prefix=krm (expected a valid resource kind prefix)
