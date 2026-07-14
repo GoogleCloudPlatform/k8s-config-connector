@@ -123,7 +123,8 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/cloud/video/stitcher/v1/*.proto \
 		./third_party/googleapis/google/cloud/dialogflow/v2beta1/*.proto \
-		./third_party/googleapis/google/iam/v2/*.proto
+		./third_party/googleapis/google/iam/v2/*.proto \
+		./third_party/googleapis/google/cloud/apihub/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

@@ -10,24 +10,37 @@ metadata:
   name: api-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: An API Hub API designed for maximal test verification - Updated description.
-  displayName: Maximal APIHub API Updated
+  apiFunctionalRequirements:
+    stringValues:
+      values:
+      - func-requirement-2
+  apiRequirements:
+    stringValues:
+      values:
+      - requirement-2
+  apiTechnicalRequirements:
+    stringValues:
+      values:
+      - tech-requirement-2
+  description: A comprehensive APIHubAPI for E2E testing - Updated
+  displayName: Maximal APIHubAPI Updated
   documentation:
-    externalURI: https://example.com/api-docs-updated
+    externalURI: https://example.com/docs/v2
   location: us-central1
   owner:
-    displayName: API Owner Updated
-    email: owner-updated@example.com
+    displayName: API New Owner
+    email: new-owner@example.com
   projectRef:
     external: ${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: |-
-      Update call failed: error creating: creating APIHubAPI projects/${projectId}/locations/us-central1/apis/api-${uniqueId}: googleapi: Error 400: Invalid resource state for "projects/${projectNumber}/locations/us-central1/apis/api-${uniqueId}": API Hub instance is not provisioned for this project
-      error details: name = PreconditionFailure type =  subj = projects/${projectNumber}/locations/us-central1/apis/api-${uniqueId} desc = API Hub instance is not provisioned for this project
-      error details: name = RequestInfo id = 019879ebb331ae57 data =
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/apis/api-${uniqueId}
   observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
