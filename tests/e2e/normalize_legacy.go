@@ -83,9 +83,6 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	}
 
-	// Always replace mock dataproc's static operation ID with ${operationID}
-	r.OperationIDs["operation-1234567890123-00000000-0000-0000-0000-000000000001"] = true
-
 	for _, event := range events {
 		body := event.Response.ParseBody()
 		if body == nil {

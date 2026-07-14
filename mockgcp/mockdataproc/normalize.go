@@ -64,7 +64,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 	event.VisitResponseStringValues(func(path string, value string) {
 		for _, match := range opIDRegex.FindAllString(value, -1) {
-			replacements.ReplaceStringValue(match, "operation-1234567890123-00000000-0000-0000-0000-000000000001")
+			replacements.ReplaceStringValue(match, "${operationID}")
 		}
 	})
 
