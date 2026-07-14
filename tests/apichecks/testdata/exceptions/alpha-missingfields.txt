@@ -3609,13 +3609,6 @@
 [missing_field] crd=vmwareenginenetworkpolicies.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.internetAccess.enabled" is not set in unstructured objects
 [missing_field] crd=vmwareengineprivateclouds.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.managementCluster.nodeTypeConfigs[].customCoreCount" is not set in unstructured objects
 [missing_field] crd=vmwareengineprivateclouds.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
-[missing_field] crd=vmwareengineprivateconnections.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=vmwareengineprivateconnections.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=vmwareengineprivateconnections.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vmwareengineprivateconnections.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.routingMode" is not set in unstructured objects
-[missing_field] crd=vmwareengineprivateconnections.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceNetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vmwareengineprivateconnections.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
-[missing_field] crd=vmwareengineprivateconnections.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.vmwareEngineNetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.callLogLevel" is not set in unstructured objects
 [missing_field] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
