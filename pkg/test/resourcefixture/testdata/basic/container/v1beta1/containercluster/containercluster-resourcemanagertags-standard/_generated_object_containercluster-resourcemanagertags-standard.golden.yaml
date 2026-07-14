@@ -10,7 +10,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: cluster-sample-${uniqueId}
@@ -25,7 +25,7 @@ spec:
     name: ${networkID}
   nodeConfig:
     resourceManagerTags:
-      tagKeys/123: tagValues/789
+      tagKeys/123: tagValues/456
   resourceID: cluster-sample-${uniqueId}
   subnetworkRef:
     name: ${subnetworkID}
@@ -39,7 +39,7 @@ status:
   endpoint: 1.23.456.78
   labelFingerprint: abcdef0123A=
   masterVersion: 1.30.5-gke.1014001
-  observedGeneration: 3
+  observedGeneration: 2
   observedState:
     controlPlaneEndpointsConfig:
       dnsEndpointConfig:

@@ -931,12 +931,6 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 	// Note: we don't have the harness yet, we have to look to the env var
 	gcpTarget := os.Getenv("E2E_GCP_TARGET")
 
-	if gcpTarget == "real" {
-		if strings.Contains(testKey, "resourcemanagertags") {
-			t.Skip("skipping GKE cluster resource manager tags tests on real GCP because organization-level tag resolution is restricted in sandbox projects")
-		}
-	}
-
 	if gcpTarget == "mock" {
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
