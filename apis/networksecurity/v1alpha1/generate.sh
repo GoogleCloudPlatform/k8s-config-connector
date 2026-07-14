@@ -47,6 +47,8 @@ go run . generate-types \
   --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
   --resource NetworkSecuritySACRealm:SACRealm \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
+  --resource NetworkSecuritySecurityProfileGroup:SecurityProfileGroup \
+  --resource NetworkSecurityFirewallEndpoint:FirewallEndpoint \
   --resource NetworkSecurityFirewallEndpointAssociation:FirewallEndpointAssociation \
   --resource NetworkSecurityGatewaySecurityPolicy:GatewaySecurityPolicy \
   --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
