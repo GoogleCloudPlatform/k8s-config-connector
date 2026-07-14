@@ -218,6 +218,7 @@ import (
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1"
+	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
@@ -424,6 +425,7 @@ type Interface interface {
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
 	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
 	VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface
+	VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
 	VmwareengineV1beta1() vmwareenginev1beta1.VmwareengineV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
@@ -628,6 +630,7 @@ type Clientset struct {
 	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
 	vertexaiV1beta1                 *vertexaiv1beta1.VertexaiV1beta1Client
 	videostitcherV1alpha1           *videostitcherv1alpha1.VideostitcherV1alpha1Client
+	visionV1alpha1                  *visionv1alpha1.VisionV1alpha1Client
 	vmwareengineV1alpha1            *vmwareenginev1alpha1.VmwareengineV1alpha1Client
 	vmwareengineV1beta1             *vmwareenginev1beta1.VmwareengineV1beta1Client
 	vpcaccessV1beta1                *vpcaccessv1beta1.VpcaccessV1beta1Client
@@ -1601,6 +1604,11 @@ func (c *Clientset) VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV
 	return c.videostitcherV1alpha1
 }
 
+// VisionV1alpha1 retrieves the VisionV1alpha1Client
+func (c *Clientset) VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface {
+	return c.visionV1alpha1
+}
+
 // VmwareengineV1alpha1 retrieves the VmwareengineV1alpha1Client
 func (c *Clientset) VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface {
 	return c.vmwareengineV1alpha1
@@ -2447,6 +2455,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.visionV1alpha1, err = visionv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vmwareengineV1alpha1, err = vmwareenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2685,6 +2697,7 @@ func New(c rest.Interface) *Clientset {
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
 	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)
 	cs.videostitcherV1alpha1 = videostitcherv1alpha1.New(c)
+	cs.visionV1alpha1 = visionv1alpha1.New(c)
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)
 	cs.vmwareengineV1beta1 = vmwareenginev1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)

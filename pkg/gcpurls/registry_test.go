@@ -242,6 +242,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}": true,
 
+		// Vision
+		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
+
 		// Workflow Executions
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
 	}

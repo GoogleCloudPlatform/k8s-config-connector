@@ -1159,6 +1159,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - vision.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vmwareengine.cnrm.cloud.google.com
   resources:
   - '*'
