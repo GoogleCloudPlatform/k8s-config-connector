@@ -29,7 +29,10 @@ cd "${REPO_ROOT}"
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running preview CLI tests..."
-# A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
+# Configure isolated gcloud configuration directory with dummy project ID to avoid ECP / token refresh errors on GCE workstations
+export CLOUDSDK_CONFIG=$(mktemp -d)
+mkdir -p "${CLOUDSDK_CONFIG}/configurations"
+echo -e "[core]\nproject = foobar" > "${CLOUDSDK_CONFIG}/configurations/config_default"
+
 
 go test -test.count=1 -v ./pkg/cli/preview/...
