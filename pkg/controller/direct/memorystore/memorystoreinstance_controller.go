@@ -466,31 +466,13 @@ func connectionsMatch(desired, actual *memorystorepb.Instance_ConnectionDetail) 
 		return desiredPsc == actualPsc
 	}
 
+	// Only match against project and network since CRD implementation uses project and network refs.
+	// So no PSC fields will be present in the desired spec.
 	if desiredPsc.GetProjectId() != "" && desiredPsc.GetProjectId() != actualPsc.GetProjectId() {
 		return false
 	}
 
 	if desiredPsc.GetNetwork() != "" && desiredPsc.GetNetwork() != actualPsc.GetNetwork() {
-		return false
-	}
-
-	if desiredPsc.GetPscConnectionId() != "" && desiredPsc.GetPscConnectionId() != actualPsc.GetPscConnectionId() {
-		return false
-	}
-
-	if desiredPsc.GetIpAddress() != "" && desiredPsc.GetIpAddress() != actualPsc.GetIpAddress() {
-		return false
-	}
-
-	if desiredPsc.GetForwardingRule() != "" && desiredPsc.GetForwardingRule() != actualPsc.GetForwardingRule() {
-		return false
-	}
-
-	if desiredPsc.GetServiceAttachment() != "" && desiredPsc.GetServiceAttachment() != actualPsc.GetServiceAttachment() {
-		return false
-	}
-
-	if desiredPsc.GetPort() != 0 && desiredPsc.GetPort() != actualPsc.GetPort() {
 		return false
 	}
 
