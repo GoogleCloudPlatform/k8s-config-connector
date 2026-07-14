@@ -75,8 +75,7 @@ func BinaryAuthorizationPlatformPolicySpec_FromProto(mapCtx *direct.MapContext, 
 	out.Description = direct.LazyPtr(in.Description)
 	// MISSING: Etag
 	// MISSING: UpdateTime
-	// MISSING: GKEPolicy
-	// (near miss): "GKEPolicy" vs "GkePolicy"
+	out.GKEPolicy = GKEPolicy_FromProto(mapCtx, in.GkePolicy)
 	return out
 }
 func BinaryAuthorizationPlatformPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthorizationPlatformPolicySpec) *api.PlatformPolicy {
@@ -88,8 +87,7 @@ func BinaryAuthorizationPlatformPolicySpec_ToProto(mapCtx *direct.MapContext, in
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: Etag
 	// MISSING: UpdateTime
-	// MISSING: GKEPolicy
-	// (near miss): "GKEPolicy" vs "GkePolicy"
+	out.GkePolicy = GKEPolicy_ToProto(mapCtx, in.GKEPolicy)
 	return out
 }
 func Check_FromProto(mapCtx *direct.MapContext, in *api.Check) *krm.Check {
