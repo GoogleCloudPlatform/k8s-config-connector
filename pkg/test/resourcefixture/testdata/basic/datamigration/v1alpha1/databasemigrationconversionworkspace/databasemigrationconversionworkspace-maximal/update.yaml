@@ -1,0 +1,18 @@
+apiVersion: datamigration.cnrm.cloud.google.com/v1alpha1
+kind: DatabaseMigrationConversionWorkspace
+metadata:
+  name: db-mw-max-${uniqueId}
+spec:
+  projectRef:
+    name: ${projectId}
+  location: us-central1
+  displayName: Maximal Conversion Workspace Updated
+  source:
+    engine: MYSQL
+    version: "5.7"
+  destination:
+    engine: POSTGRESQL
+    version: "14"
+  globalSettings:
+    convert_foreign_key_to_interleave: "false"
+    skip_triggers: "true"
