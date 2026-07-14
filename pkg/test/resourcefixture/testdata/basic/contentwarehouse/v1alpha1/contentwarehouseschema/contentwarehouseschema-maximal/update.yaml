@@ -1,0 +1,36 @@
+apiVersion: contentwarehouse.cnrm.cloud.google.com/v1alpha1
+kind: ContentWarehouseSchema
+metadata:
+  name: contentwarehouseschema-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  displayName: Updated Display Name Max ${uniqueId}
+  description: "Updated Maximal ContentWarehouseSchema Description"
+  documentIsFolder: true
+  propertyDefinitions:
+    - name: text_prop
+      displayName: Text Property
+      isRepeatable: false
+      isFilterable: true
+      isSearchable: true
+      isMetadata: true
+      isRequired: false
+      textTypeOptions: {}
+    - name: int_prop
+      displayName: Integer Property
+      isRepeatable: false
+      isFilterable: true
+      isSearchable: true
+      isMetadata: true
+      isRequired: false
+      integerTypeOptions: {}
+    - name: new_text_prop
+      displayName: New Text Property
+      isRepeatable: false
+      isFilterable: true
+      isSearchable: true
+      isMetadata: true
+      isRequired: false
+      textTypeOptions: {}

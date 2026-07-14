@@ -1258,6 +1258,8 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
 	case "cloud.google.com/go/sql/apiv1beta4/sqlpb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
+	case "cloud.google.com/go/contentwarehouse/apiv1/contentwarehousepb":
+		return "google.golang.org/genproto/googleapis/cloud/contentwarehouse/v1"
 	}
 
 	return protoGoPackage
