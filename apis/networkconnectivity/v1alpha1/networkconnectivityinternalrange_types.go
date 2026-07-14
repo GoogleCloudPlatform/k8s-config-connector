@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -160,4 +161,5 @@ type NetworkConnectivityInternalRangeList struct {
 
 func init() {
 	SchemeBuilder.Register(&NetworkConnectivityInternalRange{}, &NetworkConnectivityInternalRangeList{})
+	kccscheme.RegisterType(NetworkConnectivityInternalRangeGVK, &NetworkConnectivityInternalRange{})
 }
