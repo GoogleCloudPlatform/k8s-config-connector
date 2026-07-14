@@ -29,6 +29,7 @@ cd "${REPO_ROOT}"
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running preview CLI tests..."
-export GCP_PROJECT_ID=foobar
+# A dummy default project id is required for a few unit test cases
+gcloud config set project foobar --quiet
 
 go test -test.count=1 -v ./pkg/cli/preview/...

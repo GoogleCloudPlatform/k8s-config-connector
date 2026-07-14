@@ -29,7 +29,8 @@ cd ${REPO_ROOT}
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running operator unit tests..."
-export GCP_PROJECT_ID=foobar
+# A dummy default project id is required for a few unit test cases
+gcloud config set project foobar --quiet
 
 cd operator
 
