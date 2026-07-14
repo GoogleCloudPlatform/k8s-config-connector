@@ -72,6 +72,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 		// AI Platform
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}": true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":       true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
