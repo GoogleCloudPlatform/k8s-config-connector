@@ -1,0 +1,255 @@
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks?%24alt=json%3Benum-encoding%3Dint&frameworkId=cloudsecurityframework-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fglobal
+
+{
+  "category": [
+    1
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "1",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/test-control",
+      "parameters": [
+        {
+          "name": "test-param",
+          "parameterValue": {
+            "stringValue": "test-value"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Test description max",
+  "displayName": "Test Framework Max ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    1
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "1",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/test-control",
+      "parameters": [
+        {
+          "name": "test-param",
+          "parameterValue": {
+            "stringValue": "test-value"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Test description max",
+  "displayName": "Test Framework Max ${uniqueId}",
+  "majorRevisionId": "1",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}",
+  "type": 2
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    1
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "1",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/test-control",
+      "parameters": [
+        {
+          "name": "test-param",
+          "parameterValue": {
+            "stringValue": "test-value"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Test description max",
+  "displayName": "Test Framework Max ${uniqueId}",
+  "majorRevisionId": "1",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}",
+  "type": 2
+}
+
+---
+
+PATCH https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=cloudControlDetails%2Cdescription%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: framework.name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-max-${uniqueId}
+
+{
+  "category": [
+    1
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "2",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/test-control-updated",
+      "parameters": [
+        {
+          "name": "test-param-updated",
+          "parameterValue": {
+            "stringValue": "test-value-updated"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Test description max updated",
+  "displayName": "Test Framework Max ${uniqueId} Updated",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    1
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "2",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/test-control-updated",
+      "parameters": [
+        {
+          "name": "test-param-updated",
+          "parameterValue": {
+            "stringValue": "test-value-updated"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Test description max updated",
+  "displayName": "Test Framework Max ${uniqueId} Updated",
+  "majorRevisionId": "2",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}",
+  "type": 2
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "category": [
+    1
+  ],
+  "cloudControlDetails": [
+    {
+      "majorRevisionId": "2",
+      "name": "organizations/${organizationID}/locations/global/cloudControls/test-control-updated",
+      "parameters": [
+        {
+          "name": "test-param-updated",
+          "parameterValue": {
+            "stringValue": "test-value-updated"
+          }
+        }
+      ]
+    }
+  ],
+  "description": "Test description max updated",
+  "displayName": "Test Framework Max ${uniqueId} Updated",
+  "majorRevisionId": "2",
+  "name": "organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}",
+  "type": 2
+}
+
+---
+
+DELETE https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/frameworks/cloudsecurityframework-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fframeworks%2Fcloudsecurityframework-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

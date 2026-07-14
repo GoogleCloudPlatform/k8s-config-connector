@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: cloudsecuritycompliance.cnrm.cloud.google.com
+  kind: CloudSecurityFramework
+  name: cloudsecurityframework-proj-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
