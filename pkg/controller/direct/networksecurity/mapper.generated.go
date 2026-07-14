@@ -986,6 +986,66 @@ func NetworkSecurityFirewallEndpointAssociationSpec_v1alpha1_ToProto(mapCtx *dir
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
+func NetworkSecurityFirewallEndpointObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpoint) *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.AssociatedNetworks = in.AssociatedNetworks
+	out.Associations = direct.Slice_FromProto(mapCtx, in.Associations, FirewallEndpointAssociationReference_v1alpha1_FromProto)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func NetworkSecurityFirewallEndpointObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointObservedState) *pb.FirewallEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallEndpoint{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.FirewallEndpoint_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.AssociatedNetworks = in.AssociatedNetworks
+	out.Associations = direct.Slice_ToProto(mapCtx, in.Associations, FirewallEndpointAssociationReference_v1alpha1_ToProto)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func NetworkSecurityFirewallEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpoint) *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	out.BillingProjectID = direct.LazyPtr(in.GetBillingProjectId())
+	out.EndpointSettings = FirewallEndpointEndpointSettings_v1alpha1_FromProto(mapCtx, in.GetEndpointSettings())
+	return out
+}
+func NetworkSecurityFirewallEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityFirewallEndpointSpec) *pb.FirewallEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallEndpoint{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	out.BillingProjectId = direct.ValueOf(in.BillingProjectID)
+	out.EndpointSettings = FirewallEndpointEndpointSettings_v1alpha1_ToProto(mapCtx, in.EndpointSettings)
+	return out
+}
 func NetworkSecurityGatewaySecurityPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GatewaySecurityPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyObservedState {
 	if in == nil {
 		return nil

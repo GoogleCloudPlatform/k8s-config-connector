@@ -27,6 +27,8 @@ type NetworkSecurityAuthzPolicyExpansion interface{}
 
 type NetworkSecurityBackendAuthenticationConfigExpansion interface{}
 
+type NetworkSecurityFirewallEndpointExpansion interface{}
+
 type NetworkSecurityFirewallEndpointAssociationExpansion interface{}
 
 type NetworkSecurityGatewaySecurityPolicyExpansion interface{}

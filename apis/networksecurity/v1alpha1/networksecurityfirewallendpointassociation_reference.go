@@ -53,16 +53,6 @@ func (r *NetworkRef) Normalize(ctx context.Context, reader client.Reader, defaul
 	return nil
 }
 
-func (r *FirewallEndpointRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External != "" && r.Name == "" {
-		return nil
-	}
-	if r.External == "" && r.Name == "" {
-		return fmt.Errorf("must specify either name or external")
-	}
-	return nil // Mock implementation to pass compilation
-}
-
 func (r *TLSInspectionPolicyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External != "" && r.Name == "" {
 		return nil

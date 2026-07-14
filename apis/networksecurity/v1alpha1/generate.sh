@@ -51,6 +51,7 @@ go run . generate-types \
   --resource NetworkSecurityGatewaySecurityPolicy:GatewaySecurityPolicy \
   --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
   --resource NetworkSecurityAuthzPolicy:AuthzPolicy \
+  --resource NetworkSecurityFirewallEndpoint:FirewallEndpoint \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
