@@ -1,0 +1,9 @@
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1alpha1
+kind: BinaryAuthorizationPlatformPolicy
+metadata:
+  name: binauthz-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  platform: gke
+  description: "A minimal platform policy"
