@@ -563,6 +563,8 @@
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceIpRanges[]" is not set in unstructured objects
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.memorystoreInstanceServiceAttachment.connectionType" is not set in unstructured objects
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.memorystoreInstanceServiceAttachment.memorystoreInstanceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.redisClusterServiceAttachment.connectionType" is not set in unstructured objects
+[missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.redisClusterServiceAttachment.redisClusterRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.grpcServiceName" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.port" is not set in unstructured objects

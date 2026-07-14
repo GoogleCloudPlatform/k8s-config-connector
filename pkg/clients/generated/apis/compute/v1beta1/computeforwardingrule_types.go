@@ -81,6 +81,15 @@ type ForwardingruleMetadataFilters struct {
 	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
 
+type ForwardingruleRedisClusterServiceAttachment struct {
+	/* The connection type of the serviceAttachment. A redis cluster has multiple serviceAttachments, each with a different connection type. Use connectionType to control which serviceAttachment to target. The empty value matches a serviceAttachment with an empty connectionType. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* A reference to a RedisCluster resource. */
+	RedisClusterRef v1alpha1.ResourceRef `json:"redisClusterRef"`
+}
+
 type ForwardingruleServiceDirectoryRegistrations struct {
 	/* Immutable. Service Directory namespace to register the forwarding rule under. */
 	// +optional
@@ -98,6 +107,10 @@ type ForwardingruleTarget struct {
 	/* Target a serviceAttachment for a Memorystore for Valkey instance. */
 	// +optional
 	MemorystoreInstanceServiceAttachment *ForwardingruleMemorystoreInstanceServiceAttachment `json:"memorystoreInstanceServiceAttachment,omitempty"`
+
+	/* Target a serviceAttachment for a Redis Cluster. */
+	// +optional
+	RedisClusterServiceAttachment *ForwardingruleRedisClusterServiceAttachment `json:"redisClusterServiceAttachment,omitempty"`
 
 	// +optional
 	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
