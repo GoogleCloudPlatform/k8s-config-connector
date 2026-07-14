@@ -176,7 +176,7 @@ This file tracks the progress of new "Direct" resource implementations.
 | GrafeasNote | grafeas | [#10289](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10289) | - | - | 1 | OPEN | - |
 | GSuiteAddonsDeployment | gsuiteaddons | [#10349](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10349) | - | - | 1 | OPEN | - |
 | HypercomputeClusterCluster | hypercomputecluster | - | - | [#10333](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10333) | 1 | OPEN | - |
-| IamAccessPolicy | iam | - | - | [#10321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10321) | 1 | OPEN | - |
+| AccessContextManagerAccessPolicy | accesscontextmanager | - | - | [#10321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10321) | 1 | OPEN | - |
 | CloudTalentSolutionCompany | cloudtalentsolution | [#10319](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10319) | - | - | 1 | OPEN | - |
 | LicenseManagerConfiguration | licensemanager | [#10338](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10338) | - | - | 1 | OPEN | - |
 | LiveStreamAsset | livestream | [#10344](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10344) | - | - | 1 | OPEN | - |

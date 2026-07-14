@@ -90,9 +90,9 @@ func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapC
 	// MISSING: Name
 	// MISSING: Parent
 	// MISSING: Scopes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
@@ -103,9 +103,9 @@ func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapCon
 	// MISSING: Name
 	// MISSING: Parent
 	// MISSING: Scopes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicySpec {
@@ -117,9 +117,6 @@ func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Parent
 	out.Title = direct.LazyPtr(in.GetTitle())
 	// MISSING: Scopes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
 	return out
 }
 func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicySpec) *pb.AccessPolicy {
@@ -131,9 +128,6 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Parent
 	out.Title = direct.ValueOf(in.Title)
 	// MISSING: Scopes
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
 	return out
 }
 func AccessLevelCustom_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) *krm.AccessLevelCustom {

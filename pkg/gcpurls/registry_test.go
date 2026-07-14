@@ -70,6 +70,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
+		// Access Context Manager
+		"//accesscontextmanager.googleapis.com/organizations/{}/locations/{}/accessPolicies/{}": true,
+
 		// AI Platform
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}": true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":       true,

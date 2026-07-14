@@ -47,6 +47,20 @@ type AccessContextManagerAccessPolicySpec struct {
 	Title string `json:"title"`
 }
 
+type AccesspolicyObservedStateStatus struct {
+	/* Output only. Time the AccessPolicy was created in UTC. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. An opaque identifier for the current version of the `AccessPolicy`. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
+	/* Output only. Time the AccessPolicy was updated in UTC. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
 type AccessContextManagerAccessPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AccessContextManagerAccessPolicy's current state. */
@@ -55,6 +69,10 @@ type AccessContextManagerAccessPolicyStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
+	/* A unique specifier for the AccessContextManagerAccessPolicy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Resource name of the AccessPolicy. Format: {policy_id}. */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -62,6 +80,10 @@ type AccessContextManagerAccessPolicyStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *AccesspolicyObservedStateStatus `json:"observedState,omitempty"`
 
 	/* Output only. Time the AccessPolicy was updated in UTC. */
 	// +optional

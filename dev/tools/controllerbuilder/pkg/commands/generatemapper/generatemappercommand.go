@@ -39,6 +39,7 @@ type GenerateMapperOptions struct {
 	APIGoPackagePath      string
 	APIDirectory          string
 	OutputMapperDirectory string
+	OutputMapperFile      string
 
 	Multiversion bool
 }
@@ -60,6 +61,7 @@ func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.APIGoPackagePath, "api-go-package-path", o.APIGoPackagePath, "package path")
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
 	cmd.Flags().StringVar(&o.OutputMapperDirectory, "output-dir", o.OutputMapperDirectory, "base directory for writing mappers")
+	cmd.Flags().StringVar(&o.OutputMapperFile, "output-file", o.OutputMapperFile, "file name for writing mappers (defaults to mapper.generated.go)")
 	cmd.Flags().BoolVar(&o.Multiversion, "multiversion", o.Multiversion, "generate mappers with version specifiers, to support mixed versions")
 }
 
@@ -146,6 +148,9 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	}
 
 	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
+	if o.OutputMapperFile != "" {
+		mapperGenerator.WithFileName(o.OutputMapperFile)
+	}
 	mapperGenerator.WithIncludeSkippedOutput(o.GenerateOptions.IncludeSkippedOutput)
 
 	// Ensure that our first proto package is always imported with the "pb" alias.

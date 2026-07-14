@@ -246,7 +246,7 @@ BLOCKED_KINDS=(
     "GrafeasNote"
     "GSuiteAddonsDeployment"
     "HypercomputeClusterCluster"
-    "IamAccessPolicy"
+    "AccessContextManagerAccessPolicy"
     "CloudTalentSolutionCompany"
     "LicenseManagerConfiguration"
     "LiveStreamAsset"

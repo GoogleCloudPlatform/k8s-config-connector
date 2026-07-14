@@ -111,6 +111,10 @@ spec:
               createTime:
                 description: Output only. Time the AccessPolicy was created in UTC.
                 type: string
+              externalRef:
+                description: A unique specifier for the AccessContextManagerAccessPolicy
+                  resource in GCP.
+                type: string
               name:
                 description: 'Resource name of the AccessPolicy. Format: {policy_id}.'
                 type: string
@@ -122,6 +126,23 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time the AccessPolicy was created in
+                      UTC.
+                    type: string
+                  etag:
+                    description: Output only. An opaque identifier for the current
+                      version of the `AccessPolicy`.
+                    type: string
+                  updateTime:
+                    description: Output only. Time the AccessPolicy was updated in
+                      UTC.
+                    type: string
+                type: object
               updateTime:
                 description: Output only. Time the AccessPolicy was updated in UTC.
                 type: string

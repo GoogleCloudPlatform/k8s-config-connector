@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,11 +49,28 @@ type AccessContextManagerAccessPolicyStatus struct {
 
 	// Output only. Time the AccessPolicy was updated in UTC.
 	UpdateTime string `json:"updateTime,omitempty"`
+
+	// A unique specifier for the AccessContextManagerAccessPolicy resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *AccessContextManagerAccessPolicyObservedState `json:"observedState,omitempty"`
 }
 
 // AccessContextManagerAccessPolicyObservedState is the state of the AccessContextManagerAccessPolicy resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.AccessPolicy
 type AccessContextManagerAccessPolicyObservedState struct {
+	// Output only. An opaque identifier for the current version of the `AccessPolicy`.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessPolicy.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. Time the AccessPolicy was created in UTC.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time the AccessPolicy was updated in UTC.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

@@ -130,8 +130,13 @@ conditions:
   status: string
   type: string
 createTime: string
+externalRef: string
 name: string
 observedGeneration: integer
+observedState:
+  createTime: string
+  etag: string
+  updateTime: string
 updateTime: string
 ```
 
@@ -199,6 +204,13 @@ updateTime: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the AccessContextManagerAccessPolicy resource in GCP.</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -210,6 +222,34 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Time the AccessPolicy was created in UTC.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.etag</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. An opaque identifier for the current version of the `AccessPolicy`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. Time the AccessPolicy was updated in UTC.</p>
         </td>
     </tr>
     <tr>
