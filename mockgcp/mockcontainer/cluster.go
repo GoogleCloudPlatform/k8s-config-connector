@@ -36,6 +36,25 @@ type ClusterManagerV1 struct {
 	pb.UnimplementedClusterManagerServer
 }
 
+func (s *ClusterManagerV1) populateNodePools(ctx context.Context, clusterFqn string, obj *pb.Cluster) error {
+	var nodePools []*pb.NodePool
+	nodePoolKind := (&pb.NodePool{}).ProtoReflect().Descriptor()
+	err := s.storage.List(ctx, nodePoolKind, storage.ListOptions{
+		Prefix: clusterFqn + "/nodePools/",
+	}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	if len(nodePools) > 0 {
+		obj.NodePools = nodePools
+	}
+	return nil
+}
+
 func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterRequest) (*pb.Cluster, error) {
 	name, err := s.parseClusterName(req.Name)
 	if err != nil {
@@ -52,17 +71,8 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 		return nil, err
 	}
 
-	nodePoolPrefix := fqn + "/nodePools/"
-	var nodePools []*pb.NodePool
-	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
-		np := msg.(*pb.NodePool)
-		nodePools = append(nodePools, np)
-		return nil
-	}); err != nil {
+	if err := s.populateNodePools(ctx, fqn, obj); err != nil {
 		return nil, err
-	}
-	if len(nodePools) > 0 {
-		obj.NodePools = nodePools
 	}
 
 	return obj, nil
