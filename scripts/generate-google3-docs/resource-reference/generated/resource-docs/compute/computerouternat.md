@@ -76,6 +76,8 @@ drainNatIps:
   namespace: string
 enableDynamicPortAllocation: boolean
 enableEndpointIndependentMapping: boolean
+endpointTypes:
+- string
 icmpIdleTimeoutSec: integer
 logConfig:
   enable: boolean
@@ -99,7 +101,15 @@ rules:
     - external: string
       name: string
       namespace: string
+    sourceNatActiveRangesRefs:
+    - external: string
+      name: string
+      namespace: string
     sourceNatDrainIpsRefs:
+    - external: string
+      name: string
+      namespace: string
+    sourceNatDrainRangesRefs:
     - external: string
       name: string
       namespace: string
@@ -119,6 +129,7 @@ subnetwork:
 tcpEstablishedIdleTimeoutSec: integer
 tcpTimeWaitTimeoutSec: integer
 tcpTransitoryIdleTimeoutSec: integer
+type: string
 udpIdleTimeoutSec: integer
 ```
 
@@ -203,6 +214,26 @@ Mutually exclusive with enableEndpointIndependentMapping.</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs).</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>endpointTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Immutable. Specifies the endpoint Types supported by the NAT Gateway. Supported values include: 'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG', 'ENDPOINT_TYPE_MANAGED_PROXY_LB'.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>endpointTypes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -467,6 +498,56 @@ Mutually exclusive with enableEndpointIndependentMapping.</p>
     </tr>
     <tr>
         <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>A list of references to ComputeSubnetwork resources. Rules configured with these rules translate source IPs to the IP ranges of these subnetworks. This field is used for private NAT.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeSubnetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveRangesRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>rules[].action.sourceNatDrainIpsRefs</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -513,6 +594,56 @@ Mutually exclusive with enableEndpointIndependentMapping.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>The namespace of a ComputeAddress resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>A list of references to ComputeSubnetwork resources. These IP ranges will be drained. This field is used for private NAT.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeSubnetwork resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeSubnetwork resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainRangesRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeSubnetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -694,6 +825,16 @@ The following example is a valid match expression for private NAT:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>Timeout (in seconds) for TCP transitory connections. Defaults to 30s if not set.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>type</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. Indicates whether this NAT is used for public IP translation or private IP translation. Possible values: ["PUBLIC", "PRIVATE"].</p>
         </td>
     </tr>
     <tr>
