@@ -77,6 +77,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - apigeeregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - apihub.cnrm.cloud.google.com
   resources:
   - '*'
@@ -102,6 +110,14 @@ rules:
   - watch
 - apiGroups:
   - apphub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - appoptimize.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -213,6 +229,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - bigquerymigration.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
@@ -253,7 +277,23 @@ rules:
   - list
   - watch
 - apiGroups:
+  - blockchainnodeengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ces.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -405,6 +445,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - connectors.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - contactcenterinsights.cnrm.cloud.google.com
   resources:
   - '*'
@@ -478,6 +526,14 @@ rules:
   - watch
 - apiGroups:
   - datalabeling.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datalineage.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -677,6 +733,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - geminidataanalytics.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - gkebackup.cnrm.cloud.google.com
   resources:
   - '*'
@@ -766,6 +830,14 @@ rules:
   - watch
 - apiGroups:
   - metastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - migrationcenter.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -941,6 +1013,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - saasservicemgmt.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - secretmanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1021,6 +1101,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - sqladmin.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - storage.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1045,6 +1133,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - testing.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - tpu.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1053,7 +1149,23 @@ rules:
   - list
   - watch
 - apiGroups:
+  - vectorsearch.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vertexai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - videostitcher.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
