@@ -74,6 +74,10 @@ func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnviro
 		return nil, err
 	}
 
+	if bucket := req.GetEnvironment().GetStorageConfig().GetBucket(); strings.Contains(bucket, "/") {
+		return nil, status.Errorf(codes.InvalidArgument, "Composer doesn't have permission to read the requested Cloud Storage bucket: gs://%s", bucket)
+	}
+
 	fqn := name.String()
 	now := time.Now()
 
@@ -110,6 +114,9 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 	name, err := s.parseEnvironmentName(req.GetName())
 	if err != nil {
 		return nil, err
+	}
+	if bucket := req.GetEnvironment().GetStorageConfig().GetBucket(); strings.Contains(bucket, "/") {
+		return nil, status.Errorf(codes.InvalidArgument, "Composer doesn't have permission to read the requested Cloud Storage bucket: gs://%s", bucket)
 	}
 	fqn := name.String()
 

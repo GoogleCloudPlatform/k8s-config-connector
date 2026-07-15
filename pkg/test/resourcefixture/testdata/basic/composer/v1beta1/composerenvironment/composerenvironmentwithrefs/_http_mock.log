@@ -1042,7 +1042,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "storageConfig": {
-    "bucket": "projects/${projectId}/buckets/bucket-${uniqueId}"
+    "bucket": "bucket-${uniqueId}"
   }
 }
 
@@ -1183,7 +1183,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "state": "RUNNING",
     "storageConfig": {
-      "bucket": "projects/${projectId}/buckets/bucket-${uniqueId}"
+      "bucket": "bucket-${uniqueId}"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "uuid": "test-uuid"
@@ -1287,7 +1287,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "projects/${projectId}/buckets/bucket-${uniqueId}"
+    "bucket": "bucket-${uniqueId}"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "uuid": "test-uuid"
@@ -1382,7 +1382,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "projects/${projectId}/buckets/bucket-${uniqueId}"
+    "bucket": "bucket-${uniqueId}"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "uuid": "test-uuid"
@@ -1528,7 +1528,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "state": "RUNNING",
     "storageConfig": {
-      "bucket": "projects/${projectId}/buckets/bucket-${uniqueId}"
+      "bucket": "bucket-${uniqueId}"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "uuid": "test-uuid"
@@ -1635,7 +1635,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "projects/${projectId}/buckets/bucket-${uniqueId}"
+    "bucket": "bucket-${uniqueId}"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "uuid": "test-uuid"
