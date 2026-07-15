@@ -269,6 +269,65 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 		}
 	}
 
+	// Populate ClusterEndpoints
+	var hasAutoEndpoint bool
+	for _, endpoint := range obj.ClusterEndpoints {
+		if endpoint != nil && len(endpoint.Connections) > 0 && endpoint.Connections[0].GetPscAutoConnection() != nil {
+			hasAutoEndpoint = true
+			break
+		}
+	}
+
+	if !hasAutoEndpoint {
+		var autoConnections []*pb.ConnectionDetail
+		for _, pscConfig := range obj.PscConfigs {
+			for i, sa := range obj.PscServiceAttachments {
+				network, err := s.parseNetworkName(pscConfig.Network)
+				if err != nil {
+					return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", pscConfig.Network)
+				}
+				pscConnectionID := time.Now().UnixNano() + int64(i)
+				autoConnection := &pb.PscAutoConnection{
+					PscConnectionId:     fmt.Sprintf("%d", pscConnectionID),
+					Address:             fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
+					ForwardingRule:      fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID),
+					ProjectId:           network.Project.ID,
+					Network:             pscConfig.Network,
+					ServiceAttachment:   sa.ServiceAttachment,
+					PscConnectionStatus: pb.PscConnectionStatus_PSC_CONNECTION_STATUS_ACTIVE,
+					ConnectionType:      sa.ConnectionType,
+				}
+				autoConnections = append(autoConnections, &pb.ConnectionDetail{
+					Connection: &pb.ConnectionDetail_PscAutoConnection{
+						PscAutoConnection: autoConnection,
+					},
+				})
+			}
+		}
+		if len(autoConnections) > 0 {
+			obj.ClusterEndpoints = append([]*pb.ClusterEndpoint{
+				{
+					Connections: autoConnections,
+				},
+			}, obj.ClusterEndpoints...)
+		}
+	}
+
+	// Update user-created connections
+	for _, endpoint := range obj.ClusterEndpoints {
+		for _, conn := range endpoint.Connections {
+			if pscConnection := conn.GetPscConnection(); pscConnection != nil {
+				pscConnection.PscConnectionStatus = pb.PscConnectionStatus_PSC_CONNECTION_STATUS_ACTIVE
+				for _, sa := range obj.PscServiceAttachments {
+					if sa.ServiceAttachment == pscConnection.ServiceAttachment {
+						pscConnection.ConnectionType = sa.ConnectionType
+						break
+					}
+				}
+			}
+		}
+	}
+
 	if obj.PersistenceConfig == nil {
 		obj.PersistenceConfig = &pb.ClusterPersistenceConfig{}
 	}
@@ -436,6 +495,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
 		case "crossClusterReplicationConfig":
 			obj.CrossClusterReplicationConfig = req.Cluster.CrossClusterReplicationConfig
+		case "clusterEndpoints", "cluster_endpoints":
+			obj.ClusterEndpoints = r.mergeClusterEndpoints(obj.ClusterEndpoints, req.Cluster.ClusterEndpoints)
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
@@ -516,6 +577,21 @@ func (r *clusterServer) DeleteCluster(ctx context.Context, req *pb.DeleteCluster
 		metadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (r *clusterServer) mergeClusterEndpoints(current, updates []*pb.ClusterEndpoint) []*pb.ClusterEndpoint {
+	var results []*pb.ClusterEndpoint
+	for _, item := range current {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscAutoConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	for _, item := range updates {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	return results
 }
 
 type clusterName struct {

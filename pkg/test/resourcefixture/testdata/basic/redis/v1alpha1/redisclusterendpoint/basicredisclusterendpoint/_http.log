@@ -1,0 +1,3412 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoCreateSubnetworks": false,
+  "description": "Test network for the project",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ipCidrRange": "10.128.0.0/20",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/europe-west4"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/serviceConnectionPolicies?alt=json&prettyPrint=false&serviceConnectionPolicyId=scp-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Service Connection Policy for redis",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Service Connection Policy for redis",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=rediscluster-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west4
+
+{
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "shardCount": 3
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.128.0.2",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.128.0.3",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/${networkID}"
+        }
+      }
+    ],
+    "effectiveMaintenanceVersion": "REDISCLUSTER_20260626_00_01",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+      },
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+      }
+    ],
+    "replicaCount": 0,
+    "satisfiesPzi": true,
+    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
+    "shardCount": 3,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
+    "uid": "0123456789abcdef",
+    "zoneDistributionConfig": {
+      "mode": "MULTI_ZONE"
+    }
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "addressType": "INTERNAL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "purpose": "GCE_ENDPOINT",
+  "region": "projects/${projectId}/global/regions/europe-west4",
+  "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "status": "RESERVED",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "status": "RESERVED",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "loadBalancingScheme": "",
+  "name": "${forwardingRuleID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createRegionPscForwardingRule",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createRegionPscForwardingRule",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "PENDING",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}/setLabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=${forwardingRuleID}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "PENDING",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "addressType": "INTERNAL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "purpose": "GCE_ENDPOINT",
+  "region": "projects/${projectId}/global/regions/europe-west4",
+  "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "status": "RESERVED",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "status": "RESERVED",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "loadBalancingScheme": "",
+  "name": "${forwardingRuleID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createRegionPscForwardingRule",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "createRegionPscForwardingRule",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "PENDING",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}/setLabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=${forwardingRuleID}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "PENDING",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.2",
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.3",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "port": 6379,
+      "pscConfig": {
+        "network": "projects/${projectId}/global/networks/${networkID}"
+      }
+    }
+  ],
+  "effectiveMaintenanceVersion": "REDISCLUSTER_20260626_00_01",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "preciseSizeGb": 39,
+  "pscConnections": [
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "serverCaMode": 0,
+  "shardCount": 3,
+  "sizeGb": 39,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "zoneDistributionConfig": {
+    "mode": 1
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "PENDING",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=clusterEndpoints
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "asyncClusterEndpointsDeletionEnabled": true,
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscConnection": {
+            "address": "10.128.0.4",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "198294590078320644",
+            "serviceAttachment": "projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
+  "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "missing PSC connection for projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa in the cluster endpoint psc_user_created_connections:{ip_address:\"10.128.0.4\"  forwarding_rule:\"projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}\"  network:\"projects/${projectId}/global/networks/${networkID}\"  service_attachment:\"projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2\"  psc_connection_id:\"198294590078320644\"}: invalid argument",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.2",
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.3",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "port": 6379,
+      "pscConfig": {
+        "network": "projects/${projectId}/global/networks/${networkID}"
+      }
+    }
+  ],
+  "effectiveMaintenanceVersion": "REDISCLUSTER_20260626_00_01",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "preciseSizeGb": 39,
+  "pscConnections": [
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "serverCaMode": 0,
+  "shardCount": 3,
+  "sizeGb": 39,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "zoneDistributionConfig": {
+    "mode": 1
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "PENDING",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "PENDING",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=clusterEndpoints
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "asyncClusterEndpointsDeletionEnabled": true,
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscConnection": {
+            "address": "10.128.0.4",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "198294590078320644",
+            "serviceAttachment": "projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+          }
+        },
+        {
+          "pscConnection": {
+            "address": "10.128.0.5",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "198294590078320645",
+            "serviceAttachment": "projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+          }
+        }
+      ]
+    }
+  ],
+  "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.128.0.2",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.128.0.3",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+            }
+          }
+        ]
+      },
+      {
+        "connections": [
+          {
+            "pscConnection": {
+              "address": "10.128.0.4",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "198294590078320644",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+            }
+          },
+          {
+            "pscConnection": {
+              "address": "10.128.0.5",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "198294590078320645",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+            }
+          }
+        ]
+      }
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/${networkID}"
+        }
+      }
+    ],
+    "effectiveMaintenanceVersion": "REDISCLUSTER_20260626_00_01",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+      },
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+      }
+    ],
+    "replicaCount": 0,
+    "satisfiesPzi": true,
+    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
+    "shardCount": 3,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
+    "uid": "0123456789abcdef",
+    "zoneDistributionConfig": {
+      "mode": "MULTI_ZONE"
+    }
+  }
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.2",
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.3",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+          }
+        }
+      ]
+    },
+    {
+      "connections": [
+        {
+          "pscConnection": {
+            "address": "10.128.0.4",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "198294590078320644",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+          }
+        },
+        {
+          "pscConnection": {
+            "address": "10.128.0.5",
+            "connectionType": 1,
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "198294590078320645",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+          }
+        }
+      ]
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "port": 6379,
+      "pscConfig": {
+        "network": "projects/${projectId}/global/networks/${networkID}"
+      }
+    }
+  ],
+  "effectiveMaintenanceVersion": "REDISCLUSTER_20260626_00_01",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "preciseSizeGb": 39,
+  "pscConnections": [
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "serverCaMode": 0,
+  "shardCount": 3,
+  "sizeGb": 39,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "zoneDistributionConfig": {
+    "mode": 1
+  }
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=clusterEndpoints
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "asyncClusterEndpointsDeletionEnabled": true,
+  "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.128.0.2",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.128.0.3",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/${networkID}"
+        }
+      }
+    ],
+    "effectiveMaintenanceVersion": "REDISCLUSTER_20260626_00_01",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+      },
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+      }
+    ],
+    "replicaCount": 0,
+    "satisfiesPzi": true,
+    "serverCaMode": "SERVER_CA_MODE_UNSPECIFIED",
+    "shardCount": 3,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
+    "uid": "0123456789abcdef",
+    "zoneDistributionConfig": {
+      "mode": "MULTI_ZONE"
+    }
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "ACCEPTED",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "deleteRegionPscForwardingRule",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "deleteRegionPscForwardingRule",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "status": "RESERVED",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPAddress": "8.8.8.8",
+  "allowPscGlobalAccess": true,
+  "attachedExtensions": [],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "pscConnectionId": "111111111111",
+  "pscConnectionStatus": "ACCEPTED",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "serviceDirectoryRegistrations": [
+    {
+      "namespace": "goog-psc-default"
+    }
+  ],
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/c4627bbcfdbb44378p-tp/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "deleteRegionPscForwardingRule",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "deleteRegionPscForwardingRule",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "networkTier": "PREMIUM",
+  "purpose": "GCE_ENDPOINT",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "status": "RESERVED",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.2",
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "address": "10.128.0.3",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "port": 6379,
+      "pscConfig": {
+        "network": "projects/${projectId}/global/networks/${networkID}"
+      }
+    }
+  ],
+  "effectiveMaintenanceVersion": "REDISCLUSTER_20260626_00_01",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "name": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "preciseSizeGb": 39,
+  "pscConnections": [
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "address": "10.11.12.13",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+      "network": "projects/${projectId}/global/networks/${networkID}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "pscServiceAttachments": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/281253491495/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-ec682f50002d4cb7-psc-sa-2"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "serverCaMode": 0,
+  "shardCount": 3,
+  "sizeGb": 39,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "zoneDistributionConfig": {
+    "mode": 1
+  }
+}
+
+---
+
+DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west4%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
