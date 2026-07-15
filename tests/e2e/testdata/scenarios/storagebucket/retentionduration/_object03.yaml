@@ -30,5 +30,6 @@ status:
     softDeletePolicy:
       effectiveTime: "1970-01-01T00:00:00Z"
       retentionDurationSeconds: 7776000
+    storageClass: STANDARD
   selfLink: https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}
   url: gs://bucket-${uniqueId}
