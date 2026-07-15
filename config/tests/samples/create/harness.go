@@ -1288,6 +1288,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "redis.cnrm.cloud.google.com", Kind: "RedisInstance"}:
 			case schema.GroupKind{Group: "redis.cnrm.cloud.google.com", Kind: "RedisCluster"}:
+			case schema.GroupKind{Group: "redis.cnrm.cloud.google.com", Kind: "RedisClusterEndpoint"}:
 
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Folder"}:
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Project"}:
