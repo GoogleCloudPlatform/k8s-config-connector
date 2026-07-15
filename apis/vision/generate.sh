@@ -28,6 +28,10 @@ go run . generate-types \
     --api-version vision.cnrm.cloud.google.com/v1alpha1 \
     --resource VisionProduct:Product
 
+go run . generate-mapper \
+    --service google.cloud.vision.v1 \
+    --api-version vision.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
