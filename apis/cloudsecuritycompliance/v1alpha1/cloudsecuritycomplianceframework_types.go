@@ -180,3 +180,17 @@ type CloudControlGroupObservedState struct {
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.type
 	Type *string `json:"type,omitempty"`
 }
+
+// +kcc:proto=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails
+type Framework_CloudControlGroupDetails struct {
+	// The cloud control group included in the framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails.cloud_control_group
+	CloudControlGroup *CloudControlGroup `json:"cloudControlGroup,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails
+type Framework_CloudControlGroupDetailsObservedState struct {
+	// The cloud control group included in the framework.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.Framework.CloudControlGroupDetails.cloud_control_group
+	CloudControlGroup *CloudControlGroupObservedState `json:"cloudControlGroup,omitempty"`
+}

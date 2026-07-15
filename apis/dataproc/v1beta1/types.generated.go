@@ -51,6 +51,32 @@ type AcceleratorConfig struct {
 }
 */
 
+/* unreachable type AttachedDiskConfig
+// +kcc:proto=google.cloud.dataproc.v1.AttachedDiskConfig
+type AttachedDiskConfig struct {
+	// Optional. Disk type.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Optional. Disk size in GB.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Optional. Indicates how many IOPS to provision for the attached disk. This
+	//  sets the number of I/O operations per second that the disk can handle. See
+	//  https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.provisioned_iops
+	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
+
+	// Optional. Indicates how much throughput to provision for the attached
+	//  disk. This sets the number of throughput mb per second that the disk can
+	//  handle. See
+	//  https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.provisioned_throughput
+	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.AutoscalingConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.AutoscalingConfig
@@ -101,6 +127,11 @@ type AutoscalingPolicy struct {
 	//  associated with an autoscaling policy.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.labels
 	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The type of the clusters for which this autoscaling policy is to
+	//  be configured.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingPolicy.cluster_type
+	ClusterType *string `json:"clusterType,omitempty"`
 }
 */
 
@@ -264,9 +295,17 @@ type Cluster struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.ClusterConfig
 type ClusterConfig struct {
+	// Optional. The type of the cluster.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.cluster_type
+	ClusterType *string `json:"clusterType,omitempty"`
+
 	// Optional. The cluster tier.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.cluster_tier
 	ClusterTier *string `json:"clusterTier,omitempty"`
+
+	// Optional. The cluster engine.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.engine
+	Engine *string `json:"engine,omitempty"`
 
 	// Optional. A Cloud Storage bucket used to stage job
 	//  dependencies, config files, and job driver console output.
@@ -396,10 +435,14 @@ type ClusterStatus struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.ConfidentialInstanceConfig
 type ConfidentialInstanceConfig struct {
-	// Optional. Defines whether the instance should have confidential compute
-	//  enabled.
+	// Optional. Deprecated: Use 'confidential_instance_type' instead.
+	//  Defines whether the instance should have confidential compute enabled.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ConfidentialInstanceConfig.enable_confidential_compute
 	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+
+	// Optional. Defines the type of Confidential Compute technology to use.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ConfidentialInstanceConfig.confidential_instance_type
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
 }
 */
 
@@ -462,10 +505,10 @@ type DataprocMetricConfig_Metric struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.DiskConfig
 type DiskConfig struct {
-	// Optional. Type of the boot disk (default is "pd-standard").
-	//  Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive),
-	//  "pd-ssd" (Persistent Disk Solid State Drive),
-	//  or "pd-standard" (Persistent Disk Hard Disk Drive).
+	// Optional. Type of the boot disk (default is `pd-standard`).
+	//  Valid values: `pd-balanced` (Persistent Disk Balanced Solid State Drive),
+	//  `pd-ssd` (Persistent Disk Solid State Drive),
+	//  or `pd-standard` (Persistent Disk Hard Disk Drive).
 	//  See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.boot_disk_type
 	BootDiskType *string `json:"bootDiskType,omitempty"`
@@ -486,26 +529,33 @@ type DiskConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.num_local_ssds
 	NumLocalSsds *int32 `json:"numLocalSsds,omitempty"`
 
-	// Optional. Interface type of local SSDs (default is "scsi").
-	//  Valid values: "scsi" (Small Computer System Interface),
-	//  "nvme" (Non-Volatile Memory Express).
+	// Optional. Interface type of local SSDs (default is `scsi`).
+	//  Valid values: `scsi` (Small Computer System Interface),
+	//  `nvme` (Non-Volatile Memory Express).
 	//  See [local SSD
 	//  performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.local_ssd_interface
 	LocalSsdInterface *string `json:"localSsdInterface,omitempty"`
 
 	// Optional. Indicates how many IOPS to provision for the disk. This sets the
-	//  number of I/O operations per second that the disk can handle. Note: This
-	//  field is only supported if boot_disk_type is hyperdisk-balanced.
+	//  number of I/O operations per second that the disk can handle.
+	//  **This field is supported only if
+	//  [boot_disk_type][google.cloud.dataproc.v1.DiskConfig.boot_disk_type] is
+	//  `hyperdisk-balanced`.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.boot_disk_provisioned_iops
 	BootDiskProvisionedIops *int64 `json:"bootDiskProvisionedIops,omitempty"`
 
 	// Optional. Indicates how much throughput to provision for the disk. This
 	//  sets the number of throughput mb per second that the disk can handle.
-	//  Values must be greater than or equal to 1. Note: This field is only
-	//  supported if boot_disk_type is hyperdisk-balanced.
+	//  Values must be greater than or equal to 1. **This field is supported only
+	//  if [boot_disk_type][google.cloud.dataproc.v1.DiskConfig.boot_disk_type] is
+	//  `hyperdisk-balanced`.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.boot_disk_provisioned_throughput
 	BootDiskProvisionedThroughput *int64 `json:"bootDiskProvisionedThroughput,omitempty"`
+
+	// Optional. A list of attached disk configs for a group of VM instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.attached_disk_configs
+	AttachedDiskConfigs []AttachedDiskConfig `json:"attachedDiskConfigs,omitempty"`
 }
 */
 
@@ -686,9 +736,16 @@ type GCEClusterConfig struct {
 	ShieldedInstanceConfig *ShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
 
 	// Optional. Confidential Instance Config for clusters using [Confidential
-	//  VMs](https://cloud.google.com/compute/confidential-vm/docs).
+	//  VMs](https://cloud.google.com/confidential-computing/confidential-vm/docs).
 	// +kcc:proto:field=google.cloud.dataproc.v1.GceClusterConfig.confidential_instance_config
 	ConfidentialInstanceConfig *ConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
+
+	// Optional. [Resource manager tags]
+	//  (https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing)
+	//  to add to all instances (see [Use secure tags]
+	//  (https://cloud.google.com/dataproc/docs/guides/use-secure-tags)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.GceClusterConfig.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
 */
 
@@ -789,7 +846,7 @@ type GKENodePoolConfig_GKENodeConfig struct {
 	//  (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek)
 	//  used to encrypt the boot disk attached to each node in the node pool.
 	//  Specify the key using the following format:
-	//  <code>projects/<var>KEY_PROJECT_ID</var>/locations/<var>LOCATION</var>/keyRings/<var>RING_NAME</var>/cryptoKeys/<var>KEY_NAME</var></code>.
+	//  `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig.boot_disk_kms_key
 	BootDiskKMSKey *string `json:"bootDiskKMSKey,omitempty"`
 
@@ -915,6 +972,13 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	//  priority have the same preference.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.rank
 	Rank *int32 `json:"rank,omitempty"`
+
+	// Optional. Disk configuration to apply to the instances in this instance
+	//  selection. If specified on any entry in instanceSelectionList, then it
+	//  must be specified on every entry in instanceSelectionList and the
+	//  instanceGroupConfig must not specify any diskConfig.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.disk_config
+	DiskConfig *DiskConfig `json:"diskConfig,omitempty"`
 }
 */
 
@@ -1278,6 +1342,28 @@ type LifecycleConfig struct {
 	//  [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
 	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.auto_delete_ttl
 	AutoDeleteTTL *string `json:"autoDeleteTTL,omitempty"`
+
+	// Optional. The duration to keep the cluster started while idling (when no
+	//  jobs are running). Passing this threshold will cause the cluster to be
+	//  stopped. Minimum value is 5 minutes; maximum value is 14 days (see JSON
+	//  representation of
+	//  [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.idle_stop_ttl
+	IdleStopTTL *string `json:"idleStopTTL,omitempty"`
+
+	// Optional. The time when cluster will be auto-stopped (see JSON
+	//  representation of
+	//  [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.auto_stop_time
+	AutoStopTime *string `json:"autoStopTime,omitempty"`
+
+	// Optional. The lifetime duration of the cluster. The cluster will be
+	//  auto-stopped at the end of this period, calculated from the time of
+	//  submission of the create or update cluster request. Minimum value is 10
+	//  minutes; maximum value is 14 days (see JSON representation of
+	//  [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.auto_stop_ttl
+	AutoStopTTL *string `json:"autoStopTTL,omitempty"`
 }
 */
 

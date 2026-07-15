@@ -214,6 +214,29 @@ type FirestoreFieldList struct {
 	Items           []FirestoreField `json:"items"`
 }
 
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField
+type Index_IndexField struct {
+	// Can be __name__.
+	//  For single field indexes, this must match the name of the field or may
+	//  be omitted.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.field_path
+	FieldPath *string `json:"fieldPath,omitempty"`
+
+	// Indicates that this field supports ordering by the specified order or
+	//  comparing using =, !=, <, <=, >, >=.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.order
+	Order *string `json:"order,omitempty"`
+
+	// Indicates that this field supports operations on `array_value`s.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.array_config
+	ArrayConfig *string `json:"arrayConfig,omitempty"`
+
+	// Indicates that this field supports nearest neighbor and distance
+	//  operations on vector.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.vector_config
+	VectorConfig *Index_IndexField_VectorConfig `json:"vectorConfig,omitempty"`
+}
+
 func init() {
 	SchemeBuilder.Register(&FirestoreField{}, &FirestoreFieldList{})
 }

@@ -50,7 +50,13 @@ func workstationFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".kms_key")
 	f.UnimplementedFields.Insert(".reconciling")
+	f.UnimplementedFields.Insert(".env")
+	f.UnimplementedFields.Insert(".persistent_directories")
+	f.UnimplementedFields.Insert(".persistent_directories[].mount_path")
+	f.UnimplementedFields.Insert(".runtime_host")
+	f.UnimplementedFields.Insert(".source_workstation")
 
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".annotations")

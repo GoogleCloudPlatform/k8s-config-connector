@@ -100,6 +100,7 @@ func containerNodePoolFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".config.linux_node_config.transparent_hugepage_defrag")
 	f.Unimplemented_NotYetTriaged(".config.linux_node_config.custom_node_init")
 	f.Unimplemented_NotYetTriaged(".config.accelerators")
+	f.Unimplemented_NotYetTriaged(".config.node_image_config")
 
 	// Unimplemented sub-fields in network_config
 	f.Unimplemented_NotYetTriaged(".network_config.accelerator_network_profile")

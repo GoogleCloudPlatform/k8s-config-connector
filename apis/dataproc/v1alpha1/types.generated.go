@@ -51,6 +51,32 @@ type AcceleratorConfig struct {
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 }
 
+/* unreachable type AttachedDiskConfig
+// +kcc:proto=google.cloud.dataproc.v1.AttachedDiskConfig
+type AttachedDiskConfig struct {
+	// Optional. Disk type.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Optional. Disk size in GB.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.disk_size_gb
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// Optional. Indicates how many IOPS to provision for the attached disk. This
+	//  sets the number of I/O operations per second that the disk can handle. See
+	//  https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.provisioned_iops
+	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
+
+	// Optional. Indicates how much throughput to provision for the attached
+	//  disk. This sets the number of throughput mb per second that the disk can
+	//  handle. See
+	//  https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features
+	// +kcc:proto:field=google.cloud.dataproc.v1.AttachedDiskConfig.provisioned_throughput
+	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
+}
+*/
+
 /* unreachable type AuthenticationConfig
 // +kcc:proto=google.cloud.dataproc.v1.AuthenticationConfig
 type AuthenticationConfig struct {
@@ -91,6 +117,10 @@ type Batch struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.spark_sql_batch
 	SparkSQLBatch *SparkSQLBatch `json:"sparkSQLBatch,omitempty"`
 
+	// Optional. PySpark notebook batch config.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.pyspark_notebook_batch
+	PysparkNotebookBatch *PySparkNotebookBatch `json:"pysparkNotebookBatch,omitempty"`
+
 	// Optional. The labels to associate with this batch.
 	//  Label **keys** must contain 1 to 63 characters, and must conform to
 	//  [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
@@ -122,10 +152,10 @@ type Batch_StateHistory struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.DiskConfig
 type DiskConfig struct {
-	// Optional. Type of the boot disk (default is "pd-standard").
-	//  Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive),
-	//  "pd-ssd" (Persistent Disk Solid State Drive),
-	//  or "pd-standard" (Persistent Disk Hard Disk Drive).
+	// Optional. Type of the boot disk (default is `pd-standard`).
+	//  Valid values: `pd-balanced` (Persistent Disk Balanced Solid State Drive),
+	//  `pd-ssd` (Persistent Disk Solid State Drive),
+	//  or `pd-standard` (Persistent Disk Hard Disk Drive).
 	//  See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.boot_disk_type
 	BootDiskType *string `json:"bootDiskType,omitempty"`
@@ -146,26 +176,33 @@ type DiskConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.num_local_ssds
 	NumLocalSsds *int32 `json:"numLocalSsds,omitempty"`
 
-	// Optional. Interface type of local SSDs (default is "scsi").
-	//  Valid values: "scsi" (Small Computer System Interface),
-	//  "nvme" (Non-Volatile Memory Express).
+	// Optional. Interface type of local SSDs (default is `scsi`).
+	//  Valid values: `scsi` (Small Computer System Interface),
+	//  `nvme` (Non-Volatile Memory Express).
 	//  See [local SSD
 	//  performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.local_ssd_interface
 	LocalSsdInterface *string `json:"localSsdInterface,omitempty"`
 
 	// Optional. Indicates how many IOPS to provision for the disk. This sets the
-	//  number of I/O operations per second that the disk can handle. Note: This
-	//  field is only supported if boot_disk_type is hyperdisk-balanced.
+	//  number of I/O operations per second that the disk can handle.
+	//  **This field is supported only if
+	//  [boot_disk_type][google.cloud.dataproc.v1.DiskConfig.boot_disk_type] is
+	//  `hyperdisk-balanced`.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.boot_disk_provisioned_iops
 	BootDiskProvisionedIops *int64 `json:"bootDiskProvisionedIops,omitempty"`
 
 	// Optional. Indicates how much throughput to provision for the disk. This
 	//  sets the number of throughput mb per second that the disk can handle.
-	//  Values must be greater than or equal to 1. Note: This field is only
-	//  supported if boot_disk_type is hyperdisk-balanced.
+	//  Values must be greater than or equal to 1. **This field is supported only
+	//  if [boot_disk_type][google.cloud.dataproc.v1.DiskConfig.boot_disk_type] is
+	//  `hyperdisk-balanced`.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.boot_disk_provisioned_throughput
 	BootDiskProvisionedThroughput *int64 `json:"bootDiskProvisionedThroughput,omitempty"`
+
+	// Optional. A list of attached disk configs for a group of VM instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.attached_disk_configs
+	AttachedDiskConfigs []AttachedDiskConfig `json:"attachedDiskConfigs,omitempty"`
 }
 */
 
@@ -268,6 +305,15 @@ type ExecutionConfig struct {
 	//  resources on the project(s).
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.authentication_config
 	AuthenticationConfig *AuthenticationConfig `json:"authenticationConfig,omitempty"`
+
+	// Optional. Associates Resource Manager tags with the workload nodes.
+	//  There is a max limit of 30 tags.
+	//  Keys and values can be either in numeric format, such as
+	//  `tagKeys/{tag_key_id}` and `tagValues/{tag_value_id}`, or in namespaced
+	//  format, such as `{org_id|project_id}/{tag_key_short_name}` and
+	//  `{tag_value_short_name}`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
 */
 
@@ -419,6 +465,8 @@ type InstanceFlexibilityPolicy struct {
 	InstanceSelectionList []InstanceFlexibilityPolicy_InstanceSelection `json:"instanceSelectionList,omitempty"`
 }
 
+/* found existing non-generated go type "InstanceFlexibilityPolicy_InstanceSelection", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection
 type InstanceFlexibilityPolicy_InstanceSelection struct {
 	// Optional. Full machine-type names, e.g. "n1-standard-16".
@@ -432,7 +480,15 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	//  priority have the same preference.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.rank
 	Rank *int32 `json:"rank,omitempty"`
+
+	// Optional. Disk configuration to apply to the instances in this instance
+	//  selection. If specified on any entry in instanceSelectionList, then it
+	//  must be specified on every entry in instanceSelectionList and the
+	//  instanceGroupConfig must not specify any diskConfig.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.disk_config
+	DiskConfig *DiskConfig `json:"diskConfig,omitempty"`
 }
+*/
 
 /* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
@@ -896,7 +952,8 @@ type PrestoJob struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.PyPiRepositoryConfig
 type PyPiRepositoryConfig struct {
-	// Optional. PyPi repository address
+	// Optional. The PyPi repository address. **Note: This field is not available
+	//  for batch workloads.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.PyPiRepositoryConfig.pypi_repository
 	PypiRepository *string `json:"pypiRepository,omitempty"`
 }
@@ -989,6 +1046,38 @@ type PySparkJob struct {
 }
 */
 
+/* unreachable type PySparkNotebookBatch
+// +kcc:proto=google.cloud.dataproc.v1.PySparkNotebookBatch
+type PySparkNotebookBatch struct {
+	// Required. The HCFS URI of the notebook file to execute.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkNotebookBatch.notebook_file_uri
+	NotebookFileURI *string `json:"notebookFileURI,omitempty"`
+
+	// Optional. The parameters to pass to the notebook.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkNotebookBatch.params
+	Params map[string]string `json:"params,omitempty"`
+
+	// Optional. HCFS URIs of Python files to pass to the PySpark framework.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkNotebookBatch.python_file_uris
+	PythonFileUris []string `json:"pythonFileUris,omitempty"`
+
+	// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkNotebookBatch.jar_file_uris
+	JarFileUris []string `json:"jarFileUris,omitempty"`
+
+	// Optional. HCFS URIs of files to be placed in the working directory of
+	//  each executor
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkNotebookBatch.file_uris
+	FileUris []string `json:"fileUris,omitempty"`
+
+	// Optional. HCFS URIs of archives to be extracted into the working directory
+	//  of each executor. Supported file types:
+	//  `.jar`, `.tar`, `.tar.gz`, `.tgz`, and `.zip`.
+	// +kcc:proto:field=google.cloud.dataproc.v1.PySparkNotebookBatch.archive_uris
+	ArchiveUris []string `json:"archiveUris,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "QueryList", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.QueryList
@@ -1048,8 +1137,8 @@ type RuntimeConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.autotuning_config
 	AutotuningConfig *AutotuningConfig `json:"autotuningConfig,omitempty"`
 
-	// Optional. Cohort identifier. Identifies families of the workloads having
-	//  the same shape, e.g. daily ETL jobs.
+	// Optional. Cohort identifier. Identifies families of the workloads that have
+	//  the same shape, for example, daily ETL jobs.
 	// +kcc:proto:field=google.cloud.dataproc.v1.RuntimeConfig.cohort
 	Cohort *string `json:"cohort,omitempty"`
 }
@@ -1066,7 +1155,7 @@ type RuntimeInfo struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.Session
 type Session struct {
-	// Required. The resource name of the session.
+	// Identifier. The resource name of the session.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.name
 	Name *string `json:"name,omitempty"`
 
@@ -1074,7 +1163,7 @@ type Session struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.jupyter_session
 	JupyterSession *JupyterConfig `json:"jupyterSession,omitempty"`
 
-	// Optional. Spark Connect session config.
+	// Optional. Spark connect session config.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Session.spark_connect_session
 	SparkConnectSession *SparkConnectConfig `json:"sparkConnectSession,omitempty"`
 
@@ -1126,7 +1215,7 @@ type Session_SessionStateHistory struct {
 
 // +kcc:proto=google.cloud.dataproc.v1.SessionTemplate
 type SessionTemplate struct {
-	// Required. The resource name of the session template.
+	// Required. Identifier. The resource name of the session template.
 	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.name
 	Name *string `json:"name,omitempty"`
 
@@ -1138,7 +1227,7 @@ type SessionTemplate struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.jupyter_session
 	JupyterSession *JupyterConfig `json:"jupyterSession,omitempty"`
 
-	// Optional. Spark Connect session config.
+	// Optional. Spark connect session config.
 	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.spark_connect_session
 	SparkConnectSession *SparkConnectConfig `json:"sparkConnectSession,omitempty"`
 
@@ -1457,15 +1546,19 @@ type UsageMetrics struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.shuffle_storage_gb_seconds
 	ShuffleStorageGBSeconds *int64 `json:"shuffleStorageGBSeconds,omitempty"`
 
-	// Optional. Accelerator usage in (`milliAccelerator` x `seconds`) (see
-	//  [Dataproc Serverless pricing]
+	// Optional. [DEPRECATED] Accelerator usage in (`milliAccelerator` x
+	//  `seconds`) (see [Dataproc Serverless pricing]
 	//  (https://cloud.google.com/dataproc-serverless/pricing)).
 	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.milli_accelerator_seconds
 	MilliAcceleratorSeconds *int64 `json:"milliAcceleratorSeconds,omitempty"`
 
-	// Optional. Accelerator type being used, if any
+	// Optional. [DEPRECATED] Accelerator type being used, if any
 	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.accelerator_type
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// Optional. The timestamp of the usage metrics.
+	// +kcc:proto:field=google.cloud.dataproc.v1.UsageMetrics.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 
@@ -1533,6 +1626,16 @@ type YarnApplication struct {
 	//  possibly, access.
 	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.tracking_url
 	TrackingURL *string `json:"trackingURL,omitempty"`
+
+	// Optional. The cumulative CPU time consumed by the application for a job,
+	//  measured in vcore-seconds.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.vcore_seconds
+	VcoreSeconds *int64 `json:"vcoreSeconds,omitempty"`
+
+	// Optional. The cumulative memory usage of the application for a job,
+	//  measured in mb-seconds.
+	// +kcc:proto:field=google.cloud.dataproc.v1.YarnApplication.memory_mb_seconds
+	MemoryMbSeconds *int64 `json:"memoryMbSeconds,omitempty"`
 }
 */
 

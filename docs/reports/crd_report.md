@@ -8,6 +8,7 @@
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerGCPUserAccessBinding        | True         | False       | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeterResource    | True         | True        | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | True        |
+| agentregistry.cnrm.cloud.google.com           | AgentRegistryService                            | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com              | AIPlatformModel                                 | True         | False       | False  | Direct     | True        |
 | aistreams.cnrm.cloud.google.com               | AIStreamsCluster                                | True         | False       | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBBackup                                   | True         | True        | False  | Terraform  | True        |

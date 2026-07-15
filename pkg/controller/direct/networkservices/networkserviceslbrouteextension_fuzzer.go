@@ -46,6 +46,10 @@ func lbRouteExtensionFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_LabelsAnnotations(".labels")
 
 	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].service")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].request_body_send_mode")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].response_body_send_mode")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].observability_mode")
+	f.Unimplemented_NotYetTriaged(".extension_chains[].extensions[].forward_attributes")
 
 	return f
 }

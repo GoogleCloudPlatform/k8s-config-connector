@@ -73,7 +73,7 @@ type AspecttypeArrayItems struct {
 }
 
 type AspecttypeAuthorization struct {
-	/* Immutable. The IAM permission grantable on the EntryGroup to allow access to instantiate Aspects of Dataplex owned AspectTypes, only settable for Dataplex owned Types. */
+	/* Immutable. The IAM permission grantable on the EntryGroup to allow access to instantiate Aspects of Dataplex Universal Catalog owned AspectTypes, only settable for Dataplex Universal Catalog owned Types. */
 	// +optional
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }

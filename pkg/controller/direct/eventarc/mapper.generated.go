@@ -38,6 +38,7 @@ func EventarcChannelConnectionObservedState_FromProto(mapCtx *direct.MapContext,
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	return out
 }
 func EventarcChannelConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelConnectionObservedState) *pb.ChannelConnection {
@@ -49,6 +50,7 @@ func EventarcChannelConnectionObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
 	return out
 }
 func EventarcChannelConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ChannelConnection) *krm.EventarcChannelConnectionSpec {
@@ -61,6 +63,7 @@ func EventarcChannelConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.C
 		out.ChannelRef = &krm.ChannelRef{External: in.GetChannel()}
 	}
 	out.ActivationToken = direct.LazyPtr(in.GetActivationToken())
+	// MISSING: Labels
 	return out
 }
 func EventarcChannelConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelConnectionSpec) *pb.ChannelConnection {
@@ -73,6 +76,7 @@ func EventarcChannelConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ev
 		out.Channel = in.ChannelRef.External
 	}
 	out.ActivationToken = direct.ValueOf(in.ActivationToken)
+	// MISSING: Labels
 	return out
 }
 func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *krm.EventarcChannelObservedState {
@@ -89,6 +93,7 @@ func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ch
 	out.ActivationToken = direct.LazyPtr(in.GetActivationToken())
 	// MISSING: CryptoKeyName
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	// MISSING: Labels
 	return out
 }
 func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelObservedState) *pb.Channel {
@@ -107,6 +112,7 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.ActivationToken = direct.ValueOf(in.ActivationToken)
 	// MISSING: CryptoKeyName
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	// MISSING: Labels
 	return out
 }
 
@@ -130,6 +136,7 @@ func EventarcChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *k
 		out.ProviderRef = &krmconnectorv1.ProviderRef{External: in.GetProvider()}
 	}
 	// MISSING: CryptoKeyName
+	// MISSING: Labels
 	return out
 }
 */
@@ -147,6 +154,7 @@ found existing non-generated mapping function "EventarcChannelSpec_ToProto", ski
 			out.Provider = in.ProviderRef.External
 		}
 		// MISSING: CryptoKeyName
+		// MISSING: Labels
 		return out
 	}
 */
@@ -234,6 +242,8 @@ func EventarcGoogleAPISourceObservedState_FromProto(mapCtx *direct.MapContext, i
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Destination
 	// MISSING: CryptoKeyName
+	// MISSING: OrganizationSubscription
+	// MISSING: ProjectSubscriptions
 	return out
 }
 func EventarcGoogleAPISourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleAPISourceObservedState) *pb.GoogleApiSource {
@@ -248,6 +258,8 @@ func EventarcGoogleAPISourceObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Destination
 	// MISSING: CryptoKeyName
+	// MISSING: OrganizationSubscription
+	// MISSING: ProjectSubscriptions
 	return out
 }
 
@@ -264,6 +276,8 @@ func EventarcGoogleAPISourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Goo
 	// MISSING: Destination
 	// MISSING: CryptoKeyName
 	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	// MISSING: OrganizationSubscription
+	// MISSING: ProjectSubscriptions
 	return out
 }
 */
@@ -283,6 +297,8 @@ found existing non-generated mapping function "EventarcGoogleAPISourceSpec_ToPro
 		// MISSING: Destination
 		// MISSING: CryptoKeyName
 		out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+		// MISSING: OrganizationSubscription
+		// MISSING: ProjectSubscriptions
 		return out
 	}
 */
@@ -294,6 +310,7 @@ func EventarcGoogleChannelConfigObservedState_FromProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: CryptoKeyName
+	// MISSING: Labels
 	return out
 }
 func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleChannelConfigObservedState) *pb.GoogleChannelConfig {
@@ -304,6 +321,7 @@ func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: CryptoKeyName
+	// MISSING: Labels
 	return out
 }
 
@@ -315,6 +333,7 @@ func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krm.EventarcGoogleChannelConfigSpec{}
 	// MISSING: Name
 	// MISSING: CryptoKeyName
+	// MISSING: Labels
 	return out
 }
 */
@@ -327,6 +346,7 @@ func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.GoogleChannelConfig{}
 	// MISSING: Name
 	// MISSING: CryptoKeyName
+	// MISSING: Labels
 	return out
 }
 */

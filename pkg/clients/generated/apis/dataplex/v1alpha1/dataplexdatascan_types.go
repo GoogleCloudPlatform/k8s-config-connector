@@ -97,6 +97,10 @@ type DatascanDataDiscoverySpec struct {
 }
 
 type DatascanDataProfileSpec struct {
+	/* Optional. If set, the latest DataScan job result will be published as Dataplex Universal Catalog metadata. */
+	// +optional
+	CatalogPublishingEnabled *bool `json:"catalogPublishingEnabled,omitempty"`
+
 	/* Optional. The fields to exclude from data profile.
 
 	If specified, the fields will be excluded from data profile, regardless of
@@ -111,16 +115,15 @@ type DatascanDataProfileSpec struct {
 	// +optional
 	IncludeFields *DatascanIncludeFields `json:"includeFields,omitempty"`
 
+	/* Optional. The execution mode for the profile scan. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
 	/* Optional. Actions to take upon job completion.. */
 	// +optional
 	PostScanActions *DatascanPostScanActions `json:"postScanActions,omitempty"`
 
-	/* Optional. A filter applied to all rows in a single DataScan job.
-	The filter needs to be a valid SQL expression for a [WHERE clause in
-	GoogleSQL
-	syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause).
-
-	Example: col1 >= 0 AND col2 < 10 */
+	/* Optional. A filter applied to all rows in a single DataScan job. The filter needs to be a valid SQL expression for a WHERE clause in BigQuery standard SQL syntax. Example: col1 >= 0 AND col2 < 10 */
 	// +optional
 	RowFilter *string `json:"rowFilter,omitempty"`
 
@@ -136,6 +139,18 @@ type DatascanDataProfileSpec struct {
 }
 
 type DatascanDataQualitySpec struct {
+	/* Optional. If set, the latest DataScan job result will be published as Dataplex Universal Catalog metadata. */
+	// +optional
+	CatalogPublishingEnabled *bool `json:"catalogPublishingEnabled,omitempty"`
+
+	/* Optional. If enabled, the data scan will retrieve rules defined in the dataplex-types.global.data-rules aspect on all paths of the catalog entry corresponding to the BigQuery table resource and all attached glossary terms. The path that data-rules aspect is attached on the table entry defines the column that the rule will be evaluated against. For glossary terms, the path that the terms are attached on the table entry defines the column that the rule will be evaluated against. At the start of scan execution, the rules reflect the latest state retrieved from the catalog entry and any updates on the rules thereafter are ignored for that execution. The updates will be reflected from the next execution. Rules defined in the datascan must be empty if this field is enabled. */
+	// +optional
+	EnableCatalogBasedRules *bool `json:"enableCatalogBasedRules,omitempty"`
+
+	/* Optional. Filter for selectively running a subset of rules. You can filter the request by the name or attribute key-value pairs defined on the rule. If not specified, all rules are run. The filter is applicable to both, the rules retrieved from catalog and explicitly defined rules in the scan. Please see [filter syntax](https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview#rule-filtering) for more details. */
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
 	/* Optional. Actions to take upon job completion. */
 	// +optional
 	PostScanActions *DatascanPostScanActions `json:"postScanActions,omitempty"`
@@ -162,6 +177,18 @@ type DatascanDataQualitySpec struct {
 	100. */
 	// +optional
 	SamplingPercent *float64 `json:"samplingPercent,omitempty"`
+}
+
+type DatascanDebugQueries struct {
+	/* Optional. Specifies the description of the debug query.
+
+	* The maximum length is 1,024 characters. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Required. Specifies the SQL statement to be executed. */
+	// +optional
+	SqlStatement *string `json:"sqlStatement,omitempty"`
 }
 
 type DatascanExcludeFields struct {
@@ -244,6 +271,12 @@ type DatascanNotificationReport struct {
 type DatascanOnDemand struct {
 }
 
+type DatascanOneTime struct {
+	/* Optional. Time to live for OneTime scans. default value is 24 hours, minimum value is 0 seconds, and maximum value is 365 days. The time is calculated from the data scan job completion time. If value is set as 0 seconds, the scan will be immediately deleted upon job completion, regardless of whether the job succeeded or failed. */
+	// +optional
+	TtlAfterScanCompletion *string `json:"ttlAfterScanCompletion,omitempty"`
+}
+
 type DatascanPostScanActions struct {
 	/* Optional. If set, results will be exported to the provided BigQuery table. */
 	// +optional
@@ -297,9 +330,17 @@ type DatascanRowConditionExpectation struct {
 }
 
 type DatascanRules struct {
+	/* Optional. Map of attribute name and value linked to the rule. The rules to evaluate can be filtered based on attributes provided here and a filter expression provided in the DataQualitySpec.filter field. */
+	// +optional
+	Attributes map[string]string `json:"attributes,omitempty"`
+
 	/* Optional. The unnested column which this rule is evaluated against. */
 	// +optional
 	Column *string `json:"column,omitempty"`
+
+	/* Optional. Specifies the debug queries for this rule. Currently, only one query is supported, but this may be expanded in the future. */
+	// +optional
+	DebugQueries []DatascanDebugQueries `json:"debugQueries,omitempty"`
 
 	/* Optional. Description of the rule.
 
@@ -307,7 +348,7 @@ type DatascanRules struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Required. The dimension a rule belongs to. Results are also aggregated at the dimension level. Supported dimensions are **["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS", "FRESHNESS", "VOLUME"]** */
+	/* Optional. The dimension a rule belongs to. Results are also aggregated at the dimension level. Custom dimension name is supported with all uppercase letters and maximum length of 30 characters. */
 	// +optional
 	Dimension *string `json:"dimension,omitempty"`
 
@@ -369,6 +410,10 @@ type DatascanRules struct {
 	/* Aggregate rule which evaluates whether the provided expression is true for a table. */
 	// +optional
 	TableConditionExpectation *DatascanTableConditionExpectation `json:"tableConditionExpectation,omitempty"`
+
+	/* Aggregate rule which references a rule template and provides the parameters to be substituted in the template. If any rows are returned, this rule fails. */
+	// +optional
+	TemplateReference *DatascanTemplateReference `json:"templateReference,omitempty"`
 
 	/* Optional. The minimum ratio of **passing_rows / total_rows** required to
 	pass this rule, with a range of [0.0, 1.0].
@@ -469,6 +514,10 @@ type DatascanStorageConfig struct {
 	/* Optional. Configuration for JSON data. */
 	// +optional
 	JsonOptions *DatascanJsonOptions `json:"jsonOptions,omitempty"`
+
+	/* Optional. Specifies configuration for unstructured data discovery. */
+	// +optional
+	UnstructuredDataOptions *DatascanUnstructuredDataOptions `json:"unstructuredDataOptions,omitempty"`
 }
 
 type DatascanTableConditionExpectation struct {
@@ -477,10 +526,20 @@ type DatascanTableConditionExpectation struct {
 	SqlExpression *string `json:"sqlExpression,omitempty"`
 }
 
+type DatascanTemplateReference struct {
+	/* Required. The template entry name. Entry must be of EntryType `projects/dataplex-types/locations/global/entryTypes/data-quality-rule-template` and contains top-level aspect of AspectType `projects/dataplex-types/locations/global/aspectTypes/data-quality-rule-template`. The format is: `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}` */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type DatascanTrigger struct {
 	/* The scan runs once via `RunDataScan` API. */
 	// +optional
 	OnDemand *DatascanOnDemand `json:"onDemand,omitempty"`
+
+	/* The scan runs once, and does not create an associated ScanJob child resource. */
+	// +optional
+	OneTime *DatascanOneTime `json:"oneTime,omitempty"`
 
 	/* The scan is scheduled to run periodically. */
 	// +optional
@@ -488,6 +547,12 @@ type DatascanTrigger struct {
 }
 
 type DatascanUniquenessExpectation struct {
+}
+
+type DatascanUnstructuredDataOptions struct {
+	/* Optional. Specifies whether deeper semantic inference over the objects' contents using GenAI is enabled. */
+	// +optional
+	SemanticInferenceEnabled *bool `json:"semanticInferenceEnabled,omitempty"`
 }
 
 type DataplexDataScanSpec struct {
@@ -539,7 +604,31 @@ type DataplexDataScanSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type DatascanAnomalyDetectionGeneratedAssetsStatus struct {
+	/* Output only. The intermediate table for data anomaly detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID */
+	// +optional
+	DataIntermediateTable *string `json:"dataIntermediateTable,omitempty"`
+
+	/* Output only. The intermediate table for freshness anomaly detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID */
+	// +optional
+	FreshnessIntermediateTable *string `json:"freshnessIntermediateTable,omitempty"`
+
+	/* Output only. The result table for anomaly detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID If the result table is set at AnomalyDetectionAssets, the result table here would be the same as the one set in the AnomalyDetectionAssets.result_table. */
+	// +optional
+	ResultTable *string `json:"resultTable,omitempty"`
+
+	/* Output only. The intermediate table for volume anomaly detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID */
+	// +optional
+	VolumeIntermediateTable *string `json:"volumeIntermediateTable,omitempty"`
+}
+
 type DatascanBigqueryPublishingStatus struct {
+}
+
+type DatascanCatalogPublishingStatusStatus struct {
+	/* Output only. Execution state for publishing. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type DatascanColumnsStatus struct {
@@ -556,24 +645,36 @@ type DatascanDataDiscoveryResultStatus struct {
 }
 
 type DatascanDataProfileResultStatus struct {
+	/* Output only. The status of publishing the data scan as Dataplex Universal Catalog metadata. */
+	// +optional
+	CatalogPublishingStatus *DatascanCatalogPublishingStatusStatus `json:"catalogPublishingStatus,omitempty"`
+
 	/* Output only. The result of post scan actions. */
 	// +optional
 	PostScanActionsResult *DatascanPostScanActionsResultStatus `json:"postScanActionsResult,omitempty"`
 
-	/* The profile information per field. */
+	/* Output only. The profile information per field. */
 	// +optional
 	Profile *DatascanProfileStatus `json:"profile,omitempty"`
 
-	/* The count of rows scanned. */
+	/* Output only. The count of rows scanned. */
 	// +optional
 	RowCount *int64 `json:"rowCount,omitempty"`
 
-	/* The data scanned for this result. */
+	/* Output only. The data scanned for this result. */
 	// +optional
 	ScannedData *DatascanScannedDataStatus `json:"scannedData,omitempty"`
 }
 
 type DatascanDataQualityResultStatus struct {
+	/* Output only. The generated assets for anomaly detection. */
+	// +optional
+	AnomalyDetectionGeneratedAssets *DatascanAnomalyDetectionGeneratedAssetsStatus `json:"anomalyDetectionGeneratedAssets,omitempty"`
+
+	/* Output only. The status of publishing the data scan as Dataplex Universal Catalog metadata. */
+	// +optional
+	CatalogPublishingStatus *DatascanCatalogPublishingStatusStatus `json:"catalogPublishingStatus,omitempty"`
+
 	/* Output only. A list of results at the column level.
 
 	A column will have a corresponding `DataQualityColumnResult` if and only if
@@ -619,23 +720,23 @@ type DatascanDimensionsStatus struct {
 }
 
 type DatascanDoubleProfileStatus struct {
-	/* Average of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Average of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	Average *float64 `json:"average,omitempty"`
 
-	/* Maximum of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Maximum of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	Max *float64 `json:"max,omitempty"`
 
-	/* Minimum of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Minimum of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	Min *float64 `json:"min,omitempty"`
 
-	/* A quartile divides the number of data points into four parts, or quarters, of more-or-less equal size. Three main quartiles used are: The first quartile (Q1) splits off the lowest 25% of data from the highest 75%. It is also known as the lower or 25th empirical quartile, as 25% of the data is below this point. The second quartile (Q2) is the median of a data set. So, 50% of the data lies below this point. The third quartile (Q3) splits off the highest 25% of data from the lowest 75%. It is known as the upper or 75th empirical quartile, as 75% of the data lies below this point. Here, the quartiles is provided as an ordered list of quartile values for the scanned data, occurring in order Q1, median, Q3. */
+	/* Output only. A quartile divides the number of data points into four parts, or quarters, of more-or-less equal size. Three main quartiles used are: The first quartile (Q1) splits off the lowest 25% of data from the highest 75%. It is also known as the lower or 25th empirical quartile, as 25% of the data is below this point. The second quartile (Q2) is the median of a data set. So, 50% of the data lies below this point. The third quartile (Q3) splits off the highest 25% of data from the lowest 75%. It is known as the upper or 75th empirical quartile, as 75% of the data lies below this point. Here, the quartiles is provided as an ordered list of quartile values for the scanned data, occurring in order Q1, median, Q3. */
 	// +optional
 	Quartiles []float64 `json:"quartiles,omitempty"`
 
-	/* Standard deviation of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Standard deviation of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	StandardDeviation *float64 `json:"standardDeviation,omitempty"`
 }
@@ -655,7 +756,7 @@ type DatascanExecutionStatusStatus struct {
 }
 
 type DatascanFieldsStatus struct {
-	/* The mode of the field. Possible values include:
+	/* Output only. The mode of the field. Possible values include:
 
 	* REQUIRED, if it is a required field.
 	* NULLABLE, if it is an optional field.
@@ -663,51 +764,51 @@ type DatascanFieldsStatus struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/* The name of the field. */
+	/* Output only. The name of the field. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* Profile information for the corresponding field. */
+	/* Output only. Profile information for the corresponding field. */
 	// +optional
 	Profile *DatascanProfileStatus `json:"profile,omitempty"`
 
-	/* The data type retrieved from the schema of the data source. For instance, for a BigQuery native table, it is the [BigQuery Table Schema](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema). For a Dataplex Entity, it is the [Entity Schema](https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3). */
+	/* Output only. The data type retrieved from the schema of the data source. For instance, for a BigQuery native table, it is the [BigQuery Table Schema](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema). For a Dataplex Universal Catalog Entity, it is the [Entity Schema](https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3). */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
 
 type DatascanIncrementalFieldStatus struct {
-	/* Value that marks the end of the range. */
+	/* Output only. Value that marks the end of the range. */
 	// +optional
 	End *string `json:"end,omitempty"`
 
-	/* The field that contains values which monotonically increases over time (e.g. a timestamp column). */
+	/* Output only. The field that contains values which monotonically increases over time (e.g. a timestamp column). */
 	// +optional
 	Field *string `json:"field,omitempty"`
 
-	/* Value that marks the start of the range. */
+	/* Output only. Value that marks the start of the range. */
 	// +optional
 	Start *string `json:"start,omitempty"`
 }
 
 type DatascanIntegerProfileStatus struct {
-	/* Average of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Average of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	Average *float64 `json:"average,omitempty"`
 
-	/* Maximum of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Maximum of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	Max *int64 `json:"max,omitempty"`
 
-	/* Minimum of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Minimum of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	Min *int64 `json:"min,omitempty"`
 
-	/* A quartile divides the number of data points into four parts, or quarters, of more-or-less equal size. Three main quartiles used are: The first quartile (Q1) splits off the lowest 25% of data from the highest 75%. It is also known as the lower or 25th empirical quartile, as 25% of the data is below this point. The second quartile (Q2) is the median of a data set. So, 50% of the data lies below this point. The third quartile (Q3) splits off the highest 25% of data from the lowest 75%. It is known as the upper or 75th empirical quartile, as 75% of the data lies below this point. Here, the quartiles is provided as an ordered list of approximate quartile values for the scanned data, occurring in order Q1, median, Q3. */
+	/* Output only. A quartile divides the number of data points into four parts, or quarters, of more-or-less equal size. Three main quartiles used are: The first quartile (Q1) splits off the lowest 25% of data from the highest 75%. It is also known as the lower or 25th empirical quartile, as 25% of the data is below this point. The second quartile (Q2) is the median of a data set. So, 50% of the data lies below this point. The third quartile (Q3) splits off the highest 25% of data from the lowest 75%. It is known as the upper or 75th empirical quartile, as 75% of the data lies below this point. Here, the quartiles is provided as an ordered list of approximate quartile values for the scanned data, occurring in order Q1, median, Q3. */
 	// +optional
 	Quartiles []int64 `json:"quartiles,omitempty"`
 
-	/* Standard deviation of non-null values in the scanned data. NaN, if the field has a NaN. */
+	/* Output only. Standard deviation of non-null values in the scanned data. NaN, if the field has a NaN. */
 	// +optional
 	StandardDeviation *float64 `json:"standardDeviation,omitempty"`
 }
@@ -754,7 +855,7 @@ type DatascanPostScanActionsResultStatus struct {
 }
 
 type DatascanProfileStatus struct {
-	/* Ratio of rows with distinct values against total scanned rows. Not available for complex non-groupable field type, including RECORD, ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode. */
+	/* Output only. Ratio of rows with distinct values against total scanned rows. Not available for complex non-groupable field type, including RECORD, ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode. */
 	// +optional
 	DistinctRatio *float64 `json:"distinctRatio,omitempty"`
 
@@ -766,7 +867,7 @@ type DatascanProfileStatus struct {
 	// +optional
 	IntegerProfile *DatascanIntegerProfileStatus `json:"integerProfile,omitempty"`
 
-	/* Ratio of rows with null value against total scanned rows. */
+	/* Output only. Ratio of rows with null value against total scanned rows. */
 	// +optional
 	NullRatio *float64 `json:"nullRatio,omitempty"`
 
@@ -774,7 +875,7 @@ type DatascanProfileStatus struct {
 	// +optional
 	StringProfile *DatascanStringProfileStatus `json:"stringProfile,omitempty"`
 
-	/* The list of top N non-null values, frequency and ratio with which they occur in the scanned data. N is 10 or equal to the number of distinct values in the field, whichever is smaller. Not available for complex non-groupable field type, including RECORD, ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode. */
+	/* Output only. The list of top N non-null values, frequency and ratio with which they occur in the scanned data. N is 10 or equal to the number of distinct values in the field, whichever is smaller. Not available for complex non-groupable field type, including RECORD, ARRAY, GEOGRAPHY, and JSON, as well as fields with REPEATABLE mode. */
 	// +optional
 	TopNValues []DatascanTopNValuesStatus `json:"topNValues,omitempty"`
 }
@@ -827,29 +928,29 @@ type DatascanScannedDataStatus struct {
 }
 
 type DatascanStringProfileStatus struct {
-	/* Average length of non-null values in the scanned data. */
+	/* Output only. Average length of non-null values in the scanned data. */
 	// +optional
 	AverageLength *float64 `json:"averageLength,omitempty"`
 
-	/* Maximum length of non-null values in the scanned data. */
+	/* Output only. Maximum length of non-null values in the scanned data. */
 	// +optional
 	MaxLength *int64 `json:"maxLength,omitempty"`
 
-	/* Minimum length of non-null values in the scanned data. */
+	/* Output only. Minimum length of non-null values in the scanned data. */
 	// +optional
 	MinLength *int64 `json:"minLength,omitempty"`
 }
 
 type DatascanTopNValuesStatus struct {
-	/* Count of the corresponding value in the scanned data. */
+	/* Output only. Count of the corresponding value in the scanned data. */
 	// +optional
 	Count *int64 `json:"count,omitempty"`
 
-	/* Ratio of the corresponding value in the field against the total number of rows in the scanned data. */
+	/* Output only. Ratio of the corresponding value in the field against the total number of rows in the scanned data. */
 	// +optional
 	Ratio *float64 `json:"ratio,omitempty"`
 
-	/* String value of a top N non-null value. */
+	/* Output only. String value of a top N non-null value. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }

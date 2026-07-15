@@ -68,6 +68,7 @@ func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {
 	// Unimplemented and Not Yet Triaged fields in GCP proto
 	f.Unimplemented_NotYetTriaged(".private_config.psc_allowed_projects")
 	f.Unimplemented_NotYetTriaged(".workforce_identity_federation_config")
+	f.Unimplemented_NotYetTriaged(".private_config.custom_host_config")
 
 	return f
 }

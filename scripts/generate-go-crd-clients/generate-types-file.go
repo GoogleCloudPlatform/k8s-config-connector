@@ -401,7 +401,7 @@ func getAdditionalPropertiesFromDescription(d fielddesc.FieldDescription, r *res
 
 func organizeStatusFieldDescriptions(descriptions []fielddesc.FieldDescription, r *resourceDefinition) {
 	for _, d := range descriptions {
-		if d.ShortName == "conditions" {
+		if strings.Join(d.FullName, ".") == "status.conditions" {
 			continue // not defined in types file
 		}
 		if d.ShortName == "[]" {

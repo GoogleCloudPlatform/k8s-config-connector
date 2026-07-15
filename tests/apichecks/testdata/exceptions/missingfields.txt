@@ -2156,6 +2156,8 @@
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.allowedDomainsSettings.enable" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.gcipSettings.loginPageURI" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.gcipSettings.tenantIDs[]" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.clientID" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.clientSecret" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.loginHint" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.programmaticClients[]" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef" is not set; neither 'external' nor 'name' are set
@@ -3233,6 +3235,7 @@
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.httpGet.httpHeaders[].value" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.initialDelaySeconds" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.tcpSocket.port" is not set in unstructured objects
+[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].volumeMounts[].subPath" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].workingDir" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.executionEnvironment" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.maxRetries" is not set in unstructured objects

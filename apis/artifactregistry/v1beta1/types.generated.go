@@ -488,7 +488,7 @@ type RepositoryObservedState struct {
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.size_bytes
 	SizeBytes *int64 `json:"sizeBytes,omitempty"`
 
-	// Output only. If set, the repository satisfies physical zone separation.
+	// Output only. Whether or not this repository satisfies PZS.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.satisfies_pzs
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
 
@@ -497,7 +497,7 @@ type RepositoryObservedState struct {
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.vulnerability_scanning_config
 	VulnerabilityScanningConfig *Repository_VulnerabilityScanningConfigObservedState `json:"vulnerabilityScanningConfig,omitempty"`
 
-	// Output only. If set, the repository satisfies physical zone isolation.
+	// Output only. Whether or not this repository satisfies PZI.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 

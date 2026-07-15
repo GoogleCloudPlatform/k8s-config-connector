@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type SecuritysettingsAudioExportSettings struct {
-	/* Filename pattern for exported audio. */
+	/* Filename pattern for exported audio. {conversation} and {timestamp} are placeholders that will be replaced with the conversation ID and epoch micros of the conversation. For example, "{conversation}/recording_{timestamp}.mulaw". */
 	// +optional
 	AudioExportPattern *string `json:"audioExportPattern,omitempty"`
 

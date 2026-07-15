@@ -1381,6 +1381,11 @@ func (in *WorkerpoolVolumeMounts) DeepCopyInto(out *WorkerpoolVolumeMounts) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.SubPath != nil {
+		in, out := &in.SubPath, &out.SubPath
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
