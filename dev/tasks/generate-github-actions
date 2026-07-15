@@ -69,11 +69,6 @@ jobs_array=()
 for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
 
-    # Skip tests-e2e-fixtures-cloudsecuritycompliance as we don't need CI for it as of now
-    if [[ "${name}" == "tests-e2e-fixtures-cloudsecuritycompliance" ]]; then
-        continue
-    fi
-
     # Skip crd-equivalence-check here, we generate it as a separate workflow
     if [[ "${name}" == "crd-equivalence-check" ]]; then
         continue
