@@ -16,9 +16,13 @@ package mockcontainer
 
 import (
 	"context"
+	"net/url"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"k8s.io/klog/v2"
 )
 
@@ -87,4 +91,22 @@ func getAPIVersion(ctx context.Context) string {
 func buildSelfLink(ctx context.Context, fqn string) string {
 	version := getAPIVersion(ctx)
 	return "https://container.googleapis.com/" + version + "/" + fqn
+}
+
+// checkInvalidOSVersion checks the request context metadata for a query parameter
+// indicating that the client sent "OS_2022" which is rejected with 400 Bad Request by real GKE.
+func checkInvalidOSVersion(ctx context.Context) error {
+	md, _ := metadata.FromIncomingContext(ctx)
+	if md != nil {
+		values := md.Get(httpmux.MetadataKeyHttpRequestQuery)
+		if len(values) > 0 {
+			q, err := url.ParseQuery(values[0])
+			if err == nil {
+				if q.Get("mockgcp-invalid-os-version") == "OS_2022" {
+					return status.Errorf(codes.InvalidArgument, "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"")
+				}
+			}
+		}
+	}
+	return nil
 }
