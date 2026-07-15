@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: gkebackup.cnrm.cloud.google.com
+  kind: GKEBackupBackupChannel
+  name: gkebackupbackupchannel-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
