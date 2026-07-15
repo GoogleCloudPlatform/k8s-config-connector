@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(DataformFolder{}).Name(),
 	}
 
+	DataformTeamFolderGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DataformTeamFolder{}).Name(),
+	}
+
 	dataformAPIVersion = SchemeGroupVersion.String()
 )
