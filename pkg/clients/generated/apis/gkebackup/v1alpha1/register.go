@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(GKEBackupBackup{}).Name(),
 	}
 
+	GKEBackupBackupChannelGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(GKEBackupBackupChannel{}).Name(),
+	}
+
 	GKEBackupBackupPlanGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

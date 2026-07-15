@@ -347,6 +347,7 @@
 | firestore.cnrm.cloud.google.com               | FirestoreIndex                                  | False        | True        | False  | Terraform  | True        |
 | resourcemanager.cnrm.cloud.google.com         | Folder                                          | False        | True        | False  | Terraform  | True        |
 | geminidataanalytics.cnrm.cloud.google.com     | GeminiDataAnalyticsConversation                 | True         | False       | False  | Direct     | True        |
+| gkebackup.cnrm.cloud.google.com               | GKEBackupBackupChannel                          | True         | False       | False  | Direct     | True        |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupBackupPlan                             | True         | False       | False  | Direct     | True        |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupBackup                                 | True         | False       | False  | Direct     | True        |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupRestorePlan                            | True         | False       | False  | Direct     | True        |
