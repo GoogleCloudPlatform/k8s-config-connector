@@ -24,10 +24,6 @@
 
 package v1beta1
 
-import (
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-)
-
 /* unreachable type AiInference
 // +kcc:proto=google.pubsub.v1.AIInference
 type AiInference struct {
