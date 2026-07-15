@@ -29,5 +29,11 @@ go run . generate-types \
   --resource DeviceStreamingSession:DeviceSession \
   --skip-scaffold-files
 
+go run . generate-mapper \
+  --service google.cloud.devicestreaming.v1 \
+  --api-version devicestreaming.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/devicestreaming/

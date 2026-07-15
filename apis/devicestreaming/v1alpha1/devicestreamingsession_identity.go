@@ -42,6 +42,10 @@ func (i *DeviceStreamingSessionIdentity) String() string {
 	return DeviceStreamingSessionIdentityFormat.ToString(*i)
 }
 
+func (i *DeviceStreamingSessionIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
 func (i *DeviceStreamingSessionIdentity) FromExternal(ref string) error {
 	parsed, match, err := DeviceStreamingSessionIdentityFormat.Parse(ref)
 	if err != nil {

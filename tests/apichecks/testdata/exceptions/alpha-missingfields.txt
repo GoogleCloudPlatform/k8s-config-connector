@@ -2062,13 +2062,9 @@
 [missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].uri" is not set in unstructured objects
 [missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.androidModelID" is not set in unstructured objects
-[missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.androidVersionID" is not set in unstructured objects
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.locale" is not set in unstructured objects
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.orientation" is not set in unstructured objects
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
-[missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.ttl" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiVersion" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.avatarUri" is not set in unstructured objects
 [missing_field] crd=dialogflowagents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.classificationThreshold" is not set in unstructured objects

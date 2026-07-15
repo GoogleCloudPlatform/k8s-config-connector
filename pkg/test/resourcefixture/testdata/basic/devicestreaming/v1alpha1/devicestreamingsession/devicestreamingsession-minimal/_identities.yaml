@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: devicestreaming.cnrm.cloud.google.com
+  kind: DeviceStreamingSession
+  name: devicestreamingsession-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

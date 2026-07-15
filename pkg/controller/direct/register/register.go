@@ -72,6 +72,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc/dataprocsessiontemplate"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/devicestreaming/session"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/siptrunk"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dlp"
