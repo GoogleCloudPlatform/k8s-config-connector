@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+COMPARISON_REF="origin/master"
+if [[ -n "${GITHUB_BASE_REF:-}" ]]; then
+  COMPARISON_REF="origin/${GITHUB_BASE_REF}"
+fi
+
+CHANGED_FILES=$(git diff --name-only ${COMPARISON_REF}...HEAD || git diff --name-only HEAD~1 || true)
+echo "Changed files detected:"
+echo "${CHANGED_FILES}"
+
+services=()
+for file in ${CHANGED_FILES}; do
+  if [[ "${file}" == apis/* ]]; then
+    dir="${file#apis/}"
+    service="${dir%%/*}"
+    services+=("${service}")
+  elif [[ "${file}" == pkg/controller/direct/* ]]; then
+    dir="${file#pkg/controller/direct/}"
+    service="${dir%%/*}"
+    services+=("${service}")
+  elif [[ "${file}" == pkg/test/resourcefixture/testdata/basic/* ]]; then
+    dir="${file#pkg/test/resourcefixture/testdata/basic/}"
+    service="${dir%%/*}"
+    services+=("${service}")
+  elif [[ "${file}" == pkg/clients/generated/apis/* ]]; then
+    dir="${file#pkg/clients/generated/apis/}"
+    service="${dir%%/*}"
+    services+=("${service}")
+  fi
+done
+
+unique_services=($(echo "${services[@]:-}" | tr ' ' '\n' | sort -u | grep -v '^$' || true))
+
+priority_fixtures=()
+for service in "${unique_services[@]}"; do
+  script="dev/ci/presubmits/tests-e2e-fixtures-${service}"
+  if [[ -f "${script}" ]]; then
+    priority_fixtures+=("${service}")
+  fi
+done
+
+remaining_fixtures=()
+for f in $(find dev/ci/presubmits -name "tests-e2e-fixtures-*" -type f | sort); do
+  name=$(basename "${f}")
+  service="${name#tests-e2e-fixtures-}"
+  if [[ " ${priority_fixtures[*]:-} " =~ " ${service} " ]]; then
+    echo "Service ${service} marked for priority upfront verification."
+  else
+    remaining_fixtures+=("${service}")
+  fi
+done
+
+# Discover all sample suites
+sample_services=()
+for f in $(find dev/ci/presubmits -name "tests-e2e-samples-*" -type f | sort); do
+  name=$(basename "${f}")
+  sample_services+=("${name#tests-e2e-samples-}")
+done
+
+# Discover all scenario suites
+scenario_suites=()
+for f in $(find dev/ci/presubmits -name "tests-scenarios-*" -type f | sort); do
+  name=$(basename "${f}")
+  scenario_suites+=("${name#tests-scenarios-}")
+done
+
+HAS_PRIORITY="false"
+if [[ ${#priority_fixtures[@]} -gt 0 ]]; then
+  HAS_PRIORITY="true"
+  PRIORITY_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${priority_fixtures[@]}")
+else
+  # Pass a dummy element so fromJSON() evaluation in GHA doesn't error out on empty arrays when condition is false
+  PRIORITY_JSON='["none"]'
+fi
+
+REMAINING_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${remaining_fixtures[@]}")
+SAMPLES_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${sample_services[@]}")
+SCENARIOS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${scenario_suites[@]}")
+
+echo "has_priority_tests=${HAS_PRIORITY}"
+echo "priority_fixtures_json=${PRIORITY_JSON}"
+echo "remaining_fixtures_json=${REMAINING_JSON}"
+echo "samples_json=${SAMPLES_JSON}"
+echo "scenarios_json=${SCENARIOS_JSON}"
+
+if [[ -n "${GITHUB_OUTPUT:-}" && -f "${GITHUB_OUTPUT}" ]]; then
+  echo "has_priority_tests=${HAS_PRIORITY}" >> "${GITHUB_OUTPUT}"
+  echo "priority_fixtures_json=${PRIORITY_JSON}" >> "${GITHUB_OUTPUT}"
+  echo "remaining_fixtures_json=${REMAINING_JSON}" >> "${GITHUB_OUTPUT}"
+  echo "samples_json=${SAMPLES_JSON}" >> "${GITHUB_OUTPUT}"
+  echo "scenarios_json=${SCENARIOS_JSON}" >> "${GITHUB_OUTPUT}"
+fi
