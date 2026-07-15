@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storagecontrol/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -33,7 +34,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -55,7 +55,9 @@ type modelManagedFolder struct {
 	config config.ControllerConfig
 }
 
-func (m *modelManagedFolder) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelManagedFolder) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.StorageManagedFolder{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -119,7 +121,7 @@ func (m *modelManagedFolder) AdapterForURL(ctx context.Context, url string) (dir
 	}
 
 	// Call AdapterForObject with the dynamically created object.
-	return m.AdapterForObject(ctx, nil, u)
+	return m.AdapterForObject(ctx, &directbase.AdapterForObjectOperation{Object: u})
 }
 
 type ManagedFolderAdapter struct {
@@ -224,7 +226,7 @@ func (a *ManagedFolderAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	}
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.StorageBucketRef = &refs.StorageBucketRef{External: a.id.Parent().BucketName}
+	obj.Spec.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: a.id.Parent().BucketName}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

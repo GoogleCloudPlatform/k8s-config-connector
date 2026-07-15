@@ -22,6 +22,7 @@ package storagecontrol
 import (
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storagecontrol/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -37,7 +38,7 @@ func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Manage
 			mapCtx.Errorf("Error while parsing name %s %w", in.GetName(), err)
 		}
 		out.ProjectRef = &refs.ProjectRef{External: parent.ProjectID}
-		out.StorageBucketRef = &refs.StorageBucketRef{External: parent.String()}
+		out.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: parent.String()}
 		out.ResourceID = &resourceID
 	}
 	return out
