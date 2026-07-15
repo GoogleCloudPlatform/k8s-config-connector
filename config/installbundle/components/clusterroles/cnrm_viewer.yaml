@@ -935,6 +935,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - parallelstore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - parametermanager.cnrm.cloud.google.com
   resources:
   - '*'

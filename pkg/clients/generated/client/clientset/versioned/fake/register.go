@@ -177,6 +177,7 @@ import (
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1alpha1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1beta1"
 	osloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/oslogin/v1alpha1"
+	parallelstorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/parallelstore/v1alpha1"
 	parametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/parametermanager/v1alpha1"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privateca/v1beta1"
 	privilegedaccessmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privilegedaccessmanager/v1beta1"
@@ -391,6 +392,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	osconfigv1alpha1.AddToScheme,
 	osconfigv1beta1.AddToScheme,
 	osloginv1alpha1.AddToScheme,
+	parallelstorev1alpha1.AddToScheme,
 	parametermanagerv1alpha1.AddToScheme,
 	privatecav1beta1.AddToScheme,
 	privilegedaccessmanagerv1beta1.AddToScheme,

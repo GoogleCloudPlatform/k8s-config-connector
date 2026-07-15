@@ -475,6 +475,7 @@
 | osconfig.cnrm.cloud.google.com                | OSConfigOSPolicyAssignment                      | False        | True        | False  | DCL        | True        |
 | osconfig.cnrm.cloud.google.com                | OSConfigPatchDeployment                         | True         | False       | False  | Terraform  | False       |
 | oslogin.cnrm.cloud.google.com                 | OSLoginSSHPublicKey                             | True         | False       | False  | Terraform  | False       |
+| parallelstore.cnrm.cloud.google.com           | ParallelstoreInstance                           | True         | False       | False  | Direct     | True        |
 | parametermanager.cnrm.cloud.google.com        | ParameterManagerParameter                       | True         | False       | False  | Direct     | True        |
 | parametermanager.cnrm.cloud.google.com        | ParameterManagerParameterVersion                | True         | False       | False  | Direct     | True        |
 | privateca.cnrm.cloud.google.com               | PrivateCACAPool                                 | False        | True        | False  | DCL        | True        |
