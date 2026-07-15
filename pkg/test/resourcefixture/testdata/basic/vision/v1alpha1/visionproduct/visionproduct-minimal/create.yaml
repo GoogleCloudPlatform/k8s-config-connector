@@ -1,0 +1,10 @@
+apiVersion: vision.cnrm.cloud.google.com/v1alpha1
+kind: VisionProduct
+metadata:
+  name: visionproduct-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
+  displayName: "Minimal Vision Product"
+  productCategory: homegoods-v2
