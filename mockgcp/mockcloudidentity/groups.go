@@ -25,7 +25,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 )
@@ -73,39 +72,9 @@ func (s *groupsServer) CreateGroup(ctx context.Context, req *pb.CreateGroupReque
 
 	obj.AdditionalGroupKeys = append(obj.AdditionalGroupKeys, obj.GroupKey)
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	// Terraform client is _very_ fussy about format here
-	// (to the point of being arguably broken)
-	// return s.operations.DoneLRO(ctx, "", lro, obj)
-
-	// additionalGroupKeys are not populated in the LRO
-	retObj := proto.CloneOf(obj)
-	retObj.AdditionalGroupKeys = nil
-	go func() {
-		// realGCP adds the additional key very quickly(under 1s)
-		// Set a short wait time to match realGCP log
-		time.Sleep(10 * time.Millisecond)
-		if err := s.addAdditionalGroupKeys(context.Background(), name); err != nil {
-			klog.Fatalf("error adding additionalGroupKeys: %v", err)
-		}
-	}()
-	return buildLRO(retObj)
-}
-
-func (s *groupsServer) addAdditionalGroupKeys(ctx context.Context, name *groupName) error {
-	fqn := name.String()
-
-	obj := &pb.Group{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return err
-	}
-
+	// Add the .test-google-a.com additionalGroupKey which is auto-added by the service synchronously.
+	// This prevents race conditions where the subsequent GET gets executed before the background async update.
 	addAdditionalGroup(obj, obj.GroupKey)
-
-	// Add a test-google-a.com additionalGroupKey which is auto-added by the service.
 	for _, groupKey := range obj.AdditionalGroupKeys {
 		id := groupKey.GetId()
 		if strings.HasSuffix(id, ".test-google-a.com") {
@@ -117,11 +86,18 @@ func (s *groupsServer) addAdditionalGroupKeys(ctx context.Context, name *groupNa
 		addAdditionalGroup(obj, newGroup)
 	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return err
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
 	}
 
-	return nil
+	// Terraform client is _very_ fussy about format here
+	// (to the point of being arguably broken)
+	// return s.operations.DoneLRO(ctx, "", lro, obj)
+
+	// additionalGroupKeys are not populated in the LRO
+	retObj := proto.CloneOf(obj)
+	retObj.AdditionalGroupKeys = nil
+	return buildLRO(retObj)
 }
 
 // addAdditionalGroup adds a group to additionalGroups, unless it is already found.
