@@ -28,6 +28,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ClusterManagerV1 struct {
@@ -49,6 +50,19 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 			return nil, status.Errorf(codes.NotFound, "Not found: %s.", AsZonalLink(fqn))
 		}
 		return nil, err
+	}
+
+	nodePoolPrefix := fqn + "/nodePools/"
+	var nodePools []*pb.NodePool
+	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	if len(nodePools) > 0 {
+		obj.NodePools = nodePools
 	}
 
 	return obj, nil
