@@ -271,6 +271,7 @@ Content-Type: application/json
       "tcpEstablishedIdleTimeoutSec": 1200,
       "tcpTimeWaitTimeoutSec": 120,
       "tcpTransitoryIdleTimeoutSec": 30,
+      "type": "PUBLIC",
       "udpIdleTimeoutSec": 30
     }
   ]

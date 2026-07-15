@@ -20,8 +20,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-// RouternatLogConfig_v1beta1_FromProto maps a pb.RouterNatLogConfig to a krm.RouternatLogConfig
-func RouternatLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatLogConfig) *krm.RouternatLogConfig {
+// RouternatLogConfig_FromProto maps a pb.RouterNatLogConfig to a krm.RouternatLogConfig
+func RouternatLogConfig_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatLogConfig) *krm.RouternatLogConfig {
 	if in == nil {
 		return nil
 	}
@@ -31,8 +31,8 @@ func RouternatLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Rout
 	return out
 }
 
-// RouternatLogConfig_v1beta1_ToProto maps a krm.RouternatLogConfig to a pb.RouterNatLogConfig
-func RouternatLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatLogConfig) *pb.RouterNatLogConfig {
+// RouternatLogConfig_ToProto maps a krm.RouternatLogConfig to a pb.RouterNatLogConfig
+func RouternatLogConfig_ToProto(mapCtx *direct.MapContext, in *krm.RouternatLogConfig) *pb.RouterNatLogConfig {
 	if in == nil {
 		return nil
 	}
@@ -44,8 +44,8 @@ func RouternatLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Route
 	return out
 }
 
-// RouternatAction_v1beta1_FromProto maps a pb.RouterNatRuleAction to a krm.RouternatAction
-func RouternatAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRuleAction) *krm.RouternatAction {
+// RouternatAction_FromProto maps a pb.RouterNatRuleAction to a krm.RouternatAction
+func RouternatAction_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRuleAction) *krm.RouternatAction {
 	if in == nil {
 		return nil
 	}
@@ -56,11 +56,17 @@ func RouternatAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterN
 	for _, ip := range in.SourceNatDrainIps {
 		out.SourceNatDrainIpsRefs = append(out.SourceNatDrainIpsRefs, krm.ComputeAddressRef{External: ip})
 	}
+	for _, r := range in.SourceNatActiveRanges {
+		out.SourceNatActiveRangesRefs = append(out.SourceNatActiveRangesRefs, krm.ComputeSubnetworkRef{External: r})
+	}
+	for _, r := range in.SourceNatDrainRanges {
+		out.SourceNatDrainRangesRefs = append(out.SourceNatDrainRangesRefs, krm.ComputeSubnetworkRef{External: r})
+	}
 	return out
 }
 
-// RouternatAction_v1beta1_ToProto maps a krm.RouternatAction to a pb.RouterNatRuleAction
-func RouternatAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatAction) *pb.RouterNatRuleAction {
+// RouternatAction_ToProto maps a krm.RouternatAction to a pb.RouterNatRuleAction
+func RouternatAction_ToProto(mapCtx *direct.MapContext, in *krm.RouternatAction) *pb.RouterNatRuleAction {
 	if in == nil {
 		return nil
 	}
@@ -75,16 +81,26 @@ func RouternatAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Routerna
 			out.SourceNatDrainIps = append(out.SourceNatDrainIps, ref.External)
 		}
 	}
+	for _, ref := range in.SourceNatActiveRangesRefs {
+		if ref.External != "" {
+			out.SourceNatActiveRanges = append(out.SourceNatActiveRanges, ref.External)
+		}
+	}
+	for _, ref := range in.SourceNatDrainRangesRefs {
+		if ref.External != "" {
+			out.SourceNatDrainRanges = append(out.SourceNatDrainRanges, ref.External)
+		}
+	}
 	return out
 }
 
-// RouternatRules_v1beta1_FromProto maps a pb.RouterNatRule to a krm.RouternatRules
-func RouternatRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRule) *krm.RouternatRules {
+// RouternatRules_FromProto maps a pb.RouterNatRule to a krm.RouternatRules
+func RouternatRules_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRule) *krm.RouternatRules {
 	if in == nil {
 		return nil
 	}
 	out := &krm.RouternatRules{}
-	out.Action = RouternatAction_v1beta1_FromProto(mapCtx, in.Action)
+	out.Action = RouternatAction_FromProto(mapCtx, in.Action)
 	out.Description = in.Description
 	out.Match = direct.ValueOf(in.Match)
 	if in.RuleNumber != nil {
@@ -93,13 +109,13 @@ func RouternatRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNa
 	return out
 }
 
-// RouternatRules_v1beta1_ToProto maps a krm.RouternatRules to a pb.RouterNatRule
-func RouternatRules_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatRules) *pb.RouterNatRule {
+// RouternatRules_ToProto maps a krm.RouternatRules to a pb.RouterNatRule
+func RouternatRules_ToProto(mapCtx *direct.MapContext, in *krm.RouternatRules) *pb.RouterNatRule {
 	if in == nil {
 		return nil
 	}
 	out := &pb.RouterNatRule{}
-	out.Action = RouternatAction_v1beta1_ToProto(mapCtx, in.Action)
+	out.Action = RouternatAction_ToProto(mapCtx, in.Action)
 	out.Description = in.Description
 	if in.Match != "" {
 		out.Match = direct.LazyPtr(in.Match)
@@ -111,8 +127,8 @@ func RouternatRules_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Routernat
 	return out
 }
 
-// RouternatSubnetwork_v1beta1_FromProto maps a pb.RouterNatSubnetworkToNat to a krm.RouternatSubnetwork
-func RouternatSubnetwork_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatSubnetworkToNat) *krm.RouternatSubnetwork {
+// RouternatSubnetwork_FromProto maps a pb.RouterNatSubnetworkToNat to a krm.RouternatSubnetwork
+func RouternatSubnetwork_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatSubnetworkToNat) *krm.RouternatSubnetwork {
 	if in == nil {
 		return nil
 	}
@@ -125,8 +141,8 @@ func RouternatSubnetwork_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Rou
 	return out
 }
 
-// RouternatSubnetwork_v1beta1_ToProto maps a krm.RouternatSubnetwork to a pb.RouterNatSubnetworkToNat
-func RouternatSubnetwork_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatSubnetwork) *pb.RouterNatSubnetworkToNat {
+// RouternatSubnetwork_ToProto maps a krm.RouternatSubnetwork to a pb.RouterNatSubnetworkToNat
+func RouternatSubnetwork_ToProto(mapCtx *direct.MapContext, in *krm.RouternatSubnetwork) *pb.RouterNatSubnetworkToNat {
 	if in == nil {
 		return nil
 	}
@@ -139,8 +155,8 @@ func RouternatSubnetwork_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Rout
 	return out
 }
 
-// ComputeRouterNATSpec_v1beta1_FromProto maps a pb.RouterNat to a krm.ComputeRouterNATSpec
-func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat) *krm.ComputeRouterNATSpec {
+// ComputeRouterNATSpec_FromProto maps a pb.RouterNat to a krm.ComputeRouterNATSpec
+func ComputeRouterNATSpec_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat) *krm.ComputeRouterNATSpec {
 	if in == nil {
 		return nil
 	}
@@ -154,7 +170,7 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 		val := int64(*in.IcmpIdleTimeoutSec)
 		out.IcmpIdleTimeoutSec = &val
 	}
-	out.LogConfig = RouternatLogConfig_v1beta1_FromProto(mapCtx, in.LogConfig)
+	out.LogConfig = RouternatLogConfig_FromProto(mapCtx, in.LogConfig)
 	if in.MaxPortsPerVm != nil {
 		val := int64(*in.MaxPortsPerVm)
 		out.MaxPortsPerVm = &val
@@ -167,9 +183,9 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 	for _, ip := range in.NatIps {
 		out.NatIps = append(out.NatIps, krm.ComputeAddressRef{External: ip})
 	}
-	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, RouternatRules_v1beta1_FromProto)
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, RouternatRules_FromProto)
 	out.SourceSubnetworkIpRangesToNat = direct.ValueOf(in.SourceSubnetworkIpRangesToNat)
-	out.Subnetwork = direct.Slice_FromProto(mapCtx, in.Subnetworks, RouternatSubnetwork_v1beta1_FromProto)
+	out.Subnetwork = direct.Slice_FromProto(mapCtx, in.Subnetworks, RouternatSubnetwork_FromProto)
 	if in.TcpEstablishedIdleTimeoutSec != nil {
 		val := int64(*in.TcpEstablishedIdleTimeoutSec)
 		out.TcpEstablishedIdleTimeoutSec = &val
@@ -186,11 +202,13 @@ func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Ro
 		val := int64(*in.UdpIdleTimeoutSec)
 		out.UdpIdleTimeoutSec = &val
 	}
+	out.Type = in.Type
+	out.EndpointTypes = in.EndpointTypes
 	return out
 }
 
-// ComputeRouterNATSpec_v1beta1_ToProto maps a krm.ComputeRouterNATSpec to a pb.RouterNat
-func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterNATSpec) *pb.RouterNat {
+// ComputeRouterNATSpec_ToProto maps a krm.ComputeRouterNATSpec to a pb.RouterNat
+func ComputeRouterNATSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterNATSpec) *pb.RouterNat {
 	if in == nil {
 		return nil
 	}
@@ -206,7 +224,7 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 		val32 := int32(*in.IcmpIdleTimeoutSec)
 		out.IcmpIdleTimeoutSec = &val32
 	}
-	out.LogConfig = RouternatLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
+	out.LogConfig = RouternatLogConfig_ToProto(mapCtx, in.LogConfig)
 	if in.MaxPortsPerVm != nil {
 		val32 := int32(*in.MaxPortsPerVm)
 		out.MaxPortsPerVm = &val32
@@ -223,11 +241,11 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 			out.NatIps = append(out.NatIps, ref.External)
 		}
 	}
-	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, RouternatRules_v1beta1_ToProto)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, RouternatRules_ToProto)
 	if in.SourceSubnetworkIpRangesToNat != "" {
 		out.SourceSubnetworkIpRangesToNat = direct.LazyPtr(in.SourceSubnetworkIpRangesToNat)
 	}
-	out.Subnetworks = direct.Slice_ToProto(mapCtx, in.Subnetwork, RouternatSubnetwork_v1beta1_ToProto)
+	out.Subnetworks = direct.Slice_ToProto(mapCtx, in.Subnetwork, RouternatSubnetwork_ToProto)
 	if in.TcpEstablishedIdleTimeoutSec != nil {
 		val32 := int32(*in.TcpEstablishedIdleTimeoutSec)
 		out.TcpEstablishedIdleTimeoutSec = &val32
@@ -244,5 +262,38 @@ func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Com
 		val32 := int32(*in.UdpIdleTimeoutSec)
 		out.UdpIdleTimeoutSec = &val32
 	}
+	out.Type = in.Type
+	out.EndpointTypes = in.EndpointTypes
 	return out
+}
+
+func RouternatLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatLogConfig) *krm.RouternatLogConfig {
+	return RouternatLogConfig_FromProto(mapCtx, in)
+}
+func RouternatLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatLogConfig) *pb.RouterNatLogConfig {
+	return RouternatLogConfig_ToProto(mapCtx, in)
+}
+func RouternatAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRuleAction) *krm.RouternatAction {
+	return RouternatAction_FromProto(mapCtx, in)
+}
+func RouternatAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatAction) *pb.RouterNatRuleAction {
+	return RouternatAction_ToProto(mapCtx, in)
+}
+func RouternatRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatRule) *krm.RouternatRules {
+	return RouternatRules_FromProto(mapCtx, in)
+}
+func RouternatRules_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatRules) *pb.RouterNatRule {
+	return RouternatRules_ToProto(mapCtx, in)
+}
+func RouternatSubnetwork_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNatSubnetworkToNat) *krm.RouternatSubnetwork {
+	return RouternatSubnetwork_FromProto(mapCtx, in)
+}
+func RouternatSubnetwork_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RouternatSubnetwork) *pb.RouterNatSubnetworkToNat {
+	return RouternatSubnetwork_ToProto(mapCtx, in)
+}
+func ComputeRouterNATSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat) *krm.ComputeRouterNATSpec {
+	return ComputeRouterNATSpec_FromProto(mapCtx, in)
+}
+func ComputeRouterNATSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRouterNATSpec) *pb.RouterNat {
+	return ComputeRouterNATSpec_ToProto(mapCtx, in)
 }
