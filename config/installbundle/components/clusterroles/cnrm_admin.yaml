@@ -1016,6 +1016,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - financialservices.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - firebase.cnrm.cloud.google.com
   resources:
   - '*'
