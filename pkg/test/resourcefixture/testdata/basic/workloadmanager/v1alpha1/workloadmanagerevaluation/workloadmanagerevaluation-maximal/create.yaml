@@ -1,0 +1,21 @@
+apiVersion: workloadmanager.cnrm.cloud.google.com/v1alpha1
+kind: WorkloadManagerEvaluation
+metadata:
+  name: workloadmanagerevaluation-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  evaluationType: SQL_SERVER
+  description: "Maximal WorkloadManager Evaluation"
+  schedule: "0 */1 * * *"
+  labels:
+    env: test-env
+  resourceFilter:
+    scopeRefs:
+      - projectRef:
+          external: projects/${projectId}
+    resourceIDPatterns:
+      - ".*sql.*"
+    inclusionLabels:
+      env: prod
