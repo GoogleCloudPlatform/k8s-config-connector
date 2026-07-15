@@ -52,7 +52,10 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterGroupsServerServer(grpcServer, &groupsServer{MockService: s})
+	pb.RegisterGroupsServerServer(grpcServer, &groupsServer{
+		MockService: s,
+		getCalls:    make(map[string]int),
+	})
 	pb.RegisterGroupsMembershipsServerServer(grpcServer, &groupsMembershipsServer{MockService: s})
 }
 

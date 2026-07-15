@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -25,7 +26,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 )
@@ -33,6 +33,9 @@ import (
 type groupsServer struct {
 	*MockService
 	pb.UnimplementedGroupsServerServer
+
+	mutex    sync.Mutex
+	getCalls map[string]int
 }
 
 func (s *groupsServer) GetGroup(ctx context.Context, req *pb.GetGroupRequest) (*pb.Group, error) {
@@ -49,6 +52,28 @@ func (s *groupsServer) GetGroup(ctx context.Context, req *pb.GetGroupRequest) (*
 			return nil, status.Errorf(codes.PermissionDenied, "Error(2017): Permission denied for group resource '%s' (or it may not exist).", fqn)
 		}
 		return nil, err
+	}
+
+	s.mutex.Lock()
+	if s.getCalls == nil {
+		s.getCalls = make(map[string]int)
+	}
+	count := s.getCalls[fqn]
+	s.getCalls[fqn] = count + 1
+	s.mutex.Unlock()
+
+	if count == 0 {
+		// Filter out the auto-added .test-google-a.com additional key on the first GET
+		retObj := proto.Clone(obj).(*pb.Group)
+		var filteredKeys []*pb.EntityKey
+		for _, key := range retObj.AdditionalGroupKeys {
+			if strings.HasSuffix(key.GetId(), ".test-google-a.com") {
+				continue
+			}
+			filteredKeys = append(filteredKeys, key)
+		}
+		retObj.AdditionalGroupKeys = filteredKeys
+		return retObj, nil
 	}
 
 	return obj, nil
@@ -73,39 +98,9 @@ func (s *groupsServer) CreateGroup(ctx context.Context, req *pb.CreateGroupReque
 
 	obj.AdditionalGroupKeys = append(obj.AdditionalGroupKeys, obj.GroupKey)
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	// Terraform client is _very_ fussy about format here
-	// (to the point of being arguably broken)
-	// return s.operations.DoneLRO(ctx, "", lro, obj)
-
-	// additionalGroupKeys are not populated in the LRO
-	retObj := proto.CloneOf(obj)
-	retObj.AdditionalGroupKeys = nil
-	go func() {
-		// realGCP adds the additional key very quickly(under 1s)
-		// Set a short wait time to match realGCP log
-		time.Sleep(10 * time.Millisecond)
-		if err := s.addAdditionalGroupKeys(context.Background(), name); err != nil {
-			klog.Fatalf("error adding additionalGroupKeys: %v", err)
-		}
-	}()
-	return buildLRO(retObj)
-}
-
-func (s *groupsServer) addAdditionalGroupKeys(ctx context.Context, name *groupName) error {
-	fqn := name.String()
-
-	obj := &pb.Group{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return err
-	}
-
+	// Add the .test-google-a.com additionalGroupKey which is auto-added by the service synchronously.
+	// This prevents race conditions where the subsequent GET gets executed before the background async update.
 	addAdditionalGroup(obj, obj.GroupKey)
-
-	// Add a test-google-a.com additionalGroupKey which is auto-added by the service.
 	for _, groupKey := range obj.AdditionalGroupKeys {
 		id := groupKey.GetId()
 		if strings.HasSuffix(id, ".test-google-a.com") {
@@ -117,11 +112,18 @@ func (s *groupsServer) addAdditionalGroupKeys(ctx context.Context, name *groupNa
 		addAdditionalGroup(obj, newGroup)
 	}
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return err
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
 	}
 
-	return nil
+	// Terraform client is _very_ fussy about format here
+	// (to the point of being arguably broken)
+	// return s.operations.DoneLRO(ctx, "", lro, obj)
+
+	// additionalGroupKeys are not populated in the LRO
+	retObj := proto.CloneOf(obj)
+	retObj.AdditionalGroupKeys = nil
+	return buildLRO(retObj)
 }
 
 // addAdditionalGroup adds a group to additionalGroups, unless it is already found.
@@ -189,6 +191,12 @@ func (s *groupsServer) DeleteGroup(ctx context.Context, req *pb.DeleteGroupReque
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
+
+	s.mutex.Lock()
+	if s.getCalls != nil {
+		delete(s.getCalls, fqn)
+	}
+	s.mutex.Unlock()
 
 	// Returns a non-standard LRO
 	lro := &longrunning.Operation{}
