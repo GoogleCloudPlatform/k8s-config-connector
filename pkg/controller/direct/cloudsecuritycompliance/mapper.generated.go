@@ -81,6 +81,26 @@ func CelExpression_ToProto(mapCtx *direct.MapContext, in *krm.CelExpression) *pb
 	out.Expression = direct.ValueOf(in.Expression)
 	return out
 }
+func CloudControlDetails_FromProto(mapCtx *direct.MapContext, in *pb.CloudControlDetails) *krm.CloudControlDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudControlDetails{}
+	// MISSING: Name
+	out.MajorRevisionID = direct.LazyPtr(in.GetMajorRevisionId())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, Parameter_FromProto)
+	return out
+}
+func CloudControlDetails_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlDetails) *pb.CloudControlDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudControlDetails{}
+	// MISSING: Name
+	out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, Parameter_ToProto)
+	return out
+}
 func CloudSecurityComplianceCloudControlObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudControl) *krm.CloudSecurityComplianceCloudControlObservedState {
 	if in == nil {
 		return nil
@@ -141,6 +161,174 @@ func CloudSecurityComplianceCloudControlSpec_ToProto(mapCtx *direct.MapContext, 
 	out.SupportedTargetResourceTypes = direct.EnumSlice_ToProto[pb.TargetResourceType](mapCtx, in.SupportedTargetResourceTypes)
 	return out
 }
+
+/* found existing non-generated mapping function "CloudSecurityComplianceFrameworkObservedState_FromProto", skipping
+func CloudSecurityComplianceFrameworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Framework) *krm.CloudSecurityComplianceFrameworkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityComplianceFrameworkObservedState{}
+	// MISSING: Name
+	out.MajorRevisionID = direct.LazyPtr(in.GetMajorRevisionId())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.CloudControlGroupDetails = direct.Slice_FromProto(mapCtx, in.CloudControlGroupDetails, Framework_CloudControlGroupDetailsObservedState_FromProto)
+	out.SupportedCloudProviders = direct.EnumSlice_FromProto(mapCtx, in.SupportedCloudProviders)
+	out.SupportedTargetResourceTypes = direct.EnumSlice_FromProto(mapCtx, in.SupportedTargetResourceTypes)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "CloudSecurityComplianceFrameworkObservedState_ToProto", skipping
+func CloudSecurityComplianceFrameworkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkObservedState) *pb.Framework {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Framework{}
+	// MISSING: Name
+	out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
+	out.Type = direct.Enum_ToProto[pb.Framework_FrameworkType](mapCtx, in.Type)
+	out.CloudControlGroupDetails = direct.Slice_ToProto(mapCtx, in.CloudControlGroupDetails, Framework_CloudControlGroupDetailsObservedState_ToProto)
+	out.SupportedCloudProviders = direct.EnumSlice_ToProto[pb.CloudProvider](mapCtx, in.SupportedCloudProviders)
+	out.SupportedTargetResourceTypes = direct.EnumSlice_ToProto[pb.TargetResourceType](mapCtx, in.SupportedTargetResourceTypes)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "CloudSecurityComplianceFrameworkSpec_FromProto", skipping
+func CloudSecurityComplianceFrameworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Framework) *krm.CloudSecurityComplianceFrameworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityComplianceFrameworkSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.CloudControlGroupDetails = direct.Slice_FromProto(mapCtx, in.CloudControlGroupDetails, Framework_CloudControlGroupDetails_FromProto)
+	out.CloudControlDetails = direct.Slice_FromProto(mapCtx, in.CloudControlDetails, CloudControlDetails_FromProto)
+	out.Category = direct.EnumSlice_FromProto(mapCtx, in.Category)
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "CloudSecurityComplianceFrameworkSpec_ToProto", skipping
+
+	func CloudSecurityComplianceFrameworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkSpec) *pb.Framework {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Framework{}
+		// MISSING: Name
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.CloudControlGroupDetails = direct.Slice_ToProto(mapCtx, in.CloudControlGroupDetails, Framework_CloudControlGroupDetails_ToProto)
+		out.CloudControlDetails = direct.Slice_ToProto(mapCtx, in.CloudControlDetails, CloudControlDetails_ToProto)
+		out.Category = direct.EnumSlice_ToProto[pb.FrameworkCategory](mapCtx, in.Category)
+		return out
+	}
+*/
+func CloudSecurityFrameworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Framework) *krm.CloudSecurityFrameworkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityFrameworkObservedState{}
+	// MISSING: Name
+	out.MajorRevisionID = direct.LazyPtr(in.GetMajorRevisionId())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	// MISSING: CloudControlGroupDetails
+	out.SupportedCloudProviders = direct.EnumSlice_FromProto(mapCtx, in.SupportedCloudProviders)
+	out.SupportedTargetResourceTypes = direct.EnumSlice_FromProto(mapCtx, in.SupportedTargetResourceTypes)
+	return out
+}
+func CloudSecurityFrameworkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityFrameworkObservedState) *pb.Framework {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Framework{}
+	// MISSING: Name
+	out.MajorRevisionId = direct.ValueOf(in.MajorRevisionID)
+	out.Type = direct.Enum_ToProto[pb.Framework_FrameworkType](mapCtx, in.Type)
+	// MISSING: CloudControlGroupDetails
+	out.SupportedCloudProviders = direct.EnumSlice_ToProto[pb.CloudProvider](mapCtx, in.SupportedCloudProviders)
+	out.SupportedTargetResourceTypes = direct.EnumSlice_ToProto[pb.TargetResourceType](mapCtx, in.SupportedTargetResourceTypes)
+	return out
+}
+func CloudSecurityFrameworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Framework) *krm.CloudSecurityFrameworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityFrameworkSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CloudControlGroupDetails
+	out.CloudControlDetails = direct.Slice_FromProto(mapCtx, in.CloudControlDetails, CloudControlDetails_FromProto)
+	out.Category = direct.EnumSlice_FromProto(mapCtx, in.Category)
+	return out
+}
+func CloudSecurityFrameworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityFrameworkSpec) *pb.Framework {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Framework{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CloudControlGroupDetails
+	out.CloudControlDetails = direct.Slice_ToProto(mapCtx, in.CloudControlDetails, CloudControlDetails_ToProto)
+	out.Category = direct.EnumSlice_ToProto[pb.FrameworkCategory](mapCtx, in.Category)
+	return out
+}
+
+/* found existing non-generated mapping function "Framework_CloudControlGroupDetails_FromProto", skipping
+func Framework_CloudControlGroupDetails_FromProto(mapCtx *direct.MapContext, in *pb.Framework_CloudControlGroupDetails) *krm.Framework_CloudControlGroupDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Framework_CloudControlGroupDetails{}
+	out.CloudControlGroup = CloudControlGroup_FromProto(mapCtx, in.GetCloudControlGroup())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Framework_CloudControlGroupDetails_ToProto", skipping
+func Framework_CloudControlGroupDetails_ToProto(mapCtx *direct.MapContext, in *krm.Framework_CloudControlGroupDetails) *pb.Framework_CloudControlGroupDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Framework_CloudControlGroupDetails{}
+	if oneof := CloudControlGroup_ToProto(mapCtx, in.CloudControlGroup); oneof != nil {
+		out.Kind = &pb.Framework_CloudControlGroupDetails_CloudControlGroup{CloudControlGroup: oneof}
+	}
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "Framework_CloudControlGroupDetailsObservedState_FromProto", skipping
+func Framework_CloudControlGroupDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Framework_CloudControlGroupDetails) *krm.Framework_CloudControlGroupDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Framework_CloudControlGroupDetailsObservedState{}
+	out.CloudControlGroup = CloudControlGroupObservedState_FromProto(mapCtx, in.GetCloudControlGroup())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "Framework_CloudControlGroupDetailsObservedState_ToProto", skipping
+
+	func Framework_CloudControlGroupDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Framework_CloudControlGroupDetailsObservedState) *pb.Framework_CloudControlGroupDetails {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Framework_CloudControlGroupDetails{}
+		if oneof := CloudControlGroupObservedState_ToProto(mapCtx, in.CloudControlGroup); oneof != nil {
+			out.Kind = &pb.Framework_CloudControlGroupDetails_CloudControlGroup{CloudControlGroup: oneof}
+		}
+		return out
+	}
+*/
 func IntRange_FromProto(mapCtx *direct.MapContext, in *pb.IntRange) *krm.IntRange {
 	if in == nil {
 		return nil

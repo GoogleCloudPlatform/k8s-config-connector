@@ -31,5 +31,10 @@ go run . generate-types \
   --resource CloudSecurityComplianceFramework:Framework \
   --resource CloudSecurityFramework:Framework
 
+go run . generate-mapper \
+  --service google.cloud.cloudsecuritycompliance.v1 \
+  --api-version cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
