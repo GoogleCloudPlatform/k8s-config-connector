@@ -176,16 +176,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			}
 		}
 		if m["kind"] == "compute#router" {
-			delete(m, "encryptedInterconnectRouter")
 			if nats, ok := m["nats"].([]any); ok {
 				for _, natAny := range nats {
 					if nat, ok := natAny.(map[string]any); ok {
-						delete(nat, "effectiveTcpTimeWaitTimeoutSec")
-						delete(nat, "enableDynamicPortAllocation")
-						delete(nat, "effectiveL4EstablishedIdleTimeoutSec")
-						delete(nat, "effectiveTcpEstablishedIdleTimeoutSec")
-						delete(nat, "effectiveTcpTransitoryIdleTimeoutSec")
-						delete(nat, "effectiveUdpIdleTimeoutSec")
 						if subnetworks, ok := nat["subnetworks"].([]any); ok {
 							for _, subnetworkAny := range subnetworks {
 								if subnetwork, ok := subnetworkAny.(map[string]any); ok {

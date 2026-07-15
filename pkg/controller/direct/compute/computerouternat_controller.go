@@ -391,15 +391,17 @@ func (a *RouterNATAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 		return true, nil
 	}
 
-	a.router.Nats = newNats
+	patchRouter := &computepb.Router{
+		Nats: newNats,
+	}
 
-	updateReq := &computepb.UpdateRouterRequest{
+	updateReq := &computepb.PatchRouterRequest{
 		Project:        a.id.Project,
 		Region:         a.id.Region,
 		Router:         a.id.Router,
-		RouterResource: a.router,
+		RouterResource: patchRouter,
 	}
-	op, err := a.gcpClient.Update(ctx, updateReq)
+	op, err := a.gcpClient.Patch(ctx, updateReq)
 	if err != nil {
 		return false, fmt.Errorf("deleting compute ComputeRouterNAT %s: %w", a.id.String(), err)
 	}

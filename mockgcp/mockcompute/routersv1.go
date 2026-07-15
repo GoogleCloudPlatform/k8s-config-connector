@@ -29,22 +29,6 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func getPresentFields(ctx context.Context) map[string]bool {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return nil
-	}
-	values := md["x-gcp-present-fields"]
-	if len(values) == 0 {
-		return nil
-	}
-	presentFields := make(map[string]bool)
-	for _, val := range strings.Split(values[0], ",") {
-		presentFields[val] = true
-	}
-	return presentFields
-}
-
 type RoutersV1 struct {
 	*MockService
 	pb.UnimplementedRoutersServer
@@ -140,7 +124,8 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 		return nil, err
 	}
 
-	reqResource := req.GetRouterResource()
+	hasInterfaces := req.GetRouterResource().Interfaces != nil
+	hasBgpPeers := req.GetRouterResource().BgpPeers != nil
 
 	hasNats := false
 	if md, ok := metadata.FromIncomingContext(ctx); ok {
@@ -156,70 +141,20 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 		hasNats = req.GetRouterResource().Nats != nil
 	}
 
-	presentFields := getPresentFields(ctx)
+	proto.Merge(obj, req.GetRouterResource())
 
-	// Save repeated fields and clear them from reqResource so proto.Merge doesn't append them
-	reqNats := reqResource.Nats
-	reqResource.Nats = nil
-
-	reqInterfaces := reqResource.Interfaces
-	reqResource.Interfaces = nil
-
-	reqBgpPeers := reqResource.BgpPeers
-	reqResource.BgpPeers = nil
-
-	reqMd5 := reqResource.Md5AuthenticationKeys
-	reqResource.Md5AuthenticationKeys = nil
-
-	proto.Merge(obj, reqResource)
-
-	// Restore them in reqResource
-	reqResource.Nats = reqNats
-	reqResource.Interfaces = reqInterfaces
-	reqResource.BgpPeers = reqBgpPeers
-	reqResource.Md5AuthenticationKeys = reqMd5
-
-	// Manually replace repeated fields if present
-	hasNatsField := false
-	if presentFields != nil {
-		hasNatsField = presentFields["nats"]
-	} else {
-		hasNatsField = hasNats
+	if hasInterfaces {
+		obj.Interfaces = req.GetRouterResource().Interfaces
 	}
-	if hasNatsField {
-		obj.Nats = reqNats
+	if hasBgpPeers {
+		obj.BgpPeers = req.GetRouterResource().BgpPeers
 	}
-	hasInterfacesField := false
-	if presentFields != nil {
-		hasInterfacesField = presentFields["interfaces"]
-	} else {
-		hasInterfacesField = reqInterfaces != nil
-	}
-	if hasInterfacesField {
-		obj.Interfaces = reqInterfaces
-	}
-
-	hasBgpPeersField := false
-	if presentFields != nil {
-		hasBgpPeersField = presentFields["bgp_peers"]
-	} else {
-		hasBgpPeersField = reqBgpPeers != nil
-	}
-	if hasBgpPeersField {
-		obj.BgpPeers = reqBgpPeers
-	}
-
-	hasMd5Field := false
-	if presentFields != nil {
-		hasMd5Field = presentFields["md5_authentication_keys"]
-	} else {
-		hasMd5Field = reqMd5 != nil
-	}
-	if hasMd5Field {
-		obj.Md5AuthenticationKeys = reqMd5
+	if hasNats {
+		obj.Nats = req.GetRouterResource().Nats
 	}
 
 	s.populateRouter(obj)
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -334,11 +269,6 @@ func (s *RoutersV1) populateRouter(obj *pb.Router) {
 	for _, iface := range obj.Interfaces {
 		if iface.IpVersion == nil {
 			iface.IpVersion = PtrTo("IPV4")
-		}
-	}
-	for _, nat := range obj.Nats {
-		if nat.Type == nil {
-			nat.Type = PtrTo("PUBLIC")
 		}
 	}
 }

@@ -1,19 +1,19 @@
-934c934
+935c935
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-960c960
+962c962
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-966d965
+968d967
 <       "drainNatIps": [],
-971,972d969
+973,974d971
 <       "icmpIdleTimeoutSec": 30,
 <       "logConfig": null,
-975d971
+977d973
 <       "natIps": [],
-997,1001c993
+999,1003c995
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -21,18 +21,18 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1034c1026,1027
+1036c1028,1029
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1065c1058
+1067c1060
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1091d1083
+1095d1087
 <       "icmpIdleTimeoutSec": 30,
-1115,1119c1107
+1119,1123c1111
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -40,21 +40,21 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1129c1117
+1133c1121
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1135,1138d1122
+1139,1142d1126
 <       "autoNetworkTier": "PREMIUM",
 <       "drainNatIps": [],
 <       "effectiveTcpTimeWaitTimeoutSec": 120,
 <       "enableDynamicPortAllocation": false,
-1143,1144d1126
+1147,1148d1130
 <       "icmpIdleTimeoutSec": 30,
 <       "logConfig": null,
-1147d1128
+1151d1132
 <       "natIps": [],
-1172,1176c1153
+1176,1180c1157
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -62,18 +62,20 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1209c1186,1187
+1213c1190,1191
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1240c1218
+1244c1222
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1266d1243
+1268d1245
+<       "enableDynamicPortAllocation": false,
+1273d1249
 <       "icmpIdleTimeoutSec": 30,
-1293,1297c1270
+1300,1304c1276
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -81,31 +83,56 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1307c1280
+1314c1286
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1311c1284,1291
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1317,1319c1289
+< {
 <   "nats": []
+< }
 ---
->   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
->   "description": "example router description",
->   "id": "000000000000000000000",
->   "kind": "compute#router",
->   "name": "${routerID}",
->   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
->   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
->   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
-1329c1309
-<   "operationType": "patch",
----
->   "operationType": "update",
-1342c1322,1323
+> {}
+1349c1319,1320
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1360c1341
-<   "operationType": "patch",
----
->   "operationType": "update",
+1722a1694,1730
+>   "nats": [
+>     {
+>       "autoNetworkTier": "PREMIUM",
+>       "effectiveTcpTimeWaitTimeoutSec": 120,
+>       "enableEndpointIndependentMapping": false,
+>       "endpointTypes": [
+>         "ENDPOINT_TYPE_VM"
+>       ],
+>       "name": "computerouternat-${uniqueId}",
+>       "natIpAllocateOption": "USE_SHARED_RANGES",
+>       "rules": [
+>         {
+>           "action": {
+>             "sourceNatActiveRanges": [
+>               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+>             ],
+>             "sourceNatDrainRanges": [
+>               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+>             ]
+>           },
+>           "description": "private nat rule example",
+>           "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
+>           "ruleNumber": 100
+>         }
+>       ],
+>       "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
+>       "subnetworks": [
+>         {
+>           "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+>           "sourceIpRangesToNat": [
+>             "ALL_IP_RANGES"
+>           ]
+>         }
+>       ],
+>       "type": "PRIVATE"
+>     }
+>   ],
