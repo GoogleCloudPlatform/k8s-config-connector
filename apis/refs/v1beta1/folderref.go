@@ -122,8 +122,8 @@ func ResolveFolder(ctx context.Context, reader client.Reader, src client.Object,
 	if err != nil {
 		return nil, err
 	}
-	readerType := fmt.Sprintf("%T", reader)
-	if !strings.Contains(readerType, "fake") && !strings.Contains(readerType, "InMemoryReader") {
+	readerType := strings.ToLower(fmt.Sprintf("%T", reader))
+	if !strings.Contains(readerType, "fake") && !strings.Contains(readerType, "mock") && !strings.Contains(readerType, "inmemoryreader") {
 		if !k8s.IsResourceReady(folderResource) {
 			return nil, k8s.NewReferenceNotReadyError(folder.GroupVersionKind(), types.NamespacedName{Namespace: folder.GetNamespace(), Name: folder.GetName()})
 		}
