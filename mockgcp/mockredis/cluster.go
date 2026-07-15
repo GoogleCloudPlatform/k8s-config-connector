@@ -436,6 +436,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
 		case "crossClusterReplicationConfig":
 			obj.CrossClusterReplicationConfig = req.Cluster.CrossClusterReplicationConfig
+		case "clusterEndpoints", "cluster_endpoints":
+			obj.ClusterEndpoints = req.Cluster.ClusterEndpoints
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
