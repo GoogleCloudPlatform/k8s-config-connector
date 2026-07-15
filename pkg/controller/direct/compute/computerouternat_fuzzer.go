@@ -29,8 +29,8 @@ func init() {
 
 func computeRouterNATFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.RouterNat{},
-		ComputeRouterNATSpec_v1beta1_FromProto,
-		ComputeRouterNATSpec_v1beta1_ToProto,
+		ComputeRouterNATSpec_FromProto,
+		ComputeRouterNATSpec_ToProto,
 	)
 
 	// Field mapping comparison:
