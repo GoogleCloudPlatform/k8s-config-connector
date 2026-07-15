@@ -80,4 +80,5 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvideostitcher"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkloadmanager"
 )
