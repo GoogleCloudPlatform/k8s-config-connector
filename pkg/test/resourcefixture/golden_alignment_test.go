@@ -263,6 +263,45 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				return mockEvs[i].RequestBody < mockEvs[j].RequestBody
 			})
 
+			if method == "GET" && strings.Contains(path, "/serviceAccounts/") {
+				var realSuccessEvs []httpEvent
+				for _, ev := range realEvs {
+					if strings.Contains(ev.Status, "200") {
+						// Only append if it is not a consecutive duplicate
+						if len(realSuccessEvs) > 0 {
+							prev := realSuccessEvs[len(realSuccessEvs)-1]
+							if prev.URL == ev.URL && prev.Status == ev.Status && prev.ResponseBody == ev.ResponseBody {
+								continue
+							}
+						}
+						realSuccessEvs = append(realSuccessEvs, ev)
+					}
+				}
+				var mockSuccessEvs []httpEvent
+				for _, ev := range mockEvs {
+					if strings.Contains(ev.Status, "200") {
+						// Only append if it is not a consecutive duplicate
+						if len(mockSuccessEvs) > 0 {
+							prev := mockSuccessEvs[len(mockSuccessEvs)-1]
+							if prev.URL == ev.URL && prev.Status == ev.Status && prev.ResponseBody == ev.ResponseBody {
+								continue
+							}
+						}
+						mockSuccessEvs = append(mockSuccessEvs, ev)
+					}
+				}
+
+				compareCount := len(mockSuccessEvs)
+				if len(realSuccessEvs) < compareCount {
+					compareCount = len(realSuccessEvs)
+				}
+
+				for i := 0; i < compareCount; i++ {
+					compareJSON(t, fmt.Sprintf("path %s, method %s, call %d response body", path, method, i), realSuccessEvs[i].ResponseBody, mockSuccessEvs[i].ResponseBody)
+				}
+				continue
+			}
+
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
