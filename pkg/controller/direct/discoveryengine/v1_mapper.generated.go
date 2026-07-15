@@ -213,13 +213,41 @@ func Answer_Reference_ChunkInfo_ToProto(mapCtx *direct.MapContext, in *krm.Answe
 	out.DocumentMetadata = Answer_Reference_ChunkInfo_DocumentMetadata_ToProto(mapCtx, in.DocumentMetadata)
 	return out
 }
+func Answer_Reference_ChunkInfo_DocumentMetadata_FromProto(mapCtx *direct.MapContext, in *pb.Answer_Reference_ChunkInfo_DocumentMetadata) *krm.Answer_Reference_ChunkInfo_DocumentMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Answer_Reference_ChunkInfo_DocumentMetadata{}
+	out.Document = direct.LazyPtr(in.GetDocument())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.PageIdentifier = direct.LazyPtr(in.GetPageIdentifier())
+	if v := direct.Struct_FromProto(mapCtx, in.GetStructData()); v != nil {
+		out.StructData = *v
+	}
+	return out
+}
+func Answer_Reference_ChunkInfo_DocumentMetadata_ToProto(mapCtx *direct.MapContext, in *krm.Answer_Reference_ChunkInfo_DocumentMetadata) *pb.Answer_Reference_ChunkInfo_DocumentMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Answer_Reference_ChunkInfo_DocumentMetadata{}
+	out.Document = direct.ValueOf(in.Document)
+	out.Uri = direct.ValueOf(in.URI)
+	out.Title = direct.ValueOf(in.Title)
+	out.PageIdentifier = direct.ValueOf(in.PageIdentifier)
+	out.StructData = direct.Struct_ToProto(mapCtx, &in.StructData)
+	return out
+}
 func Answer_Reference_StructuredDocumentInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Answer_Reference_StructuredDocumentInfo) *krm.Answer_Reference_StructuredDocumentInfoObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Answer_Reference_StructuredDocumentInfoObservedState{}
 	out.Document = direct.LazyPtr(in.GetDocument())
-	out.StructData = direct.Struct_FromProto(mapCtx, in.GetStructData())
+	if v := direct.Struct_FromProto(mapCtx, in.GetStructData()); v != nil {
+		out.StructData = *v
+	}
 	out.Title = direct.LazyPtr(in.GetTitle())
 	out.URI = direct.LazyPtr(in.GetUri())
 	return out
@@ -230,7 +258,7 @@ func Answer_Reference_StructuredDocumentInfoObservedState_ToProto(mapCtx *direct
 	}
 	out := &pb.Answer_Reference_StructuredDocumentInfo{}
 	out.Document = direct.ValueOf(in.Document)
-	out.StructData = direct.Struct_ToProto(mapCtx, in.StructData)
+	out.StructData = direct.Struct_ToProto(mapCtx, &in.StructData)
 	out.Title = direct.ValueOf(in.Title)
 	out.Uri = direct.ValueOf(in.URI)
 	return out
@@ -244,7 +272,9 @@ func Answer_Reference_UnstructuredDocumentInfo_FromProto(mapCtx *direct.MapConte
 	out.URI = direct.LazyPtr(in.GetUri())
 	out.Title = direct.LazyPtr(in.GetTitle())
 	out.ChunkContents = direct.Slice_FromProto(mapCtx, in.ChunkContents, Answer_Reference_UnstructuredDocumentInfo_ChunkContent_FromProto)
-	out.StructData = direct.Struct_FromProto(mapCtx, in.GetStructData())
+	if v := direct.Struct_FromProto(mapCtx, in.GetStructData()); v != nil {
+		out.StructData = *v
+	}
 	return out
 }
 func Answer_Reference_UnstructuredDocumentInfo_ToProto(mapCtx *direct.MapContext, in *krm.Answer_Reference_UnstructuredDocumentInfo) *pb.Answer_Reference_UnstructuredDocumentInfo {
@@ -256,7 +286,7 @@ func Answer_Reference_UnstructuredDocumentInfo_ToProto(mapCtx *direct.MapContext
 	out.Uri = direct.ValueOf(in.URI)
 	out.Title = direct.ValueOf(in.Title)
 	out.ChunkContents = direct.Slice_ToProto(mapCtx, in.ChunkContents, Answer_Reference_UnstructuredDocumentInfo_ChunkContent_ToProto)
-	out.StructData = direct.Struct_ToProto(mapCtx, in.StructData)
+	out.StructData = direct.Struct_ToProto(mapCtx, &in.StructData)
 	return out
 }
 func Answer_Reference_UnstructuredDocumentInfo_ChunkContent_FromProto(mapCtx *direct.MapContext, in *pb.Answer_Reference_UnstructuredDocumentInfo_ChunkContent) *krm.Answer_Reference_UnstructuredDocumentInfo_ChunkContent {
@@ -347,7 +377,9 @@ func Answer_Step_Action_Observation_SearchResult_FromProto(mapCtx *direct.MapCon
 	out.Title = direct.LazyPtr(in.GetTitle())
 	out.SnippetInfo = direct.Slice_FromProto(mapCtx, in.SnippetInfo, Answer_Step_Action_Observation_SearchResult_SnippetInfo_FromProto)
 	out.ChunkInfo = direct.Slice_FromProto(mapCtx, in.ChunkInfo, Answer_Step_Action_Observation_SearchResult_ChunkInfo_FromProto)
-	out.StructData = direct.Struct_FromProto(mapCtx, in.GetStructData())
+	if v := direct.Struct_FromProto(mapCtx, in.GetStructData()); v != nil {
+		out.StructData = *v
+	}
 	return out
 }
 func Answer_Step_Action_Observation_SearchResult_ToProto(mapCtx *direct.MapContext, in *krm.Answer_Step_Action_Observation_SearchResult) *pb.Answer_Step_Action_Observation_SearchResult {
@@ -360,7 +392,7 @@ func Answer_Step_Action_Observation_SearchResult_ToProto(mapCtx *direct.MapConte
 	out.Title = direct.ValueOf(in.Title)
 	out.SnippetInfo = direct.Slice_ToProto(mapCtx, in.SnippetInfo, Answer_Step_Action_Observation_SearchResult_SnippetInfo_ToProto)
 	out.ChunkInfo = direct.Slice_ToProto(mapCtx, in.ChunkInfo, Answer_Step_Action_Observation_SearchResult_ChunkInfo_ToProto)
-	out.StructData = direct.Struct_ToProto(mapCtx, in.StructData)
+	out.StructData = direct.Struct_ToProto(mapCtx, &in.StructData)
 	return out
 }
 func Answer_Step_Action_Observation_SearchResult_ChunkInfo_FromProto(mapCtx *direct.MapContext, in *pb.Answer_Step_Action_Observation_SearchResult_ChunkInfo) *krm.Answer_Step_Action_Observation_SearchResult_ChunkInfo {
