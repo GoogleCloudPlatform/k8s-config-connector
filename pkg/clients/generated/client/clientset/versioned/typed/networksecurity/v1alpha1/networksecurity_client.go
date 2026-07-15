@@ -41,6 +41,7 @@ type NetworksecurityV1alpha1Interface interface {
 	NetworkSecurityInterceptEndpointGroupsGetter
 	NetworkSecurityMirroringDeploymentsGetter
 	NetworkSecurityMirroringEndpointGroupsGetter
+	NetworkSecurityPartnerSSEGatewaysGetter
 	NetworkSecurityPartnerSSERealmsGetter
 	NetworkSecuritySACRealmsGetter
 	NetworkSecuritySecurityProfilesGetter
@@ -90,6 +91,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringDeployments(name
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringEndpointGroups(namespace string) NetworkSecurityMirroringEndpointGroupInterface {
 	return newNetworkSecurityMirroringEndpointGroups(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityPartnerSSEGateways(namespace string) NetworkSecurityPartnerSSEGatewayInterface {
+	return newNetworkSecurityPartnerSSEGateways(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityPartnerSSERealms(namespace string) NetworkSecurityPartnerSSERealmInterface {

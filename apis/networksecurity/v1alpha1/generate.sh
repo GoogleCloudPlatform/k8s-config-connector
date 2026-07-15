@@ -59,6 +59,7 @@ go run . generate-types \
   --service google.cloud.networksecurity.v1alpha1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
+  --resource NetworkSecurityPartnerSSEGateway:PartnerSSEGateway \
   --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
   --proto-source-path ${PROTO_OUT}
 
