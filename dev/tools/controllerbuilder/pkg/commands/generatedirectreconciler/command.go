@@ -106,6 +106,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 		GenerateOptions:    o.GenerateOptions,
 		OutputAPIDirectory: o.APIDirectory,
 		Resources:          options.ResourceList{o.Resource},
+		ServiceName:        o.ServiceName,
 	}
 	if err := generatetypes.RunGenerateCRD(ctx, crdOps); err != nil {
 		return fmt.Errorf("generate types: %w", err)
@@ -115,6 +116,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 		APIGoPackagePath:      o.APIGoPackagePath,
 		APIDirectory:          o.APIDirectory,
 		OutputMapperDirectory: o.OutputMapperDirectory,
+		ServiceNames:          []string{o.ServiceName},
 	}
 	if err := generatemapper.RunGenerateMapper(ctx, mapperOps); err != nil {
 		return fmt.Errorf("generate mapper: %w", err)
@@ -122,6 +124,7 @@ func RunGenerateBasicReconciler(ctx context.Context, o *GenerateBasicReconcilerO
 	controllerOps := &generatecontroller.GenerateControllerOptions{
 		GenerateOptions: o.GenerateOptions,
 		Resource:        o.Resource,
+		ServiceName:     o.ServiceName,
 	}
 	if err := generatecontroller.RunController(ctx, controllerOps); err != nil {
 		return fmt.Errorf("generate controller: %w", err)
