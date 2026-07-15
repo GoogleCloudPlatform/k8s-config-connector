@@ -89,6 +89,7 @@ require (
 	cloud.google.com/go/spanner v1.91.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/translate v1.17.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/workflows v1.19.0
