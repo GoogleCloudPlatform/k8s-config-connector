@@ -584,9 +584,6 @@
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeScalingFactor" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.serveNodes" is not set in unstructured objects
 [missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].alwaysDeny" is not set in unstructured objects
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].displayName" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].imageAllowlist.allowPattern[]" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].imageFreshnessCheck.maxUploadAgeDays" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].sigstoreSignatureCheck.sigstoreAuthorities[].displayName" is not set in unstructured objects
@@ -603,13 +600,8 @@
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].vulnerabilityCheck.containerAnalysisVulnerabilityProjects[]" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].vulnerabilityCheck.maximumFixableSeverity" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].vulnerabilityCheck.maximumUnfixableSeverity" is not set in unstructured objects
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].displayName" is not set in unstructured objects
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].imageAllowlist.allowPattern[]" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].scope.kubernetesNamespace" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].scope.kubernetesServiceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.imageAllowlist.allowPattern[]" is not set in unstructured objects
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.platform" is not set in unstructured objects
-[missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=blockchainnodeengineblockchainnodes.blockchainnodeengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentID" is not set in unstructured objects
 [missing_field] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.callMetadata.agentChannel" is not set in unstructured objects
