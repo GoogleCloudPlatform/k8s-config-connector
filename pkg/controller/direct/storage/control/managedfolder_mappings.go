@@ -14,7 +14,7 @@
 
 // +generated:mapper
 // krm.group: storage.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.storage.control.v2
 
 package storagecontrol
@@ -26,26 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func StorageManagedFolderObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StorageManagedFolderObservedState{}
-	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func StorageManagedFolderObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageManagedFolderObservedState) *pb.ManagedFolder {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ManagedFolder{}
-	out.Metageneration = direct.ValueOf(in.Metageneration)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
 func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderSpec {
 	if in == nil {
 		return nil
@@ -60,12 +40,5 @@ func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Manage
 		out.StorageBucketRef = &refs.StorageBucketRef{External: parent.String()}
 		out.ResourceID = &resourceID
 	}
-	return out
-}
-func StorageManagedFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageManagedFolderSpec) *pb.ManagedFolder {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ManagedFolder{}
 	return out
 }
