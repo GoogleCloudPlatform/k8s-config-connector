@@ -7004,11 +7004,6 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 		*out = new(int64)
 		**out = **in
 	}
-	if in.NatIpAllocateOption != nil {
-		in, out := &in.NatIpAllocateOption, &out.NatIpAllocateOption
-		*out = new(string)
-		**out = **in
-	}
 	if in.NatIps != nil {
 		in, out := &in.NatIps, &out.NatIps
 		*out = make([]v1alpha1.ResourceRef, len(*in))
