@@ -80,22 +80,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			bodyBytes, err := io.ReadAll(r.Body)
 			if err == nil {
 				if bytes.Contains(bodyBytes, []byte(`"OS_2022"`)) {
-					w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-					w.WriteHeader(http.StatusBadRequest)
-					w.Write([]byte(`{
-  "error": {
-    "code": 400,
-    "errors": [
-      {
-        "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
-        "reason": "invalid"
-      }
-    ],
-    "message": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
-    "status": "INVALID_ARGUMENT"
-  }
-}`))
-					return
+					// Convert to OS_VERSION_UNSPECIFIED so protojson parses it without error
+					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_UNSPECIFIED"`))
+					// Append invalid OS version query param to propagate to context metadata
+					q := r.URL.Query()
+					q.Set("mockgcp-invalid-os-version", "OS_2022")
+					r.URL.RawQuery = q.Encode()
 				}
 				// Replace short enum names with full proto enum names
 				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2019"`), []byte(`"OS_VERSION_LTSC2019"`))

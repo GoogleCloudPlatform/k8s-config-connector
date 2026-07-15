@@ -42,7 +42,7 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 
 	obj := &pb.NodePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 	return obj, nil
 }
@@ -75,6 +75,10 @@ func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePo
 }
 
 func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	reqName := req.GetParent() + "/nodePools/" + req.GetNodePool().GetName()
 
 	name, err := s.parseNodePoolName(reqName)
@@ -371,6 +375,10 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 }
 
 func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNodePoolRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	reqName := req.GetName()
 
 	name, err := s.parseNodePoolName(reqName)
@@ -381,7 +389,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	fqn := name.String()
 	obj := &pb.NodePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 
 	klog.Infof("UpdateNodePool %v", prototext.Format(req))
@@ -451,7 +459,7 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 	fqn := name.String()
 	obj := &pb.NodePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 
 	obj.InitialNodeCount = req.NodeCount
@@ -487,7 +495,7 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 
 	oldObj := &pb.NodePool{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 
 	// Update the cluster's NodePools list after deletion

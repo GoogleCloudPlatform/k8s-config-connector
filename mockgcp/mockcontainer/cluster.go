@@ -79,6 +79,10 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 }
 
 func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClusterRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	reqName := req.GetParent() + "/clusters/" + req.GetCluster().GetName()
 	name, err := s.parseClusterName(reqName)
 	if err != nil {
@@ -235,9 +239,14 @@ func locationToZone(location string) (string, error) {
 }
 
 func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	if req.GetUpdate() == nil || proto.Equal(req.GetUpdate(), &pb.ClusterUpdate{}) {
 		return nil, status.Errorf(codes.InvalidArgument, "must specify a field to update")
 	}
+
 	reqName := req.GetName()
 
 	name, err := s.parseClusterName(reqName)
