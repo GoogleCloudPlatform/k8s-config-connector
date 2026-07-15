@@ -31,6 +31,7 @@ import (
 
 type NetworkservicesV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	NetworkServicesAuthzExtensionsGetter
 	NetworkServicesEdgeCacheKeysetsGetter
 	NetworkServicesEdgeCacheOriginsGetter
 	NetworkServicesEdgeCacheServicesGetter
@@ -42,6 +43,10 @@ type NetworkservicesV1alpha1Interface interface {
 // NetworkservicesV1alpha1Client is used to interact with features provided by the networkservices.cnrm.cloud.google.com group.
 type NetworkservicesV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *NetworkservicesV1alpha1Client) NetworkServicesAuthzExtensions(namespace string) NetworkServicesAuthzExtensionInterface {
+	return newNetworkServicesAuthzExtensions(c, namespace)
 }
 
 func (c *NetworkservicesV1alpha1Client) NetworkServicesEdgeCacheKeysets(namespace string) NetworkServicesEdgeCacheKeysetInterface {
