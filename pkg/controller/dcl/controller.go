@@ -371,11 +371,13 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 			r.logger.Error(err, "error marshaling resource as unstructured for diff reporting")
 		} else {
 			diff := structuredreporting.Diff{
+				Controller:  k8s.ReconcilerTypeDCL,
 				Object:      u,
 				IsNewObject: true,
 			}
 			structuredreporting.ReportDiff(ctx, &diff)
 		}
+
 	}
 	newState, err := dclunstruct.Apply(ctx, dclConfig, dclResource, lifecycleParams...)
 	if err != nil {

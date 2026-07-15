@@ -310,6 +310,7 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 
 	diff := iamv1beta1.IAMPolicySpecDiffers(&desiredPolicy.Spec, &iamPolicy.Spec)
 	if diff.HasDiff() {
+		diff.Controller = k8s.ReconcilerTypeIAMPartialPolicy
 		structuredreporting.ReportDiff(r.Ctx, diff)
 	}
 
