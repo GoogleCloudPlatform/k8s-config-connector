@@ -21,7 +21,6 @@ package mockstorage
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -203,12 +202,10 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 
 func (s *StorageControlService) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
 	obj := &pb.ManagedFolder{}
-	// Since a ManagedFolder's Name is stored with a trailing "/", we need to add it to the end of the request Name.
 	if err := s.storage.Get(ctx, req.GetName(), obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "The specified managed folder does not exist.")
 		}
-		log.Printf("An unexpected error occurred: %v", err)
 		return nil, err
 	}
 	return obj, nil
@@ -240,8 +237,6 @@ func (s *StorageControlService) CreateManagedFolder(ctx context.Context, req *pb
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Metageneration = generation
-
-	log.Printf("Checking for an empty name: %s", obj.Name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
