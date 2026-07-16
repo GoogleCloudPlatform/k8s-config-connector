@@ -1,6 +1,0 @@
-- caisURL: //cloudresourcemanager.googleapis.com/projects/project-${uniqueId}
-  group: resourcemanager.cnrm.cloud.google.com
-  kind: Project
-  name: project-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1beta1

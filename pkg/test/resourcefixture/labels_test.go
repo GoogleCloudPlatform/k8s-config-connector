@@ -91,21 +91,28 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 		hasLabels := false
 		if supportsTF {
 			rcs, err := smLoader.GetResourceConfigs(gvk)
-			if err == nil {
-				for _, rc := range rcs {
-					if rc.MetadataMapping.Labels != "" {
-						hasLabels = true
-						break
-					}
+			if err != nil {
+				t.Fatalf("error getting resource configs for %v: %v", gvk, err)
+			}
+			for _, rc := range rcs {
+				if rc.MetadataMapping.Labels != "" {
+					hasLabels = true
+					break
 				}
 			}
 		}
 
 		if supportsDCL {
 			s, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
-			if err == nil && s != nil {
+			if err != nil {
+				t.Fatalf("error getting DCL schema for %v: %v", gvk, err)
+			}
+			if s != nil {
 				_, _, found, err := dclextension.GetLabelsFieldSchema(s)
-				if err == nil && found {
+				if err != nil {
+					t.Fatalf("error getting labels field schema for %v: %v", gvk, err)
+				}
+				if found {
 					hasLabels = true
 				}
 			}
