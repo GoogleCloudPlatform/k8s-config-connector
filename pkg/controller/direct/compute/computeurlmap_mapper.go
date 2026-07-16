@@ -1207,6 +1207,8 @@ func UrlmapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) 
 	}
 	out := &krm.UrlmapTest{}
 	out.Description = in.Description
+	out.ExpectedOutputUrl = in.ExpectedOutputUrl
+	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
 	out.Host = direct.ValueOf(in.Host)
 	out.Path = direct.ValueOf(in.Path)
 	out.Service = direct.ValueOf(UrlmapService_v1beta1_FromProto(mapCtx, in.Service))
@@ -1219,6 +1221,8 @@ func UrlmapTest_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapTest) *
 	}
 	out := &pb.UrlMapTest{}
 	out.Description = in.Description
+	out.ExpectedOutputUrl = in.ExpectedOutputUrl
+	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
 	out.Host = direct.LazyPtr(in.Host)
 	out.Path = direct.LazyPtr(in.Path)
 	out.Service = UrlmapService_v1beta1_ToProto(mapCtx, &in.Service)
