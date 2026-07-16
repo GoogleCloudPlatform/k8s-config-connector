@@ -225,6 +225,9 @@ func (a *ManagedFolderAdapter) Export(ctx context.Context) (*unstructured.Unstru
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
+	// ProjectRef and StorageBucketRef are promoted through the inlined
+	// StorageFolderParent, so it has to exist before assigning through it.
+	obj.Spec.StorageFolderParent = &krm.StorageFolderParent{}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: a.id.Parent().BucketName}
 

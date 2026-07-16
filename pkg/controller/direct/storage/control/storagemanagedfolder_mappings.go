@@ -36,9 +36,11 @@ func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.Manage
 		parent, resourceID, err := krm.ParseManagedFolderExternal(in.GetName())
 		if err != nil {
 			mapCtx.Errorf("Error while parsing name %s %w", in.GetName(), err)
+			return nil
 		}
+		out.StorageFolderParent = &krm.StorageFolderParent{}
 		out.ProjectRef = &refs.ProjectRef{External: parent.ProjectID}
-		out.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: parent.String()}
+		out.StorageBucketRef = &storagev1beta1.StorageBucketRef{External: parent.BucketName}
 		out.ResourceID = &resourceID
 	}
 	return out
