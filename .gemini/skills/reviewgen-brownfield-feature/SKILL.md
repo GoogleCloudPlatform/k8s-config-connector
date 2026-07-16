@@ -15,8 +15,8 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
 *   **Target Files**: Patch files are under `third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/[servicename]/resource_[servicename]_[typename].go` (or extracted schema files like `node_config.go`).
 *   **Adding New Fields**:
     1. Verify schema addition in the schema map (`map[string]*schema.Schema`).
-    2. Verify expanding logic (KRM/Terraform struct -> GCP SDK) is implemented for new fields.
-    3. Verify flattening logic (GCP SDK -> Terraform schema) is implemented for new fields.
+    2. Verify expanding logic (Terraform struct -> GCP SDK) is implemented for new fields.
+    3. Verify flattening logic (GCP SDK -> Terraform struct) is implemented for new fields.
 *   **Modifying Existing Fields (Backwards-Compatible Behavior Changes)**:
     1. Schema definition updated as required.
     2. Related expanding/flattening logic updated to match the modified schema.
@@ -30,7 +30,7 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
 ## 2. Declarative Resource Client Library (DCL) Based Resource Changes
 
 > [!IMPORTANT]
-> Triple check if DCL changes are strictly necessary before approving. Direct migrations or TF backports are preferred.
+> Triple check if DCL changes are strictly necessary before approving. Direct migrations are preferred.
 
 ### Patch Verification
 *   **Target Files**: Patch files are under `third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/[servicename]/`.
@@ -53,7 +53,7 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
 ## 3. Shared Review Invariants
 
 ### A. Test Coverage
-*   **New Fields**: Must be covered in `create.yaml` and/or `update.yaml` within a dedicated fixture test directory under `pkg/test/resourcefixture/testdata/basic/`. Multiple test cases are required if fields are mutually exclusive (`oneOf`).
+*   **New Fields**: Must be covered in `create.yaml` and/or `update.yaml` within a dedicated fixture test directory under `pkg/test/resourcefixture/testdata/basic/`. Multiple test cases are required if fields are mutually exclusive explicitly (`oneOf`) or implicitly (errors from the service).
 *   **Existing Fields / Behavior Changes**: New behavior or state transitions must be covered in `create.yaml` and/or `update.yaml`.
 
 ### B. MockGCP and Real GCP Alignment
