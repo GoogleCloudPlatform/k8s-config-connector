@@ -5,7 +5,8 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
     cnrm-test: "true"
-    label-one: one
+    label-one: two
+    label-three: three
     label-two: two
     managed-by-cnrm: "true"
   name: ${alertPolicyId}
@@ -28,7 +29,6 @@ spec:
       trigger:
         count: 1
     displayName: Very high CPU usage
-    name: projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionId}
   displayName: Test Alert Policy
   documentation:
     content: |-

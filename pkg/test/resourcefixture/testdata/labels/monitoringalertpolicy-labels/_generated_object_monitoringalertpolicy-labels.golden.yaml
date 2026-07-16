@@ -70,11 +70,9 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: 'Update call failed: error updating: rpc error: code = InvalidArgument
-      desc = update_mask path "user_labels" not supported by mock (full update_mask=paths:"conditions"
-      paths:"user_labels")'
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
   creationRecord:
   - mutateTime: "1970-01-01T00:00:00Z"
