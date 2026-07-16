@@ -1,11 +1,11 @@
 ---
-name: reviewgen-brownfield-feature
-description: Comprehensive review guide and criteria for PRs adding or modifying features in brownfield resources (TF patches, DCL patches, CRD changes, MockGCP alignment, and Direct Controller alignment).
+name: reviewgen-legacy-feature
+description: Comprehensive review guide and criteria for PRs adding or modifying features in legacy resources (TF patches, DCL patches, CRD changes, MockGCP alignment, and Direct Controller alignment).
 ---
 
-# Review Guide for Brownfield Resource Feature Changes
+# Review Guide for Legacy Resource Feature Changes
 
-This skill outlines the mandatory review criteria for PRs that introduce new fields, update behaviors, or backport patches for **Brownfield resources** (Terraform-based or DCL-based resources).
+This skill outlines the mandatory review criteria for PRs that introduce new fields, update behaviors, or backport patches for **Legacy resources** (Terraform-based or DCL-based resources). Note that the terms "legacy resource" and "brownfield resource" are used interchangeably throughout this skill.
 
 ---
 
@@ -108,7 +108,7 @@ This skill outlines the mandatory review criteria for PRs that introduce new fie
 ## Standard Review Summary Template
 
 ```markdown
-### Brownfield Feature Review Results
+### Legacy Feature Review Results
 
 * **Real GCP Test Verification**: [Pass/Pending/Needs-Human-Verification] - (Verified via minor _http.log vs _http_mock.log diffs or contributor claim. For bot PRs: prompt human reviewer with timestamp window)
 * **TF / DCL Patch Integrity**: [Pass/Fail] - (Verified schema, expanders, and flatteners)
