@@ -1,0 +1,195 @@
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "There is no service with id 'monitoringservice-${uniqueId}' in project '${projectNumber}'",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/services?alt=json&serviceId=monitoringservice-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectId}/services/monitoringservice-${uniqueId}",
+  "telemetry": {
+    "resourceName": "//storage.googleapis.com/buckets/bucket-id1"
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}",
+  "telemetry": {
+    "resourceName": "//storage.googleapis.com/buckets/bucket-id1"
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}",
+  "telemetry": {
+    "resourceName": "//storage.googleapis.com/buckets/bucket-id1"
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json&updateMask=userLabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "telemetry": {
+    "resourceName": "//storage.googleapis.com/buckets/bucket-id1"
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}",
+  "telemetry": {
+    "resourceName": "//storage.googleapis.com/buckets/bucket-id1"
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "custom": {},
+  "displayName": "A basic monitoring service.",
+  "name": "projects/${projectNumber}/services/monitoringservice-${uniqueId}",
+  "telemetry": {
+    "resourceName": "//storage.googleapis.com/buckets/bucket-id1"
+  },
+  "userLabels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/services/monitoringservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

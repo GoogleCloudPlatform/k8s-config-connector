@@ -1,0 +1,15 @@
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryNamespace
+metadata:
+  labels:
+    cnrm-test: "true"
+    label-one: two
+    label-three: three
+    label-two: two
+    managed-by-cnrm: "true"
+  name: servicedirectory-namespace-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: servicedirectory-namespace-${uniqueId}

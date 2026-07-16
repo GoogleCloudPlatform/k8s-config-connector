@@ -152,9 +152,6 @@
 [schema_violation] file=labels/configcontrollerinstance-labels gvk=configcontroller.cnrm.cloud.google.com/v1beta1, Kind=ConfigControllerInstance: [].spec.projectRef: Required value
 [schema_violation] file=labels/deploymentmanagerdeployment-labels gvk=deploymentmanager.cnrm.cloud.google.com/v1alpha1, Kind=DeploymentManagerDeployment: [].spec.target: Invalid value: "array": spec.target in body must be of type object: "array"
 [schema_violation] file=labels/edgecontainervpnconnection-labels gvk=edgecontainer.cnrm.cloud.google.com/v1beta1, Kind=EdgeContainerVpnConnection: [].spec: Invalid value: "enable_high_availability": spec.enable_high_availability in body is a forbidden property
-[schema_violation] file=labels/edgenetworknetwork-labels gvk=edgenetwork.cnrm.cloud.google.com/v1beta1, Kind=EdgeNetworkNetwork: [].spec.projectRef: Required value
-[schema_violation] file=labels/edgenetworksubnet-labels gvk=edgenetwork.cnrm.cloud.google.com/v1beta1, Kind=EdgeNetworkNetwork: [].spec.projectRef: Required value
-[schema_violation] file=labels/edgenetworksubnet-labels gvk=edgenetwork.cnrm.cloud.google.com/v1beta1, Kind=EdgeNetworkSubnet: [].spec.projectRef: Required value
 [schema_violation] file=labels/filestorebackup-labels gvk=filestore.cnrm.cloud.google.com/v1beta1, Kind=FilestoreBackup: [].spec.projectRef: Required value
 [schema_violation] file=labels/filestorebackup-labels gvk=filestore.cnrm.cloud.google.com/v1beta1, Kind=FilestoreInstance: [].spec.projectRef: Required value
 [schema_violation] file=labels/filestoreinstance-labels gvk=filestore.cnrm.cloud.google.com/v1beta1, Kind=FilestoreInstance: [].spec.projectRef: Required value
@@ -171,4 +168,3 @@
 [schema_violation] file=labels/privatecacertificatetemplate-labels gvk=privateca.cnrm.cloud.google.com/v1beta1, Kind=PrivateCACertificateTemplate: [].spec.projectRef: Required value
 [schema_violation] file=labels/servicedirectoryendpoint-labels gvk=servicedirectory.cnrm.cloud.google.com/v1beta1, Kind=ServiceDirectoryNamespace: [].spec.projectRef: Required value
 [schema_violation] file=labels/servicedirectoryservice-labels gvk=servicedirectory.cnrm.cloud.google.com/v1beta1, Kind=ServiceDirectoryNamespace: [].spec.projectRef: Required value
-[schema_violation] file=labels/vertexaitensorboard-labels gvk=vertexai.cnrm.cloud.google.com/v1alpha1, Kind=VertexAITensorboard: [].spec.projectRef: Required value

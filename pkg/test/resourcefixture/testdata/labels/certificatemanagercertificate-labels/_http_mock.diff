@@ -1,0 +1,88 @@
+199c199
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+222c222
+< POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate${uniqueId}
+---
+> POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?%24alt=json%3Benum-encoding%3Dint&certificateId=certificatemanagercertificate${uniqueId}
+243c243
+<   "scope": "EDGE_CACHE"
+---
+>   "scope": 1
+269c269
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+323c323
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+348c348
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+352c352
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+363c363
+<     "state": "ACTIVE"
+---
+>     "state": 3
+366c366
+<   "scope": "EDGE_CACHE"
+---
+>   "scope": 1
+371c371
+< PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json&updateMask=labels
+---
+> PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+382c382,394
+<   }
+---
+>   },
+>   "managed": {
+>     "dnsAuthorizations": [
+>       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+>       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
+>     ],
+>     "domains": [
+>       "${uniqueId}1.hashicorptest.com",
+>       "${uniqueId}2.hashicorptest.com"
+>     ]
+>   },
+>   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+>   "scope": 1
+408c420
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+463c475
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+489c501
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+493c505
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+504c516
+<     "state": "ACTIVE"
+---
+>     "state": 3
+507c519
+<   "scope": "EDGE_CACHE"
+---
+>   "scope": 1
+512c524
+< DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+538c550
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}

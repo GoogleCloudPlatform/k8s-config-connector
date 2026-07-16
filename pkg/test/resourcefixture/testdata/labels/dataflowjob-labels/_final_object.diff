@@ -1,0 +1,23 @@
+6d5
+<     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"ipConfiguration":"WORKER_IP_PUBLIC","parameters":{"inputFile":"gs://dataflow-samples/shakespeare/various.txt","output":"gs://storagebucket-${uniqueId}/output"}}}'
+9d7
+<     cnrm.cloud.google.com/state-into-spec: absent
+13c11
+<   generation: 2
+---
+>   generation: 1
+32d29
+<   resourceID: dataflowjob-${uniqueId}
+43,46c40,42
+<     message: 'Update call failed: error applying desired state: summary: Batch jobs
+<       cannot be updated.'
+<     reason: UpdateFailed
+<     status: "False"
+---
+>     message: The resource is up to date
+>     reason: UpToDate
+>     status: "True"
+49c45
+<   observedGeneration: 2
+---
+>   observedGeneration: 1

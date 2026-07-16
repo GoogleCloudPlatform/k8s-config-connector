@@ -39,6 +39,17 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
+var exemptedGroupKinds = map[schema.GroupKind]bool{
+	// EdgeContainerNodePool does not implement UpdateNodePool mock, making label updates impossible to test in MockGCP.
+	{Group: "edgecontainer.cnrm.cloud.google.com", Kind: "EdgeContainerNodePool"}: true,
+	// VertexAITensorboard does not support updating labels field in mock GCP.
+	{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboard"}: true,
+	// EdgeNetworkNetwork does not support updating labels (labels field is immutable).
+	{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkNetwork"}: true,
+	// EdgeNetworkSubnet does not support updating labels (labels field is immutable).
+	{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkSubnet"}: true,
+}
+
 func TestVerifyLabelsTestCasesExist(t *testing.T) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
@@ -103,7 +114,10 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 		if hasLabels {
 			// Only require labels test case if there is a basic test case for this GVK.
 			if _, found := findBasicFixture(gvk, allFixtures); found {
-				matchingGVKs = append(matchingGVKs, gvk)
+				gk := schema.GroupKind{Group: gvk.Group, Kind: gvk.Kind}
+				if !exemptedGroupKinds[gk] {
+					matchingGVKs = append(matchingGVKs, gvk)
+				}
 			}
 		}
 	}

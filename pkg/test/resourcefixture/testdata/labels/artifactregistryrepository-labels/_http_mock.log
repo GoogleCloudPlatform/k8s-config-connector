@@ -1,0 +1,501 @@
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}-2
+Content-Type: application/json
+
+{
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
+    "format": "DOCKER",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-two",
+      "managed-by-cnrm": "true"
+    },
+    "mode": "STANDARD_REPOSITORY",
+    "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+    "satisfiesPzi": true,
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_DISABLED",
+      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}
+Content-Type: application/json
+
+{
+  "description": "test repository description",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 2,
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream-repo",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
+    "description": "test repository description",
+    "format": "DOCKER",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "one",
+      "label-two": "two",
+      "managed-by-cnrm": "true"
+    },
+    "mode": "VIRTUAL_REPOSITORY",
+    "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+    "satisfiesPzi": true,
+    "virtualRepositoryConfig": {
+      "upstreamPolicies": [
+        {
+          "id": "upstream-repo",
+          "priority": 1,
+          "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+        }
+      ]
+    },
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_UNSUPPORTED",
+      "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+      "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream-repo",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": 1,
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+Content-Type: application/json
+
+{
+  "description": "test repository description",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream-repo",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream-repo",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": 1,
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream-repo",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": 1,
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "mode": 1,
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": 2,
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

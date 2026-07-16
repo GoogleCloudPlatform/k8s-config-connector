@@ -1,0 +1,186 @@
+POST https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/keys?alt=json
+Content-Type: application/json
+
+{
+  "displayName": "display-name-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "allowAmpTraffic": false,
+    "integrationType": "SCORE"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GET https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/keys/${keyID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+PATCH https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/keys/${keyID}?alt=json&updateMask=labels
+Content-Type: application/json
+
+{
+  "displayName": "display-name-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "allowAmpTraffic": false,
+    "integrationType": "SCORE"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GET https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/keys/${keyID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+DELETE https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/keys/${keyID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

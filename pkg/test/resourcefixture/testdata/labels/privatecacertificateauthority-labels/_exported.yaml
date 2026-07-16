@@ -1,0 +1,39 @@
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificateAuthority
+metadata:
+  labels:
+    cnrm-test: "true"
+    label-one: two
+    label-three: three
+    label-two: two
+    managed-by-cnrm: "true"
+  name: privatecacertificateauthority-${uniqueId}
+spec:
+  caPoolRef:
+    external: projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}
+  config:
+    subjectConfig:
+      subject:
+        commonName: my-certificate-authority
+        organization: Example
+      subjectAltName:
+        dnsNames:
+        - example.com
+        - example.com
+    x509Config:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
+  keySpec:
+    algorithm: RSA_PKCS1_4096_SHA256
+  lifetime: 24h0m0s
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: privatecacertificateauthority-${uniqueId}
+  type: SELF_SIGNED
