@@ -161,15 +161,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".status.observedState.status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
 
-	// URLMap
-	replacements.TransformObject("", func(m map[string]any) {
+	transformComputeResources := func(m map[string]any) {
 		if m["kind"] == "compute#urlMap" {
 			delete(m, "status")
 		}
-	})
-
-	// SecurityPolicy
-	replacements.TransformObject("", func(m map[string]any) {
 		if m["kind"] == "compute#securityPolicy" {
 			delete(m, "selfLinkWithId")
 			if rules, ok := m["rules"].([]any); ok {
@@ -180,7 +175,50 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 				}
 			}
 		}
-	})
+		if m["kind"] == "compute#router" {
+			if nats, ok := m["nats"].([]any); ok {
+				for _, natAny := range nats {
+					if nat, ok := natAny.(map[string]any); ok {
+						if subnetworks, ok := nat["subnetworks"].([]any); ok {
+							for _, subnetworkAny := range subnetworks {
+								if subnetwork, ok := subnetworkAny.(map[string]any); ok {
+									if name, ok := subnetwork["name"].(string); ok {
+										subnetwork["name"] = toRelativePath(name)
+									}
+								}
+							}
+						}
+						if rules, ok := nat["rules"].([]any); ok {
+							for _, ruleAny := range rules {
+								if rule, ok := ruleAny.(map[string]any); ok {
+									if action, ok := rule["action"].(map[string]any); ok {
+										if activeRanges, ok := action["sourceNatActiveRanges"].([]any); ok {
+											for i, r := range activeRanges {
+												if s, ok := r.(string); ok {
+													activeRanges[i] = toRelativePath(s)
+												}
+											}
+										}
+										if drainRanges, ok := action["sourceNatDrainRanges"].([]any); ok {
+											for i, r := range drainRanges {
+												if s, ok := r.(string); ok {
+													drainRanges[i] = toRelativePath(s)
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	replacements.TransformObject("", transformComputeResources)
+	replacements.TransformObject(".items[]", transformComputeResources)
+	replacements.TransformObject(".response", transformComputeResources)
 
 	// Route and Operation
 	replacements.TransformObject("", func(m map[string]any) {
@@ -310,4 +348,11 @@ func isComputeAPI(event mockgcpregistry.Event) bool {
 		return strings.Contains(u.Path, "/compute/")
 	}
 	return false
+}
+
+func toRelativePath(uri string) string {
+	uri = strings.TrimPrefix(uri, "https://www.googleapis.com/compute/beta/")
+	uri = strings.TrimPrefix(uri, "https://www.googleapis.com/compute/v1/")
+	uri = strings.TrimPrefix(uri, "https://www.googleapis.com/compute/alpha/")
+	return uri
 }
