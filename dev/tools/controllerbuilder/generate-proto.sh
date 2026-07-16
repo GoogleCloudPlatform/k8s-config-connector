@@ -88,47 +88,53 @@ if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
   exit 0
 fi
 
+shopt -s nullglob
+PROTO_FILES=(
+    ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto
+    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto
+    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto
+    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto
+    ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/partner/aistreams/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto
+    ${THIRD_PARTY}/googleapis/google/api/*.proto
+    ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/cloud/bigquery/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/dataflow/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/firestore/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/firestore/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/iam/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/iam/admin/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/logging/v2/*.proto
+    ${THIRD_PARTY}/googleapis/google/monitoring/v3/*.proto
+    ${THIRD_PARTY}/googleapis/google/monitoring/metricsscope/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/monitoring/dashboard/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/devtools/cloudbuild/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/devtools/artifactregistry/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/devtools/testing/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/spanner/admin/instance/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto
+    ${THIRD_PARTY}/googleapis/google/storage/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/maps/mapmanagement/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto
+    ${THIRD_PARTY}/googleapis/google/container/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto
+)
+shopt -u nullglob
+
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
     -I ${THIRD_PARTY}/googleapis/ \
     -I ${REPO_ROOT}/mockgcp/apis \
-    ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
-    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
-    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
-    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
-    ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/partner/aistreams/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
-    ${THIRD_PARTY}/googleapis/google/api/*.proto \
-    ${THIRD_PARTY}/googleapis/google/api/*.proto \
-    ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/bigquery/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/dataflow/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/firestore/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/firestore/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/iam/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/iam/admin/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/logging/v2/*.proto \
-    ${THIRD_PARTY}/googleapis/google/monitoring/v3/*.proto \
-    ${THIRD_PARTY}/googleapis/google/monitoring/metricsscope/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/monitoring/dashboard/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/devtools/cloudbuild/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/devtools/artifactregistry/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/devtools/testing/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/spanner/admin/instance/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
-    ${THIRD_PARTY}/googleapis/google/storage/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/container/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto \
+    "${PROTO_FILES[@]}" \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
 cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
