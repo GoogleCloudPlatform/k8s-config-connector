@@ -1,0 +1,12 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+10c9
+<   generation: 2
+---
+>   generation: 1
+77d75
+<   resourceID: privatecacertificatetemplate-${uniqueId}
+86c84
+<   observedGeneration: 2
+---
+>   observedGeneration: 1

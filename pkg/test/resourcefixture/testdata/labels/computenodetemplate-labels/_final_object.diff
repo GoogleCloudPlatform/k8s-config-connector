@@ -1,0 +1,21 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 2
+---
+>   generation: 1
+26d24
+<   resourceID: ${nodeTemplateID}
+30,33c28,29
+<     message: 'Update call failed: cannot make changes to immutable field(s): [Field
+<       Name: nodeAffinityLabels.%, Got: 5, Wanted: 4 Field Name: nodeAffinityLabels.Label-One,
+<       Got: two, Wanted: one Field Name: nodeAffinityLabels.Label-Three, Got: three,
+<       Wanted: ]; please refer to our troubleshooting doc: https://cloud.google.com/config-connector/docs/troubleshooting'
+---
+>     message: 'Update call failed: error updating: ComputeNodeTemplate is immutable
+>       and cannot be updated'
+38c34,35
+<   observedGeneration: 2
+---
+>   externalRef: projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}
+>   observedGeneration: 1
