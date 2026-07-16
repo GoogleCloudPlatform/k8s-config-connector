@@ -38,17 +38,6 @@ var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
 	}: true,
 }
 
-// mockGCPGETSkipGroupKinds lists resources whose MockGCP GET representations currently have minor schema drift
-// right across simulated server defaults or response attributes compared to real GCP.
-var mockGCPGETSkipGroupKinds = map[schema.GroupKind]bool{
-	schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:                       true,
-	schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouterNAT"}:                     true,
-	schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSecurityPolicy"}:                true,
-	schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocSession"}:                     true,
-	schema.GroupKind{Group: "filestore.cnrm.cloud.google.com", Kind: "FilestoreInstance"}:                  true,
-	schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivitySpoke"}: true,
-}
-
 func TestGoldenLogAlignment(t *testing.T) {
 	rootDir := "testdata/basic"
 	absRootDir, err := filepath.Abs(rootDir)
@@ -67,7 +56,6 @@ func TestGoldenLogAlignment(t *testing.T) {
 
 			if fileExists(realLogPath) {
 				createPath := filepath.Join(path, "create.yaml")
-				skipGET := false
 				if fileExists(createPath) {
 					gvk, err := getGVKFromYAML(createPath)
 					if err == nil {
@@ -78,14 +66,13 @@ func TestGoldenLogAlignment(t *testing.T) {
 						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
 							t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
 						}
-						skipGET = mockGCPGETSkipGroupKinds[gk]
 					}
 				}
 
 				if fileExists(mockLogPath) {
 					relPath, _ := filepath.Rel(absRootDir, path)
 					t.Run(relPath, func(t *testing.T) {
-						compareLogs(t, realLogPath, mockLogPath, skipGET)
+						compareLogs(t, realLogPath, mockLogPath)
 					})
 				}
 			}
@@ -114,12 +101,12 @@ func fileExists(path string) bool {
 
 type pathMethodEvents map[string]map[string][]httpEvent
 
-func groupByPathAndMethod(events []httpEvent, skipGET bool) pathMethodEvents {
+func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 	grouped := make(pathMethodEvents)
 	for _, ev := range events {
 		if ev.Method == "GET" {
-			if skipGET || strings.Contains(ev.URL, "/operations/") || strings.Contains(ev.URL, "/operations?") {
-				continue // Skip LRO polling GET requests or excluded GET representations
+			if strings.Contains(ev.URL, "/operations/") || strings.Contains(ev.URL, "/operations?") {
+				continue // Skip LRO polling GET requests
 			}
 		}
 		if ev.Method == "GRPC" {
@@ -140,12 +127,12 @@ func groupByPathAndMethod(events []httpEvent, skipGET bool) pathMethodEvents {
 	return grouped
 }
 
-func compareLogs(t *testing.T, realPath, mockPath string, skipGET bool) {
+func compareLogs(t *testing.T, realPath, mockPath string) {
 	realEvents := readLog(t, realPath)
 	mockEvents := readLog(t, mockPath)
 
-	realGrouped := groupByPathAndMethod(realEvents, skipGET)
-	mockGrouped := groupByPathAndMethod(mockEvents, skipGET)
+	realGrouped := groupByPathAndMethod(realEvents)
+	mockGrouped := groupByPathAndMethod(mockEvents)
 
 	compareGroupedLogs(t, realGrouped, mockGrouped)
 }
@@ -400,6 +387,11 @@ func cleanURL(u string) string {
 	if protoIdx := strings.Index(u, "://"); protoIdx != -1 {
 		u = u[protoIdx+3:]
 	}
+	if idx := strings.Index(u, "/projects/"); idx != -1 {
+		return u[idx:]
+	} else if idx := strings.Index(u, "projects/"); idx != -1 {
+		return "/" + u[idx:]
+	}
 	if slashIdx := strings.Index(u, "/"); slashIdx != -1 {
 		u = u[slashIdx:]
 	}
@@ -430,6 +422,7 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 			}
 			return
 		}
+		realObj = normalizeRepresentation(realObj)
 	}
 
 	if mockJSON != "" {
@@ -439,10 +432,67 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 			}
 			return
 		}
+		mockObj = normalizeRepresentation(mockObj)
 	}
 
 	if diff := cmp.Diff(realObj, mockObj); diff != "" {
 		t.Errorf("%s: payload mismatch (-real +mock):\n%s", context, diff)
+	}
+}
+
+func normalizeRepresentation(obj interface{}) interface{} {
+	switch v := obj.(type) {
+	case map[string]interface{}:
+		if auto, ok := v["autoCreateSubnetworks"].(bool); ok && auto {
+			if _, hasSubnets := v["subnetworks"]; hasSubnets {
+				v["subnetworks"] = []interface{}{"https://www.googleapis.com/compute/v1/projects/_project_/regions/_all_/subnetworks/_auto_"}
+			}
+		}
+		if ula, ok := v["enableUlaInternalIpv6"].(bool); ok && !ula {
+			delete(v, "enableUlaInternalIpv6")
+		}
+		if enc, ok := v["encryptedInterconnectRouter"].(bool); ok && !enc {
+			delete(v, "encryptedInterconnectRouter")
+		}
+		if timeout, ok := v["effectiveTcpTimeWaitTimeoutSec"].(float64); ok && timeout == 120 {
+			delete(v, "effectiveTcpTimeWaitTimeoutSec")
+		}
+		if desc, ok := v["description"].(string); ok && desc == "" {
+			delete(v, "description")
+		}
+		if preview, ok := v["preview"].(bool); ok && !preview {
+			delete(v, "preview")
+		}
+		if dyn, ok := v["enableDynamicPortAllocation"].(bool); ok && !dyn {
+			delete(v, "enableDynamicPortAllocation")
+		}
+		if state, ok := v["state"].(string); ok && state == "READY" && v["kind"] == "compute#subnetwork" {
+			delete(v, "state")
+		}
+		if rangeStr, ok := v["internalIpv6Range"].(string); ok && strings.HasPrefix(rangeStr, "fd") {
+			v["internalIpv6Range"] = "fd00:0000:0000:0:0:0:0:0/48"
+		}
+		for k, val := range v {
+			v[k] = normalizeRepresentation(val)
+		}
+		return v
+	case []interface{}:
+		for i, item := range v {
+			v[i] = normalizeRepresentation(item)
+		}
+		sort.SliceStable(v, func(i, j int) bool {
+			si, _ := json.Marshal(v[i])
+			sj, _ := json.Marshal(v[j])
+			return string(si) < string(sj)
+		})
+		return v
+	case string:
+		if idx := strings.Index(v, "projects/"); idx != -1 && (strings.HasPrefix(v, "https://") || strings.HasPrefix(v, "/") || strings.HasPrefix(v, "projects/")) {
+			return "projects/" + v[idx+len("projects/"):]
+		}
+		return v
+	default:
+		return obj
 	}
 }
 

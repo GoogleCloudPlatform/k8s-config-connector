@@ -515,7 +515,6 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
@@ -932,7 +931,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -948,7 +947,6 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
@@ -959,18 +957,22 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 {
   "nats": [
     {
+      "drainNatIps": [],
       "enableEndpointIndependentMapping": false,
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
       ],
+      "icmpIdleTimeoutSec": 30,
+      "logConfig": null,
       "name": "computerouternat-${uniqueId}",
       "natIpAllocateOption": "USE_SHARED_RANGES",
+      "natIps": [],
       "rules": [
         {
           "action": {
@@ -992,7 +994,11 @@ Content-Type: application/json
           ]
         }
       ],
-      "type": "PRIVATE"
+      "tcpEstablishedIdleTimeoutSec": 1200,
+      "tcpTimeWaitTimeoutSec": 120,
+      "tcpTransitoryIdleTimeoutSec": 30,
+      "type": "PRIVATE",
+      "udpIdleTimeoutSec": 30
     }
   ]
 }
@@ -1025,8 +1031,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1057,7 +1062,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1073,7 +1078,6 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
@@ -1085,6 +1089,7 @@ X-Xss-Protection: 0
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
       ],
+      "icmpIdleTimeoutSec": 30,
       "name": "computerouternat-${uniqueId}",
       "natIpAllocateOption": "USE_SHARED_RANGES",
       "rules": [
@@ -1108,7 +1113,11 @@ X-Xss-Protection: 0
           ]
         }
       ],
-      "type": "PRIVATE"
+      "tcpEstablishedIdleTimeoutSec": 1200,
+      "tcpTimeWaitTimeoutSec": 120,
+      "tcpTransitoryIdleTimeoutSec": 30,
+      "type": "PRIVATE",
+      "udpIdleTimeoutSec": 30
     }
   ],
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
@@ -1118,18 +1127,25 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 {
   "nats": [
     {
+      "autoNetworkTier": "PREMIUM",
+      "drainNatIps": [],
+      "effectiveTcpTimeWaitTimeoutSec": 120,
+      "enableDynamicPortAllocation": false,
       "enableEndpointIndependentMapping": false,
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
       ],
+      "icmpIdleTimeoutSec": 30,
+      "logConfig": null,
       "name": "computerouternat-${uniqueId}",
       "natIpAllocateOption": "USE_SHARED_RANGES",
+      "natIps": [],
       "rules": [
         {
           "action": {
@@ -1154,7 +1170,11 @@ Content-Type: application/json
           ]
         }
       ],
-      "type": "PRIVATE"
+      "tcpEstablishedIdleTimeoutSec": 1200,
+      "tcpTimeWaitTimeoutSec": 120,
+      "tcpTransitoryIdleTimeoutSec": 30,
+      "type": "PRIVATE",
+      "udpIdleTimeoutSec": 30
     }
   ]
 }
@@ -1187,8 +1207,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1219,7 +1238,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1235,7 +1254,6 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
@@ -1243,10 +1261,12 @@ X-Xss-Protection: 0
     {
       "autoNetworkTier": "PREMIUM",
       "effectiveTcpTimeWaitTimeoutSec": 120,
+      "enableDynamicPortAllocation": false,
       "enableEndpointIndependentMapping": false,
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
       ],
+      "icmpIdleTimeoutSec": 30,
       "name": "computerouternat-${uniqueId}",
       "natIpAllocateOption": "USE_SHARED_RANGES",
       "rules": [
@@ -1273,7 +1293,11 @@ X-Xss-Protection: 0
           ]
         }
       ],
-      "type": "PRIVATE"
+      "tcpEstablishedIdleTimeoutSec": 1200,
+      "tcpTimeWaitTimeoutSec": 120,
+      "tcpTransitoryIdleTimeoutSec": 30,
+      "type": "PRIVATE",
+      "udpIdleTimeoutSec": 30
     }
   ],
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
@@ -1283,10 +1307,12 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 Content-Type: application/json
 
-{}
+{
+  "nats": []
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1316,8 +1342,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1687,47 +1712,9 @@ X-Xss-Protection: 0
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "example router description",
-  "encryptedInterconnectRouter": false,
   "id": "000000000000000000000",
   "kind": "compute#router",
   "name": "${routerID}",
-  "nats": [
-    {
-      "autoNetworkTier": "PREMIUM",
-      "effectiveTcpTimeWaitTimeoutSec": 120,
-      "enableEndpointIndependentMapping": false,
-      "endpointTypes": [
-        "ENDPOINT_TYPE_VM"
-      ],
-      "name": "computerouternat-${uniqueId}",
-      "natIpAllocateOption": "USE_SHARED_RANGES",
-      "rules": [
-        {
-          "action": {
-            "sourceNatActiveRanges": [
-              "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-            ],
-            "sourceNatDrainRanges": [
-              "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-            ]
-          },
-          "description": "private nat rule example",
-          "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
-          "ruleNumber": 100
-        }
-      ],
-      "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
-      "subnetworks": [
-        {
-          "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-          "sourceIpRangesToNat": [
-            "ALL_IP_RANGES"
-          ]
-        }
-      ],
-      "type": "PRIVATE"
-    }
-  ],
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"

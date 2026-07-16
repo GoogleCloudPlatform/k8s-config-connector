@@ -236,7 +236,7 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "projects/${projectId}/regions/us-central1",
   "selfLink": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
+  "stackType": "IPV4_ONLY"
 }
 
 ---
