@@ -3194,7 +3194,6 @@
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.persistenceConfig.rdbNextSnapshotTime" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.persistenceConfig.rdbSnapshotPeriod" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.persistenceConfig.rdbSnapshotStartTime" is not set in unstructured objects
-[missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.readReplicasMode" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.redisConfigs" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.redisVersion" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaCount" is not set in unstructured objects
