@@ -393,6 +393,14 @@ func parseLog(content string) []httpEvent {
 
 func extractResourceKey(urlPath string) string {
 	u := strings.Split(urlPath, "?")[0]
+	var servicePrefix string
+	if protoIdx := strings.Index(u, "://"); protoIdx != -1 {
+		hostPath := u[protoIdx+3:]
+		if slashIdx := strings.Index(hostPath, "/"); slashIdx != -1 {
+			host := hostPath[:slashIdx]
+			servicePrefix = strings.Split(host, ".")[0] + "/"
+		}
+	}
 	u = cleanURL(u)
 	segments := strings.Split(strings.Trim(u, "/"), "/")
 	if len(segments) == 0 {
@@ -404,9 +412,13 @@ func extractResourceKey(urlPath string) string {
 	}
 	if len(segments) >= 2 {
 		prevSeg := segments[len(segments)-2]
-		return prevSeg + "/" + lastSeg
+		if prevSeg == "operations" && len(segments) >= 3 {
+			prevPrevSeg := segments[len(segments)-3]
+			return servicePrefix + prevPrevSeg + "/" + prevSeg + "/" + lastSeg
+		}
+		return servicePrefix + prevSeg + "/" + lastSeg
 	}
-	return lastSeg
+	return servicePrefix + lastSeg
 }
 
 func cleanURL(u string) string {

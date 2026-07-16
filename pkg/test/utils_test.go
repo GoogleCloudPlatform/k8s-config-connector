@@ -25,19 +25,31 @@ func TestExtractResourceKey(t *testing.T) {
 	}{
 		{
 			url:  "https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-123",
-			want: "clusters/cluster-sample-123",
+			want: "container/clusters/cluster-sample-123",
 		},
 		{
 			url:  "https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-123/nodePools/nodepool-sample-123?alt=json",
-			want: "nodePools/nodepool-sample-123",
+			want: "container/nodePools/nodepool-sample-123",
 		},
 		{
 			url:  "https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/computenetwork-123",
-			want: "networks/computenetwork-123",
+			want: "compute/networks/computenetwork-123",
 		},
 		{
 			url:  "https://cloudkms.googleapis.com/v1/projects/mock-project/locations/us-central1/keyRings/keyring-123/cryptoKeys/cryptokey-123:getIamPolicy",
-			want: "cryptoKeys/cryptokey-123",
+			want: "cloudkms/cryptoKeys/cryptokey-123",
+		},
+		{
+			url:  "https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-123",
+			want: "container/us-central1-a/operations/operation-123",
+		},
+		{
+			url:  "https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/operations/operation-456",
+			want: "compute/us-central1/operations/operation-456",
+		},
+		{
+			url:  "https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-789",
+			want: "compute/global/operations/operation-789",
 		},
 	}
 
