@@ -1,0 +1,21 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+  labels:
+    label-one: two
+    label-three: three
+  name: computeglobalforwardingrule-${uniqueId}
+spec:
+  description: A global forwarding rule
+  ipAddress:
+    ip: 0.0.0.0
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  location: global
+  networkRef:
+    name: default
+  portRange: "80"
+  target:
+    targetHTTPProxyRef:
+      name: computetargethttpproxy-${uniqueId}

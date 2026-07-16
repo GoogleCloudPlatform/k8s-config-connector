@@ -1,0 +1,17 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheKeyset
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: networkservicesedgecachekeyset-${uniqueId}
+spec:
+  description: The default keyset
+  projectRef:
+    external: ${projectId}
+  publicKey:
+  - id: my-public-key
+    value: FHsTyFHNmvNpw4o7-rp-M1yqMyBF8vXSBRkZtkQ0RKY
+  - id: my-public-key-2
+    value: hzd03llxB1u5FOLKFkZ6_wCJqC7jtN0bg7xlBqS6WVM
+  resourceID: networkservicesedgecachekeyset${uniqueId}

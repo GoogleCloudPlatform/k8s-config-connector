@@ -1,0 +1,9 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: bigquerydatasetsample${uniqueId}
+spec:
+  friendlyName: bigquerydataset-sample

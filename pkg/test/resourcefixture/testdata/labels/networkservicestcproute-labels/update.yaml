@@ -1,0 +1,34 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesTCPRoute
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: networkservicestcproute-${uniqueId}
+spec:
+  description: A test TcpRoute
+  gateways:
+  - name: networkservicesgateway-1-${uniqueId}
+  location: global
+  meshes:
+  - name: networkservicesmesh-1-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
+  rules:
+  - action:
+      destinations:
+      - serviceRef:
+          name: computebackendservice-1-${uniqueId}
+        weight: 1
+    matches:
+    - address: 10.0.0.1/32
+      port: "7777"
+  - action:
+      destinations:
+      - serviceRef:
+          name: computebackendservice-1-${uniqueId}
+        weight: 1
+      originalDestination: false
+    matches:
+    - address: 10.0.0.1/0
+      port: "1"

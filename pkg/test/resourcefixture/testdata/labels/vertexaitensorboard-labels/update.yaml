@@ -1,0 +1,11 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAITensorboard
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: vertexaitensorboard${uniqueId}
+spec:
+  description: Dashboard version 1
+  displayName: config-connector v1
+  region: us-central1

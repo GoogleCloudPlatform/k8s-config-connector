@@ -1,0 +1,55 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesGRPCRoute
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: networkservicesgrpcroute-${uniqueId}
+spec:
+  description: A test GrpcRoute
+  gateways:
+  - name: networkservicesgateway-1-${uniqueId}
+  hostnames:
+  - test1
+  - test2
+  location: global
+  meshes:
+  - name: networkservicesmesh-1-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
+  rules:
+  - action:
+      destinations:
+      - serviceRef:
+          name: computebackendservice-1-${uniqueId}
+        weight: 50
+      - serviceRef:
+          name: computebackendservice-1-${uniqueId}
+        weight: 50
+      faultInjectionPolicy:
+        abort:
+          httpStatus: 501
+          percentage: 1
+        delay:
+          fixedDelay: 10s
+          percentage: 2
+      retryPolicy:
+        numRetries: 3
+        retryConditions:
+        - refused-stream
+        - cancelled
+      timeout: 30s
+    matches:
+    - headers:
+      - key: foo
+        type: EXACT
+        value: bar
+      method:
+        caseSensitive: false
+        grpcMethod: SayHello
+        grpcService: helloworld.Greeter
+        type: EXACT
+  - action:
+      destinations:
+      - serviceRef:
+          name: computebackendservice-1-${uniqueId}

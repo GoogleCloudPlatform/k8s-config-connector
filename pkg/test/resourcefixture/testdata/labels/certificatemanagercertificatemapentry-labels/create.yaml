@@ -1,0 +1,17 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerCertificateMapEntry
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: certificatemanagercertificatemapentry-${uniqueId}
+spec:
+  certificatesRefs:
+  - name: certificatemanagercertificate-${uniqueId}
+  description: sample certificate map entry
+  mapRef:
+    name: certificatemanagercertificatemap-${uniqueId}
+  matcher: PRIMARY
+  projectRef:
+    external: ${projectId}
+  resourceID: certificatemanagercertificatemapentry${uniqueId}

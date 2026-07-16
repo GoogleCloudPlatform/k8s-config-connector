@@ -1,0 +1,15 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    label-one: one
+    label-two: two
+  name: pubsubsubscription-sample-${uniqueId}
+spec:
+  ackDeadlineSeconds: 15
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
+    name: pubsubtopic-sample-${uniqueId}

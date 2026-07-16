@@ -1,0 +1,14 @@
+apiVersion: beyondcorp.cnrm.cloud.google.com/v1alpha1
+kind: BeyondCorpAppGateway
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: beyondcorpappgateway-${uniqueId}
+spec:
+  hostType: GCP_REGIONAL_MIG
+  projectRef:
+    external: ${projectId}
+  region: us-central1
+  resourceID: beyondcorpappgateway${uniqueId}
+  type: TCP_PROXY

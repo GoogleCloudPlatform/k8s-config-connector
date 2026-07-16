@@ -1,0 +1,20 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityServerTLSPolicy
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: networksecurityservertlspolicy-${uniqueId}
+spec:
+  allowOpen: true
+  description: Test global server TLS policy
+  location: global
+  mtlsPolicy:
+    clientValidationCa:
+    - certificateProviderInstance:
+        pluginInstance: google_cloud_private_spiffe
+  projectRef:
+    external: projects/${projectId}
+  serverCertificate:
+    certificateProviderInstance:
+      pluginInstance: google_cloud_private_spiffe

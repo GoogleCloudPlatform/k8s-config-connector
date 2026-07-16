@@ -47,6 +47,7 @@ const (
 	StateAbsentInSpec           TestType = "stateabsentinspec"
 	ResourceOverrides           TestType = "resourceoverrides"
 	ReconcileIntervalAnnotation TestType = "reconcileintervalannotations"
+	Labels                      TestType = "labels"
 )
 
 type ResourceFixture struct {
@@ -286,6 +287,8 @@ func parseTestTypeFromPath(t *testing.T, path string) TestType {
 		return ResourceOverrides
 	case "reconcileintervalannotations":
 		return ReconcileIntervalAnnotation
+	case "labels":
+		return Labels
 	default:
 		t.Fatalf("failed to parse test type for path %v", path)
 		return Unknown

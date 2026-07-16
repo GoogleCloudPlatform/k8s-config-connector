@@ -1,0 +1,21 @@
+apiVersion: datafusion.cnrm.cloud.google.com/v1beta1
+kind: DataFusionInstance
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: dfi-${uniqueId}
+spec:
+  dataprocServiceAccountRef:
+    name: gsa-${uniqueId}
+  description: A test Data Fusion instance.
+  displayName: Test Data Fusion Instance
+  enableStackdriverLogging: true
+  enableStackdriverMonitoring: true
+  location: us-central1
+  networkConfig:
+    ipAllocation: 10.89.48.0/22
+    networkRef:
+      name: default
+  privateInstance: true
+  type: BASIC

@@ -1,0 +1,14 @@
+apiVersion: beyondcorp.cnrm.cloud.google.com/v1alpha1
+kind: BeyondCorpAppConnector
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: beyondcorpappconnector-${uniqueId}
+spec:
+  principalInfo:
+  - serviceAccount:
+    - email: ${google_service_account.service_account.email}
+  projectRef:
+    external: ${projectId}
+  resourceID: beyondcorpappconnector${uniqueId}

@@ -1,0 +1,25 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+kind: VertexAIIndex
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: vertexaiindex-${uniqueId}
+spec:
+  description: an example vertex AI index
+  displayName: vertex AI index
+  indexUpdateMethod: BATCH_UPDATE
+  metadata:
+    config:
+      algorithmConfig:
+        treeAhConfig:
+          leafNodeEmbeddingCount: 500
+          leafNodesToSearchPercent: 7
+      approximateNeighborsCount: 150
+      dimensions: 2
+      distanceMeasureType: DOT_PRODUCT_DISTANCE
+      shardSize: SHARD_SIZE_SMALL
+    contentsDeltaUri: ${KCC_VERTEX_AI_INDEX_TEST_DATA_URI}
+  projectRef:
+    external: ${projectId}
+  region: us-central1

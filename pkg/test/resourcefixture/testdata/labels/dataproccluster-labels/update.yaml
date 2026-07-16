@@ -1,0 +1,22 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocCluster
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: dataproccluster-${uniqueId}
+spec:
+  config:
+    autoscalingConfig:
+      policyRef:
+        name: dataprocautoscalingpolicy-${uniqueId}
+    gceClusterConfig:
+      internalIPOnly: false
+    masterConfig:
+      diskConfig:
+        bootDiskType: pd-standard
+      machineType: n2-standard-2
+      numInstances: 1
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}

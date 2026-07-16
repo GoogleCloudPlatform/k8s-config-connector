@@ -1,0 +1,30 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    label-one: one
+    label-two: two
+  name: containercluster-${uniqueId}
+spec:
+  clusterAutoscaling:
+    autoProvisioningDefaults:
+      management:
+        autoRepair: false
+        autoUpgrade: true
+      oauthScopes:
+      - https://www.googleapis.com/auth/devstorage.read_only
+      - https://www.googleapis.com/auth/logging.write
+    enabled: true
+    resourceLimits:
+    - maximum: 1
+      resourceType: cpu
+    - maximum: 1024
+      resourceType: memory
+  initialNodeCount: 1
+  location: us-central1-a
+  nodePoolAutoConfig:
+    networkTags:
+      tags:
+      - test-autoscaling

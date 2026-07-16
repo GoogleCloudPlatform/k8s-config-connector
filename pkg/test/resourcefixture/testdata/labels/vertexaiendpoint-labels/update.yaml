@@ -1,0 +1,13 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+kind: VertexAIEndpoint
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: vertexaiendpoint-${uniqueId}
+spec:
+  description: example vertex AI endpoint
+  displayName: vertexai-endpoint-basic
+  projectRef:
+    external: ${projectId}
+  region: us-central1

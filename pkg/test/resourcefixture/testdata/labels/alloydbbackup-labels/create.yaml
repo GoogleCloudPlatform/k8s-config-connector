@@ -1,0 +1,14 @@
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBBackup
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: alloydbbackup-${uniqueId}
+spec:
+  clusterNameRef:
+    name: alloydbcluster-${uniqueId}
+  location: europe-west9
+  projectRef:
+    external: ${projectId}
+  resourceID: alloydbbackup${uniqueId}

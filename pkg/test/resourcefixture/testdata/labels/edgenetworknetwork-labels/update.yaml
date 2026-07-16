@@ -1,0 +1,12 @@
+apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
+kind: EdgeNetworkNetwork
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: edgenetworknetwork-${uniqueId}
+spec:
+  description: Basic Network
+  location: us-central1
+  mtu: 9000
+  zone: us-central1-test-zone
