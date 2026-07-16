@@ -11,17 +11,32 @@
 *   `ApigeeRegistryArtifact`
     *   Manage [Apigee Registry artifacts](https://cloud.google.com/apigee/docs/api-hub/registry-overview) associated with APIs, versions, or specs.
 
+*   `ApigeeRegistryInstance`
+    *   Manage [Apigee API Hub Registry Instances](https://cloud.google.com/apigee/docs/api-hub/overview) to manage and catalog APIs.
+
+*   `APIHubAPI`
+    *   Manage [API Hub APIs](https://cloud.google.com/apigee/docs/api-hub/overview) to track API catalogs.
+
 *   `APIHubExternalAPI`
     *   Manage [API Hub external APIs](https://cloud.google.com/apigee/docs/api-hub/api-hub-overview) to track APIs hosted outside of GCP.
 
 *   `APIHubInstance`
     *   Manage [API Hub instances](https://cloud.google.com/apigee/docs/api-hub/api-hub-overview) to enable enterprise API management.
 
+*   `APIHubPlugin`
+    *   Manage [API Hub Plugins](https://cloud.google.com/apigee/docs/api-hub/overview) to extend API Hub capabilities.
+
+*   `APIHubRuntimeProjectAttachment`
+    *   Manage [API Hub Runtime Project Attachments](https://cloud.google.com/apigee/docs/api-hub/overview) to associate runtime projects with API Hub.
+
 *   `AppOptimizeReport`
     *   Manage [App Hub Optimize reports](https://cloud.google.com/app-hub/docs/overview).
 
 *   `ArtifactRegistryVPCSCConfig`
     *   Manage [Artifact Registry VPC Service Controls configurations](https://cloud.google.com/artifact-registry/docs/vpc-sc) to secure repository access.
+
+*   `BigLakeCatalog`
+    *   Manage [BigLake Catalogs](https://cloud.google.com/bigquery/docs/biglake-intro) for unified data lake governance.
 
 *   `BigQueryMigrationMigrationWorkflow`
     *   Manage [BigQuery Migration workflows](https://cloud.google.com/bigquery/docs/migration-intro) to orchestrate data migration to BigQuery.
@@ -38,14 +53,26 @@
 *   `CCInsightsPhraseMatcher`
     *   Manage [Contact Center Insights phrase matchers](https://cloud.google.com/contact-center/insights/docs) to detect specific phrases in conversations.
 
+*   `CCInsightsView`
+    *   Manage [Contact Center Insights Views](https://cloud.google.com/contact-center/insights/docs) to control access to conversational data.
+
 *   `CESApp`
     *   Manage [Consumer Experience Suite (CES) applications](https://cloud.google.com/ces/docs).
 
 *   `CloudBuildConnection`
     *   Manage [Cloud Build 2nd gen connections](https://cloud.google.com/build/docs/submitting-builds/git-repos/connect-repo-github) to integrate external source repositories.
 
+*   `CloudDeployAutomation`
+    *   Manage [Cloud Deploy Automations](https://cloud.google.com/deploy/docs) to automate release delivery pipelines.
+
+*   `CloudSecurityComplianceCloudControl`
+    *   Manage [Cloud Security Compliance Cloud Controls](https://cloud.google.com/security-command-center/docs) to enforce security compliance guidelines.
+
 *   `CloudSecurityComplianceFramework`
     *   Manage [Cloud Security Compliance frameworks](https://cloud.google.com/security-command-center/docs/compliance-standards).
+
+*   `ConfigDeliveryFleetPackage`
+    *   Manage [Config Delivery Fleet Packages](https://cloud.google.com/gke-enterprise/docs/config-delivery) to deliver software packages to clusters.
 
 *   `ConnectorsConnection`
     *   Manage [Integration Connectors connections](https://cloud.google.com/integration-connectors/docs) to connect to SaaS, databases, and enterprise systems.
@@ -58,6 +85,9 @@
 
 *   `ContentWarehouseSynonymSet`
     *   Manage [Document AI Warehouse synonym sets](https://cloud.google.com/document-ai/docs/warehouse) to expand search queries.
+
+*   `DatabaseMigrationConversionWorkspace`
+    *   Manage [Database Migration Conversion Workspaces](https://cloud.google.com/database-migration/docs) to convert database schemas during migrations.
 
 *   `DatabaseMigrationPrivateConnection`
     *   Manage [Database Migration Service private connections](https://cloud.google.com/database-migration/docs) to securely connect source databases to GCP.
@@ -73,6 +103,9 @@
 
 *   `DataLabelingEvaluationJob`
     *   Manage [AI Platform Data Labeling evaluation jobs](https://cloud.google.com/ai-platform/data-labeling/docs) to assess model quality.
+
+*   `DataLabelingInstruction`
+    *   Manage [Data Labeling Instructions](https://cloud.google.com/ai-platform/data-labeling/docs) to describe instructions for human annotators.
 
 *   `DataLineageProcess`
     *   Manage [Dataplex Data Lineage processes](https://cloud.google.com/dataplex/docs/data-lineage) to track data origin and movement.
@@ -95,8 +128,17 @@
 *   `DataplexMetadataJob`
     *   Manage [Dataplex metadata jobs](https://cloud.google.com/dataplex/docs) for metadata extraction.
 
+*   `DataprocSession`
+    *   Manage [Dataproc Sessions](https://cloud.google.com/dataproc/docs/concepts/sessions) to run interactive spark notebooks and workloads.
+
+*   `DataprocSessionTemplate`
+    *   Manage [Dataproc Session Templates](https://cloud.google.com/dataproc/docs/concepts/sessions) to template interactive spark sessions.
+
 *   `DevConnectConnection`
     *   Manage [Developer Connect connections](https://cloud.google.com/developer-connect/docs) to securely link third-party Git hosts.
+
+*   `DeviceStreamingSession`
+    *   Manage [Device Streaming Sessions](https://cloud.google.com/android-studio/docs/devices/device-streaming) to stream remote physical devices.
 
 *   `DialogflowConversationDataset`
     *   Manage [Dialogflow conversation datasets](https://cloud.google.com/dialogflow/cx/docs) for agent training.
@@ -119,7 +161,10 @@
 *   `DLPDiscoveryConfig`
     *   Manage [Sensitive Data Protection (DLP) discovery configurations](https://cloud.google.com/security-command-center/docs/sensitive-data-protection) for profiling data assets.
 
-*   `EventarcGoogleApiSource`
+*   `EventarcChannelConnection`
+    *   Manage [Eventarc Channel Connections](https://cloud.google.com/eventarc/docs) to connect external event sources.
+
+*   `EventarcGoogleAPISource`
     *   Manage [Eventarc Google API sources](https://cloud.google.com/eventarc/docs) to configure event routing.
 
 *   `GeminiDataAnalyticsConversation`
@@ -152,11 +197,17 @@
 *   `NetworkSecurityGatewaySecurityPolicy`
     *   Manage [Network Security gateway security policies](https://cloud.google.com/secure-web-proxy/docs) for Secure Web Proxy configurations.
 
+*   `NetworkSecurityInterceptEndpointGroup`
+    *   Manage [Network Security Intercept Endpoint Groups](https://cloud.google.com/secure-web-proxy/docs) to intercept and route network traffic.
+
 *   `NetworkSecurityPartnerSSEGateway`
     *   Manage [Network Security partner Secure Service Edge (SSE) gateways](https://cloud.google.com/secure-web-proxy/docs).
 
 *   `NetworkSecurityPartnerSSERealm`
     *   Manage [Network Security partner Secure Service Edge (SSE) realms](https://cloud.google.com/secure-web-proxy/docs).
+
+*   `NetworkSecuritySACRealm`
+    *   Manage [Network Security Secure Access Connector Realms](https://cloud.google.com/secure-web-proxy/docs) to configure secure remote access boundaries.
 
 *   `NetworkSecuritySecurityProfile`
     *   Manage [Network Security security profiles](https://cloud.google.com/firewall/docs/about-cloud-firewall-plus) to group threat prevention policies.
@@ -166,6 +217,12 @@
 
 *   `NetworkServicesAuthzExtension`
     *   Manage [Network Services authorization extensions](https://cloud.google.com/service-extensions/docs) to integrate third-party callouts.
+
+*   `NetworkServicesWasmPlugin`
+    *   Manage [Network Services Wasm Plugins](https://cloud.google.com/service-extensions/docs/wasm-plugin-overview) to extend traffic routing behavior.
+
+*   `NotebooksExecution`
+    *   Manage [Notebooks Executions](https://cloud.google.com/vertex-ai/docs/workbench/reference/rest) to run scheduled notebooks.
 
 *   `NotebooksSchedule`
     *   Manage [Vertex AI Workbench schedules](https://cloud.google.com/vertex-ai/docs/workbench) to run automated notebooks.
@@ -193,6 +250,9 @@
 
 *   `VectorSearchCollection`
     *   Manage [Vertex AI Vector Search collections](https://cloud.google.com/vertex-ai/docs/vector-search).
+
+*   `VertexAIDeploymentResourcePool`
+    *   Manage [Vertex AI Deployment Resource Pools](https://cloud.google.com/vertex-ai/docs/predictions/using-dedicated-resources) for dedicated serving resources.
 
 *   `VertexAIFeatureGroup`
     *   Manage [Vertex AI Feature Store feature groups](https://cloud.google.com/vertex-ai/docs/featurestore/overview) to organize features.
@@ -223,101 +283,172 @@
 
 ## New Fields:
 
-*   [`ComputeSubnetwork`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesubnetwork)
-    *   Added `spec.reservedInternalRange` field.
-
-*   [`NetworkConnectivityInternalRange`](https://cloud.google.com/config-connector/docs/reference/resource-docs/networkconnectivity/networkconnectivityinternalrange)
-    *   Added `spec.allocationOptions` field.
+*   [`ComputeAddress`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeaddress)
+    *   Added `spec.ipCollection` field.
 
 *   [`ComputeNetwork`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computenetwork)
     *   Added `spec.networkProfile` field.
 
+*   [`ComputeRouterNAT`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computerouternat)
+    *   Added Private NAT feature support.
+
 *   [`ComputeSecurityPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesecuritypolicy)
     *   Added `spec.region` field.
 
-*   [`DNSRecordSet`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dns/dnsrecordset)
-    *   Added support for routing policy `healthCheckRef` and `rrdatasRefs` fields.
-
-*   [`ComputeAddress`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeaddress)
-    *   Added `spec.ipCollection` field.
+*   [`ComputeSubnetwork`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesubnetwork)
+    *   Added `spec.reservedInternalRange` field.
 
 *   [`ComputeURLMap`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeurlmap)
     *   Added `spec.defaultCustomErrorResponsePolicy` field.
     *   Added `spec.test[].expectedOutputUrl` and `spec.test[].expectedRedirectResponseCode` fields.
 
-*   [`RedisCluster`](https://cloud.google.com/config-connector/docs/reference/resource-docs/redis/rediscluster)
-    *   Added `spec.crossClusterReplicationConfig` field.
+*   [`ContainerCluster`](https://cloud.google.com/config-connector/docs/reference/resource-docs/container/containercluster)
+    *   Added support for GKE Parallelstore CSI Driver Addon via `spec.addonsConfig.gkeParallelstoreCsiDriverConfig`.
+
+*   [`ContainerNodePool`](https://cloud.google.com/config-connector/docs/reference/resource-docs/container/containernodepool)
+    *   Added support for GKE NodePool Queued Provisioning via `spec.queuedProvisioning` and `spec.nodeConfig.taints`.
+
+*   [`DNSRecordSet`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dns/dnsrecordset)
+    *   Added support for routing policy `healthCheckRef` and `rrdatasRefs` fields.
 
 *   [`MonitoringAlertPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/monitoring/monitoringalertpolicy)
     *   Added `spec.conditions[].conditionSql` field (SQL Condition).
 
-*   [`StorageBucket`](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket)
-    *   Added `spec.ipFilter` field.
+*   [`NetworkConnectivityInternalRange`](https://cloud.google.com/config-connector/docs/reference/resource-docs/networkconnectivity/networkconnectivityinternalrange)
+    *   Added `spec.allocationOptions` field.
 
 *   [`PubSubTopic`](https://cloud.google.com/config-connector/docs/reference/resource-docs/pubsub/pubsubtopic)
     *   Added `spec.messageStoragePolicy.enforceInTransit` field.
 
-*   [`ComputeRouterNAT`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computerouternat)
-    *   Added Private NAT feature support.
+*   [`RedisCluster`](https://cloud.google.com/config-connector/docs/reference/resource-docs/redis/rediscluster)
+    *   Added `spec.crossClusterReplicationConfig` field.
+
+*   [`StorageBucket`](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket)
+    *   Added `spec.ipFilter` field.
 
 ## Reconciliation Improvements
 
-We have added support for direct reconciliation to more resources, with opt-in behaviour. The API is unchanged. To use the direct reconciler, add the `cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.
-
 *   [`BigQueryReservationCapacityCommitment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigqueryreservation/bigqueryreservationcapacitycommitment)
+
 *   [`BigtableGCPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigtable/bigtablegcpolicy)
+
 *   [`BillingBudgetsBudget`](https://cloud.google.com/config-connector/docs/reference/resource-docs/billingbudgets/billingbudgetsbudget)
+
 *   [`CertificateManagerCertificateMap`](https://cloud.google.com/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemap)
+
 *   [`CertificateManagerCertificateMapEntry`](https://cloud.google.com/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemapentry)
+
+*   We have added support for direct reconciliation to more resources, with opt-in behaviour. The API is unchanged. To use the direct reconciler, add the `cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.
+
 *   [`ComputeAddress`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeaddress)
+
 *   [`ComputeAutoscaler`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeautoscaler)
+
 *   [`ComputeBackendServiceSignedURLKey`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computebackendservicesignedurlkey)
+
 *   [`ComputeDisk`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computedisk)
+
 *   [`ComputeDiskResourcePolicyAttachment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computediskresourcepolicyattachment)
+
 *   [`ComputeExternalVPNGateway`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeexternalvpngateway)
+
 *   [`ComputeFirewall`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computefirewall)
+
 *   [`ComputeFirewallPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computefirewallpolicy)
+
 *   [`ComputeHTTPHealthCheck`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computehttphealthcheck)
+
 *   [`ComputeHTTPSHealthCheck`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computehttpshealthcheck)
+
 *   [`ComputeImage`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeimage)
+
 *   [`ComputeInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeinstance)
+
 *   [`ComputeInstanceGroup`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeinstancegroup)
+
 *   [`ComputeInstanceGroupManager`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeinstancegroupmanager)
+
 *   [`ComputeNetwork`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computenetwork)
+
 *   [`ComputeNodeTemplate`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computenodetemplate)
+
 *   [`ComputeRoute`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeroute)
+
 *   [`ComputeRouter`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computerouter)
+
 *   [`ComputeRouterInterface`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computerouterinterface)
+
 *   [`ComputeRouterNAT`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computerouternat)
-*   [`ComputeSSLPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesslpolicy)
+
 *   [`ComputeSecurityPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesecuritypolicy)
+
+*   [`ComputeSSLPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesslpolicy)
+
 *   [`ComputeTargetHTTPSProxy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computetargethttpsproxy)
+
 *   [`ComputeURLMap`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeurlmap)
+
 *   [`DataflowJob`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dataflow/dataflowjob)
+
 *   [`DataprocAutoscalingPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dataproc/dataprocautoscalingpolicy)
+
 *   [`DataprocCluster`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dataproc/dataproccluster)
-*   [`DNSResponsePolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dns/dnsresponsepolicy)
+
+*   [`DNSResponsePolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dns/dnsresponsepolicies)
+
 *   [`KMSCryptoKey`](https://cloud.google.com/config-connector/docs/reference/resource-docs/kms/kmscryptokey)
+
 *   [`KMSKeyRing`](https://cloud.google.com/config-connector/docs/reference/resource-docs/kms/kmskeyring)
+
 *   [`LoggingLogExclusion`](https://cloud.google.com/config-connector/docs/reference/resource-docs/logging/logginglogexclusion)
+
 *   [`MonitoringAlertPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/monitoring/monitoringalertpolicy)
+
 *   [`NetworkServicesGateway`](https://cloud.google.com/config-connector/docs/reference/resource-docs/networkservices/networkservicesgateway)
+
 *   [`PrivateCACertificateAuthority`](https://cloud.google.com/config-connector/docs/reference/resource-docs/privateca/privatecacertificateauthority)
+
 *   [`PrivateCACertificateTemplate`](https://cloud.google.com/config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate)
+
 *   [`PubSubSubscription`](https://cloud.google.com/config-connector/docs/reference/resource-docs/pubsub/pubsubsubscription)
+
 *   [`RecaptchaEnterpriseKey`](https://cloud.google.com/config-connector/docs/reference/resource-docs/recaptchaenterprise/recaptchaenterprisekey)
+
 *   [`RedisInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/redis/redisinstance)
-*   [`ServiceDirectoryEndpoint`](https://cloud.google.com/config-connector/docs/reference/resource-docs/servicedirectory/servicedirectoryendpoint)
-*   [`ServiceDirectoryNamespace`](https://cloud.google.com/config-connector/docs/reference/resource-docs/servicedirectory/servicedirectorynamespace)
+
 *   [`Service`](https://cloud.google.com/config-connector/docs/reference/resource-docs/serviceusage/service)
+
+*   [`ServiceDirectoryEndpoint`](https://cloud.google.com/config-connector/docs/reference/resource-docs/servicedirectory/servicedirectoryendpoint)
+
+*   [`ServiceDirectoryNamespace`](https://cloud.google.com/config-connector/docs/reference/resource-docs/servicedirectory/servicedirectorynamespace)
+
 *   [`ServiceIdentity`](https://cloud.google.com/config-connector/docs/reference/resource-docs/serviceusage/serviceidentity)
 
 ## Bug Fixes:
 
-*   [`ComposerEnvironment`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11001): Fix storageConfig.bucketRef mapping.
-*   [`MemorystoreInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11547): Prevent infinite reconciliation drift loop by aligning connections list length.
-*   [`MemorystoreInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11559): Prevent false drift and update attempts on unspecified immutable fields.
-*   [`ComputeBackendService`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11800): Fix config-connector export tool to export `backend` field.
-*   [`KMSAutokeyConfig`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9658): Clean up and improve autokey config identity and deletion resolution.
 *   [`BigQuery`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9623): Fix perpetual diff on tables inheriting dataset encryption.
+
+*   [BigQueryTable](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9623): Fix perpetual diff on tables inheriting dataset encryption.
+
+*   [`ComposerEnvironment`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11001): Fix storageConfig.bucketRef mapping.
+
+*   [`ComputeBackendService`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11800): Fix config-connector export tool to export `backend` field.
+
+*   [ComputeForwardingRule](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9696): Fix missing structured diff for `ForwardingRule` in Preview Mode.
+
+*   [ContainerNodePool](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11189): Fix 400 error during GKE `ContainerNodePool` reconciliation.
+
+*   [`KMSAutokeyConfig`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9658): Clean up and improve autokey config identity and deletion resolution.
+
+*   [`MemorystoreInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11559): Prevent false drift and update attempts on unspecified immutable fields.
+
+*   [MemorystoreInstance & RedisCluster](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10703): Avoid modifying a dependent resource's `ReplicationConfig`.
+
 *   [`NotebooksInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9810): Fix direct controller for NotebookInstance to resolve references.
+
+*   [PrivateCA](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9693): Fix issue with `forceDirect`.
+
+*   [RedisInstance](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11294): Fix `secondaryIpRange` update failure.
+
+*   [VertexAI](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11163): Avoid type recursion in the `aiplatform` v1alpha1 API.
+
