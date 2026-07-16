@@ -797,6 +797,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - livestream.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - logging.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1117,6 +1125,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - storageinsights.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - storagetransfer.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1149,6 +1165,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - translate.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vectorsearch.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1166,6 +1190,14 @@ rules:
   - watch
 - apiGroups:
   - videostitcher.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vision.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1198,6 +1230,14 @@ rules:
   - watch
 - apiGroups:
   - workflows.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workloadmanager.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
