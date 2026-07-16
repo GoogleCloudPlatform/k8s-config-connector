@@ -521,7 +521,7 @@ func (in *ApplicationNodeAnnotations) DeepCopyInto(out *ApplicationNodeAnnotatio
 	*out = *in
 	if in.Annotations != nil {
 		in, out := &in.Annotations, &out.Annotations
-		*out = make([]ApplicationApplicationAnnotations, len(*in))
+		*out = make([]ApplicationAnnotations, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}

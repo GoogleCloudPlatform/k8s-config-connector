@@ -311,7 +311,7 @@ type ApplicationMediaWarehouseConfig struct {
 type ApplicationNodeAnnotations struct {
 	/* The node specific stream annotations. */
 	// +optional
-	Annotations []ApplicationApplicationAnnotations `json:"annotations,omitempty"`
+	Annotations []ApplicationAnnotations `json:"annotations,omitempty"`
 
 	/* The node name of the application graph. */
 	// +optional
@@ -617,13 +617,13 @@ type VisionAIApplicationSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	/* Required. A user friendly display name for the solution. */
-	DisplayName *string `json:"displayName"`
+	DisplayName string `json:"displayName"`
 
 	/* The location of this resource. */
-	Location *string `json:"location"`
+	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VisionAIApplication name. If not given, the metadata.name will be used. */
 	// +optional

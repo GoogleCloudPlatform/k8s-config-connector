@@ -29,7 +29,6 @@ echo "Generating go types"
 go run ./scripts/generate-go-crd-clients
 
 # Apply local patch for VisionAI client generation to map ApplicationAnnotations to ApplicationApplicationAnnotations
-sed -i 's/Annotations \[\]ApplicationAnnotations/Annotations \[\]ApplicationApplicationAnnotations/g' pkg/clients/generated/apis/visionai/v1alpha1/visionaiapplication_types.go
 
 # Generate deepcopy etc
 echo "Generating deepcopy for go types"
