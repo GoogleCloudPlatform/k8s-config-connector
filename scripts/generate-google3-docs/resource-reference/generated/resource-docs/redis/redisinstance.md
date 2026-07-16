@@ -655,6 +655,9 @@ nodes:
 observedGeneration: integer
 observedState:
   authString: string
+  lastAppliedValues:
+    reservedIpRange: string
+    secondaryIpRange: string
 persistenceIamIdentity: string
 port: integer
 readEndpoint: string
@@ -826,6 +829,27 @@ serverCaCerts:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.lastAppliedValues</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.lastAppliedValues.reservedIpRange</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The reserved IP range as it was last successfully applied.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.lastAppliedValues.secondaryIpRange</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The secondary IP range as it was last successfully applied.</p>
         </td>
     </tr>
     <tr>

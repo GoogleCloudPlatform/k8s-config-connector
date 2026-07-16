@@ -43,6 +43,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.crossClusterReplicationConfig.membership.secondaryClusters[].uid", "0123456789abcdef")
 	replacements.ReplacePath(".response.crossClusterReplicationConfig.primaryCluster.uid", "0123456789abcdef")
 	replacements.ReplacePath(".response.crossClusterReplicationConfig.secondaryClusters[].uid", "0123456789abcdef")
+	replacements.ReplacePath(".response.authString", "secret-squirrel")
+	replacements.ReplacePath(".serverCaCerts[].cert", "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n")
+	replacements.ReplacePath(".response.serverCaCerts[].cert", "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n")
+	replacements.ReplacePath(".response.persistenceConfig.rdbSnapshotStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".persistenceConfig.rdbSnapshotStartTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.ReplacePath(".status.observedState.pscConnections[].pscConnectionID", "${pscConnectionID}")
 	replacements.ReplacePath(".status.observedState.pscConnections[].address", "10.11.12.13")
@@ -52,6 +57,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.primaryCluster.uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.membership.secondaryClusters[].uid", "0123456789abcdef")
 	replacements.ReplacePath(".status.observedState.crossClusterReplicationConfig.secondaryClusters[].uid", "0123456789abcdef")
+	replacements.ReplacePath(".status.observedState.authString", "secret-squirrel")
+	replacements.ReplacePath(".status.observedState.serverCaCerts[].cert", "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n")
 
 	// Standardize zone locations to us-central1-a
 	replacements.ReplacePath(".currentLocationId", "us-central1-a")

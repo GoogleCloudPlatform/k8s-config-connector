@@ -52,6 +52,9 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 		}
 
 		switch statusErr.Code() {
+		case codes.InvalidArgument:
+			httpErrorResponse.Error.Code = http.StatusBadRequest
+			httpErrorResponse.Error.Status = "INVALID_ARGUMENT"
 		case codes.NotFound:
 			httpErrorResponse.Error.Code = http.StatusNotFound
 			httpErrorResponse.Error.Status = "NOT_FOUND"

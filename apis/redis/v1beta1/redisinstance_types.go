@@ -309,6 +309,19 @@ type InstanceObservedStateStatus struct {
 	/* Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
 	// +optional
 	AuthString *string `json:"authString,omitempty"`
+
+	// +optional
+	LastAppliedValues *LastAppliedValues `json:"lastAppliedValues,omitempty"`
+}
+
+type LastAppliedValues struct {
+	/* The secondary IP range as it was last successfully applied. */
+	// +optional
+	SecondaryIpRange *string `json:"secondaryIpRange,omitempty"`
+
+	/* The reserved IP range as it was last successfully applied. */
+	// +optional
+	ReservedIpRange *string `json:"reservedIpRange,omitempty"`
 }
 
 type InstanceServerCaCertsStatus struct {

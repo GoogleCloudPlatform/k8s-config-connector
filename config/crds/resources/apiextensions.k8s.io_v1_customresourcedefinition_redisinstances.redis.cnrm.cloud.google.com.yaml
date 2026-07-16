@@ -452,6 +452,17 @@ spec:
                     description: Output only. AUTH String set on the instance. This
                       field will only be populated if auth_enabled is true.
                     type: string
+                  lastAppliedValues:
+                    properties:
+                      reservedIpRange:
+                        description: The reserved IP range as it was last successfully
+                          applied.
+                        type: string
+                      secondaryIpRange:
+                        description: The secondary IP range as it was last successfully
+                          applied.
+                        type: string
+                    type: object
                 type: object
               persistenceIamIdentity:
                 description: Output only. Cloud IAM identity used by import / export

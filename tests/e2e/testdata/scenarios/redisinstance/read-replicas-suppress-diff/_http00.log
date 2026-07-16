@@ -1,0 +1,185 @@
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances?alt=json&instanceId=redisinstance-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "connectMode": "DIRECT_PEERING",
+  "displayName": "Initial Display Name",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "memorySizeGb": 1,
+  "name": "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}",
+  "replicaCount": 1,
+  "reservedIpRange": "test-range-reserved",
+  "tier": "STANDARD_HA",
+  "transitEncryptionMode": "DISABLED"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+    "alternativeLocationId": "us-central1-a",
+    "authorizedNetwork": "projects/${projectId}/global/networks/default",
+    "connectMode": "DIRECT_PEERING",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentLocationId": "us-central1-a",
+    "displayName": "Initial Display Name",
+    "host": "10.20.30.40",
+    "labels": {
+      "managed-by-cnrm": "true"
+    },
+    "locationId": "us-central1-a",
+    "memorySizeGb": 1,
+    "name": "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}",
+    "nodes": [
+      {
+        "id": "node-0",
+        "zone": "us-central1-a"
+      }
+    ],
+    "persistenceConfig": {
+      "persistenceMode": "DISABLED"
+    },
+    "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
+    "port": 6379,
+    "readReplicasMode": "READ_REPLICAS_DISABLED",
+    "redisVersion": "REDIS_7_0",
+    "replicaCount": 1,
+    "reservedIpRange": "10.20.30.0/24",
+    "serverCaCerts": [
+      {
+        "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+      }
+    ],
+    "state": "READY",
+    "tier": "STANDARD_HA",
+    "transitEncryptionMode": "DISABLED"
+  }
+}
+
+---
+
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alternativeLocationId": "us-central1-a",
+  "authorizedNetwork": "projects/${projectId}/global/networks/default",
+  "connectMode": "DIRECT_PEERING",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentLocationId": "us-central1-a",
+  "displayName": "Initial Display Name",
+  "host": "10.20.30.40",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "locationId": "us-central1-a",
+  "memorySizeGb": 1,
+  "name": "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}",
+  "nodes": [
+    {
+      "id": "node-0",
+      "zone": "us-central1-a"
+    }
+  ],
+  "persistenceConfig": {
+    "persistenceMode": "DISABLED"
+  },
+  "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
+  "port": 6379,
+  "readReplicasMode": "READ_REPLICAS_DISABLED",
+  "redisVersion": "REDIS_7_0",
+  "replicaCount": 1,
+  "reservedIpRange": "10.20.30.0/24",
+  "serverCaCerts": [
+    {
+      "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+    }
+  ],
+  "state": "READY",
+  "tier": "STANDARD_HA",
+  "transitEncryptionMode": "DISABLED"
+}

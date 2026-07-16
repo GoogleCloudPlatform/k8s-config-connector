@@ -2,24 +2,21 @@ apiVersion: redis.cnrm.cloud.google.com/v1beta1
 kind: RedisInstance
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
-  labels:
-    cnrm-test: "true"
-    label-one: value-one
-  name: redisinstances-${uniqueId}
-  namespace: ${uniqueId}
+  generation: 1
+  name: redisinstance-${uniqueId}
+  namespace: ${projectId}
 spec:
-  connectMode: DIRECT_PEERING
-  displayName: Sample Redis Instance with Secondary IP Range - Updated
-  memorySizeGb: 16
-  readReplicasMode: READ_REPLICAS_ENABLED
-  region: europe-west4
-  secondaryIpRange: auto
+  displayName: Initial Display Name
+  memorySizeGb: 1
+  region: us-central1
+  replicaCount: 1
+  reservedIpRange: test-range-reserved
   tier: STANDARD_HA
 status:
   conditions:
@@ -34,9 +31,11 @@ status:
   nodes:
   - id: node-0
     zone: us-central1-a
-  observedGeneration: 2
+  observedGeneration: 1
   observedState:
     lastAppliedValues:
-      secondaryIpRange: auto
+      reservedIpRange: test-range-reserved
   persistenceIamIdentity: serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com
   port: 6379
+  serverCaCerts:
+  - cert: '-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n'

@@ -134,9 +134,6 @@ func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.In
 	if obj.RedisVersion == "" {
 		obj.RedisVersion = "REDIS_7_0"
 	}
-	if obj.ReservedIpRange == "" {
-		obj.ReservedIpRange = "10.20.30.0/24"
-	}
 	if obj.AlternativeLocationId == "" {
 		obj.AlternativeLocationId = obj.LocationId
 	}
@@ -168,12 +165,38 @@ func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.In
 	if obj.PersistenceConfig.PersistenceMode == pb.PersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
 		obj.PersistenceConfig.PersistenceMode = pb.PersistenceConfig_DISABLED
 	}
+	if obj.PersistenceConfig.PersistenceMode == pb.PersistenceConfig_RDB {
+		obj.PersistenceConfig.RdbSnapshotStartTime = timestamppb.New(time.Now())
+	}
 
 	if obj.ReadReplicasMode == pb.Instance_READ_REPLICAS_MODE_UNSPECIFIED {
 		obj.ReadReplicasMode = pb.Instance_READ_REPLICAS_DISABLED
 	}
+
 	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
 		obj.TransitEncryptionMode = pb.Instance_DISABLED
+	}
+
+	if obj.ConnectMode == pb.Instance_CONNECT_MODE_UNSPECIFIED {
+		obj.ConnectMode = pb.Instance_DIRECT_PEERING
+	}
+
+	if obj.ReservedIpRange == "" {
+		obj.ReservedIpRange = "10.1.2.0/24"
+	}
+	if obj.ReservedIpRange != "" && !strings.Contains(obj.ReservedIpRange, "/") {
+		obj.ReservedIpRange = "10.20.30.0/24"
+	}
+
+	if obj.SecondaryIpRange != "" && obj.SecondaryIpRange != "auto" && !strings.Contains(obj.SecondaryIpRange, "/") {
+		obj.SecondaryIpRange = "10.87.192.0/28"
+	}
+
+	// The serverCaCerts field appears in the output when the instance is created with transitEncryptionMode enabled
+	if obj.TransitEncryptionMode == pb.Instance_SERVER_AUTHENTICATION {
+		cert := pb.TlsCertificate{Cert: "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"}
+		obj.ServerCaCerts = []*pb.TlsCertificate{}
+		obj.ServerCaCerts = append(obj.ServerCaCerts, &cert)
 	}
 }
 
@@ -215,6 +238,8 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 			updated.MemorySizeGb = req.GetInstance().GetMemorySizeGb()
 		case "redisConfig", "redisConfigs", "redis_configs":
 			updated.RedisConfigs = req.GetInstance().GetRedisConfigs()
+		case "replicaCount", "replica_count":
+			updated.ReplicaCount = req.GetInstance().GetReplicaCount()
 		case "readReplicasMode", "read_replicas_mode":
 			updated.ReadReplicasMode = req.GetInstance().GetReadReplicasMode()
 			// SecondaryIpRange can only be set during Update call when enabling readReplicasMode, or it will be ignored.

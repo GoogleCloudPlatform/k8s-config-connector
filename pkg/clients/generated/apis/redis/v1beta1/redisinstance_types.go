@@ -228,6 +228,16 @@ type RedisInstanceSpec struct {
 	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
 }
 
+type InstanceLastAppliedValuesStatus struct {
+	/* The reserved IP range as it was last successfully applied. */
+	// +optional
+	ReservedIpRange *string `json:"reservedIpRange,omitempty"`
+
+	/* The secondary IP range as it was last successfully applied. */
+	// +optional
+	SecondaryIpRange *string `json:"secondaryIpRange,omitempty"`
+}
+
 type InstanceMaintenanceScheduleStatus struct {
 	/* Output only. The end time of any upcoming scheduled maintenance for this instance. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
@@ -256,6 +266,9 @@ type InstanceObservedStateStatus struct {
 	/* Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
 	// +optional
 	AuthString *string `json:"authString,omitempty"`
+
+	// +optional
+	LastAppliedValues *InstanceLastAppliedValuesStatus `json:"lastAppliedValues,omitempty"`
 }
 
 type InstanceServerCaCertsStatus struct {

@@ -1,0 +1,6 @@
+- caisURL: //redis.googleapis.com/projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}
+  group: redis.cnrm.cloud.google.com
+  kind: RedisInstance
+  name: redisinstances-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
