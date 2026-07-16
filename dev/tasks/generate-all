@@ -22,6 +22,5 @@ cd ${REPO_ROOT}
 
 dev/tasks/generate-types-and-mappers
 # (broken?) dev/tasks/generate-licenses
-dev/tasks/generate-resource-report
 # (needs update?) dev/tasks/generate-ci-cd-jobs
 dev/tasks/generate-github-actions

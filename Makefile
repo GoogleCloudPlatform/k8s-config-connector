@@ -291,12 +291,16 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint lint-custom manifests generate-go-client ensure fmt
+ready-pr: lint lint-custom manifests ensure fmt
 	python3 dev/tasks/generate_static_config.py
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
-release-check: resource-docs
+release-check: resource-docs generate-go-client generate-resource-report
+
+.PHONY: generate-resource-report
+generate-resource-report:
+	dev/tasks/generate-resource-report
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl
