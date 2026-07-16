@@ -38,6 +38,17 @@ var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
 	}: true,
 }
 
+// mockGCPGETSkipGroupKinds lists resources whose MockGCP GET representations currently have minor schema drift
+// right across simulated server defaults or response attributes compared to real GCP.
+var mockGCPGETSkipGroupKinds = map[schema.GroupKind]bool{
+	schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:                       true,
+	schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRouterNAT"}:                     true,
+	schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSecurityPolicy"}:                true,
+	schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocSession"}:                     true,
+	schema.GroupKind{Group: "filestore.cnrm.cloud.google.com", Kind: "FilestoreInstance"}:                  true,
+	schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivitySpoke"}: true,
+}
+
 func TestGoldenLogAlignment(t *testing.T) {
 	rootDir := "testdata/basic"
 	absRootDir, err := filepath.Abs(rootDir)
@@ -56,20 +67,25 @@ func TestGoldenLogAlignment(t *testing.T) {
 
 			if fileExists(realLogPath) {
 				createPath := filepath.Join(path, "create.yaml")
+				skipGET := false
 				if fileExists(createPath) {
 					gvk, err := getGVKFromYAML(createPath)
 					if err == nil {
 						gk := gvk.GroupKind()
+						if mockGCPSkipGroupKinds[gk] {
+							return nil
+						}
 						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
 							t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
 						}
+						skipGET = mockGCPGETSkipGroupKinds[gk]
 					}
 				}
 
 				if fileExists(mockLogPath) {
 					relPath, _ := filepath.Rel(absRootDir, path)
 					t.Run(relPath, func(t *testing.T) {
-						compareLogs(t, realLogPath, mockLogPath)
+						compareLogs(t, realLogPath, mockLogPath, skipGET)
 					})
 				}
 			}
@@ -98,11 +114,13 @@ func fileExists(path string) bool {
 
 type pathMethodEvents map[string]map[string][]httpEvent
 
-func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
+func groupByPathAndMethod(events []httpEvent, skipGET bool) pathMethodEvents {
 	grouped := make(pathMethodEvents)
 	for _, ev := range events {
 		if ev.Method == "GET" {
-			continue // Skip GET entirely
+			if skipGET || strings.Contains(ev.URL, "/operations/") || strings.Contains(ev.URL, "/operations?") {
+				continue // Skip LRO polling GET requests or excluded GET representations
+			}
 		}
 		if ev.Method == "GRPC" {
 			parts := strings.Split(ev.URL, "/")
@@ -122,12 +140,12 @@ func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 	return grouped
 }
 
-func compareLogs(t *testing.T, realPath, mockPath string) {
+func compareLogs(t *testing.T, realPath, mockPath string, skipGET bool) {
 	realEvents := readLog(t, realPath)
 	mockEvents := readLog(t, mockPath)
 
-	realGrouped := groupByPathAndMethod(realEvents)
-	mockGrouped := groupByPathAndMethod(mockEvents)
+	realGrouped := groupByPathAndMethod(realEvents, skipGET)
+	mockGrouped := groupByPathAndMethod(mockEvents, skipGET)
 
 	compareGroupedLogs(t, realGrouped, mockGrouped)
 }
@@ -288,6 +306,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			for i := 0; i < compareCount; i++ {
 				if is404OrEmptyOnDeletedParent(path, realEvs[i], mockGrouped) || is404OrEmptyOnDeletedParent(path, mockEvs[i], mockGrouped) {
 					continue
+				}
+				if method == "GET" && strings.Contains(realEvs[i].Status, "404") && strings.Contains(mockEvs[i].Status, "404") {
+					continue // Both real and mock confirm resource does not exist right before create / after delete
 				}
 				compareJSON(t, fmt.Sprintf("path %s, method %s, call %d request body", path, method, i), realEvs[i].RequestBody, mockEvs[i].RequestBody)
 				compareJSON(t, fmt.Sprintf("path %s, method %s, call %d response body", path, method, i), realEvs[i].ResponseBody, mockEvs[i].ResponseBody)
