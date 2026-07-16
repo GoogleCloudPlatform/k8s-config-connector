@@ -27,8 +27,8 @@ Your goal is to monitor the repo for release triggers and create actionable GitH
 # Scan Trigger: Release Version Bump
 1.  **Identify Milestone**:
     - Identify open milestones: `gh api repos/GoogleCloudPlatform/k8s-config-connector/milestones?state=open`.
-    - Check if any milestone's `due_on` matches exactly tomorrow (`date -u -d '+1 day' +%Y-%m-%d`).
-    - If a milestone is due tomorrow (e.g., `1.148`), append `.0` to it to form the release version (e.g., `1.148.0`).
+    - Check if any milestone's `due_on` is on or before tomorrow (`date -u -d '+1 day' +%Y-%m-%d`).
+    - If a milestone is due on or before tomorrow (e.g., `1.148`), append `.0` to it to form the release version (e.g., `1.148.0`).
     - Note: The previous version is the version in `version/VERSION` file.
 2.  **Verify Necessity**:
     - Let `VERSION` be `{{milestone}}.0`.
