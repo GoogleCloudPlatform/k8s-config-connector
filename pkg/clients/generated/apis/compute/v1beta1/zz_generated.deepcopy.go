@@ -16468,6 +16468,16 @@ func (in *UrlmapTest) DeepCopyInto(out *UrlmapTest) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ExpectedOutputURL != nil {
+		in, out := &in.ExpectedOutputURL, &out.ExpectedOutputURL
+		*out = new(string)
+		**out = **in
+	}
+	if in.ExpectedRedirectResponseCode != nil {
+		in, out := &in.ExpectedRedirectResponseCode, &out.ExpectedRedirectResponseCode
+		*out = new(int32)
+		**out = **in
+	}
 	in.Service.DeepCopyInto(&out.Service)
 	return
 }
