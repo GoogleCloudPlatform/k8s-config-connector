@@ -20,12 +20,12 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"reflect"
 	"regexp"
 	"sort"
 	"strings"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/yaml"
@@ -404,8 +404,8 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 
 	if realJSON != "" {
 		if err := json.Unmarshal([]byte(realJSON), &realObj); err != nil {
-			if realJSON != mockJSON {
-				t.Errorf("%s: string mismatch:\n  real: %q\n  mock: %q", context, realJSON, mockJSON)
+			if diff := cmp.Diff(realJSON, mockJSON); diff != "" {
+				t.Errorf("%s: string mismatch (-real +mock):\n%s", context, diff)
 			}
 			return
 		}
@@ -413,15 +413,15 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 
 	if mockJSON != "" {
 		if err := json.Unmarshal([]byte(mockJSON), &mockObj); err != nil {
-			if realJSON != mockJSON {
-				t.Errorf("%s: string mismatch:\n  real: %q\n  mock: %q", context, realJSON, mockJSON)
+			if diff := cmp.Diff(realJSON, mockJSON); diff != "" {
+				t.Errorf("%s: string mismatch (-real +mock):\n%s", context, diff)
 			}
 			return
 		}
 	}
 
-	if !reflect.DeepEqual(realObj, mockObj) {
-		t.Errorf("%s: JSON mismatch:\n  real: %s\n  mock: %s", context, realJSON, mockJSON)
+	if diff := cmp.Diff(realObj, mockObj); diff != "" {
+		t.Errorf("%s: payload mismatch (-real +mock):\n%s", context, diff)
 	}
 }
 
