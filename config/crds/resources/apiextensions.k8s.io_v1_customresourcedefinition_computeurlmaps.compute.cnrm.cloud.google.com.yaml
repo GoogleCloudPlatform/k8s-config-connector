@@ -2489,6 +2489,16 @@ spec:
                     description:
                       description: Description of this test case.
                       type: string
+                    expectedOutputUrl:
+                      description: The expected output URL evaluated by the load balancer
+                        containing the scheme, host, path and query parameters.
+                      type: string
+                    expectedRedirectResponseCode:
+                      description: For rules with urlRedirect, the test passes only
+                        if expectedRedirectResponseCode matches the HTTP status code
+                        in load balancer's redirect response.
+                      format: int32
+                      type: integer
                     host:
                       description: Host portion of the URL.
                       type: string
