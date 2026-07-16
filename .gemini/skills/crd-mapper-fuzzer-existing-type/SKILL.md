@@ -70,4 +70,3 @@ When writing a KRM round-trip fuzzer, or if a fuzzer already exists:
 - Run `dev/tasks/diff-crds` to verify there are absolutely no unintended schema changes.
 - Since we are transitioning an existing type, the primary acceptance criterion is "does it generate the same CRD schema".
 - Once the schema is identical, run `make ready-pr` to regenerate Go clients (and compile-check the changes, run custom linters, format the files, and regenerate static configs).
-- Finally, run `dev/tasks/generate-resource-report` to update the resource reports `docs/reports/crd_report.csv` and `docs/reports/crd_report.md` to reflect the transition.

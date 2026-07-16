@@ -54,23 +54,6 @@ if [[ "${changed_file_count}" != "0" ]] || [[ "${added_config_file_count}" != "0
     exit 1
 fi
 
-make generate-go-client ensure fmt
-changed_file_count=$(git diff --name-only | wc -l)
-added_go_client_file_count=$(git ls-files --others --exclude-standard pkg/clients/generated/ | wc -l)
-if [[ "${changed_file_count}" != "0" ]] || [[ "${added_go_client_file_count}" != "0" ]]; then
-    echo "Full diff:"
-    git diff
-    echo "ERROR: Resource Go Clients must be regenerated. Please run 'make ready-pr' or 'make generate-go-client ensure fmt' and update your PR."
-    echo "<hint_for_agent>Run 'make ready-pr' to regenerate Go clients.</hint_for_agent>"
-    echo "Affected files:"
-    git diff --name-only
-    git ls-files --others --exclude-standard pkg/clients/generated/
-    echo "First 100 lines of diff:"
-    git diff | head -n100
-    exit 1
-fi
-
-<<'# TODO: Add make ensure back when we stop calling it in the step above.'
 make ensure
 if [[ $? -ne 0 ]]; then
   echo "'make ensure' failed. Please validate the override patch files."
@@ -85,4 +68,3 @@ if [[ "${changed_file_count}" != "0" ]]; then
     git diff --name-only
     exit 1
 fi
-# TODO: Add make ensure back when we stop calling it in the step above.

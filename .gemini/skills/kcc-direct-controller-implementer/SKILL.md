@@ -108,8 +108,6 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
 
 6.  **Final Generation & Reporting**:
     Run `make ready-pr` from the repository root. This is a critical step that:
-    - Regenerates all Go clients in `pkg/clients/generated`.
-    - Updates global CRD reports (`docs/reports/crd_report.md` and `.csv`).
     - Runs `make fmt` and `make vet`.
     YOU MUST COMMIT ALL RESULTING CHANGES.
 

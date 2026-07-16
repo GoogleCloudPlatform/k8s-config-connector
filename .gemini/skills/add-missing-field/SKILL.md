@@ -52,8 +52,8 @@ This skill guides an automated agent through adding a missing field to a GCP res
    - If the tests fail because mockgcp doesn't support the field, you might need to implement a stub in mockgcp.
    - This stub just needs to behave reasonably so tests pass; full realgcp parity will be checked in separate E2E testing.
 
-8. **Regenerate Go Client**
-   - Please run 'make ready-pr' or 'make generate-go-client ensure fmt'.
+8. **Run Pre-PR Checks**
+   - Please run `make ready-pr`.
 
 9. **Reference Mapping Tips**
    - **Use capital KMS**: If you add a reference like `KMSKeyRef`, naming it all-caps `KMSKeyRef *refs.KMSCryptoKeyRef` instead of `KmsKeyRef` allows the controller builder to automatically identify it as a reference field and generate its mapping logic.
