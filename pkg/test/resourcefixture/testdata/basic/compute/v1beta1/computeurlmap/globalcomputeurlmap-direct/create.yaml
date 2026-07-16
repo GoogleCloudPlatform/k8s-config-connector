@@ -49,4 +49,12 @@ spec:
             overrideResponseCode: 404
         errorServiceRef:
           name: computebackendbucket-${uniqueId}
+  test:
+    - host: "mysite.com"
+      path: "/index.html"
+      description: "Test direct routing to service"
+      service:
+        backendServiceRef:
+          name: computebackendservice-${uniqueId}
+      expectedOutputUrl: "https://mysite.com/index.html"
   location: global
