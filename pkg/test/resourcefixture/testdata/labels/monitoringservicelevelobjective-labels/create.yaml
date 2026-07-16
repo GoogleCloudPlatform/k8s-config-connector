@@ -1,0 +1,23 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringServiceLevelObjective
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: monitoringservicelevelobjective-${uniqueId}
+spec:
+  displayName: A request based distribution cut filter
+  goal: 0.9
+  projectRef:
+    external: projects/${projectId}
+  rollingPeriod: 86400s
+  serviceLevelIndicator:
+    requestBased:
+      distributionCut:
+        distributionFilter: "project = ${projectId}\n metric.type=\"serviceruntime.googleapis.com/api/request_latencies\"
+          \n resource.type=\"api\"  "
+        range:
+          max: 100
+          min: 50
+  serviceRef:
+    external: monitoringservice-${uniqueId}

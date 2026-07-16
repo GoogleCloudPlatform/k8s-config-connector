@@ -1,0 +1,15 @@
+apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
+kind: EdgeContainerNodePool
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: edgecontainernodepools-${uniqueId}
+spec:
+  clusterRef:
+    name: edgecontainercluster-${uniqueId}
+  location: us-central1
+  nodeCount: 1
+  nodeLocation: edge-site-node-123
+  projectRef:
+    external: ${projectId}

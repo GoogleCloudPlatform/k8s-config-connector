@@ -1,0 +1,12 @@
+apiVersion: dialogflowcx.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowCXIntent
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: dialogflowcxintent-labels-test
+  namespace: test-namespace
+spec:
+  displayName: dummy-intent
+  parentRef:
+    name: dummy-parent

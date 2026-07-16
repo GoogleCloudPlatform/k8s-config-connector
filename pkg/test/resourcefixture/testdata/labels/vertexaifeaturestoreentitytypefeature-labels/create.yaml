@@ -1,0 +1,12 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIFeaturestoreEntityTypeFeature
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: vertexaifeaturestoreentitytypefeature-labels-test
+  namespace: test-namespace
+spec:
+  entityTypeRef:
+    name: dummy-entitytype
+  valueType: DOUBLE

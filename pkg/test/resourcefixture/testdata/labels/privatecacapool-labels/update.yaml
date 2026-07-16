@@ -1,0 +1,77 @@
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACAPool
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: privatecacapool-${uniqueId}
+spec:
+  issuancePolicy:
+    allowedIssuanceModes:
+      allowConfigBasedIssuance: false
+      allowCsrBasedIssuance: true
+    allowedKeyTypes:
+    - rsa:
+        maxModulusSize: 128
+        minModulusSize: 64
+    - ellipticCurve:
+        signatureAlgorithm: ECDSA_P384
+    baselineValues:
+      additionalExtensions:
+      - critical: false
+        objectId:
+          objectIdPath:
+          - 1
+          - 7
+        value: c3RyaW5nCg==
+      aiaOcspServers:
+      - string
+      caOptions:
+        isCa: false
+        maxIssuerPathLength: 7
+      keyUsage:
+        baseKeyUsage:
+          certSign: false
+          contentCommitment: false
+          crlSign: false
+          dataEncipherment: false
+          decipherOnly: false
+          digitalSignature: false
+          encipherOnly: false
+          keyAgreement: false
+          keyEncipherment: false
+        extendedKeyUsage:
+          clientAuth: false
+          codeSigning: false
+          emailProtection: false
+          ocspSigning: false
+          serverAuth: false
+          timeStamping: false
+        unknownExtendedKeyUsages:
+        - objectIdPath:
+          - 1
+          - 7
+      policyIds:
+      - objectIdPath:
+        - 1
+        - 7
+    identityConstraints:
+      allowSubjectAltNamesPassthrough: false
+      allowSubjectPassthrough: false
+      celExpression:
+        description: Always false
+        expression: "false"
+        location: devops.ca_pool.json
+        title: Sample expression
+    maximumLifetime: 43200s
+    passthroughExtensions:
+      additionalExtensions:
+      - objectIdPath:
+        - 1
+        - 7
+      knownExtensions:
+      - BASE_KEY_USAGE
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  tier: ENTERPRISE

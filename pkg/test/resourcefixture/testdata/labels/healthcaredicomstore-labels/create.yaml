@@ -1,0 +1,11 @@
+apiVersion: healthcare.cnrm.cloud.google.com/v1alpha1
+kind: HealthcareDICOMStore
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: healthcaredicomstore-labels-test
+  namespace: test-namespace
+spec:
+  datasetRef:
+    name: dummy-dataset

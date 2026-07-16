@@ -1,0 +1,14 @@
+apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
+kind: EdgeContainerVpnConnection
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: edgecontainervpnconnection-${uniqueId}
+spec:
+  clusterRef:
+    name: edgecontainercluster-${uniqueId}
+  enable_high_availability: true
+  location: us-central1
+  projectRef:
+    external: ${projectId}

@@ -1,0 +1,17 @@
+apiVersion: beyondcorp.cnrm.cloud.google.com/v1alpha1
+kind: BeyondCorpAppConnection
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: beyondcorpappconnection-${uniqueId}
+spec:
+  applicationEndpoint:
+  - host: foo-host
+    port: 8080
+  connectors:
+  - ${google_beyondcorp_app_connector.app_connector.id}
+  projectRef:
+    external: ${projectId}
+  resourceID: beyondcorpappconnection${uniqueId}
+  type: TCP_PROXY

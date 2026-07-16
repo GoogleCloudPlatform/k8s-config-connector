@@ -1,0 +1,11 @@
+apiVersion: healthcare.cnrm.cloud.google.com/v1alpha1
+kind: HealthcareConsentStore
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: healthcareconsentstore-labels-test
+  namespace: test-namespace
+spec:
+  datasetRef:
+    name: dummy-dataset

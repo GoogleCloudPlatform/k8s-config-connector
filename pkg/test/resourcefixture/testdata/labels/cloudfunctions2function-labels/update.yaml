@@ -1,0 +1,17 @@
+apiVersion: cloudfunctions2.cnrm.cloud.google.com/v1alpha1
+kind: CloudFunctions2Function
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: cloudfunctions2function-labels-test
+  namespace: test-namespace
+spec:
+  buildConfig:
+    entryPoint: helloGet
+    source:
+      storageSource:
+        bucketRef:
+          name: dummy-bucket
+        object: dummy-object
+  location: us-central1

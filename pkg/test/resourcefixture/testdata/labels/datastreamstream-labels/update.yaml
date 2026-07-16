@@ -1,0 +1,15 @@
+apiVersion: datastream.cnrm.cloud.google.com/v1alpha1
+kind: DatastreamStream
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: datastreamstream-labels-test
+  namespace: test-namespace
+spec:
+  destinationConnectionProfileRef:
+    name: dummy-conn
+  displayName: dummy-stream
+  location: us-central1
+  sourceConnectionProfileRef:
+    name: dummy-conn

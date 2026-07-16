@@ -1,0 +1,45 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+  labels:
+    label-one: one
+    label-two: two
+  name: computeinstance-${uniqueId}
+spec:
+  attachedDisk:
+  - sourceDiskRef:
+      name: computedisk-1-${uniqueId}
+  bootDisk:
+    autoDelete: false
+    sourceDiskRef:
+      name: computedisk-${uniqueId}
+  description: an basic instance example
+  machineType: n1-standard-1
+  metadata:
+  - key: foo
+    value: bar
+  - key: bar
+    value: baz
+  metadataStartupScript: echo hi > /test.txt
+  networkInterface:
+  - accessConfig:
+    - natIpRef:
+        name: computeaddress-2-${uniqueId}
+    networkIpRef:
+      kind: ComputeAddress
+      name: computeaddress-${uniqueId}
+    networkRef:
+      name: default
+  scheduling:
+    automaticRestart: false
+    onHostMaintenance: TERMINATE
+    preemptible: true
+  serviceAccount:
+    scopes:
+    - cloud-platform
+    serviceAccountRef:
+      name: gsa-${uniqueId}
+  zone: us-west1-a

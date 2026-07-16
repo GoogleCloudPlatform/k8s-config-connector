@@ -1,0 +1,12 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSnapshot
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: computesnapshot-${uniqueId}
+spec:
+  description: test description
+  sourceDiskRef:
+    name: computedisk-${uniqueId}
+  zone: us-central1-a

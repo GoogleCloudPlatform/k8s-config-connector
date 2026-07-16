@@ -1,0 +1,12 @@
+apiVersion: apigateway.cnrm.cloud.google.com/v1alpha1
+kind: APIGatewayGateway
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: apigatewaygateway-labels-test
+  namespace: test-namespace
+spec:
+  apiConfigRef:
+    name: dummy-apiconfig
+  gatewayId: dummy-gateway

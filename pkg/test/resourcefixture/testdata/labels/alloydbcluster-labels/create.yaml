@@ -1,0 +1,22 @@
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/state-into-spec: absent
+  labels:
+    label-one: one
+    label-two: two
+  name: alloydbcluster-2-${uniqueId}
+spec:
+  clusterType: SECONDARY
+  deletionPolicy: FORCE
+  location: europe-west8
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  secondaryConfig:
+    primaryClusterNameRef:
+      name: alloydbcluster-1-${uniqueId}

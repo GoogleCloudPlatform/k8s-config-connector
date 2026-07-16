@@ -1,0 +1,24 @@
+apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
+kind: EdgeContainerCluster
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: edgecontainercluster-${uniqueId}
+spec:
+  authorization:
+    adminUsers:
+      usernameRef:
+        name: gsa-${uniqueId}
+  defaultMaxPodsPerNode: 110
+  fleet:
+    projectRef:
+      external: ${projectId}
+  location: us-central1
+  networking:
+    clusterIpv4CidrBlocks:
+    - 10.0.0.0/16
+    servicesIpv4CidrBlocks:
+    - 10.1.0.0/16
+  projectRef:
+    external: ${projectId}

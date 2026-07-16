@@ -1,0 +1,11 @@
+apiVersion: filestore.cnrm.cloud.google.com/v1alpha1
+kind: FilestoreSnapshot
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: filestoresnapshot-labels-test
+  namespace: test-namespace
+spec:
+  instanceRef:
+    name: dummy-instance

@@ -1,0 +1,19 @@
+apiVersion: apigateway.cnrm.cloud.google.com/v1alpha1
+kind: APIGatewayAPIConfig
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: apigatewayapiconfig-labels-test
+  namespace: test-namespace
+spec:
+  apiRef:
+    name: dummy-api
+  openapiDocuments:
+  - document:
+      contents: |-
+        swagger: '2.0'
+        info:
+          title: API Gateway
+          version: 1.0.0
+      path: openapi.yaml

@@ -1,0 +1,13 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIIndexEndpoint
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: vertexaiindexendpoint-labels-test
+  namespace: test-namespace
+spec:
+  displayName: dummy-index-endpoint
+  location: us-central1
+  projectRef:
+    external: projects/dummy-project

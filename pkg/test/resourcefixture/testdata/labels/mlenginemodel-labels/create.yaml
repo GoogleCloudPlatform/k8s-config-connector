@@ -1,0 +1,14 @@
+apiVersion: mlengine.cnrm.cloud.google.com/v1alpha1
+kind: MLEngineModel
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: mlenginemodel-${uniqueId}
+spec:
+  description: My model
+  projectRef:
+    external: ${projectId}
+  regions:
+  - us-central1
+  resourceID: mlenginemodel${uniqueId}

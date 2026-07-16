@@ -1,0 +1,11 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheService
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: networkservicesedgecacheservice-labels-test
+  namespace: test-namespace
+spec:
+  projectRef:
+    external: projects/dummy-project

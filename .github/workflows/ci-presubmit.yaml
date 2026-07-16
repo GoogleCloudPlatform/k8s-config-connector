@@ -211,6 +211,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-brownfield-labels:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/tests-e2e-brownfield-labels"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-brownfield-labels
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-brownfield-labels
+          path: /tmp/artifacts/
+
+
   tests-e2e-direct-iam:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -508,6 +528,7 @@ jobs:
       - smoketest-with-kind
       - test-mockgcp
       - test-pause
+      - tests-e2e-brownfield-labels
       - tests-e2e-direct-iam
       - tests-e2e-fixtures
       - priority-e2e-fixtures

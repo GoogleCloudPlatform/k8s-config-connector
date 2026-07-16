@@ -1,0 +1,15 @@
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryEndpoint
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: servicedirectoryendpoint-${uniqueId}
+spec:
+  addressRef:
+    name: computeaddress-${uniqueId}
+  networkRef:
+    external: projects/${projectNumber}/global/networks/default
+  port: 443
+  serviceRef:
+    name: servicedirectoryservice-${uniqueId}

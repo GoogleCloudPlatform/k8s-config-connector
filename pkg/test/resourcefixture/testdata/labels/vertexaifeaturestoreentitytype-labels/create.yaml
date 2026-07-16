@@ -1,0 +1,11 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIFeaturestoreEntityType
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: vertexaifeaturestoreentitytype-labels-test
+  namespace: test-namespace
+spec:
+  featurestoreRef:
+    name: dummy-featurestore

@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: computeaddress-${uniqueId}
+spec:
+  addressType: EXTERNAL
+  description: A test address with ipCollection
+  ipCollectionRef:
+    external: regions/us-central1/publicDelegatedPrefixes/pdp-${uniqueId}
+  location: us-central1

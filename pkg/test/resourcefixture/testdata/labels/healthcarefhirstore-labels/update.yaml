@@ -1,0 +1,12 @@
+apiVersion: healthcare.cnrm.cloud.google.com/v1alpha1
+kind: HealthcareFHIRStore
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: healthcarefhirstore-labels-test
+  namespace: test-namespace
+spec:
+  datasetRef:
+    name: dummy-dataset
+  version: DSTU2

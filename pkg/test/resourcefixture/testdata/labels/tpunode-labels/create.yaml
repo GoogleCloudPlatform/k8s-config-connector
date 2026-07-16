@@ -1,0 +1,15 @@
+apiVersion: tpu.cnrm.cloud.google.com/v1alpha1
+kind: TPUNode
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: tpunode-${uniqueId}
+spec:
+  acceleratorType: v3-8
+  cidrBlock: 10.2.0.0/29
+  projectRef:
+    external: ${projectId}
+  resourceID: tpunode${uniqueId}
+  tensorflowVersion: ${data.google_tpu_tensorflow_versions.available.versions[0]}
+  zone: us-central1-b
