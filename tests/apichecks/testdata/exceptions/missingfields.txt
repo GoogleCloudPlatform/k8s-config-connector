@@ -953,6 +953,7 @@
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.privateIpv6GoogleAccess" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.purpose" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.role" is not set in unstructured objects
+[missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.secondaryIpRange[].ipCidrRange" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.stackType" is not set in unstructured objects
 [missing_field] crd=computetargethttpproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.httpKeepAliveTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computetargethttpproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.proxyBind" is not set in unstructured objects

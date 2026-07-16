@@ -163,9 +163,9 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#subnetwork")
-	// if obj.EnableFlowLogs == nil {
-	// 	obj.EnableFlowLogs = PtrTo(false)
-	// }
+	if obj.EnableFlowLogs == nil {
+		obj.EnableFlowLogs = PtrTo(false)
+	}
 	if obj.PrivateIpGoogleAccess == nil {
 		obj.PrivateIpGoogleAccess = PtrTo(false)
 	}
@@ -179,7 +179,6 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if obj.StackType == nil && obj.GetPurpose() != "PRIVATE_NAT" {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
-	obj.State = PtrTo("READY")
 	networkName, err := s.parseNetworkSelfLink(obj.GetNetwork())
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
@@ -208,7 +207,9 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	gatewayAddress[3] = 1
 	obj.GatewayAddress = PtrTo(gatewayAddress.String())
 
-	// obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
+	if obj.AllowSubnetCidrRoutesOverlap == nil {
+		obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
+	}
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

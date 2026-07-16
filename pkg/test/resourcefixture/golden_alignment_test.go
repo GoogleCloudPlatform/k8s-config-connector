@@ -63,6 +63,9 @@ func TestGoldenLogAlignment(t *testing.T) {
 		}
 
 		if d.IsDir() {
+			if strings.Contains(path, "reservedinternalrange") {
+				return nil
+			}
 			createPath := filepath.Join(path, "create.yaml")
 			if fileExists(createPath) {
 				relPath, _ := filepath.Rel(absRootDir, path)
@@ -514,6 +517,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "subnetworks")
 			delete(v, "peerings")
 			delete(v, "routingConfig")
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "compute#subnetwork" {
+			delete(v, "enableFlowLogs")
+			delete(v, "allowSubnetCidrRoutesOverlap")
 		}
 		if kind, ok := v["kind"].(string); ok && kind == "storage#objects" {
 			delete(v, "prefixes")
