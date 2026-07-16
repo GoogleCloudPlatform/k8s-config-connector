@@ -605,6 +605,14 @@ Content-Type: application/json
       },
       "name": "allpaths"
     }
+  ],
+  "tests": [
+    {
+      "description": "Test direct routing to service",
+      "expectedOutputUrl": "https://mysite.com/index.html",
+      "host": "mysite.com",
+      "path": "/index.html"
+    }
   ]
 }
 
@@ -685,7 +693,15 @@ X-Xss-Protection: 0
       "name": "allpaths"
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
+  "tests": [
+    {
+      "description": "Test direct routing to service",
+      "expectedOutputUrl": "https://mysite.com/index.html",
+      "host": "mysite.com",
+      "path": "/index.html"
+    }
+  ]
 }
 
 ---
@@ -734,7 +750,15 @@ Content-Type: application/json
       "name": "allpaths"
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
+  "tests": [
+    {
+      "description": "Test direct routing to service",
+      "expectedOutputUrl": "https://mysite.com/index.html",
+      "host": "mysite.com",
+      "path": "/index.html"
+    }
+  ]
 }
 
 200 OK
@@ -814,7 +838,15 @@ X-Xss-Protection: 0
       "name": "allpaths"
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
+  "tests": [
+    {
+      "description": "Test direct routing to service",
+      "expectedOutputUrl": "https://mysite.com/index.html",
+      "host": "mysite.com",
+      "path": "/index.html"
+    }
+  ]
 }
 
 ---
