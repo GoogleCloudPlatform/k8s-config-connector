@@ -1,0 +1,25 @@
+apiVersion: eventarc.cnrm.cloud.google.com/v1beta1
+kind: EventarcTrigger
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: eventarctrigger-${uniqueId}
+spec:
+  destination:
+    cloudRunService:
+      region: us-central1
+      serviceRef:
+        external: runservice-1-${uniqueId}
+  location: us-central1
+  matchingCriteria:
+  - attribute: type
+    value: google.cloud.pubsub.topic.v1.messagePublished
+  projectRef:
+    external: projects/${projectId}
+  serviceAccountRef:
+    name: gsa-${uniqueId}
+  transport:
+    pubsub:
+      topicRef:
+        name: pubsubtopic-${uniqueId}

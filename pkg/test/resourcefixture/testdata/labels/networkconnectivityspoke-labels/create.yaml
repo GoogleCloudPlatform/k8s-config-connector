@@ -1,0 +1,18 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+kind: NetworkConnectivitySpoke
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: networkconnectivityspoke-${uniqueId}
+spec:
+  description: A sample spoke with a linked router appliance instance
+  hubRef:
+    name: networkconnectivityhub-${uniqueId}
+  linkedRouterApplianceInstances:
+    instances:
+    - ipAddress: 10.128.0.2
+      virtualMachineRef:
+        name: computeinstance-${uniqueId}
+    siteToSiteDataTransfer: true
+  location: us-central1

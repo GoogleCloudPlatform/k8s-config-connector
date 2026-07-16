@@ -1,0 +1,14 @@
+apiVersion: deploymentmanager.cnrm.cloud.google.com/v1alpha1
+kind: DeploymentManagerDeployment
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: deploymentmanagerdeployment-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: deploymentmanagerdeployment${uniqueId}
+  target:
+  - config:
+    - content: ${file("path/to/config.yml")}

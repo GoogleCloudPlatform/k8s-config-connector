@@ -1,0 +1,20 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    label-one: one
+    label-two: two
+  name: arrepository-${uniqueId}
+spec:
+  description: test repository description
+  format: DOCKER
+  location: us-west1
+  mode: VIRTUAL_REPOSITORY
+  virtualRepositoryConfig:
+    upstreamPolicies:
+    - id: upstream-repo
+      priority: 1
+      repositoryRef:
+        name: arrepository-${uniqueId}-2

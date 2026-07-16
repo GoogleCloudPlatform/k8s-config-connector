@@ -1,0 +1,28 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesEndpointPolicy
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: networkservicesendpointpolicy-${uniqueId}
+spec:
+  authorizationPolicyRef:
+    name: networksecurityauthorizationpolicy-${uniqueId}
+  clientTlsPolicyRef:
+    name: networksecurityclienttlspolicy-${uniqueId}
+  description: A sample endpoint policy
+  endpointMatcher:
+    metadataLabelMatcher:
+      metadataLabelMatchCriteria: MATCH_ANY
+      metadataLabels:
+      - labelName: filter-test
+        labelValue: "true"
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  serverTlsPolicyRef:
+    name: networksecurityservertlspolicy-${uniqueId}
+  trafficPortSelector:
+    ports:
+    - "6767"
+  type: SIDECAR_PROXY

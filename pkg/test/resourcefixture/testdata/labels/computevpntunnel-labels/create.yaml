@@ -1,0 +1,19 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeVPNTunnel
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: computevpntunnel-${uniqueId}
+spec:
+  localTrafficSelector:
+  - 192.168.0.0/16
+  peerIp: 15.0.0.120
+  region: us-central1
+  sharedSecret:
+    valueFrom:
+      secretKeyRef:
+        key: sharedSecret
+        name: secret-${uniqueId}
+  targetVPNGatewayRef:
+    name: computetargetvpngateway-${uniqueId}

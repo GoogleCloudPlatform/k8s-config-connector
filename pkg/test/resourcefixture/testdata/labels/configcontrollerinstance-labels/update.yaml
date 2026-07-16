@@ -1,0 +1,16 @@
+apiVersion: configcontroller.cnrm.cloud.google.com/v1beta1
+kind: ConfigControllerInstance
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: cci-${uniqueId}
+spec:
+  location: us-central1
+  managementConfig:
+    standardManagementConfig:
+      clusterCidrBlock: /20
+      masterIPv4CidrBlock: 172.16.123.64/28
+      networkRef:
+        name: default
+      servicesCidrBlock: /24

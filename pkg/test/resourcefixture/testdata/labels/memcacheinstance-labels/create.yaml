@@ -1,0 +1,24 @@
+apiVersion: memcache.cnrm.cloud.google.com/v1beta1
+kind: MemcacheInstance
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: memcacheinstance-${uniqueId}
+spec:
+  displayName: Sample Memcache Instance
+  memcacheParameters:
+    params:
+      listen-backlog: "10000"
+      max-item-size: "524288"
+      max-reqs-per-event: "1"
+  networkRef:
+    name: computenetwork-${uniqueId}
+  nodeConfig:
+    cpuCount: 1
+    memorySizeMb: 1024
+  nodeCount: 2
+  region: us-central1
+  zones:
+  - us-central1-a
+  - us-central1-c

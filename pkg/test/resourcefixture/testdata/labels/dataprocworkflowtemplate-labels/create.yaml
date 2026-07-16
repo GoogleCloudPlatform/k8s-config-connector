@@ -1,0 +1,45 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocWorkflowTemplate
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: dataprocworkflowtemplate-${uniqueId}
+spec:
+  jobs:
+  - sparkJob:
+      mainClass: SomeClass
+    stepId: someJob
+  - prerequisiteStepIds:
+    - someJob
+    prestoJob:
+      queryFileUri: someUri
+    stepId: otherJob
+  location: us-central1
+  placement:
+    managedCluster:
+      clusterName: test-cluster
+      config:
+        autoscalingConfig:
+          policyRef:
+            name: dataprocautoscalingpolicy-${uniqueId}
+        gceClusterConfig:
+          tags:
+          - foo
+          - bar
+        masterConfig:
+          diskConfig:
+            bootDiskSizeGb: 30
+            bootDiskType: pd-standard
+          machineType: n2-standard-8
+          numInstances: 1
+        softwareConfig:
+          imageVersion: 2.0.39-debian10
+        workerConfig:
+          diskConfig:
+            bootDiskSizeGb: 30
+            numLocalSsds: 1
+          machineType: n2-standard-8
+          numInstances: 3
+  projectRef:
+    external: projects/${projectId}

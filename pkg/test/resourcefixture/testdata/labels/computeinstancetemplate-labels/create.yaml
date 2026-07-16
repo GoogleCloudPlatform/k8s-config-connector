@@ -1,0 +1,30 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: computeinstancetemplate-${uniqueId}
+spec:
+  description: a basic instance template example
+  disk:
+  - autoDelete: false
+    boot: true
+    sourceDiskRef:
+      name: computedisk-${uniqueId}
+  - autoDelete: true
+    boot: false
+    sourceImageRef:
+      name: computeimage-${uniqueId}
+  machineType: n1-standard-1
+  metadata:
+  - key: foo
+    value: bar
+  - key: bar
+    value: baz
+  networkInterface:
+  - networkRef:
+      name: computenetwork-${uniqueId}
+    subnetworkRef:
+      name: computesubnetwork-${uniqueId}
+  region: us-central1

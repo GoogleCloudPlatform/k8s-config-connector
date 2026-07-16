@@ -1,0 +1,13 @@
+apiVersion: filestore.cnrm.cloud.google.com/v1beta1
+kind: FilestoreBackup
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: filestorebackup-${uniqueId}
+spec:
+  description: A sample backup
+  location: us-central1
+  sourceFileShare: my_share
+  sourceInstanceRef:
+    name: filestoreinstance-${uniqueId}

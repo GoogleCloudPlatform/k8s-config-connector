@@ -1,0 +1,9 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+kind: NetworkConnectivityHub
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: networkconnectivityhub-${uniqueId}
+spec:
+  description: A sample hub

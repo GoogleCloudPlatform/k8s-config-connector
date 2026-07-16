@@ -1,0 +1,12 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: gkehubfeature-${uniqueId}
+spec:
+  location: global
+  projectRef:
+    name: acm-${uniqueId}
+  resourceID: configmanagement

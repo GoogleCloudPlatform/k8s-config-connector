@@ -1,0 +1,21 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: monitoringnotificationchannel-${uniqueId}
+spec:
+  description: Sends notifications to indicated webhook URL using HTTP-standard basic
+    authentication. Should be used in conjunction with SSL/TLS to reduce the risk
+    of attackers snooping the credentials.
+  labels:
+    url: http://hooks.example.com/notifications
+    username: admin
+  sensitiveLabels:
+    password:
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: secret-${uniqueId}
+  type: webhook_basicauth

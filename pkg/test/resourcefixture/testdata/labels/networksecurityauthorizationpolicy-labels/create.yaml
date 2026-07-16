@@ -1,0 +1,29 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityAuthorizationPolicy
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: networksecurityauthorizationpolicy-full-${uniqueId}
+spec:
+  action: ALLOW
+  description: A full authorization policy for testing
+  location: global
+  projectRef:
+    external: ${projectId}
+  rules:
+  - destinations:
+    - hosts:
+      - example.com
+      httpHeaderMatch:
+        headerName: X-Test-Header
+        regexMatch: .*
+      methods:
+      - GET
+      ports:
+      - 8080
+    sources:
+    - ipBlocks:
+      - 1.2.3.4/32
+      principals:
+      - spiffe://foo.bar/ns/default/sa/default

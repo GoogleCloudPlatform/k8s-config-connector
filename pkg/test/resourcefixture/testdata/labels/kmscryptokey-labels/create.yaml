@@ -1,0 +1,16 @@
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: kmscryptokey-${uniqueId}
+spec:
+  importOnly: false
+  keyRingRef:
+    name: kmscryptokey-${uniqueId}
+  purpose: ENCRYPT_DECRYPT
+  rotationPeriod: 172800s
+  versionTemplate:
+    algorithm: GOOGLE_SYMMETRIC_ENCRYPTION
+    protectionLevel: SOFTWARE

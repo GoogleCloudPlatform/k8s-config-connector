@@ -1,0 +1,19 @@
+apiVersion: filestore.cnrm.cloud.google.com/v1beta1
+kind: FilestoreInstance
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: filestoreinstance-${uniqueId}
+spec:
+  description: Test instance
+  fileShares:
+  - capacityGb: 2560
+    name: my_share
+  location: us-central1-b
+  networks:
+  - modes:
+    - MODE_IPV4
+    networkRef:
+      name: default
+  tier: PREMIUM

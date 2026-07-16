@@ -1,0 +1,10 @@
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryService
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: servicedirectoryservice-${uniqueId}
+spec:
+  namespaceRef:
+    name: servicedirectorynamespace-${uniqueId}
