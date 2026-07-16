@@ -1307,6 +1307,55 @@ spec:
                         description: cgroupMode specifies the cgroup mode to be used
                           on the node.
                         type: string
+                      swapConfig:
+                        description: SwapConfig specifies the swap configuration on
+                          the nodes.
+                        properties:
+                          bootDiskProfile:
+                            description: BootDiskProfile specifies the configuration
+                              for swap on the node's boot disk.
+                            properties:
+                              swapSizeGib:
+                                description: Swap size in GiB.
+                                type: integer
+                              swapSizePercent:
+                                description: Swap size as a percentage of the boot
+                                  disk size.
+                                type: integer
+                            type: object
+                          dedicatedLocalSsdProfile:
+                            description: DedicatedLocalSsdProfile specifies the configuration
+                              for swap on dedicated local NVMe SSDs.
+                            properties:
+                              diskCount:
+                                description: The number of physical local NVMe SSD
+                                  disks to attach.
+                                type: integer
+                            type: object
+                          enabled:
+                            description: Whether swap is enabled.
+                            type: boolean
+                          encryptionConfig:
+                            description: EncryptionConfig specifies the encryption
+                              configuration for swap.
+                            properties:
+                              disabled:
+                                description: If true, swap space will not be encrypted.
+                                type: boolean
+                            type: object
+                          ephemeralLocalSsdProfile:
+                            description: EphemeralLocalSsdProfile specifies the configuration
+                              for swap on ephemeral local SSDs.
+                            properties:
+                              swapSizeGib:
+                                description: Swap size in GiB.
+                                type: integer
+                              swapSizePercent:
+                                description: Swap size as a percentage of the ephemeral
+                                  local SSD capacity.
+                                type: integer
+                            type: object
+                        type: object
                       sysctls:
                         additionalProperties:
                           type: string
