@@ -484,39 +484,6 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 				}
 			}
 		}
-		if typeVal, found, _ := unstructured.NestedFieldNoCopy(obj, "type"); found {
-			if typeNum, ok := typeVal.(float64); ok {
-				switch int(typeNum) {
-				case 1:
-					if err := unstructured.SetNestedField(obj, "FIXED_RECORD", "type"); err != nil {
-						t.Fatalf("FAIL: setting type FIXED_RECORD: %v", err)
-					}
-				case 2:
-					if err := unstructured.SetNestedField(obj, "PER_PROJECT_RECORD", "type"); err != nil {
-						t.Fatalf("FAIL: setting type PER_PROJECT_RECORD: %v", err)
-					}
-				}
-			}
-		}
-		if response, found, _ := unstructured.NestedMap(obj, "response"); found {
-			if typeVal, found, _ := unstructured.NestedFieldNoCopy(response, "type"); found {
-				if typeNum, ok := typeVal.(float64); ok {
-					switch int(typeNum) {
-					case 1:
-						if err := unstructured.SetNestedField(response, "FIXED_RECORD", "type"); err != nil {
-							t.Fatalf("FAIL: setting type FIXED_RECORD on response: %v", err)
-						}
-					case 2:
-						if err := unstructured.SetNestedField(response, "PER_PROJECT_RECORD", "type"); err != nil {
-							t.Fatalf("FAIL: setting type PER_PROJECT_RECORD on response: %v", err)
-						}
-					}
-					if err := unstructured.SetNestedMap(obj, response, "response"); err != nil {
-						t.Fatalf("FAIL: setting response map: %v", err)
-					}
-				}
-			}
-		}
 	})
 	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 		if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {

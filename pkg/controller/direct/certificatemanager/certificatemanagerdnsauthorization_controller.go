@@ -286,6 +286,9 @@ func compareCertificateManagerDNSAuthorization(ctx context.Context, actual, desi
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
+	if desired.Type == certificatemanagerpb.DnsAuthorization_TYPE_UNSPECIFIED {
+		desired.Type = certificatemanagerpb.DnsAuthorization_FIXED_RECORD
+	}
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
