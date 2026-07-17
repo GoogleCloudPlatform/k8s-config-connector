@@ -62,8 +62,6 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkServicesHTTPRouteSpec defines the desired state of
-              NetworkServicesHTTPRoute
             properties:
               description:
                 description: Optional. A free-text description of the resource. Max
@@ -244,8 +242,6 @@ spec:
                           items:
                             properties:
                               serviceRef:
-                                description: ComputeBackendServiceRef is a reference
-                                  to a ComputeBackendService.
                                 oneOf:
                                 - not:
                                     required:
@@ -422,8 +418,6 @@ spec:
                                 to. The weight of the destination will be ignored.
                               properties:
                                 serviceRef:
-                                  description: ComputeBackendServiceRef is a reference
-                                    to a ComputeBackendService.
                                   oneOf:
                                   - not:
                                       required:
@@ -679,8 +673,6 @@ spec:
             - rules
             type: object
           status:
-            description: NetworkServicesHTTPRouteStatus defines the config connector
-              machine state of NetworkServicesHTTPRoute
             properties:
               conditions:
                 description: Conditions represent the latest available observations

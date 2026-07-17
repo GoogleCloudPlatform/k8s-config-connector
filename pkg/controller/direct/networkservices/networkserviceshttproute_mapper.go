@@ -16,7 +16,6 @@ package networkservices
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -100,7 +99,7 @@ func HttprouteDestination_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_
 	}
 	out := &krm.HttprouteDestination{}
 	if in.GetServiceName() != "" {
-		out.ServiceRef = &computev1beta1.ComputeBackendServiceRef{
+		out.ServiceRef = &krm.BackendServiceRef{
 			External: in.GetServiceName(),
 		}
 	}
@@ -126,7 +125,7 @@ func HttprouteDestinations_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute
 	}
 	out := &krm.HttprouteDestinations{}
 	if in.GetServiceName() != "" {
-		out.ServiceRef = &computev1beta1.ComputeBackendServiceRef{
+		out.ServiceRef = &krm.BackendServiceRef{
 			External: in.GetServiceName(),
 		}
 	}

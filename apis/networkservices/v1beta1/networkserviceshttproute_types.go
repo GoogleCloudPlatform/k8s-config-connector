@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -124,10 +123,21 @@ type HttprouteDelay struct {
 	Percentage *int64 `json:"percentage,omitempty"`
 }
 
+type BackendServiceRef struct {
+	// The value of an externally managed ComputeBackendService resource.
+	External string `json:"external,omitempty"`
+
+	// The name of a ComputeBackendService resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a ComputeBackendService resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // +kcc:proto=google.cloud.networkservices.v1.HttpRoute.Destination
 type HttprouteDestination struct {
 	// +optional
-	ServiceRef *computev1beta1.ComputeBackendServiceRef `json:"serviceRef,omitempty"`
+	ServiceRef *BackendServiceRef `json:"serviceRef,omitempty"`
 
 	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
@@ -137,7 +147,7 @@ type HttprouteDestination struct {
 // +kcc:proto=google.cloud.networkservices.v1.HttpRoute.Destination
 type HttprouteDestinations struct {
 	// +optional
-	ServiceRef *computev1beta1.ComputeBackendServiceRef `json:"serviceRef,omitempty"`
+	ServiceRef *BackendServiceRef `json:"serviceRef,omitempty"`
 
 	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
@@ -352,7 +362,6 @@ type HttprouteUrlRewrite struct {
 	PathPrefixRewrite *string `json:"pathPrefixRewrite,omitempty"`
 }
 
-// NetworkServicesHTTPRouteSpec defines the desired state of NetworkServicesHTTPRoute
 // +kcc:spec:proto=google.cloud.networkservices.v1.HttpRoute
 type NetworkServicesHTTPRouteSpec struct {
 	/* Optional. A free-text description of the resource. Max length 1024 characters. */
@@ -382,7 +391,6 @@ type NetworkServicesHTTPRouteSpec struct {
 	Rules []HttprouteRules `json:"rules"`
 }
 
-// NetworkServicesHTTPRouteStatus defines the config connector machine state of NetworkServicesHTTPRoute
 type NetworkServicesHTTPRouteStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
