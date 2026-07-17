@@ -27,7 +27,8 @@ go run . generate-types \
     --service google.cloud.networkservices.v1 \
     --api-version "networkservices.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
-    --resource NetworkServicesGateway:Gateway
+    --resource NetworkServicesGateway:Gateway \
+    --resource NetworkServicesHTTPRoute:HttpRoute
 
 
 go run . generate-mapper \
