@@ -703,6 +703,13 @@ spec:
                     description: The GCE resource labels (a map of key/value pairs)
                       to be applied to the node pool.
                     type: object
+                  resourceManagerTags:
+                    additionalProperties:
+                      type: string
+                    description: The resource manager tags (a map of key/value pairs)
+                      to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id},
+                      and values are in the format tagValues/{tag_value_id}.
+                    type: object
                   sandboxConfig:
                     description: Immutable. Sandbox configuration for this node.
                     properties:

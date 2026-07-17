@@ -274,6 +274,10 @@ type NodePoolNodeConfig struct {
 	// +kcc:proto:field=google.container.v1.NodeConfig.resource_labels
 	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
+	/* The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}. */
+	// +kcc:proto:field=google.container.v1.NodeConfig.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+
 	/* Immutable. Sandbox configuration for this node. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.sandbox_config
 	SandboxConfig *SandboxConfig `json:"sandboxConfig,omitempty"`

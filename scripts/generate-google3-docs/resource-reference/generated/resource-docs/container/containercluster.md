@@ -356,6 +356,8 @@ nodeConfig:
     - string
   resourceLabels:
     string: string
+  resourceManagerTags:
+    string: string
   sandboxConfig:
     sandboxType: string
   serviceAccountRef:
@@ -387,6 +389,8 @@ nodePoolAutoConfig:
   networkTags:
     tags:
     - string
+  resourceManagerTags:
+    string: string
 nodePoolDefaults:
   nodeConfigDefaults:
     gcfsConfig:
@@ -3198,6 +3202,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.sandboxConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -3524,6 +3538,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolAutoConfig.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>Collection of Resource Manager tags to be applied to GKE Autopilot node pools. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}.</p>
         </td>
     </tr>
     <tr>

@@ -517,6 +517,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
+				case "map[string]string":
+					functionName = "map_string_string_FromProto"
 				}
 
 				// special handling for proto messages that mapped to KRM string
@@ -814,6 +816,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
+				case "map[string]string":
+					functionName = "map_string_string_ToProto"
 				}
 
 				// special handling for proto messages that mapped to KRM string
