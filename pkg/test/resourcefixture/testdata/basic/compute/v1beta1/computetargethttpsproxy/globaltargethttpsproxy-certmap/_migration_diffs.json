@@ -1,0 +1,420 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "CertificateManagerCertificateMap/certificatemanagercertificatemap-${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "sample certificate map"
+      },
+      {
+        "id": "gclb_targets.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.value",
+        "old": "",
+        "new": "cert-map"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "certificatemanagercertificatemap${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeHealthCheck/computehealthcheck-${uniqueId}",
+    "fields": [
+      {
+        "id": "check_interval_sec",
+        "old": "",
+        "new": "10"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "healthy_threshold",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "http_health_check.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "http_health_check.0.port",
+        "old": "",
+        "new": "80"
+      },
+      {
+        "id": "http_health_check.0.proxy_header",
+        "old": "",
+        "new": "NONE"
+      },
+      {
+        "id": "http_health_check.0.request_path",
+        "old": "",
+        "new": "/"
+      },
+      {
+        "id": "log_config.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computehealthcheck-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "timeout_sec",
+        "old": "",
+        "new": "5"
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "unhealthy_threshold",
+        "old": "",
+        "new": "2"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeBackendService/computebackendservice-${uniqueId}",
+    "fields": [
+      {
+        "id": "backend.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "cdn_policy.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "connection_draining_timeout_sec",
+        "old": "",
+        "new": "300"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "generated_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "health_checks.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "health_checks.38937939",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
+      },
+      {
+        "id": "load_balancing_scheme",
+        "old": "",
+        "new": "EXTERNAL"
+      },
+      {
+        "id": "log_config.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computebackendservice-${uniqueId}"
+      },
+      {
+        "id": "port_name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "protocol",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "session_affinity",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "timeout_sec",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeURLMap/computeurlmap-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "default_service",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "map_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computeurlmap-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeURLMap/computeurlmap-2-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "default_service",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "map_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computeurlmap-2-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeTargetHTTPSProxy/computetargethttpsproxy-${uniqueId}",
+    "fields": [
+      {
+        "id": "certificate_map",
+        "old": "",
+        "new": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "test description"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computetargethttpsproxy-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "proxy_bind",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "proxy_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "quic_override",
+        "old": "",
+        "new": "DISABLE"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "url_map",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "",
+    "fields": [
+      {
+        "id": "certificate_map",
+        "old": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+        "new": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}"
+      },
+      {
+        "id": "url_map",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
+        "new": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "",
+    "fields": [
+      {
+        "id": "certificate_map",
+        "old": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+        "new": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}"
+      },
+      {
+        "id": "url_map",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
+        "new": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "",
+    "fields": [
+      {
+        "id": "certificate_map",
+        "old": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+        "new": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}"
+      },
+      {
+        "id": "url_map",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
+        "new": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+      }
+    ]
+  }
+]
