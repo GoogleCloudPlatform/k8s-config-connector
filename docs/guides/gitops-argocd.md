@@ -1,68 +1,83 @@
 # Managing Config Connector with GitOps (ArgoCD)
 
-This guide provides a production-tested workflow for installing, managing, and upgrading Config Connector (KCC) using GitOps tooling like **ArgoCD** or **Flux**.
+This guide provides a production-tested workflow for installing, managing, and upgrading Config Connector (KCC) using GitOps tools such as **ArgoCD** or **Flux**.
 
 ---
 
-## Architecture & Deployment Options
+## Architecture and deployment options
 
 Config Connector can be deployed and managed via GitOps using two primary patterns:
 
-1. **Operator-Based GitOps (Recommended)**: ArgoCD deploys the Config Connector Operator via pre-rendered release bundles. The Operator then manages CRD lifecycle and controller deployments automatically based on declarative `ConfigConnector` custom resources.
-2. **Pre-Rendered Manifest GitOps**: ArgoCD directly manages the rendered release bundle manifests (`0-cnrm-system.yaml` and resource CRDs) rendered from Kustomize templates.
+1. **Operator-based GitOps (Recommended)**: ArgoCD deploys the Config Connector Operator via pre-rendered release bundles. The Operator then manages CRD lifecycle and controller deployments automatically based on declarative `ConfigConnector` custom resources.
+2. **Pre-rendered manifest GitOps**: ArgoCD directly manages the rendered release bundle manifests (`0-cnrm-system.yaml` and resource CRDs) rendered from Kustomize templates.
 
 ---
 
-## Important Gotchas & Prerequisites
+## Prerequisites and key considerations
 
-Before setting up ArgoCD applications for KCC, note the following critical requirements:
+Before setting up ArgoCD applications for Config Connector, ensure you meet the following prerequisites and review key operational constraints:
 
-### 1. Raw Upstream Repo vs. Rendered Manifests
-The raw source repository (`operator/config/default`) contains release patch templates (`manager_image_patch_template.yaml`) that require build-time rendering. Attempting to point ArgoCD directly at raw upstream source paths without generating `manager_image_patch.yaml` will result in Kustomize build errors.
+### Prerequisites
+* A running Kubernetes cluster (e.g., GKE Standard or GKE Autopilot) with Workload Identity enabled.
+* ArgoCD installed and running in your cluster.
+* A Google Cloud IAM Service Account created with the required GCP roles for the resources you intend to manage.
 
-* **Solution**: Use official published release bundles (downloadable from Google Cloud Storage), or render the Kustomize targets using `dev/tasks/build-release-bundle` in your CI pipeline before committing the manifests to your GitOps repository.
+### Key considerations
 
-### 2. Mandatory Server-Side Apply for CRDs
-KCC includes over 250 CRDs with extensive OpenAPI schemas. Standard client-side `kubectl apply` will fail on large CRD bundles due to Kubernetes' 262KB `kubectl.kubernetes.io/last-applied-configuration` annotation limit in etcd (`metadata.annotations: Too long`).
+> [!NOTE]
+> **Raw upstream repository vs. rendered manifests**  
+> The raw source repository path (`operator/config/default`) contains release patch templates (`manager_image_patch_template.yaml`) that require build-time rendering. Attempting to point ArgoCD directly at raw upstream source paths without generating `manager_image_patch.yaml` results in Kustomize build errors.  
+> **Solution**: Use official published release bundles from Google Cloud Storage, or render the Kustomize targets using `./dev/tasks/build-release-bundle` in your CI pipeline before committing manifests to your GitOps repository.
 
-* **Solution**: You **MUST enable Server-Side Apply** in your ArgoCD Application sync options (`ServerSideApply=true`).
+> [!IMPORTANT]
+> **Mandatory Server-Side Apply for CRDs**  
+> Config Connector includes over 250 CRDs with extensive OpenAPI validation schemas. Standard client-side `kubectl apply` fails on large CRD bundles due to Kubernetes' 262KB `kubectl.kubernetes.io/last-applied-configuration` etcd annotation size limit.  
+> **Solution**: You **must enable Server-Side Apply** in your ArgoCD Application sync options (`ServerSideApply=true`).
 
-### 3. CRD Upgrades & Safety Rules
-* **In-Place Upgrades**: CRDs update **in-place** when applying new versions. etcd object creation timestamps and live GCP resources remain untouched.
-* ⚠️ **NEVER DELETE CRDs**: Running `kubectl delete crd` cascade-deletes all Custom Resource (CR) instances across all namespaces. Because KCC resources have finalizers attached by default, deleting CR instances will instruct KCC to **delete the underlying production GCP infrastructure** in Google Cloud.
+> [!CAUTION]
+> **CRD upgrades and safety rules**  
+> * **In-place updates**: CRDs update **in-place** when applying new versions. etcd object creation timestamps and live GCP resources remain untouched.  
+> * **Never delete CRDs**: Running `kubectl delete crd` cascade-deletes all Custom Resource (CR) instances across all namespaces. Because Config Connector resources have finalizers attached by default, deleting CR instances instructs Config Connector to **delete the underlying production GCP infrastructure** in Google Cloud.
 
 ---
 
-## Step-by-Step Installation Guide
+## Step-by-step installation guide
 
-### Step 1: Obtain or Render the Installation Manifests
+### Step 1: Obtain or render the installation manifests
 
-You can obtain the required pre-rendered KCC installation manifests using either of the following sources:
+Obtain the required pre-rendered Config Connector installation manifests using either of the following methods:
 
-#### **Method A: Official Google Cloud Published Release Bundles (Recommended)**
-If you are installing KCC without building from source, download the latest official release bundle tarball from Google Cloud Storage:
+#### **Method A: Official Google Cloud published release bundles (Recommended)**
+If you are installing Config Connector without building from source, download the latest official release bundle tarball from Google Cloud Storage:
+
 ```bash
-# Download the official release bundle
+# Download the official published release bundle
 curl -O https://storage.googleapis.com/config-connector-operator/latest/release-bundle.tar.gz
+
+# Extract the release bundle files
 tar -xvf release-bundle.tar.gz
 ```
+
 This tarball contains pre-rendered, production-ready manifests:
 * `0-cnrm-system.yaml`: Contains the Operator deployment, RBAC roles, ServiceAccounts, and `configconnector-operator-system` namespace.
-* `crds.yaml`: Contains the complete set of KCC CustomResourceDefinitions.
+* `crds.yaml`: Contains the complete set of Config Connector CustomResourceDefinitions.
 
-#### **Method B: Building from GitHub Repository Source**
+#### **Method B: Building from GitHub repository source**
 If you are tracking the open-source GitHub repository source code:
+
 ```bash
+# Clone the upstream repository
 git clone https://github.com/GoogleCloudPlatform/k8s-config-connector.git
 cd k8s-config-connector
 
-# Render standard cluster bundle
+# Render standard cluster bundle manifests
 ./dev/tasks/build-release-bundle
 ```
 This populates rendered manifests in `config/installbundle/releases/` ready for GitOps use.
 
-#### **Recommended GitOps Repository Structure**
-Organize your team's GitOps repository (e.g., `https://github.com/<your-org>/kcc-gitops.git`) as follows:
+#### **Recommended GitOps repository structure**
+Organize your team's GitOps repository (for example, `https://github.com/<your-org>/kcc-gitops.git`) as follows:
+
 ```text
 kcc-gitops/
 ├── operator/
@@ -75,7 +90,7 @@ kcc-gitops/
 
 ### Step 2: Configure ArgoCD Application for KCC Operator
 
-Create an ArgoCD `Application` targeting your rendered KCC manifests directory in your GitOps repository. Be sure to include `ServerSideApply=true` in `syncOptions`:
+Create an ArgoCD `Application` targeting your rendered Config Connector manifests directory in your GitOps repository. Ensure `ServerSideApply=true` is set under `syncOptions`:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -88,7 +103,7 @@ spec:
   source:
     repoURL: 'https://github.com/<your-org>/kcc-gitops.git'
     targetRevision: main
-    path: operator
+    path: operator                     # Path to 0-cnrm-system.yaml and crds.yaml
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: configconnector-operator-system
@@ -98,44 +113,44 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true   # CRITICAL: Bypasses 262KB annotation limit on CRDs
+      - ServerSideApply=true           # CRITICAL: Bypasses 262KB annotation limit on CRDs
 ```
 
 ---
 
-### Step 3: Declaratively Configure Config Connector
+### Step 3: Declaratively configure Config Connector
 
-Once the Operator is deployed by ArgoCD, declaratively configure Config Connector by committing a `ConfigConnector` custom resource to your GitOps repository.
+Once ArgoCD deploys the Operator, declaratively configure Config Connector by committing a `ConfigConnector` custom resource to your GitOps repository.
 
-> 💡 **Prerequisite**: Ensure the specified Google Service Account (`googleServiceAccount`) has been created in GCP IAM and bound to the KCC ServiceAccount via Workload Identity.
+#### **Cluster mode configuration**:
+Use `mode: cluster` when managing GCP resources across the entire cluster using a single Google Service Account:
 
-#### **Cluster Mode Configuration**:
 ```yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnector
 metadata:
   name: configconnector.core.cnrm.cloud.google.com
 spec:
-  mode: cluster
+  mode: cluster                         # Cluster-wide reconciliation mode
   googleServiceAccount: "kcc-system@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 ```
 
-#### **Namespace Mode Configuration**:
-For namespace mode, deploy a `ConfigConnectorContext` resource in each managed namespace to bind dedicated GCP Service Accounts per namespace:
+#### **Namespace mode configuration**:
+Use `mode: namespaced` and deploy a `ConfigConnectorContext` resource in each managed namespace to bind dedicated GCP Service Accounts per namespace:
 
 ```yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnectorContext
 metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
-  namespace: config-control
+  namespace: config-control             # Target namespace to enable
 spec:
   googleServiceAccount: "kcc-namespace-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com"
 ```
 
 ---
 
-## Safe Upgrade Workflow
+## Safe upgrade workflow
 
 When upgrading Config Connector to a newer release:
 
@@ -145,4 +160,4 @@ When upgrading Config Connector to a newer release:
 4. **Verification**:
    - Verify CRDs updated in-place: `kubectl get crd containerclusters.container.cnrm.cloud.google.com` (creation timestamp should remain unchanged).
    - Check operator status: `kubectl get configconnector -o yaml`.
-   - Existing GCP resources and running workloads will remain completely uninterrupted.
+   - Existing GCP resources and running workloads remain completely uninterrupted.
