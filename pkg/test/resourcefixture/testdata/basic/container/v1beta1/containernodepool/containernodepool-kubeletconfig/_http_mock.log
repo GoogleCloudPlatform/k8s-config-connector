@@ -943,32 +943,24 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 {
   "nodePool": {
-    "autoscaling": {
-      "enabled": true,
-      "maxNodeCount": 3,
-      "minNodeCount": 1,
-      "totalMaxNodeCount": 0,
-      "totalMinNodeCount": 0
-    },
     "config": {
-      "advancedMachineFeatures": {
-        "enableNestedVirtualization": true,
-        "threadsPerCore": "1"
+      "kubeletConfig": {
+        "cpuCfsQuota": true,
+        "cpuCfsQuotaPeriod": "100ms",
+        "cpuManagerPolicy": "none",
+        "imageGcHighThresholdPercent": 70,
+        "imageGcLowThresholdPercent": 50,
+        "imageMaximumGcAge": "1h0m0s",
+        "imageMinimumGcAge": "1m0s",
+        "podPidsLimit": "1024"
       },
       "loggingConfig": {
         "variantConfig": {
           "variant": "DEFAULT"
         }
-      },
-      "machineType": "n4-standard-2",
-      "taints": [
-        {
-          "effect": "NO_SCHEDULE",
-          "key": "originalKey",
-          "value": "originalValue"
-        }
-      ]
+      }
     },
+    "initialNodeCount": 1,
     "name": "nodepool-sample-${uniqueId}",
     "networkConfig": {}
   }
@@ -1036,34 +1028,33 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscaling": {
-    "enabled": true,
-    "maxNodeCount": 3,
-    "minNodeCount": 1
-  },
   "config": {
-    "advancedMachineFeatures": {
-      "enableNestedVirtualization": true,
-      "threadsPerCore": "1"
-    },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "cpuCfsQuota": true,
+      "cpuCfsQuotaPeriod": "100ms",
+      "cpuManagerPolicy": "none",
+      "imageGcHighThresholdPercent": 70,
+      "imageGcLowThresholdPercent": 50,
+      "imageMaximumGcAge": "1h0m0s",
+      "imageMinimumGcAge": "1m0s",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2
+      "maxParallelImagePulls": 3,
+      "podPidsLimit": "1024"
     },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1082,13 +1073,6 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "originalKey",
-        "value": "originalValue"
-      }
-    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
@@ -1185,34 +1169,33 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscaling": {
-    "enabled": true,
-    "maxNodeCount": 3,
-    "minNodeCount": 1
-  },
   "config": {
-    "advancedMachineFeatures": {
-      "enableNestedVirtualization": true,
-      "threadsPerCore": "1"
-    },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "cpuCfsQuota": true,
+      "cpuCfsQuotaPeriod": "100ms",
+      "cpuManagerPolicy": "none",
+      "imageGcHighThresholdPercent": 70,
+      "imageGcLowThresholdPercent": 50,
+      "imageMaximumGcAge": "1h0m0s",
+      "imageMinimumGcAge": "1m0s",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2
+      "maxParallelImagePulls": 3,
+      "podPidsLimit": "1024"
     },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1231,13 +1214,6 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "originalKey",
-        "value": "originalValue"
-      }
-    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
@@ -1334,34 +1310,33 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscaling": {
-    "enabled": true,
-    "maxNodeCount": 3,
-    "minNodeCount": 1
-  },
   "config": {
-    "advancedMachineFeatures": {
-      "enableNestedVirtualization": true,
-      "threadsPerCore": "1"
-    },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "cpuCfsQuota": true,
+      "cpuCfsQuotaPeriod": "100ms",
+      "cpuManagerPolicy": "none",
+      "imageGcHighThresholdPercent": 70,
+      "imageGcLowThresholdPercent": 50,
+      "imageMaximumGcAge": "1h0m0s",
+      "imageMinimumGcAge": "1m0s",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2
+      "maxParallelImagePulls": 3,
+      "podPidsLimit": "1024"
     },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1380,13 +1355,6 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "originalKey",
-        "value": "originalValue"
-      }
-    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
@@ -1483,34 +1451,33 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscaling": {
-    "enabled": true,
-    "maxNodeCount": 3,
-    "minNodeCount": 1
-  },
   "config": {
-    "advancedMachineFeatures": {
-      "enableNestedVirtualization": true,
-      "threadsPerCore": "1"
-    },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "cpuCfsQuota": true,
+      "cpuCfsQuotaPeriod": "100ms",
+      "cpuManagerPolicy": "none",
+      "imageGcHighThresholdPercent": 70,
+      "imageGcLowThresholdPercent": 50,
+      "imageMaximumGcAge": "1h0m0s",
+      "imageMinimumGcAge": "1m0s",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2
+      "maxParallelImagePulls": 3,
+      "podPidsLimit": "1024"
     },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1529,13 +1496,6 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "originalKey",
-        "value": "originalValue"
-      }
-    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
@@ -1564,70 +1524,6 @@ X-Xss-Protection: 0
     "strategy": "SURGE"
   },
   "version": "1.30.5-gke.1014001"
-}
-
----
-
-PUT https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-{
-  "update": {
-    "desiredNodePoolAutoscaling": {
-      "enabled": true,
-      "maxNodeCount": 5,
-      "minNodeCount": 1,
-      "totalMinNodeCount": 0
-    },
-    "desiredNodePoolId": "nodepool-sample-${uniqueId}"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "${operationID}",
-  "operationType": "UPDATE_CLUSTER",
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
-  "zone": "us-central1-a"
-}
-
----
-
-GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "name": "${operationID}",
-  "operationType": "UPDATE_CLUSTER",
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
-  "zone": "us-central1-a"
 }
 
 ---
@@ -1637,16 +1533,17 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
-  "name": "nodepool-sample-${uniqueId}",
-  "taints": {
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "newKey",
-        "value": "newValue"
-      }
-    ]
-  }
+  "kubeletConfig": {
+    "cpuCfsQuota": true,
+    "cpuCfsQuotaPeriod": "100ms",
+    "cpuManagerPolicy": "none",
+    "imageGcHighThresholdPercent": 80,
+    "imageGcLowThresholdPercent": 60,
+    "imageMaximumGcAge": "2h0m0s",
+    "imageMinimumGcAge": "2m0s",
+    "podPidsLimit": "2048"
+  },
+  "nodePoolId": "nodepool-sample-${uniqueId}"
 }
 
 200 OK
@@ -1661,6 +1558,7 @@ X-Xss-Protection: 0
 
 {
   "name": "${operationID}",
+  "operationType": "UPGRADE_NODES",
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
@@ -1686,6 +1584,7 @@ X-Xss-Protection: 0
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
   "name": "${operationID}",
+  "operationType": "UPGRADE_NODES",
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
@@ -1967,34 +1866,33 @@ X-Xss-Protection: 0
       "version": "1.30.5-gke.1014001"
     },
     {
-      "autoscaling": {
-        "enabled": true,
-        "maxNodeCount": 5,
-        "minNodeCount": 1
-      },
       "config": {
-        "advancedMachineFeatures": {
-          "enableNestedVirtualization": true,
-          "threadsPerCore": "1"
-        },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "cpuCfsQuota": true,
+          "cpuCfsQuotaPeriod": "100ms",
+          "cpuManagerPolicy": "none",
+          "imageGcHighThresholdPercent": 80,
+          "imageGcLowThresholdPercent": 60,
+          "imageMaximumGcAge": "2h0m0s",
+          "imageMinimumGcAge": "2m0s",
           "insecureKubeletReadonlyPortEnabled": false,
-          "maxParallelImagePulls": 2
+          "maxParallelImagePulls": 3,
+          "podPidsLimit": "2048"
         },
         "loggingConfig": {
           "variantConfig": {
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "e2-medium",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -2013,13 +1911,6 @@ X-Xss-Protection: 0
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true
         },
-        "taints": [
-          {
-            "effect": "NO_SCHEDULE",
-            "key": "newKey",
-            "value": "newValue"
-          }
-        ],
         "windowsNodeConfig": {}
       },
       "initialNodeCount": 1,
@@ -2109,34 +2000,33 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscaling": {
-    "enabled": true,
-    "maxNodeCount": 5,
-    "minNodeCount": 1
-  },
   "config": {
-    "advancedMachineFeatures": {
-      "enableNestedVirtualization": true,
-      "threadsPerCore": "1"
-    },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "cpuCfsQuota": true,
+      "cpuCfsQuotaPeriod": "100ms",
+      "cpuManagerPolicy": "none",
+      "imageGcHighThresholdPercent": 80,
+      "imageGcLowThresholdPercent": 60,
+      "imageMaximumGcAge": "2h0m0s",
+      "imageMinimumGcAge": "2m0s",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2
+      "maxParallelImagePulls": 3,
+      "podPidsLimit": "2048"
     },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2155,13 +2045,6 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "newKey",
-        "value": "newValue"
-      }
-    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
@@ -2258,34 +2141,33 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscaling": {
-    "enabled": true,
-    "maxNodeCount": 5,
-    "minNodeCount": 1
-  },
   "config": {
-    "advancedMachineFeatures": {
-      "enableNestedVirtualization": true,
-      "threadsPerCore": "1"
-    },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "cpuCfsQuota": true,
+      "cpuCfsQuotaPeriod": "100ms",
+      "cpuManagerPolicy": "none",
+      "imageGcHighThresholdPercent": 80,
+      "imageGcLowThresholdPercent": 60,
+      "imageMaximumGcAge": "2h0m0s",
+      "imageMinimumGcAge": "2m0s",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2
+      "maxParallelImagePulls": 3,
+      "podPidsLimit": "2048"
     },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2304,13 +2186,6 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "newKey",
-        "value": "newValue"
-      }
-    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,
@@ -2407,34 +2282,33 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscaling": {
-    "enabled": true,
-    "maxNodeCount": 5,
-    "minNodeCount": 1
-  },
   "config": {
-    "advancedMachineFeatures": {
-      "enableNestedVirtualization": true,
-      "threadsPerCore": "1"
-    },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "cpuCfsQuota": true,
+      "cpuCfsQuotaPeriod": "100ms",
+      "cpuManagerPolicy": "none",
+      "imageGcHighThresholdPercent": 80,
+      "imageGcLowThresholdPercent": 60,
+      "imageMaximumGcAge": "2h0m0s",
+      "imageMinimumGcAge": "2m0s",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2
+      "maxParallelImagePulls": 3,
+      "podPidsLimit": "2048"
     },
     "loggingConfig": {
       "variantConfig": {
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "e2-medium",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2453,13 +2327,6 @@ X-Xss-Protection: 0
     "shieldedInstanceConfig": {
       "enableIntegrityMonitoring": true
     },
-    "taints": [
-      {
-        "effect": "NO_SCHEDULE",
-        "key": "newKey",
-        "value": "newValue"
-      }
-    ],
     "windowsNodeConfig": {}
   },
   "initialNodeCount": 1,

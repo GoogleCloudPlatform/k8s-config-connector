@@ -649,6 +649,22 @@ type KubeletConfig struct {
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.pod_pids_limit
 	PodPidsLimit *int `json:"podPidsLimit,omitempty"`
+
+	/* Percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_low_threshold_percent
+	ImageGcLowThresholdPercent *int `json:"imageGcLowThresholdPercent,omitempty"`
+
+	/* Percent of disk usage after which image garbage collection is always run. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_high_threshold_percent
+	ImageGcHighThresholdPercent *int `json:"imageGcHighThresholdPercent,omitempty"`
+
+	/* Minimum age for an unused image before it is garbage collected. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_minimum_gc_age
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
+	/* Maximum age an image can be unused before it is garbage collected. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_maximum_gc_age
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.LinuxNodeConfig

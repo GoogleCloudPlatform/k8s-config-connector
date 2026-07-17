@@ -516,6 +516,26 @@ func schemaNodeConfig() *schema.Schema {
 								Optional:    true,
 								Description: `Controls the maximum number of processes allowed to run in a pod.`,
 							},
+							"image_gc_low_threshold_percent": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Description: `Defines the percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to.`,
+							},
+							"image_gc_high_threshold_percent": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Description: `Defines the percent of disk usage after which image garbage collection is always run.`,
+							},
+							"image_minimum_gc_age": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `Defines the minimum age for an unused image before it is garbage collected.`,
+							},
+							"image_maximum_gc_age": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `Defines the maximum age an image can be unused before it is garbage collected.`,
+							},
 						},
 					},
 				},
@@ -1035,6 +1055,18 @@ func expandKubeletConfig(v interface{}) *container.NodeKubeletConfig {
 	if podPidsLimit, ok := cfg["pod_pids_limit"]; ok {
 		kConfig.PodPidsLimit = int64(podPidsLimit.(int))
 	}
+	if imageGcLowThresholdPercent, ok := cfg["image_gc_low_threshold_percent"]; ok {
+		kConfig.ImageGcLowThresholdPercent = int64(imageGcLowThresholdPercent.(int))
+	}
+	if imageGcHighThresholdPercent, ok := cfg["image_gc_high_threshold_percent"]; ok {
+		kConfig.ImageGcHighThresholdPercent = int64(imageGcHighThresholdPercent.(int))
+	}
+	if imageMinimumGcAge, ok := cfg["image_minimum_gc_age"]; ok {
+		kConfig.ImageMinimumGcAge = imageMinimumGcAge.(string)
+	}
+	if imageMaximumGcAge, ok := cfg["image_maximum_gc_age"]; ok {
+		kConfig.ImageMaximumGcAge = imageMaximumGcAge.(string)
+	}
 	return kConfig
 }
 
@@ -1437,7 +1469,11 @@ func flattenKubeletConfig(c *container.NodeKubeletConfig) []map[string]interface
 			"cpu_cfs_quota":        c.CpuCfsQuota,
 			"cpu_cfs_quota_period": c.CpuCfsQuotaPeriod,
 			"cpu_manager_policy":   c.CpuManagerPolicy,
-			"pod_pids_limit":       c.PodPidsLimit,
+			"pod_pids_limit":                  c.PodPidsLimit,
+			"image_gc_low_threshold_percent":  c.ImageGcLowThresholdPercent,
+			"image_gc_high_threshold_percent": c.ImageGcHighThresholdPercent,
+			"image_minimum_gc_age":            c.ImageMinimumGcAge,
+			"image_maximum_gc_age":            c.ImageMaximumGcAge,
 		})
 	}
 	return result

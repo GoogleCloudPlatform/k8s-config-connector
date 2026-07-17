@@ -1286,6 +1286,23 @@ spec:
                       cpuManagerPolicy:
                         description: Control the CPU management policy on the node.
                         type: string
+                      imageGcHighThresholdPercent:
+                        description: Percent of disk usage after which image garbage
+                          collection is always run.
+                        type: integer
+                      imageGcLowThresholdPercent:
+                        description: Percent of disk usage before which image garbage
+                          collection is never run. Lowest disk usage to garbage collect
+                          to.
+                        type: integer
+                      imageMaximumGcAge:
+                        description: Maximum age an image can be unused before it
+                          is garbage collected.
+                        type: string
+                      imageMinimumGcAge:
+                        description: Minimum age for an unused image before it is
+                          garbage collected.
+                        type: string
                       podPidsLimit:
                         description: Controls the maximum number of processes allowed
                           to run in a pod.
