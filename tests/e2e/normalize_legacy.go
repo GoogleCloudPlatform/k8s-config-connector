@@ -562,7 +562,6 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	})
 
-	// Specific to ComputeNetwork
 	if strings.Contains(t.Name(), "computeaddress") || strings.Contains(t.Name(), "containercluster") {
 		jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 			normalizeNetwork := func(o map[string]any) {
