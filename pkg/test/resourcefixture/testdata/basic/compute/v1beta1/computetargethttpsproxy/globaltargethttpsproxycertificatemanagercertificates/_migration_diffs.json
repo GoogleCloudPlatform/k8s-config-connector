@@ -179,7 +179,7 @@
         "new": "1"
       },
       {
-        "id": "health_checks.1046505217",
+        "id": "health_checks.1555883992",
         "old": "",
         "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
       },
@@ -233,48 +233,6 @@
   {
     "controller": "tf",
     "isNewObject": true,
-    "resource": "ComputeURLMap/computeurlmap-${uniqueId}",
-    "fields": [
-      {
-        "id": "creation_timestamp",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "default_service",
-        "old": "",
-        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
-      },
-      {
-        "id": "fingerprint",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "map_id",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": "computeurlmap-${uniqueId}"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "self_link",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
     "resource": "ComputeURLMap/computeurlmap-2-${uniqueId}",
     "fields": [
       {
@@ -301,6 +259,48 @@
         "id": "name",
         "old": "",
         "new": "computeurlmap-2-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeURLMap/computeurlmap-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "default_service",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "map_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computeurlmap-${uniqueId}"
       },
       {
         "id": "project",
@@ -373,42 +373,6 @@
         "id": "url_map",
         "old": "",
         "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-      }
-    ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "",
-    "fields": [
-      {
-        "id": "url_map",
-        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
-        "new": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-      }
-    ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "",
-    "fields": [
-      {
-        "id": "url_map",
-        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
-        "new": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-      }
-    ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "",
-    "fields": [
-      {
-        "id": "url_map",
-        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
-        "new": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
       }
     ]
   }
