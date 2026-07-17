@@ -380,7 +380,7 @@ func CertificateManagerDNSAuthorizationSpec_v1beta1_FromProto(mapCtx *direct.Map
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Domain = direct.LazyPtr(in.GetDomain())
 	// MISSING: DNSResourceRecord
-	// MISSING: Type
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
 func CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CertificateManagerDNSAuthorizationSpec) *pb.DnsAuthorization {
@@ -395,7 +395,7 @@ func CertificateManagerDNSAuthorizationSpec_v1beta1_ToProto(mapCtx *direct.MapCo
 	out.Description = direct.ValueOf(in.Description)
 	out.Domain = direct.ValueOf(in.Domain)
 	// MISSING: DNSResourceRecord
-	// MISSING: Type
+	out.Type = direct.Enum_ToProto[pb.DnsAuthorization_Type](mapCtx, in.Type)
 	return out
 }
 func CertificateManagerDNSAuthorizationStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DnsAuthorization) *krm.CertificateManagerDNSAuthorizationStatus {

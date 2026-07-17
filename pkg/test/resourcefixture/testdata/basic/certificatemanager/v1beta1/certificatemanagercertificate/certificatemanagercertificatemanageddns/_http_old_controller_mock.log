@@ -14,7 +14,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -113,7 +113,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -576,8 +576,8 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "second sample dns for testing creating a certificate with dns-auth",
   "dnsResourceRecord": {
-    "data": "authorize.certificatemanager.goog.",
-    "name": "_acme-challenge.${uniqueId}2.hashicorptest.com.",
+    "data": "dns-resource-record-data-placeholder",
+    "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
     "type": "CNAME"
   },
   "domain": "${uniqueId}2.hashicorptest.com",
@@ -586,7 +586,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
-  "type": 1,
+  "type": "FIXED_RECORD",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -665,8 +665,8 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "first sample dns for testing creating a certificate with dns-auth",
   "dnsResourceRecord": {
-    "data": "authorize.certificatemanager.goog.",
-    "name": "_acme-challenge.${uniqueId}1.hashicorptest.com.",
+    "data": "dns-resource-record-data-placeholder",
+    "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
     "type": "CNAME"
   },
   "domain": "${uniqueId}1.hashicorptest.com",
@@ -675,7 +675,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
-  "type": 1,
+  "type": "FIXED_RECORD",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 

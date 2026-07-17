@@ -5,14 +5,14 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
     cnrm-test: "true"
-    label-one: value-one
+    label-one: value-one-updated
     managed-by-cnrm: "true"
-  name: certificatemanagerdnsauthorization-${uniqueId}
+  name: certificatemanagerdnsauthorization${uniqueId}
 spec:
-  description: Updated sample description
+  description: updated sample dns authorization per project
   domain: ${uniqueId}.hashicorptest.com
   location: global
   projectRef:
     name: ${projectId}
-  resourceID: certificatemanagerdnsauthorization-${uniqueId}
-  type: FIXED_RECORD
+  resourceID: certificatemanagerdnsauthorization${uniqueId}
+  type: PER_PROJECT_RECORD

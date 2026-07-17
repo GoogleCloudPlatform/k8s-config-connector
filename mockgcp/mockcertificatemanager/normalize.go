@@ -37,6 +37,29 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 
 	visitor.ReplacePath(".certificateIssuanceConfigs[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".certificateIssuanceConfigs[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	normalizeType := func(m map[string]any) {
+		if typeVal, found := m["type"]; found {
+			switch v := typeVal.(type) {
+			case float64:
+				switch int(v) {
+				case 1:
+					m["type"] = "FIXED_RECORD"
+				case 2:
+					m["type"] = "PER_PROJECT_RECORD"
+				}
+			case int:
+				switch v {
+				case 1:
+					m["type"] = "FIXED_RECORD"
+				case 2:
+					m["type"] = "PER_PROJECT_RECORD"
+				}
+			}
+		}
+	}
+	visitor.TransformObject("", normalizeType)
+	visitor.TransformObject(".response", normalizeType)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, visitor mockgcpregistry.NormalizingVisitor) {

@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -123,7 +123,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "sample dns authorization",
   "dnsResourceRecord": {
-    "data": "authorize.certificatemanager.goog.",
+    "data": "dns-resource-record-data-placeholder",
     "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
     "type": "CNAME"
   },
@@ -134,7 +134,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
-  "type": 1,
+  "type": "FIXED_RECORD",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -241,7 +241,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "updated dns authorization",
   "dnsResourceRecord": {
-    "data": "authorize.certificatemanager.goog.",
+    "data": "dns-resource-record-data-placeholder",
     "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
     "type": "CNAME"
   },
@@ -253,7 +253,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
-  "type": 1,
+  "type": "FIXED_RECORD",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
