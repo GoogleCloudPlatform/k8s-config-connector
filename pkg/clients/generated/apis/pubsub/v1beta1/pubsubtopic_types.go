@@ -39,13 +39,12 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type TopicMessageStoragePolicy struct {
-	/* A list of IDs of GCP regions where messages that are published to
-	the topic may be persisted in storage. Messages published by
-	publishers running in non-allowed GCP regions (or running outside
-	of GCP altogether) will be routed for storage in one of the
-	allowed regions. An empty list means that no regions are allowed,
-	and is not a valid configuration. */
+	/* A list of IDs of GCP regions where messages that are published to the topic may be persisted in storage. Messages published by publishers running in non-allowed GCP regions (or running outside of GCP altogether) will be routed for storage in one of the allowed regions. An empty list means that no regions are allowed, and is not a valid configuration. */
 	AllowedPersistenceRegions []string `json:"allowedPersistenceRegions"`
+
+	/* Optional. If true, `allowed_persistence_regions` is also used to enforce in-transit guarantees for messages. That is, Pub/Sub will fail Publish operations on this topic and subscribe operations on any subscription attached to this topic in any region that is not in `allowed_persistence_regions`. */
+	// +optional
+	EnforceInTransit *bool `json:"enforceInTransit,omitempty"`
 }
 
 type TopicSchemaSettings struct {
@@ -53,31 +52,20 @@ type TopicSchemaSettings struct {
 	// +optional
 	Encoding *string `json:"encoding,omitempty"`
 
+	/* PubSubSchemaRef is a reference to a PubSubSchema. */
 	SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
 }
 
 type PubSubTopicSpec struct {
-	/* The KMSCryptoKey to be used to protect access to messages published
-	on this topic. Your project's Pub/Sub service account
-	('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
-	must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
-	feature. */
+	/* The KMSCryptoKey to be used to protect access to messages published on this topic. Your project's Pub/Sub service account ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* Indicates the minimum duration to retain a message after it is published
-	to the topic. If this field is set, messages published to the topic in
-	the last messageRetentionDuration are always available to subscribers.
-	For instance, it allows any attached subscription to seek to a timestamp
-	that is up to messageRetentionDuration in the past. If this field is not
-	set, message retention is controlled by settings on individual subscriptions.
-	Cannot be more than 31 days or less than 10 minutes. */
+	/* Indicates the minimum duration to retain a message after it is published to the topic. If this field is set, messages published to the topic in the last messageRetentionDuration are always available to subscribers. For instance, it allows any attached subscription to seek to a timestamp that is up to messageRetentionDuration in the past. If this field is not set, message retention is controlled by settings on individual subscriptions. Cannot be more than 31 days or less than 10 minutes. */
 	// +optional
 	MessageRetentionDuration *string `json:"messageRetentionDuration,omitempty"`
 
-	/* Policy constraining the set of Google Cloud Platform regions where
-	messages published to the topic may be stored. If not present, then no
-	constraints are in effect. */
+	/* Policy constraining the set of Google Cloud Platform regions where messages published to the topic may be stored. If not present, then no constraints are in effect. */
 	// +optional
 	MessageStoragePolicy *TopicMessageStoragePolicy `json:"messageStoragePolicy,omitempty"`
 

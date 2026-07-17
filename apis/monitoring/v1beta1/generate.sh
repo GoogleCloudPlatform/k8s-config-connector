@@ -18,20 +18,30 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
 go run . generate-types \
-  --service google.monitoring.v3 \
+  --service google.monitoring.v3,google.monitoring.metricsscope.v1,google.monitoring.dashboard.v1 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
-  --resource MonitoringNotificationChannel:NotificationChannel
+  --include-skipped-output \
+  --resource MonitoringGroup:Group \
+  --resource MonitoringMetricDescriptor:google.api.MetricDescriptor \
+  --resource MonitoringNotificationChannel:NotificationChannel \
+  --resource MonitoringUptimeCheckConfig:UptimeCheckConfig \
+  --resource MonitoringService:Service \
+  --resource MonitoringMonitoredProject:MonitoredProject \
+  --resource MonitoringDashboard:Dashboard \
+  --resource MonitoringAlertPolicy:AlertPolicy
 
 go run . generate-mapper \
-  --service google.monitoring.v3 \
-  --api-version monitoring.cnrm.cloud.google.com/v1beta1
+  --service google.monitoring.v3,google.api,google.monitoring.metricsscope.v1,google.monitoring.dashboard.v1 \
+  --api-version monitoring.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/monitoring/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/monitoring/

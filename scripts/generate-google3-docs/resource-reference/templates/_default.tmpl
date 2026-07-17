@@ -1,0 +1,64 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+{{ if .ServiceName }}
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>{{ .ServiceName }}</td>
+</tr>
+{{ end }}
+{{ if .ServiceDocumentation }}
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="{{ .ServiceDocumentation }}">{{ .ServiceDocumentation }}</a></td>
+</tr>
+{{ end }}
+{{ if .RESTResourceName }}
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>{{ .RESTResourceName }}</td>
+</tr>
+{{ end }}
+{{ if .RESTResourceDocumentation }}
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="{{ .RESTResourceDocumentation }}">{{ .RESTResourceDocumentation }}</a></td>
+</tr>
+{{ end }}
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+{{ if .ServiceName }}
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>{{ .ServiceName }}</td>
+</tr>
+{{ end }}
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

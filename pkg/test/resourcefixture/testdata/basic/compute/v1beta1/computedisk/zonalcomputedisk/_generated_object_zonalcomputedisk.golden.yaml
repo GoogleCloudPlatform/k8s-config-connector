@@ -3,23 +3,22 @@ kind: ComputeDisk
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/observed-secret-versions: (removed)
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
-  name: computedisk-${uniqueId}
+    label-one: value-one-updated
+    label-two: value-two
+  name: ${diskID}
   namespace: ${uniqueId}
 spec:
   description: an example disk without reference
   location: us-central1-a
   projectRef:
     external: ${projectId}
-  resourceID: computedisk-${uniqueId}
+  size: 12
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -28,5 +27,6 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
+  labelFingerprint: abcdef0123A=
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/computedisk-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}

@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # https://pkg.go.dev/github.com/apparentlymart/go-textseg/v12@v12.0.0
-license: Apache-2.0,MIT,Unicode-DFS-2016
+license: Apache-2.0, MIT, Unicode-DFS-2016
 licenseURLs:
 - https://raw.githubusercontent.com/apparentlymart/go-textseg/master/LICENSE

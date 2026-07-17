@@ -24,101 +24,67 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// fixStaleExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
-// This guarantees the backward compatibility for Compute Beta resources.
-func fixStaleExternalFormat(external string) string {
-	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1/")
-	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1beta1/")
-	external = strings.TrimPrefix(external, "/")
-	return external
-}
-
-type ComputeSubnetworkRef struct {
-	/* The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeSubnetwork` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeSubnetwork` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
-
-func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeSubnetworkRef) (*ComputeSubnetworkRef, error) {
-	if ref == nil {
-		return nil, nil
+// TrimComputeURIPrefix trims known GCP Compute Engine URL and URI prefixes
+// to normalize the resource path to projects/{{project}}/... format.
+// This is robust and ensures unknown values/prefixes are not silently ignored.
+//
+// Deprecated: use refs.TrimComputeURIPrefix instead.
+func TrimComputeURIPrefix(ref string) string {
+	// Standard compute prefixes
+	prefixes := []string{
+		"https://compute.googleapis.com/compute/v1/",
+		"https://compute.googleapis.com/compute/beta/",
+		"https://compute.googleapis.com/compute/v1beta1/",
+		"https://compute.googleapis.com/",
+		"https://www.googleapis.com/compute/v1/",
+		"https://www.googleapis.com/compute/beta/",
+		"https://www.googleapis.com/compute/v1beta1/",
+		"https://www.googleapis.com/",
+		"http://compute.googleapis.com/compute/v1/",
+		"http://compute.googleapis.com/compute/beta/",
+		"http://compute.googleapis.com/compute/v1beta1/",
+		"http://compute.googleapis.com/",
+		"http://www.googleapis.com/compute/v1/",
+		"http://www.googleapis.com/compute/beta/",
+		"http://www.googleapis.com/compute/v1beta1/",
+		"http://www.googleapis.com/",
+		"//compute.googleapis.com/compute/v1/",
+		"//compute.googleapis.com/compute/beta/",
+		"//compute.googleapis.com/compute/v1beta1/",
+		"//compute.googleapis.com/",
+		"//www.googleapis.com/compute/v1/",
+		"//www.googleapis.com/compute/beta/",
+		"//www.googleapis.com/compute/v1beta1/",
+		"//www.googleapis.com/",
+		"compute/v1/",
+		"compute/beta/",
+		"compute/v1beta1/",
+		"/compute.googleapis.com/",
+	}
+	for _, prefix := range prefixes {
+		ref = strings.TrimPrefix(ref, prefix)
 	}
 
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
+	// Support the special handling from FixStaleComputeExternalFormat for unknown compute versions with warning
+	// For instance: https://www.googleapis.com/compute/otherVersion/projects/...
+	// If the string starts with compute/ (e.g. after trimming http://www.googleapis.com/ or https://www.googleapis.com/ etc.)
+	// "https://www.googleapis.com/" gets trimmed, leaving "compute/otherVersion/..."
+	tokens := strings.Split(ref, "/")
+	if len(tokens) > 1 && tokens[0] == "compute" {
+		version := tokens[1]
+		if version == "v1" || version == "v1beta1" || version == "beta" {
+			ref = strings.Join(tokens[2:], "/")
+		} else {
+			klog.Warningf("received Compute selfLink with unknown version %s, accepted versions are v1, v1beta1 and beta.", version)
+			ref = strings.Join(tokens[1:], "/")
 		}
-		ref.External = fixStaleExternalFormat(ref.External)
-
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
-			projectID := tokens[1]
-			region := tokens[3]
-			subnetID := tokens[5]
-			return &ComputeSubnetworkRef{
-				External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, subnetID),
-			}, nil
-		}
-		return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/<projectId>/regions/<region>/subnetworks/<networkid>)", ref.External)
 	}
 
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on computenetwork reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	subnetObj := &unstructured.Unstructured{}
-	subnetObj.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeSubnetwork",
-	})
-	if err := reader.Get(ctx, key, subnetObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced ComputeSubnetwork %v not found", key)
-		}
-		return nil, fmt.Errorf("error reading referenced ComputeSubnetwork %v: %w", key, err)
-	}
-
-	subnetID, err := GetResourceID(subnetObj)
-	if err != nil {
-		return nil, err
-	}
-
-	region, _, _ := unstructured.NestedString(subnetObj.Object, "spec", "region")
-	if region == "" {
-		return nil, fmt.Errorf("cannot get region from references ComputeSubnetwork %v: %w", key, err)
-	}
-
-	projectID, err := ResolveProjectID(ctx, reader, subnetObj)
-	if err != nil {
-		return nil, err
-	}
-	return &ComputeSubnetworkRef{
-		External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, subnetID),
-	}, nil
-}
-
-type ComputeAddressRef struct {
-	/* The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeAddress` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeAddress` resource. */
-	Namespace string `json:"namespace,omitempty"`
+	return strings.TrimPrefix(ref, "/")
 }
 
 type ComputeServiceAttachmentRef struct {
@@ -231,66 +197,11 @@ type ComputeTargetVPNGatewayRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type ComputeFirewallPolicyRef struct {
-	// A reference to an externally managed ComputeFirewallPolicy resource.
-	// Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.
+type ComputeForwardingRuleRef struct {
+	/* The ComputeForwardingRule selflink in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeFirewallPolicy` resource. */
+	/* The name field of a ComputeForwardingRule resource. */
 	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeFirewallPolicy` resource. */
+	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
-}
-
-func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeFirewallPolicyRef) (*ComputeFirewallPolicyRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeFirewallPolicy := &unstructured.Unstructured{}
-	computeFirewallPolicy.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeFirewallPolicy",
-	})
-	if err := reader.Get(ctx, key, computeFirewallPolicy); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(computeFirewallPolicy.GroupVersionKind(), key)
-		}
-		return nil, fmt.Errorf("error reading referenced ComputeFirewallPolicy %v: %w", key, err)
-	}
-
-	externalRef, _, _ := unstructured.NestedString(computeFirewallPolicy.Object, "status", "externalRef")
-	if externalRef != "" {
-		return &ComputeFirewallPolicyRef{
-			External: externalRef}, nil
-	}
-
-	selfLink, _, _ := unstructured.NestedString(computeFirewallPolicy.Object, "status", "selfLink")
-	if selfLink == "" {
-		return nil, k8s.NewReferenceNotFoundError(computeFirewallPolicy.GroupVersionKind(), key)
-	}
-
-	partialID := strings.TrimPrefix(selfLink, "https://www.googleapis.com/")
-	tokens := strings.Split(partialID, "/")
-	return &ComputeFirewallPolicyRef{
-		External: tokens[len(tokens)-1]}, nil
 }

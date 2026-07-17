@@ -65,9 +65,7 @@ type SslcertificateValueFrom struct {
 }
 
 type ComputeSSLCertificateSpec struct {
-	/* Immutable. The certificate in PEM format.
-	The certificate chain must be no greater than 5 certs long.
-	The chain must include at least one intermediate cert. */
+	/* Immutable. The certificate in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert. */
 	Certificate SslcertificateCertificate `json:"certificate"`
 
 	/* Immutable. An optional description of this resource. */

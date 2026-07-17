@@ -62,11 +62,18 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetForwardingRuleResource()).(*pb.ForwardingRule)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetForwardingRuleResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
+	obj.SelfLinkWithId = obj.SelfLink
+	if obj.IPAddress == nil {
+		obj.IPAddress = PtrTo("1.2.3.4")
+	}
+	if obj.Description == nil {
+		obj.Description = PtrTo("")
+	}
 	// labels will be added separately with setLabels
 	obj.Labels = nil
 	// If below values are not provided by user, it appears to default by GCP
@@ -100,23 +107,23 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	}
 
 	if obj.Network != nil {
-		networkName, err := s.parseNetworkName(obj.GetNetwork())
+		networkName, err := s.parseNetworkSelfLink(obj.GetNetwork())
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 		}
-		obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
+		obj.Network = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
 	}
 
 	if obj.Subnetwork != nil {
-		subnetworkName, err := s.parseSubnetName(obj.GetSubnetwork())
+		subnetworkName, err := s.parseSubnetSelfLink(obj.GetSubnetwork())
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "subnetwork %q is not valid", obj.GetSubnetwork())
 		}
-		obj.Subnetwork = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", subnetworkName.Project.ID, subnetworkName.Region, subnetworkName.Name)))
+		obj.Subnetwork = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", subnetworkName.Project.ID, subnetworkName.Region, subnetworkName.Name)))
 	}
 
 	// output only fields
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 	// output only field, this field is only used for internal load balancing.
 	if obj.LoadBalancingScheme != nil && *obj.LoadBalancingScheme == "INTERNAL" {
 		if obj.ServiceLabel != nil {

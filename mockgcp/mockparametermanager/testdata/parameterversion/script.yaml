@@ -1,0 +1,8 @@
+- pre: gcloud parametermanager parameters create test-pm-${uniqueId} --location=global --parameter-format=JSON
+
+- exec: gcloud parametermanager parameters versions create "test-${uniqueId}" --parameter="test-pm-${uniqueId}" --location="global" --payload-data='{"key":"value"}'
+- exec: gcloud parametermanager parameters versions describe "test-${uniqueId}" --parameter="test-pm-${uniqueId}" --location="global"
+- exec: gcloud parametermanager parameters versions update "test-${uniqueId}" --parameter="test-pm-${uniqueId}" --location="global" --disabled
+- exec: gcloud parametermanager parameters versions delete "test-${uniqueId}" --parameter="test-pm-${uniqueId}" --location="global" --quiet
+
+- post: gcloud parametermanager parameters delete test-pm-${uniqueId} --location=global --quiet

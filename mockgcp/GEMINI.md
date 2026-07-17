@@ -24,8 +24,8 @@ This command will download necessary tools, sync the required version of the `go
 
 Tests are standard `go test` tests, but some helper scripts are provided:
 
-* `dev/tools/record-gcp [<testpath>]` will record the results of running the tests against (real) GCP; writing the golden output logs.
-* `dev/tools/compare-mock [<testpath>]` will record the results of running the tests against our mocks of GCP; ideally the golden output will not change.
+* `hack/record-gcp [<testpath>]` will record the results of running the tests against (real) GCP; writing the golden output logs.
+* `hack/compare-mock [<testpath>]` will record the results of running the tests against our mocks of GCP; ideally the golden output will not change.
 
 ## Development Conventions
 
@@ -42,10 +42,57 @@ The `README.md` file provides a detailed guide for adding a new mock service. Th
 
 ### Golden File Testing
 
-The project uses a "golden file" testing approach. This involves:
+The project uses a "golden file" testing approach. This involves running tests against real GCP to capture ground truth, and then ensuring the mock implementation produces identical results.
 
-1.  Running tests against the real GCP services to capture the expected HTTP requests and responses.
-2.  Saving this captured data as "golden files" (e.g., `_http.log`).
-3.  Running the tests against the mock implementation and comparing the actual output to the golden files.
+**Expert Workflow: Aligning Mock with Real GCP**
 
-This ensures that the mock implementation accurately reflects the behavior of the real GCP APIs.
+Whenever you add a new field or modify GCP communication, you MUST align the mock logs.
+
+1.  **Establish a Baseline**: 
+    - Identify the `<testname>` (final folder name) and `<fixture-path>` (full relative path).
+    - Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior (writes `_http.log` and `_generated_object_*.golden.yaml`).
+      - **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API has not been used or is disabled), enable the service using `gcloud` and try again:
+        ```bash
+        gcloud services enable <service-name>.googleapis.com
+        ```
+        *(For example: `gcloud services enable compute.googleapis.com`)*
+    - **CRITICAL**: `git add <fixture-path>` and `git commit -m "Update real GCP golden logs"` to establish a clean git baseline.
+
+2.  **Identify Discrepancies**:
+    - Run `hack/compare-mock "fixtures/^<testname>$"` to record current mock behavior in the working tree.
+    - Run `git diff <fixture-path>` to see the exact discrepancies between Mock and Real GCP.
+
+3.  **Diagnose and Fix (Incremental)**:
+    - **Output-Only Fields/IDs**: If IDs or URLs are wrong, search for `populate<Resource>Defaults` in `mockgcp/mock<service>/<resource>.go`. Extract the exact pattern from real logs (look for prefixes, trimming, or hashing) and implement it precisely.
+    - **Volatile Fields**: If data like timestamps or etags differ but are functionally equivalent, update `mockgcp/mock<service>/normalize.go`.
+    - **Controller Mappings**: If field names differ from the proto, check the controller mapping:
+        - TF-Based: Search `third_party/github.com/hashicorp/terraform-provider-google` for `flatten<FieldName>` functions.
+        - Direct: Check `pkg/controller/direct/<service>/mapper.generated.go`.
+    - **Rule**: Fix only **ONE small point** at a time and verify immediately. Revert (`git reset --hard`) if you get stuck in a loop.
+
+4.  **Verify**: Re-run `hack/compare-mock "fixtures/^<testname>$"` and check `git diff <fixture-path>`. Repeat until aligned.
+
+### Normalization and Scoping
+
+Mock services often need to normalize responses to ensure stable golden logs (e.g., replacing timestamps or IDs with placeholders). This is typically implemented in `normalize.go` using the `Previsit` and `ConfigureVisitor` methods.
+
+**Purpose of Normalization**
+Normalization is STRICTLY for removing randomness and non-reproducible values (like timestamps, UUIDs, generated IP addresses, etc.) to ensure tests are stable. It MUST NOT be used to paper over behavioral differences between mockgcp and real GCP. For example, if a real GCP API returns a project number in a specific field but the mock returns a project ID, you should fix the mock implementation to correctly return the project number rather than writing a normalizer to hide the discrepancy. Our goal is to make mockgcp accurately reflect real GCP behavior so controllers are forced to handle real-world API responses properly.
+
+**Critical Rule: Previsit Scoping**
+
+The `Previsit` method is **globally executed** for every event across all registered services. To prevent one service's normalization rules from affecting another service's tests, you MUST explicitly scope the `Previsit` logic to the relevant service URL.
+
+Example of correct scoping:
+
+```go
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+    // Only apply normalization if the request is for this service
+    if !strings.Contains(event.URL(), "myservice.googleapis.com") {
+        return
+    }
+    // ... normalization logic ...
+}
+```
+
+Failure to scope `Previsit` can lead to unintended log changes in unrelated services, causing "log corruption" and massive diffs in unrelated test data.

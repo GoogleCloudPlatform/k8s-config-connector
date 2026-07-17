@@ -40,7 +40,7 @@ func (s *InstanceTemplatesV1) Insert(ctx context.Context, req *pb.InsertInstance
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + name
 	selfLink := fmt.Sprintf("https://compute.googleapis.com/compute/v1/projects/%s/global/instanceTemplates/%s", req.GetProject(), name)
 
-	obj := proto.Clone(req.GetInstanceTemplateResource()).(*pb.InstanceTemplate)
+	obj := proto.CloneOf(req.GetInstanceTemplateResource())
 	obj.SelfLink = PtrTo(selfLink)
 	obj.Kind = PtrTo("compute#instanceTemplate")
 	obj.Id = PtrTo(s.generateID())
@@ -112,6 +112,9 @@ func (s *InstanceTemplatesV1) Get(ctx context.Context, req *pb.GetInstanceTempla
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + req.GetInstanceTemplate()
 	obj := &pb.InstanceTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 	return obj, nil
@@ -124,6 +127,9 @@ func (s *InstanceTemplatesV1) Delete(ctx context.Context, req *pb.DeleteInstance
 	fqn := "projects/" + req.GetProject() + "/global/instanceTemplates/" + req.GetInstanceTemplate()
 	deleted := &pb.InstanceTemplate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

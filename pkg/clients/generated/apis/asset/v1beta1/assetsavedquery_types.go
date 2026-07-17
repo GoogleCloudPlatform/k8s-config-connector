@@ -231,7 +231,7 @@ type AssetSavedQuerySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* FolderRef represents the Folder that this resource belongs to. */
+	/* The Folder that contains this resource. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 

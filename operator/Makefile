@@ -36,18 +36,32 @@ all: manager
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests
-	go run gotest.tools/gotestsum@latest --format testname -- -v ./pkg/... -coverprofile cover.out
+	go test -v ./pkg/... -coverprofile cover.out
 
 # Build manager binary
 .PHONY: manager
 manager: generate fmt vet
 	go build -o bin/manager cmd/manager/main.go
 
+VERSION := $(shell cat ${REPO_ROOT}/version/VERSION)
+CHANNEL_MANIFEST := ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/crds.yaml
+
+.PHONY: ensure-channels
+ensure-channels:
+	@if [ ! -f "${CHANNEL_MANIFEST}" ]; then \
+		echo "Channel manifest not found at ${CHANNEL_MANIFEST}. Generating..."; \
+		${REPO_ROOT}/dev/tasks/generate-channels; \
+	fi
+
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests:
+manifests: ensure-channels
 	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
-	go run scripts/generate-image-configmap/main.go
+	@if [ -f "${CHANNEL_MANIFEST}" ]; then \
+		go run scripts/generate-image-configmap/main.go; \
+	else \
+		echo "Skipping image configmap generation as channel manifest ${CHANNEL_MANIFEST} is missing"; \
+	fi
 
 # Run go fmt against code
 .PHONY: fmt

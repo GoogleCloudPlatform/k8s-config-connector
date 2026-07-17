@@ -84,7 +84,7 @@ func (s *environmentsServer) CreateOrganizationsEnvironment(ctx context.Context,
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.OrganizationsEnvironment).(*pb.GoogleCloudApigeeV1Environment)
+	obj := proto.CloneOf(req.OrganizationsEnvironment)
 	obj.Name = req.OrganizationsEnvironment.Name
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -117,7 +117,7 @@ func (s *environmentsServer) UpdateOrganizationsEnvironment(ctx context.Context,
 	}
 
 	// All fields should be passed by callergst
-	updated := ProtoClone(req.GetOrganizationsEnvironment())
+	updated := proto.CloneOf(req.GetOrganizationsEnvironment())
 	updated.Name = obj.Name
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {

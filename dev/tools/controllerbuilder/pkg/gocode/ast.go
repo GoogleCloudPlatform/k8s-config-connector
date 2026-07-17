@@ -192,8 +192,8 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 				if err := p.addStruct(n.Name, def, comments); err != nil {
 					errs = append(errs, err)
 				}
-			case *ast.Ident:
-				// type alias
+			case *ast.Ident, *ast.SelectorExpr:
+				// type alias or simple type
 			case *ast.InterfaceType:
 				// always skip, nothing to generate for interface
 			default:
@@ -239,25 +239,21 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 		tokens := strings.Split(s, ".")
 		if len(tokens) > 1 {
 			packageName := tokens[0]
-			// if packageName == "apiextensionsv1" {
-			//	structField.GoPackage = "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-			//	p.Imports = append(p.Imports, &GoImport{
-			//		GoPackage: structField.GoPackage,
-			//		Alias:     packageName,
-			//	})
-			// } else {
+			if packageName == "apiextensionsv1" {
+				structField.GoPackage = "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+			} else {
 				for _, imp := range p.Imports {
 					if imp.Alias == packageName {
 						structField.GoPackage = imp.GoPackage
 						break
 					}
 				}
-			// }
+			}
 			if structField.GoPackage == "" {
 				for _, imp := range p.Imports {
 					fmt.Printf("imp: %+v\n", imp)
 				}
-				panic(fmt.Sprintf("could not find import for %q (package %q)", goType, packageName))
+				panic(fmt.Sprintf("could not find import for %q (package %q) in package %q", goType, packageName, p.GoPackage))
 			}
 		}
 

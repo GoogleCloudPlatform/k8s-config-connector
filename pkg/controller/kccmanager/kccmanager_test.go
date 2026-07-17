@@ -54,6 +54,7 @@ var (
 // The scheme is not thread-safe due to its use and modification of its internal maps. Different managers should not
 // share a scheme.
 func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 
 	controllersCfg := kccmanager.Config{
@@ -63,6 +64,7 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 				BindAddress: "0",
 			},
 		},
+		SkipNameValidation: true,
 	}
 	schemePtrMap := make(map[*runtime.Scheme]string)
 	schemePtrMap[clusterModeManager.GetScheme()] = "clusterModeMgr"
@@ -79,9 +81,45 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 	}
 }
 
-func TestClusterModeManager(t *testing.T) {
+func TestSkipNameValidation(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
-	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1})
+
+	controllersCfg := kccmanager.Config{
+		ManagerOptions: manager.Options{
+			// disable prometheus metrics as by default, the metrics server binds to the same port in all instances
+			Metrics: server.Options{
+				BindAddress: "0",
+			},
+		},
+		SkipNameValidation: false,
+	}
+
+	// Note: Because controller-runtime uses a global map to register controller names, this map retains state across the entire lifetime of the test process.
+	// If this test is executed multiple times in the same process (e.g., using go test -count=2), the first manager creation will fail on the second run because the map was dirtied by the first run.
+	_, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), controllersCfg)
+	if err != nil {
+		t.Fatalf("error creating manager 1: %v", err)
+	}
+
+	// This should fail because it tries to register controllers with same names.
+	// controller-runtime (at least in some versions) has a global registry of controller names.
+	_, err = kccmanager.New(ctx, clusterModeManager.GetConfig(), controllersCfg)
+	if err == nil {
+		t.Fatalf("expected error creating manager 2 without SkipNameValidation, but got nil")
+	}
+
+	controllersCfg.SkipNameValidation = true
+	_, err = kccmanager.New(ctx, clusterModeManager.GetConfig(), controllersCfg)
+	if err != nil {
+		t.Fatalf("error creating manager 3 with SkipNameValidation: %v", err)
+	}
+}
+
+func TestClusterModeManager(t *testing.T) {
+	t.Parallel()
+	ctx := context.TODO()
+	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1, SkipNameValidation: true})
 	if err != nil {
 		t.Fatalf("error creating manager: %v", err)
 	}
@@ -103,6 +141,7 @@ func TestClusterModeManager(t *testing.T) {
 // not started controllers. Verify that only the first is reconciled, then start a second set of controllers and verify
 // the second is reconciled.
 func TestNamespacedModeManager(t *testing.T) {
+	t.Parallel()
 	ctx := context.TODO()
 	basicPubSubFixture := getBasicPubSubSchemaFixture(t)
 	project := testgcp.GetDefaultProject(t)
@@ -120,6 +159,7 @@ func TestNamespacedModeManager(t *testing.T) {
 				},
 			},
 		},
+		SkipNameValidation: true,
 	}
 	mgr1, err := kccmanager.New(ctx, namespacedModeManager.GetConfig(), controllersCfg1)
 	if err != nil {
@@ -163,6 +203,7 @@ func TestNamespacedModeManager(t *testing.T) {
 				},
 			},
 		},
+		SkipNameValidation: true,
 	}
 	// start controllers for the second namespace and verify that the second resource does reconcile
 	mgr2, err := kccmanager.New(ctx, namespacedModeManager.GetConfig(), controllersCfg2)
@@ -232,8 +273,7 @@ func waitForReconcile(t *testing.T, kubeClient client.Client, resource *unstruct
 }
 
 func TestMain(m *testing.M) {
-	managers := []*manager.Manager{
-		&clusterModeManager,
+	managers := []*manager.Manager{&clusterModeManager,
 		&namespacedModeManager,
 	}
 	testmain.SetupMultipleEnvironments(m, test.IntegrationTestType, nil, managers)

@@ -32,7 +32,11 @@ type FakeParametermanagerV1alpha1 struct {
 }
 
 func (c *FakeParametermanagerV1alpha1) ParameterManagerParameters(namespace string) v1alpha1.ParameterManagerParameterInterface {
-	return &FakeParameterManagerParameters{c, namespace}
+	return newFakeParameterManagerParameters(c, namespace)
+}
+
+func (c *FakeParametermanagerV1alpha1) ParameterManagerParameterVersions(namespace string) v1alpha1.ParameterManagerParameterVersionInterface {
+	return newFakeParameterManagerParameterVersions(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -39,18 +39,11 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ExternalvpngatewayInterface struct {
-	/* Immutable. The numeric ID for this interface. Allowed values are based on the redundancy type
-	of this external VPN gateway
-	* '0 - SINGLE_IP_INTERNALLY_REDUNDANT'
-	* '0, 1 - TWO_IPS_REDUNDANCY'
-	* '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY'. */
+	/* Immutable. The numeric ID for this interface. Allowed values are based on the redundancy type of this external VPN gateway * '0 - SINGLE_IP_INTERNALLY_REDUNDANT' * '0, 1 - TWO_IPS_REDUNDANCY' * '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY'. */
 	// +optional
 	Id *int64 `json:"id,omitempty"`
 
-	/* Immutable. IP address of the interface in the external VPN gateway.
-	Only IPv4 is supported. This IP address can be either from
-	your on-premise gateway or another Cloud provider's VPN gateway,
-	it cannot be an IP address from Google Compute Engine. */
+	/* Immutable. IP address of the interface in the external VPN gateway. Only IPv4 is supported. This IP address can be either from your on-premise gateway or another Cloud provider's VPN gateway, it cannot be an IP address from Google Compute Engine. */
 	// +optional
 	IpAddress *string `json:"ipAddress,omitempty"`
 }
@@ -64,7 +57,7 @@ type ComputeExternalVPNGatewaySpec struct {
 	// +optional
 	Interface []ExternalvpngatewayInterface `json:"interface,omitempty"`
 
-	/* Immutable. Indicates the redundancy type of this external VPN gateway Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"]. */
+	/* Immutable. Indicates the redundancy type of this external VPN gateway. Possible values: ["FOUR_IPS_REDUNDANCY", "SINGLE_IP_INTERNALLY_REDUNDANT", "TWO_IPS_REDUNDANCY"]. */
 	// +optional
 	RedundancyType *string `json:"redundancyType,omitempty"`
 
@@ -77,8 +70,7 @@ type ComputeExternalVPNGatewayStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeExternalVPNGateway's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The fingerprint used for optimistic locking of this resource.  Used
-	internally during updates. */
+	/* The fingerprint used for optimistic locking of this resource. Used internally during updates. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 
@@ -86,6 +78,7 @@ type ComputeExternalVPNGatewayStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* The self link of the ComputeExternalVPNGateway. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }

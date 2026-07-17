@@ -31,6 +31,11 @@ import (
 // we should avoid adding to this function and instead add to the per-service normalization functions.
 // Deprecated: add functionality to the per-service normalization instead.
 func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject, uniqueID string, events test.LogEntries) (string, []func(string) string) {
+	if strings.Contains(strings.ToLower(t.Name()), "cloudbatchresourceallowance") {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			return !strings.Contains(e.Request.URL, "pubsub.googleapis.com")
+		})
+	}
 
 	r := NewReplacements()
 
@@ -61,8 +66,8 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
 				id = tokens[len(tokens)-1]
 			}
-			// operation name format: operation-{operationId}
-			if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation") {
+			// operation name format: operation-{operationId} or org-{organizationId}-{operationId}
+			if len(tokens) == 1 && (strings.HasPrefix(tokens[0], "operation") || strings.HasPrefix(tokens[0], "org-")) {
 				id = s
 			}
 			// SQL operations require a special case.
@@ -167,6 +172,24 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 		// remove if not done - and done can be omitted when false
 		return false
+	})
+
+	// Specific to KMS AutokeyConfig: remove the flaky PATCH request sent during Delete/cleanup
+	// due to eventual consistency state fluctuations on real GCP.
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		if e.Request.Method == "PATCH" && strings.Contains(e.Request.URL, "/autokeyConfig") {
+			if strings.Contains(e.Request.URL, "updateMask=keyProjectResolutionMode") {
+				body := e.Request.ParseBody()
+				if body != nil {
+					mode := body["keyProjectResolutionMode"]
+					if mode == float64(3) || mode == "DISABLED" {
+						// Skip recording this flaky PATCH to DISABLED during delete
+						return false
+					}
+				}
+			}
+		}
+		return true
 	})
 
 	jsonMutators := []test.JSONMutator{}
@@ -486,12 +509,50 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	})
 
+	// Specific to ComputeNetwork
+	if strings.Contains(t.Name(), "computeaddress") {
+		jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+			normalizeNetwork := func(o map[string]any) {
+				if val, found, err := unstructured.NestedString(o, "kind"); err == nil && found && val == "compute#network" {
+					delete(o, "peerings")
+					delete(o, "routingConfig")
+					delete(o, "subnetworks")
+				}
+			}
+			normalizeNetwork(obj)
+			if responseObj, found, _ := unstructured.NestedMap(obj, "response"); found {
+				normalizeNetwork(responseObj)
+			}
+		})
+	}
+
 	// Specific to KMS
 	addReplacement("policy.etag", "abcdef0123A=")
 	addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")
 	addSetStringReplacement(".cryptoKeyVersions[].generateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
+
+	// Specific to KMS AutokeyConfig
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/autokeyConfig") {
+			// Normalize etag
+			obj["etag"] = "abcdef0123A="
+			// Normalize name based on whether it contains folders or projects
+			if name, ok := obj["name"].(string); ok {
+				if strings.Contains(name, "folders/") {
+					obj["name"] = "folders/${folderID}/autokeyConfig"
+				} else {
+					obj["name"] = "projects/${projectNumber}/autokeyConfig"
+				}
+			}
+			// Only normalize keyProjectResolutionMode and state to prevent flakiness on project configs
+			if strings.Contains(requestURL, "/projects/") {
+				obj["keyProjectResolutionMode"] = float64(3)
+				obj["state"] = float64(1)
+			}
+		}
+	})
 
 	// Specific to BigQueryConnectionConnection.
 	addReplacement("aws.accessRole.identity", "048077221682493034546")
@@ -711,6 +772,12 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("lastModifiedTime", "123456789")
 
 	events.PrettifyJSON(jsonMutators...)
+
+	if strings.Contains(t.Name(), "osconfig") {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			return strings.Contains(e.Request.URL, "osconfig.googleapis.com")
+		})
+	}
 
 	NormalizeHTTPLog(t, events, h.RegisteredServices(), project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
 

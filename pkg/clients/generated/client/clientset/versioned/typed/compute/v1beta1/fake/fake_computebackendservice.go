@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeComputeBackendServices implements ComputeBackendServiceInterface
-type FakeComputeBackendServices struct {
+// fakeComputeBackendServices implements ComputeBackendServiceInterface
+type fakeComputeBackendServices struct {
+	*gentype.FakeClientWithList[*v1beta1.ComputeBackendService, *v1beta1.ComputeBackendServiceList]
 	Fake *FakeComputeV1beta1
-	ns   string
 }
 
-var computebackendservicesResource = v1beta1.SchemeGroupVersion.WithResource("computebackendservices")
-
-var computebackendservicesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeBackendService")
-
-// Get takes name of the computeBackendService, and returns the corresponding computeBackendService object, and an error if there is any.
-func (c *FakeComputeBackendServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeBackendService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computebackendservicesResource, c.ns, name), &v1beta1.ComputeBackendService{})
-
-	if obj == nil {
-		return nil, err
+func newFakeComputeBackendServices(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeBackendServiceInterface {
+	return &fakeComputeBackendServices{
+		gentype.NewFakeClientWithList[*v1beta1.ComputeBackendService, *v1beta1.ComputeBackendServiceList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("computebackendservices"),
+			v1beta1.SchemeGroupVersion.WithKind("ComputeBackendService"),
+			func() *v1beta1.ComputeBackendService { return &v1beta1.ComputeBackendService{} },
+			func() *v1beta1.ComputeBackendServiceList { return &v1beta1.ComputeBackendServiceList{} },
+			func(dst, src *v1beta1.ComputeBackendServiceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.ComputeBackendServiceList) []*v1beta1.ComputeBackendService {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.ComputeBackendServiceList, items []*v1beta1.ComputeBackendService) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.ComputeBackendService), err
-}
-
-// List takes label and field selectors, and returns the list of ComputeBackendServices that match those selectors.
-func (c *FakeComputeBackendServices) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeBackendServiceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computebackendservicesResource, computebackendservicesKind, c.ns, opts), &v1beta1.ComputeBackendServiceList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.ComputeBackendServiceList{ListMeta: obj.(*v1beta1.ComputeBackendServiceList).ListMeta}
-	for _, item := range obj.(*v1beta1.ComputeBackendServiceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested computeBackendServices.
-func (c *FakeComputeBackendServices) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(computebackendservicesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a computeBackendService and creates it.  Returns the server's representation of the computeBackendService, and an error, if there is any.
-func (c *FakeComputeBackendServices) Create(ctx context.Context, computeBackendService *v1beta1.ComputeBackendService, opts v1.CreateOptions) (result *v1beta1.ComputeBackendService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computebackendservicesResource, c.ns, computeBackendService), &v1beta1.ComputeBackendService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeBackendService), err
-}
-
-// Update takes the representation of a computeBackendService and updates it. Returns the server's representation of the computeBackendService, and an error, if there is any.
-func (c *FakeComputeBackendServices) Update(ctx context.Context, computeBackendService *v1beta1.ComputeBackendService, opts v1.UpdateOptions) (result *v1beta1.ComputeBackendService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computebackendservicesResource, c.ns, computeBackendService), &v1beta1.ComputeBackendService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeBackendService), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeBackendServices) UpdateStatus(ctx context.Context, computeBackendService *v1beta1.ComputeBackendService, opts v1.UpdateOptions) (*v1beta1.ComputeBackendService, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computebackendservicesResource, "status", c.ns, computeBackendService), &v1beta1.ComputeBackendService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeBackendService), err
-}
-
-// Delete takes name of the computeBackendService and deletes it. Returns an error if one occurs.
-func (c *FakeComputeBackendServices) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computebackendservicesResource, c.ns, name, opts), &v1beta1.ComputeBackendService{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeComputeBackendServices) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(computebackendservicesResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.ComputeBackendServiceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched computeBackendService.
-func (c *FakeComputeBackendServices) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeBackendService, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computebackendservicesResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeBackendService{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeBackendService), err
 }

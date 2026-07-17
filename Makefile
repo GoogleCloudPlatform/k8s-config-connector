@@ -14,6 +14,7 @@
 
 PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
+GO_VERSION := $(shell grep "^go" go.mod | sed -e 's/^go[[:space:]]\+//')
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
 CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/controller:${SHORT_SHA}
 RECORDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/recorder:${SHORT_SHA}
@@ -25,7 +26,7 @@ CONFIG_CONNECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/config-connector-cli:${SHORT_S
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
-GOLANGCI_LINT_VERSION := v2.7.1
+GOLANGCI_LINT_VERSION := v2.9.0
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
@@ -51,7 +52,19 @@ all: test manager operator config-connector
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests
-	./scripts/unit-test.sh
+	dev/ci/presubmits/unit-tests
+	dev/ci/presubmits/unit-tests-operator
+
+# Setup repository git hooks for automated pre-push presubmit validation
+.PHONY: setup-hooks
+setup-hooks:
+	dev/tasks/install-git-hooks
+
+# Run canonical presubmit / validation checks without pushing
+.PHONY: presubmit validate
+validate presubmit:
+	dev/tasks/validate-and-push --validate-only
+
 
 # Build config-connector binary
 .PHONY: config-connector
@@ -128,7 +141,7 @@ lint:
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
-		golangci-lint run -v --timeout=10m
+		golangci-lint run -v --timeout=20m && echo "✅ Linting passed successfully!" || (echo "❌ Linting failed! Please fix the errors above."; exit 1)
 
 .PHONY: lint-custom
 lint-custom:
@@ -258,7 +271,12 @@ generate-go-client:
 # Generate google3 docs
 .PHONY: resource-docs
 resource-docs:
-	@go run ./scripts/generate-google3-docs/resource-reference/main.go
+	@go run ./scripts/generate-google3-docs/resource-reference/main.go --flavor=github
+	@go run ./scripts/generate-google3-docs/resource-lists/main.go
+
+.PHONY: google-resource-docs
+google-resource-docs:
+	@go run ./scripts/generate-google3-docs/resource-reference/main.go --flavor=google
 	@go run ./scripts/generate-google3-docs/resource-lists/main.go
 
 # Run against the configured Kubernetes cluster in ~/.kube/config
@@ -269,15 +287,20 @@ run: generate fmt vet
 # Ensures dependencies are up-to-date
 .PHONY: ensure
 ensure:
-	go mod tidy -compat=1.23
+	go mod tidy -compat=${GO_VERSION}
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
 ready-pr: lint lint-custom manifests ensure fmt
+	python3 dev/tasks/generate_static_config.py
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
-release-check: resource-docs
+release-check: resource-docs generate-go-client generate-resource-report
+
+.PHONY: generate-resource-report
+generate-resource-report:
+	dev/tasks/generate-resource-report
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl

@@ -56,7 +56,7 @@ func (s *metricsServiceV2) GetLogMetric(ctx context.Context, req *pb.GetLogMetri
 }
 
 func redactForReturn(obj *pb.LogMetric) *pb.LogMetric {
-	redacted := proto.Clone(obj).(*pb.LogMetric)
+	redacted := proto.CloneOf(obj)
 	if redacted.MetricDescriptor != nil {
 		redacted.MetricDescriptor.Metadata = nil
 		redacted.MetricDescriptor.LaunchStage = api.LaunchStage_LAUNCH_STAGE_UNSPECIFIED
@@ -76,7 +76,7 @@ func (s *metricsServiceV2) CreateLogMetric(ctx context.Context, req *pb.CreateLo
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetMetric()).(*pb.LogMetric)
+	obj := proto.CloneOf(req.GetMetric())
 	obj.Name = name.MetricName
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -131,7 +131,7 @@ func (s *metricsServiceV2) UpdateLogMetric(ctx context.Context, req *pb.UpdateLo
 
 	now := time.Now()
 
-	updated := proto.Clone(req.GetMetric()).(*pb.LogMetric)
+	updated := proto.CloneOf(req.GetMetric())
 	updated.Name = name.MetricName
 	updated.CreateTime = existing.CreateTime
 	updated.UpdateTime = timestamppb.New(now)

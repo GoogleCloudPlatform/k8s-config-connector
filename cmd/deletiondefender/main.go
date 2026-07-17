@@ -49,11 +49,13 @@ func main() {
 
 	var enablePprof bool
 	var pprofPort int
+	var skipNameValidation bool
 
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
+	flag.BoolVar(&skipNameValidation, "skip-name-validation", false, "option to bypass the duplicate controller name check during registration; false by default")
 	flag.Parse()
 
 	// this enables packages using the kubernetes controller-runtime logging package to log
@@ -99,7 +101,7 @@ func main() {
 
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
+	if err := registration.AddDeletionDefender(mgr, &controller.Deps{SkipNameValidation: skipNameValidation}); err != nil {
 		log.Fatal(err, "error adding registration controller")
 	}
 

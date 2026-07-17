@@ -22,18 +22,24 @@
 package v1alpha1
 
 import (
-	"net/http"
+	http "net/http"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
+	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataplex/v1alpha1"
+	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
 type DataplexV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	DataplexAspectTypesGetter
+	DataplexDataAttributeBindingsGetter
+	DataplexDataScansGetter
+	DataplexDataTaxonomiesGetter
 	DataplexEntryGroupsGetter
 	DataplexEntryTypesGetter
+	DataplexGlossariesGetter
 	DataplexLakesGetter
+	DataplexMetadataJobsGetter
 	DataplexTasksGetter
 	DataplexZonesGetter
 }
@@ -41,6 +47,22 @@ type DataplexV1alpha1Interface interface {
 // DataplexV1alpha1Client is used to interact with features provided by the dataplex.cnrm.cloud.google.com group.
 type DataplexV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *DataplexV1alpha1Client) DataplexAspectTypes(namespace string) DataplexAspectTypeInterface {
+	return newDataplexAspectTypes(c, namespace)
+}
+
+func (c *DataplexV1alpha1Client) DataplexDataAttributeBindings(namespace string) DataplexDataAttributeBindingInterface {
+	return newDataplexDataAttributeBindings(c, namespace)
+}
+
+func (c *DataplexV1alpha1Client) DataplexDataScans(namespace string) DataplexDataScanInterface {
+	return newDataplexDataScans(c, namespace)
+}
+
+func (c *DataplexV1alpha1Client) DataplexDataTaxonomies(namespace string) DataplexDataTaxonomyInterface {
+	return newDataplexDataTaxonomies(c, namespace)
 }
 
 func (c *DataplexV1alpha1Client) DataplexEntryGroups(namespace string) DataplexEntryGroupInterface {
@@ -51,8 +73,16 @@ func (c *DataplexV1alpha1Client) DataplexEntryTypes(namespace string) DataplexEn
 	return newDataplexEntryTypes(c, namespace)
 }
 
+func (c *DataplexV1alpha1Client) DataplexGlossaries(namespace string) DataplexGlossaryInterface {
+	return newDataplexGlossaries(c, namespace)
+}
+
 func (c *DataplexV1alpha1Client) DataplexLakes(namespace string) DataplexLakeInterface {
 	return newDataplexLakes(c, namespace)
+}
+
+func (c *DataplexV1alpha1Client) DataplexMetadataJobs(namespace string) DataplexMetadataJobInterface {
+	return newDataplexMetadataJobs(c, namespace)
 }
 
 func (c *DataplexV1alpha1Client) DataplexTasks(namespace string) DataplexTaskInterface {
@@ -68,9 +98,7 @@ func (c *DataplexV1alpha1Client) DataplexZones(namespace string) DataplexZoneInt
 // where httpClient was generated with rest.HTTPClientFor(c).
 func NewForConfig(c *rest.Config) (*DataplexV1alpha1Client, error) {
 	config := *c
-	if err := setConfigDefaults(&config); err != nil {
-		return nil, err
-	}
+	setConfigDefaults(&config)
 	httpClient, err := rest.HTTPClientFor(&config)
 	if err != nil {
 		return nil, err
@@ -82,9 +110,7 @@ func NewForConfig(c *rest.Config) (*DataplexV1alpha1Client, error) {
 // Note the http client provided takes precedence over the configured transport values.
 func NewForConfigAndClient(c *rest.Config, h *http.Client) (*DataplexV1alpha1Client, error) {
 	config := *c
-	if err := setConfigDefaults(&config); err != nil {
-		return nil, err
-	}
+	setConfigDefaults(&config)
 	client, err := rest.RESTClientForConfigAndClient(&config, h)
 	if err != nil {
 		return nil, err
@@ -107,17 +133,15 @@ func New(c rest.Interface) *DataplexV1alpha1Client {
 	return &DataplexV1alpha1Client{c}
 }
 
-func setConfigDefaults(config *rest.Config) error {
-	gv := v1alpha1.SchemeGroupVersion
+func setConfigDefaults(config *rest.Config) {
+	gv := dataplexv1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
-	config.NegotiatedSerializer = scheme.Codecs.WithoutConversion()
+	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
 
 	if config.UserAgent == "" {
 		config.UserAgent = rest.DefaultKubernetesUserAgent()
 	}
-
-	return nil
 }
 
 // RESTClient returns a RESTClient that is used to communicate

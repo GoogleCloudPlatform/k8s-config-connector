@@ -52,9 +52,9 @@ func ValueOf[T any](t *T) T {
 	return *t
 }
 
-// getAPIVersion returns the version of the compute API the caller is using.
+// GetComputeAPIVersion returns the version of the compute API the caller is using.
 // It defaults to v1
-func getAPIVersion(ctx context.Context) string {
+func GetComputeAPIVersion(ctx context.Context) string {
 	md, _ := metadata.FromIncomingContext(ctx)
 	path := ""
 	if md != nil {
@@ -72,9 +72,9 @@ func getAPIVersion(ctx context.Context) string {
 	return version
 }
 
-// buildComputeSelfLink constructs a full self link (including https://www.googleapis.com/compute/)
-func buildComputeSelfLink(ctx context.Context, fqn string) string {
-	version := getAPIVersion(ctx)
+// BuildComputeSelfLink constructs a full self link (including https://www.googleapis.com/compute/)
+func BuildComputeSelfLink(ctx context.Context, fqn string) string {
+	version := GetComputeAPIVersion(ctx)
 	return "https://www.googleapis.com/compute/" + version + "/" + fqn
 }
 
@@ -82,4 +82,27 @@ func buildComputeSelfLink(ctx context.Context, fqn string) string {
 func lastComponent(s string) string {
 	i := strings.LastIndex(s, "/")
 	return s[i+1:]
+}
+
+// ExpandComputeLink converts a relative compute resource path or an absolute compute URL
+// into an absolute compute URL with the correct (current requested) API version.
+func ExpandComputeLink(ctx context.Context, link string) string {
+	if link == "" {
+		return ""
+	}
+	// If it's already an absolute URL, find the part after the API version
+	if strings.HasPrefix(link, "https://www.googleapis.com/compute/") {
+		trimmed := strings.TrimPrefix(link, "https://www.googleapis.com/compute/")
+		// trimmed is "<version>/projects/..."
+		parts := strings.SplitN(trimmed, "/", 2)
+		if len(parts) == 2 {
+			return BuildComputeSelfLink(ctx, parts[1])
+		}
+	}
+	// Otherwise, assume it's a relative path starting with "projects/" or similar
+	trimmed := strings.TrimPrefix(link, "/")
+	if strings.HasPrefix(trimmed, "projects/") {
+		return BuildComputeSelfLink(ctx, trimmed)
+	}
+	return link
 }

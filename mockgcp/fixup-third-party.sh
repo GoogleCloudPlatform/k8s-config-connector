@@ -29,6 +29,7 @@ GOOGLEAPIS=$(pwd)
 
 rm -rf mockgcp/ && mkdir -p mockgcp/api/ && mkdir -p mockgcp/devtools
 
+rm -rf google/cloud/vpcaccess/
 mv google/cloud/ mockgcp/
 mv google/container/ mockgcp/
 mv google/dataflow/ mockgcp/
@@ -39,10 +40,12 @@ mv google/pubsub/ mockgcp/
 mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
+mv google/partner/ mockgcp/
+
+rm -rf mockgcp/cloud/privilegedaccessmanager/
 
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
-mv google/api/cloudquotas/ mockgcp/api/
 mv google/devtools/artifactregistry mockgcp/devtools
 mv google/devtools/cloudbuild mockgcp/devtools
 mv google/devtools/sourcerepo mockgcp/devtools
@@ -70,6 +73,8 @@ find . -type f -print0 | xargs -0 sed -i \
   -e "s@google\.pubsub@mockgcp.pubsub@g" \
   -e "s@google/monitoring/@mockgcp/monitoring/@g" \
   -e "s@google\.monitoring@mockgcp.monitoring@g" \
+  -e "s@google/partner/@mockgcp/partner/@g" \
+  -e "s@google\.partner@mockgcp.partner@g" \
   -e "s@google/storage/@mockgcp/storage/@g" \
   -e "s@google\.storage@mockgcp.storage@g" \
   -e "s@google/spanner/@mockgcp/spanner/@g" \
@@ -78,8 +83,6 @@ find . -type f -print0 | xargs -0 sed -i \
   -e "s@google\.api\.apikeys@mockgcp.api.apikeys@g" \
   -e "s@google/api/serviceusage/@mockgcp/api/serviceusage/@g" \
   -e "s@google\.api\.serviceusage@mockgcp.api.serviceusage@g" \
-  -e "s@google/api/cloudquotas/@mockgcp/api/cloudquotas/@g" \
-  -e "s@google\.api\.cloudquotas@mockgcp.api.cloudquotas@g" \
   -e "s@google/devtools/artifactregistry/@mockgcp/devtools/artifactregistry/@g" \
   -e "s@google\.devtools\.artifactregistry@mockgcp.devtools.artifactregistry@g" \
   -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g" \

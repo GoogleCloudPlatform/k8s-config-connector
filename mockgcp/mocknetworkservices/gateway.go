@@ -89,7 +89,7 @@ func (s *NetworkServicesServer) CreateGateway(ctx context.Context, req *pb.Creat
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Gateway).(*pb.Gateway)
+	obj := proto.CloneOf(req.Gateway)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -108,7 +108,7 @@ func (s *NetworkServicesServer) CreateGateway(ctx context.Context, req *pb.Creat
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj).(*pb.Gateway)
+		result := proto.CloneOf(obj)
 		result.SelfLink = "" // Not populated here
 		return result, nil
 	})
@@ -153,7 +153,16 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 				obj.Labels = req.GetGateway().GetLabels()
 			case "description":
 				obj.Description = req.GetGateway().GetDescription()
-			// Add other updatable fields here
+			case "ports":
+				obj.Ports = req.GetGateway().GetPorts()
+			case "server_tls_policy", "serverTlsPolicy":
+				obj.ServerTlsPolicy = req.GetGateway().GetServerTlsPolicy()
+			case "addresses":
+				obj.Addresses = req.GetGateway().GetAddresses()
+			case "type":
+				obj.Type = req.GetGateway().GetType()
+			case "scope":
+				obj.Scope = req.GetGateway().GetScope()
 			default:
 				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 			}
@@ -176,7 +185,7 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 
-		result := proto.Clone(obj).(*pb.Gateway)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }

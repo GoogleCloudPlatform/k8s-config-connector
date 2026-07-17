@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 )
@@ -95,7 +95,7 @@ func (s *NotificationChannelService) CreateNotificationChannel(ctx context.Conte
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NotificationChannel).(*pb.NotificationChannel)
+	obj := proto.CloneOf(req.NotificationChannel)
 	obj.CreationRecord = &pb.MutationRecord{
 		MutateTime: timestamppb.New(now),
 	}
@@ -125,12 +125,19 @@ func (s *NotificationChannelService) UpdateNotificationChannel(ctx context.Conte
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.NotificationChannel)
-	for _, path := range req.GetUpdateMask().GetPaths() {
+	updated := proto.CloneOf(existing)
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		// If update_mask is not provided, we should ideally update all fields present in the request.
+		// For simplicity, we'll update all supported fields.
+		paths = []string{"description", "display_name", "enabled", "labels", "type", "user_labels"}
+	}
+
+	for _, path := range paths {
 		switch path {
 		case "description":
-			updated.DisplayName = req.GetNotificationChannel().GetDescription()
-		case "display_name":
+			updated.Description = req.GetNotificationChannel().GetDescription()
+		case "display_name", "displayName":
 			updated.DisplayName = req.GetNotificationChannel().GetDisplayName()
 		case "enabled":
 			updated.Enabled = req.GetNotificationChannel().GetEnabled()
@@ -138,7 +145,7 @@ func (s *NotificationChannelService) UpdateNotificationChannel(ctx context.Conte
 			updated.Labels = req.GetNotificationChannel().GetLabels()
 		case "type":
 			updated.Type = req.GetNotificationChannel().GetType()
-		case "user_labels":
+		case "user_labels", "userLabels":
 			updated.UserLabels = req.GetNotificationChannel().GetUserLabels()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock (full update_mask=%v)", path, req.GetUpdateMask())

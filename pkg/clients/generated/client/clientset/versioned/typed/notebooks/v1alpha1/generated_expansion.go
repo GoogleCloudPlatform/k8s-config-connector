@@ -22,3 +22,7 @@
 package v1alpha1
 
 type NotebooksEnvironmentExpansion interface{}
+
+type NotebooksExecutionExpansion interface{}
+
+type NotebooksScheduleExpansion interface{}

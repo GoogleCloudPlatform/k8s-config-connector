@@ -19,6 +19,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -26,14 +27,17 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.deploy.v1 \
   --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1  \
-  --resource DeployCustomTargetType:CustomTargetType \
-  --resource CloudDeployDeployPolicy:DeployPolicy
+  --resource CloudDeployCustomTargetType:CustomTargetType \
+  --resource CloudDeployDeployPolicy:DeployPolicy \
+  --resource CloudDeployTarget:Target \
+  --resource CloudDeployAutomation:Automation
 
 go run . generate-mapper \
   --service google.cloud.deploy.v1 \
-  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1
+  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1 \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/clouddeploy/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/clouddeploy/

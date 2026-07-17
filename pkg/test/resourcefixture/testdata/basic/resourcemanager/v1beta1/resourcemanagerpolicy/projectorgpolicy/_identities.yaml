@@ -1,0 +1,12 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/${TEST_DEPENDENT_ORG_PROJECT_ID}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: orgpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: ResourceManagerPolicy
+  name: projectorgpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

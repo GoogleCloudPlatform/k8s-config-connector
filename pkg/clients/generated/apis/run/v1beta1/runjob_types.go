@@ -238,6 +238,20 @@ type JobNetworkInterfaces struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
+type JobNfs struct {
+	/* Path that is exported by the NFS server. */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
+	/* If true, the volume will be mounted as read only for all mounts. */
+	// +optional
+	ReadOnly *bool `json:"readOnly,omitempty"`
+
+	/* Hostname or IP address of the NFS server */
+	// +optional
+	Server *string `json:"server,omitempty"`
+}
+
 type JobPorts struct {
 	/* Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536. */
 	// +optional
@@ -399,6 +413,10 @@ type JobVolumes struct {
 	/* Required. Volume's name. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+
+	/* For Nfs Volumes, contains the path to the nfs Volume */
+	// +optional
+	Nfs *JobNfs `json:"nfs,omitempty"`
 
 	/* Secret represents a secret that should populate this volume. */
 	// +optional

@@ -21,6 +21,7 @@ var allServices = []string{
 	"bigquery.googleapis.com",
 	"cloudresourcemanager.googleapis.com",
 	"compute.googleapis.com",
+	"dataflow.googleapis.com",
 	"pubsub.googleapis.com",
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",
@@ -29,6 +30,7 @@ var allServices = []string{
 	"anthosconfigmanagement.googleapis.com",
 	"anthospolicycontroller.googleapis.com",
 	"managedkafka.googleapis.com",
+	"memcache.googleapis.com",
 	"multiclusteringress.googleapis.com",
 	"multiclusterservicediscovery.googleapis.com",
 	"mesh.googleapis.com",
@@ -39,6 +41,9 @@ var allServices = []string{
 	"container.googleapis.com",
 	"workflows.googleapis.com",
 	"cloudapis.googleapis.com",
+	"orgpolicy.googleapis.com",
+	"osconfig.googleapis.com",
+	"privateca.googleapis.com",
 }
 
 func isKnownService(serviceName string) bool {

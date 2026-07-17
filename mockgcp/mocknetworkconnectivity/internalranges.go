@@ -67,7 +67,7 @@ func (r *internalRanges) CreateProjectsLocationsInternalRange(ctx context.Contex
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetProjectsLocationsInternalRange()).(*pb.InternalRange)
+	obj := proto.CloneOf(req.GetProjectsLocationsInternalRange())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -137,6 +137,8 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 				obj.TargetCidrRange = patch.TargetCidrRange
 			case "usage":
 				obj.Usage = patch.Usage
+			case "allocation_options", "allocationOptions":
+				obj.AllocationOptions = patch.AllocationOptions
 			default:
 				log.Info("unsupported update_mask", "req", req)
 				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock", path)

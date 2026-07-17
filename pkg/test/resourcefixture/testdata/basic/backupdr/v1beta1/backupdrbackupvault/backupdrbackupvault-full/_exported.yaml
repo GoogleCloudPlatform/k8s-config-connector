@@ -1,0 +1,19 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1beta1
+kind: BackupDRBackupVault
+metadata:
+  labels:
+    another-label: another-value
+    cnrm-test: "true"
+    custom-label: bar
+    label-key: label-value
+    managed-by-cnrm: "true"
+  name: backupdrbackupvault-full-${uniqueId}
+spec:
+  accessRestriction: WITHIN_ORGANIZATION
+  backupMinimumEnforcedRetentionDuration: 24h1m40s
+  description: This is an updated full backup vault
+  effectiveTime: "2025-08-17T10:00:00Z"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: backupdrbackupvault-full-${uniqueId}

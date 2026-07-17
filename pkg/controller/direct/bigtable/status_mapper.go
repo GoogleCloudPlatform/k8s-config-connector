@@ -20,7 +20,6 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 
 	krmbigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -66,19 +65,24 @@ func Any_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.Any
 	return out
 }
 
-func Type_Struct_Encoding_DelimitedBytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Encoding_DelimitedBytes) *krm.Type_Struct_Encoding_DelimitedBytes {
+func EncryptionInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmbigtablev1alpha1.EncryptionInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Type_Struct_Encoding_DelimitedBytes{}
-	out.Delimiter = in.GetDelimiter()
+	out := &krmbigtablev1alpha1.EncryptionInfoObservedState{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	out.EncryptionStatus = Status_v1alpha1_FromProto(mapCtx, in.GetEncryptionStatus())
+	out.KMSKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
 	return out
 }
-func Type_Struct_Encoding_DelimitedBytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Type_Struct_Encoding_DelimitedBytes) *pb.Type_Struct_Encoding_DelimitedBytes {
+
+func EncryptionInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.EncryptionInfoObservedState) *pb.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Type_Struct_Encoding_DelimitedBytes{}
-	out.Delimiter = in.Delimiter
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
+	out.EncryptionStatus = Status_v1alpha1_ToProto(mapCtx, in.EncryptionStatus)
+	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
 	return out
 }

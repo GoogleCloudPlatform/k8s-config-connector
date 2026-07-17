@@ -16,15 +16,16 @@ package mockvpcaccess
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/vpcaccess/apiv1/vpcaccesspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vpcaccess/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -59,20 +60,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterVpcAccessServiceHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	grpcMux.AddService(pb.NewVpcAccessServiceClient(conn))
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	// Terraform uses the /v1beta1/ endpoints, but we have protos only for v1.
 	// Also, we probably want to be implementing the newer versions
@@ -85,7 +79,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			r.URL = u
 		}
 
-		mux.ServeHTTP(w, r)
+		grpcMux.ServeHTTP(w, r)
 	}
 
 	return http.HandlerFunc(rewriteBetaToV1), nil

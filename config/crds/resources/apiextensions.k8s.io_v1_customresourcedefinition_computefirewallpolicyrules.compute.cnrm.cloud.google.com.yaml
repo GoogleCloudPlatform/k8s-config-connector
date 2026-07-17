@@ -103,14 +103,13 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed ComputeFirewallPolicy
-                      resource. Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.
+                      resource. Should be in the format "locations/global/firewallPolicies/{{firewallPolicyID}}".
                     type: string
                   name:
-                    description: The `name` field of a `ComputeFirewallPolicy` resource.
+                    description: The name of a ComputeFirewallPolicy resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeFirewallPolicy`
-                      resource.
+                    description: The namespace of a ComputeFirewallPolicy resource.
                     type: string
                 type: object
               match:
@@ -220,6 +219,7 @@ spec:
                 type: integer
               targetResources:
                 items:
+                  description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
                   oneOf:
                   - not:
                       required:
@@ -236,9 +236,8 @@ spec:
                     - external
                   properties:
                     external:
-                      description: The value of an externally managed ComputeNetwork
-                        resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                        or "projects/{{projectId}}/global/networks/{{networkId}}"
+                      description: A reference to an externally managed ComputeNetwork
+                        resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                       type: string
                     name:
                       description: The name of a ComputeNetwork resource.

@@ -15,7 +15,10 @@
 package mockcontainer
 
 import (
+	"bytes"
 	"context"
+	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -72,8 +75,48 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			r = httpmux.RewriteRequest(r, &u2)
 		}
 
-		mux.ServeHTTP(w, r)
+		// Intercept Request Body: OS_2022 -> OS_VERSION_LTSC2022
+		if r.Body != nil {
+			bodyBytes, err := io.ReadAll(r.Body)
+			if err == nil {
+				// Replace short enum names with full proto enum names
+				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_LTSC2022"`))
+				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2019"`), []byte(`"OS_VERSION_LTSC2019"`))
+				r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+				r.ContentLength = int64(len(bodyBytes))
+			}
+		}
+
+		// Intercept Response Body: OS_VERSION_LTSC2022 -> OS_2022
+		rec := &responseWrapper{ResponseWriter: w, body: &bytes.Buffer{}}
+		mux.ServeHTTP(rec, r)
+
+		respBytes := rec.body.Bytes()
+		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2022"`), []byte(`"OS_2022"`))
+		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2019"`), []byte(`"OS_2019"`))
+
+		w.Header().Set("Content-Length", fmt.Sprintf("%d", len(respBytes)))
+		if rec.statusCode != 0 {
+			w.WriteHeader(rec.statusCode)
+		} else {
+			w.WriteHeader(http.StatusOK)
+		}
+		w.Write(respBytes)
 	}
 
 	return http.HandlerFunc(rewriteV1ToBeta), nil
+}
+
+type responseWrapper struct {
+	http.ResponseWriter
+	body       *bytes.Buffer
+	statusCode int
+}
+
+func (w *responseWrapper) WriteHeader(statusCode int) {
+	w.statusCode = statusCode
+}
+
+func (w *responseWrapper) Write(b []byte) (int, error) {
+	return w.body.Write(b)
 }

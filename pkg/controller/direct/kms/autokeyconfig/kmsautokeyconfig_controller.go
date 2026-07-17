@@ -1,0 +1,275 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package kmsautokeyconfig
+
+import (
+	"context"
+	"fmt"
+	"reflect"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+
+	gcp "cloud.google.com/go/kms/apiv1"
+
+	kmspb "cloud.google.com/go/kms/apiv1/kmspb"
+	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+const (
+	ctrlName = "kms-autokeyconfig-controller"
+)
+
+func init() {
+	registry.RegisterModel(krm.KMSAutokeyConfigGVK, NewModel)
+}
+
+func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{config: *config}, nil
+}
+
+var _ directbase.Model = &model{}
+
+type model struct {
+	config config.ControllerConfig
+}
+
+func (m *model) client(ctx context.Context) (*gcp.AutokeyAdminClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := gcp.NewAutokeyAdminRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building AutokeyConfig client: %w", err)
+	}
+	return gcpClient, err
+}
+
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+	obj := &krm.KMSAutokeyConfig{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	id, err := krm.NewAutokeyConfigIdentity(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s, err: %w", obj.GetName(), err)
+	}
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &Adapter{
+		id:        id,
+		reader:    reader,
+		gcpClient: gcpClient,
+		desired:   obj,
+	}, nil
+}
+
+func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// TODO: Support URLs
+	return nil, nil
+}
+
+type Adapter struct {
+	id        *krm.KMSAutokeyConfigIdentity
+	reader    client.Reader
+	gcpClient *gcp.AutokeyAdminClient
+	desired   *krm.KMSAutokeyConfig
+	actual    *kmspb.AutokeyConfig
+}
+
+var _ directbase.Adapter = &Adapter{}
+
+// Find return true if AutokeyConfig exist and user has permission to read it.
+// Else it will return false and error.
+func (a *Adapter) Find(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting KMSAutokeyConfig", "name", a.id)
+
+	req := &kmspb.GetAutokeyConfigRequest{Name: a.id.String()}
+	autokeyconfigpb, err := a.gcpClient.GetAutokeyConfig(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			log.V(2).Info("KMSAutokeyConfig not found/uninitialized, treating as UNINITIALIZED actual state", "name", a.id)
+			a.actual = &kmspb.AutokeyConfig{
+				Name:  a.id.String(),
+				State: kmspb.AutokeyConfig_UNINITIALIZED,
+			}
+			return true, nil
+		}
+		return false, fmt.Errorf("getting KMSAutokeyConfig %q: %w", a.id, err)
+	}
+
+	a.actual = autokeyconfigpb
+	return true, nil
+}
+
+func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("Create operation not supported for AutokeyConfig resource.")
+	return fmt.Errorf("Create operation not supported for AutokeyConfig resource")
+}
+
+func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating AutokeyConfig", "name", a.id)
+
+	var keyProject *refs.ProjectIdentity
+	if a.desired.Spec.KeyProjectRef != nil {
+		var err error
+		keyProject, err = refs.ResolveProject(ctx, a.reader, a.desired.GetNamespace(), a.desired.Spec.KeyProjectRef)
+		if err != nil {
+			return fmt.Errorf("unable to resolve key project for autokeyConfig name: %s, err: %w", a.desired.GetName(), err)
+		}
+	}
+
+	mapCtx := &direct.MapContext{}
+	resource := KMSAutokeyConfig_FromFields(mapCtx, a.id, keyProject, a.desired.Spec.KeyProjectResolutionMode)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	updated, err := a.updateAutokeyConfig(ctx, resource)
+	if err != nil {
+		return err
+	}
+
+	status := &krm.KMSAutokeyConfigStatus{}
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
+	log := klog.FromContext(ctx)
+	updateMask := &fieldmaskpb.FieldMask{}
+	if !reflect.DeepEqual(resource.KeyProject, a.actual.KeyProject) {
+		updateMask.Paths = append(updateMask.Paths, "key_project")
+	}
+	if resource.KeyProjectResolutionMode != a.actual.KeyProjectResolutionMode {
+		updateMask.Paths = append(updateMask.Paths, "key_project_resolution_mode")
+	}
+
+	if len(updateMask.Paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		return nil, nil
+	}
+	req := &kmspb.UpdateAutokeyConfigRequest{
+		UpdateMask:    updateMask,
+		AutokeyConfig: resource,
+	}
+	updated, err := a.gcpClient.UpdateAutokeyConfig(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("updating AutokeyConfig %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated AutokeyConfig", "name", a.id)
+	return updated, nil
+}
+
+func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.KMSAutokeyConfig{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(kms.KMSAutokeyConfigSpec_FromProto(mapCtx, a.actual))
+
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	parent := a.id.Parent()
+	if parent.FolderID != "" {
+		obj.Spec.FolderRef = &refs.FolderRef{External: parent.FolderID}
+		obj.Spec.ProjectRef = nil
+	}
+	if parent.ProjectID != "" {
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.ProjectID}
+		obj.Spec.FolderRef = nil
+	}
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+	u.Object = uObj
+	return u, nil
+}
+
+// Delete implements the Adapter interface.
+// Note: Delete operation is not supported for GCP AutokeyConfig resource.
+// However in KCC, the user has full flexibility to delete the KCC AutokeyConfig resource.
+// To make this KCC operation effective, as part of KCC AutokeyConfig deletion we will update the AutokeyConfig resource in GCP with empty key_project which will prevent further use of AutokeyConfig.
+// Because of the above decision we will update the observedstate for AutokeyConfig with state = UNINITIALIZED
+func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting AutokeyConfig", "name", a.id)
+	if a.actual == nil {
+		return false, fmt.Errorf("delete AutokeyConfig failed: Find() was not called or returned false")
+	}
+	if a.actual.State == kmspb.AutokeyConfig_UNINITIALIZED {
+		log.V(2).Info("skipping delete for UNINITIALIZED AutokeyConfig, assuming it was already deleted", "name", a.id)
+		return true, nil
+	}
+	mapCtx := &direct.MapContext{}
+	// Keep only spec fields, by round-tripping through KRM.
+	// Make a copy of the a.actual, disable AutokeyConfig, and clear the project reference.
+	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)
+	tempKrmAutokeyResource.KeyProject = nil
+	disabledMode := "DISABLED"
+	tempKrmAutokeyResource.KeyProjectResolutionMode = &disabledMode
+	resource := AutokeyConfig_ToProto(mapCtx, tempKrmAutokeyResource)
+	updated, err := a.updateAutokeyConfig(ctx, resource)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			log.V(2).Info("skipping delete for non-existent AutokeyConfig (or deleted parent), assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
+		return false, fmt.Errorf("updating AutokeyConfig %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting the key_project", "name", a.id)
+	status := &krm.KMSAutokeyConfigStatus{}
+	// The state in ObservedState is expected to be UNINITIALIZED as we have set the key_project to empty
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+
+	if mapCtx.Err() != nil {
+		return false, mapCtx.Err()
+	}
+	// TODO: uncomment once we found a valid solution
+	//deleteOp.UpdateStatus(ctx, status, nil)
+	return true, nil
+}

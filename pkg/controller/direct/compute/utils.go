@@ -53,5 +53,22 @@ func IsSelfLinkEqual(a, b *string) bool {
 			}
 		}
 	}
+
 	return aVal == bVal
+}
+
+func ConvertInt32ToInt(in *int32) *int {
+	if in == nil {
+		return nil
+	}
+	v := int(*in)
+	return &v
+}
+
+func ConvertIntToInt32(in *int) *int32 {
+	if in == nil {
+		return nil
+	}
+	v := int32(*in)
+	return &v
 }

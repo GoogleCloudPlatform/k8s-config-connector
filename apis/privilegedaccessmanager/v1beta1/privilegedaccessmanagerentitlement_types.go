@@ -147,6 +147,7 @@ type PrivilegedAccessManagerEntitlementObservedState struct {
 // PrivilegedAccessManagerEntitlement API.
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type PrivilegedAccessManagerEntitlement struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

@@ -69,7 +69,7 @@ func (s *RegionalAddressesV1) List(ctx context.Context, req *pb.ListAddressesReq
 	response := &pb.AddressList{}
 	response.Id = PtrTo("0123456789")
 	response.Kind = PtrTo("compute#addressList")
-	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
 
 	findKind := (&pb.Address{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
@@ -94,8 +94,8 @@ func (s *RegionalAddressesV1) Insert(ctx context.Context, req *pb.InsertAddressR
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetAddressResource()).(*pb.Address)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetAddressResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")
@@ -124,6 +124,9 @@ func (s *RegionalAddressesV1) populateDefaults(obj *pb.Address) {
 	}
 	if obj.AddressType == nil {
 		obj.AddressType = PtrTo("EXTERNAL")
+	}
+	if obj.GetAddressType() == "INTERNAL" && obj.Purpose == nil {
+		obj.Purpose = PtrTo("GCE_ENDPOINT")
 	}
 	if obj.Description == nil {
 		obj.Description = PtrTo("")
@@ -178,6 +181,7 @@ func (s *RegionalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsAd
 	}
 
 	obj.Labels = req.GetRegionSetLabelsRequestResource().GetLabels()
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.Labels))
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

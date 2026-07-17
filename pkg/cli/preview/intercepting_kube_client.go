@@ -41,11 +41,15 @@ type interceptingKubeClient struct {
 	upstreamClient     *StreamingClient
 	upstreamRestMapper meta.RESTMapper
 
-	recorder *Recorder
+	objectTransformers []ObjectTransformer
+	recorder           *Recorder
 }
 
+// ObjectTransformer transforms a Kubernetes object.
+type ObjectTransformer func(ctx context.Context, obj client.Object) error
+
 // newInterceptingKubeClient creates a new interceptingKubeClient.
-func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Config) (*interceptingKubeClient, error) {
+func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Config, objectTransformers []ObjectTransformer) (*interceptingKubeClient, error) {
 	httpClient, err := rest.HTTPClientFor(upstreamRestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("building http client: %w", err)
@@ -72,6 +76,7 @@ func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Conf
 		upstreamClient:     upstreamClient,
 		upstreamRestMapper: upstreamRestMapper,
 		recorder:           recorder,
+		objectTransformers: slices.Clone(objectTransformers),
 	}, nil
 }
 
@@ -118,7 +123,7 @@ func (c *interceptingKubeClient) NewCache(restConfig *rest.Config, opts cache.Op
 		break
 	}
 
-	return newInterceptingControllerRuntimeCache(c.upstreamClient, typeStore, namespace)
+	return newInterceptingControllerRuntimeCache(c.upstreamClient, typeStore, namespace, c.objectTransformers)
 }
 
 // interceptingControllerRuntimeClient is a controller-runtime client that intercepts Kubernetes API calls.
@@ -136,7 +141,7 @@ type interceptingControllerRuntimeClient struct {
 // blockedMethod is called when a write operation is attempted.
 // It returns an error, so that the write operation is not forwarded upstream.
 func (c *interceptingControllerRuntimeClient) blockedMethod(ctx context.Context, method string, args ...any) error {
-	c.parent.recorder.RecordBlockedKubeMethod(ctx, method, args...)
+	c.parent.recorder.RecordBlockedKubeMethod(ctx, c.typeStore.scheme, method, args...)
 	return fmt.Errorf("%q blocked in preview mode", method)
 }
 
@@ -145,7 +150,7 @@ func (c *interceptingControllerRuntimeClient) blockedMethod(ctx context.Context,
 // This is useful for status updates, where we want to record the GCP operation,
 // which typically happens after the status update is made.
 func (c *interceptingControllerRuntimeClient) ignoredMethod(ctx context.Context, method string, args ...any) error {
-	c.parent.recorder.RecordIgnoredKubeMethod(ctx, method, args...)
+	c.parent.recorder.RecordIgnoredKubeMethod(ctx, c.typeStore.scheme, method, args...)
 	return nil
 }
 
@@ -216,13 +221,13 @@ func (c *interceptingControllerRuntimeClient) Delete(ctx context.Context, obj cl
 // Update updates the given obj in the Kubernetes cluster. obj must be a
 // struct pointer so that obj can be updated with the content returned by the Server.
 func (c *interceptingControllerRuntimeClient) Update(ctx context.Context, obj client.Object, opts ...client.UpdateOption) error {
-	return c.blockedMethod(ctx, "update", obj, opts)
+	return c.ignoredMethod(ctx, "update", obj, opts)
 }
 
 // Patch patches the given obj in the Kubernetes cluster. obj must be a
 // struct pointer so that obj can be updated with the content returned by the Server.
 func (c *interceptingControllerRuntimeClient) Patch(ctx context.Context, obj client.Object, patch client.Patch, opts ...client.PatchOption) error {
-	return c.blockedMethod(ctx, "patch", obj, opts)
+	return c.ignoredMethod(ctx, "patch", obj, opts)
 }
 
 // DeleteAllOf deletes all objects of the given type matching the given options.
@@ -294,16 +299,18 @@ type interceptingControllerRuntimeCache struct {
 
 	started atomic.Bool
 
-	informers map[schema.GroupVersionKind]*streamingInformer
+	informers          map[schema.GroupVersionKind]*streamingInformer
+	objectTransformers []ObjectTransformer
 }
 
 // newInterceptingControllerRuntimeCache creates a new interceptingControllerRuntimeCache.
-func newInterceptingControllerRuntimeCache(streamingClient *StreamingClient, typeStore *typeStore, namespace string) (*interceptingControllerRuntimeCache, error) {
+func newInterceptingControllerRuntimeCache(streamingClient *StreamingClient, typeStore *typeStore, namespace string, objectTransformers []ObjectTransformer) (*interceptingControllerRuntimeCache, error) {
 	return &interceptingControllerRuntimeCache{
-		streamingClient: streamingClient,
-		informers:       make(map[schema.GroupVersionKind]*streamingInformer),
-		typeStore:       typeStore,
-		namespace:       namespace,
+		streamingClient:    streamingClient,
+		informers:          make(map[schema.GroupVersionKind]*streamingInformer),
+		typeStore:          typeStore,
+		namespace:          namespace,
+		objectTransformers: objectTransformers,
 	}, nil
 }
 
@@ -322,7 +329,7 @@ func (c *interceptingControllerRuntimeCache) Get(ctx context.Context, key client
 	if err != nil {
 		return err
 	}
-	informer, err := c.getOrCreateInformer(ctx, typeInfo)
+	informer, err := c.getOrCreateInformer(ctx, typeInfo, c.objectTransformers)
 	if err != nil {
 		return err
 	}
@@ -349,10 +356,10 @@ func (c *interceptingControllerRuntimeCache) GetInformer(ctx context.Context, ob
 		return nil, err
 	}
 
-	return c.getOrCreateInformer(ctx, typeInfo)
+	return c.getOrCreateInformer(ctx, typeInfo, c.objectTransformers)
 }
 
-func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Context, typeInfo *typeInfo) (*streamingInformer, error) {
+func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Context, typeInfo *typeInfo, objectTransformers []ObjectTransformer) (*streamingInformer, error) {
 	gvk := typeInfo.gvk
 
 	c.mutex.Lock()
@@ -363,7 +370,7 @@ func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Con
 		return existing, nil
 	}
 
-	informer, err := newStreamingInformer(c.streamingClient, typeInfo, c.namespace)
+	informer, err := newStreamingInformer(c.streamingClient, typeInfo, c.namespace, objectTransformers)
 	if err != nil {
 		return nil, err
 	}
@@ -391,7 +398,7 @@ func (c *interceptingControllerRuntimeCache) GetInformerForKind(ctx context.Cont
 		return nil, err
 	}
 
-	return c.getOrCreateInformer(ctx, typeInfo)
+	return c.getOrCreateInformer(ctx, typeInfo, c.objectTransformers)
 }
 
 // RemoveInformer removes an informer entry and stops it if it was running.

@@ -17,6 +17,8 @@ package mockcompute
 import (
 	"context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -38,6 +40,9 @@ func (s *RegionalHealthCheckV1) Get(ctx context.Context, req *pb.GetRegionHealth
 
 	obj := &pb.HealthCheck{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -54,17 +59,28 @@ func (s *RegionalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertRegion
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetHealthCheckResource()).(*pb.HealthCheck)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetHealthCheckResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#healthCheck")
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
+
+	s.populateHealthCheckDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -82,13 +98,26 @@ func (s *RegionalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchRegionHe
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	if req.GetHealthCheckResource() != nil && req.GetHealthCheckResource().SourceRegions != nil {
+		obj.SourceRegions = nil
+	}
 	proto.Merge(obj, req.GetHealthCheckResource())
+
+	s.populateHealthCheckDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -104,14 +133,35 @@ func (s *RegionalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateRegion
 		return nil, err
 	}
 
-	// TODO: Implement helper to implement the full rules here
-	proto.Merge(obj, req.GetHealthCheckResource())
+	// For PUT (Update), we replace the resource but preserve system fields
+	id := obj.Id
+	selfLink := obj.SelfLink
+	creationTimestamp := obj.CreationTimestamp
+	kind := obj.Kind
+	region := obj.Region
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	updatedObj := proto.CloneOf(req.GetHealthCheckResource())
+	updatedObj.Id = id
+	updatedObj.SelfLink = selfLink
+	updatedObj.CreationTimestamp = creationTimestamp
+	updatedObj.Kind = kind
+	updatedObj.Region = region
+
+	s.populateHealthCheckDefaults(updatedObj)
+
+	if err := s.storage.Update(ctx, fqn, updatedObj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      updatedObj.Id,
+		TargetLink:    updatedObj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return updatedObj, nil
+	})
 }
 
 func (s *RegionalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteRegionHealthCheckRequest) (*pb.Operation, error) {
@@ -127,7 +177,15 @@ func (s *RegionalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteRegion
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalHealthCheckName struct {

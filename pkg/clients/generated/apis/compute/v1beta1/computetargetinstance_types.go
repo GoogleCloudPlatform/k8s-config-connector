@@ -46,14 +46,11 @@ type ComputeTargetInstanceSpec struct {
 	/* The ComputeInstance handling traffic for this target instance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-	/* Immutable. NAT option controlling how IPs are NAT'ed to the instance.
-	Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"]. */
+	/* Immutable. NAT option controlling how IPs are NAT'ed to the instance. Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Possible values: ["NO_NAT"]. */
 	// +optional
 	NatPolicy *string `json:"natPolicy,omitempty"`
 
-	/* The network this target instance uses to forward
-	traffic. If not specified, the traffic will be forwarded to the network
-	that the default network interface belongs to. */
+	/* The network this target instance uses to forward traffic. If not specified, the traffic will be forwarded to the network that the default network interface belongs to. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 

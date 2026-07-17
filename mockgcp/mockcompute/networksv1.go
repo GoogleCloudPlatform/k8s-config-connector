@@ -62,21 +62,40 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetNetworkResource()).(*pb.Network)
+	obj := proto.CloneOf(req.GetNetworkResource())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
-	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, name.String()))
+	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
 	obj.Kind = PtrTo("compute#network")
 	obj.NetworkFirewallPolicyEnforcementOrder = PtrTo("AFTER_CLASSIC_FIREWALL")
-	if obj.RoutingConfig != nil {
+	if obj.RoutingConfig == nil {
+		obj.RoutingConfig = &pb.NetworkRoutingConfig{
+			BgpBestPathSelectionMode: PtrTo("LEGACY"),
+			RoutingMode:              PtrTo("REGIONAL"),
+		}
+	} else {
 		if obj.RoutingConfig.BgpBestPathSelectionMode == nil {
 			obj.RoutingConfig.BgpBestPathSelectionMode = PtrTo("LEGACY")
+		}
+		if obj.RoutingConfig.RoutingMode == nil {
+			obj.RoutingConfig.RoutingMode = PtrTo("REGIONAL")
 		}
 	}
 
 	if obj.AutoCreateSubnetworks == nil {
 		obj.AutoCreateSubnetworks = PtrTo(true)
+	}
+	if obj.NetworkProfile != nil {
+		val := *obj.NetworkProfile
+		if val != "" && !strings.HasPrefix(val, "https://") {
+			val = "https://www.googleapis.com/compute/v1/" + strings.TrimPrefix(val, "/")
+			obj.NetworkProfile = PtrTo(val)
+		}
+	}
+
+	if ValueOf(obj.EnableUlaInternalIpv6) && obj.InternalIpv6Range == nil {
+		obj.InternalIpv6Range = PtrTo("fd00:c00:0000:0:0:0:0:0/00")
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -104,7 +123,7 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 }
 
 // Patches the specified network with the data included in the request.
-// Only the following fields can be modified: routingConfig.routingMode.
+// Only the following fields can be modified: routingConfig.routingMode, enableUlaInternalIpv6.
 func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*pb.Operation, error) {
 	name, err := s.newNetworkName(req.GetProject(), req.GetNetwork())
 	if err != nil {
@@ -126,6 +145,15 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 		}
 	}
 
+	operationType := "compute.networks.patch"
+	if req.GetNetworkResource().EnableUlaInternalIpv6 != nil {
+		obj.EnableUlaInternalIpv6 = req.GetNetworkResource().EnableUlaInternalIpv6
+		operationType = "updateNetwork"
+	}
+	if ValueOf(obj.EnableUlaInternalIpv6) && obj.InternalIpv6Range == nil {
+		obj.InternalIpv6Range = PtrTo("fd00:c00:0000:0:0:0:0:0/00")
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -133,7 +161,7 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("compute.networks.patch"),
+		OperationType: PtrTo(operationType),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
@@ -179,6 +207,16 @@ func (s *NetworksV1) RemovePeering(ctx context.Context, req *pb.RemovePeeringNet
 	fqn := name.String()
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			log.Info("network already deleted, removePeering is a no-op", "network", fqn)
+			op := &pb.Operation{
+				Id:            PtrTo(uint64(123456789)),
+				OperationType: PtrTo("compute.networks.removePeering"),
+				Status:        PtrTo(pb.Operation_DONE),
+				Progress:      PtrTo(int32(100)),
+			}
+			return op, nil
+		}
 		return nil, err
 	}
 

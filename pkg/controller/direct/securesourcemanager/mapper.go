@@ -16,6 +16,7 @@ package securesourcemanager
 
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -51,7 +52,7 @@ func SecureSourceManagerRepositoryObservedState_FromProto(mapCtx *direct.MapCont
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Uid = direct.LazyPtr(in.Uid)
 	out.Etag = direct.LazyPtr(in.Etag)
-	out.URIs = Repository_URIsObservedState_FromProto(mapCtx, in.GetUris())
+	out.URIs = Repository_UrIsObservedState_FromProto(mapCtx, in.GetUris())
 	return out
 }
 func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerRepositoryObservedState) *pb.Repository {
@@ -63,7 +64,7 @@ func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContex
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Etag = direct.ValueOf(in.Etag)
-	out.Uris = Repository_URIsObservedState_ToProto(mapCtx, in.URIs)
+	out.Uris = Repository_UrIsObservedState_ToProto(mapCtx, in.URIs)
 	return out
 }
 func SecureSourceManagerRepositorySpec_InstanceRef_FromProto(mapCtx *direct.MapContext, in string) *krm.SecureSourceManagerInstanceRef {
@@ -71,4 +72,28 @@ func SecureSourceManagerRepositorySpec_InstanceRef_FromProto(mapCtx *direct.MapC
 		return nil
 	}
 	return &krm.SecureSourceManagerInstanceRef{External: in}
+}
+
+func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_PrivateConfig{}
+	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
+	if in.GetCaPool() != "" {
+		out.CAPoolRef = &privatecarefs.PrivateCACAPoolRef{External: in.GetCaPool()}
+	}
+	return out
+}
+
+func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_PrivateConfig{}
+	out.IsPrivate = direct.ValueOf(in.IsPrivate)
+	if in.CAPoolRef != nil {
+		out.CaPool = privatecarefs.StripCAPoolPrefix(in.CAPoolRef.External)
+	}
+	return out
 }

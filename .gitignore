@@ -15,6 +15,7 @@
 # IntelliJ/Goland config
 .idea
 *.iml
+*.prof
 
 # Google Terraform Provider binary
 #terraform-provider-google-beta
@@ -160,17 +161,12 @@ e2e.log
 testlogs/
 log
 
-# experiments/conductor
-experiments/conductor/logs
-experiments/conductor/branches.yaml
-
 # failing fuzz output
 pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
 
 # Experimental MCP
 # Let Gemini CLI to ignore env to avoid sensitive data
 .gemini/.env
-# Ignore settings.json till we ship a MCP server.
 .gemini/settings.json
 
 # Ignore pycache
@@ -180,3 +176,11 @@ experiments/mcp/**/*.egg-info
 
 # MCP eval
 experiments/**/__pycache__/
+# Ignore all channel packages by default, but unignore per-namespace-components.yaml
+# The bang (!) prefix is used to unignore the given files.
+operator/channels/packages/configconnector/*/cluster/
+operator/channels/packages/configconnector/*/crds.yaml
+operator/channels/packages/configconnector/*/namespaced/0-cnrm-system.yaml
+operator/autopilot-channels/packages/configconnector/*/cluster/
+operator/autopilot-channels/packages/configconnector/*/crds.yaml
+operator/autopilot-channels/packages/configconnector/*/namespaced/0-cnrm-system.yaml

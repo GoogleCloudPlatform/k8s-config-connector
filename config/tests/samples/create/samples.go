@@ -15,6 +15,7 @@
 package create
 
 import (
+	"context"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -37,8 +38,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	"github.com/ghodss/yaml" //nolint:depguard
+	"google.golang.org/api/option"
+	serviceusage "google.golang.org/api/serviceusage/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -126,6 +130,24 @@ type CreateDeleteTestOptions struct { //nolint:revive
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	ctx := t.Ctx
 
+	if t.GCPTarget == GCPTargetModeReal {
+		if err := preflightCheckAPIs(ctx, t, opt.Create); err != nil {
+			t.Fatalf("FAIL: pre-flight check failed: %v", err)
+		}
+	}
+
+	if t.Manager != nil {
+		var gvks []schema.GroupVersionKind
+		for _, u := range opt.Create {
+			gvks = append(gvks, u.GroupVersionKind())
+		}
+		cacheSyncCtx, cacheSyncCancel := context.WithTimeout(ctx, 2*time.Minute)
+		defer cacheSyncCancel()
+		if err := WaitUntilControllersAreRegistered(cacheSyncCtx, t.T, t.Manager, gvks); err != nil {
+			t.Fatalf("FAIL: error waiting for controllers to register and cache to sync: %v", err)
+		}
+	}
+
 	// Note: we should use server-side apply for both create and update.
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
 
@@ -152,6 +174,15 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 
 	if len(opt.Updates) != 0 {
+		// Record the generation of all resources before patching to detect metadata-only updates
+		for _, updateUnstruct := range opt.Updates {
+			name := k8s.GetNamespacedName(updateUnstruct)
+			currentObj := updateUnstruct.DeepCopy()
+			if err := t.Manager.GetAPIReader().Get(t.Ctx, name, currentObj); err == nil {
+				t.preGenerations[name.String()] = currentObj.GetGeneration()
+			}
+		}
+
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
 			t.Logf("using server-side apply to update object")
@@ -207,7 +238,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
 		done = true
 		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
-		err = t.GetClient().Get(t.Ctx, name, u)
+		err = t.Manager.GetAPIReader().Get(t.Ctx, name, u)
 		if err != nil {
 			logger.Info("Error getting resource", "kind", u.GetKind(), "name", u.GetName(), "error", err)
 			if t.Ctx.Err() != nil {
@@ -232,6 +263,12 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
+		if preGen, exists := t.preGenerations[name.String()]; exists && objectStatus.Generation == preGen {
+			logger.Info("metadata-only update detected (generation did not change after patch); sleeping 5s to allow controller reconciliation", "kind", u.GetKind(), "name", u.GetName(), "generation", objectStatus.Generation)
+			delete(t.preGenerations, name.String())
+			time.Sleep(5 * time.Second)
+			return true, nil
+		}
 		if *objectStatus.ObservedGeneration < objectStatus.Generation {
 			logger.Info("resource status.observedGeneration is behind current generation",
 				"kind", u.GetKind(), "name", u.GetName(),
@@ -242,6 +279,11 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 			if c.Type == "Ready" && c.Status == "True" {
 				logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
 				return true, nil
+			}
+			if c.Type == "Ready" && c.Status == "False" {
+				if terminal, category := isTerminalError(c.Reason, c.Message); terminal {
+					return false, fmt.Errorf("terminal error (%s): reason: %s, message: %s", category, c.Reason, c.Message)
+				}
 			}
 		}
 		// This resource is not completely ready. Let's keep polling.
@@ -263,6 +305,57 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 	}
 	objectStatus := teststatus.GetObjectStatus(t.T, u)
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
+}
+
+func preflightCheckAPIs(ctx context.Context, h *Harness, resources []*unstructured.Unstructured) error {
+	var services []string
+	for _, u := range resources {
+		// Read declared services from the test manifests. If you want a specific service to be checked add it to dependencies.yaml.
+		if u.GroupVersionKind().Group == "serviceusage.cnrm.cloud.google.com" && u.GroupVersionKind().Kind == "Service" {
+			services = append(services, u.GetName())
+		}
+	}
+
+	if len(services) == 0 {
+		return nil
+	}
+
+	h.Logf("[Pre-flight] Checking if required services can be enabled: %v", services)
+	httpClient := h.GCPHTTPClient()
+	if httpClient == nil {
+		return fmt.Errorf("GCP HTTP client is nil")
+	}
+
+	su, err := serviceusage.NewService(ctx, option.WithHTTPClient(httpClient), option.WithUserAgent("kcc-e2e-preflight"))
+	if err != nil {
+		return fmt.Errorf("failed to create serviceusage client: %w", err)
+	}
+
+	for _, serviceName := range services {
+		name := fmt.Sprintf("projects/%s/services/%s", h.Project.ProjectID, serviceName)
+		svc, err := su.Services.Get(name).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("failed to get service status for %q (is serviceusage.googleapis.com enabled?): %w", serviceName, err)
+		}
+		h.Logf("[Pre-flight] Service %s state is %s", serviceName, svc.State)
+	}
+	return nil
+}
+
+var httpCodeRegex = regexp.MustCompile(`\b(400|401|403)\b`)
+
+func isTerminalError(reason, message string) (bool, string) {
+	match := httpCodeRegex.FindString(message)
+	switch match {
+	case "400":
+		return true, "Bad Request (400)"
+	case "401":
+		return true, "Unauthorized (401)"
+	case "403":
+		return true, "Forbidden (403)"
+	default:
+		return false, ""
+	}
 }
 
 func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
@@ -647,4 +740,43 @@ func sortByDescendingLen(strs []string) []string {
 		return len(strsCopy[i]) > len(strsCopy[j])
 	})
 	return strsCopy
+}
+
+func WaitForObservedGeneration(h *Harness, timeout time.Duration, unstructs ...*unstructured.Unstructured) {
+	var wg sync.WaitGroup
+	for _, u := range unstructs {
+		u := u
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			waitForObservedGenerationSingleResource(h, u, timeout)
+		}()
+	}
+	wg.Wait()
+}
+
+func waitForObservedGenerationSingleResource(t *Harness, u *unstructured.Unstructured, timeout time.Duration) {
+	name := k8s.GetNamespacedName(u)
+	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
+		done = true
+		err = t.GetClient().Get(t.Ctx, name, u)
+		if err != nil {
+			if t.Ctx.Err() != nil {
+				return false, t.Ctx.Err()
+			}
+			return false, nil
+		}
+
+		objectStatus := teststatus.GetObjectStatus(t.T, u)
+		if objectStatus.ObservedGeneration == nil {
+			return false, nil
+		}
+		if *objectStatus.ObservedGeneration < objectStatus.Generation {
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil && !wait.Interrupted(err) {
+		t.Error(fmt.Errorf("error while polling for observedGeneration on %v with name '%v': %w", u.GetKind(), u.GetName(), err))
+	}
 }

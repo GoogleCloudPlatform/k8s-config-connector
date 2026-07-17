@@ -176,6 +176,23 @@ spec:
                     description: Immutable. The type of accelerator(s) that may be
                       attached to the machine as per [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
                     type: string
+                  gpuPartitionSize:
+                    description: |-
+                      Optional. Immutable. The Nvidia GPU partition size.
+
+                       When specified, the requested accelerators will be partitioned into
+                       smaller GPU partitions. For example, if the request is for 8 units of
+                       NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+                       create 8 * 7 = 56 partitioned MIG instances.
+
+                       The partition size must be a value supported by the requested accelerator.
+                       Refer to
+                       [Nvidia GPU
+                       Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+                       for the available partition sizes.
+
+                       If set, the accelerator_count should be set to 1.
+                    type: string
                   machineType:
                     description: |-
                       Immutable. The type of the machine.
@@ -192,6 +209,11 @@ spec:
                        as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
                        this field is required.
                     type: string
+                  multihostGpuNodeCount:
+                    description: Optional. Immutable. The number of nodes per replica
+                      for multihost GPU deployments.
+                    format: int32
+                    type: integer
                   reservationAffinity:
                     description: Optional. Immutable. Configuration controlling how
                       this resource pool consumes reservation.
@@ -245,9 +267,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The value of an externally managed ComputeNetwork
-                          resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                          or "projects/{{projectId}}/global/networks/{{networkId}}"
+                        description: A reference to an externally managed ComputeNetwork
+                          resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                         type: string
                       name:
                         description: The name of a ComputeNetwork resource.
@@ -275,15 +296,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                          when not managed by Config Connector.
+                        description: A reference to an externally managed ComputeSubnetwork
+                          resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
                         type: string
                       name:
-                        description: The `name` field of a `ComputeSubnetwork` resource.
+                        description: The name of a ComputeSubnetwork resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeSubnetwork`
-                          resource.
+                        description: The namespace of a ComputeSubnetwork resource.
                         type: string
                     type: object
                 required:

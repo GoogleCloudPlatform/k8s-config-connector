@@ -63,9 +63,9 @@ func (s *FirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertFirewallP
 
 	fqn := policyName.String()
 
-	obj := proto.Clone(req.GetFirewallPolicyResource()).(*pb.FirewallPolicy)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, policyName.String()))
-	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, policyName.String()) + "/" + policyId)
+	obj := proto.CloneOf(req.GetFirewallPolicyResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, policyName.String()))
+	obj.SelfLinkWithId = PtrTo(BuildComputeSelfLink(ctx, policyName.String()) + "/" + policyId)
 	obj.Parent = PtrTo(req.ParentId)
 	obj.RuleTupleCount = PtrTo(int32(8))
 	obj.Id = PtrTo(id)
@@ -123,10 +123,6 @@ func (s *FirewallPoliciesV1) Patch(ctx context.Context, req *pb.PatchFirewallPol
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("updateFirewallPolicy"),
 		User:          PtrTo("user@example.com"),
-		// patch operation finished super fast
-		Progress: PtrTo(int32(100)),
-		Status:   PtrTo(pb.Operation_DONE),
-		EndTime:  PtrTo(s.nowString()),
 	}
 	return s.startGlobalOrganizationLRO(ctx, op, func() (proto.Message, error) {
 		return obj, nil

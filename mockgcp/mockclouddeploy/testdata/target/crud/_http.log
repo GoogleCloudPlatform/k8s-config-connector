@@ -1,0 +1,275 @@
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets/test-${uniqueId}?alt=json&allowMissing=True&updateMask=%2A%2Clabels
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "test target",
+  "name": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+  "run": {
+    "location": "projects/${projectId}/locations/us-central1"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.Target",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "test target",
+    "etag": "abcdef0123A=",
+    "executionConfigs": [
+      {
+        "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+        "defaultPool": {
+          "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+          "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+        },
+        "executionTimeout": "3600s",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "usages": [
+          "RENDER",
+          "DEPLOY",
+          "VERIFY",
+          "PREDEPLOY",
+          "POSTDEPLOY"
+        ]
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+    "run": {
+      "location": "projects/${projectId}/locations/us-central1"
+    },
+    "targetId": "test-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test target",
+  "etag": "abcdef0123A=",
+  "executionConfigs": [
+    {
+      "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+      "defaultPool": {
+        "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      "executionTimeout": "3600s",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "usages": [
+        "RENDER",
+        "DEPLOY",
+        "VERIFY",
+        "PREDEPLOY",
+        "POSTDEPLOY"
+      ]
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+  "run": {
+    "location": "projects/${projectId}/locations/us-central1"
+  },
+  "targetId": "test-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines?alt=json&filter=serialPipeline.stages.targetId%3A%22test-${uniqueId}%22&pageSize=0
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "targets": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "test target",
+      "etag": "abcdef0123A=",
+      "executionConfigs": [
+        {
+          "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+          "defaultPool": {
+            "artifactStorage": "gs://us-central1.deploy-artifacts.${projectId}.appspot.com",
+            "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+          },
+          "executionTimeout": "3600s",
+          "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+          "usages": [
+            "RENDER",
+            "DEPLOY",
+            "VERIFY",
+            "PREDEPLOY",
+            "POSTDEPLOY"
+          ]
+        }
+      ],
+      "name": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+      "run": {
+        "location": "projects/${projectId}/locations/us-central1"
+      },
+      "targetId": "test-${uniqueId}",
+      "uid": "111111111111111111111",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/targets/test-${uniqueId}?alt=json&allowMissing=True
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/targets/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

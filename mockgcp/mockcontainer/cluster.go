@@ -28,6 +28,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ClusterManagerV1 struct {
@@ -51,6 +52,19 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 		return nil, err
 	}
 
+	nodePoolPrefix := fqn + "/nodePools/"
+	var nodePools []*pb.NodePool
+	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	if len(nodePools) > 0 {
+		obj.NodePools = nodePools
+	}
+
 	return obj, nil
 }
 
@@ -63,7 +77,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := proto.CloneOf(req.Cluster)
 
 	obj.Status = pb.Cluster_RUNNING
 
@@ -108,6 +122,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	if obj.NetworkConfig.ServiceExternalIpsConfig == nil {
 		obj.NetworkConfig.ServiceExternalIpsConfig = &pb.ServiceExternalIPsConfig{}
 	}
+	obj.NetworkConfig.Subnetwork = strings.TrimPrefix(obj.NetworkConfig.Subnetwork, "https://www.googleapis.com/compute/v1/")
 
 	// On output, Network and Subnetwork show the ID instead of the full name
 	obj.Network = lastComponent(obj.Network)
@@ -119,7 +134,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	obj.ServicesIpv4Cidr = "34.118.224.0/20"
 
-	if err := s.populateClusterDefaults(name.Project, obj); err != nil {
+	if err := s.populateClusterDefaults(name.Project, obj, true); err != nil {
 		return nil, err
 	}
 
@@ -134,7 +149,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	}
 
 	for i, nodePool := range obj.NodePools {
-		nodePoolObj := proto.Clone(nodePool).(*pb.NodePool)
+		nodePoolObj := proto.CloneOf(nodePool)
 		if err := s.populateNodePoolDefaults(name.Project, obj, nodePoolObj); err != nil {
 			return nil, err
 		}
@@ -153,10 +168,17 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		return nil, err
 	}
 
+	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, obj.CurrentNodeCount); err != nil {
+		klog.Errorf("failed to create mock IGM: %v", err)
+	}
+
 	for _, nodePool := range obj.NodePools {
 		nodePoolFqn := name.String() + "/nodePools/" + nodePool.GetName()
 		if err := s.storage.Create(ctx, nodePoolFqn, nodePool); err != nil {
 			return nil, err
+		}
+		if err := s.createMockIGM(ctx, name.Project, nodePool.InstanceGroupUrls, nodePool.InitialNodeCount); err != nil {
+			klog.Errorf("failed to create mock IGM: %v", err)
 		}
 	}
 
@@ -218,7 +240,7 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 
 	klog.Infof("UpdateCluster %v", prototext.Format(req))
 
-	update := proto.Clone(req.GetUpdate()).(*pb.ClusterUpdate)
+	update := proto.CloneOf(req.GetUpdate())
 
 	// We clear each field of the update as we go, so we know if we've missed one!
 
@@ -327,13 +349,35 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
 	}
 
-	// TODO: Support more updates!
+	if update.DesiredAdditionalIpRangesConfig != nil {
+		if obj.IpAllocationPolicy == nil {
+			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+		}
+		obj.IpAllocationPolicy.AdditionalIpRangesConfigs = update.DesiredAdditionalIpRangesConfig.AdditionalIpRangesConfigs
+		update.DesiredAdditionalIpRangesConfig = nil
+	}
+
+	if update.DesiredDatabaseEncryption != nil {
+		if obj.DatabaseEncryption == nil {
+			obj.DatabaseEncryption = &pb.DatabaseEncryption{}
+		}
+		if update.DesiredDatabaseEncryption.State != pb.DatabaseEncryption_UNKNOWN {
+			obj.DatabaseEncryption.State = update.DesiredDatabaseEncryption.State
+		}
+		if update.DesiredDatabaseEncryption.KeyName != "" {
+			obj.DatabaseEncryption.KeyName = update.DesiredDatabaseEncryption.KeyName
+		}
+		obj.DatabaseEncryption.CurrentState = nil
+		update.DesiredDatabaseEncryption = nil
+	}
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
+
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
 
-	if err := s.populateClusterDefaults(name.Project, obj); err != nil {
+	if err := s.populateClusterDefaults(name.Project, obj, false); err != nil {
+
 		return nil, err
 	}
 
@@ -371,7 +415,7 @@ func (s *ClusterManagerV1) SetLabels(ctx context.Context, req *pb.SetLabelsReque
 		return nil, status.Errorf(codes.FailedPrecondition, "label fingerprint does not match")
 	}
 
-	update := proto.Clone(existing).(*pb.Cluster)
+	update := proto.CloneOf(existing)
 	update.ResourceLabels = req.ResourceLabels
 
 	if err := s.storage.Update(ctx, fqn, update); err != nil {
@@ -444,12 +488,41 @@ func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClus
 	})
 }
 
-func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData, obj *pb.Cluster) error {
-	if obj.NodeConfig == nil {
-		obj.NodeConfig = &pb.NodeConfig{}
+func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData, obj *pb.Cluster, isCreate bool) error {
+	hasDefaultPool := false
+	for _, np := range obj.NodePools {
+		if np.Name == "default-pool" {
+			hasDefaultPool = true
+			break
+		}
 	}
-	if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
-		return err
+	if isCreate && len(obj.NodePools) == 0 {
+		hasDefaultPool = true
+	}
+
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
+	if hasDefaultPool {
+		if obj.NodeConfig == nil {
+			obj.NodeConfig = &pb.NodeConfig{}
+		}
+		if obj.ConfidentialNodes != nil && obj.ConfidentialNodes.Enabled {
+			if obj.NodeConfig.ConfidentialNodes == nil {
+				obj.NodeConfig.ConfidentialNodes = &pb.ConfidentialNodes{}
+			}
+			obj.NodeConfig.ConfidentialNodes.Enabled = true
+			obj.NodeConfig.ConfidentialNodes.ConfidentialInstanceType = obj.ConfidentialNodes.ConfidentialInstanceType
+		}
+		if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
+			return err
+		}
+	} else {
+		obj.NodeConfig = nil
 	}
 
 	// Populate new fields based on deprecated fields
@@ -597,15 +670,50 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.CurrentNodeCount = 1
 	}
 
+	// If databaseEncryption field doesn't exist and databaseEncryption.state is UNKNOWN, then it should be defaulted to
+	// DECRYPTED with no key.
+	// Otherwise, UNKNOWN actually represents ALL_OBJECTS_ENCRYPTION_ENABLED (more details see the comments below), and
+	// we will update it to ENCRYPTED.
 	if obj.DatabaseEncryption == nil {
-		obj.DatabaseEncryption = &pb.DatabaseEncryption{}
+		obj.DatabaseEncryption = &pb.DatabaseEncryption{
+			State: pb.DatabaseEncryption_DECRYPTED,
+		}
+	} else {
+		// Possibly because mockgcp is using an older version of the proto,
+		// when the requested state is pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED,
+		// it's dropped in the received request, and then got parsed to pb.DatabaseEncryption_UNKNOWN.
+		//
+		// Besides, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+		// here, this error shows up in the test log:
+		//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+		//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+		if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
+			obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
+		}
 	}
 
-	if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
-		obj.DatabaseEncryption.State = pb.DatabaseEncryption_DECRYPTED
-	}
 	if obj.DatabaseEncryption.CurrentState == nil {
-		obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+		switch obj.DatabaseEncryption.State {
+		case pb.DatabaseEncryption_DECRYPTED:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+			if obj.DatabaseEncryption.KeyName != "" {
+				obj.DatabaseEncryption.DecryptionKeys = []string{obj.DatabaseEncryption.KeyName}
+				obj.DatabaseEncryption.KeyName = ""
+			}
+		case pb.DatabaseEncryption_ENCRYPTED:
+			// The real GCP service decided to return `ALL_OBJECTS_ENCRYPTION_ENABLED` when the input is `ENCRYPTED`
+			// for the latest version (1.35 and above).
+			// However, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+			// here, this error shows up in the test log:
+			//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+			//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		case pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED:
+			// CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED value is not yet supported in googleapis library.
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		default:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+		}
 	}
 
 	// defaultMaxPodsConstraint
@@ -893,7 +1001,9 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		if dnsEndpointConfig.AllowExternalTraffic == nil {
 			dnsEndpointConfig.AllowExternalTraffic = PtrTo(false)
 		}
-		//  "enableK8sCertsViaDns": false,
+		if dnsEndpointConfig.EnableK8STokensViaDns == nil {
+			dnsEndpointConfig.EnableK8STokensViaDns = PtrTo(false)
+		}
 		dnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
 	}
 

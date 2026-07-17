@@ -63,7 +63,7 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.ManagedZone).(*pb.ManagedZone)
+	obj := proto.CloneOf(req.ManagedZone)
 
 	obj.CreationTime = PtrTo(time.Now().UTC().Format(time.RFC3339))
 
@@ -71,7 +71,7 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 		obj.CloudLoggingConfig = &pb.ManagedZoneCloudLoggingConfig{}
 	}
 	obj.CloudLoggingConfig.Kind = PtrTo("dns#managedZoneCloudLoggingConfig")
-	obj.Id = PtrTo[uint64](1234567890)
+	obj.Id = PtrTo[uint64](uint64(time.Now().UnixNano()))
 	obj.Kind = PtrTo("dns#managedZone")
 	obj.NameServers = []string{
 		"ns-cloud-c1.googledomains.com.",
@@ -141,7 +141,7 @@ func (s *managedZonesService) UpdateManagedZone(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
-	updated := proto.Clone(req.ManagedZone).(*pb.ManagedZone)
+	updated := proto.CloneOf(req.ManagedZone)
 
 	// These fields are output only and cannot be changed.
 	updated.CreationTime = existing.CreationTime
@@ -185,7 +185,7 @@ func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.Patc
 		return nil, err
 	}
 
-	updated := proto.Clone(&existing).(*pb.ManagedZone)
+	updated := proto.CloneOf(&existing)
 	if req.GetManagedZone().Description != nil {
 		updated.Description = req.GetManagedZone().Description
 	}

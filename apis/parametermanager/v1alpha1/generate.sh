@@ -18,13 +18,15 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # Generate the KCC type structs from the GCP proto definitions
 go run . generate-types \
   --service google.cloud.parametermanager.v1 \
   --api-version parametermanager.cnrm.cloud.google.com/v1alpha1  \
-  --resource ParameterManagerParameter:Parameter
+  --resource ParameterManagerParameter:Parameter \
+  --resource ParameterManagerParameterVersion:ParameterVersion
 
 # Generate the mapper functions that convert between the KCC structs and the GCP proto structs
 go run . generate-mapper \
@@ -38,4 +40,4 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 # Format the generated Go code
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/parametermanager/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/parametermanager/

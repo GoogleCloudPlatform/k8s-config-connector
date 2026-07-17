@@ -61,6 +61,19 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: ipCollectionRef
+          tfField: ip_collection
+          description: |-
+            The PublicDelegatedPrefix IP collection from which to
+            reserve the address. Only external IPv4 addresses can use this.
+
+            Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
+            only the 'external' field of this reference can be used.
+          gvk:
+            kind: ComputePublicDelegatedPrefix
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -1272,6 +1285,8 @@ spec:
             group: resourcemanager.cnrm.cloud.google.com
     - name: google_compute_network
       kind: ComputeNetwork
+      mutableButUnreadableFields:
+        - delete_default_routes_on_create
       metadataMapping:
         name: name
       resourceID:
@@ -2169,6 +2184,27 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: rules.action.source_nat_active_ranges
+          key: sourceNatActiveRangesRefs
+          description: |-
+            A list of URLs of the subnetworks used as source ranges for this NAT Rule.
+            These subnetworks must have purpose set to PRIVATE_NAT. This field is used for private NAT.
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: rules.action.source_nat_drain_ranges
+          key: sourceNatDrainRangesRefs
+          description: |-
+            A list of URLs of subnetworks representing source ranges to be drained.
+            This is only supported on patch/update, and these subnetworks must have previously been used as active ranges in this NAT Rule.
+            This field is used for private NAT.
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -2397,6 +2433,20 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: reservedInternalRangeRef
+          tfField: reserved_internal_range
+          gvk:
+            kind: NetworkConnectivityInternalRange
+            version: v1alpha1
+            group: networkconnectivity.cnrm.cloud.google.com
+          targetField: externalRef
+        - key: secondaryIpRange.reservedInternalRangeRef
+          tfField: secondary_ip_range.reserved_internal_range
+          gvk:
+            kind: NetworkConnectivityInternalRange
+            version: v1alpha1
+            group: networkconnectivity.cnrm.cloud.google.com
+          targetField: externalRef
       containers:
         - type: project
           tfField: project
@@ -2892,6 +2942,24 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+        - tfField: default_custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            kind: ComputeBackendBucket
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: path_matcher.default_custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            kind: ComputeBackendBucket
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project

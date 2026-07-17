@@ -129,6 +129,8 @@ spec:
               recaptchaOptionsConfig:
                 properties:
                   redirectSiteKeyRef:
+                    description: RecaptchaEnterpriseKeyRef is a reference to a GCP
+                      RecaptchaEnterpriseKey.
                     oneOf:
                     - not:
                         required:
@@ -145,8 +147,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The value of an externally managed RecaptchaEnterpriseKey
-                          resource.
+                        description: A reference to an externally managed RecaptchaEnterpriseKey
+                          resource. Should be in the format "projects/{{projectID}}/keys/{{keyID}}".
                         type: string
                       name:
                         description: The name of a RecaptchaEnterpriseKey resource.
@@ -158,6 +160,10 @@ spec:
                 required:
                 - redirectSiteKeyRef
                 type: object
+              region:
+                description: Region represents the geographical location of the ComputeSecurityPolicy.
+                  Specify a region name or "global" for global resources.
+                type: string
               resourceID:
                 description: The ComputeSecurityPolicy name. If not given, the metadata.name
                   will be used.

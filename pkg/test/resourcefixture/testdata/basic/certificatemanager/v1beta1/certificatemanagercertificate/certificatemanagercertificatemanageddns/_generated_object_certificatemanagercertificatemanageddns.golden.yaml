@@ -3,8 +3,6 @@ kind: CertificateManagerCertificate
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/observed-secret-versions: (removed)
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -36,3 +34,11 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
+  observedState:
+    managed:
+      authorizationAttemptInfo:
+      - domain: ${uniqueId}1.hashicorptest.com
+        state: AUTHORIZED
+      - domain: ${uniqueId}2.hashicorptest.com
+        state: AUTHORIZED
+      state: ACTIVE

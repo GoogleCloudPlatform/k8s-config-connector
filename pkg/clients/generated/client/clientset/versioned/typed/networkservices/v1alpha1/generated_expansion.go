@@ -21,10 +21,16 @@
 
 package v1alpha1
 
+type NetworkServicesAuthzExtensionExpansion interface{}
+
 type NetworkServicesEdgeCacheKeysetExpansion interface{}
 
 type NetworkServicesEdgeCacheOriginExpansion interface{}
 
 type NetworkServicesEdgeCacheServiceExpansion interface{}
 
+type NetworkServicesLBRouteExtensionExpansion interface{}
+
 type NetworkServicesServiceBindingExpansion interface{}
+
+type NetworkServicesWasmPluginExpansion interface{}

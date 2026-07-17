@@ -53,6 +53,13 @@ spec:
             version: v1beta1
             group: kms.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: ip_filter.vpc_network_sources.network
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       directives:
         - force_destroy
       containers:

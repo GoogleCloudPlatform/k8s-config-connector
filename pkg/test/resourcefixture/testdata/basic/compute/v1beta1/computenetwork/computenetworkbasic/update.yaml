@@ -21,6 +21,7 @@ metadata:
     label-one: "value-one"
   name: computenetwork-${uniqueId}
 spec:
-  routingMode: GLOBAL
+  routingMode: REGIONAL
   autoCreateSubnetworks: false
   enableUlaInternalIpv6: true
+  networkProfile: projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon

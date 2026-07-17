@@ -18,12 +18,15 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.parametermanager.v1
 // resource: ParameterManagerParameter:Parameter
+// resource: ParameterManagerParameterVersion:ParameterVersion
 
 package v1alpha1
 
+/* unreachable type ResourcePolicyMember
 // +kcc:proto=google.iam.v1.ResourcePolicyMember
 type ResourcePolicyMember struct {
 }
+*/
 
 // +kcc:observedstate:proto=google.iam.v1.ResourcePolicyMember
 type ResourcePolicyMemberObservedState struct {

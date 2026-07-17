@@ -30,11 +30,12 @@ spec:
 ---
 
 kind: RunCLI
+DEFER-HTTP-LOG: true
 args: [ "powertools", "force-set-field", "--namespace=${projectId}", "--kind=StorageBucket", "--name=storagebucket-${uniqueId}", "spec.location=EU" ]
 
 ---
 
-TEST: READ-OBJECT
+TEST: WAIT-FOR-READY
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:

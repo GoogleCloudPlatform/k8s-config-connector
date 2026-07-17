@@ -33,10 +33,11 @@ type Normalizer struct {
 }
 
 func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
+	replacements := NewReplacements()
 	return &Normalizer{
 		uniqueID:     uniqueID,
 		project:      project,
-		Replacements: NewReplacements(),
+		Replacements: replacements,
 	}
 }
 
@@ -195,6 +196,8 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("nextRotationTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.nextRotationTime", "2024-04-01T12:34:56.123456Z")
 
 	// Specific to datacatalog
 	addReplacement("dataCatalogTimestamps.createTime", "2024-04-01T12:34:56.123456Z")
@@ -265,6 +268,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
 	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("Expires")
 
 	got := events.FormatHTTP()
 	normalizers := []func(string) string{}
@@ -317,8 +321,8 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
 				id = tokens[len(tokens)-1]
 			}
-			// operation name format: operation-{operationId}
-			if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation") {
+			// operation name format: operation-{operationId} or org-{organizationId}-{operationId}
+			if len(tokens) == 1 && (strings.HasPrefix(tokens[0], "operation") || strings.HasPrefix(tokens[0], "org-")) {
 				id = s
 			}
 		}

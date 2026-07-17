@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/externalVpnGateways/externalvpngateway-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeExternalVPNGateway
+  name: externalvpngateway-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

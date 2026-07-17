@@ -63,6 +63,24 @@ spec:
             description: NetworkConnectivityInternalRangeSpec defines the desired
               state of NetworkConnectivityInternalRange
             properties:
+              allocationOptions:
+                description: Optional. Range auto-allocation options, may be set only
+                  when auto-allocation is selected by not setting ip_cidr_range (and
+                  setting prefix_length).
+                properties:
+                  allocationStrategy:
+                    description: Optional. Allocation strategy. Not setting this field
+                      when the allocation is requested means an implementation defined
+                      strategy is used.
+                    type: string
+                  firstAvailableRangesLookupSize:
+                    description: Optional. This field must be set only when allocation_strategy
+                      is set to RANDOM_FIRST_N_AVAILABLE. The value should be the
+                      maximum expected parallelism of range creation requests issued
+                      to the same space of peered networks.
+                    format: int32
+                    type: integer
+                type: object
               description:
                 description: A description of this resource.
                 type: string
@@ -93,7 +111,7 @@ spec:
                   target:
                     description: 'Immutable. Resource path of the target resource.
                       The target project can be different, as in the cases when migrating
-                      to peer networks. The resource For example: /projects/{project}/regions/{region}/subnetworks/{subnet}'
+                      to peer networks. For example: /projects/{project}/regions/{region}/subnetworks/{subnet}'
                     type: string
                 type: object
               networkRef:
@@ -118,9 +136,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeNetwork
-                      resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                     type: string
                   name:
                     description: The name of a ComputeNetwork resource.

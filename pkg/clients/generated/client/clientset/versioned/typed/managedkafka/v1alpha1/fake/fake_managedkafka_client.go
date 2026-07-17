@@ -31,8 +31,12 @@ type FakeManagedkafkaV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeManagedkafkaV1alpha1) ManagedKafkaConnectClusters(namespace string) v1alpha1.ManagedKafkaConnectClusterInterface {
+	return newFakeManagedKafkaConnectClusters(c, namespace)
+}
+
 func (c *FakeManagedkafkaV1alpha1) ManagedKafkaConsumerGroups(namespace string) v1alpha1.ManagedKafkaConsumerGroupInterface {
-	return &FakeManagedKafkaConsumerGroups{c, namespace}
+	return newFakeManagedKafkaConsumerGroups(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

@@ -22,7 +22,10 @@ import (
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
+	"k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
 )
 
@@ -31,13 +34,16 @@ var (
 )
 
 type ConfigConnectorContextChecker struct {
+	client client.Client
 }
 
-func NewConfigConnectorContextChecker() *ConfigConnectorContextChecker {
-	return &ConfigConnectorContextChecker{}
+func NewConfigConnectorContextChecker(client client.Client) *ConfigConnectorContextChecker {
+	return &ConfigConnectorContextChecker{
+		client: client,
+	}
 }
 
-func (c *ConfigConnectorContextChecker) Preflight(_ context.Context, o declarative.DeclarativeObject) error {
+func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declarative.DeclarativeObject) error {
 	clog.Info("preflight check before reconciling the object", "kind", o.GetObjectKind().GroupVersionKind().Kind, "name", o.GetName(), "namespace", o.GetNamespace())
 
 	ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
@@ -57,6 +63,42 @@ func (c *ConfigConnectorContextChecker) Preflight(_ context.Context, o declarati
 		return err
 	}
 
+	// Validate mode consistency with ConfigConnector
+	cc := &corev1beta1.ConfigConnector{}
+	if c.client != nil {
+		if err := c.client.Get(ctx, types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}, cc); err != nil {
+			if !errors.IsNotFound(err) {
+				return fmt.Errorf("error getting ConfigConnector: %w", err)
+			}
+			// If not found, we use an empty CC object which defaults to Exclusion mode.
+			cc = &corev1beta1.ConfigConnector{}
+		}
+		if err := validateResourceSettingsMode(cc, ccc); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func validateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext) error {
+	var ccMode, cccMode corev1beta1.ResourceSettingsMode
+	if cc != nil && cc.Spec.Experiments != nil && cc.Spec.Experiments.ResourceSettings != nil {
+		ccMode = cc.Spec.Experiments.ResourceSettings.Mode
+	}
+	if ccc != nil && ccc.Spec.Experiments != nil && ccc.Spec.Experiments.ResourceSettings != nil {
+		cccMode = ccc.Spec.Experiments.ResourceSettings.Mode
+	}
+
+	// If one is omitted, we allow it for transition (lenient mode)
+	if ccMode == "" || cccMode == "" {
+		return nil
+	}
+
+	// Direct Conflict (Reject)
+	if ccMode != cccMode {
+		return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
+	}
 	return nil
 }
 

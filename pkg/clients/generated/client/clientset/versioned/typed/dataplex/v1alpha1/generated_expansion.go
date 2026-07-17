@@ -21,11 +21,23 @@
 
 package v1alpha1
 
+type DataplexAspectTypeExpansion interface{}
+
+type DataplexDataAttributeBindingExpansion interface{}
+
+type DataplexDataScanExpansion interface{}
+
+type DataplexDataTaxonomyExpansion interface{}
+
 type DataplexEntryGroupExpansion interface{}
 
 type DataplexEntryTypeExpansion interface{}
 
+type DataplexGlossaryExpansion interface{}
+
 type DataplexLakeExpansion interface{}
+
+type DataplexMetadataJobExpansion interface{}
 
 type DataplexTaskExpansion interface{}
 

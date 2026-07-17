@@ -1,0 +1,9 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaasServiceMgmtRelease
+metadata:
+  name: saasservicemgmtrelease-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  unitKind: "my-unit-kind-${uniqueId}"

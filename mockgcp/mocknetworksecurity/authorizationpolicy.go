@@ -40,7 +40,7 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 
 	fqn := name
 
-	obj := proto.Clone(req.AuthorizationPolicy).(*pb.AuthorizationPolicy)
+	obj := proto.CloneOf(req.AuthorizationPolicy)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
@@ -59,7 +59,7 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj).(*pb.AuthorizationPolicy)
+		result := proto.CloneOf(obj)
 		return result, nil
 	})
 }
@@ -96,16 +96,31 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 		return nil, err
 	}
 
-	updated := proto.Clone(req.GetAuthorizationPolicy()).(*pb.AuthorizationPolicy)
-	updated.CreateTime = obj.CreateTime
+	updated := proto.CloneOf(obj)
 	updated.UpdateTime = timestamppb.New(time.Now())
-	switch req.GetUpdateMask().GetPaths()[0] {
-	case "rules":
-		updated.Rules = req.GetAuthorizationPolicy().GetRules()
-	case "action":
-		updated.Action = req.GetAuthorizationPolicy().GetAction()
-	default:
-		return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled	 in mock", req.GetUpdateMask().GetPaths()[0])
+
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		// If update_mask is not provided, all fields should be overwritten.
+		updated = proto.CloneOf(req.GetAuthorizationPolicy())
+		updated.CreateTime = obj.CreateTime
+		updated.UpdateTime = timestamppb.New(time.Now())
+		updated.Name = obj.Name
+	} else {
+		for _, path := range paths {
+			switch path {
+			case "rules":
+				updated.Rules = req.GetAuthorizationPolicy().GetRules()
+			case "action":
+				updated.Action = req.GetAuthorizationPolicy().GetAction()
+			case "description":
+				updated.Description = req.GetAuthorizationPolicy().GetDescription()
+			case "labels":
+				updated.Labels = req.GetAuthorizationPolicy().GetLabels()
+			default:
+				return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
+			}
+		}
 	}
 
 	if err := s.storage.Update(ctx, name.String(), updated); err != nil {
@@ -122,7 +137,7 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(updated).(*pb.AuthorizationPolicy)
+		result := proto.CloneOf(updated)
 		return result, nil
 	})
 }

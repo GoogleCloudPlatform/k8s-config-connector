@@ -22,16 +22,17 @@
 package v1alpha1
 
 import (
-	"net/http"
+	http "net/http"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/parametermanager/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
+	parametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/parametermanager/v1alpha1"
+	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
 type ParametermanagerV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	ParameterManagerParametersGetter
+	ParameterManagerParameterVersionsGetter
 }
 
 // ParametermanagerV1alpha1Client is used to interact with features provided by the parametermanager.cnrm.cloud.google.com group.
@@ -43,14 +44,16 @@ func (c *ParametermanagerV1alpha1Client) ParameterManagerParameters(namespace st
 	return newParameterManagerParameters(c, namespace)
 }
 
+func (c *ParametermanagerV1alpha1Client) ParameterManagerParameterVersions(namespace string) ParameterManagerParameterVersionInterface {
+	return newParameterManagerParameterVersions(c, namespace)
+}
+
 // NewForConfig creates a new ParametermanagerV1alpha1Client for the given config.
 // NewForConfig is equivalent to NewForConfigAndClient(c, httpClient),
 // where httpClient was generated with rest.HTTPClientFor(c).
 func NewForConfig(c *rest.Config) (*ParametermanagerV1alpha1Client, error) {
 	config := *c
-	if err := setConfigDefaults(&config); err != nil {
-		return nil, err
-	}
+	setConfigDefaults(&config)
 	httpClient, err := rest.HTTPClientFor(&config)
 	if err != nil {
 		return nil, err
@@ -62,9 +65,7 @@ func NewForConfig(c *rest.Config) (*ParametermanagerV1alpha1Client, error) {
 // Note the http client provided takes precedence over the configured transport values.
 func NewForConfigAndClient(c *rest.Config, h *http.Client) (*ParametermanagerV1alpha1Client, error) {
 	config := *c
-	if err := setConfigDefaults(&config); err != nil {
-		return nil, err
-	}
+	setConfigDefaults(&config)
 	client, err := rest.RESTClientForConfigAndClient(&config, h)
 	if err != nil {
 		return nil, err
@@ -87,17 +88,15 @@ func New(c rest.Interface) *ParametermanagerV1alpha1Client {
 	return &ParametermanagerV1alpha1Client{c}
 }
 
-func setConfigDefaults(config *rest.Config) error {
-	gv := v1alpha1.SchemeGroupVersion
+func setConfigDefaults(config *rest.Config) {
+	gv := parametermanagerv1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
-	config.NegotiatedSerializer = scheme.Codecs.WithoutConversion()
+	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
 
 	if config.UserAgent == "" {
 		config.UserAgent = rest.DefaultKubernetesUserAgent()
 	}
-
-	return nil
 }
 
 // RESTClient returns a RESTClient that is used to communicate

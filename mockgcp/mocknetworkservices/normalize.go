@@ -15,15 +15,48 @@
 package mocknetworkservices
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
-
-const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "networkservices.googleapis.com") {
+		return
+	}
+
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".lbRouteExtensions[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".lbRouteExtensions[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".wasmPlugins[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".wasmPlugins[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".wasmPluginVersions[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".wasmPluginVersions[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".versions.*.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".versions.*.updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.requestedCancellation", nil)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	// Only apply this logic if the request is for the networkservices API.
+	if !strings.Contains(event.URL(), "networkservices.googleapis.com") {
+		return
+	}
+
+	// Normalize compute reference URLs in responses to match real GCP behavior.
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasPrefix(value, "https://compute.googleapis.com/compute/v1/") {
+			newValue := strings.Replace(value, "https://compute.googleapis.com/compute/v1/", "https://www.googleapis.com/compute/v1/", 1)
+			replacements.ReplaceStringValue(value, newValue)
+		}
+	})
 }

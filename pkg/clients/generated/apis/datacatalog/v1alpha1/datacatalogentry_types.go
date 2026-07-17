@@ -216,7 +216,7 @@ type EntryDataSourceConnectionSpec struct {
 }
 
 type EntryDatabaseTableSpec struct {
-	/* Spec what aplies to tables that are actually views. Not set for "real" tables. */
+	/* Spec what applies to tables that are actually views. Not set for "real" tables. */
 	// +optional
 	DatabaseViewSpec *EntryDatabaseViewSpec `json:"databaseViewSpec,omitempty"`
 
@@ -294,7 +294,7 @@ type EntryGcsFilesetSpec struct {
 	/* Required. Patterns to identify a set of files in Google Cloud Storage.
 
 	For more information, see [Wildcard Names]
-	(https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames).
+	(https://cloud.google.com/storage/docs/wildcards).
 
 	Note: Currently, bucket wildcards are not supported.
 
@@ -320,7 +320,8 @@ type EntryGcsFilesetSpec struct {
 	You can combine wildcards to match complex sets of files, for example:
 
 	`gs://bucket_name/[a-m]??.j*g` */
-	FilePatterns []string `json:"filePatterns"`
+	// +optional
+	FilePatterns []string `json:"filePatterns,omitempty"`
 }
 
 type EntryLookerColumnSpec struct {
@@ -385,7 +386,8 @@ type EntryProtobuf struct {
 
 type EntryRangeElementType struct {
 	/* Required. The type of a field element. See [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type]. */
-	Type string `json:"type"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type EntryRoutineArguments struct {
@@ -827,7 +829,7 @@ type EntryExternalTablesStatus struct {
 }
 
 type EntryFeatureOnlineStoreSpecStatus struct {
-	/* Output only. Type of underelaying storage for the FeatureOnlineStore. */
+	/* Output only. Type of underlying storage for the FeatureOnlineStore. */
 	// +optional
 	StorageType *string `json:"storageType,omitempty"`
 }
@@ -836,6 +838,28 @@ type EntryGcsFilesetSpecStatus struct {
 	/* Output only. Sample files contained in this fileset, not all files contained in this fileset are represented here. */
 	// +optional
 	SampleGCSFileSpecs []EntrySampleGCSFileSpecsStatus `json:"sampleGCSFileSpecs,omitempty"`
+}
+
+type EntryGcsTimestampsStatus struct {
+	/* Creation timestamp of the resource within the given system. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Expiration timestamp of the resource within the given system.
+
+	Currently only applicable to BigQuery resources. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	/* Timestamp of the last modification of the resource or its metadata within
+	a given system.
+
+	Note: Depending on the source system, not every modification updates this
+	timestamp.
+	For example, BigQuery timestamps every metadata modification but not data
+	or permission changes. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type EntryObservedStateStatus struct {
@@ -922,7 +946,16 @@ type EntryProtobufStatus struct {
 
 type EntrySampleGCSFileSpecsStatus struct {
 	/* Required. Full file path. Example: `gs://bucket_name/a/b.txt`. */
-	FilePath string `json:"filePath"`
+	// +optional
+	FilePath *string `json:"filePath,omitempty"`
+
+	/* Output only. Creation, modification, and expiration timestamps of a Cloud Storage file. */
+	// +optional
+	GcsTimestamps *EntryGcsTimestampsStatus `json:"gcsTimestamps,omitempty"`
+
+	/* Output only. File size in bytes. */
+	// +optional
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
 }
 
 type EntryStoragePropertiesStatus struct {

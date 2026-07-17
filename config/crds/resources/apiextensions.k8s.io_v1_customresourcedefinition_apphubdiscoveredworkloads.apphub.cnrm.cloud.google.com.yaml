@@ -64,10 +64,10 @@ spec:
               AppHubDiscoveredWorkload
             properties:
               location:
-                description: Required. The location of the application.
+                description: Required. The location of the resource.
                 type: string
               projectRef:
-                description: Required. The host project of the application.
+                description: Required. The host project of the resource.
                 oneOf:
                 - not:
                     required:
@@ -155,16 +155,17 @@ spec:
                     properties:
                       gcpProject:
                         description: Output only. The service project identifier that
-                          the underlying cloud resource resides in. Empty for non
-                          cloud resources.
+                          the underlying cloud resource resides in. Empty for non-cloud
+                          resources.
                         type: string
                       location:
                         description: Output only. The location that the underlying
-                          compute resource resides in (e.g us-west1).
+                          compute resource resides in (for example, us-west1).
                         type: string
                       zone:
                         description: Output only. The location that the underlying
-                          compute resource resides in if it is zonal (e.g us-west1-a).
+                          compute resource resides in if it is zonal (for example,
+                          us-west1-a).
                         type: string
                     type: object
                   workloadReference:

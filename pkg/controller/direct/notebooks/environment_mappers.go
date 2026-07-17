@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func NotebooksEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentSpec {
+func NotebooksEnvironmentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentSpec {
 	if in == nil {
 		return nil
 	}
@@ -33,7 +33,7 @@ func NotebooksEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Enviro
 	out.PostStartupScript = direct.LazyPtr(in.GetPostStartupScript())
 	return out
 }
-func NotebooksEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentSpec) *pb.Environment {
+func NotebooksEnvironmentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentSpec) *pb.Environment {
 	if in == nil {
 		return nil
 	}
@@ -50,7 +50,7 @@ func NotebooksEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Noteboo
 	out.PostStartupScript = direct.ValueOf(in.PostStartupScript)
 	return out
 }
-func NotebooksEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentObservedState {
+func NotebooksEnvironmentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.NotebooksEnvironmentObservedState {
 	if in == nil {
 		return nil
 	}
@@ -59,7 +59,7 @@ func NotebooksEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
-func NotebooksEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentObservedState) *pb.Environment {
+func NotebooksEnvironmentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NotebooksEnvironmentObservedState) *pb.Environment {
 	if in == nil {
 		return nil
 	}

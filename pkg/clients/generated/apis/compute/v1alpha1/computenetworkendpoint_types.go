@@ -39,14 +39,14 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeNetworkEndpointSpec struct {
+	/* InstanceRef is a reference to a ComputeInstance. */
 	// +optional
 	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 
-	/* Immutable. IPv4 address of network endpoint. The IP address must belong
-	to a VM in GCE (either the primary IP or as part of an aliased IP
-	range). */
+	/* Immutable. IPv4 address of network endpoint. The IP address must belong to a VM in Compute Engine (either the primary IP or as part of an aliased IP range). */
 	IpAddress string `json:"ipAddress"`
 
+	/* The network endpoint group to which this network endpoint belongs. */
 	NetworkEndpointGroupRef v1alpha1.ResourceRef `json:"networkEndpointGroupRef"`
 
 	/* The project that this resource belongs to. */

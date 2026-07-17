@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DiskConfig_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krm.DiskConfig {
+func DiskConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krm.DiskConfig {
 	if in == nil {
 		return nil
 	}
@@ -33,7 +33,7 @@ func DiskConfig_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krm.Dis
 	out.BootDiskProvisionedThroughput = in.BootDiskProvisionedThroughput
 	return out
 }
-func DiskConfig_ToProto(mapCtx *direct.MapContext, in *krm.DiskConfig) *pb.DiskConfig {
+func DiskConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DiskConfig) *pb.DiskConfig {
 	if in == nil {
 		return nil
 	}

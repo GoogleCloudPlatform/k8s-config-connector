@@ -38,6 +38,19 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type ClusterAdditionalIpRangesConfigs struct {
+	/* List of secondary ranges names within this subnetwork that can be used for pod IPs. */
+	// +optional
+	PodIpv4RangeNames []string `json:"podIpv4RangeNames,omitempty"`
+
+	/* Status of the subnetwork, If in draining status, subnet will not be selected for new node pools. */
+	// +optional
+	Status *string `json:"status,omitempty"`
+
+	/* The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. */
+	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+}
+
 type ClusterAdditionalPodRangesConfig struct {
 	/* Name for pod secondary ipv4 range which has the actual range defined ahead. */
 	PodRangeNames []string `json:"podRangeNames"`
@@ -64,7 +77,7 @@ type ClusterAddonsConfig struct {
 	// +optional
 	GcpFilestoreCsiDriverConfig *ClusterGcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
-	/* The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable. */
+	/* The status of the GCS Fuse CSI driver addon, which allows the usage of GCS bucket as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +optional
 	GcsFuseCsiDriverConfig *ClusterGcsFuseCsiDriverConfig `json:"gcsFuseCsiDriverConfig,omitempty"`
 
@@ -91,6 +104,10 @@ type ClusterAddonsConfig struct {
 	/* Whether we should enable the network policy addon for the master. This must be enabled in order to enable network policy for the nodes. To enable this, you must also define a network_policy block, otherwise nothing will happen. It can only be disabled if the nodes already do not have network policies enabled. Defaults to disabled; set disabled = false to enable. */
 	// +optional
 	NetworkPolicyConfig *ClusterNetworkPolicyConfig `json:"networkPolicyConfig,omitempty"`
+
+	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +optional
+	ParallelstoreCsiDriverConfig *ClusterParallelstoreCsiDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
 }
 
 type ClusterAdvancedDatapathObservabilityConfig struct {
@@ -118,8 +135,7 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
-	/* Immutable. The Customer Managed Encryption Key used to encrypt the
-	boot disk attached to each node in the node pool. */
+	/* Immutable. The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
 
@@ -231,6 +247,10 @@ type ClusterClusterTelemetry struct {
 }
 
 type ClusterConfidentialNodes struct {
+	/* Immutable. Defines the type of technology used by the confidential node. */
+	// +optional
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
 }
@@ -266,7 +286,7 @@ type ClusterDatabaseEncryption struct {
 	// +optional
 	KeyName *string `json:"keyName,omitempty"`
 
-	/* ENCRYPTED or DECRYPTED. */
+	/* ENCRYPTED, ALL_OBJECTS_ENCRYPTION_ENABLED or DECRYPTED. */
 	State string `json:"state"`
 }
 
@@ -302,6 +322,10 @@ type ClusterDnsEndpointConfig struct {
 	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
 	// +optional
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
+
+	/* Controls whether the k8s token auth is allowed via DNS. */
+	// +optional
+	EnableK8sTokensViaDns *bool `json:"enableK8sTokensViaDns,omitempty"`
 }
 
 type ClusterEnableK8sBetaApis struct {
@@ -315,6 +339,10 @@ type ClusterEphemeralStorageConfig struct {
 }
 
 type ClusterEphemeralStorageLocalSsdConfig struct {
+	/* Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces. */
+	// +optional
+	DataCacheCount *int64 `json:"dataCacheCount,omitempty"`
+
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int64 `json:"localSsdCount"`
 }
@@ -418,6 +446,10 @@ type ClusterIdentityServiceConfig struct {
 }
 
 type ClusterIpAllocationPolicy struct {
+	/* AdditionalIPRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. Each AdditionalIPRangesConfig corresponds to a single subnetwork. */
+	// +optional
+	AdditionalIpRangesConfigs []ClusterAdditionalIpRangesConfigs `json:"additionalIpRangesConfigs,omitempty"`
+
 	/* AdditionalPodRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. */
 	// +optional
 	AdditionalPodRangesConfig *ClusterAdditionalPodRangesConfig `json:"additionalPodRangesConfig,omitempty"`
@@ -478,6 +510,22 @@ type ClusterKubeletConfig struct {
 	/* Control the CPU management policy on the node. */
 	CpuManagerPolicy string `json:"cpuManagerPolicy"`
 
+	/* Percent of disk usage after which image garbage collection is always run. */
+	// +optional
+	ImageGcHighThresholdPercent *int64 `json:"imageGcHighThresholdPercent,omitempty"`
+
+	/* Percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to. */
+	// +optional
+	ImageGcLowThresholdPercent *int64 `json:"imageGcLowThresholdPercent,omitempty"`
+
+	/* Maximum age an image can be unused before it is garbage collected. */
+	// +optional
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
+
+	/* Minimum age for an unused image before it is garbage collected. */
+	// +optional
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +optional
 	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`
@@ -516,7 +564,7 @@ type ClusterMaintenanceExclusion struct {
 }
 
 type ClusterMaintenancePolicy struct {
-	/* Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT. */
+	/* Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM", where HH : [00-23] and MM : [00-59] GMT. */
 	// +optional
 	DailyMaintenanceWindow *ClusterDailyMaintenanceWindow `json:"dailyMaintenanceWindow,omitempty"`
 
@@ -579,7 +627,7 @@ type ClusterMasterAuthorizedNetworksConfig struct {
 	// +optional
 	CidrBlocks []ClusterCidrBlocks `json:"cidrBlocks,omitempty"`
 
-	/* Whether master is accessbile via Google Compute Engine Public IP addresses. */
+	/* Whether master is accessible via Google Compute Engine Public IP addresses. */
 	// +optional
 	GcpPublicCidrsAccessEnabled *bool `json:"gcpPublicCidrsAccessEnabled,omitempty"`
 }
@@ -726,9 +774,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Immutable. Setting this field will assign instances
-	of this pool to run on the specified node group. This is useful
-	for running workloads on sole tenant nodes. */
+	/* Immutable. Setting this field will assign instances of this pool to run on the specified node group. This is useful for running workloads on sole tenant nodes. */
 	// +optional
 	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
 
@@ -807,6 +853,10 @@ type ClusterNotificationConfig struct {
 	Pubsub ClusterPubsub `json:"pubsub"`
 }
 
+type ClusterParallelstoreCsiDriverConfig struct {
+	Enabled bool `json:"enabled"`
+}
+
 type ClusterPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -851,8 +901,7 @@ type ClusterPrivateClusterConfig struct {
 	// +optional
 	PrivateEndpoint *string `json:"privateEndpoint,omitempty"`
 
-	/* Immutable. Subnetwork in cluster's network where master's endpoint
-	will be provisioned. */
+	/* Immutable. Subnetwork in cluster's network where master's endpoint will be provisioned. */
 	// +optional
 	PrivateEndpointSubnetworkRef *v1alpha1.ResourceRef `json:"privateEndpointSubnetworkRef,omitempty"`
 
@@ -893,11 +942,7 @@ type ClusterRecurringWindow struct {
 }
 
 type ClusterReleaseChannel struct {
-	/* The selected release channel. Accepted values are:
-	* UNSPECIFIED: Not set.
-	* RAPID: Weekly upgrade cadence; Early testers and developers who requires new features.
-	* REGULAR: Multiple per month upgrade cadence; Production users who need features not yet offered in the Stable channel.
-	* STABLE: Every few months upgrade cadence; Production users who need stability above all else, and for whom frequent upgrades are too risky. */
+	/* The selected release channel. Accepted values are: * UNSPECIFIED: Not set. * RAPID: Weekly upgrade cadence; Early testers and developers who requires new features. * REGULAR: Multiple per month upgrade cadence; Production users who need features not yet offered in the Stable channel. * STABLE: Every few months upgrade cadence; Production users who need stability above all else, and for whom frequent upgrades are too risky. */
 	Channel string `json:"channel"`
 }
 
@@ -984,9 +1029,7 @@ type ClusterStandardRolloutPolicy struct {
 	// +optional
 	BatchPercentage *float64 `json:"batchPercentage,omitempty"`
 
-	/* Soak time after each batch gets drained.
-
-	A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
+	/* Soak time after each batch gets drained. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
 	// +optional
 	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
 }
@@ -1047,8 +1090,7 @@ type ClusterWorkloadConfig struct {
 }
 
 type ClusterWorkloadIdentityConfig struct {
-	/* DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.
-	Enables workload identity. */
+	/* DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field. Enables workload identity. */
 	// +optional
 	IdentityNamespace *string `json:"identityNamespace,omitempty"`
 
@@ -1239,6 +1281,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	NetworkPolicy *ClusterNetworkPolicy `json:"networkPolicy,omitempty"`
 
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -1305,6 +1348,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	ServiceExternalIpsConfig *ClusterServiceExternalIpsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
+	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 

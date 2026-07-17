@@ -29,6 +29,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -236,6 +237,10 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
+	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
+		return nil, err
+	}
+
 	return manifest.NewObject(u)
 }
 
@@ -248,7 +253,56 @@ func handleControllerManagerStatefulSetPerNamespace(ctx context.Context, c clien
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
+	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
+		return nil, err
+	}
+
 	return manifest.NewObject(u)
+}
+
+func applyConfigConnectorExperiments(ctx context.Context, c client.Client, u *unstructured.Unstructured) error {
+	cc, err := controllers.GetConfigConnector(ctx, c, controllers.ValidConfigConnectorNamespacedName)
+	if err != nil {
+		if !apierrors.IsNotFound(err) {
+			return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
+		}
+		// If CC is not found (e.g. during deletion tests), just skip applying experiments.
+		return nil
+	}
+	return applyExperimentsToManagerContainer(u, cc)
+}
+
+func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1beta1.ConfigConnector) error {
+	if cc.Spec.Experiments == nil {
+		return nil
+	}
+
+	if lease := cc.Spec.Experiments.MultiClusterLease; lease != nil {
+		if err := setFlagForManagerContainer(u, "--leader-election-type", "multicluster"); err != nil {
+			return fmt.Errorf("failed to set --leader-election-type: %w", err)
+		}
+		if err := setFlagForManagerContainer(u, "--syncing-mode", "pull"); err != nil {
+			return fmt.Errorf("failed to set --syncing-mode: %w", err)
+		}
+
+		// Add annotations to the Pod template
+		annotations, _, err := unstructured.NestedStringMap(u.Object, "spec", "template", "metadata", "annotations")
+		if err != nil {
+			return fmt.Errorf("failed to get pod template annotations: %w", err)
+		}
+		if annotations == nil {
+			annotations = make(map[string]string)
+		}
+		annotations["cnrm.cloud.google.com/lease-name"] = lease.LeaseName
+		annotations["cnrm.cloud.google.com/lease-namespace"] = lease.Namespace
+		annotations["cnrm.cloud.google.com/lease-identity"] = lease.ClusterCandidateIdentity
+
+		if err := unstructured.SetNestedStringMap(u.Object, annotations, "spec", "template", "metadata", "annotations"); err != nil {
+			return fmt.Errorf("failed to set pod template annotations: %w", err)
+		}
+	}
+
+	return nil
 }
 
 func enableUserProjectOverride(u *unstructured.Unstructured) error {

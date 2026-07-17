@@ -47,3 +47,23 @@ spec:
   labels:
     key1: val1
     key2: val2
+  maintenanceVersion: "MEMORYSTORE_20260313_01_02"
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: MONDAY
+      startTime:
+        hours: 5
+        minutes: 0
+        seconds: 0
+        nanos: 0
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 2
+        minutes: 0
+        seconds: 0
+        nanos: 0
+    retention: 345600s
+  kmsKeyRef:
+    name: key-${uniqueId}

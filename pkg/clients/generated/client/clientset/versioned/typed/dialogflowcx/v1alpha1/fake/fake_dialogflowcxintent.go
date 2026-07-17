@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflowcx/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	dialogflowcxv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dialogflowcx/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDialogflowCXIntents implements DialogflowCXIntentInterface
-type FakeDialogflowCXIntents struct {
+// fakeDialogflowCXIntents implements DialogflowCXIntentInterface
+type fakeDialogflowCXIntents struct {
+	*gentype.FakeClientWithList[*v1alpha1.DialogflowCXIntent, *v1alpha1.DialogflowCXIntentList]
 	Fake *FakeDialogflowcxV1alpha1
-	ns   string
 }
 
-var dialogflowcxintentsResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxintents")
-
-var dialogflowcxintentsKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXIntent")
-
-// Get takes name of the dialogflowCXIntent, and returns the corresponding dialogflowCXIntent object, and an error if there is any.
-func (c *FakeDialogflowCXIntents) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowCXIntent, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(dialogflowcxintentsResource, c.ns, name), &v1alpha1.DialogflowCXIntent{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDialogflowCXIntents(fake *FakeDialogflowcxV1alpha1, namespace string) dialogflowcxv1alpha1.DialogflowCXIntentInterface {
+	return &fakeDialogflowCXIntents{
+		gentype.NewFakeClientWithList[*v1alpha1.DialogflowCXIntent, *v1alpha1.DialogflowCXIntentList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("dialogflowcxintents"),
+			v1alpha1.SchemeGroupVersion.WithKind("DialogflowCXIntent"),
+			func() *v1alpha1.DialogflowCXIntent { return &v1alpha1.DialogflowCXIntent{} },
+			func() *v1alpha1.DialogflowCXIntentList { return &v1alpha1.DialogflowCXIntentList{} },
+			func(dst, src *v1alpha1.DialogflowCXIntentList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DialogflowCXIntentList) []*v1alpha1.DialogflowCXIntent {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DialogflowCXIntentList, items []*v1alpha1.DialogflowCXIntent) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DialogflowCXIntent), err
-}
-
-// List takes label and field selectors, and returns the list of DialogflowCXIntents that match those selectors.
-func (c *FakeDialogflowCXIntents) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DialogflowCXIntentList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(dialogflowcxintentsResource, dialogflowcxintentsKind, c.ns, opts), &v1alpha1.DialogflowCXIntentList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DialogflowCXIntentList{ListMeta: obj.(*v1alpha1.DialogflowCXIntentList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DialogflowCXIntentList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested dialogflowCXIntents.
-func (c *FakeDialogflowCXIntents) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(dialogflowcxintentsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a dialogflowCXIntent and creates it.  Returns the server's representation of the dialogflowCXIntent, and an error, if there is any.
-func (c *FakeDialogflowCXIntents) Create(ctx context.Context, dialogflowCXIntent *v1alpha1.DialogflowCXIntent, opts v1.CreateOptions) (result *v1alpha1.DialogflowCXIntent, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(dialogflowcxintentsResource, c.ns, dialogflowCXIntent), &v1alpha1.DialogflowCXIntent{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXIntent), err
-}
-
-// Update takes the representation of a dialogflowCXIntent and updates it. Returns the server's representation of the dialogflowCXIntent, and an error, if there is any.
-func (c *FakeDialogflowCXIntents) Update(ctx context.Context, dialogflowCXIntent *v1alpha1.DialogflowCXIntent, opts v1.UpdateOptions) (result *v1alpha1.DialogflowCXIntent, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(dialogflowcxintentsResource, c.ns, dialogflowCXIntent), &v1alpha1.DialogflowCXIntent{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXIntent), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDialogflowCXIntents) UpdateStatus(ctx context.Context, dialogflowCXIntent *v1alpha1.DialogflowCXIntent, opts v1.UpdateOptions) (*v1alpha1.DialogflowCXIntent, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(dialogflowcxintentsResource, "status", c.ns, dialogflowCXIntent), &v1alpha1.DialogflowCXIntent{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXIntent), err
-}
-
-// Delete takes name of the dialogflowCXIntent and deletes it. Returns an error if one occurs.
-func (c *FakeDialogflowCXIntents) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(dialogflowcxintentsResource, c.ns, name, opts), &v1alpha1.DialogflowCXIntent{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDialogflowCXIntents) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(dialogflowcxintentsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DialogflowCXIntentList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched dialogflowCXIntent.
-func (c *FakeDialogflowCXIntents) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DialogflowCXIntent, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(dialogflowcxintentsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DialogflowCXIntent{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DialogflowCXIntent), err
 }

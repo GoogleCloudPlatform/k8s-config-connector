@@ -27,8 +27,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	pb "cloud.google.com/go/pubsublite/apiv1/pubsublitepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/pubsublite/v1"
 )
 
 func (s *PubSubLiteV1) GetSubscription(ctx context.Context, req *pb.GetSubscriptionRequest) (*pb.Subscription, error) {
@@ -56,7 +56,7 @@ func (s *PubSubLiteV1) CreateSubscription(ctx context.Context, req *pb.CreateSub
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Subscription).(*pb.Subscription)
+	obj := proto.CloneOf(req.Subscription)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

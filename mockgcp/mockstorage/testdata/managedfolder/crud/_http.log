@@ -15,7 +15,6 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -68,7 +67,6 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -94,7 +92,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -119,7 +116,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -149,7 +145,6 @@ Connection: keep-alive
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -179,7 +174,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -201,7 +195,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -226,7 +219,6 @@ Connection: keep-alive
 
 204 No Content
 Content-Type: application/json
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -242,7 +234,6 @@ Connection: keep-alive
 
 204 No Content
 Content-Type: application/json
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin

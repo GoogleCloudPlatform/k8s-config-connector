@@ -1,0 +1,6 @@
+- caisURL: //billingbudgets.googleapis.com/billingAccounts/${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES}/budgets/billingAccounts/${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES}/budgets/18c05d38482a0dff
+  group: billingbudgets.cnrm.cloud.google.com
+  kind: BillingBudgetsBudget
+  name: billingbudgetsbudget-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -1,0 +1,39 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dnsrecordset-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  managedZoneRef:
+    name: dnsmanagedzone-${uniqueId}
+  name: cnrm-dns-example-${uniqueId}.com.
+  routingPolicy:
+    geo:
+    - location: us-central1
+      rrdatasRefs:
+      - external: 1.2.3.6
+      - external: 1.2.3.7
+    - location: us-west1
+      rrdatasRefs:
+      - external: 2.3.4.7
+      - external: 2.3.4.8
+  ttl: 300
+  type: A
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2

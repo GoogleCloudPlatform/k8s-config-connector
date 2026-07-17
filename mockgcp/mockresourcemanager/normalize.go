@@ -25,33 +25,68 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "cloudresourcemanager.googleapis.com") {
+		return
+	}
+
+	// Normalization for TagKeys and TagValues
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".tagKeys[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".tagKeys[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".tagKeys[].etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".tagValues[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".tagValues[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".tagValues[].etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".response.tagKeys[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.tagKeys[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.tagKeys[].etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".response.tagValues[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.tagValues[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.tagValues[].etag", "abcdef0123A=")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !isCloudResourceManagerAPI(event) {
 		return
-
 	}
+
 	name := ""
 	event.VisitResponseStringValues(func(path string, value string) {
-		switch path {
-		case ".name":
+		if path == ".name" || path == ".response.name" {
 			name = value
-		case ".projectNumber":
+		}
+		if path == ".projectNumber" {
 			replacements.ReplaceStringValue(value, "${projectNumber}")
 		}
 	})
 
+	if strings.HasPrefix(name, "folders/") {
+		tokens := strings.Split(name, "/")
+		if len(tokens) == 2 {
+			replacements.ReplaceStringValue(tokens[1], "${folderID}")
+		}
+	}
+
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 2 && tokens[0] == "tagKeys" {
-		if name == "namespaced" {
+		if tokens[1] == "namespaced" {
 			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
 		} else {
 			replacements.ReplaceStringValue(tokens[1], "${tagKeyID}")
 		}
 	}
 	if len(tokens) == 2 && tokens[0] == "tagValues" {
-		if name == "namespaced" {
+		if tokens[1] == "namespaced" {
 			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/getNamespaced
 		} else {
 			replacements.ReplaceStringValue(tokens[1], "${tagValueID}")

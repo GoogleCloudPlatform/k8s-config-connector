@@ -45,19 +45,208 @@ name: ci-presubmit
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - '**'
+      - '!experiments/**'
   push:
     branches: ["master", "release-*"]
+    paths:
+      - '**'
+      - '!experiments/**'
   merge_group:
     types: [checks_requested]
     branches: ["master", "release-*"]
+    paths:
+      - '**'
+      - '!experiments/**'
 
 
 jobs:
 EOF
 
+jobs_array=()
+emitted_fixtures=false
+emitted_samples=false
+emitted_scenarios=false
+
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  prepare-test-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      has_priority_tests: \${{ steps.split.outputs.has_priority_tests }}
+      priority_fixtures_json: \${{ steps.split.outputs.priority_fixtures_json }}
+      remaining_fixtures_json: \${{ steps.split.outputs.remaining_fixtures_json }}
+      samples_json: \${{ steps.split.outputs.samples_json }}
+      scenarios_json: \${{ steps.split.outputs.scenarios_json }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Split test matrix between priority and non-priority
+        id: split
+        run: ./dev/tasks/split-test-matrix
+EOF
 
 for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
+
+    # Skip crd-equivalence-check here, we generate it as a separate workflow
+    if [[ "${name}" == "crd-equivalence-check" ]]; then
+        continue
+    fi
+
+    # Replace all individual tests-e2e-fixtures-* right in exact original alphabetical spot with priority-e2e-fixtures and tests-e2e-fixtures-matrix
+    if [[ "${name}" == tests-e2e-fixtures-* ]]; then
+        if [[ "${emitted_fixtures}" == false ]]; then
+            emitted_fixtures=true
+            jobs_array+=("priority-e2e-fixtures" "tests-e2e-fixtures-matrix")
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  priority-e2e-fixtures:
+    name: "tests-e2e-fixtures-\${{ matrix.service }}"
+    runs-on: ubuntu-latest
+    needs: prepare-test-matrix
+    if: needs.prepare-test-matrix.outputs.has_priority_tests == 'true'
+    timeout-minutes: 60
+    strategy:
+      fail-fast: true
+      matrix:
+        service: \${{ fromJSON(needs.prepare-test-matrix.outputs.priority_fixtures_json) }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - uses: 'google-github-actions/setup-gcloud@v3'
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run priority E2E fixtures for \${{ matrix.service }}"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-\${{ matrix.service }}
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-priority-e2e-fixtures-\${{ matrix.service }}
+          path: /tmp/artifacts/
+
+  tests-e2e-fixtures-matrix:
+    name: "tests-e2e-fixtures-\${{ matrix.service }}"
+    runs-on: ubuntu-latest
+    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
+    if: \${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        service: \${{ fromJSON(needs.prepare-test-matrix.outputs.remaining_fixtures_json) }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - uses: 'google-github-actions/setup-gcloud@v3'
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-\${{ matrix.service }}"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-\${{ matrix.service }}
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-fixtures-\${{ matrix.service }}
+          path: /tmp/artifacts/
+EOF
+        fi
+        continue
+    fi
+
+    # Replace all individual tests-e2e-samples-* directly in their original spot with tests-e2e-samples-matrix
+    if [[ "${name}" == tests-e2e-samples-* ]]; then
+        if [[ "${emitted_samples}" == false ]]; then
+            emitted_samples=true
+            jobs_array+=("tests-e2e-samples-matrix")
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  tests-e2e-samples-matrix:
+    name: "tests-e2e-samples-\${{ matrix.service }}"
+    runs-on: ubuntu-latest
+    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
+    if: \${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        service: \${{ fromJSON(needs.prepare-test-matrix.outputs.samples_json) }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - uses: 'google-github-actions/setup-gcloud@v3'
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-\${{ matrix.service }}"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-\${{ matrix.service }}
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-samples-\${{ matrix.service }}
+          path: /tmp/artifacts/
+EOF
+        fi
+        continue
+    fi
+
+    # Replace all individual tests-scenarios-* directly in their original spot with tests-scenarios-matrix
+    if [[ "${name}" == tests-scenarios-* ]]; then
+        if [[ "${emitted_scenarios}" == false ]]; then
+            emitted_scenarios=true
+            jobs_array+=("tests-scenarios-matrix")
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  tests-scenarios-matrix:
+    name: "tests-scenarios-\${{ matrix.suite }}"
+    runs-on: ubuntu-latest
+    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
+    if: \${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: \${{ fromJSON(needs.prepare-test-matrix.outputs.scenarios_json) }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+      - uses: 'google-github-actions/setup-gcloud@v3'
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run dev/ci/presubmits/tests-scenarios-\${{ matrix.suite }}"
+        run: |
+          ./dev/ci/presubmits/tests-scenarios-\${{ matrix.suite }}
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-tests-scenarios-\${{ matrix.suite }}
+          path: /tmp/artifacts/
+EOF
+        fi
+        continue
+    fi
+
+    # Emit all other standalone checks right in exact preserved structure and alphabetical placement
+    jobs_array+=("${name}")
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
@@ -65,19 +254,75 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     runs-on: ubuntu-latest
 EOF
 
-    if [[ "${name}" == tests-e2e-* ]]; then
+    if [[ "${name}" == "golangci-lint" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.9.0
+          args: --timeout=20m
+EOF
+    continue
+    fi
+
+    if [[ "${name}" == "license-lint" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: ./dev/actions/cache-go
+      - name: "Run ${f}"
+        run: |
+          ./${f}
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-${name}
+          path: /tmp/artifacts/
+
+EOF
+    continue
+    fi
+
+    if [[ "${name}" == tests-e2e-* || "${name}" == tests-scenarios-* ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     needs: unit-tests
 EOF
     fi
 
+    if [[ "${name}" == "validate-untested-fields" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 EOF
+    else
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+EOF
+    fi
 
-    if [[ "${name}" == "unit-tests" ]]; then
+    if [[ "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
@@ -85,29 +330,42 @@ EOF
     fi
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
+      - uses: ./dev/actions/cache-go
 EOF
 
     # TODO: We should look at the script to see if it needs gcloud
-    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" ]]; then
+    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: 'google-github-actions/setup-gcloud@v2'
+      - uses: 'google-github-actions/setup-gcloud@v3'
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
 EOF
     fi
 
+    if [[ "${name}" == "validate-untested-fields" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: "Run ${f}"
+        run: |
+          ./${f}
+        env:
+          COMMIT_HEAD: \${{ github.event.pull_request.head.sha }}
+          BASE_COMMIT: \${{ github.event.pull_request.base.sha }}
+          ARTIFACTS: /tmp/artifacts
+EOF
+    else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Run ${f}"
         run: |
           ./${f}
         env:
           ARTIFACTS: /tmp/artifacts
+EOF
+    fi
+
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -117,10 +375,199 @@ EOF
 
 done
 
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  presubmit-gatekeeper:
+    needs:
+      - prepare-test-matrix
+EOF
+
+for job in "${jobs_array[@]}"; do
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - ${job}
+EOF
+done
+
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    runs-on: ubuntu-latest
+    if: \${{ !cancelled() }} # Ensure this runs even if some dependencies fail, but not if the workflow is cancelled
+    steps:
+      - name: Verify all checks succeeded
+        run: |
+          results='\${{ toJSON(needs) }}'
+          echo "Analyzing job results..."
+
+          # Find any job whose result is 'failure' or 'cancelled' (ignoring 'success' and 'skipped')
+          failures=\$(echo "\$results" | jq '[to_entries[] | select(.value.result == "failure" or .value.result == "cancelled")]')
+          
+          if [ "\$(echo "\$failures" | jq '. | length')" -ne 0 ]; then
+            echo "ERROR: One or more checks failed or were cancelled:"
+            echo "\$failures" | jq '.[] | {job: .key, result: .value.result}'
+            exit 1
+          fi
+          echo "All checks completed successfully or were skipped safely!"
+EOF
+
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<'EOF'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+EOF
+
+cat > ${REPO_ROOT}/.github/workflows/crd-equivalence-check.yaml <<EOF
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Generated by dev/tasks/generate-github-actions. DO NOT EDIT.
+
+name: crd-equivalence-check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  push:
+    branches: ["master", "release-*"]
+    paths:
+      - 'config/crds/resources/**'
+  merge_group:
+    types: [checks_requested]
+    branches: ["master", "release-*"]
+    paths:
+      - 'config/crds/resources/**'
+
+jobs:
+  crd-equivalence-check:
+    runs-on: ubuntu-latest
+    if: \${{ contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/crd-equivalence-check"
+        run: |
+          ./dev/ci/presubmits/crd-equivalence-check
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v7
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-crd-equivalence-check
+          path: /tmp/artifacts/
+
+concurrency:
+  group: \${{ github.workflow }}-\${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+EOF
+
+cat > ${REPO_ROOT}/.github/workflows/experiments-ci.yaml <<EOF
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Generated by dev/tasks/generate-github-actions. DO NOT EDIT.
+
+name: experiments-ci
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'experiments/**'
+  push:
+    branches: ["master", "release-*"]
+    paths:
+      - 'experiments/**'
+  merge_group:
+    types: [checks_requested]
+    branches: ["master", "release-*"]
+    paths:
+      - 'experiments/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./dev/actions/cache-go
+        with:
+          go-version: '1.26'
+      - name: "Run dev/ci/experiments-ci.sh"
+        run: |
+          chmod +x dev/ci/experiments-ci.sh
+          dev/ci/experiments-ci.sh
+
+concurrency:
+  group: \${{ github.workflow }}-\${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+EOF
+
+cat > ${REPO_ROOT}/.github/workflows/ci-presubmit-bypass.yaml <<EOF
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Generated by dev/tasks/generate-github-actions. DO NOT EDIT.
+
+name: ci-presubmit
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'experiments/**'
+      - '**.md'
+  merge_group:
+    types: [checks_requested]
+    branches: ["master", "release-*"]
+    paths:
+      - 'experiments/**'
+      - '**.md'
+
+jobs:
+  presubmit-gatekeeper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bypass check
+        run: echo "Bypassing presubmit checks for documentation or experiment-only changes."
+
+concurrency:
+  group: \${{ github.workflow }}-bypass-\${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 EOF

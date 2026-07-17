@@ -47,10 +47,9 @@ func GetReferencedResource(r *Resource, typeConfig corekccv1alpha1.TypeConfig,
 	}
 
 	rc, err := smLoader.GetResourceConfig(u)
-	if err != nil {
-		return nil, fmt.Errorf("error getting ResourceConfig for referenced resource %v: %w", r.GetName(), err)
+	if err == nil && rc != nil {
+		rsrc.ResourceConfig = *rc
 	}
-	rsrc.ResourceConfig = *rc
 	return rsrc, nil
 }
 
@@ -210,10 +209,7 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 
 func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interface{}, error) {
 	key := text.SnakeCaseToLowerCamelCase(tc.TargetField)
-	switch key {
-	case "":
-		return resolveDefaultTargetFieldValue(r, tc)
-	default:
+	if key != "" {
 		if val, exists, _ := unstructured.NestedString(r.Spec, strings.Split(key, ".")...); exists {
 			return val, nil
 		}
@@ -224,11 +220,16 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 		if val, exists, _ := unstructured.NestedString(getObservedStateFromStatus(r.Status), strings.Split(key, ".")...); exists {
 			return val, nil
 		}
-		// For now, we do not support recursive target field resolution (i.e. targeting a field in
-		// the referenced resource that itself is a reference to a third resource, which would require
-		// its own target field resolution).
-		return nil, fmt.Errorf("referenced resource's target field %v is unsupported", tc.TargetField)
 	}
+
+	if key == "" || key == "name" {
+		return resolveDefaultTargetFieldValue(r, tc)
+	}
+
+	// For now, we do not support recursive target field resolution (i.e. targeting a field in
+	// the referenced resource that itself is a reference to a third resource, which would require
+	// its own target field resolution).
+	return nil, fmt.Errorf("referenced resource's target field %v is unsupported", tc.TargetField)
 }
 
 func resolveDefaultTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interface{}, error) {

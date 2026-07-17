@@ -58,17 +58,29 @@ func (s *RegionalURLMapsV1) Insert(ctx context.Context, req *pb.InsertRegionUrlM
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetUrlMapResource()).(*pb.UrlMap)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetUrlMapResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#urlMap")
+	obj.Region = PtrTo("https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/regions/" + name.Region)
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a UrlMap resource in the specified project using the data included in the request.
@@ -87,13 +99,36 @@ func (s *RegionalURLMapsV1) Patch(ctx context.Context, req *pb.PatchRegionUrlMap
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	if len(req.GetUrlMapResource().GetHostRules()) > 0 {
+		obj.HostRules = nil
+	}
+	if len(req.GetUrlMapResource().GetPathMatchers()) > 0 {
+		obj.PathMatchers = nil
+	}
+	if len(req.GetUrlMapResource().GetTests()) > 0 {
+		obj.Tests = nil
+	}
+	if req.GetUrlMapResource().GetDefaultCustomErrorResponsePolicy() != nil {
+		obj.DefaultCustomErrorResponsePolicy = nil
+	}
 	proto.Merge(obj, req.GetUrlMapResource())
+	obj.Region = PtrTo("https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/regions/" + name.Region)
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a UrlMap resource in the specified project using the data included in the request.
@@ -111,13 +146,28 @@ func (s *RegionalURLMapsV1) Update(ctx context.Context, req *pb.UpdateRegionUrlM
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	obj.HostRules = nil
+	obj.PathMatchers = nil
+	obj.Tests = nil
+	obj.DefaultCustomErrorResponsePolicy = nil
 	proto.Merge(obj, req.GetUrlMapResource())
+	obj.Region = PtrTo("https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/regions/" + name.Region)
+
+	s.populateURLMapDefaults(ctx, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteRegionUrlMapRequest) (*pb.Operation, error) {
@@ -131,10 +181,21 @@ func (s *RegionalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteRegionUrlM
 
 	deleted := &pb.UrlMap{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalUrlMapName struct {

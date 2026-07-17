@@ -129,7 +129,7 @@ type SecretRotation struct {
 }
 
 type SecretTopics struct {
-	/* PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object. */
+	/* PubSubTopicRef is a reference to a PubSubTopic. */
 	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 

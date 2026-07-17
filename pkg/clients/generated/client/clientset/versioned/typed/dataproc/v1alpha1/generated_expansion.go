@@ -26,3 +26,7 @@ type DataprocBatchExpansion interface{}
 type DataprocJobExpansion interface{}
 
 type DataprocNodeGroupExpansion interface{}
+
+type DataprocSessionExpansion interface{}
+
+type DataprocSessionTemplateExpansion interface{}

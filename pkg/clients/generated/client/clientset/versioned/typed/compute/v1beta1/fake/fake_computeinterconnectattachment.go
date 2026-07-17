@@ -22,123 +22,34 @@
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeComputeInterconnectAttachments implements ComputeInterconnectAttachmentInterface
-type FakeComputeInterconnectAttachments struct {
+// fakeComputeInterconnectAttachments implements ComputeInterconnectAttachmentInterface
+type fakeComputeInterconnectAttachments struct {
+	*gentype.FakeClientWithList[*v1beta1.ComputeInterconnectAttachment, *v1beta1.ComputeInterconnectAttachmentList]
 	Fake *FakeComputeV1beta1
-	ns   string
 }
 
-var computeinterconnectattachmentsResource = v1beta1.SchemeGroupVersion.WithResource("computeinterconnectattachments")
-
-var computeinterconnectattachmentsKind = v1beta1.SchemeGroupVersion.WithKind("ComputeInterconnectAttachment")
-
-// Get takes name of the computeInterconnectAttachment, and returns the corresponding computeInterconnectAttachment object, and an error if there is any.
-func (c *FakeComputeInterconnectAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeInterconnectAttachment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computeinterconnectattachmentsResource, c.ns, name), &v1beta1.ComputeInterconnectAttachment{})
-
-	if obj == nil {
-		return nil, err
+func newFakeComputeInterconnectAttachments(fake *FakeComputeV1beta1, namespace string) computev1beta1.ComputeInterconnectAttachmentInterface {
+	return &fakeComputeInterconnectAttachments{
+		gentype.NewFakeClientWithList[*v1beta1.ComputeInterconnectAttachment, *v1beta1.ComputeInterconnectAttachmentList](
+			fake.Fake,
+			namespace,
+			v1beta1.SchemeGroupVersion.WithResource("computeinterconnectattachments"),
+			v1beta1.SchemeGroupVersion.WithKind("ComputeInterconnectAttachment"),
+			func() *v1beta1.ComputeInterconnectAttachment { return &v1beta1.ComputeInterconnectAttachment{} },
+			func() *v1beta1.ComputeInterconnectAttachmentList { return &v1beta1.ComputeInterconnectAttachmentList{} },
+			func(dst, src *v1beta1.ComputeInterconnectAttachmentList) { dst.ListMeta = src.ListMeta },
+			func(list *v1beta1.ComputeInterconnectAttachmentList) []*v1beta1.ComputeInterconnectAttachment {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1beta1.ComputeInterconnectAttachmentList, items []*v1beta1.ComputeInterconnectAttachment) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1beta1.ComputeInterconnectAttachment), err
-}
-
-// List takes label and field selectors, and returns the list of ComputeInterconnectAttachments that match those selectors.
-func (c *FakeComputeInterconnectAttachments) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeInterconnectAttachmentList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computeinterconnectattachmentsResource, computeinterconnectattachmentsKind, c.ns, opts), &v1beta1.ComputeInterconnectAttachmentList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.ComputeInterconnectAttachmentList{ListMeta: obj.(*v1beta1.ComputeInterconnectAttachmentList).ListMeta}
-	for _, item := range obj.(*v1beta1.ComputeInterconnectAttachmentList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested computeInterconnectAttachments.
-func (c *FakeComputeInterconnectAttachments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(computeinterconnectattachmentsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a computeInterconnectAttachment and creates it.  Returns the server's representation of the computeInterconnectAttachment, and an error, if there is any.
-func (c *FakeComputeInterconnectAttachments) Create(ctx context.Context, computeInterconnectAttachment *v1beta1.ComputeInterconnectAttachment, opts v1.CreateOptions) (result *v1beta1.ComputeInterconnectAttachment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computeinterconnectattachmentsResource, c.ns, computeInterconnectAttachment), &v1beta1.ComputeInterconnectAttachment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeInterconnectAttachment), err
-}
-
-// Update takes the representation of a computeInterconnectAttachment and updates it. Returns the server's representation of the computeInterconnectAttachment, and an error, if there is any.
-func (c *FakeComputeInterconnectAttachments) Update(ctx context.Context, computeInterconnectAttachment *v1beta1.ComputeInterconnectAttachment, opts v1.UpdateOptions) (result *v1beta1.ComputeInterconnectAttachment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computeinterconnectattachmentsResource, c.ns, computeInterconnectAttachment), &v1beta1.ComputeInterconnectAttachment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeInterconnectAttachment), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeInterconnectAttachments) UpdateStatus(ctx context.Context, computeInterconnectAttachment *v1beta1.ComputeInterconnectAttachment, opts v1.UpdateOptions) (*v1beta1.ComputeInterconnectAttachment, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computeinterconnectattachmentsResource, "status", c.ns, computeInterconnectAttachment), &v1beta1.ComputeInterconnectAttachment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeInterconnectAttachment), err
-}
-
-// Delete takes name of the computeInterconnectAttachment and deletes it. Returns an error if one occurs.
-func (c *FakeComputeInterconnectAttachments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computeinterconnectattachmentsResource, c.ns, name, opts), &v1beta1.ComputeInterconnectAttachment{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeComputeInterconnectAttachments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(computeinterconnectattachmentsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1beta1.ComputeInterconnectAttachmentList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched computeInterconnectAttachment.
-func (c *FakeComputeInterconnectAttachments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeInterconnectAttachment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computeinterconnectattachmentsResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeInterconnectAttachment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.ComputeInterconnectAttachment), err
 }

@@ -39,14 +39,14 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type DataCatalogPolicyTagSpec struct {
-	/* Description of this policy tag. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. If not set, defaults to an empty description. */
+	/* Description of this policy tag. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
 	/* User defined name of this policy tag. It must: be unique within the parent taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces; not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
 	DisplayName string `json:"displayName"`
 
-	/* PolicyTagRef defines the resource reference to DataCatalogPolicyTag, which "External" field holds the GCP identifier for the KRM object. */
+	/* PolicyTagRef is a reference to a DataCatalogPolicyTag. */
 	// +optional
 	ParentPolicyTagRef *v1alpha1.ResourceRef `json:"parentPolicyTagRef,omitempty"`
 
@@ -54,7 +54,7 @@ type DataCatalogPolicyTagSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* TaxonomyRef defines the resource reference to DataCatalogTaxonomy, which "External" field holds the GCP identifier for the KRM object. */
+	/* TaxonomyRef is a reference to a DataCatalogTaxonomy. */
 	TaxonomyRef v1alpha1.ResourceRef `json:"taxonomyRef"`
 }
 

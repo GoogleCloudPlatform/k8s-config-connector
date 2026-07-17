@@ -96,3 +96,68 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb
 
 EOF
 
+# Container/GKE patches
+
+sed -i '/message NodeNetworkConfig {/,/}/ s/string subnetwork = 19 \[(google.api.field_behavior) = OUTPUT_ONLY\];/string subnetwork = 19;/' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message AdditionalIPRangesConfig --mode append <<EOF
+
+  // Output only. The status of the additional pod ranges.
+  string status = 3;
+
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message DNSEndpointConfig --mode append <<EOF
+
+  // Controls whether the k8s token auth is allowed via DNS.
+
+  optional bool enable_k8s_tokens_via_dns = 5;
+
+EOF
+
+# ResourceManager v1 patches - temporarily switching to proto3 because patch-proto has issues with proto2
+API_PROTO=${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/resourcemanager/v1/api.proto
+
+if ! grep -q "FoldersServer" "${API_PROTO}" || ! grep -q "TestIamPermissions" "${API_PROTO}"; then
+  sed -i 's/^syntax = "proto2";/syntax = "proto3";/' ${API_PROTO}
+
+  go run . --file ${API_PROTO} --message "TestIamPermissionsRequest" --mode "replace" <<EOF
+  // REQUIRED: The resource for which the permission checking is to be performed.
+  optional string resource = 1;
+
+  // The set of permissions to check for the resource.
+  repeated string permissions = 2 [json_name="permissions"];
+EOF
+
+  go run . --file ${API_PROTO} --service "FoldersServer" --mode "append" <<EOF
+  // Returns permissions that a caller has on the specified project.
+  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{resource=folders/*}:testIamPermissions"
+      body: "*"
+    };
+  };
+EOF
+
+  go run . --file ${API_PROTO} --service "OrganizationsServer" --mode "append" <<EOF
+  // Returns permissions that a caller has on the specified project.
+  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{resource=organizations/*}:testIamPermissions"
+      body: "*"
+    };
+  };
+EOF
+
+  go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
+  // Returns permissions that a caller has on the specified project.
+  rpc TestIamPermissions(TestIamPermissionsRequest) returns (TestIamPermissionsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{resource=projects/*}:testIamPermissions"
+      body: "*"
+    };
+  };
+EOF
+
+  sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
+fi

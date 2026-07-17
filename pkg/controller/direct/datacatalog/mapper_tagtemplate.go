@@ -44,7 +44,7 @@ func DataCatalogTagTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagT
 	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
 	out.Fields = make(map[string]krmv1alpha1.TagTemplateField)
 	for k, v := range in.GetFields() {
-		out.Fields[k] = *TagTemplateField_FromProto(mapCtx, v)
+		out.Fields[k] = *TagTemplateField_v1alpha1_FromProto(mapCtx, v)
 	}
 	return out
 }
@@ -58,7 +58,7 @@ func DataCatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alph
 	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
 	out.Fields = make(map[string]*pb.TagTemplateField)
 	for k, v := range in.Fields {
-		out.Fields[k] = TagTemplateField_ToProto(mapCtx, &v)
+		out.Fields[k] = TagTemplateField_v1alpha1_ToProto(mapCtx, &v)
 	}
 	return out
 }
@@ -78,4 +78,12 @@ func DataCatalogTagTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out := &pb.TagTemplate{}
 	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
 	return out
+}
+
+func DataCatalogTagTemplateSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krmv1alpha1.DataCatalogTagTemplateSpec {
+	return DataCatalogTagTemplateSpec_FromProto(mapCtx, in)
+}
+
+func DataCatalogTagTemplateSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
+	return DataCatalogTagTemplateSpec_ToProto(mapCtx, in)
 }

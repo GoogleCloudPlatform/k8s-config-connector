@@ -54,14 +54,17 @@ var crdTestCases = []CRDTestCase{
 }
 
 func TestGetCRD(t *testing.T) {
+	t.Parallel()
 	for _, tc := range crdTestCases {
 		t.Run(tc.Name, func(t *testing.T) {
+			t.Parallel()
 			getCRDAssertResult(t, tc, crdloader.GetCRD)
 		})
 	}
 }
 
 func TestCrdLoader_GetCRD(t *testing.T) {
+	t.Parallel()
 	env := &envtest.Environment{
 		CRDDirectoryPaths:        []string{repo.GetCRDsPath()},
 		ControlPlaneStartTimeout: time.Minute,
@@ -83,6 +86,7 @@ func TestCrdLoader_GetCRD(t *testing.T) {
 	}
 	for _, tc := range crdTestCases {
 		t.Run(tc.Name, func(t *testing.T) {
+			t.Parallel()
 			loader := crdloader.New(kubeClient)
 			getCRDAssertResult(t, tc, loader.GetCRD)
 		})

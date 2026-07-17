@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -132,7 +133,7 @@ func (a *IAPSettingsAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating IAPSettings", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := IAPSettingsSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredPb := IAPSettingsSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -145,7 +146,11 @@ func (a *IAPSettingsAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	desiredPb.Name = a.id.String() // explicitly set Name field for the underlying GCP API
-
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 	req := &pb.UpdateIapSettingsRequest{
 		IapSettings: desiredPb,
 		UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
@@ -176,7 +181,7 @@ func (a *IAPSettingsAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.IAPSettings{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(IAPSettingsSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(IAPSettingsSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

@@ -392,7 +392,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRef)
+		*out = new(refsv1beta1.FolderRefDeprecated)
 		**out = **in
 	}
 }

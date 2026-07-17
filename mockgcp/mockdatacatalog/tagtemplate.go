@@ -60,7 +60,7 @@ func (s *DataCatalogV1) CreateTagTemplate(ctx context.Context, req *pb.CreateTag
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.TagTemplate).(*pb.TagTemplate)
+	obj := proto.CloneOf(req.TagTemplate)
 	obj.Name = fqn
 
 	// Populate the name field for each field

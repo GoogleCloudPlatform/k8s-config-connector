@@ -46,7 +46,14 @@ def find_files_by_pattern(repo_root, patterns):
     return [f for f in result.stdout.strip().split('\n') if f.strip()]
 
 
-def update_go_mod_files(repo_root, go_toolchain):
+def extract_major_minor(version):
+    """Given major.minor.patch, will return major.minor"""
+    match = re.search(r'(\d+\.\d+)?', version)
+    minor_version = match.group()
+    return minor_version
+
+
+def update_go_mod_files(repo_root, go_version, go_toolchain):
     """Update all go.mod files with the new toolchain."""
     patterns = ["go.mod", "**/go.mod"]
     go_mod_files = find_files_by_pattern(repo_root, patterns)
@@ -58,10 +65,14 @@ def update_go_mod_files(repo_root, go_toolchain):
         full_path = os.path.join(repo_root, go_mod_file)
         dir_path = os.path.dirname(full_path)
 
+        minor_version = extract_major_minor(go_version)
+        print(f"Updating {go_mod_file} to go {minor_version}")
+        run_command(["go", "mod", "edit", f"-go={minor_version}"], cwd=dir_path)
+
         print(f"Updating {go_mod_file} to toolchain {go_toolchain}")
         run_command(["go", "mod", "edit", f"-toolchain={go_toolchain}"], cwd=dir_path)
 
-def update_go_work_files(repo_root, go_toolchain):
+def update_go_work_files(repo_root, go_version, go_toolchain):
     """Update all go.work files with the new toolchain."""
     patterns = ["go.work", "**/go.work"]
     go_work_files = find_files_by_pattern(repo_root, patterns)
@@ -72,6 +83,10 @@ def update_go_work_files(repo_root, go_toolchain):
 
         full_path = os.path.join(repo_root, go_work_file)
         dir_path = os.path.dirname(full_path)
+
+        minor_version = extract_major_minor(go_version)
+        print(f"Updating {go_work_file} to go {minor_version}")
+        run_command(["go", "work", "edit", f"-go={minor_version}"], cwd=dir_path)
 
         print(f"Updating {go_work_file} to toolchain {go_toolchain}")
         run_command(["go", "work", "edit", f"-toolchain={go_toolchain}"], cwd=dir_path)
@@ -178,9 +193,10 @@ def main():
     print(f"GO_VERSION={go_version}")
 
     # Update go.mod files
-    update_go_mod_files(repo_root, go_toolchain)
+    update_go_mod_files(repo_root, go_version, go_toolchain)
+
     # Update go.work files
-    update_go_work_files(repo_root, go_toolchain)
+    update_go_work_files(repo_root, go_version, go_toolchain)
 
     # Update Dockerfiles
     update_dockerfiles(repo_root, go_version)

@@ -61,27 +61,18 @@ func (s *GlobalSslPolicyV1) Insert(ctx context.Context, req *pb.InsertSslPolicyR
 	fqn := name.String()
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetSslPolicyResource()).(*pb.SslPolicy)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetSslPolicyResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#sslPolicy")
-	if obj.Fingerprint == nil {
-		obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := populateSslPolicy(obj); err != nil {
+		return nil, err
 	}
 
-	// output-only
-	obj.EnabledFeatures = []string{
-		//"TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
-		"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
-		//"TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
-		"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
-		"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
-		//"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-		"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-		//"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-		"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-		"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+	if obj.Fingerprint == nil {
+		obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -113,15 +104,15 @@ func (s *GlobalSslPolicyV1) Patch(ctx context.Context, req *pb.PatchSslPolicyReq
 	}
 
 	proto.Merge(obj, req.GetSslPolicyResource())
+	if req.GetSslPolicyResource().CustomFeatures != nil {
+		obj.CustomFeatures = req.GetSslPolicyResource().GetCustomFeatures()
+	}
 
-	// Add additional default enabled features
-	obj.EnabledFeatures = append(obj.EnabledFeatures,
-		"TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
-		"TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
-		"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-		"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-	)
-	sort.Strings(obj.EnabledFeatures)
+	if err := populateSslPolicy(obj); err != nil {
+		return nil, err
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -136,6 +127,96 @@ func (s *GlobalSslPolicyV1) Patch(ctx context.Context, req *pb.PatchSslPolicyReq
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
 	})
+}
+
+func populateSslPolicy(obj *pb.SslPolicy) error {
+	if obj.MinTlsVersion == nil || *obj.MinTlsVersion == "" {
+		obj.MinTlsVersion = PtrTo("TLS_1_0")
+	}
+	if obj.Profile == nil || *obj.Profile == "" {
+		obj.Profile = PtrTo("COMPATIBLE")
+	}
+
+	profile := *obj.Profile
+	minTls := *obj.MinTlsVersion
+
+	// Validate TLS 1.3 constraint
+	if minTls == "TLS_1_3" && profile != "RESTRICTED" {
+		return status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.profile': '%s'. When min_tls_version is set to TLS_1_3, profile must be set to RESTRICTED.", profile)
+	}
+
+	// Validate FIPS constraint
+	if profile == "FIPS_202205" && minTls != "TLS_1_2" {
+		return status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.minTlsVersion': '%s'. When profile is set to FIPS_202205, min_tls_version must be set to TLS_1_2.", minTls)
+	}
+
+	// Validate Custom features
+	if profile == "CUSTOM" && len(obj.CustomFeatures) == 0 {
+		return status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.customFeatures': ''. custom_features cannot be empty when profile is set to CUSTOM.")
+	}
+	if profile != "CUSTOM" && len(obj.CustomFeatures) > 0 {
+		return status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.customFeatures': '%v'. custom_features must be empty when profile is not CUSTOM.", obj.CustomFeatures)
+	}
+
+	var features []string
+	switch profile {
+	case "RESTRICTED":
+		features = []string{
+			"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+			"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+			"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+			"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+		}
+	case "MODERN":
+		features = []string{
+			"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+			"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+			"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+			"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+			"TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+			"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+			"TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+			"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+		}
+	case "COMPATIBLE":
+		features = []string{
+			"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+			"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+			"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+			"TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+			"TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+			"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+			"TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+			"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+			"TLS_RSA_WITH_AES_128_GCM_SHA256",
+			"TLS_RSA_WITH_AES_256_GCM_SHA384",
+			"TLS_RSA_WITH_AES_128_CBC_SHA",
+			"TLS_RSA_WITH_AES_256_CBC_SHA",
+			"TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+		}
+	case "FIPS_202205":
+		features = []string{
+			"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+			"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+			"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+		}
+	case "CUSTOM":
+		features = make([]string, len(obj.CustomFeatures))
+		copy(features, obj.CustomFeatures)
+	default:
+		return status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.profile': '%s'. Allowed values are COMPATIBLE, MODERN, RESTRICTED, FIPS_202205, CUSTOM.", profile)
+	}
+
+	sort.Strings(features)
+	obj.EnabledFeatures = features
+	return nil
 }
 
 func (s *GlobalSslPolicyV1) Delete(ctx context.Context, req *pb.DeleteSslPolicyRequest) (*pb.Operation, error) {

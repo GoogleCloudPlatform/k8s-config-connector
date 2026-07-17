@@ -29,8 +29,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
 )
 
 type kmsServer struct {
@@ -68,7 +68,10 @@ func (r *kmsServer) CreateKeyRing(ctx context.Context, req *pb.CreateKeyRingRequ
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetKeyRing()).(*pb.KeyRing)
+	obj := proto.CloneOf(req.GetKeyRing())
+	if obj == nil {
+		obj = &pb.KeyRing{}
+	}
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 

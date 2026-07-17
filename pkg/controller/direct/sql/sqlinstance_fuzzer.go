@@ -70,6 +70,8 @@ func sqlInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".sql_network_architecture")
 	f.SpecField(".replication_cluster")
 	f.SpecField(".gemini_config")
+	f.Unimplemented_NotYetTriaged(".settings.accelerated_replica_mode")
+	f.Unimplemented_NotYetTriaged(".settings.insights_config.enhanced_query_insights_enabled")
 
 	f.StatusField(".settings")
 	f.StatusField(".database_installed_version")

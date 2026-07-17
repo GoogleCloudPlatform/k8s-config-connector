@@ -1,0 +1,283 @@
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Cluster "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/CreateCluster
+
+{
+  "cluster": {
+    "labels": {
+      "foo": "bar"
+    }
+  },
+  "clusterId": "aistreamscluster-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.OperationMetadata",
+    "apiVersion": "v1alpha1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.OperationMetadata",
+    "apiVersion": "v1alpha1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.Cluster",
+    "certificate": "dummy-cert",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "serviceEndpoint": "aistreamscluster-${uniqueId}.aistreams.googleapis.com",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+}
+
+OK
+
+{
+  "certificate": "dummy-cert",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+  "serviceEndpoint": "aistreamscluster-${uniqueId}.aistreams.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+}
+
+OK
+
+{
+  "certificate": "dummy-cert",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+  "serviceEndpoint": "aistreamscluster-${uniqueId}.aistreams.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/UpdateCluster
+
+{
+  "cluster": {
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+  },
+  "updateMask": "labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.OperationMetadata",
+    "apiVersion": "v1alpha1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.OperationMetadata",
+    "apiVersion": "v1alpha1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.Cluster",
+    "certificate": "dummy-cert",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "serviceEndpoint": "aistreamscluster-${uniqueId}.aistreams.googleapis.com",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+}
+
+OK
+
+{
+  "certificate": "dummy-cert",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+  "serviceEndpoint": "aistreamscluster-${uniqueId}.aistreams.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+}
+
+OK
+
+{
+  "certificate": "dummy-cert",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+  "serviceEndpoint": "aistreamscluster-${uniqueId}.aistreams.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+}
+
+OK
+
+{
+  "certificate": "dummy-cert",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+  "serviceEndpoint": "aistreamscluster-${uniqueId}.aistreams.googleapis.com",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.partner.aistreams.v1alpha1.AIStreams/DeleteCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.OperationMetadata",
+    "apiVersion": "v1alpha1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.partner.aistreams.v1alpha1.OperationMetadata",
+    "apiVersion": "v1alpha1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/aistreamscluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

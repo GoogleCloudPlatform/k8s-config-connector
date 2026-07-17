@@ -111,6 +111,7 @@ func CompareProtoMessage(a, b proto.Message, compareDiff CompareDiff) (sets.Set[
 }
 
 // CompareProtoMessageStructuredDiff computes the diff between two proto messages and returns both the set of changed field paths and a structured Diff object.
+// Deprecated: CompareProtoMessageStructuredDiff is obsolete; please use tags.DiffForTopLevelFields instead.
 func CompareProtoMessageStructuredDiff(a, b proto.Message, compareDiff CompareDiff) (sets.Set[string], *structuredreporting.Diff, error) {
 	diffPaths := sets.Set[string]{}
 	diff := &structuredreporting.Diff{}

@@ -16,18 +16,19 @@ package mockmonitoring
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	dashboardpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
-	metricsscopepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/metricsscope/v1"
-	monitoringpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
+	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
+	dashboardpb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
+	metricsscopepb "cloud.google.com/go/monitoring/metricsscope/apiv1/metricsscopepb"
 )
 
 func init() {
@@ -69,26 +70,19 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		monitoringpb.RegisterAlertPolicyServiceHandler,
-		monitoringpb.RegisterGroupServiceHandler,
-		monitoringpb.RegisterMetricServiceHandler,
-		monitoringpb.RegisterNotificationChannelServiceHandler,
-		monitoringpb.RegisterServiceMonitoringServiceHandler,
-		monitoringpb.RegisterUptimeCheckServiceHandler,
-		dashboardpb.RegisterDashboardsServiceHandler,
-		metricsscopepb.RegisterMetricsScopesHandler,
-	)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	mux.AddService(monitoringpb.NewAlertPolicyServiceClient(conn))
+	mux.AddService(monitoringpb.NewGroupServiceClient(conn))
+	mux.AddService(monitoringpb.NewMetricServiceClient(conn))
+	mux.AddService(monitoringpb.NewNotificationChannelServiceClient(conn))
+	mux.AddService(monitoringpb.NewServiceMonitoringServiceClient(conn))
+	mux.AddService(monitoringpb.NewUptimeCheckServiceClient(conn))
+	mux.AddService(dashboardpb.NewDashboardsServiceClient(conn))
+	mux.AddService(metricsscopepb.NewMetricsScopesClient(conn))
 
 	return mux, nil
 }

@@ -100,6 +100,12 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	switch resource {
 	case "addresses":
 		return "${addressID}"
+	case "urlMaps":
+		return "${urlMapID}"
+	case "backendServices":
+		return "${backendServiceID}"
+	case "healthChecks":
+		return "${healthCheckID}"
 	case "creator":
 		return "${creatorID}"
 	case "tensorboards":
@@ -159,7 +165,17 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "processorVersions":
 		return "${processorVersionID}"
 	case "keyHandles":
-		return "1a1a1a-222b-3cc3-d444-e555ee555555"
+		return "${keyHandleID}"
+	case "instanceGroupManagers":
+		if strings.HasPrefix(name, "gke-") {
+			return ""
+		}
+		return "${instanceGroupManagerID}"
+	case "instanceGroups":
+		if strings.HasPrefix(name, "gke-") {
+			return ""
+		}
+		return "${instanceGroupID}"
 	default:
 		return ""
 	}

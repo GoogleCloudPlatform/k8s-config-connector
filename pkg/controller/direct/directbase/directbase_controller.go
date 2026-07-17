@@ -99,9 +99,10 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator: deps.JitterGenerator,
-		defaulters:      deps.Defaulters,
-		iamDeps:         deps.IAMAdapterDeps,
+		jitterGenerator:    deps.JitterGenerator,
+		defaulters:         deps.Defaulters,
+		iamDeps:            deps.IAMAdapterDeps,
+		SkipNameValidation: deps.SkipNameValidation,
 	}
 	return &r, nil
 }
@@ -116,7 +117,7 @@ func add(mgr manager.Manager, r *DirectReconciler) error {
 	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
-		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, SkipNameValidation: ptr.To(true), RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, SkipNameValidation: ptr.To(r.SkipNameValidation), RateLimiter: ratelimiter.NewRateLimiter()}).
 		WatchesRawSource(
 			source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
@@ -161,6 +162,8 @@ type Deps struct {
 
 	// There are Dependencies for Adapters in particular (not the reconcilers)
 	IAMAdapterDeps *IAMAdapterDeps
+
+	SkipNameValidation bool
 }
 
 // TODO(kcc-team): we want to remove these in the future
@@ -193,6 +196,8 @@ type DirectReconciler struct {
 
 	// reconcilePredicate is the predicate which determines if we should be reconciling this object
 	reconcilePredicate predicate.Predicate
+
+	SkipNameValidation bool
 }
 
 type reconcileContext struct {
@@ -424,6 +429,12 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	if !existsAlready {
 		createOp := NewCreateOperation(r.Reconciler.LifecycleHandler, r.Reconciler.Client, u)
+		diff := structuredreporting.Diff{
+			Object:      u,
+			IsNewObject: true,
+		}
+		structuredreporting.ReportDiff(ctx, &diff)
+
 		if err := adapter.Create(ctx, createOp); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))

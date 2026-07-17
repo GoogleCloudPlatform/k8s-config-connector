@@ -34,6 +34,10 @@ spec:
         labels: labels
       resourceID:
         targetField: name
+      observedFields:
+        - managed.state
+        - managed.authorization_attempt_info
+        - managed.provisioning_issue
       hierarchicalReferences:
         - type: project
           key: projectRef

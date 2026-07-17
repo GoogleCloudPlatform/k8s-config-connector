@@ -14,6 +14,7 @@ metadata:
     configmanagement.gke.io/sync-namespace: mock-sync-namespace
     custom-label: "bar" # updated valid label
 spec:
+  resourceID: "batchjob-labels"
   projectRef:
     external: ${projectId}
   location: us-central1

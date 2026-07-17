@@ -79,16 +79,28 @@ func TestE2EScript(t *testing.T) {
 			scenarioPath := scenarioPath
 
 			t.Run(scenarioPath, func(t *testing.T) {
+				if os.Getenv("SKIP_ALL") != "" {
+					t.Skip("SKIP_ALL is set")
+				}
 				uniqueID := testvariable.NewUniqueID()
 				folderID := ""
+
+				var harnessOptions []create.HarnessOption
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummy := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, dummy.Name, dummy.Objects)
+
+					// Record the CRDs we will use, for faster testing
+					keepCRDs := map[schema.GroupKind]bool{}
+					for _, obj := range dummy.Objects {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
 				}
 
-				h := create.NewHarness(ctx, t)
+				h := create.NewHarness(ctx, t, harnessOptions...)
 				project := h.Project
 				script := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, project)
 
@@ -100,23 +112,29 @@ func TestE2EScript(t *testing.T) {
 				})
 
 				var eventsByStep []*SkippableLogEntries
-				eventsBefore := h.Events.HTTPEvents
-				captureHTTPLogEvents := func(skip bool) {
+				eventsBeforeCount := len(h.Events.GetHTTPEvents())
+				captureHTTPLogEvents := func(skip bool, deferCapture bool) {
 					var stepEvents []*test.LogEntry
-					for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
-						stepEvents = append(stepEvents, h.Events.HTTPEvents[i])
+					allEvents := h.Events.GetHTTPEvents()
+					if !deferCapture {
+						for i := eventsBeforeCount; i < len(allEvents); i++ {
+							stepEvents = append(stepEvents, allEvents[i])
+						}
 					}
 					eventsByStep = append(eventsByStep, &SkippableLogEntries{
-						SkipCheck: skip,
+						SkipCheck: skip || deferCapture,
 						Entries:   stepEvents,
 					})
-					eventsBefore = h.Events.HTTPEvents
+					if !deferCapture {
+						eventsBeforeCount = len(allEvents)
+					}
 				}
 
-				// tracks the all applied objects (in order, to avoid deletion dependency-ordering issues)
+				// tracks all applied objects (in order, to avoid deletion dependency-ordering issues)
 				appliedObjects := []*unstructured.Unstructured{}
 
 				for i, obj := range script.Objects {
+					stepStart := time.Now()
 					testCommand := ""
 					v, ok := obj.Object["TEST"]
 					if ok {
@@ -128,6 +146,12 @@ func TestE2EScript(t *testing.T) {
 
 					t.Logf("***/Step %d: %s %s %s/%s", i, testCommand, obj.GroupVersionKind().Kind, obj.GetNamespace(), obj.GetName())
 
+					deferHTTPLog := false
+					v, ok = obj.Object["DEFER-HTTP-LOG"]
+					if ok {
+						deferHTTPLog = v.(bool)
+					}
+
 					if obj.GroupVersionKind().Kind == "RunCLI" {
 						argsObjects := obj.Object["args"].([]any)
 						var args []string
@@ -136,6 +160,8 @@ func TestE2EScript(t *testing.T) {
 						}
 						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
 						runCLI(h, args, uniqueID, baseOutputPath)
+						captureHTTPLogEvents(true, deferHTTPLog)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
@@ -148,18 +174,30 @@ func TestE2EScript(t *testing.T) {
 								h.Fatalf("running test command: %v", err)
 							}
 						} else {
-							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
+							t.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
 						}
 
-						captureHTTPLogEvents(false)
+						captureHTTPLogEvents(false, deferHTTPLog)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
-					// SystemRun let's KCC run for a while to observe/ gather HTTP logs
+					// SystemRun lets KCC run for a while to observe/gather HTTP logs
 					if obj.GroupVersionKind().Kind == "SystemRun" {
+						var waitTimeout time.Duration
+						if d, ok, _ := unstructured.NestedInt64(obj.Object, "duration"); ok {
+							waitTimeout = time.Duration(d) * time.Second
+						} else if d, ok, _ := unstructured.NestedFloat64(obj.Object, "duration"); ok {
+							waitTimeout = time.Duration(d * float64(time.Second))
+						}
+						if durationString, ok, _ := unstructured.NestedString(obj.Object, "duration"); ok {
+							d, err := time.ParseDuration(durationString)
+							if err != nil {
+								h.Fatalf("failed to parse duration %q: %v", durationString, err)
+							}
+							waitTimeout = d
+						}
 						if h.MockGCP != nil {
-							d, _, _ := unstructured.NestedInt64(obj.Object, "duration")
-							waitTimeout := time.Duration(d) * time.Second
 							timeoutChan := time.After(waitTimeout)
 							ticker := time.NewTicker(30 * time.Second)
 
@@ -167,22 +205,25 @@ func TestE2EScript(t *testing.T) {
 								stopWaiting := false
 								select {
 								case <-timeoutChan:
-									t.Logf("finished waiting for http log collections")
+									t.Logf("finished waiting for http log collection")
 									stopWaiting = true
 									break
 								case <-ticker.C:
-									t.Logf("waiting for http log collections")
+									t.Logf("waiting for http log collection")
 								}
 								if stopWaiting {
 									break
 								}
 							}
+							ticker.Stop()
 
 						} else {
-							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
+							t.Logf("sleeping for %v for SystemRun", waitTimeout)
+							time.Sleep(waitTimeout)
 						}
 
-						captureHTTPLogEvents(true)
+						captureHTTPLogEvents(true, deferHTTPLog)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
@@ -207,6 +248,14 @@ func TestE2EScript(t *testing.T) {
 						applyObject(h, obj)
 						time.Sleep(10 * time.Second)
 
+					case "WAIT-FOR-OBSERVED-GENERATION":
+						create.WaitForObservedGeneration(h, 5*time.Minute, obj)
+						appliedObjects = append(appliedObjects, obj)
+
+					case "WAIT-FOR-READY":
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
+						appliedObjects = append(appliedObjects, obj)
+
 					case "READ-OBJECT":
 						appliedObjects = append(appliedObjects, obj)
 
@@ -219,6 +268,7 @@ func TestE2EScript(t *testing.T) {
 						if targetStepForReadAndCompare <= 0 {
 							t.Fatalf("value of TARGET_STEP_FOR_READ_AND_COMPARE should be an integer > 0")
 						}
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-NO-WAIT":
@@ -269,24 +319,25 @@ func TestE2EScript(t *testing.T) {
 						}
 						sval := val.(string)
 
+						waitCtx, waitCancel := context.WithTimeout(ctx, logCheckTimeout)
+						defer waitCancel()
+
 						ticker := time.NewTicker(1 * time.Second)
-						for {
-							stopWaiting := false
+						defer ticker.Stop()
+
+						found := false
+						for !found {
 							select {
-							case <-time.After(logCheckTimeout):
-								t.Fatalf("timed out looking for value %s in http log", sval)
-								stopWaiting = true
+							case <-waitCtx.Done():
+								t.Fatalf("timed out looking for value %s in http log: %v", sval, waitCtx.Err())
 							case <-ticker.C:
 								// todo(acpana): find better asympotatic approach
-								for _, l := range h.Events.HTTPEvents {
+								for _, l := range h.Events.GetHTTPEvents() {
 									if strings.Contains(l.Response.Body, sval) {
-										stopWaiting = true
+										found = true
 										break
 									}
 								}
-							}
-							if stopWaiting {
-								break
 							}
 						}
 
@@ -354,6 +405,7 @@ func TestE2EScript(t *testing.T) {
 
 					default:
 						t.Errorf("FAIL: unknown TEST command %q", testCommand)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
 
@@ -423,7 +475,8 @@ func TestE2EScript(t *testing.T) {
 						}
 					}
 
-					captureHTTPLogEvents(false)
+					captureHTTPLogEvents(false, deferHTTPLog)
+					t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 				}
 
 				t.Logf("***/Finished Steps")
@@ -490,6 +543,7 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 	delete(o.Object, "TEST")
 	delete(o.Object, "VALUE_PRESENT")
 	delete(o.Object, "WRITE-KUBE-OBJECT")
+	delete(o.Object, "DEFER-HTTP-LOG")
 	delete(o.Object, "TARGET_STEP_FOR_READ_AND_COMPARE")
 
 	return o
@@ -599,6 +653,7 @@ func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name 
 // It does this by waiting for the resourceVersion to change twice: once from the user's patch,
 // and a second time from the controller's status update during reconciliation.
 func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstructured, prePatchRV string) {
+	t := h.T
 	key := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
 
 	// First, wait for the resourceVersion to change, indicating our patch has landed.
@@ -630,7 +685,7 @@ func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstru
 		}
 		return current.GetResourceVersion() != rvAfterPatch, nil
 	}); err != nil {
-		h.T.Logf("warning: timed out waiting for controller to reconcile patch; test may be flaky: %v", err)
+		t.Logf("warning: timed out waiting for controller to reconcile patch; test may be flaky: %v", err)
 	}
 }
 

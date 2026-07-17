@@ -19,6 +19,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -30,7 +31,13 @@ go run . generate-types \
     --resource DataplexZone:Zone \
     --resource DataplexTask:Task \
     --resource DataplexEntryGroup:EntryGroup \
-    --resource DataplexEntryType:EntryType
+    --resource DataplexEntryType:EntryType \
+    --resource DataplexDataTaxonomy:DataTaxonomy \
+    --resource DataplexAspectType:AspectType \
+    --resource DataplexDataScan:DataScan \
+    --resource DataplexMetadataJob:MetadataJob
+
+# Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 
 go run . generate-mapper \
     --service google.cloud.dataplex.v1 \
@@ -39,4 +46,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/dataplex/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/dataplex/

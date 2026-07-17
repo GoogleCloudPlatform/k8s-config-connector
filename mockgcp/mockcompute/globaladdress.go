@@ -62,8 +62,8 @@ func (s *GlobalAddressesV1) Insert(ctx context.Context, req *pb.InsertGlobalAddr
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetAddressResource()).(*pb.Address)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetAddressResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")
@@ -129,6 +129,7 @@ func (s *GlobalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsGlob
 	}
 
 	obj.Labels = req.GetGlobalSetLabelsRequestResource().GetLabels()
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.Labels))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

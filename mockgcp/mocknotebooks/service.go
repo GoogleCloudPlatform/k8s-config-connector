@@ -26,12 +26,17 @@ import (
 	"google.golang.org/grpc"
 
 	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
+	pb_v1beta1 "cloud.google.com/go/notebooks/apiv1beta1/notebookspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/notebooks/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked notebooks service.
 type MockService struct {
@@ -46,8 +51,13 @@ type NotebookServiceV1 struct {
 	pb.UnimplementedNotebookServiceServer
 }
 
+type NotebookServiceV1beta1 struct {
+	*MockService
+	pb_v1beta1.UnimplementedNotebookServiceServer
+}
+
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -62,16 +72,19 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNotebookServiceServer(grpcServer, &NotebookServiceV1{MockService: s})
+	pb_v1beta1.RegisterNotebookServiceServer(grpcServer, &NotebookServiceV1beta1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		grpcpb.RegisterNotebookServiceHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
-
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, fmt.Errorf("error creating mux: %w", err)
 	}
+
+	mux.AddService(pb.NewNotebookServiceClient(conn))
+	mux.AddService(pb_v1beta1.NewNotebookServiceClient(conn))
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

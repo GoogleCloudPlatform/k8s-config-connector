@@ -1,0 +1,96 @@
+---
+name: kcc-identity-reference
+description: Creates or updates the _identity.go and _reference.go files for a Config Connector resource, ensuring they follow the canonical gcpurls.Template pattern. Use this when you need to make sure the identity and reference is up to date for a KCC resource or when implementing IdentityV2 and refs.Ref for a resource.
+---
+
+# Kcc Identity Reference
+
+## Overview
+
+This skill guides you through creating or updating the `_identity.go` and `_reference.go` files for a given Config Connector resource (e.g. `MemoryStoreInstance`). The goal is to implement `identity.IdentityV2` and `refs.Ref` using the canonical `gcpurls.Template` pattern, identical to the pattern used in `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go`.
+
+## Hints
+
+* If the identity or reference files already exist, do not update the copyright year.
+
+## Workflow
+
+When asked to update or create the identity and reference for a "resource of the day" (e.g., `group: memorystore.cnrm.cloud.google.com`, `kind: MemoryStoreInstance`), follow these steps:
+
+### Step 1: Locate the target files
+
+1. Identify the `groupPrefix` (the group without the `.cnrm.cloud.google.com` suffix). Example: `memorystore`
+2. Look for the resource version directory under `apis/<groupPrefix>/`. Example: `apis/memorystore/v1beta1/` or `apis/memorystore/v1alpha1/`. (Check the filesystem to see which versions exist).
+3. The files to edit/create are `apis/<groupPrefix>/<version>/<kind>_identity.go` and `apis/<groupPrefix>/<version>/<kind>_reference.go`.
+   - Note: `<kind>` is typically the full lowercase Kind, e.g. `memorystoreinstance`. Sometimes the `groupPrefix` is dropped, so check if the files already exist.
+
+### Step 2: Determine the Identity Template
+
+1. Read the corresponding line in `docs/ai/metadata/cloudassetinventory_names.jsonl` using grep. Search for the resource kind to find its URL format.
+   - Example: `grep -i memorystore docs/ai/metadata/cloudassetinventory_names.jsonl`
+   - Output might be: `{"resourceType": "memorystore.googleapis.com/Instance", "nameFormats": ["//memorystore.googleapis.com/projects/{{PROJECT_ID}}/locations/{{LOCATION}}/instances/{{INSTANCE}}"]}`
+   - **Note:** If the resource is missing from `cloudassetinventory_names.jsonl` (e.g. not handled by CAIS), check the existing `_identity.go` or direct controller to infer the URL format. Pay attention to camelCase path segments (e.g. `entryGroups` instead of `entrygroups`), as GCP URLs are case-sensitive. Additionally, if the resource is missing from `cloudassetinventory_names.jsonl`, you will also need to add its URL format as an exception in `pkg/gcpurls/registry_test.go` to prevent the `TestRegisteredTemplatesMatchCAI` test from failing.
+2. Map the format to the `gcpurls.Template` format: `"projects/{project}/locations/{location}/instances/{instance}"`.
+3. Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go` to refresh your understanding of the implementation details.
+
+### Step 3: Implement the Identity (`<kind>_identity.go`)
+
+Create or update the file to match the canonical example. Key requirements:
+- Use the standard copyright header (Year 2026).
+- Declare interface implementations: `_ identity.IdentityV2 = &<Kind>Identity{}` (or `_ identity.ServerGeneratedIdentity = &<Kind>Identity{}` if the resource has a server-generated ID) and `_ identity.Resource = &<Kind>{}`
+- Define the template var: `var <Kind>IdentityFormat = gcpurls.Template[<Kind>Identity]("api.googleapis.com", "projects/{project}/...")`
+- The struct must map exactly to the template fields (e.g., `Project string`, `Location string`, `Instance string`) and have `// +k8s:deepcopy-gen=false`.
+  - **Important:** Add a standard Go doc comment like `// <Kind>Identity is the identity of a GCP <Kind> resource.` right above the struct definition.
+  - **Important:** The variables in your `gcpurls.Template` (e.g. `{instance}`) MUST match the struct fields when both are lowercased (e.g. `{deploymentresourcepool}` matches `DeploymentResourcePool`). Do not use underscores in the template variables (e.g. `{deployment_resource_pool}`) or Go struct fields (e.g. `Deployment_resource_pool`). For GCP URL templates that originally contain snake_case placeholders (e.g. `{aspect_type}`), you must map them to camelCase variables in the `gcpurls.Template` (e.g., `{aspectType}`) and use CamelCase in the corresponding Go struct fields (e.g., `AspectType string`). Avoid snake_case fields with underscores (such as `Aspect_type string`) in Go structs entirely.
+  - **Note:** If an existing deepcopy method was previously generated for this identity struct, run `dev/tasks/generate-types-and-mappers` to regenerate the types and remove the obsolete code.
+- Implement `String()`, `FromExternal(ref string)`, and `Host()` by delegating to the format var.
+- **For Server-Generated IDs**: If the resource can have its ID generated by the GCP server when not specified in the spec, implement `identity.ServerGeneratedIdentity` instead of `identity.IdentityV2`.
+  - Implement `HasIdentitySpecified() bool` (e.g., return `i.ID != ""`).
+  - In `GetIdentity()`, if `obj.Status.ExternalRef` is set, parse it to extract the authoritative server-generated ID and default the empty spec identity ID field to it prior to cross-checking or returning. See `apis/bigqueryconnection/v1beta1/bigqueryconnectionconnection_identity.go` for the exact reference implementation.
+- Implement `ParentString()` to return the GCP parent URI string (e.g., `projects/{project}` or `projects/{project}/locations/{location}`) to simplify parent path construction in controllers.
+- Implement `getIdentityFrom<Kind>Spec(ctx context.Context, reader client.Reader, obj *<Kind>) (*<Kind>Identity, error)` to extract fields from the spec/obj (often using `refs.ResolveProjectID`, `refs.GetLocation`, etc.).
+  - **Important:** This function MUST take a typed pointer `*<Kind>` directly. If any callers (such as `Normalize` fallback) only have an `*unstructured.Unstructured` object, those callers must first convert it using `common.ToStructuredType[*<Kind>](unstructuredObj)` before calling `getIdentityFrom<Kind>Spec`. This keeps the extraction code highly type-safe and avoids manual unstructured field parsing.
+- Implement Boilerplate and GetIdentity(ctx, reader) on the Resource struct:
+  - **CRITICAL / MANDATORY STATUS CROSS-CHECK IN GETIDENTITY:** In `GetIdentity`, you MUST always cross-check the parsed identity from spec against `status.externalRef` or whatever other status field holds the identity for created objects (e.g. `status.name`). This prevents drift and guarantees that the identity resolved is authoritative for created objects. If the resource is created, its identity MUST come from status; we cross-check spec against status to detect drift.
+  - **CRITICAL / MANDATORY:** Do NOT change the schema (e.g., do not add `status.externalRef` or `status.name` fields to the `_types.go` file if they are not already there) in this phase. If the resource's `Status` struct does not already contain an `ExternalRef` or `Name` field, do NOT perform any cross-check against the status in `GetIdentity`. Simply return the parsed `specIdentity` without checking status. **We should never change the schema to introduce an identity or reference.**
+  - **Verification:** Always run `dev/tasks/diff-crds` to check and guarantee that we have not changed the schema in any way.
+
+  - **Note:** If you are updating an existing resource's Identity struct to the IdentityV2 pattern, be sure to check for existing usages of the struct and its old methods (e.g. `.Parent()`, `.ID()`) in dependent identity files and direct controllers, and update them to use the new fields (e.g. `.Project`, `.Location`, etc.).  The compiler is your friend: remove the functions, then run `go vet ./...` or `go build ./...` to look for references to functions that no longer exist.
+
+### Step 4: Implement the Reference (`<kind>_reference.go`)
+
+Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_reference.go` to refresh your understanding.
+
+**CRITICAL RULE FOR REFERENCE TYPES:** Whenever a reference type (e.g., `<Kind>Ref` implementing `refsv1beta1.Ref`) is needed, it must **always** be defined and implemented in its own separate file named `<kind>_reference.go` rather than inside `_types.go`. This keeps the API types clean and ensures reference-related types are organized consistently across packages.
+
+Create or update the file to match the canonical example. Key requirements:
+- Use the standard copyright header (Year 2026).
+- Implement `_ refs.Ref = &<Kind>Ref{}`.
+- Define the GVK variable: `var <Kind>GVK = schema.GroupVersionKind{...}` (It is also acceptable if this is defined in `<kind>_types.go`).
+- Define the `<Kind>Ref` struct with exactly 3 fields: `External`, `Name`, and `Namespace`.
+  - **Important:** Add a clean, simple doc comment like `// <Kind>Ref is a reference to a GCP <Kind>.` right above the struct definition. Avoid verbose or awkward boilerplate phrasing like "defines the resource reference to..." or "which External field...".
+  - The `External` field MUST have specific godoc: `"A reference to an externally managed <Kind> resource. Should be in the format \"projects/{{projectID}}/...\""`. Do not use generic docstrings.
+  - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
+- Include `func init() { refs.Register(&<Kind>Ref{}) }`.
+- Implement boilerplate methods: `GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`.
+- Implement `Normalize` to populate the `External` field:
+  - **CRITICAL WARNING:** If the referenced resource is a direct controller or any modern resource that supports `status.externalRef` (or equivalent status-based identity), **NEVER** use `NormalizeWithFallback` or any custom fallback function that reads from the `spec` (such as calling `getIdentityFrom<Kind>Spec`). You **MUST** delegate `Normalize` directly to `refs.Normalize`.
+  - **Why?** `refs.Normalize` reads strictly from status and avoids using spec. If a reference looks at the spec (via `getIdentityFrom<Kind>Spec`) during normalization before the resource is fully ready/created in GCP, it will prematurely return an identity string. This leads to broken dependency validation, reconciliation loops, and cascading lookup failures because dependent resources assume the dependency is ready when it is not.
+  - **Legacy Fallbacks:** Only use `refs.NormalizeWithFallback` for older, legacy resources (e.g. DCL or Terraform) that completely lack `status.externalRef`.
+  - **CRITICAL GUIDELINES FOR FALLBACK FUNCTION IN NORMALIZE (LEGACY ONLY):**
+    1. The fallback function is ONLY for when `status.externalRef` is not available. It MUST first check if the referenced resource is fully reconciled and ready in GCP by inspecting status fields. It should look at `status.conditions` (i.e. checking if the `Ready` condition is `True`) or whatever other status field signals that the object is ready (such as `status.state`, `status.selfLink`, etc.).
+    2. If the status fields indicate that the resource is not ready, the fallback function MUST return `""` (empty string). This will correctly bubble up a `k8s.NewReferenceNotReadyError`.
+    3. If and only if the status fields indicate that the resource is ready, the fallback function may construct and return the external identity string. It should use spec fields (by converting the unstructured object using `common.ToStructuredType` and calling `getIdentityFrom<Kind>Spec`) as a last-resort fallback to build the identity. (No spec/status cross-checking is needed inside `Normalize` itself).
+
+### Step 5: Verify
+
+1. **Write Unit Tests**:
+   - Write comprehensive unit tests for the Identity (e.g., `<kind>_identity_test.go`).
+   - **Do NOT** create a separate `<kind>_reference_test.go` file (as it typically duplicates the parsing and formatting tests of the identity). Instead, add any validation or format test cases directly to the identity unit tests.
+   - You MUST use `github.com/google/go-cmp/cmp` (with the `cmp.Diff` function) when comparing structs or multiple fields in tests, to ensure precise, clear diff outputs on failures.
+   - Always use the standard got/want mismatch format for failures, e.g. `(-want +got):\n%s`.
+   - **CRITICAL:** When creating/modifying an identity type, always run `TestGoldenIdentitiesYamlFiles` (defined in `pkg/cli/powertools/cais/cmd_test.go`) with `WRITE_GOLDEN_OUTPUT=1` using `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/cli/powertools/cais/...` to generate or update the golden output `_identities.yaml` file(s) for the test fixtures. This prevents presubmit CI unit test failures.
+
+2. **Run Compilations and Linters**:
+   - Ensure the code compiles and there are no lint errors. You MUST always run `go vet ./...` and `go build ./...` before sending the PR to verify that your changes have not introduced any compilation errors across the entire project.
+   - If any CRDs, schemas, or reference definitions changed, always run `make resource-docs` to regenerate the resource documentation and prevent doc validation pipeline breakages.

@@ -23,13 +23,11 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dataproc/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -76,31 +74,30 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterWorkflowTemplateServiceServer(grpcServer, &workflowTemplateServer{MockService: s})
 	pb.RegisterBatchControllerServer(grpcServer, &batchControllerServer{MockService: s})
 	pb.RegisterJobControllerServer(grpcServer, &jobControllerServer{MockService: s})
+	pb.RegisterSessionControllerServer(grpcServer, &sessionControllerServer{MockService: s})
+	pb.RegisterSessionTemplateControllerServer(grpcServer, &sessionTemplateControllerServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pbhttp.RegisterClusterControllerHandler,
-		pbhttp.RegisterAutoscalingPolicyServiceHandler,
-		pbhttp.RegisterWorkflowTemplateServiceHandler,
-		pbhttp.RegisterBatchControllerHandler,
-		pbhttp.RegisterJobControllerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	// Dataproc does not set Cache-Control
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		response.Header().Del("Cache-Control")
-	}
+	mux.AddService(pb.NewClusterControllerClient(conn))
+	mux.AddService(pb.NewAutoscalingPolicyServiceClient(conn))
+	mux.AddService(pb.NewWorkflowTemplateServiceClient(conn))
+	mux.AddService(pb.NewBatchControllerClient(conn))
+	mux.AddService(pb.NewJobControllerClient(conn))
+	mux.AddService(pb.NewSessionControllerClient(conn))
+	mux.AddService(pb.NewSessionTemplateControllerClient(conn))
 
-	// Returns non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	// Dataproc does not set Cache-Control
+	mux.OverrideHeaders(func(response http.ResponseWriter) {
+		response.Header().Del("Cache-Control")
+	})
 
 	return mux, nil
 }

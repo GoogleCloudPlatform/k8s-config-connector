@@ -1,0 +1,6 @@
+- caisURL: //serviceusage.googleapis.com/projects/${projectId}/services/pubsub.googleapis.com/identity
+  group: serviceusage.cnrm.cloud.google.com
+  kind: ServiceIdentity
+  name: pubsub.googleapis.com
+  namespace: ${uniqueId}
+  version: v1beta1

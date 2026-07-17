@@ -53,11 +53,20 @@ type NormalizingVisitor interface {
 	// ReplaceStringValue replaces the given string value with the provided string value
 	ReplaceStringValue(oldValue string, newValue string)
 
+	// TransformString modifies the string value at the given path using the provided function
+	TransformString(path string, transform func(string) string)
+
+	// TransformLRO identifies if the object is a Long Running Operation and applies the transform
+	TransformLRO(transform func(map[string]any))
+
 	// SortSlice will sort the slice at the given path
 	SortSlice(path string)
 
 	// SortSliceBy will sort the slice at the given path, ordering by the given field
 	SortSliceBy(path string, sortBy string)
+
+	// TransformObject modifies the object at the given path using the provided function
+	TransformObject(path string, transform func(map[string]any))
 }
 
 type Normalizer interface {

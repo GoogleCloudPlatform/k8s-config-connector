@@ -4,7 +4,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     app.kubernetes.io/component: mock-component
     app.kubernetes.io/instance: mock-instance
@@ -23,6 +23,7 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
+  resourceID: batchjob-labels
   taskGroups:
   - parallelism: 1
     taskCount: 1
@@ -43,7 +44,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/jobs/batchjob-labels
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     name: projects/${projectId}/locations/us-central1/jobs/batchjob-labels

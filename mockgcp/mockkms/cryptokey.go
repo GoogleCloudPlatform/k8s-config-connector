@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
+	pb "cloud.google.com/go/kms/apiv1/kmspb"
 )
 
 func (r *kmsServer) GetCryptoKey(ctx context.Context, req *pb.GetCryptoKeyRequest) (*pb.CryptoKey, error) {
@@ -63,7 +63,10 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetCryptoKey()).(*pb.CryptoKey)
+	obj := proto.CloneOf(req.GetCryptoKey())
+	if obj == nil {
+		obj = &pb.CryptoKey{}
+	}
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 
@@ -128,6 +131,12 @@ func (r *kmsServer) UpdateCryptoKey(ctx context.Context, req *pb.UpdateCryptoKey
 		switch path {
 		case "labels":
 			obj.Labels = req.GetCryptoKey().GetLabels()
+		case "rotation_period", "rotationPeriod":
+			obj.RotationSchedule = req.GetCryptoKey().GetRotationSchedule()
+		case "next_rotation_time", "nextRotationTime":
+			obj.NextRotationTime = req.GetCryptoKey().GetNextRotationTime()
+		case "destroy_scheduled_duration", "destroyScheduledDuration":
+			obj.DestroyScheduledDuration = req.GetCryptoKey().GetDestroyScheduledDuration()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}

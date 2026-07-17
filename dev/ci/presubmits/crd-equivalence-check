@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+# Determine the base branch for comparison
+# In GitHub Actions, GITHUB_BASE_REF is set for PRs.
+BASE_BRANCH="${GITHUB_BASE_REF:-master}"
+
+# Allow overriding the comparison reference for local testing
+COMPARISON_REF="${COMPARISON_REF:-origin/${BASE_BRANCH}}"
+
+# Extract the remote name from the COMPARISON_REF (e.g., 'origin' from 'origin/master')
+REMOTE_NAME=$(echo "${COMPARISON_REF}" | cut -d'/' -f1)
+REMOTE_BRANCH=$(echo "${COMPARISON_REF}" | cut -d'/' -f2-)
+
+# Fetch the base branch to ensure it is available for comparison
+git fetch "${REMOTE_NAME}" "${REMOTE_BRANCH}" --quiet
+
+echo "COMPARISON_REF: ${COMPARISON_REF}"
+echo "BASE_BRANCH: ${BASE_BRANCH}"
+
+# Identify changed CRD files
+CHANGED_CRDS=$(git diff --name-only ${COMPARISON_REF}...HEAD | grep "config/crds/resources/" || true)
+
+if [[ -z "${CHANGED_CRDS}" ]]; then
+  echo "No changed CRD files found."
+  exit 0
+fi
+
+FAILED=0
+
+echo "Running equivalence check..."
+# We explicitly allow the addition of status.externalRef because it is a
+# required structural change when migrating resources to the Direct controller.
+CMD="dev/tasks/diff-crds --base ${COMPARISON_REF} --allow-status-external-ref-addition"
+echo "Running: ${CMD}"
+
+# We capture output to check for differences
+# We use '|| true' to prevent errexit from stopping the script on tool errors (we want to log them).
+OUTPUT=$(${CMD} 2>&1 || true)
+
+echo "${OUTPUT}"
+
+if echo "${OUTPUT}" | grep -q "Diffs for CRD:"; then
+  echo "ERROR: CRDs are not equivalent to ${COMPARISON_REF}!"
+  FAILED=1
+fi
+
+if [[ ${FAILED} -ne 0 ]]; then
+  echo "CRD equivalence checks failed. Please review the output above."
+  exit 1
+fi
+
+echo "All CRD equivalence checks passed!"

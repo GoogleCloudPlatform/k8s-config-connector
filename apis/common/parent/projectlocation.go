@@ -66,9 +66,11 @@ func (p *ProjectAndLocationParent) FromExternal(ref string) error {
 // ProjectAndLocationParent specifies the resource's GCP hierarchy (Project/Folder/Organization) and its geographical location.
 // +kubebuilder:object:generate:=true
 type ProjectAndLocationRef struct {
+	// The Project that this resource belongs to.
 	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
+	// The location that this resource belongs to.
 	// +required
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
 	Location string `json:"location"`

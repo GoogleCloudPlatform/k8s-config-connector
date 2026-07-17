@@ -42,7 +42,7 @@ type KMSImportJobSpec struct {
 	/* Required. Immutable. The wrapping method to be used for incoming key material. */
 	ImportMethod string `json:"importMethod"`
 
-	/* KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object. */
+	/* KMSKeyRingRef is a reference to a KMSKeyRing. */
 	KmsKeyRingRef v1alpha1.ResourceRef `json:"kmsKeyRingRef"`
 
 	/* Required. Immutable. The protection level of the [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level] of the [version_template][google.cloud.kms.v1.CryptoKey.version_template] on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to import into. */

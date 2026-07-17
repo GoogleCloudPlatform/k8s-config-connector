@@ -126,9 +126,16 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 		}
 	}
 	if in.NullValue != nil {
-		value, err := strconv.Atoi(direct.ValueOf(in.NullValue))
-		if err != nil {
-			mapCtx.Errorf("error converting value %s from string to int", direct.ValueOf(in.NullValue))
+		strVal := direct.ValueOf(in.NullValue)
+		var value int
+		if val, ok := structpb.NullValue_value[strVal]; ok {
+			value = int(val)
+		} else {
+			var err error
+			value, err = strconv.Atoi(strVal)
+			if err != nil {
+				mapCtx.Errorf("error converting value %s from string to int", strVal)
+			}
 		}
 		out.Kind = &structpb.Value_NullValue{
 			NullValue: structpb.NullValue(value),
@@ -144,9 +151,9 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 			StringValue: direct.ValueOf(in.StringValue),
 		}
 	}
-	if in.StructValue != nil {
+	if len(in.StructValue.Raw) > 0 {
 		out.Kind = &structpb.Value_StructValue{
-			StructValue: StructValue_ToProto(mapCtx, in.StructValue),
+			StructValue: direct.Struct_ToProto(mapCtx, &in.StructValue),
 		}
 	}
 	return out
@@ -171,40 +178,86 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 		value := in.GetBoolValue()
 		out.BoolValue = &value
 	case *structpb.Value_StructValue:
-		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
-	}
-	return out
-}
-
-func StructValue_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
-	if in == nil {
-		return nil
-	}
-	out := make(map[string]string)
-	for key, val := range in.Fields {
-		out[key] = val.GetStringValue()
-	}
-	return out
-}
-
-func StructValue_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.Struct{}
-	if len(in) > 0 {
-		out.Fields = make(map[string]*structpb.Value)
-	}
-	for key, val := range in {
-		value := &structpb.Value_StringValue{
-			StringValue: val,
-		}
-		out.Fields[key] = &structpb.Value{
-			Kind: value,
+		if val := direct.Struct_FromProto(mapCtx, in.GetStructValue()); val != nil {
+			out.StructValue = *val
 		}
 	}
 	return out
 }
+
+func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm.FunctionCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionCall{}
+	out.Name = direct.LazyPtr(in.GetName())
+	if val := direct.Struct_FromProto(mapCtx, in.GetArgs()); val != nil {
+		out.Args = *val
+	}
+	return out
+}
+
+func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.FunctionCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionCall{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
+	return out
+}
+
+func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krm.FunctionResponse {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionResponse{}
+	out.Name = direct.LazyPtr(in.GetName())
+	if val := direct.Struct_FromProto(mapCtx, in.GetResponse()); val != nil {
+		out.Response = *val
+	}
+	return out
+}
+
+func FunctionResponse_ToProto(mapCtx *direct.MapContext, in *krm.FunctionResponse) *pb.FunctionResponse {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionResponse{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
+	return out
+}
+
+/*
+func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ListValue{}
+	for _, v := range in.Values {
+		krmVal := Value_FromProto(mapCtx, v)
+		if krmVal != nil {
+			out.Values = append(out.Values, *krmVal)
+		}
+	}
+	return out
+}
+
+func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	for i := range in.Values {
+		pbVal := Value_ToProto(mapCtx, &in.Values[i])
+		if pbVal != nil {
+			out.Values = append(out.Values, pbVal)
+		}
+	}
+	return out
+}
+*/
 
 func ExplanationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krm.ExplanationMetadata {
 	if in == nil {

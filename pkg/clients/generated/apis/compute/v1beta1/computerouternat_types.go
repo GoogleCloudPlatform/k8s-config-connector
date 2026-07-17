@@ -39,11 +39,21 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type RouternatAction struct {
+	/* A list of URLs of the IP resources used for this NAT rule. These IP addresses must be valid static external IP addresses assigned to the project. This field is used for public NAT. */
 	// +optional
 	SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
 
+	/* A list of references to ComputeSubnetwork resources. Rules configured with these rules translate source IPs to the IP ranges of these subnetworks. This field is used for private NAT. */
+	// +optional
+	SourceNatActiveRangesRefs []v1alpha1.ResourceRef `json:"sourceNatActiveRangesRefs,omitempty"`
+
+	/* A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT rule only. This field is used for public NAT. */
 	// +optional
 	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
+
+	/* A list of references to ComputeSubnetwork resources. These IP ranges will be drained. This field is used for private NAT. */
+	// +optional
+	SourceNatDrainRangesRefs []v1alpha1.ResourceRef `json:"sourceNatDrainRangesRefs,omitempty"`
 }
 
 type RouternatLogConfig struct {
@@ -77,23 +87,16 @@ type RouternatRules struct {
 	"nexthop.hub == 'https://networkconnectivity.googleapis.com/v1alpha1/projects/my-project/global/hub/hub-1'". */
 	Match string `json:"match"`
 
-	/* An integer uniquely identifying a rule in the list.
-	The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT. */
+	/* An integer uniquely identifying a rule in the list. The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT. */
 	RuleNumber int64 `json:"ruleNumber"`
 }
 
 type RouternatSubnetwork struct {
-	/* List of the secondary ranges of the subnetwork that are allowed
-	to use NAT. This can be populated only if
-	'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
-	sourceIpRangesToNat. */
+	/* List of the secondary ranges of the subnetwork that are allowed to use NAT. This can be populated only if 'LIST_OF_SECONDARY_IP_RANGES' is one of the values in sourceIpRangesToNat. */
 	// +optional
 	SecondaryIpRangeNames []string `json:"secondaryIpRangeNames,omitempty"`
 
-	/* List of options for which source IPs in the subnetwork
-	should have NAT enabled. Supported values include:
-	'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES',
-	'PRIMARY_IP_RANGE'. */
+	/* List of options for which source IPs in the subnetwork should have NAT enabled. Supported values include: 'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES', 'PRIMARY_IP_RANGE'. */
 	SourceIpRangesToNat []string `json:"sourceIpRangesToNat"`
 
 	/* The subnetwork to NAT. */
@@ -101,6 +104,7 @@ type RouternatSubnetwork struct {
 }
 
 type ComputeRouterNATSpec struct {
+	/* A list of IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. */
 	// +optional
 	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
 
@@ -114,10 +118,13 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	EnableDynamicPortAllocation *bool `json:"enableDynamicPortAllocation,omitempty"`
 
-	/* Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information
-	see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs). */
+	/* Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs). */
 	// +optional
 	EnableEndpointIndependentMapping *bool `json:"enableEndpointIndependentMapping,omitempty"`
+
+	/* Immutable. Specifies the endpoint Types supported by the NAT Gateway. Supported values include: 'ENDPOINT_TYPE_VM', 'ENDPOINT_TYPE_SWG', 'ENDPOINT_TYPE_MANAGED_PROXY_LB'. */
+	// +optional
+	EndpointTypes []string `json:"endpointTypes,omitempty"`
 
 	/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
 	// +optional
@@ -127,8 +134,7 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	LogConfig *RouternatLogConfig `json:"logConfig,omitempty"`
 
-	/* Maximum number of ports allocated to a VM from this NAT.
-	This field can only be set when enableDynamicPortAllocation is enabled. */
+	/* Maximum number of ports allocated to a VM from this NAT. This field can only be set when enableDynamicPortAllocation is enabled. */
 	// +optional
 	MaxPortsPerVm *int64 `json:"maxPortsPerVm,omitempty"`
 
@@ -136,11 +142,10 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	MinPortsPerVm *int64 `json:"minPortsPerVm,omitempty"`
 
-	/* How external IPs should be allocated for this NAT. Valid values are
-	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
+	/* How external IPs should be allocated for this NAT. Valid values are 'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
 	NatIpAllocateOption string `json:"natIpAllocateOption"`
 
+	/* NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY. */
 	// +optional
 	NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
 
@@ -158,37 +163,28 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	Rules []RouternatRules `json:"rules,omitempty"`
 
-	/* How NAT should be configured per Subnetwork.
-	If 'ALL_SUBNETWORKS_ALL_IP_RANGES', all of the
-	IP ranges in every Subnetwork are allowed to Nat.
-	If 'ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES', all of the primary IP
-	ranges in every Subnetwork are allowed to Nat.
-	'LIST_OF_SUBNETWORKS': A list of Subnetworks are allowed to Nat
-	(specified in the field subnetwork below). Note that if this field
-	contains ALL_SUBNETWORKS_ALL_IP_RANGES or
-	ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-	other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]. */
+	/* How NAT should be configured per Subnetwork. If 'ALL_SUBNETWORKS_ALL_IP_RANGES', all of the IP ranges in every Subnetwork are allowed to Nat. If 'ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES', all of the primary IP ranges in every Subnetwork are allowed to Nat. 'LIST_OF_SUBNETWORKS': A list of Subnetworks are allowed to Nat (specified in the field subnetwork below). Note that if this field contains ALL_SUBNETWORKS_ALL_IP_RANGES or ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]. */
 	SourceSubnetworkIpRangesToNat string `json:"sourceSubnetworkIpRangesToNat"`
 
-	/* One or more subnetwork NAT configurations. Only used if
-	'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'. */
+	/* One or more subnetwork NAT configurations. Only used if 'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'. */
 	// +optional
 	Subnetwork []RouternatSubnetwork `json:"subnetwork,omitempty"`
 
-	/* Timeout (in seconds) for TCP established connections.
-	Defaults to 1200s if not set. */
+	/* Timeout (in seconds) for TCP established connections. Defaults to 1200s if not set. */
 	// +optional
 	TcpEstablishedIdleTimeoutSec *int64 `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
 
-	/* Timeout (in seconds) for TCP connections that are in TIME_WAIT state.
-	Defaults to 120s if not set. */
+	/* Timeout (in seconds) for TCP connections that are in TIME_WAIT state. Defaults to 120s if not set. */
 	// +optional
 	TcpTimeWaitTimeoutSec *int64 `json:"tcpTimeWaitTimeoutSec,omitempty"`
 
-	/* Timeout (in seconds) for TCP transitory connections.
-	Defaults to 30s if not set. */
+	/* Timeout (in seconds) for TCP transitory connections. Defaults to 30s if not set. */
 	// +optional
 	TcpTransitoryIdleTimeoutSec *int64 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
+
+	/* Immutable. Indicates whether this NAT is used for public IP translation or private IP translation. Possible values: ["PUBLIC", "PRIVATE"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 
 	/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
 	// +optional

@@ -59,14 +59,14 @@ func returnView(obj *pb.Table, view pb.Table_View) *pb.Table {
 		view = pb.Table_SCHEMA_VIEW
 	}
 
-	ret := proto.Clone(obj).(*pb.Table)
+	ret := proto.CloneOf(obj)
 
 	for _, columnFamily := range ret.GetColumnFamilies() {
 		if proto.Equal(columnFamily.GcRule, &pb.GcRule{}) {
 			columnFamily.GcRule = nil
 		}
 
-		if proto.Equal(columnFamily.ValueType, &pb.Type{}) {
+		if columnFamily.ValueType != nil && columnFamily.ValueType.GetKind() == nil {
 			columnFamily.ValueType = nil
 		}
 	}
@@ -86,7 +86,7 @@ func (s *tableAdminServer) ListTables(ctx context.Context, req *pb.ListTablesReq
 		Prefix: instanceName.String() + "/tables/",
 	}, func(obj proto.Message) error {
 		table := obj.(*pb.Table)
-		response.Tables = append(response.Tables, table)
+		response.Tables = append(response.Tables, returnView(table, req.GetView()))
 		return nil
 	}); err != nil {
 		return nil, err
@@ -104,24 +104,18 @@ func (s *tableAdminServer) CreateTable(ctx context.Context, req *pb.CreateTableR
 
 	tableFQN := tableName.String()
 
-	obj := proto.Clone(req.Table).(*pb.Table)
+	obj := proto.CloneOf(req.Table)
 	obj.Name = tableFQN
 
 	if obj.Granularity == pb.Table_TIMESTAMP_GRANULARITY_UNSPECIFIED {
 		obj.Granularity = pb.Table_MILLIS
 	}
 
-	for _, columnFamily := range obj.GetColumnFamilies() {
-		if columnFamily.ValueType == nil {
-			columnFamily.ValueType = &pb.Type{}
-		}
-	}
-
 	if err := s.storage.Create(ctx, tableFQN, obj); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	return returnView(obj, pb.Table_VIEW_UNSPECIFIED), nil
 }
 
 func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.ModifyColumnFamiliesRequest) (*pb.Table, error) {

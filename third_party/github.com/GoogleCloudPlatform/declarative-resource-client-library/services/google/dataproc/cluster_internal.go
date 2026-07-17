@@ -495,6 +495,11 @@ func newUpdateClusterUpdateClusterRequest(ctx context.Context, f *Cluster, c *Cl
 	res := f
 	_ = res
 
+	if v, err := expandClusterConfig(c, f.Config, res); err != nil {
+		return nil, fmt.Errorf("error expanding Config into config: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		req["config"] = v
+	}
 	if v := f.Labels; !dcl.IsEmptyValueIndirect(v) {
 		req["labels"] = v
 	}
@@ -7292,7 +7297,7 @@ func diffCluster(c *Client, desired, actual *Cluster, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Config, actual.Config, dcl.DiffInfo{ObjectFunction: compareClusterConfigNewStyle, EmptyObject: EmptyClusterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Config")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Config, actual.Config, dcl.DiffInfo{ObjectFunction: compareClusterConfigNewStyle, EmptyObject: EmptyClusterConfig, OperationSelector: dcl.TriggersOperation("updateClusterUpdateClusterOperation")}, fn.AddNest("Config")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7443,7 +7448,7 @@ func compareClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SecurityConfig, actual.SecurityConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecurityConfigNewStyle, EmptyObject: EmptyClusterConfigSecurityConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SecurityConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SecurityConfig, actual.SecurityConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecurityConfigNewStyle, EmptyObject: EmptyClusterConfigSecurityConfig, OperationSelector: dcl.TriggersOperation("updateClusterUpdateClusterOperation")}, fn.AddNest("SecurityConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8714,7 +8719,7 @@ func compareClusterConfigSecurityConfigNewStyle(d, a interface{}, fn dcl.FieldNa
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IdentityConfig, actual.IdentityConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecurityConfigIdentityConfigNewStyle, EmptyObject: EmptyClusterConfigSecurityConfigIdentityConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IdentityConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IdentityConfig, actual.IdentityConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecurityConfigIdentityConfigNewStyle, EmptyObject: EmptyClusterConfigSecurityConfigIdentityConfig, OperationSelector: dcl.TriggersOperation("updateClusterUpdateClusterOperation")}, fn.AddNest("IdentityConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -8870,7 +8875,7 @@ func compareClusterConfigSecurityConfigIdentityConfigNewStyle(d, a interface{}, 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.UserServiceAccountMapping, actual.UserServiceAccountMapping, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserServiceAccountMapping")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UserServiceAccountMapping, actual.UserServiceAccountMapping, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateClusterUpdateClusterOperation")}, fn.AddNest("UserServiceAccountMapping")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

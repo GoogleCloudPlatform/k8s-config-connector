@@ -65,6 +65,137 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the instance.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
+              crossInstanceReplicationConfig:
+                description: Optional. The cross instance replication config for the
+                  instance.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: Optional. The full resource path of the remote
+                          instance.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                  secondaryInstances:
+                    description: |-
+                      Optional. List of secondary instances that are replicating from this
+                       primary instance.
+
+                       This field is only set for a primary instance.
+                    items:
+                      properties:
+                        instanceRef:
+                          description: Optional. The full resource path of the remote
+                            instance.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed MemorystoreInstance
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              type: string
+                            name:
+                              description: The name of a MemorystoreInstance resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a MemorystoreInstance
+                                resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -102,10 +233,9 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: The value of an externally managed
+                                    description: A reference to an externally managed
                                       ComputeNetwork resource. Should be in the format
-                                      "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                      "projects/{{projectID}}/global/networks/{{networkID}}".
                                     type: string
                                   name:
                                     description: The name of a ComputeNetwork resource.
@@ -168,6 +298,34 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              kmsKeyRef:
+                description: Optional. The KMS key reference for the instance.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -179,6 +337,51 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenancePolicy:
+                description: Optional. The maintenance policy for the instance.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_window is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Optional. Allows to define schedule that runs
+                            specified day of the week.
+                          type: string
+                        startTime:
+                          description: Optional. Start time of the window in UTC.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              maintenanceVersion:
+                description: Optional. The maintenance version of the instance.
+                type: string
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -326,9 +529,117 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  availableMaintenanceVersions:
+                    description: Output only. The list of available maintenance versions
+                      for the instance.
+                    items:
+                      type: string
+                    type: array
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The cross instance replication config for
+                      the instance.
+                    properties:
+                      membership:
+                        description: Output only. An output only view of all the member
+                          instances participating in the cross instance replication.
+                          This view will be provided by every member instance irrespective
+                          of its instance role(primary or secondary).
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: Optional. The full resource path of the
+                                  remote instance.
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: Optional. The full resource path of
+                                    the remote instance.
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: Optional. The full resource path of the remote
+                              instance.
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      secondaryInstances:
+                        description: |-
+                          Optional. List of secondary instances that are replicating from this
+                           primary instance.
+
+                           This field is only set for a primary instance.
+                        items:
+                          properties:
+                            instance:
+                              description: Optional. The full resource path of the
+                                remote instance.
+                              type: string
+                            uid:
+                              description: Output only. The unique identifier of the
+                                remote instance.
+                              type: string
+                          type: object
+                        type: array
+                      updateTime:
+                        description: Output only. The last time cross instance replication
+                          config was updated.
+                        type: string
+                    type: object
+                  effectiveMaintenanceVersion:
+                    description: Output only. The current version of the maintenance
+                      schedule.
+                    type: string
+                  encryptionInfo:
+                    description: Output only. Encryption information for the instance.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary KMS key.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the instance.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. Latest update timestamp of the encryption
+                          info.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -384,6 +695,29 @@ spec:
                           type: array
                       type: object
                     type: array
+                  maintenancePolicy:
+                    description: Output only. User-defined weekly maintenance windows
+                      in which space is reserved for maintenance.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. Upcoming maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.
@@ -392,6 +726,19 @@ spec:
                         description: Output only. Memory size in GB of the node.
                         type: number
                     type: object
+                  pscAttachmentDetails:
+                    description: Output only. List of PSC connections for the instance.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of Psc endpoint.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target.
+                          type: string
+                      type: object
+                    type: array
                   state:
                     description: Output only. Current state of the instance.
                     type: string
@@ -402,6 +749,17 @@ spec:
                       updateInfo:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
+                        properties:
+                          targetReplicaCount:
+                            description: Output only. Target number of replica nodes
+                              per shard for the instance.
+                            format: int32
+                            type: integer
+                          targetShardCount:
+                            description: Output only. Target number of shards for
+                              the instance.
+                            format: int32
+                            type: integer
                         type: object
                     type: object
                   uid:
@@ -460,6 +818,137 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the instance.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
+              crossInstanceReplicationConfig:
+                description: Optional. The cross instance replication config for the
+                  instance.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: Optional. The full resource path of the remote
+                          instance.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                  secondaryInstances:
+                    description: |-
+                      Optional. List of secondary instances that are replicating from this
+                       primary instance.
+
+                       This field is only set for a primary instance.
+                    items:
+                      properties:
+                        instanceRef:
+                          description: Optional. The full resource path of the remote
+                            instance.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed MemorystoreInstance
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              type: string
+                            name:
+                              description: The name of a MemorystoreInstance resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a MemorystoreInstance
+                                resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -497,10 +986,9 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: The value of an externally managed
+                                    description: A reference to an externally managed
                                       ComputeNetwork resource. Should be in the format
-                                      "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                      "projects/{{projectID}}/global/networks/{{networkID}}".
                                     type: string
                                   name:
                                     description: The name of a ComputeNetwork resource.
@@ -563,6 +1051,34 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              kmsKeyRef:
+                description: Optional. The KMS key reference for the instance.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -574,6 +1090,51 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenancePolicy:
+                description: Optional. The maintenance policy for the instance.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_window is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Optional. Allows to define schedule that runs
+                            specified day of the week.
+                          type: string
+                        startTime:
+                          description: Optional. Start time of the window in UTC.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              maintenanceVersion:
+                description: Optional. The maintenance version of the instance.
+                type: string
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -721,9 +1282,117 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  availableMaintenanceVersions:
+                    description: Output only. The list of available maintenance versions
+                      for the instance.
+                    items:
+                      type: string
+                    type: array
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The cross instance replication config for
+                      the instance.
+                    properties:
+                      membership:
+                        description: Output only. An output only view of all the member
+                          instances participating in the cross instance replication.
+                          This view will be provided by every member instance irrespective
+                          of its instance role(primary or secondary).
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: Optional. The full resource path of the
+                                  remote instance.
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: Optional. The full resource path of
+                                    the remote instance.
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: Optional. The full resource path of the remote
+                              instance.
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      secondaryInstances:
+                        description: |-
+                          Optional. List of secondary instances that are replicating from this
+                           primary instance.
+
+                           This field is only set for a primary instance.
+                        items:
+                          properties:
+                            instance:
+                              description: Optional. The full resource path of the
+                                remote instance.
+                              type: string
+                            uid:
+                              description: Output only. The unique identifier of the
+                                remote instance.
+                              type: string
+                          type: object
+                        type: array
+                      updateTime:
+                        description: Output only. The last time cross instance replication
+                          config was updated.
+                        type: string
+                    type: object
+                  effectiveMaintenanceVersion:
+                    description: Output only. The current version of the maintenance
+                      schedule.
+                    type: string
+                  encryptionInfo:
+                    description: Output only. Encryption information for the instance.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary KMS key.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the instance.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. Latest update timestamp of the encryption
+                          info.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -779,6 +1448,29 @@ spec:
                           type: array
                       type: object
                     type: array
+                  maintenancePolicy:
+                    description: Output only. User-defined weekly maintenance windows
+                      in which space is reserved for maintenance.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. Upcoming maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.
@@ -787,6 +1479,19 @@ spec:
                         description: Output only. Memory size in GB of the node.
                         type: number
                     type: object
+                  pscAttachmentDetails:
+                    description: Output only. List of PSC connections for the instance.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of Psc endpoint.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target.
+                          type: string
+                      type: object
+                    type: array
                   state:
                     description: Output only. Current state of the instance.
                     type: string
@@ -797,6 +1502,17 @@ spec:
                       updateInfo:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
+                        properties:
+                          targetReplicaCount:
+                            description: Output only. Target number of replica nodes
+                              per shard for the instance.
+                            format: int32
+                            type: integer
+                          targetShardCount:
+                            description: Output only. Target number of shards for
+                              the instance.
+                            format: int32
+                            type: integer
                         type: object
                     type: object
                   uid:

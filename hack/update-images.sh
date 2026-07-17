@@ -13,14 +13,26 @@
 # limitations under the License.
 
 #/bin/bash
-#export PROM_2_SD_VERSION="$(gcrane ls gke.gcr.io/prometheus-to-sd | egrep "prometheus-to-sd:v" | sort -r --version-sort | head -1)"
 export PROM_2_SD_VERSION="$(gcrane ls gcr.io/gke-release/prometheus-to-sd | egrep "prometheus-to-sd:v" | sort -r --version-sort | head -1)"
 echo "Switching to use the $PROM_2_SD_VERSION image"
-for file in `find . -name '*.yaml'`
-do 
+files=`find . -name '*.yaml' | egrep -v "operator/channels/packages/configconnector"`
+for file in ${files}
+do
 	#if grep -q "gke.gcr.io/prometheus-to-sd" $file 
 	if grep -q "gcr.io/gke-release/prometheus-to-sd" $file 
 	then
 		sed -i -E "s|gcr.io/gke-release/prometheus-to-sd:.*|$PROM_2_SD_VERSION|g" $file
+	fi
+done
+export PROM_2_SD_VERSION="$(gcrane ls gke.gcr.io/prometheus-to-sd | egrep "prometheus-to-sd:v" | sort -r --version-sort | head -1)"
+echo "Switching to use the $PROM_2_SD_VERSION image"
+files=`find . -name 'manifest.go'`
+files+=" "`find . -name 'customization.go'`
+for file in ${files}
+do
+	#if grep -q "gcr.io/gke-release/prometheus-to-sd" $file 
+	if grep -q "gke.gcr.io/prometheus-to-sd" $file 
+	then
+		sed -i -E "s|gke.gcr.io/prometheus-to-sd:.*|$PROM_2_SD_VERSION|g" $file
 	fi
 done

@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -522,9 +523,19 @@ func (in *MachineSpec) DeepCopyInto(out *MachineSpec) {
 		*out = new(int32)
 		**out = **in
 	}
+	if in.GpuPartitionSize != nil {
+		in, out := &in.GpuPartitionSize, &out.GpuPartitionSize
+		*out = new(string)
+		**out = **in
+	}
 	if in.TpuTopology != nil {
 		in, out := &in.TpuTopology, &out.TpuTopology
 		*out = new(string)
+		**out = **in
+	}
+	if in.MultihostGpuNodeCount != nil {
+		in, out := &in.MultihostGpuNodeCount, &out.MultihostGpuNodeCount
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ReservationAffinity != nil {
@@ -554,12 +565,12 @@ func (in *NetworkSpec) DeepCopyInto(out *NetworkSpec) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(computev1beta1.ComputeNetworkRef)
+		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 }

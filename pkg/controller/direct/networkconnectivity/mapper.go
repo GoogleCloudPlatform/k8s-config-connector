@@ -17,10 +17,11 @@ package networkconnectivity
 import (
 	"time"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -38,31 +39,31 @@ func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.Map
 	// MISSING: Labels
 	// MISSING: Name
 	if in.Network != "" {
-		out.Network = &computev1beta1.ComputeNetworkRef{External: in.Network}
+		out.Network = &computerefs.ComputeNetworkRef{External: in.Network}
 	}
-	out.PscConfig = PscConfig_FromProto(mapCtx, in.GetPscConfig())
+	out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
 	// MISSING: PscConnections
 	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 	// MISSING: UpdateTime
 	return out
 }
-func NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeNetworkRef) string {
+func NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx *direct.MapContext, in *computerefs.ComputeNetworkRef) string {
 	if in == nil {
 		return ""
 	}
 	return in.External
 }
-func PscConfig_Subnetworks_FromProto(mapCtx *direct.MapContext, in []string) []refs.ComputeSubnetworkRef {
+func PSCConfig_Subnetworks_FromProto(mapCtx *direct.MapContext, in []string) []computev1beta1.ComputeSubnetworkRef {
 	if in == nil {
 		return nil
 	}
-	var out []refs.ComputeSubnetworkRef
+	var out []computev1beta1.ComputeSubnetworkRef
 	for _, s := range in {
-		out = append(out, refs.ComputeSubnetworkRef{External: s})
+		out = append(out, computev1beta1.ComputeSubnetworkRef{External: s})
 	}
 	return out
 }
-func PscConfig_Subnetworks_ToProto(mapCtx *direct.MapContext, in []refs.ComputeSubnetworkRef) []string {
+func PSCConfig_Subnetworks_ToProto(mapCtx *direct.MapContext, in []computev1beta1.ComputeSubnetworkRef) []string {
 	if in == nil {
 		return nil
 	}

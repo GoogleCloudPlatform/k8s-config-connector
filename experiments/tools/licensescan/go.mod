@@ -1,11 +1,12 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/tools/licensescan
 
-go 1.24.0
+go 1.26
 
-toolchain go1.24.6
+toolchain go1.26.4
 
 require (
 	github.com/spf13/cobra v1.8.1
+	golang.org/x/mod v0.33.0
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/yaml v1.4.0
 )

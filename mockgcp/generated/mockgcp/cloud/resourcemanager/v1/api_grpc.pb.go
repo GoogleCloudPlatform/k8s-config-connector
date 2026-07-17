@@ -35,6 +35,8 @@ type FoldersServerClient interface {
 	ListOrgPoliciesFolder(ctx context.Context, in *ListOrgPoliciesFolderRequest, opts ...grpc.CallOption) (*ListOrgPoliciesResponse, error)
 	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
 	SetOrgPolicyFolder(ctx context.Context, in *SetOrgPolicyFolderRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
+	// Returns permissions that a caller has on the specified project.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error)
 }
 
 type foldersServerClient struct {
@@ -99,6 +101,15 @@ func (c *foldersServerClient) SetOrgPolicyFolder(ctx context.Context, in *SetOrg
 	return out, nil
 }
 
+func (c *foldersServerClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error) {
+	out := new(TestIamPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.FoldersServer/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FoldersServerServer is the server API for FoldersServer service.
 // All implementations must embed UnimplementedFoldersServerServer
 // for forward compatibility
@@ -115,6 +126,8 @@ type FoldersServerServer interface {
 	ListOrgPoliciesFolder(context.Context, *ListOrgPoliciesFolderRequest) (*ListOrgPoliciesResponse, error)
 	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
 	SetOrgPolicyFolder(context.Context, *SetOrgPolicyFolderRequest) (*OrgPolicy, error)
+	// Returns permissions that a caller has on the specified project.
+	TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error)
 	mustEmbedUnimplementedFoldersServerServer()
 }
 
@@ -139,6 +152,9 @@ func (UnimplementedFoldersServerServer) ListOrgPoliciesFolder(context.Context, *
 }
 func (UnimplementedFoldersServerServer) SetOrgPolicyFolder(context.Context, *SetOrgPolicyFolderRequest) (*OrgPolicy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetOrgPolicyFolder not implemented")
+}
+func (UnimplementedFoldersServerServer) TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 func (UnimplementedFoldersServerServer) mustEmbedUnimplementedFoldersServerServer() {}
 
@@ -261,6 +277,24 @@ func _FoldersServer_SetOrgPolicyFolder_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FoldersServer_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoldersServerServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloudresourcemanager.v1.FoldersServer/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoldersServerServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FoldersServer_ServiceDesc is the grpc.ServiceDesc for FoldersServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -291,6 +325,10 @@ var FoldersServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetOrgPolicyFolder",
 			Handler:    _FoldersServer_SetOrgPolicyFolder_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _FoldersServer_TestIamPermissions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -519,6 +557,8 @@ type OrganizationsServerClient interface {
 	SearchOrganization(ctx context.Context, in *SearchOrganizationRequest, opts ...grpc.CallOption) (*SearchOrganizationsResponse, error)
 	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
 	SetOrgPolicyOrganization(ctx context.Context, in *SetOrgPolicyOrganizationRequest, opts ...grpc.CallOption) (*OrgPolicy, error)
+	// Returns permissions that a caller has on the specified project.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error)
 }
 
 type organizationsServerClient struct {
@@ -601,6 +641,15 @@ func (c *organizationsServerClient) SetOrgPolicyOrganization(ctx context.Context
 	return out, nil
 }
 
+func (c *organizationsServerClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error) {
+	out := new(TestIamPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsServerServer is the server API for OrganizationsServer service.
 // All implementations must embed UnimplementedOrganizationsServerServer
 // for forward compatibility
@@ -621,6 +670,8 @@ type OrganizationsServerServer interface {
 	SearchOrganization(context.Context, *SearchOrganizationRequest) (*SearchOrganizationsResponse, error)
 	// Updates the specified `Policy` on the resource. Creates a new `Policy` for that `Constraint` on the resource if one does not exist. Not supplying an `etag` on the request `Policy` results in an unconditional write of the `Policy`.
 	SetOrgPolicyOrganization(context.Context, *SetOrgPolicyOrganizationRequest) (*OrgPolicy, error)
+	// Returns permissions that a caller has on the specified project.
+	TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error)
 	mustEmbedUnimplementedOrganizationsServerServer()
 }
 
@@ -651,6 +702,9 @@ func (UnimplementedOrganizationsServerServer) SearchOrganization(context.Context
 }
 func (UnimplementedOrganizationsServerServer) SetOrgPolicyOrganization(context.Context, *SetOrgPolicyOrganizationRequest) (*OrgPolicy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetOrgPolicyOrganization not implemented")
+}
+func (UnimplementedOrganizationsServerServer) TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 func (UnimplementedOrganizationsServerServer) mustEmbedUnimplementedOrganizationsServerServer() {}
 
@@ -809,6 +863,24 @@ func _OrganizationsServer_SetOrgPolicyOrganization_Handler(srv interface{}, ctx 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsServer_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsServerServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloudresourcemanager.v1.OrganizationsServer/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsServerServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -848,6 +920,10 @@ var OrganizationsServer_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SetOrgPolicyOrganization",
 			Handler:    _OrganizationsServer_SetOrgPolicyOrganization_Handler,
 		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _OrganizationsServer_TestIamPermissions_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "mockgcp/cloud/resourcemanager/v1/api.proto",
@@ -883,6 +959,8 @@ type ProjectsServerClient interface {
 	UndeleteProject(ctx context.Context, in *UndeleteProjectServiceRequest, opts ...grpc.CallOption) (*Empty, error)
 	// Updates the attributes of the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have modify permissions for this Project.
 	UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*Project, error)
+	// Returns permissions that a caller has on the specified project.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error)
 }
 
 type projectsServerClient struct {
@@ -1010,6 +1088,15 @@ func (c *projectsServerClient) UpdateProject(ctx context.Context, in *UpdateProj
 	return out, nil
 }
 
+func (c *projectsServerClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRequest, opts ...grpc.CallOption) (*TestIamPermissionsResponse, error) {
+	out := new(TestIamPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloudresourcemanager.v1.ProjectsServer/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServerServer is the server API for ProjectsServer service.
 // All implementations must embed UnimplementedProjectsServerServer
 // for forward compatibility
@@ -1040,6 +1127,8 @@ type ProjectsServerServer interface {
 	UndeleteProject(context.Context, *UndeleteProjectServiceRequest) (*Empty, error)
 	// Updates the attributes of the Project identified by the specified `project_id` (for example, `my-project-123`). The caller must have modify permissions for this Project.
 	UpdateProject(context.Context, *UpdateProjectRequest) (*Project, error)
+	// Returns permissions that a caller has on the specified project.
+	TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error)
 	mustEmbedUnimplementedProjectsServerServer()
 }
 
@@ -1085,6 +1174,9 @@ func (UnimplementedProjectsServerServer) UndeleteProject(context.Context, *Undel
 }
 func (UnimplementedProjectsServerServer) UpdateProject(context.Context, *UpdateProjectRequest) (*Project, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateProject not implemented")
+}
+func (UnimplementedProjectsServerServer) TestIamPermissions(context.Context, *TestIamPermissionsRequest) (*TestIamPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 func (UnimplementedProjectsServerServer) mustEmbedUnimplementedProjectsServerServer() {}
 
@@ -1333,6 +1425,24 @@ func _ProjectsServer_UpdateProject_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectsServer_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServerServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloudresourcemanager.v1.ProjectsServer/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServerServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProjectsServer_ServiceDesc is the grpc.ServiceDesc for ProjectsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1391,6 +1501,10 @@ var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateProject",
 			Handler:    _ProjectsServer_UpdateProject_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _ProjectsServer_TestIamPermissions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

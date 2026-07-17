@@ -59,16 +59,11 @@ type ComputeVPNTunnelSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. IKE protocol version to use when establishing the VPN tunnel with
-	peer VPN gateway.
-	Acceptable IKE versions are 1 or 2. Default version is 2. */
+	/* Immutable. IKE protocol version to use when establishing the VPN tunnel with peer VPN gateway. Acceptable IKE versions are 1 or 2. Default version is 2. */
 	// +optional
 	IkeVersion *int64 `json:"ikeVersion,omitempty"`
 
-	/* Immutable. Local traffic selector to use when establishing the VPN tunnel with
-	peer VPN gateway. The value should be a CIDR formatted string,
-	for example '192.168.0.0/16'. The ranges should be disjoint.
-	Only IPv4 is supported. */
+	/* Immutable. Local traffic selector to use when establishing the VPN tunnel with peer VPN gateway. The value should be a CIDR formatted string, for example '192.168.0.0/16'. The ranges should be disjoint. Only IPv4 is supported. */
 	// +optional
 	LocalTrafficSelector []string `json:"localTrafficSelector,omitempty"`
 
@@ -76,14 +71,11 @@ type ComputeVPNTunnelSpec struct {
 	// +optional
 	PeerExternalGatewayInterface *int64 `json:"peerExternalGatewayInterface,omitempty"`
 
-	/* The peer side external VPN gateway to which this VPN tunnel
-	is connected. */
+	/* The peer side external VPN gateway to which this VPN tunnel is connected. */
 	// +optional
 	PeerExternalGatewayRef *v1alpha1.ResourceRef `json:"peerExternalGatewayRef,omitempty"`
 
-	/* The peer side HA GCP VPN gateway to which this VPN tunnel is
-	connected. If provided, the VPN tunnel will automatically use the
-	same VPN gateway interface ID in the peer GCP VPN gateway. */
+	/* The peer side HA GCP VPN gateway to which this VPN tunnel is connected. If provided, the VPN tunnel will automatically use the same VPN gateway interface ID in the peer GCP VPN gateway. */
 	// +optional
 	PeerGCPGatewayRef *v1alpha1.ResourceRef `json:"peerGCPGatewayRef,omitempty"`
 
@@ -94,10 +86,7 @@ type ComputeVPNTunnelSpec struct {
 	/* Immutable. The region where the tunnel is located. If unset, is set to the region of 'target_vpn_gateway'. */
 	Region string `json:"region"`
 
-	/* Immutable. Remote traffic selector to use when establishing the VPN tunnel with
-	peer VPN gateway. The value should be a CIDR formatted string,
-	for example '192.168.0.0/16'. The ranges should be disjoint.
-	Only IPv4 is supported. */
+	/* Immutable. Remote traffic selector to use when establishing the VPN tunnel with peer VPN gateway. The value should be a CIDR formatted string, for example '192.168.0.0/16'. The ranges should be disjoint. Only IPv4 is supported. */
 	// +optional
 	RemoteTrafficSelector []string `json:"remoteTrafficSelector,omitempty"`
 
@@ -109,12 +98,10 @@ type ComputeVPNTunnelSpec struct {
 	// +optional
 	RouterRef *v1alpha1.ResourceRef `json:"routerRef,omitempty"`
 
-	/* Immutable. Shared secret used to set the secure session between the Cloud VPN
-	gateway and the peer VPN gateway. */
+	/* Immutable. Shared secret used to set the secure session between the Cloud VPN gateway and the peer VPN gateway. */
 	SharedSecret VpntunnelSharedSecret `json:"sharedSecret"`
 
-	/* The ComputeTargetVPNGateway with which this VPN tunnel is
-	associated. */
+	/* The ComputeTargetVPNGateway with which this VPN tunnel is associated. */
 	// +optional
 	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
 
@@ -122,9 +109,7 @@ type ComputeVPNTunnelSpec struct {
 	// +optional
 	VpnGatewayInterface *int64 `json:"vpnGatewayInterface,omitempty"`
 
-	/* The ComputeVPNGateway with which this VPN tunnel is associated.
-	This must be used if a High Availability VPN gateway resource is
-	created. */
+	/* The ComputeVPNGateway with which this VPN tunnel is associated. This must be used if a High Availability VPN gateway resource is created. */
 	// +optional
 	VpnGatewayRef *v1alpha1.ResourceRef `json:"vpnGatewayRef,omitempty"`
 }
@@ -141,8 +126,7 @@ type ComputeVPNTunnelStatus struct {
 	// +optional
 	DetailedStatus *string `json:"detailedStatus,omitempty"`
 
-	/* The fingerprint used for optimistic locking of this resource.  Used
-	internally during updates. */
+	/* The fingerprint used for optimistic locking of this resource.  Used internally during updates. */
 	// +optional
 	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
 

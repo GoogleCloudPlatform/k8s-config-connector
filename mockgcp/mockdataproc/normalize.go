@@ -15,6 +15,9 @@
 package mockdataproc
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -22,19 +25,19 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Cluster
-	replacements.ReplacePath(".status.stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.status.stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".clusters[].status.stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".metadata.status.stateStartTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".clusters[].status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
-	replacements.ReplacePath(".statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".response.statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".clusters[].statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".metadata.statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".clusters[].statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// Job
-	replacements.ReplacePath(".statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".status.stateStartTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// metrics are volatile and more "data plane"
 	for _, metric := range []string{
@@ -50,6 +53,31 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "dataproc.googleapis.com") {
+		return
+	}
+
+	// We want to normalize the random session UUID to "00000000-0000-0000-0000-000000000001"
+	// Let's find any UUID-like string in the response and register a replacement for it!
+	uuidRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
+	opIDRegex := regexp.MustCompile(`operation-\d+-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		for _, match := range opIDRegex.FindAllString(value, -1) {
+			replacements.ReplaceStringValue(match, "${operationID}")
+		}
+	})
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		// Cluster UUID is already handled and normalized to ${dataStoreClusterUUID}, so don't overwrite it if it's clusterUuid
+		if path == ".clusterUuid" || path == ".response.clusterUuid" {
+			return
+		}
+		for _, match := range uuidRegex.FindAllString(value, -1) {
+			replacements.ReplaceStringValue(match, "00000000-0000-0000-0000-000000000001")
+		}
+	})
+
 	event.VisitResponseStringValues(func(path string, value string) {
 		switch path {
 		case ".config.configBucket":

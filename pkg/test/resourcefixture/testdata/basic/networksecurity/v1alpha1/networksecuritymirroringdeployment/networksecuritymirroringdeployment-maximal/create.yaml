@@ -1,0 +1,15 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringDeployment
+metadata:
+  labels:
+    key-one: value-one
+  name: mirroringdep-max-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  forwardingRuleRef:
+    external: "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}"
+  mirroringDeploymentGroupRef:
+    external: "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-dg-${uniqueId}"
+  description: "Maximal mirroring deployment description"

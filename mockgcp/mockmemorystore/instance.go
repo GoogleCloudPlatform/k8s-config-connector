@@ -17,7 +17,6 @@ package mockmemorystore
 import (
 	"context"
 	"fmt"
-	"math/rand/v2"
 	"strings"
 	"time"
 
@@ -25,12 +24,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
+	"github.com/google/uuid"
 )
 
 type instanceServer struct {
@@ -54,7 +55,7 @@ func (r *instanceServer) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 		return nil, err
 	}
 
-	retObj := proto.Clone(obj).(*pb.Instance)
+	retObj := proto.CloneOf(obj)
 	return retObj, nil
 }
 
@@ -69,10 +70,10 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-
+	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Instance_CREATING
 
 	if err := r.populateDefaultsForInstance(name, obj); err != nil {
@@ -83,24 +84,19 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		return nil, err
 	}
 
-	updatedObj := proto.Clone(obj).(*pb.Instance)
-	updatedObj.CreateTime = nil
-	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
-
 	metadata := &pb.OperationMetadata{
 		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "create",
 	}
-
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
-		// pscConfigs is not included in the response
-		retObj.PscAutoConnections = nil
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
+		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
 	})
 }
@@ -111,28 +107,99 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	}
 
 	if obj.DeletionProtectionEnabled == nil {
-		obj.DeletionProtectionEnabled = mocks.PtrTo(false)
+		obj.DeletionProtectionEnabled = new(false)
+	}
+
+	if obj.EffectiveMaintenanceVersion == nil {
+		obj.EffectiveMaintenanceVersion = new("MEMORYSTORE_20260313_01_02")
+	}
+
+	if obj.AvailableMaintenanceVersions == nil {
+		obj.AvailableMaintenanceVersions = []string{"MEMORYSTORE_20260313_01_02", "MEMORYSTORE_20260313_01_03"}
+	}
+
+	if obj.KmsKey != nil && *obj.KmsKey != "" {
+		obj.EncryptionInfo = &pb.EncryptionInfo{
+			EncryptionType:     pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
+			KmsKeyVersions:     []string{*obj.KmsKey + "/cryptoKeyVersions/1"},
+			KmsKeyPrimaryState: pb.EncryptionInfo_ENABLED,
+		}
+	} else {
+		if obj.EncryptionInfo == nil {
+			obj.EncryptionInfo = &pb.EncryptionInfo{
+				EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			}
+		}
 	}
 
 	if obj.NodeType == pb.Instance_NODE_TYPE_UNSPECIFIED {
 		obj.NodeType = pb.Instance_HIGHMEM_MEDIUM
 	}
 
-	if obj.Endpoints == nil {
-		pscConnectionID := time.Now().UnixNano()
+	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
+		obj.Mode = pb.Instance_CLUSTER
+	}
 
+	if len(obj.PscAttachmentDetails) == 0 {
+		var types []pb.ConnectionType
+		switch obj.GetMode() {
+		case pb.Instance_CLUSTER:
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_DISCOVERY)
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED)
+		default:
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_PRIMARY)
+			types = append(types, pb.ConnectionType_CONNECTION_TYPE_READER)
+		}
+		pscProjectNumber := 11199043661                                 // This is (presumably) a project owned by memorystore
+		pscUID := strings.ReplaceAll(uuid.New().String(), "-", "")[:15] // Take a substring to get a shorter UID
+		obj.PscAttachmentDetails = []*pb.PscAttachmentDetail{
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa", pscProjectNumber, name.Location, pscUID),
+				ConnectionType:    types[0],
+			},
+			{
+				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-j%s-psc-sa-2", pscProjectNumber, name.Location, pscUID),
+				ConnectionType:    types[1],
+			},
+		}
+	}
+
+	if len(obj.Endpoints) > 0 {
+		if obj.Endpoints[0] != nil && len(obj.Endpoints[0].Connections) > 0 {
+			connections := obj.Endpoints[0].Connections
+			if len(connections) == 1 {
+				autoConnection := connections[0].GetPscAutoConnection()
+				if autoConnection != nil {
+					obj.Endpoints[0].Connections = append(obj.Endpoints[0].Connections, &pb.Instance_ConnectionDetail{
+						Connection: &pb.Instance_ConnectionDetail_PscAutoConnection{
+							PscAutoConnection: proto.CloneOf(autoConnection),
+						},
+					})
+				}
+			}
+		}
+		pscConnectionID := int64(1234567890123456789)
 		for _, endpoint := range obj.Endpoints {
-			for _, connections := range endpoint.Connections {
+			for i, connections := range endpoint.Connections {
+				attachmentDetails := obj.PscAttachmentDetails[i%2]
 				if connections.GetPscAutoConnection() != nil {
 					autoConnection := connections.GetPscAutoConnection()
 					network, err := s.parseNetworkName(autoConnection.GetNetwork())
 					if err != nil {
 						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", autoConnection.Network)
 					}
-					forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
-					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
-					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
+					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
+					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
 					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
+					autoConnection.ConnectionType = attachmentDetails.ConnectionType
+					autoConnection.ServiceAttachment = attachmentDetails.ServiceAttachment
+					if autoConnection.Ports == nil && autoConnection.ConnectionType != pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED {
+						autoConnection.Ports = &pb.PscAutoConnection_Port{
+							Port: 6379,
+						}
+					}
 					pscConnectionID++
 				}
 				if connections.GetPscConnection() != nil {
@@ -141,10 +208,15 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					if err != nil {
 						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", userConnection.Network)
 					}
-					forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
-					userConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
-					userConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
+					userConnection.ProjectId = network.Project.ID
+					userConnection.PscConnectionStatus = pb.PscConnectionStatus_ACTIVE
+					userConnection.ConnectionType = attachmentDetails.ConnectionType
 					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
+					if userConnection.Ports == nil && userConnection.ConnectionType != pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED {
+						userConnection.Ports = &pb.PscConnection_Port{
+							Port: 6379,
+						}
+					}
 					pscConnectionID++
 				}
 			}
@@ -161,8 +233,8 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.ReplicaCount == nil {
 		obj.ReplicaCount = mocks.PtrTo[int32](0)
 	}
-	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
-		obj.Mode = pb.Instance_CLUSTER
+	if obj.NodeConfig == nil {
+		obj.NodeConfig = &pb.NodeConfig{}
 	}
 	nodeCapacity := float64(1)
 	switch obj.GetNodeType() {
@@ -177,19 +249,15 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	default:
 		return fmt.Errorf("unknown node type %v", obj.GetNodeType())
 	}
-
-	if obj.NodeConfig == nil {
-		obj.NodeConfig = &pb.NodeConfig{
-			SizeGb: *mocks.PtrTo(float64(nodeCapacity)),
-		}
-	}
+	obj.NodeConfig.SizeGb = *mocks.PtrTo(float64(nodeCapacity))
 
 	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
 		obj.TransitEncryptionMode = pb.Instance_TRANSIT_ENCRYPTION_DISABLED
 	}
 	if obj.Uid == "" {
-		obj.Uid = fmt.Sprintf("%x", time.Now().UnixNano())
+		obj.Uid = uuid.New().String()
 	}
+
 	if obj.ZoneDistributionConfig == nil {
 		obj.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
 	}
@@ -199,6 +267,63 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
 	}
+	if obj.AutomatedBackupConfig == nil {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{}
+	}
+	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+	}
+	if obj.CrossInstanceReplicationConfig != nil {
+		config := obj.CrossInstanceReplicationConfig
+		if config.UpdateTime == nil {
+			config.UpdateTime = timestamppb.Now()
+		}
+		membership := &pb.CrossInstanceReplicationConfig_Membership{}
+		switch config.InstanceRole {
+		case pb.CrossInstanceReplicationConfig_PRIMARY:
+			if len(config.SecondaryInstances) == 0 {
+				return status.Errorf(codes.InvalidArgument, "no secondary instances specified")
+			}
+			membership.PrimaryInstance = &pb.CrossInstanceReplicationConfig_RemoteInstance{
+				Instance: obj.Name,
+				Uid:      obj.Uid,
+			}
+			for _, secondary := range config.SecondaryInstances {
+				secondaryInstance := &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: secondary.Instance,
+					Uid:      uuid.NewString(),
+				}
+				membership.SecondaryInstances = append(membership.SecondaryInstances, secondaryInstance)
+			}
+			config.PrimaryInstance = nil
+			config.SecondaryInstances = membership.SecondaryInstances
+		case pb.CrossInstanceReplicationConfig_SECONDARY:
+			if config.PrimaryInstance == nil {
+				return status.Errorf(codes.InvalidArgument, "no primary instance specified")
+			}
+			if config.PrimaryInstance != nil {
+				primaryInstance := &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: config.PrimaryInstance.GetInstance(),
+					Uid:      uuid.NewString(),
+				}
+				membership.PrimaryInstance = primaryInstance
+			}
+			membership.SecondaryInstances = append(membership.SecondaryInstances, &pb.CrossInstanceReplicationConfig_RemoteInstance{
+				Instance: obj.Name,
+				Uid:      obj.Uid,
+			})
+			// This field is only set for a primary instance.
+			config.PrimaryInstance = membership.PrimaryInstance
+			config.SecondaryInstances = nil
+		case pb.CrossInstanceReplicationConfig_NONE, pb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED:
+			obj.CrossInstanceReplicationConfig = nil
+		default:
+			return fmt.Errorf("unknown instance role %v", config.InstanceRole)
+		}
+		config.Membership = membership
+	}
+	// PscAutoConnections is not included in the response
+	obj.PscAutoConnections = nil
 	return nil
 }
 
@@ -217,7 +342,6 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	obj.State = pb.Instance_UPDATING
 
 	// Required. Mask of fields to update. At least one path must be supplied in
 	// this field. The elements of the repeated paths field may only include these
@@ -241,24 +365,54 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 
 	for _, path := range paths {
 		switch path {
+		case "authorizationMode":
+			obj.AuthorizationMode = req.Instance.AuthorizationMode
+		case "labels":
+			obj.Labels = req.Instance.Labels
 		case "replicaCount":
 			obj.ReplicaCount = req.Instance.ReplicaCount
 		case "shardCount":
 			obj.ShardCount = req.Instance.ShardCount
-		case "deletionProtectionEnabled":
-			obj.DeletionProtectionEnabled = req.Instance.DeletionProtectionEnabled
-		case "persistenceConfig":
-			obj.PersistenceConfig = req.Instance.PersistenceConfig
-		case "engineConfigs":
-			obj.EngineConfigs = req.Instance.EngineConfigs
-		case "endpoints":
-			obj.Endpoints = req.Instance.Endpoints
-		case "labels":
-			obj.Labels = req.Instance.Labels
 		case "nodeType":
 			obj.NodeType = req.Instance.NodeType
-
+		case "persistenceConfig":
+			obj.PersistenceConfig = req.Instance.PersistenceConfig
+		case "engineVersion":
+			obj.EngineVersion = req.Instance.EngineVersion
+		case "engineConfigs":
+			obj.EngineConfigs = req.Instance.EngineConfigs
+		case "deletionProtectionEnabled":
+			obj.DeletionProtectionEnabled = req.Instance.DeletionProtectionEnabled
+		case "endpoints":
+			obj.Endpoints = r.mergeEndpoints(obj.Endpoints, req.Instance.Endpoints)
+		case "maintenancePolicy":
+			if req.Instance.MaintenancePolicy != nil {
+				obj.MaintenancePolicy = req.Instance.MaintenancePolicy
+			}
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
+		case "crossInstanceReplicationConfig":
+			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
+		case "gcsSource":
+			if gcsSource := req.Instance.GetGcsSource(); gcsSource != nil {
+				obj.ImportSources = &pb.Instance_GcsSource{GcsSource: gcsSource}
+			}
+		case "managedBackupSource":
+			if managedBackupSource := req.Instance.GetManagedBackupSource(); managedBackupSource != nil {
+				obj.ImportSources = &pb.Instance_ManagedBackupSource_{ManagedBackupSource: managedBackupSource}
+			}
+		case "mode":
+			obj.Mode = req.Instance.Mode
+		case "transitEncryptionMode":
+			obj.TransitEncryptionMode = req.Instance.TransitEncryptionMode
+		case "zoneDistributionConfig":
+			obj.ZoneDistributionConfig = req.Instance.ZoneDistributionConfig
+		case "maintenanceVersion":
+			obj.MaintenanceVersion = req.Instance.MaintenanceVersion
 		default:
+			// Note: actual error is:
+			// googleapi: Error 400: unsupported path in fieldMask: mode. Allowed values are engine_version, automated_backup_config, shard_count, persistence_config.rdb_config.rdb_snapshot_period, acl_policy, auth_mode, persistence_config.aof_config.append_fsync, simulate_maintenance_event, deletion_protection_enabled, node_type, cross_instance_replication_config.primary_instance.instance, replica_count, persistence_config.rdb_config.rdb_snapshot_start_time, endpoints, cross_instance_replication_config, cross_instance_replication_config.instance_role, rotate_server_certificate, engine_configs, labels, persistence_config, maintenance_window, maintenance_policy, automated_backup_config.fixed_frequency_schedule.start_time.hours, maintenance_version, maintenance_policy.weekly_maintenance_window, automated_backup_config.fixed_frequency_schedule.start_time, cross_instance_replication_config.secondary_instances, automated_backup_config.automated_backup_mode, automated_backup_config.fixed_frequency_schedule, automated_backup_config.retention, persistence_config.mode
+
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
@@ -267,6 +421,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		return nil, err
 	}
 
+	obj.State = pb.Instance_UPDATING
+	obj.UpdateTime = timestamppb.New(time.Now())
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -281,13 +437,31 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 
-		retObj := proto.Clone(obj).(*pb.Instance)
-		// pscConfigs is not included in the response
-		retObj.PscAutoConnections = nil
+		if err := r.syncReplication(ctx, obj); err != nil {
+			return nil, err
+		}
+
+		retObj := proto.CloneOf(obj)
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
+		r.storage.Update(ctx, fqn, retObj)
 		return retObj, nil
 	})
+}
+
+func (r *instanceServer) mergeEndpoints(current, updates []*pb.Instance_InstanceEndpoint) []*pb.Instance_InstanceEndpoint {
+	var results []*pb.Instance_InstanceEndpoint
+	for _, item := range current {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscAutoConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	for _, item := range updates {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	return results
 }
 
 func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
@@ -312,8 +486,15 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 		return nil, status.Errorf(codes.FailedPrecondition, "The instance is deletion protected. Please disable deletion protection to delete the instance. To disable, update DeleteProtectionEnabled to false via the Update API")
 	}
 
-	deletedObj := &pb.Instance{}
-	if err := r.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	if obj.GetCrossInstanceReplicationConfig().GetInstanceRole() == pb.CrossInstanceReplicationConfig_PRIMARY {
+		secondaryInstances := obj.CrossInstanceReplicationConfig.SecondaryInstances
+		if len(secondaryInstances) > 0 {
+			return nil, status.Errorf(codes.FailedPrecondition, "Primary instance %q cannot be deleted because it still has secondary instances: %v", obj.GetName(), secondaryInstances)
+		}
+	}
+
+	obj.State = pb.Instance_DELETING
+	if err := r.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -326,6 +507,256 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
+		deletedObj := &pb.Instance{}
+		r.storage.Delete(ctx, fqn, deletedObj)
+		return &emptypb.Empty{}, nil
+	})
+}
+
+func (r *instanceServer) syncReplication(ctx context.Context, obj *pb.Instance) error {
+	config := obj.GetCrossInstanceReplicationConfig()
+	if config == nil {
+		return nil
+	}
+
+	if config.InstanceRole == pb.CrossInstanceReplicationConfig_PRIMARY {
+		membership := &pb.CrossInstanceReplicationConfig_Membership{
+			PrimaryInstance: &pb.CrossInstanceReplicationConfig_RemoteInstance{
+				Instance: obj.Name,
+				Uid:      obj.Uid,
+			},
+		}
+		var secondaryInstances []*pb.CrossInstanceReplicationConfig_RemoteInstance
+		for _, sc := range config.SecondaryInstances {
+			secondary := &pb.Instance{}
+			if err := r.storage.Get(ctx, sc.GetInstance(), secondary); err == nil {
+				secondaryInstances = append(secondaryInstances, &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: secondary.Name,
+					Uid:      secondary.Uid,
+				})
+			} else {
+				secondaryInstances = append(secondaryInstances, sc)
+			}
+		}
+		membership.SecondaryInstances = secondaryInstances
+		config.Membership = membership
+		config.SecondaryInstances = secondaryInstances
+		config.PrimaryInstance = nil
+
+		// Update secondaries
+		for _, sc := range membership.SecondaryInstances {
+			secondary := &pb.Instance{}
+			if err := r.storage.Get(ctx, sc.GetInstance(), secondary); err == nil {
+				if secondary.CrossInstanceReplicationConfig == nil {
+					secondary.CrossInstanceReplicationConfig = &pb.CrossInstanceReplicationConfig{}
+				}
+				secondary.CrossInstanceReplicationConfig.InstanceRole = pb.CrossInstanceReplicationConfig_SECONDARY
+				secondary.CrossInstanceReplicationConfig.PrimaryInstance = membership.PrimaryInstance
+				secondary.CrossInstanceReplicationConfig.SecondaryInstances = nil
+				secondary.CrossInstanceReplicationConfig.Membership = membership
+				secondary.CrossInstanceReplicationConfig.UpdateTime = timestamppb.Now()
+				if err := r.storage.Update(ctx, secondary.Name, secondary); err != nil {
+					return err
+				}
+			}
+		}
+		// Save obj with updated membership
+		if err := r.storage.Update(ctx, obj.Name, obj); err != nil {
+			return err
+		}
+	} else if config.InstanceRole == pb.CrossInstanceReplicationConfig_SECONDARY {
+		pc := config.GetPrimaryInstance()
+		if pc.GetInstance() == "" {
+			return nil
+		}
+		primaryName := pc.GetInstance()
+		primary := &pb.Instance{}
+		if err := r.storage.Get(ctx, primaryName, primary); err == nil {
+			// Ensure primary knows about this secondary
+			found := false
+			if primary.CrossInstanceReplicationConfig == nil {
+				primary.CrossInstanceReplicationConfig = &pb.CrossInstanceReplicationConfig{
+					InstanceRole: pb.CrossInstanceReplicationConfig_PRIMARY,
+				}
+			}
+			for _, sc := range primary.CrossInstanceReplicationConfig.SecondaryInstances {
+				if sc.GetInstance() == obj.Name {
+					found = true
+					sc.Uid = obj.Uid
+					break
+				}
+			}
+			if !found {
+				primary.CrossInstanceReplicationConfig.SecondaryInstances = append(primary.CrossInstanceReplicationConfig.SecondaryInstances, &pb.CrossInstanceReplicationConfig_RemoteInstance{
+					Instance: obj.Name,
+					Uid:      obj.Uid,
+				})
+			}
+			// Sync from primary's perspective
+			if err := r.syncReplication(ctx, primary); err != nil {
+				return err
+			}
+		}
+	}
+
+	// Reload obj to ensure it has the latest state (including membership)
+	latest := &pb.Instance{}
+	if err := r.storage.Get(ctx, obj.Name, latest); err != nil {
+		return err
+	}
+	proto.Reset(obj)
+	proto.Merge(obj, latest)
+
+	return nil
+}
+
+func (r *instanceServer) GetBackup(ctx context.Context, req *pb.GetBackupRequest) (*pb.Backup, error) {
+	name, err := r.parseBackupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Backup{}
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	retObj := proto.CloneOf(obj)
+	return retObj, nil
+}
+
+func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInstanceRequest) (*longrunning.Operation, error) {
+	instanceName, err := r.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	instanceFqn := instanceName.String()
+	instanceObj := &pb.Instance{}
+	if err := r.storage.Get(ctx, instanceFqn, instanceObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", instanceFqn)
+		}
+		return nil, err
+	}
+
+	backupCollectionName := ""
+	if instanceObj.BackupCollection != nil {
+		backupCollectionName = *instanceObj.BackupCollection
+	} else {
+		backupCollectionName = fmt.Sprintf("projects/%s/locations/%s/backupCollections/backupCollection-%s", instanceName.Project.ID, instanceName.Location, instanceName.Name)
+		instanceObj.BackupCollection = mocks.PtrTo(backupCollectionName)
+		if err := r.storage.Update(ctx, instanceFqn, instanceObj); err != nil {
+			return nil, err
+		}
+	}
+
+	backupID := req.GetBackupId()
+	if backupID == "" {
+		backupID = time.Now().Format("20060102150405")
+	}
+
+	reqName := fmt.Sprintf("%s/backups/%s", backupCollectionName, backupID)
+	name, err := r.parseBackupName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	// Default TTL is 100 years
+	ttl := durationpb.New(100 * 365 * 24 * time.Hour)
+	if req.GetTtl() != nil {
+		ttl = req.GetTtl()
+	}
+
+	obj := &pb.Backup{
+		BackupType: pb.Backup_ON_DEMAND,
+		BackupFiles: []*pb.BackupFile{
+			{
+				FileName:   fmt.Sprintf("file-%s.rdb", backupID),
+				SizeBytes:  141,
+				CreateTime: timestamppb.New(now),
+			},
+		},
+		CreateTime:     timestamppb.New(now),
+		ExpireTime:     timestamppb.New(now.Add(ttl.AsDuration())),
+		EngineVersion:  instanceObj.EngineVersion,
+		Instance:       instanceName.String(),
+		InstanceUid:    instanceObj.Uid,
+		Name:           fqn,
+		NodeType:       instanceObj.NodeType,
+		ShardCount:     instanceObj.ShardCount,
+		State:          pb.Backup_CREATING,
+		TotalSizeBytes: 141,
+		Uid:            fmt.Sprintf("backup-%s", backupID),
+	}
+
+	obj.EncryptionInfo = &pb.EncryptionInfo{
+		EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+		LastUpdateTime: timestamppb.New(now),
+	}
+
+	if err := r.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	prefix := name.OperationPrefix()
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     instanceName.String(),
+		Verb:       "backup",
+	}
+
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		obj.State = pb.Backup_ACTIVE
+		r.storage.Update(ctx, fqn, obj)
+		return proto.CloneOf(instanceObj), nil
+	})
+}
+
+func (r *instanceServer) DeleteBackup(ctx context.Context, req *pb.DeleteBackupRequest) (*longrunning.Operation, error) {
+	name, err := r.parseBackupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	now := time.Now()
+
+	obj := &pb.Backup{}
+
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	obj.State = pb.Backup_DELETING
+	if err := r.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "delete",
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		deletedObj := &pb.Backup{}
+		r.storage.Delete(ctx, fqn, deletedObj)
 		return &emptypb.Empty{}, nil
 	})
 }
@@ -388,5 +819,48 @@ func (s *instanceServer) parseNetworkName(name string) (*networkName, error) {
 			Name:    tokens[4],
 		}, nil
 	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+type backupName struct {
+	Project          *projects.ProjectData
+	Location         string
+	BackupCollection string
+	Name             string
+}
+
+func (n *backupName) String() string {
+	return fmt.Sprintf("%s/backups/%s", n.Parent(), n.Name)
+}
+
+func (n *backupName) Parent() string {
+	return fmt.Sprintf("%s/backupCollections/%s", n.OperationPrefix(), n.BackupCollection)
+}
+
+func (n *backupName) OperationPrefix() string {
+	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
+}
+
+// parseBackupName parses a string into a backup name.
+// The expected form is `projects/*/locations/*/backupCollections/*/backups/*`.
+func (r *instanceServer) parseBackupName(name string) (*backupName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "backupCollections" && tokens[6] == "backups" {
+		project, err := r.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &backupName{
+			Project:          project,
+			Location:         tokens[3],
+			BackupCollection: tokens[5],
+			Name:             tokens[7],
+		}
+
+		return name, nil
+	}
+
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }

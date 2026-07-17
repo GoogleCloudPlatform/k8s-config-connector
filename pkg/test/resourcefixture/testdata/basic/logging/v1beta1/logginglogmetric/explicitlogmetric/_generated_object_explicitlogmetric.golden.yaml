@@ -4,7 +4,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: logginglogmetric-${uniqueId}
@@ -21,7 +21,6 @@ spec:
     valueType: DISTRIBUTION
   projectRef:
     external: projects/${projectId}
-  resourceID: logginglogmetric-${uniqueId}
   valueExtractor: EXTRACT(jsonPayload.response)
 status:
   conditions:
@@ -34,5 +33,5 @@ status:
   metricDescriptor:
     name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}
     type: logging.googleapis.com/user/logginglogmetric-${uniqueId}
-  observedGeneration: 3
+  observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

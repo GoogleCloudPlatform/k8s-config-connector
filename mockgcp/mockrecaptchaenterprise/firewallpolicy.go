@@ -64,7 +64,7 @@ func (s *recaptchaEnterpriseService) CreateFirewallPolicy(ctx context.Context, r
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetFirewallPolicy()).(*pb.FirewallPolicy)
+	obj := proto.CloneOf(req.GetFirewallPolicy())
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -148,7 +148,7 @@ func (s *MockService) parseFirewallPolicyName(name string) (*firewallPolicyName,
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "firewallpolicies" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

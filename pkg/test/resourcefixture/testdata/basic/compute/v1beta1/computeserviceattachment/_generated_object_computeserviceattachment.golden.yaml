@@ -10,7 +10,7 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: computeserviceattachment-${uniqueId}
+  name: ${serviceAttachmentID}
   namespace: ${uniqueId}
 spec:
   connectionPreference: ACCEPT_MANUAL
@@ -27,7 +27,7 @@ spec:
   - name: ${subnetworkID}
   projectRef:
     name: project-3-${uniqueId}
-  resourceID: computeserviceattachment-${uniqueId}
+  resourceID: ${serviceAttachmentID}
   targetServiceRef:
     name: ${forwardingRuleID}
 status:
@@ -40,4 +40,4 @@ status:
   fingerprint: abcdef0123A=
   id: 1111111111111111
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/beta/projects/example-project-01/regions/us-west1/serviceAttachments/computeserviceattachment-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/beta/projects/example-project-01/regions/us-west1/serviceAttachments/${serviceAttachmentID}

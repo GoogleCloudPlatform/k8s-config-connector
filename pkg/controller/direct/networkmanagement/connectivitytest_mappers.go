@@ -16,14 +16,13 @@ package networkmanagement
 
 import (
 	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
+	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"google.golang.org/genproto/googleapis/rpc/status"
-	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.EndpointObservedState {
@@ -84,59 +83,7 @@ func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointOb
 	// MISSING: ProjectID
 	return out
 }
-func StatusObservedState_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.StatusObservedState {
-	if in == nil {
-		return nil
-	}
 
-	out := &krm.StatusObservedState{
-		Code:    direct.LazyPtr(in.Code),
-		Message: direct.LazyPtr(in.Message),
-	}
-	if len(in.Details) == 0 {
-		return out
-	}
-	detailsOut := make([]krm.Any, 0)
-	for _, d := range in.Details {
-		if d == nil {
-			continue
-		}
-		dOut := krm.Any{
-			TypeURL: direct.LazyPtr(d.TypeUrl),
-			Value:   direct.ByteSliceToStringPtr(mapCtx, d.Value),
-		}
-		detailsOut = append(detailsOut, dOut)
-	}
-	if len(detailsOut) > 0 {
-		out.Details = detailsOut
-	}
-	return out
-}
-func StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusObservedState) *status.Status {
-	if in == nil {
-		return nil
-	}
-
-	out := &status.Status{
-		Code:    direct.ValueOf(in.Code),
-		Message: direct.ValueOf(in.Message),
-	}
-	if len(in.Details) == 0 {
-		return out
-	}
-	detailsOut := make([]*anypb.Any, 0)
-	for _, d := range in.Details {
-		dOut := &anypb.Any{
-			TypeUrl: direct.ValueOf(d.TypeURL),
-			Value:   direct.StringPtrToByteSlice(mapCtx, d.Value),
-		}
-		detailsOut = append(detailsOut, dOut)
-	}
-	if len(detailsOut) > 0 {
-		out.Details = detailsOut
-	}
-	return out
-}
 func NetworkManagementConnectivityTestSpec_RelatedProjects_FromProto(mapCtx *direct.MapContext, in []string) []refs.ProjectRef {
 	if len(in) == 0 {
 		return nil
@@ -192,7 +139,7 @@ func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoin
 	out.AppEngineVersion = Endpoint_AppEngineVersionEndpoint_FromProto(mapCtx, in.GetAppEngineVersion())
 	out.CloudRunRevision = Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx, in.GetCloudRunRevision())
 	if in.GetNetwork() != "" {
-		out.ComputeNetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.ComputeNetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NetworkType = direct.Enum_FromProto(mapCtx, in.GetNetworkType())
 	if in.GetProjectId() != "" {

@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: apigee.cnrm.cloud.google.com
+  kind: ApigeeEnvgroup
+  name: apigeeenvgroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -51,7 +51,7 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 
 	now := time.Now()
 
-	updated := CloneProto(existing)
+	updated := proto.CloneOf(existing)
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 
 	updated.FriendlyName = req.GetTable().FriendlyName
@@ -62,6 +62,8 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 	}
 
 	updated.Etag = PtrTo(computeEtag(updated))
+
+	s.normalizeTable(updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
@@ -86,6 +88,8 @@ func (s *tablesServer) GetTable(ctx context.Context, req *pb.GetTableRequest) (*
 		return nil, err
 	}
 
+	s.normalizeTable(obj)
+
 	return obj, nil
 }
 
@@ -99,7 +103,7 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetTable()).(*pb.Table)
+	obj := proto.CloneOf(req.GetTable())
 
 	datasetServer := &datasetsServer{MockService: s.MockService}
 	datasetName, err := datasetServer.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
@@ -347,7 +351,9 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	obj.Etag = PtrTo(computeEtag(obj))
 
-	ret := CloneProto(obj)
+	s.normalizeTable(obj)
+
+	ret := proto.CloneOf(obj)
 
 	// TimePartitioning.RequirePartitionFilter is not returned in the POST response,
 	// but will be returned after the table is created.
@@ -381,7 +387,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 
 	now := time.Now()
 
-	updated := CloneProto(existing)
+	updated := proto.CloneOf(existing)
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 	updated.Description = req.GetTable().Description
 	updated.FriendlyName = req.GetTable().FriendlyName
@@ -425,6 +431,8 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 			}
 		}
 	}
+
+	s.normalizeTable(updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
@@ -486,4 +494,21 @@ func (s *MockService) buildTableName(projectName string, datasetID string, table
 	}
 
 	return name, nil
+}
+
+func (s *tablesServer) normalizeTable(table *pb.Table) {
+	if table.Schema != nil {
+		for _, field := range table.Schema.Fields {
+			s.normalizeTableField(field)
+		}
+	}
+}
+
+func (s *tablesServer) normalizeTableField(field *pb.TableFieldSchema) {
+	if field.PolicyTags != nil && len(field.PolicyTags.Names) == 0 {
+		field.PolicyTags = nil
+	}
+	for _, subField := range field.Fields {
+		s.normalizeTableField(subField)
+	}
 }

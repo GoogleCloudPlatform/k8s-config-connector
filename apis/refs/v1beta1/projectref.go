@@ -38,7 +38,7 @@ var ProjectGVK = schema.GroupVersionKind{
 }
 
 func init() {
-	Register(&ProjectRef{})
+	Register(&ProjectRef{}, nil)
 }
 
 // The Project that this resource belongs to.
@@ -71,6 +71,8 @@ func (r *ProjectRef) GetExternal() string {
 
 func (r *ProjectRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 // AsProjectRef converts a generic ResourceRef into a ProjectRef
@@ -84,6 +86,82 @@ func AsProjectRef(in *deprecatedrefs.ResourceRef) *ProjectRef {
 		External:  in.External,
 		Kind:      in.Kind,
 	}
+}
+
+// The resource reference that defaults to Project if Kind is not specified.
+type ExtendedProjectRef struct {
+	// Kind of the referenced resource
+	Kind      string `json:"kind,omitempty"`
+	Namespace string `json:"namespace,omitempty"`
+	Name      string `json:"name,omitempty"`
+	// APIVersion of the referenced resource
+	APIVersion string `json:"apiVersion,omitempty"`
+	// The external name of the referenced resource
+	External string `json:"external,omitempty"`
+}
+
+func (r *ExtendedProjectRef) GetGVK() schema.GroupVersionKind {
+	// If Kind is not specified, default to "Project"
+	if r.Kind == "" {
+		return ProjectGVK
+	}
+	return schema.FromAPIVersionAndKind(r.APIVersion, r.Kind)
+}
+
+func (r *ExtendedProjectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ExtendedProjectRef) GroupVersionKind() schema.GroupVersionKind {
+	return r.GetGVK()
+}
+
+func (r *ExtendedProjectRef) SetGroupVersionKind(gvk schema.GroupVersionKind) {
+	r.APIVersion, r.Kind = gvk.ToAPIVersionAndKind()
+}
+
+func (r *ExtendedProjectRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ExtendedProjectRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ExtendedProjectRef) ValidateExternal(ref string) error {
+	// If Kind is not specified, default to "Project"
+	if r.Kind == "" || r.Kind == "Project" {
+		id := &ProjectIdentity{}
+		if err := id.FromExternal(ref); err != nil {
+			return err
+		}
+		return nil
+	}
+	return nil
+}
+
+func (r *ExtendedProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// If Kind is not specified, default to "Project"
+	if r.Kind == "" || r.Kind == "Project" {
+		projectRef := &ProjectRef{
+			External:  r.External,
+			Name:      r.Name,
+			Namespace: r.Namespace,
+		}
+		if err := projectRef.Normalize(ctx, reader, defaultNamespace); err != nil {
+			return err
+		}
+		r.External = projectRef.External
+		r.Name = ""
+		r.Namespace = ""
+		return nil
+	}
+	return Normalize(ctx, reader, r, defaultNamespace)
 }
 
 type ProjectIdentity struct {

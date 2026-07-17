@@ -1,0 +1,26 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/project-${uniqueId}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: project-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: accesscontextmanager.cnrm.cloud.google.com
+  kind: AccessContextManagerAccessLevel
+  name: acl${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/gsa-${uniqueId}
+  group: iam.cnrm.cloud.google.com
+  kind: IAMServiceAccount
+  name: gsa-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: 'cannot resolve accessPolicyRef: format of AccessContextManagerAccessPolicy
+    external="accessPolicies/578359180191" was not known (use accessPolicies/{{access_policy}})'
+  group: accesscontextmanager.cnrm.cloud.google.com
+  kind: AccessContextManagerServicePerimeter
+  name: kccsvcperimeter${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

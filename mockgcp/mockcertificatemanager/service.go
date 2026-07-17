@@ -17,16 +17,20 @@ package mockcertificatemanager
 import (
 	"context"
 	"net/http"
-	"strings"
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked certificatemanager service.
 type MockService struct {
@@ -39,7 +43,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -58,23 +62,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterCertificateManagerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			switch resource := strings.Split(error.Message, " ")[0]; resource {
-			case "dnsAuthorization", "certificate", "certificateMap", "certificateMapEntry":
-				error.Message = strings.Replace(error.Message, resource, "Resource", 1)
-			}
-			error.Message = strings.Replace(error.Message, `"`, `'`, 2)
-			error.Message = strings.Replace(error.Message, "not found", "was not found", 1)
-			error.Errors = nil
-		}
-	}
-	return mux, nil
+
+	grpcMux.AddService(pb.NewCertificateManagerClient(conn))
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	return grpcMux, nil
 }

@@ -144,6 +144,7 @@ type CloudDMSMigrationJobSpec struct {
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* Optional. Data dump parallelism settings used by the migration. Currently applicable only for MySQL to Cloud SQL for MySQL migrations only. */

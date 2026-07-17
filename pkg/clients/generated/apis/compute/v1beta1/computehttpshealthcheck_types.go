@@ -39,34 +39,27 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeHTTPSHealthCheckSpec struct {
-	/* How often (in seconds) to send a health check. The default value is 5
-	seconds. */
+	/* How often (in seconds) to send a health check. The default value is 5 seconds. */
 	// +optional
-	CheckIntervalSec *int64 `json:"checkIntervalSec,omitempty"`
+	CheckIntervalSec *int32 `json:"checkIntervalSec,omitempty"`
 
-	/* An optional description of this resource. Provide this property when
-	you create the resource. */
+	/* An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* A so-far unhealthy instance will be marked healthy after this many
-	consecutive successes. The default value is 2. */
+	/* A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2. */
 	// +optional
-	HealthyThreshold *int64 `json:"healthyThreshold,omitempty"`
+	HealthyThreshold *int32 `json:"healthyThreshold,omitempty"`
 
-	/* The value of the host header in the HTTPS health check request. If
-	left empty (default value), the public IP on behalf of which this
-	health check is performed will be used. */
+	/* The value of the host header in the HTTPS health check request. If left empty (default value), the public IP on behalf of which this health check is performed will be used. */
 	// +optional
 	Host *string `json:"host,omitempty"`
 
-	/* The TCP port number for the HTTPS health check request.
-	The default value is 443. */
+	/* The TCP port number for the HTTPS health check request. The default value is 443. */
 	// +optional
-	Port *int64 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 
-	/* The request path of the HTTPS health check request.
-	The default value is /. */
+	/* The request path of the HTTPS health check request. The default value is /. */
 	// +optional
 	RequestPath *string `json:"requestPath,omitempty"`
 
@@ -74,16 +67,13 @@ type ComputeHTTPSHealthCheckSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* How long (in seconds) to wait before claiming failure.
-	The default value is 5 seconds.  It is invalid for timeoutSec to have
-	greater value than checkIntervalSec. */
+	/* How long (in seconds) to wait before claiming failure. The default value is 5 seconds. It is invalid for timeoutSec to have greater value than checkIntervalSec. */
 	// +optional
-	TimeoutSec *int64 `json:"timeoutSec,omitempty"`
+	TimeoutSec *int32 `json:"timeoutSec,omitempty"`
 
-	/* A so-far healthy instance will be marked unhealthy after this many
-	consecutive failures. The default value is 2. */
+	/* A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2. */
 	// +optional
-	UnhealthyThreshold *int64 `json:"unhealthyThreshold,omitempty"`
+	UnhealthyThreshold *int32 `json:"unhealthyThreshold,omitempty"`
 }
 
 type ComputeHTTPSHealthCheckStatus struct {

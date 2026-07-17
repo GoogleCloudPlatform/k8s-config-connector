@@ -20,10 +20,11 @@ import (
 	"testing"
 
 	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apikeys/v1alpha1"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/yaml"
 )
 
@@ -49,10 +50,14 @@ spec:
 	}
 	t.Logf("u: %+v", u)
 
-	a := &adapter{}
-	a.desired = u
-	a.projectID = "example-project"
-	a.location = "global"
+	a := &adapter{
+		desired: u,
+		id: &v1alpha1.APIKeysKeyIdentity{
+			Project:  "example-project",
+			Location: "global",
+			Key:      "sample",
+		},
+	}
 	req, err := a.buildCreateRequest()
 	if err != nil {
 		t.Fatalf("error building create: %v", err)
@@ -83,6 +88,7 @@ key:
       allowedIps:
       - 1.2.3.4
       - 5.6.7.8
+keyId: sample
 parent: projects/example-project/locations/global
 `
 
@@ -96,21 +102,20 @@ parent: projects/example-project/locations/global
 
 func TestMapping(t *testing.T) {
 	originalKRM := &v1alpha1.APIKeysKey{}
-	originalKRM.Spec.Restrictions = &v1alpha1.KeyRestrictions{
-		AndroidKeyRestrictions: &v1alpha1.KeyAndroidKeyRestrictions{
-			AllowedApplications: []v1alpha1.KeyAllowedApplications{
+	originalKRM.Spec.Restrictions = &v1alpha1.Restrictions{
+		AndroidKeyRestrictions: &v1alpha1.AndroidKeyRestrictions{
+			AllowedApplications: []v1alpha1.AndroidApplication{
 				{
-					Sha1Fingerprint: "sha1-fingerprint",
-					PackageName:     "package-name",
+					Sha1Fingerprint: ptr.To("sha1-fingerprint"),
+					PackageName:     ptr.To("package-name"),
 				},
 				{
-					Sha1Fingerprint: "sha1-fingerprint-2",
-					PackageName:     "package-name-2",
+					Sha1Fingerprint: ptr.To("sha1-fingerprint-2"),
+					PackageName:     ptr.To("package-name-2"),
 				},
 			},
 		},
 	}
-
 	gotProto := &pb.Key{}
 	if err := keyMapping.Map(originalKRM, gotProto); err != nil {
 		t.Fatalf("error mapping: %v", err)

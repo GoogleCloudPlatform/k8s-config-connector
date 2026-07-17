@@ -38,6 +38,7 @@ type GenerateControllerOptions struct {
 
 func (o *GenerateControllerOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().Var(&o.Resource, "resource", "the KRM Kind and the equivalent proto resource separated with a colon.  e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`.")
+	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", "", "the GCP service name")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -125,7 +126,7 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 		}
 	}
 
-	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.ProtoName)
+	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.Kind)
 	err = errors.Join(err, c.GenerateController(cArgs))
 	err = errors.Join(err, c.RegisterController())
 	return err

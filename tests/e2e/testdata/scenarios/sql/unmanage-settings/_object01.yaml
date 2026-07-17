@@ -2,6 +2,7 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   annotations:
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/unmanaged: spec.settings
   finalizers:
@@ -32,7 +33,6 @@ spec:
     diskAutoresizeLimit: -100
     diskSize: -100
     diskType: INVALID_TYPE
-    edition: INVALID_EDITION
     ipConfiguration:
       ipv4Enabled: false
       requireSsl: true

@@ -41,7 +41,7 @@ func (n *notifications) GetNotification(ctx context.Context, req *pb.GetNotifica
 
 	// The real GCP service stores what the request gives but returns the topic with the PubSub domain.
 	obj.Topic = PtrTo("//pubsub.googleapis.com/" + ValueOf(obj.Topic))
-	ret := proto.Clone(obj).(*pb.Notification)
+	ret := proto.CloneOf(obj)
 	return ret, nil
 
 }
@@ -50,7 +50,7 @@ func (n *notifications) InsertNotification(ctx context.Context, req *pb.InsertNo
 	n.id += 1
 	fqn := fullyQualifiedName(req.GetBucket(), fmt.Sprint(n.id))
 
-	obj := proto.Clone(req.GetNotification()).(*pb.Notification)
+	obj := proto.CloneOf(req.GetNotification())
 	obj.Id = PtrTo(fmt.Sprint(n.id))
 	obj.Etag = PtrTo(fields.ComputeWeakEtag(obj))
 	obj.SelfLink = PtrTo("https://www.googleapis.com/storage/v1/b/" + req.GetBucket() + "/notificationConfigs/" + fmt.Sprint(n.id))

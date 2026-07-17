@@ -22,15 +22,14 @@
 package v1beta1
 
 import (
-	"context"
-	"time"
+	context "context"
 
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	gentype "k8s.io/client-go/gentype"
 )
 
 // StorageNotificationsGetter has a method to return a StorageNotificationInterface.
@@ -41,158 +40,34 @@ type StorageNotificationsGetter interface {
 
 // StorageNotificationInterface has methods to work with StorageNotification resources.
 type StorageNotificationInterface interface {
-	Create(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.CreateOptions) (*v1beta1.StorageNotification, error)
-	Update(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.UpdateOptions) (*v1beta1.StorageNotification, error)
-	UpdateStatus(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.UpdateOptions) (*v1beta1.StorageNotification, error)
+	Create(ctx context.Context, storageNotification *storagev1beta1.StorageNotification, opts v1.CreateOptions) (*storagev1beta1.StorageNotification, error)
+	Update(ctx context.Context, storageNotification *storagev1beta1.StorageNotification, opts v1.UpdateOptions) (*storagev1beta1.StorageNotification, error)
+	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+	UpdateStatus(ctx context.Context, storageNotification *storagev1beta1.StorageNotification, opts v1.UpdateOptions) (*storagev1beta1.StorageNotification, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.StorageNotification, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.StorageNotificationList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*storagev1beta1.StorageNotification, error)
+	List(ctx context.Context, opts v1.ListOptions) (*storagev1beta1.StorageNotificationList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.StorageNotification, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *storagev1beta1.StorageNotification, err error)
 	StorageNotificationExpansion
 }
 
 // storageNotifications implements StorageNotificationInterface
 type storageNotifications struct {
-	client rest.Interface
-	ns     string
+	*gentype.ClientWithList[*storagev1beta1.StorageNotification, *storagev1beta1.StorageNotificationList]
 }
 
 // newStorageNotifications returns a StorageNotifications
 func newStorageNotifications(c *StorageV1beta1Client, namespace string) *storageNotifications {
 	return &storageNotifications{
-		client: c.RESTClient(),
-		ns:     namespace,
+		gentype.NewClientWithList[*storagev1beta1.StorageNotification, *storagev1beta1.StorageNotificationList](
+			"storagenotifications",
+			c.RESTClient(),
+			scheme.ParameterCodec,
+			namespace,
+			func() *storagev1beta1.StorageNotification { return &storagev1beta1.StorageNotification{} },
+			func() *storagev1beta1.StorageNotificationList { return &storagev1beta1.StorageNotificationList{} },
+		),
 	}
-}
-
-// Get takes name of the storageNotification, and returns the corresponding storageNotification object, and an error if there is any.
-func (c *storageNotifications) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.StorageNotification, err error) {
-	result = &v1beta1.StorageNotification{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of StorageNotifications that match those selectors.
-func (c *storageNotifications) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.StorageNotificationList, err error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	result = &v1beta1.StorageNotificationList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested storageNotifications.
-func (c *storageNotifications) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	var timeout time.Duration
-	if opts.TimeoutSeconds != nil {
-		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
-	}
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Watch(ctx)
-}
-
-// Create takes the representation of a storageNotification and creates it.  Returns the server's representation of the storageNotification, and an error, if there is any.
-func (c *storageNotifications) Create(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.CreateOptions) (result *v1beta1.StorageNotification, err error) {
-	result = &v1beta1.StorageNotification{}
-	err = c.client.Post().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(storageNotification).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Update takes the representation of a storageNotification and updates it. Returns the server's representation of the storageNotification, and an error, if there is any.
-func (c *storageNotifications) Update(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.UpdateOptions) (result *v1beta1.StorageNotification, err error) {
-	result = &v1beta1.StorageNotification{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		Name(storageNotification.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(storageNotification).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *storageNotifications) UpdateStatus(ctx context.Context, storageNotification *v1beta1.StorageNotification, opts v1.UpdateOptions) (result *v1beta1.StorageNotification, err error) {
-	result = &v1beta1.StorageNotification{}
-	err = c.client.Put().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		Name(storageNotification.Name).
-		SubResource("status").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(storageNotification).
-		Do(ctx).
-		Into(result)
-	return
-}
-
-// Delete takes name of the storageNotification and deletes it. Returns an error if one occurs.
-func (c *storageNotifications) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		Name(name).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *storageNotifications) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
-	}
-	return c.client.Delete().
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
-		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
-		Error()
-}
-
-// Patch applies the patch and returns the patched storageNotification.
-func (c *storageNotifications) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.StorageNotification, err error) {
-	result = &v1beta1.StorageNotification{}
-	err = c.client.Patch(pt).
-		Namespace(c.ns).
-		Resource("storagenotifications").
-		Name(name).
-		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(data).
-		Do(ctx).
-		Into(result)
-	return
 }

@@ -228,6 +228,13 @@ func schemaNodeConfig() *schema.Schema {
 								ValidateFunc: validation.IntAtLeast(0),
 								Description:  `Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.`,
 							},
+							"data_cache_count": {
+								Type:         schema.TypeInt,
+								Optional:     true,
+								ForceNew:     true,
+								ValidateFunc: validation.IntAtLeast(0),
+								Description:  `Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces.`,
+							},
 						},
 					},
 				},
@@ -509,6 +516,26 @@ func schemaNodeConfig() *schema.Schema {
 								Optional:    true,
 								Description: `Controls the maximum number of processes allowed to run in a pod.`,
 							},
+							"image_gc_low_threshold_percent": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Description: `Defines the percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to.`,
+							},
+							"image_gc_high_threshold_percent": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Description: `Defines the percent of disk usage after which image garbage collection is always run.`,
+							},
+							"image_minimum_gc_age": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `Defines the minimum age for an unused image before it is garbage collected.`,
+							},
+							"image_maximum_gc_age": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `Defines the maximum age an image can be unused before it is garbage collected.`,
+							},
 						},
 					},
 				},
@@ -641,6 +668,14 @@ func schemaNodeConfig() *schema.Schema {
 								ForceNew:    true,
 								Description: `Whether Confidential Nodes feature is enabled for all nodes in this pool.`,
 							},
+							"confidential_instance_type": {
+								Type:             schema.TypeString,
+								Optional:         true,
+								ForceNew:         true,
+								DiffSuppressFunc: suppressDiffForConfidentialNodes,
+								Description:      `Defines the type of technology used by the confidential node.`,
+								ValidateFunc:     validation.StringInSlice([]string{"SEV", "SEV_SNP", "TDX"}, false),
+							},
 						},
 					},
 				},
@@ -655,6 +690,21 @@ func schemaNodeConfig() *schema.Schema {
 								Type:        schema.TypeBool,
 								Required:    true,
 								Description: `Whether or not NCCL Fast Socket is enabled`,
+							},
+						},
+					},
+				},
+				"windows_node_config": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					MaxItems:    1,
+					Description: `Parameters that can be configured on Windows nodes.`,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"os_version": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `os_version specifies the Windows Server release version to be used on the node.`,
 							},
 						},
 					},
@@ -775,6 +825,10 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		conf := v.([]interface{})[0].(map[string]interface{})
 		nc.EphemeralStorageLocalSsdConfig = &container.EphemeralStorageLocalSsdConfig{
 			LocalSsdCount: int64(conf["local_ssd_count"].(int)),
+		}
+		dataCacheCount, ok := conf["data_cache_count"]
+		if ok && dataCacheCount != nil {
+			nc.EphemeralStorageLocalSsdConfig.DataCacheCount = int64(dataCacheCount.(int))
 		}
 	}
 
@@ -948,6 +1002,10 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		nc.ConfidentialNodes = expandConfidentialNodes(v)
 	}
 
+	if v, ok := nodeConfig["windows_node_config"]; ok {
+		nc.WindowsNodeConfig = expandWindowsNodeConfig(v)
+	}
+
 	return nc
 }
 
@@ -996,6 +1054,18 @@ func expandKubeletConfig(v interface{}) *container.NodeKubeletConfig {
 	}
 	if podPidsLimit, ok := cfg["pod_pids_limit"]; ok {
 		kConfig.PodPidsLimit = int64(podPidsLimit.(int))
+	}
+	if imageGcLowThresholdPercent, ok := cfg["image_gc_low_threshold_percent"]; ok {
+		kConfig.ImageGcLowThresholdPercent = int64(imageGcLowThresholdPercent.(int))
+	}
+	if imageGcHighThresholdPercent, ok := cfg["image_gc_high_threshold_percent"]; ok {
+		kConfig.ImageGcHighThresholdPercent = int64(imageGcHighThresholdPercent.(int))
+	}
+	if imageMinimumGcAge, ok := cfg["image_minimum_gc_age"]; ok {
+		kConfig.ImageMinimumGcAge = imageMinimumGcAge.(string)
+	}
+	if imageMaximumGcAge, ok := cfg["image_maximum_gc_age"]; ok {
+		kConfig.ImageMaximumGcAge = imageMaximumGcAge.(string)
 	}
 	return kConfig
 }
@@ -1099,7 +1169,8 @@ func expandConfidentialNodes(configured interface{}) *container.ConfidentialNode
 	}
 	config := l[0].(map[string]interface{})
 	return &container.ConfidentialNodes{
-		Enabled: config["enabled"].(bool),
+		Enabled:                  config["enabled"].(bool),
+		ConfidentialInstanceType: config["confidential_instance_type"].(string),
 	}
 }
 
@@ -1170,6 +1241,7 @@ func flattenNodeConfig(c *container.NodeConfig, v interface{}) []map[string]inte
 		"advanced_machine_features":          flattenAdvancedMachineFeaturesConfig(c.AdvancedMachineFeatures),
 		"sole_tenant_config":                 flattenSoleTenantConfig(c.SoleTenantConfig),
 		"fast_socket":                        flattenFastSocket(c.FastSocket),
+		"windows_node_config":                flattenWindowsNodeConfig(c.WindowsNodeConfig),
 	})
 
 	if len(c.OauthScopes) > 0 {
@@ -1253,7 +1325,8 @@ func flattenEphemeralStorageLocalSsdConfig(c *container.EphemeralStorageLocalSsd
 	result := []map[string]interface{}{}
 	if c != nil {
 		result = append(result, map[string]interface{}{
-			"local_ssd_count": c.LocalSsdCount,
+			"local_ssd_count":  c.LocalSsdCount,
+			"data_cache_count": c.DataCacheCount,
 		})
 	}
 	return result
@@ -1396,7 +1469,11 @@ func flattenKubeletConfig(c *container.NodeKubeletConfig) []map[string]interface
 			"cpu_cfs_quota":        c.CpuCfsQuota,
 			"cpu_cfs_quota_period": c.CpuCfsQuotaPeriod,
 			"cpu_manager_policy":   c.CpuManagerPolicy,
-			"pod_pids_limit":       c.PodPidsLimit,
+			"pod_pids_limit":                  c.PodPidsLimit,
+			"image_gc_low_threshold_percent":  c.ImageGcLowThresholdPercent,
+			"image_gc_high_threshold_percent": c.ImageGcHighThresholdPercent,
+			"image_minimum_gc_age":            c.ImageMinimumGcAge,
+			"image_maximum_gc_age":            c.ImageMaximumGcAge,
 		})
 	}
 	return result
@@ -1417,7 +1494,8 @@ func flattenConfidentialNodes(c *container.ConfidentialNodes) []map[string]inter
 	result := []map[string]interface{}{}
 	if c != nil {
 		result = append(result, map[string]interface{}{
-			"enabled": c.Enabled,
+			"enabled":                    c.Enabled,
+			"confidential_instance_type": c.ConfidentialInstanceType,
 		})
 	}
 	return result
@@ -1459,5 +1537,31 @@ func flattenHostMaintenancePolicy(c *container.HostMaintenancePolicy) []map[stri
 		})
 	}
 
+	return result
+}
+
+func expandWindowsNodeConfig(v interface{}) *container.WindowsNodeConfig {
+	if v == nil {
+		return nil
+	}
+	ls := v.([]interface{})
+	if len(ls) == 0 {
+		return nil
+	}
+	wnc := &container.WindowsNodeConfig{}
+	cfg := ls[0].(map[string]interface{})
+	if val, ok := cfg["os_version"]; ok {
+		wnc.OsVersion = val.(string)
+	}
+	return wnc
+}
+
+func flattenWindowsNodeConfig(c *container.WindowsNodeConfig) []map[string]interface{} {
+	result := []map[string]interface{}{}
+	if c != nil && c.OsVersion != "" {
+		result = append(result, map[string]interface{}{
+			"os_version": c.OsVersion,
+		})
+	}
 	return result
 }

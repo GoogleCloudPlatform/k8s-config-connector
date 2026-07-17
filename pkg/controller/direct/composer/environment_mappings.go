@@ -17,9 +17,11 @@ package composer
 import (
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -113,12 +115,12 @@ func PrivateEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.Privat
 	out.CloudComposerNetworkIPv4CIDRBlock = direct.LazyPtr(in.GetCloudComposerNetworkIpv4CidrBlock())
 	out.EnablePrivatelyUsedPublicIPs = direct.LazyPtr(in.GetEnablePrivatelyUsedPublicIps())
 	if in.GetCloudComposerConnectionSubnetwork() != "" {
-		out.CloudComposerConnectionSubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
+		out.CloudComposerConnectionSubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
 	}
 	// MISSING: WebServerIPV4ReservedRange
 	// MISSING: CloudComposerNetworkIPV4ReservedRange
 	if in.GetCloudComposerConnectionSubnetwork() != "" {
-		out.CloudComposerConnectionSubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
+		out.CloudComposerConnectionSubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
 	}
 	out.NetworkingConfig = NetworkingConfig_FromProto(mapCtx, in.GetNetworkingConfig())
 	return out
@@ -188,10 +190,10 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.Location = direct.LazyPtr(in.GetLocation())
 	out.MachineType = direct.LazyPtr(in.GetMachineType())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
 	// MISSING: OauthScopes
@@ -342,5 +344,56 @@ func WorkloadsConfig_WorkerResource_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.StorageGb = direct.StringToFloat32(mapCtx, direct.ValueOf(in.StorageGB))
 	out.MinCount = direct.ValueOf(in.MinCount)
 	out.MaxCount = direct.ValueOf(in.MaxCount)
+	return out
+}
+
+func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionConfig{}
+	if in.GetKmsKeyName() != "" {
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
+	return out
+}
+
+func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
+	return out
+}
+
+func StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb.StorageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageConfig{}
+	if in.BucketRef != nil {
+		id := &storagev1beta1.StorageBucketIdentity{}
+		if err := id.FromExternal(in.BucketRef.External); err != nil {
+			mapCtx.Errorf("storageConfig.bucketRef: %v", err)
+		} else {
+			out.Bucket = id.Bucket
+		}
+	}
+	return out
+}
+
+func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *krm.StorageConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageConfig{}
+	if in.GetBucket() != "" {
+		out.BucketRef = &storagev1beta1.StorageBucketRef{
+			External: "gs://" + in.GetBucket(),
+		}
+	}
 	return out
 }

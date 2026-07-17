@@ -14,14 +14,18 @@
 
 // +tool:mockgcp-service
 // http.host: billingbudgets.googleapis.com
-// proto.service: google.cloud.billing.budgets.v1.BudgetService
+// proto.service: google.cloud.billing.budgets.v1beta1.BudgetService
 
 package mockbillingbudgets
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -76,9 +80,46 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	grpcMux.AddService(pb.NewBudgetServiceClient(conn))
 
-	// mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-	// 	response.Header().Del("Cache-Control")
-	// }
+	mux := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		isV1 := strings.Contains(r.URL.Path, "/v1/") && !strings.Contains(r.URL.Path, "/v1beta1/")
+		if isV1 {
+			if r.Body != nil && (r.Method == "POST" || r.Method == "PATCH" || r.Method == "PUT") {
+				bodyBytes, err := io.ReadAll(r.Body)
+				if err == nil {
+					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte("\"notificationsRule\""), []byte("\"allUpdatesRule\""))
+					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte("\"notifications_rule\""), []byte("\"all_updates_rule\""))
 
-	return grpcMux, nil
+					var raw map[string]json.RawMessage
+					if json.Unmarshal(bodyBytes, &raw) == nil {
+						if _, ok := raw["budget"]; !ok {
+							wrapped := map[string]json.RawMessage{
+								"budget": json.RawMessage(bodyBytes),
+							}
+							wrappedBytes, err := json.Marshal(wrapped)
+							if err == nil {
+								bodyBytes = wrappedBytes
+							}
+						}
+					}
+					r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+					r.ContentLength = int64(len(bodyBytes))
+				}
+			}
+			r.URL.Path = strings.Replace(r.URL.Path, "/v1/", "/v1beta1/", 1)
+			w = &v1ResponseWriter{ResponseWriter: w}
+		}
+		grpcMux.ServeHTTP(w, r)
+	})
+
+	return mux, nil
+}
+
+type v1ResponseWriter struct {
+	http.ResponseWriter
+}
+
+func (w *v1ResponseWriter) Write(b []byte) (int, error) {
+	b = bytes.ReplaceAll(b, []byte("\"allUpdatesRule\""), []byte("\"notificationsRule\""))
+	b = bytes.ReplaceAll(b, []byte("\"all_updates_rule\""), []byte("\"notifications_rule\""))
+	return w.ResponseWriter.Write(b)
 }

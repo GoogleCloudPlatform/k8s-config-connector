@@ -1,0 +1,62 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: instance-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  crossInstanceReplicationConfig:
+    instanceRole: PRIMARY
+    secondaryInstances:
+    - instanceRef:
+        name: dependency-instance-${uniqueId}
+  location: us-east1
+  projectRef:
+    external: ${projectId}
+  shardCount: 3
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    availableMaintenanceVersions:
+    - MEMORYSTORE_20260313_01_02
+    - MEMORYSTORE_20260313_01_03
+    createTime: "1970-01-01T00:00:00Z"
+    crossInstanceReplicationConfig:
+      membership:
+        primaryInstance:
+          instance: projects/${projectId}/locations/us-east1/instances/instance-${uniqueId}
+          uid: 11111111-1111-1111-1111-111111111111
+        secondaryInstances:
+        - instance: projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}
+          uid: 11111111-1111-1111-1111-111111111111
+      secondaryInstances:
+      - instance: projects/${projectId}/locations/us-central1/instances/dependency-instance-${uniqueId}
+        uid: 11111111-1111-1111-1111-111111111111
+      updateTime: "2024-04-01T12:34:56.123456Z"
+    effectiveMaintenanceVersion: MEMORYSTORE_20260313_01_02
+    encryptionInfo:
+      encryptionType: GOOGLE_DEFAULT_ENCRYPTION
+    nodeConfig:
+      sizeGB: 13
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/${pscProjectNumber}/regions/us-east1/serviceAttachments/${pscServiceAttachment}
+    - serviceAttachment: projects/${pscProjectNumber}/regions/us-east1/serviceAttachments/${pscServiceAttachment}-2
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

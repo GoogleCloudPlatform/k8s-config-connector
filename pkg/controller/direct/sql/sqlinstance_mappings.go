@@ -17,7 +17,7 @@ package sql
 import (
 	"fmt"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 
@@ -421,9 +421,10 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration) *api.IpCon
 		SslMode:                                 direct.ValueOf(in.SslMode),
 	}
 
-	if in.EnablePrivatePathForGoogleCloudServices != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "EnablePrivatePathForGoogleCloudServices")
-	}
+	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
+	// TODO: Roll this out more widely once we confirm it works well for IpConfiguration.
+	out.ForceSendFields = append(out.ForceSendFields, "EnablePrivatePathForGoogleCloudServices")
+
 	if in.Ipv4Enabled != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "Ipv4Enabled")
 	}
@@ -447,7 +448,7 @@ func InstanceAuthorizedNetworksKRMToGCP(in []krm.InstanceAuthorizedNetworks) []*
 	return out
 }
 
-func InstancePrivateNetworkRefKRMToGCP(in *computev1beta1.ComputeNetworkRef) string {
+func InstancePrivateNetworkRefKRMToGCP(in *computerefs.ComputeNetworkRef) string {
 	if in == nil {
 		return ""
 	}
@@ -1004,12 +1005,12 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 	return out
 }
 
-func InstancePrivateNetworkRefRefGCPToKRM(in string) *computev1beta1.ComputeNetworkRef {
+func InstancePrivateNetworkRefRefGCPToKRM(in string) *computerefs.ComputeNetworkRef {
 	if in == "" {
 		return nil
 	}
 
-	out := &computev1beta1.ComputeNetworkRef{
+	out := &computerefs.ComputeNetworkRef{
 		External: in,
 	}
 

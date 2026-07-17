@@ -1,0 +1,3 @@
+- Moved mockgcp dataplex to httptogrpc.
+- Observed that dataplex protos were under `google/cloud/dataplex` instead of `mockgcp/cloud/dataplex`. Updated the skill to reflect this possibility.
+- Dataplex has multiple services (`DataplexService`, `CatalogService`, etc.). `NewHTTPMux` should register all services that were previously registered.

@@ -39,4 +39,11 @@ NOTE: you can avoid any pausing in actuation by first changing the
 
 ### Eventual state transitions & Jitter
 
-When you un-pause actuation, reconciliation will not happen immediately, but will instead start happening on the normal re-reconciliation interval (with jitter). We may enhance this behavior in future 
+
+---
+
+## Further Reading
+
+*   [Config Connector Operational Modes](config-connector-mode.md) for general configuration options (Identity, Billing, etc.).
+*   [Controller Implementation Overrides](controller-configuration.md) for details on choosing between Direct, Terraform, and DCL controllers.
+ 

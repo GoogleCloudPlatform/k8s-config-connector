@@ -1,0 +1,53 @@
+79c79
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+102c102
+< POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views?alt=json&viewId=logginglogview-${uniqueId}
+---
+> POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views?%24alt=json%3Benum-encoding%3Dint&viewId=logginglogview-${uniqueId}
+131c131
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+154c154
+< PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json&updateMask=description%2Cfilter
+---
+> PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cfilter
+159c159,160
+<   "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\""
+---
+>   "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\"",
+>   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}"
+182c183
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+205c206
+< DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+---
+> DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+219,241d219
+< 
+< ---
+< 
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "View logginglogview-${uniqueId} does not exist",
+<     "status": "NOT_FOUND"
+<   }
+< }

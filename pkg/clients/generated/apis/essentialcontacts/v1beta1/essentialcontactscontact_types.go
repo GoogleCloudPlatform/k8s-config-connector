@@ -42,11 +42,11 @@ type EssentialContactsContactSpec struct {
 	/* Required. The email address to send notifications to. The email address does not need to be a Google Account. */
 	Email string `json:"email"`
 
-	/* FolderRef represents the Folder that this resource belongs to. */
+	/* The Folder that contains this resource. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
-	/* Required. The preferred language for notifications, as a ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages) for a list of supported languages. */
+	/* Required. The preferred language for notifications, as an ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages) for a list of supported languages. */
 	LanguageTag string `json:"languageTag"`
 
 	/* Required. The categories of notifications that the contact will receive communications for. */

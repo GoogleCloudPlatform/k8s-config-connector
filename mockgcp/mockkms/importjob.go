@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
+	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -83,14 +83,17 @@ func (s *kmsServer) CreateImportJob(ctx context.Context, req *pb.CreateImportJob
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetImportJob()).(*pb.ImportJob)
+	obj := proto.CloneOf(req.GetImportJob())
+	if obj == nil {
+		obj = &pb.ImportJob{}
+	}
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.ExpireTime = timestamppb.New(now)
 	obj.ImportMethod = pb.ImportJob_RSA_OAEP_3072_SHA1_AES_256
 	obj.State = pb.ImportJob_PENDING_GENERATION
 
-	result := proto.Clone(obj).(*pb.ImportJob)
+	result := proto.CloneOf(obj)
 
 	obj.GenerateTime = timestamppb.New(now)
 	obj.State = pb.ImportJob_ACTIVE

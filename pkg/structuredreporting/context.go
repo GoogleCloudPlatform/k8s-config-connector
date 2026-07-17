@@ -25,7 +25,8 @@ import (
 type contextKey string
 
 const (
-	listenerContextKey contextKey = "structuredreporting.listener"
+	listenerContextKey       contextKey = "structuredreporting.listener"
+	reconcilerTypeContextKey contextKey = "structuredreporting.reconcilerType"
 )
 
 func GetListenerFromContext(ctx context.Context) (Listener, bool) {
@@ -42,6 +43,22 @@ func GetListenerFromContext(ctx context.Context) (Listener, bool) {
 
 func ContextWithListener(ctx context.Context, listener Listener) context.Context {
 	return context.WithValue(ctx, listenerContextKey, listener)
+}
+
+func GetReconcilerTypeFromContext(ctx context.Context) (k8s.ReconcilerType, bool) {
+	if ctx == nil {
+		return "", false
+	}
+	if v := ctx.Value(reconcilerTypeContextKey); v != nil {
+		if t, ok := v.(k8s.ReconcilerType); ok {
+			return t, true
+		}
+	}
+	return "", false
+}
+
+func ContextWithReconcilerType(ctx context.Context, t k8s.ReconcilerType) context.Context {
+	return context.WithValue(ctx, reconcilerTypeContextKey, t)
 }
 
 // Listener is implemented by listeners to the "structured reporting" event stream.

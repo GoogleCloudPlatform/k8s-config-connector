@@ -17,6 +17,8 @@ package mockcompute
 import (
 	"context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -38,6 +40,9 @@ func (s *GlobalHealthCheckV1) Get(ctx context.Context, req *pb.GetHealthCheckReq
 
 	obj := &pb.HealthCheck{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -54,17 +59,27 @@ func (s *GlobalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertHealthCh
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetHealthCheckResource()).(*pb.HealthCheck)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetHealthCheckResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#healthCheck")
+
+	s.populateHealthCheckDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -82,13 +97,26 @@ func (s *GlobalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchHealthChec
 	}
 
 	// TODO: Implement helper to implement the full rules here
+	if req.GetHealthCheckResource() != nil && req.GetHealthCheckResource().SourceRegions != nil {
+		obj.SourceRegions = nil
+	}
 	proto.Merge(obj, req.GetHealthCheckResource())
+
+	s.populateHealthCheckDefaults(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -104,14 +132,33 @@ func (s *GlobalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateHealthCh
 		return nil, err
 	}
 
-	// TODO: Implement helper to implement the full rules here
-	proto.Merge(obj, req.GetHealthCheckResource())
+	// For PUT (Update), we replace the resource but preserve system fields
+	id := obj.Id
+	selfLink := obj.SelfLink
+	creationTimestamp := obj.CreationTimestamp
+	kind := obj.Kind
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	updatedObj := proto.CloneOf(req.GetHealthCheckResource())
+	updatedObj.Id = id
+	updatedObj.SelfLink = selfLink
+	updatedObj.CreationTimestamp = creationTimestamp
+	updatedObj.Kind = kind
+
+	s.populateHealthCheckDefaults(updatedObj)
+
+	if err := s.storage.Update(ctx, fqn, updatedObj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      updatedObj.Id,
+		TargetLink:    updatedObj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return updatedObj, nil
+	})
 }
 
 func (s *GlobalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteHealthCheckRequest) (*pb.Operation, error) {
@@ -127,7 +174,15 @@ func (s *GlobalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteHealthCh
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type globalHealthCheckName struct {

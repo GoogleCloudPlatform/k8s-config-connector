@@ -1,0 +1,399 @@
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=kcc-assetfeed-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectNumber}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "feed": {
+    "assetNames": [
+      "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/instance1"
+    ],
+    "assetTypes": [
+      "compute.googleapis.com/Instance"
+    ],
+    "condition": {
+      "description": "deleted asset",
+      "expression": "temporal_asset.deleted == false",
+      "title": "deleted"
+    },
+    "contentType": 7,
+    "feedOutputConfig": {
+      "pubsubDestination": {
+        "topic": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+      }
+    },
+    "name": "projects/${projectNumber}/feeds/assetfeed-${uniqueId}",
+    "relationshipTypes": [
+      "INSTANCE_TO_INSTANCEGROUP"
+    ]
+  },
+  "feedId": "assetfeed-${uniqueId}",
+  "parent": "projects/${projectNumber}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetNames": [
+    "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/instance1"
+  ],
+  "assetTypes": [
+    "compute.googleapis.com/Instance"
+  ],
+  "condition": {
+    "description": "deleted asset",
+    "expression": "temporal_asset.deleted == false",
+    "title": "deleted"
+  },
+  "contentType": 7,
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/assetfeed-${uniqueId}",
+  "relationshipTypes": [
+    "INSTANCE_TO_INSTANCEGROUP"
+  ]
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetNames": [
+    "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/instance1"
+  ],
+  "assetTypes": [
+    "compute.googleapis.com/Instance"
+  ],
+  "condition": {
+    "description": "deleted asset",
+    "expression": "temporal_asset.deleted == false",
+    "title": "deleted"
+  },
+  "contentType": 7,
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/assetfeed-${uniqueId}",
+  "relationshipTypes": [
+    "INSTANCE_TO_INSTANCEGROUP"
+  ]
+}
+
+---
+
+PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: feed.name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "feed": {
+    "assetNames": [
+      "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/instance1",
+      "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/images/image1"
+    ],
+    "assetTypes": [
+      "compute.googleapis.com/Instance",
+      "compute.googleapis.com/Image"
+    ],
+    "condition": {
+      "description": "deleted asset",
+      "expression": "temporal_asset.deleted == true",
+      "location": "us-central1",
+      "title": "deleted"
+    },
+    "contentType": 7,
+    "feedOutputConfig": {
+      "pubsubDestination": {
+        "topic": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+      }
+    },
+    "name": "projects/${projectNumber}/feeds/assetfeed-${uniqueId}",
+    "relationshipTypes": [
+      "INSTANCE_TO_INSTANCEGROUP",
+      "COMPUTE_IMAGE_BOOT_DISK"
+    ]
+  },
+  "updateMask": "assetNames,assetTypes,condition.expression,condition.location,relationshipTypes"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetNames": [
+    "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/instance1",
+    "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/images/image1"
+  ],
+  "assetTypes": [
+    "compute.googleapis.com/Instance",
+    "compute.googleapis.com/Image"
+  ],
+  "condition": {
+    "description": "deleted asset",
+    "expression": "temporal_asset.deleted == true",
+    "location": "us-central1",
+    "title": "deleted"
+  },
+  "contentType": 7,
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/assetfeed-${uniqueId}",
+  "relationshipTypes": [
+    "INSTANCE_TO_INSTANCEGROUP",
+    "COMPUTE_IMAGE_BOOT_DISK"
+  ]
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetNames": [
+    "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/instances/instance1",
+    "//compute.googleapis.com/projects/${projectId}/zones/us-central1-a/images/image1"
+  ],
+  "assetTypes": [
+    "compute.googleapis.com/Instance",
+    "compute.googleapis.com/Image"
+  ],
+  "condition": {
+    "description": "deleted asset",
+    "expression": "temporal_asset.deleted == true",
+    "location": "us-central1",
+    "title": "deleted"
+  },
+  "contentType": 7,
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/assetfeed-${uniqueId}",
+  "relationshipTypes": [
+    "INSTANCE_TO_INSTANCEGROUP",
+    "COMPUTE_IMAGE_BOOT_DISK"
+  ]
+}
+
+---
+
+DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

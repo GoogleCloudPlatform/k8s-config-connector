@@ -39,6 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type PacketmirroringCollectorIlb struct {
+	/* The Forwarding Rule resource of type `loadBalancingScheme=INTERNAL` that will be used as collector for mirrored traffic. The specified forwarding rule must have `isMirroringCollector` set to true. */
 	UrlRef v1alpha1.ResourceRef `json:"urlRef"`
 }
 
@@ -61,6 +62,7 @@ type PacketmirroringInstances struct {
 	// +optional
 	CanonicalUrl *string `json:"canonicalUrl,omitempty"`
 
+	/* InstanceRef is a reference to a ComputeInstance. */
 	// +optional
 	UrlRef *v1alpha1.ResourceRef `json:"urlRef,omitempty"`
 }

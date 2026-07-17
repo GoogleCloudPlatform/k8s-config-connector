@@ -1,0 +1,8001 @@
+[
+  {
+    "group": "apigateway",
+    "kind": "APIGatewayAPIConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 78,
+    "downstreamCount": 0
+  },
+  {
+    "group": "apigateway",
+    "kind": "APIGatewayGateway",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 79,
+    "downstreamCount": 0
+  },
+  {
+    "group": "apikeys",
+    "kind": "APIKeysKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 80,
+    "downstreamCount": 0
+  },
+  {
+    "group": "accesscontextmanager",
+    "kind": "AccessContextManagerAccessLevel",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "AccessContextManagerAccessPolicy",
+      "IAMServiceAccount"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 35,
+    "downstreamCount": 2
+  },
+  {
+    "group": "accesscontextmanager",
+    "kind": "AccessContextManagerAccessLevelCondition",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "AccessContextManagerAccessLevel"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 81,
+    "downstreamCount": 0
+  },
+  {
+    "group": "accesscontextmanager",
+    "kind": "AccessContextManagerAccessPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 32,
+    "downstreamCount": 3
+  },
+  {
+    "group": "accesscontextmanager",
+    "kind": "AccessContextManagerGCPUserAccessBinding",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 82,
+    "downstreamCount": 0
+  },
+  {
+    "group": "accesscontextmanager",
+    "kind": "AccessContextManagerServicePerimeter",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "AccessContextManagerAccessLevel",
+      "AccessContextManagerAccessPolicy",
+      "IAMServiceAccount",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 83,
+    "downstreamCount": 0
+  },
+  {
+    "group": "accesscontextmanager",
+    "kind": "AccessContextManagerServicePerimeterResource",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 84,
+    "downstreamCount": 0
+  },
+  {
+    "group": "alloydb",
+    "kind": "AlloyDBBackup",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 85,
+    "downstreamCount": 0
+  },
+  {
+    "group": "alloydb",
+    "kind": "AlloyDBCluster",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 36,
+    "downstreamCount": 2
+  },
+  {
+    "group": "alloydb",
+    "kind": "AlloyDBUser",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "AlloyDBCluster"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 86,
+    "downstreamCount": 0
+  },
+  {
+    "group": "apigee",
+    "kind": "ApigeeAddonsConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 87,
+    "downstreamCount": 0
+  },
+  {
+    "group": "apigee",
+    "kind": "ApigeeEnvironment",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ApigeeOrganization"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 37,
+    "downstreamCount": 2
+  },
+  {
+    "group": "apigee",
+    "kind": "ApigeeNATAddress",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 88,
+    "downstreamCount": 0
+  },
+  {
+    "group": "apigee",
+    "kind": "ApigeeOrganization",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 18,
+    "downstreamCount": 7
+  },
+  {
+    "group": "apigee",
+    "kind": "ApigeeSyncAuthorization",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 89,
+    "downstreamCount": 0
+  },
+  {
+    "group": "appengine",
+    "kind": "AppEngineDomainMapping",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 90,
+    "downstreamCount": 0
+  },
+  {
+    "group": "appengine",
+    "kind": "AppEngineFirewallRule",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 91,
+    "downstreamCount": 0
+  },
+  {
+    "group": "appengine",
+    "kind": "AppEngineFlexibleAppVersion",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 92,
+    "downstreamCount": 0
+  },
+  {
+    "group": "appengine",
+    "kind": "AppEngineServiceSplitTraffic",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 93,
+    "downstreamCount": 0
+  },
+  {
+    "group": "appengine",
+    "kind": "AppEngineStandardAppVersion",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 94,
+    "downstreamCount": 0
+  },
+  {
+    "group": "artifactregistry",
+    "kind": "ArtifactRegistryRepository",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 95,
+    "downstreamCount": 0
+  },
+  {
+    "group": "beyondcorp",
+    "kind": "BeyondCorpAppConnection",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 96,
+    "downstreamCount": 0
+  },
+  {
+    "group": "beyondcorp",
+    "kind": "BeyondCorpAppConnector",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 97,
+    "downstreamCount": 0
+  },
+  {
+    "group": "beyondcorp",
+    "kind": "BeyondCorpAppGateway",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 98,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigquerydatapolicy",
+    "kind": "BigQueryDataPolicyDataPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 99,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigquery",
+    "kind": "BigQueryDataset",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 26,
+    "downstreamCount": 4
+  },
+  {
+    "group": "bigquery",
+    "kind": "BigQueryDatasetAccess",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 100,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigquery",
+    "kind": "BigQueryJob",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "BigQueryDataset",
+      "BigQueryTable",
+      "KMSCryptoKey"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 101,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigqueryreservation",
+    "kind": "BigQueryReservationCapacityCommitment",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 102,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigquery",
+    "kind": "BigQueryRoutine",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "BigQueryDataset",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 103,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigquery",
+    "kind": "BigQueryTable",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "BigQueryDataset",
+      "KMSCryptoKey"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 56,
+    "downstreamCount": 1
+  },
+  {
+    "group": "bigtable",
+    "kind": "BigtableAppProfile",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "BigtableInstance"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 104,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigtable",
+    "kind": "BigtableGCPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "BigtableInstance",
+      "BigtableTable"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 105,
+    "downstreamCount": 0
+  },
+  {
+    "group": "bigtable",
+    "kind": "BigtableInstance",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 16,
+    "downstreamCount": 8
+  },
+  {
+    "group": "bigtable",
+    "kind": "BigtableTable",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "BigtableInstance"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 38,
+    "downstreamCount": 2
+  },
+  {
+    "group": "billingbudgets",
+    "kind": "BillingBudgetsBudget",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "PubSubTopic"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 106,
+    "downstreamCount": 0
+  },
+  {
+    "group": "binaryauthorization",
+    "kind": "BinaryAuthorizationAttestor",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 107,
+    "downstreamCount": 0
+  },
+  {
+    "group": "binaryauthorization",
+    "kind": "BinaryAuthorizationPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 108,
+    "downstreamCount": 0
+  },
+  {
+    "group": "certificatemanager",
+    "kind": "CertificateManagerCertificate",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 109,
+    "downstreamCount": 0
+  },
+  {
+    "group": "certificatemanager",
+    "kind": "CertificateManagerCertificateMap",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 110,
+    "downstreamCount": 0
+  },
+  {
+    "group": "certificatemanager",
+    "kind": "CertificateManagerCertificateMapEntry",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 111,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudasset",
+    "kind": "CloudAssetFolderFeed",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Folder"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 112,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudasset",
+    "kind": "CloudAssetOrganizationFeed",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 113,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudasset",
+    "kind": "CloudAssetProjectFeed",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 114,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudbuild",
+    "kind": "CloudBuildTrigger",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "StorageBucket"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 115,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudfunctions2",
+    "kind": "CloudFunctions2Function",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 116,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudfunctions",
+    "kind": "CloudFunctionsFunction",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "IAMServiceAccount",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 117,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudids",
+    "kind": "CloudIDSEndpoint",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 118,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudiot",
+    "kind": "CloudIOTDevice",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 119,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudiot",
+    "kind": "CloudIOTDeviceRegistry",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 120,
+    "downstreamCount": 0
+  },
+  {
+    "group": "cloudscheduler",
+    "kind": "CloudSchedulerJob",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "IAMServiceAccount"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 121,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeAddress",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 39,
+    "downstreamCount": 2
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeAutoscaler",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 122,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeBackendBucket",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "StorageBucket"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 19,
+    "downstreamCount": 7
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeBackendBucketSignedURLKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeBackendBucket",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 123,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeBackendService",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeHTTPHealthCheck",
+      "ComputeHealthCheck",
+      "ComputeInstanceGroup",
+      "ComputeNetwork",
+      "ComputeNetworkEndpointGroup",
+      "ComputeSecurityPolicy"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 15,
+    "downstreamCount": 9
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeBackendServiceSignedURLKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeBackendService",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 124,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeDisk",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeImage",
+      "ComputeSnapshot",
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 297,
+    "downstreamCount": 4
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeDiskResourcePolicyAttachment",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeDisk",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 298,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeExternalVPNGateway",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 125,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeFirewall",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 126,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeFirewallPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Folder"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 27,
+    "downstreamCount": 4
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeFirewallPolicyAssociation",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ComputeFirewallPolicy"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 127,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeForwardingRule",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeAddress",
+      "ComputeBackendService",
+      "ComputeNetwork",
+      "ComputeServiceAttachment",
+      "ComputeSubnetwork",
+      "ComputeTargetGRPCProxy",
+      "ComputeTargetHTTPProxy",
+      "ComputeTargetHTTPSProxy",
+      "ComputeTargetSSLProxy",
+      "ComputeTargetTCPProxy",
+      "ComputeTargetVPNGateway"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 57,
+    "downstreamCount": 1
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeGlobalNetworkEndpoint",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 128,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeGlobalNetworkEndpointGroup",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 129,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeHTTPHealthCheck",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 12,
+    "downstreamCount": 11
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeHTTPSHealthCheck",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 130,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeHealthCheck",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 11,
+    "downstreamCount": 12
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeImage",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeDisk",
+      "KMSCryptoKey"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 299,
+    "downstreamCount": 4
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeInstance",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeInstanceTemplate",
+      "ComputeNetwork",
+      "ComputeSubnetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 28,
+    "downstreamCount": 4
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeInstanceGroup",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 14,
+    "downstreamCount": 10
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeInstanceGroupManager",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "ComputeHealthCheck",
+      "ComputeInstanceTemplate",
+      "IAMServiceAccount",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 58,
+    "downstreamCount": 1
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeInstanceGroupNamedPort",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 131,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeInstanceTemplate",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 20,
+    "downstreamCount": 7
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeInterconnectAttachment",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeRouter"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 29,
+    "downstreamCount": 4
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeMachineImage",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 132,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeManagedSSLCertificate",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 133,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetwork",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 3,
+    "downstreamCount": 129
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetworkEndpoint",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeInstance",
+      "ComputeNetworkEndpointGroup",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 134,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetworkEndpointGroup",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 13,
+    "downstreamCount": 11
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetworkFirewallPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 135,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetworkFirewallPolicyAssociation",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeFirewallPolicy",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 136,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetworkFirewallPolicyRule",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeFirewallPolicy",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 137,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetworkPeering",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 138,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNetworkPeeringRoutesConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 139,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNodeGroup",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNodeTemplate",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 140,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeNodeTemplate",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 59,
+    "downstreamCount": 1
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeOrganizationSecurityPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 141,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeOrganizationSecurityPolicyAssociation",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 142,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeOrganizationSecurityPolicyRule",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 143,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputePacketMirroring",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 144,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputePerInstanceConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeInstanceGroupManager",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 145,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeProjectMetadata",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 146,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRegionAutoscaler",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": true,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 147,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRegionDiskResourcePolicyAttachment",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeDisk",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 300,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRegionNetworkEndpointGroup",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "ComputeSubnetwork",
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 148,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRegionPerInstanceConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 149,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRegionSSLPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 150,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeReservation",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 151,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeResourcePolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 152,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRoute",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 153,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRouter",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 22,
+    "downstreamCount": 6
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRouterInterface",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeInterconnectAttachment",
+      "ComputeRouter",
+      "ComputeSubnetwork",
+      "ComputeVPNTunnel"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 60,
+    "downstreamCount": 1
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRouterNAT",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeRouter",
+      "ComputeSubnetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 154,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeRouterPeer",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeRouter",
+      "ComputeRouterInterface"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 155,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeSSLCertificate",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 156,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeSSLPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 30,
+    "downstreamCount": 4
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeSecurityPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 10,
+    "downstreamCount": 13
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeServiceAttachment",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 40,
+    "downstreamCount": 2
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeSharedVPCHostProject",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 157,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeSharedVPCServiceProject",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 158,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeSnapshot",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 31,
+    "downstreamCount": 4
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeSubnetwork",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 8,
+    "downstreamCount": 23
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetGRPCProxy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeURLMap"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 41,
+    "downstreamCount": 2
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetHTTPProxy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeURLMap"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 42,
+    "downstreamCount": 2
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetHTTPSProxy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeSSLPolicy",
+      "ComputeURLMap"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 43,
+    "downstreamCount": 2
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetInstance",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeInstance",
+      "ComputeNetwork",
+      "ComputeSecurityPolicy"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 159,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetPool",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeHTTPHealthCheck",
+      "ComputeSecurityPolicy"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 160,
+    "downstreamCount": 0
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetSSLProxy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeBackendService",
+      "ComputeSSLPolicy"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 44,
+    "downstreamCount": 2
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetTCPProxy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeBackendService"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 45,
+    "downstreamCount": 2
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeTargetVPNGateway",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 24,
+    "downstreamCount": 5
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeURLMap",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeBackendBucket",
+      "ComputeBackendService"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 25,
+    "downstreamCount": 5
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeVPNGateway",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeInterconnectAttachment",
+      "ComputeNetwork"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 33,
+    "downstreamCount": 3
+  },
+  {
+    "group": "compute",
+    "kind": "ComputeVPNTunnel",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeRouter",
+      "ComputeTargetVPNGateway",
+      "ComputeVPNGateway"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 46,
+    "downstreamCount": 2
+  },
+  {
+    "group": "configcontroller",
+    "kind": "ConfigControllerInstance",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 161,
+    "downstreamCount": 0
+  },
+  {
+    "group": "containeranalysis",
+    "kind": "ContainerAnalysisNote",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 162,
+    "downstreamCount": 0
+  },
+  {
+    "group": "containeranalysis",
+    "kind": "ContainerAnalysisOccurrence",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 163,
+    "downstreamCount": 0
+  },
+  {
+    "group": "containerattached",
+    "kind": "ContainerAttachedCluster",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 164,
+    "downstreamCount": 0
+  },
+  {
+    "group": "container",
+    "kind": "ContainerCluster",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 47,
+    "downstreamCount": 2
+  },
+  {
+    "group": "container",
+    "kind": "ContainerNodePool",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "ContainerCluster",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 165,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dlp",
+    "kind": "DLPDeidentifyTemplate",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 166,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dlp",
+    "kind": "DLPInspectTemplate",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 61,
+    "downstreamCount": 1
+  },
+  {
+    "group": "dlp",
+    "kind": "DLPJobTrigger",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "DLPInspectTemplate",
+      "Project",
+      "StorageBucket"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 167,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dlp",
+    "kind": "DLPStoredInfoType",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 168,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dns",
+    "kind": "DNSManagedZone",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 62,
+    "downstreamCount": 1
+  },
+  {
+    "group": "dns",
+    "kind": "DNSPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 169,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dns",
+    "kind": "DNSRecordSet",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "DNSManagedZone",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 170,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dns",
+    "kind": "DNSResponsePolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 171,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dns",
+    "kind": "DNSResponsePolicyRule",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 172,
+    "downstreamCount": 0
+  },
+  {
+    "group": "datacatalog",
+    "kind": "DataCatalogPolicyTag",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "DataCatalogTaxonomy"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 173,
+    "downstreamCount": 0
+  },
+  {
+    "group": "datacatalog",
+    "kind": "DataCatalogTaxonomy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 63,
+    "downstreamCount": 1
+  },
+  {
+    "group": "datafusion",
+    "kind": "DataFusionInstance",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 174,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dataflow",
+    "kind": "DataflowFlexTemplateJob",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 175,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dataflow",
+    "kind": "DataflowJob",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 176,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dataproc",
+    "kind": "DataprocAutoscalingPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 177,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dataproc",
+    "kind": "DataprocCluster",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "StorageBucket"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 23,
+    "downstreamCount": 6
+  },
+  {
+    "group": "dataproc",
+    "kind": "DataprocWorkflowTemplate",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "KMSCryptoKey",
+      "Project",
+      "StorageBucket"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 178,
+    "downstreamCount": 0
+  },
+  {
+    "group": "datastore",
+    "kind": "DatastoreIndex",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 179,
+    "downstreamCount": 0
+  },
+  {
+    "group": "datastream",
+    "kind": "DatastreamStream",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 180,
+    "downstreamCount": 0
+  },
+  {
+    "group": "deploymentmanager",
+    "kind": "DeploymentManagerDeployment",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 181,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflow",
+    "kind": "DialogflowAgent",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 182,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflowcx",
+    "kind": "DialogflowCXAgent",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 183,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflowcx",
+    "kind": "DialogflowCXEntityType",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 184,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflowcx",
+    "kind": "DialogflowCXFlow",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 185,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflowcx",
+    "kind": "DialogflowCXIntent",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 186,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflowcx",
+    "kind": "DialogflowCXPage",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 187,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflowcx",
+    "kind": "DialogflowCXWebhook",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 188,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflow",
+    "kind": "DialogflowEntityType",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 189,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflow",
+    "kind": "DialogflowFulfillment",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 190,
+    "downstreamCount": 0
+  },
+  {
+    "group": "dialogflow",
+    "kind": "DialogflowIntent",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 191,
+    "downstreamCount": 0
+  },
+  {
+    "group": "documentai",
+    "kind": "DocumentAIProcessorDefaultVersion",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 192,
+    "downstreamCount": 0
+  },
+  {
+    "group": "edgecontainer",
+    "kind": "EdgeContainerCluster",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 48,
+    "downstreamCount": 2
+  },
+  {
+    "group": "edgecontainer",
+    "kind": "EdgeContainerNodePool",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "EdgeContainerCluster",
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 193,
+    "downstreamCount": 0
+  },
+  {
+    "group": "edgecontainer",
+    "kind": "EdgeContainerVpnConnection",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "EdgeContainerCluster",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 194,
+    "downstreamCount": 0
+  },
+  {
+    "group": "edgenetwork",
+    "kind": "EdgeNetworkNetwork",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 64,
+    "downstreamCount": 1
+  },
+  {
+    "group": "edgenetwork",
+    "kind": "EdgeNetworkSubnet",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "EdgeNetworkNetwork",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 195,
+    "downstreamCount": 0
+  },
+  {
+    "group": "eventarc",
+    "kind": "EventarcTrigger",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "Project",
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 196,
+    "downstreamCount": 0
+  },
+  {
+    "group": "filestore",
+    "kind": "FilestoreBackup",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 197,
+    "downstreamCount": 0
+  },
+  {
+    "group": "filestore",
+    "kind": "FilestoreInstance",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 198,
+    "downstreamCount": 0
+  },
+  {
+    "group": "filestore",
+    "kind": "FilestoreSnapshot",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 199,
+    "downstreamCount": 0
+  },
+  {
+    "group": "firebase",
+    "kind": "FirebaseAndroidApp",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "FirebaseProject"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 200,
+    "downstreamCount": 0
+  },
+  {
+    "group": "firebasedatabase",
+    "kind": "FirebaseDatabaseInstance",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 201,
+    "downstreamCount": 0
+  },
+  {
+    "group": "firebasehosting",
+    "kind": "FirebaseHostingChannel",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 202,
+    "downstreamCount": 0
+  },
+  {
+    "group": "firebasehosting",
+    "kind": "FirebaseHostingSite",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 203,
+    "downstreamCount": 0
+  },
+  {
+    "group": "firebase",
+    "kind": "FirebaseProject",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 65,
+    "downstreamCount": 1
+  },
+  {
+    "group": "firebasestorage",
+    "kind": "FirebaseStorageBucket",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 204,
+    "downstreamCount": 0
+  },
+  {
+    "group": "firebase",
+    "kind": "FirebaseWebApp",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 205,
+    "downstreamCount": 0
+  },
+  {
+    "group": "firestore",
+    "kind": "FirestoreIndex",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 206,
+    "downstreamCount": 0
+  },
+  {
+    "group": "resourcemanager",
+    "kind": "Folder",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": true,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 1,
+    "downstreamCount": 409
+  },
+  {
+    "group": "gkehub",
+    "kind": "GKEHubFeature",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 66,
+    "downstreamCount": 1
+  },
+  {
+    "group": "gkehub",
+    "kind": "GKEHubMembership",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 49,
+    "downstreamCount": 2
+  },
+  {
+    "group": "healthcare",
+    "kind": "HealthcareConsentStore",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 207,
+    "downstreamCount": 0
+  },
+  {
+    "group": "healthcare",
+    "kind": "HealthcareDICOMStore",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 208,
+    "downstreamCount": 0
+  },
+  {
+    "group": "healthcare",
+    "kind": "HealthcareDataset",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 209,
+    "downstreamCount": 0
+  },
+  {
+    "group": "healthcare",
+    "kind": "HealthcareFHIRStore",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 210,
+    "downstreamCount": 0
+  },
+  {
+    "group": "healthcare",
+    "kind": "HealthcareHL7V2Store",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 211,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMAccessBoundaryPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 212,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMAuditConfig",
+    "version": "v1beta1",
+    "controllerType": "IAMAuditConfig",
+    "defaultController": "IAMAuditConfig",
+    "supportedControllers": [
+      "IAMAuditConfig"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 213,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMCustomRole",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 214,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMPartialPolicy",
+    "version": "v1beta1",
+    "controllerType": "IAMPartialPolicy",
+    "defaultController": "IAMPartialPolicy",
+    "supportedControllers": [
+      "Direct",
+      "IAMPartialPolicy"
+    ],
+    "dependencies": [
+      "IAMServiceAccount",
+      "ServiceIdentity"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 215,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMPolicy",
+    "version": "v1beta1",
+    "controllerType": "IAMPolicy",
+    "defaultController": "IAMPolicy",
+    "supportedControllers": [
+      "IAMPolicy"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": true,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 216,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMPolicyMember",
+    "version": "v1beta1",
+    "controllerType": "IAMPolicyMember",
+    "defaultController": "IAMPolicyMember",
+    "supportedControllers": [
+      "IAMPolicyMember"
+    ],
+    "dependencies": [
+      "IAMServiceAccount",
+      "ServiceIdentity"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "Missing _reference.go or _identity.go",
+    "sortOrder": 217,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMServiceAccount",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 6,
+    "downstreamCount": 55
+  },
+  {
+    "group": "iam",
+    "kind": "IAMServiceAccountKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "IAMServiceAccount"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 218,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMWorkforcePool",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 67,
+    "downstreamCount": 1
+  },
+  {
+    "group": "iam",
+    "kind": "IAMWorkforcePoolProvider",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "IAMWorkforcePool"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 219,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iam",
+    "kind": "IAMWorkloadIdentityPool",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 68,
+    "downstreamCount": 1
+  },
+  {
+    "group": "iam",
+    "kind": "IAMWorkloadIdentityPoolProvider",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "IAMWorkloadIdentityPool",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 220,
+    "downstreamCount": 0
+  },
+  {
+    "group": "iap",
+    "kind": "IAPBrand",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "edgeCases": {
+      "gcpAPIDeprecated": true,
+      "notes": "IAP Brand APIs are deprecated. Context can be found at https://docs.cloud.google.com/iap/docs/deprecations and https://docs.cloud.google.com/iap/docs/deprecations/migrate-oauth-client."
+    },
+    "sortOrder": 301,
+    "downstreamCount": 1
+  },
+  {
+    "group": "iap",
+    "kind": "IAPIdentityAwareProxyClient",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "IAPBrand"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 221,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformConfig",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 222,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformDefaultSupportedIDPConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 223,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformInboundSAMLConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 224,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformOAuthIDPConfig",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 225,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformProjectDefaultConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 226,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformTenant",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 69,
+    "downstreamCount": 1
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformTenantDefaultSupportedIDPConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 227,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformTenantInboundSAMLConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 228,
+    "downstreamCount": 0
+  },
+  {
+    "group": "identityplatform",
+    "kind": "IdentityPlatformTenantOAuthIDPConfig",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "IdentityPlatformTenant"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 229,
+    "downstreamCount": 0
+  },
+  {
+    "group": "kms",
+    "kind": "KMSCryptoKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSKeyRing"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 5,
+    "downstreamCount": 126
+  },
+  {
+    "group": "kms",
+    "kind": "KMSCryptoKeyVersion",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 230,
+    "downstreamCount": 0
+  },
+  {
+    "group": "kms",
+    "kind": "KMSKeyRing",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 4,
+    "downstreamCount": 128
+  },
+  {
+    "group": "kms",
+    "kind": "KMSKeyRingImportJob",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 231,
+    "downstreamCount": 0
+  },
+  {
+    "group": "kms",
+    "kind": "KMSSecretCiphertext",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 232,
+    "downstreamCount": 0
+  },
+  {
+    "group": "logging",
+    "kind": "LoggingLogBucket",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 34,
+    "downstreamCount": 3
+  },
+  {
+    "group": "logging",
+    "kind": "LoggingLogExclusion",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 233,
+    "downstreamCount": 0
+  },
+  {
+    "group": "logging",
+    "kind": "LoggingLogSink",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "BigQueryDataset",
+      "Folder",
+      "LoggingLogBucket",
+      "Project",
+      "PubSubTopic",
+      "StorageBucket"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 234,
+    "downstreamCount": 0
+  },
+  {
+    "group": "logging",
+    "kind": "LoggingLogView",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Folder",
+      "Project",
+      "StorageBucket"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 235,
+    "downstreamCount": 0
+  },
+  {
+    "group": "mlengine",
+    "kind": "MLEngineModel",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 236,
+    "downstreamCount": 0
+  },
+  {
+    "group": "memcache",
+    "kind": "MemcacheInstance",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 237,
+    "downstreamCount": 0
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringAlertPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 70,
+    "downstreamCount": 1
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringGroup",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 71,
+    "downstreamCount": 1
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringMetricDescriptor",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 238,
+    "downstreamCount": 0
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringMonitoredProject",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 239,
+    "downstreamCount": 0
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringNotificationChannel",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 240,
+    "downstreamCount": 0
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringService",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 72,
+    "downstreamCount": 1
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringServiceLevelObjective",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "MonitoringService",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 241,
+    "downstreamCount": 0
+  },
+  {
+    "group": "monitoring",
+    "kind": "MonitoringUptimeCheckConfig",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "MonitoringGroup",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 242,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkconnectivity",
+    "kind": "NetworkConnectivityHub",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 73,
+    "downstreamCount": 1
+  },
+  {
+    "group": "networkconnectivity",
+    "kind": "NetworkConnectivitySpoke",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "NetworkConnectivityHub",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 243,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networksecurity",
+    "kind": "NetworkSecurityAuthorizationPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 244,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networksecurity",
+    "kind": "NetworkSecurityClientTLSPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 245,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networksecurity",
+    "kind": "NetworkSecurityServerTLSPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 246,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesEdgeCacheKeyset",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 247,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesEdgeCacheOrigin",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 248,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesEdgeCacheService",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 249,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesEndpointPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 250,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesGRPCRoute",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 251,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesGateway",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 252,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesHTTPRoute",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 253,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesMesh",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 254,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesTCPRoute",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 255,
+    "downstreamCount": 0
+  },
+  {
+    "group": "networkservices",
+    "kind": "NetworkServicesTLSRoute",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project",
+      "Service"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 256,
+    "downstreamCount": 0
+  },
+  {
+    "group": "osconfig",
+    "kind": "OSConfigGuestPolicy",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "StorageBucket"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 257,
+    "downstreamCount": 0
+  },
+  {
+    "group": "osconfig",
+    "kind": "OSConfigOSPolicyAssignment",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 258,
+    "downstreamCount": 0
+  },
+  {
+    "group": "osconfig",
+    "kind": "OSConfigPatchDeployment",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 259,
+    "downstreamCount": 0
+  },
+  {
+    "group": "oslogin",
+    "kind": "OSLoginSSHPublicKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 260,
+    "downstreamCount": 0
+  },
+  {
+    "group": "privateca",
+    "kind": "PrivateCACAPool",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 50,
+    "downstreamCount": 2
+  },
+  {
+    "group": "privateca",
+    "kind": "PrivateCACertificate",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "PrivateCACAPool",
+      "PrivateCACertificateAuthority",
+      "PrivateCACertificateTemplate",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 261,
+    "downstreamCount": 0
+  },
+  {
+    "group": "privateca",
+    "kind": "PrivateCACertificateAuthority",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL"
+    ],
+    "dependencies": [
+      "KMSCryptoKey",
+      "PrivateCACAPool",
+      "Project",
+      "StorageBucket"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 74,
+    "downstreamCount": 1
+  },
+  {
+    "group": "privateca",
+    "kind": "PrivateCACertificateTemplate",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 75,
+    "downstreamCount": 1
+  },
+  {
+    "group": "resourcemanager",
+    "kind": "Project",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Folder"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 2,
+    "downstreamCount": 404
+  },
+  {
+    "group": "pubsublite",
+    "kind": "PubSubLiteReservation",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "edgeCases": {
+      "gcpAPIDeprecated": true,
+      "notes": "Pub/Sub Lite is deprecated. Please find more details at https://docs.cloud.google.com/pubsub/lite/docs/release-notes#June_17_2024"
+    },
+    "sortOrder": 302,
+    "downstreamCount": 0
+  },
+  {
+    "group": "pubsublite",
+    "kind": "PubSubLiteSubscription",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "edgeCases": {
+      "gcpAPIDeprecated": true,
+      "notes": "Pub/Sub Lite is deprecated. Please find more details at https://docs.cloud.google.com/pubsub/lite/docs/release-notes#June_17_2024"
+    },
+    "sortOrder": 303,
+    "downstreamCount": 0
+  },
+  {
+    "group": "pubsublite",
+    "kind": "PubSubLiteTopic",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "edgeCases": {
+      "gcpAPIDeprecated": true,
+      "notes": "Pub/Sub Lite is deprecated. Please find more details at https://docs.cloud.google.com/pubsub/lite/docs/release-notes#June_17_2024"
+    },
+    "sortOrder": 304,
+    "downstreamCount": 0
+  },
+  {
+    "group": "pubsub",
+    "kind": "PubSubSchema",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 17,
+    "downstreamCount": 8
+  },
+  {
+    "group": "pubsub",
+    "kind": "PubSubSubscription",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "PubSubTopic",
+      "StorageBucket"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 51,
+    "downstreamCount": 2
+  },
+  {
+    "group": "pubsub",
+    "kind": "PubSubTopic",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey",
+      "PubSubSchema"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 21,
+    "downstreamCount": 7
+  },
+  {
+    "group": "recaptchaenterprise",
+    "kind": "RecaptchaEnterpriseKey",
+    "version": "v1beta1",
+    "controllerType": "DCL",
+    "defaultController": "DCL",
+    "supportedControllers": [
+      "DCL",
+      "Direct"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 262,
+    "downstreamCount": 0
+  },
+  {
+    "group": "redis",
+    "kind": "RedisInstance",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 263,
+    "downstreamCount": 0
+  },
+  {
+    "group": "resourcemanager",
+    "kind": "ResourceManagerLien",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 264,
+    "downstreamCount": 0
+  },
+  {
+    "group": "resourcemanager",
+    "kind": "ResourceManagerPolicy",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Folder",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 265,
+    "downstreamCount": 0
+  },
+  {
+    "group": "run",
+    "kind": "RunJob",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "Project",
+      "StorageBucket"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 266,
+    "downstreamCount": 0
+  },
+  {
+    "group": "run",
+    "kind": "RunService",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "IAMServiceAccount",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 267,
+    "downstreamCount": 0
+  },
+  {
+    "group": "sql",
+    "kind": "SQLDatabase",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 268,
+    "downstreamCount": 0
+  },
+  {
+    "group": "sql",
+    "kind": "SQLSSLCert",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 269,
+    "downstreamCount": 0
+  },
+  {
+    "group": "sql",
+    "kind": "SQLUser",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 270,
+    "downstreamCount": 0
+  },
+  {
+    "group": "secretmanager",
+    "kind": "SecretManagerSecret",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 52,
+    "downstreamCount": 2
+  },
+  {
+    "group": "secretmanager",
+    "kind": "SecretManagerSecretVersion",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "SecretManagerSecret"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 271,
+    "downstreamCount": 0
+  },
+  {
+    "group": "securitycenter",
+    "kind": "SecurityCenterNotificationConfig",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 272,
+    "downstreamCount": 0
+  },
+  {
+    "group": "securitycenter",
+    "kind": "SecurityCenterSource",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 273,
+    "downstreamCount": 0
+  },
+  {
+    "group": "serviceusage",
+    "kind": "Service",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 9,
+    "downstreamCount": 15
+  },
+  {
+    "group": "servicedirectory",
+    "kind": "ServiceDirectoryEndpoint",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "Service"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 274,
+    "downstreamCount": 0
+  },
+  {
+    "group": "servicedirectory",
+    "kind": "ServiceDirectoryNamespace",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 76,
+    "downstreamCount": 1
+  },
+  {
+    "group": "servicedirectory",
+    "kind": "ServiceDirectoryService",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "ServiceDirectoryNamespace"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 275,
+    "downstreamCount": 0
+  },
+  {
+    "group": "serviceusage",
+    "kind": "ServiceIdentity",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 53,
+    "downstreamCount": 2
+  },
+  {
+    "group": "servicenetworking",
+    "kind": "ServiceNetworkingConnection",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 276,
+    "downstreamCount": 0
+  },
+  {
+    "group": "serviceusage",
+    "kind": "ServiceUsageConsumerQuotaOverride",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 277,
+    "downstreamCount": 0
+  },
+  {
+    "group": "sourcerepo",
+    "kind": "SourceRepoRepository",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "IAMServiceAccount"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 278,
+    "downstreamCount": 0
+  },
+  {
+    "group": "spanner",
+    "kind": "SpannerDatabase",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey",
+      "SpannerInstance"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 77,
+    "downstreamCount": 1
+  },
+  {
+    "group": "spanner",
+    "kind": "SpannerInstance",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 54,
+    "downstreamCount": 2
+  },
+  {
+    "group": "storage",
+    "kind": "StorageBucket",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 7,
+    "downstreamCount": 40
+  },
+  {
+    "group": "storage",
+    "kind": "StorageBucketAccessControl",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "StorageBucket"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 279,
+    "downstreamCount": 0
+  },
+  {
+    "group": "storage",
+    "kind": "StorageDefaultObjectAccessControl",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "StorageBucket"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 280,
+    "downstreamCount": 0
+  },
+  {
+    "group": "storage",
+    "kind": "StorageHMACKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 281,
+    "downstreamCount": 0
+  },
+  {
+    "group": "storage",
+    "kind": "StorageNotification",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "StorageBucket"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 282,
+    "downstreamCount": 0
+  },
+  {
+    "group": "storagetransfer",
+    "kind": "StorageTransferAgentPool",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 283,
+    "downstreamCount": 0
+  },
+  {
+    "group": "storagetransfer",
+    "kind": "StorageTransferJob",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "StorageBucket"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 284,
+    "downstreamCount": 0
+  },
+  {
+    "group": "tpu",
+    "kind": "TPUNode",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 285,
+    "downstreamCount": 0
+  },
+  {
+    "group": "tags",
+    "kind": "TagsLocationTagBinding",
+    "version": "v1beta1",
+    "controllerType": "Direct",
+    "defaultController": "Direct",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "TagsTagValue"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 286,
+    "downstreamCount": 0
+  },
+  {
+    "group": "tags",
+    "kind": "TagsTagBinding",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [
+      "TagsTagValue"
+    ],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 287,
+    "downstreamCount": 0
+  },
+  {
+    "group": "tags",
+    "kind": "TagsTagKey",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 288,
+    "downstreamCount": 0
+  },
+  {
+    "group": "tags",
+    "kind": "TagsTagValue",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Direct",
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Completed",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 55,
+    "downstreamCount": 2
+  },
+  {
+    "group": "vpcaccess",
+    "kind": "VPCAccessConnector",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 289,
+    "downstreamCount": 0
+  },
+  {
+    "group": "vertexai",
+    "kind": "VertexAIDataset",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "In Progress",
+    "steps": {
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 290,
+    "downstreamCount": 0
+  },
+  {
+    "group": "vertexai",
+    "kind": "VertexAIEndpoint",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "ComputeNetwork",
+      "KMSCryptoKey",
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 291,
+    "downstreamCount": 0
+  },
+  {
+    "group": "vertexai",
+    "kind": "VertexAIFeaturestoreEntityType",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 292,
+    "downstreamCount": 0
+  },
+  {
+    "group": "vertexai",
+    "kind": "VertexAIFeaturestoreEntityTypeFeature",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 293,
+    "downstreamCount": 0
+  },
+  {
+    "group": "vertexai",
+    "kind": "VertexAIIndex",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 294,
+    "downstreamCount": 0
+  },
+  {
+    "group": "vertexai",
+    "kind": "VertexAIIndexEndpoint",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 295,
+    "downstreamCount": 0
+  },
+  {
+    "group": "vertexai",
+    "kind": "VertexAITensorboard",
+    "version": "v1beta1",
+    "controllerType": "Terraform",
+    "defaultController": "Terraform",
+    "supportedControllers": [
+      "Terraform"
+    ],
+    "dependencies": [
+      "Project"
+    ],
+    "state": "Not Started",
+    "steps": {
+      "gen-types": false,
+      "identity-reference": false,
+      "mapper-fuzzer": false,
+      "mocks": false,
+      "controller": false,
+      "tests": false
+    },
+    "mocksLastRefreshed": "Never",
+    "notes": "",
+    "sortOrder": 296,
+    "downstreamCount": 0
+  }
+]

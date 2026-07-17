@@ -131,11 +131,32 @@ func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
 
 func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) []*gocode.GoStruct {
 	// Use precomputed mappings
-	if matches, found := v.precomputedMappings[msg.FullName()]; found {
-		return matches
+	matches, found := v.precomputedMappings[msg.FullName()]
+	if !found {
+		klog.V(2).Infof("did not find mapping for %q", msg.FullName())
+		return nil
 	}
-	klog.V(2).Infof("did not find mapping for %q", msg.FullName())
-	return nil
+
+	var krmGroup string
+	if v.generatedFileAnnotation != nil {
+		if groups := v.generatedFileAnnotation.Attributes["krm.group"]; len(groups) > 0 {
+			krmGroup = groups[0]
+		}
+	}
+
+	if krmGroup != "" {
+		groupName := strings.TrimSuffix(krmGroup, ".cnrm.cloud.google.com")
+		expectedPackagePrefix := "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + groupName
+		var filtered []*gocode.GoStruct
+		for _, match := range matches {
+			if strings.HasPrefix(match.GoPackage, expectedPackagePrefix) {
+				filtered = append(filtered, match)
+			}
+		}
+		return filtered
+	}
+
+	return matches
 }
 
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
@@ -206,7 +227,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		out.fileAnnotation = v.generatedFileAnnotation
 
 		{
-			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
+			out.addImport("refsv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
@@ -283,6 +304,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				if krmFieldRefs := goFields[strings.TrimSuffix(krmFieldName, "s")+"Refs"]; krmFieldRefs != nil {
+					isPointerSlice := strings.HasPrefix(krmFieldRefs.Type, "[]*")
 					template := `
 						if v := in.{protoAccessor}; len(v) != 0 {
 							for i := range v {
@@ -290,8 +312,19 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 							}
 						}
 					`
+					if !isPointerSlice {
+						template = `
+						if v := in.{protoAccessor}; len(v) != 0 {
+							for i := range v {
+								out.{KRMField} = append(out.{KRMField}, {RefType}{External: v[i]})
+							}
+						}
+					`
+					}
 
-					qualifiedTypeName := strings.TrimPrefix(krmFieldRefs.Type, "*")
+					qualifiedTypeName := krmFieldRefs.Type
+					qualifiedTypeName = strings.TrimPrefix(qualifiedTypeName, "[]")
+					qualifiedTypeName = strings.TrimPrefix(qualifiedTypeName, "*")
 					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
 					if len(tokens) > 1 {
 						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)
@@ -324,9 +357,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
-			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
 			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
-
 			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
 				var fromProtoElemFunc string
 				switch protoField.Kind() {
@@ -446,8 +478,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceFromProtoFunction = ""
 					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
+						useSliceFromProtoFunction = ""
+						useCustomMethod = krmFieldName + "_FromProto"
 					}
 				}
 
@@ -523,6 +555,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
 						protoFieldName,
+					)
+				} else if !strings.HasPrefix(krmField.Type, "*") {
+					fmt.Fprintf(out, "\tout.%s = in.%s\n",
+						krmFieldName,
+						protoAccessor,
 					)
 				} else {
 					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
@@ -607,9 +644,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
-			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]") && krmField.Type != "[]byte"
 			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
-
 			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
 				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
 				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")
@@ -743,8 +779,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceToProtoFunction = ""
 					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
+						useSliceToProtoFunction = ""
+						useCustomMethod = krmFieldName + "_ToProto"
 					}
 				}
 
@@ -1097,6 +1133,8 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.UInt64Value_FromProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_FromProto"
+	case "google.rpc.Status":
+		return "direct.Status_FromProto"
 	}
 	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -1129,6 +1167,8 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.UInt64Value_ToProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_ToProto"
+	case "google.rpc.Status":
+		return "direct.Status_ToProto"
 	}
 	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -1181,6 +1221,9 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 	// Disambiguate in a way that preserves compatibility with the existing code
 	if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
 		importAlias = "refs" + importAlias
+	} else if strings.HasSuffix(goPackage, "k8s-config-connector/apis/refs") {
+		// for _reference.go files under apis/refs and not apis/refs/v1beta1
+		// do nothing, use `refs` as import alias
 	} else if _, suffix, found := strings.Cut(goPackage, "k8s-config-connector/apis/"); found {
 		tokens := strings.Split(suffix, "/")
 		if len(tokens) == 2 {

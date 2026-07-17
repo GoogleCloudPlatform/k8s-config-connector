@@ -13,20 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-mapper \
-    --multiversion \
-    --service google.cloud.compute.v1 \
-    --api-version compute.cnrm.cloud.google.com/v1alpha1
+./generate-proto.sh
+
+go run . generate-types \
+  --service google.cloud.compute.v1 \
+  --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService \
+  --resource ComputeNetworkAttachment:NetworkAttachment \
+  --resource ComputeInterconnect:Interconnect \
+  --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
+  --resource ComputeRegionPerInstanceConfig:PerInstanceConfig \
+  --resource ComputeAutoscaler:Autoscaler \
+  --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
+  --resource ComputeRegionAutoscaler:Autoscaler \
+  --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
+  --resource ComputeNetworkEndpoint:NetworkEndpoint \
+  --resource ComputeMachineImage:MachineImage \
+  --resource ComputeRegionSSLPolicy:SslPolicy \
+  --include-skipped-output
+
+rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/compute/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/compute/

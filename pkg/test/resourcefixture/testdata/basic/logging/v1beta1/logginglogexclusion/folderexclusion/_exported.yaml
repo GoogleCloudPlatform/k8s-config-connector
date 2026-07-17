@@ -1,0 +1,11 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogExclusion
+metadata:
+  name: exclusion-${uniqueId}
+spec:
+  description: An updated log exclusion
+  disabled: true
+  filter: resource.type=gcs_bucket severity<=ERROR sample(insertId, 0.99)
+  folderRef:
+    external: ${folderID}
+  resourceID: exclusion-${uniqueId}

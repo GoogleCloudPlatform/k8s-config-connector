@@ -21,6 +21,7 @@ import (
 	"strings"
 	"time"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v1"
 	v3 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
@@ -33,6 +34,20 @@ import (
 type ProjectsV1 struct {
 	*MockService
 	pb.UnimplementedProjectsServerServer
+}
+
+func (s *ProjectsV1) TestIamPermissions(ctx context.Context, req *pb.TestIamPermissionsRequest) (*pb.TestIamPermissionsResponse, error) {
+	reqv3 := &iampb.TestIamPermissionsRequest{
+		Resource:    req.GetResource(),
+		Permissions: req.GetPermissions(),
+	}
+	resv3, err := s.projectsV3.TestIamPermissions(ctx, reqv3)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.TestIamPermissionsResponse{
+		Permissions: resv3.GetPermissions(),
+	}, nil
 }
 
 // Retrieves the project identified by the specified `name` (for example,

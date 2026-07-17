@@ -19,21 +19,13 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
-    --service google.cloud.orgpolicy.v2  \
-    --api-version orgpolicy.cnrm.cloud.google.com/v1alpha1 \
-    --resource OrgPolicyPolicy:Policy
-
-go run . generate-mapper \
-    --service google.cloud.orgpolicy.v2 \
-    --api-version orgpolicy.cnrm.cloud.google.com/v1alpha1
-
+# generate-types and generate-mapper are not needed for v1alpha1 as the resource has been promoted to v1beta1
+# and v1alpha1 support is maintained via additional-versions in v1beta1.
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/orgpolicy/

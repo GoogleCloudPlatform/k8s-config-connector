@@ -1679,6 +1679,11 @@ func (in *DataprocAutoscalingPolicyStatus) DeepCopyInto(out *DataprocAutoscaling
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int64)
@@ -1811,6 +1816,11 @@ func (in *DataprocClusterStatus) DeepCopyInto(out *DataprocClusterStatus) {
 		in, out := &in.Config, &out.Config
 		*out = new(ClusterConfigStatus)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
 	}
 	if in.Metrics != nil {
 		in, out := &in.Metrics, &out.Metrics

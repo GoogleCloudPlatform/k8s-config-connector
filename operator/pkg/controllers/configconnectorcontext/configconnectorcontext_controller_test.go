@@ -1297,7 +1297,16 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
-			expectCELFailure:       "failed rule: self.metadata.name == 'cnrm-controller-manager'",
+			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors: []string{
+						"failed to apply rate limit customization cnrm-webhook-manager: rate limit customization for cnrm-webhook-manager is not supported. Supported controllers: cnrm-controller-manager",
+					},
+					ObservedGeneration: 0,
+				},
+			},
+			expectCELFailure: "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 		},
 		{
 			name:                   "customization from a different namespace has no effect",

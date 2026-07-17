@@ -18,12 +18,17 @@ import (
 	"context"
 	"sort"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 // Diff allows reporting of a detected difference
 type Diff struct {
 	Object *unstructured.Unstructured
+
+	// Controller indicates the type of reconciler (e.g. direct, tf, dcl) reporting the diff
+	Controller k8s.ReconcilerType
 
 	// Fields contains field-level diffs
 	// Likely empty if NewObject is true
@@ -35,7 +40,11 @@ type Diff struct {
 
 type DiffField struct {
 	// ID is the identity of the field.  Note that this might be the proto or terraform name.
-	ID  string
+	ID string
+
+	// ProtoFieldDescriptor is the proto fieldDescriptor of the field, if known.
+	ProtoFieldDescriptor protoreflect.FieldDescriptor
+
 	Old any
 	New any
 }
@@ -45,6 +54,11 @@ func (d *Diff) AddField(id string, old any, new any) {
 	d.Fields = append(d.Fields, DiffField{ID: id, Old: old, New: new})
 }
 
+// AddProtoField adds the data for a changed field where we know the proto field descriptor.
+func (d *Diff) AddProtoField(id string, fd protoreflect.FieldDescriptor, old any, new any) {
+	d.Fields = append(d.Fields, DiffField{ID: id, ProtoFieldDescriptor: fd, Old: old, New: new})
+}
+
 // HasDiff returns true if the diff has any fields that differ.
 func (d *Diff) HasDiff() bool {
 	return len(d.Fields) > 0
@@ -52,6 +66,11 @@ func (d *Diff) HasDiff() bool {
 
 // ReportDiff should be called by a controller when it detects diffs
 func ReportDiff(ctx context.Context, diff *Diff) {
+	if diff != nil && diff.Controller == "" {
+		if t, ok := GetReconcilerTypeFromContext(ctx); ok {
+			diff.Controller = t
+		}
+	}
 	if listener, ok := GetListenerFromContext(ctx); ok {
 		listener.OnDiff(ctx, diff)
 	}
@@ -60,6 +79,10 @@ func ReportDiff(ctx context.Context, diff *Diff) {
 func (d *Diff) AddDiff(other *Diff) *Diff {
 	if other == nil {
 		return d
+	}
+
+	if d.Controller == "" && other.Controller != "" {
+		d.Controller = other.Controller
 	}
 
 	for _, f := range other.Fields {
@@ -77,4 +100,13 @@ func (d *Diff) FieldIDs() []string {
 	}
 	sort.Strings(ids)
 	return ids
+}
+
+// FieldsByID returns a mutable map of field IDs to their DiffField details, making it easy to check membership and manipulate the diffs.
+func (d *Diff) FieldsByID() map[string]DiffField {
+	m := make(map[string]DiffField, len(d.Fields))
+	for _, f := range d.Fields {
+		m[f.ID] = f
+	}
+	return m
 }

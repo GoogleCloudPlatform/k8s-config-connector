@@ -1,10 +1,10 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//	http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,13 +33,18 @@ func loggingLinkFuzzer() fuzztesting.KRMFuzzer {
 		LoggingLinkObservedState_FromProto, LoggingLinkObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
+	// Explicitly compare the KRM Spec fields with the GCP proto fields:
+	// - loggingLogBucketRef (KRM Spec only): Resolved at identity / adapter creation time, maps to bucket name hierarchy.
+	// - resourceID (KRM Spec only): Mapped to leaf part of name.
+	// - description (KRM Spec): Mapped to GCP .description.
+	// - bigqueryDatasetRef (KRM Spec only, commented out/not yet supported): GCP .bigquery_dataset is output-only and mapped in ObservedState.
+	f.SpecField(".description")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".lifecycle_state")
-	f.StatusFields.Insert(".bigquery_dataset")
+	f.StatusField(".create_time")
+	f.StatusField(".lifecycle_state")
+	f.StatusField(".bigquery_dataset")
 
-	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_Identity(".name")
 
 	return f
 }

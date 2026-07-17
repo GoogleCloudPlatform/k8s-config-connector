@@ -43,20 +43,14 @@ type ComputeTargetHTTPProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Specifies how long to keep a connection open, after completing a response,
-	while there is no matching traffic (in seconds). If an HTTP keepalive is
-	not specified, a default value (610 seconds) will be used. For Global
-	external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
-	the maximum allowed value is 1200 seconds. For Global external HTTP(S)
-	load balancer (classic), this option is not available publicly. */
+	/* Immutable. Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). If an HTTP keepalive is not specified, a default value (610 seconds) will be used. For Global external HTTP(S) load balancer, the minimum allowed value is 5 seconds and the maximum allowed value is 1200 seconds. For Global external HTTP(S) load balancer (classic), this option is not available publicly. */
 	// +optional
 	HttpKeepAliveTimeoutSec *int64 `json:"httpKeepAliveTimeoutSec,omitempty"`
 
 	/* Location represents the geographical location of the ComputeTargetHTTPProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
-	/* Immutable. This field only applies when the forwarding rule that references
-	this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
+	/* Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. */
 	// +optional
 	ProxyBind *bool `json:"proxyBind,omitempty"`
 
@@ -64,8 +58,7 @@ type ComputeTargetHTTPProxySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* A reference to the ComputeURLMap resource that defines the mapping
-	from URL to the BackendService. */
+	/* A reference to the ComputeURLMap resource that defines the mapping from URL to the BackendService. */
 	UrlMapRef v1alpha1.ResourceRef `json:"urlMapRef"`
 }
 

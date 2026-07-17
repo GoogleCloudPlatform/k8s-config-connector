@@ -59,13 +59,13 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetBackendServiceResource()).(*pb.BackendService)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetBackendServiceResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
 
-	s.populateDefaults(obj)
+	s.populateBackendServiceDefaults(ctx, obj)
 
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
@@ -82,44 +82,6 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
 	})
-}
-
-func (s *GlobalBackendServicesV1) populateDefaults(obj *pb.BackendService) {
-
-	if obj.AffinityCookieTtlSec == nil {
-		obj.AffinityCookieTtlSec = PtrTo(int32(0))
-	}
-
-	if obj.ConnectionDraining == nil {
-		obj.ConnectionDraining = &pb.ConnectionDraining{}
-	}
-
-	if obj.ConnectionDraining.DrainingTimeoutSec == nil {
-		obj.ConnectionDraining.DrainingTimeoutSec = PtrTo(int32(0))
-	}
-
-	if obj.Description == nil {
-		obj.Description = PtrTo("")
-	}
-
-	if obj.EnableCDN == nil {
-		obj.EnableCDN = PtrTo(false)
-	}
-
-	if obj.LoadBalancingScheme == nil {
-		obj.LoadBalancingScheme = PtrTo("EXTERNAL")
-	}
-
-	switch obj.GetProtocol() {
-	case "HTTP":
-		if obj.Port == nil {
-			obj.Port = PtrTo[int32](80)
-		}
-	}
-
-	if obj.SessionAffinity == nil {
-		obj.SessionAffinity = PtrTo("NONE")
-	}
 }
 
 func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBackendServiceRequest) (*pb.Operation, error) {
@@ -210,6 +172,104 @@ func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBack
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) AddSignedUrlKey(ctx context.Context, req *pb.AddSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	}
+
+	keyResource := req.GetSignedUrlKeyResource()
+	if keyResource == nil || keyResource.KeyName == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "SignedUrlKeyResource and KeyName must be specified")
+	}
+	keyName := *keyResource.KeyName
+
+	if obj.CdnPolicy == nil {
+		obj.CdnPolicy = &pb.BackendServiceCdnPolicy{}
+	}
+
+	found := false
+	for _, n := range obj.CdnPolicy.SignedUrlKeyNames {
+		if n == keyName {
+			found = true
+			break
+		}
+	}
+	if !found {
+		obj.CdnPolicy.SignedUrlKeyNames = append(obj.CdnPolicy.SignedUrlKeyNames, keyName)
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) DeleteSignedUrlKey(ctx context.Context, req *pb.DeleteSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	}
+
+	keyName := req.GetKeyName()
+	if keyName == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "KeyName must be specified")
+	}
+
+	if obj.CdnPolicy != nil {
+		var newNames []string
+		for _, n := range obj.CdnPolicy.SignedUrlKeyNames {
+			if n != keyName {
+				newNames = append(newNames, n)
+			}
+		}
+		obj.CdnPolicy.SignedUrlKeyNames = newNames
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("deleteSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
 	})
 }
 

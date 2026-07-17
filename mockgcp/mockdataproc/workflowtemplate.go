@@ -65,7 +65,7 @@ func (s *workflowTemplateServer) CreateWorkflowTemplate(ctx context.Context, req
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetTemplate()).(*pb.WorkflowTemplate)
+	obj := proto.CloneOf(req.GetTemplate())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -136,30 +136,36 @@ func (s *workflowTemplateServer) DeleteWorkflowTemplate(ctx context.Context, req
 }
 
 type workflowTemplateName struct {
-	Project *projects.ProjectData
-	Region  string
-	Name    string
+	Project      *projects.ProjectData
+	LocationType string
+	Region       string
+	Name         string
 }
 
 func (n *workflowTemplateName) String() string {
-	return fmt.Sprintf("projects/%s/regions/%s/workflowTemplates/%s", n.Project.ID, n.Region, n.Name)
+	locationType := n.LocationType
+	if locationType == "" {
+		locationType = "regions"
+	}
+	return fmt.Sprintf("projects/%s/%s/%s/workflowTemplates/%s", n.Project.ID, locationType, n.Region, n.Name)
 }
 
 // parseWorkflowTemplateName parses a string into an WorkflowTemplateName.
-// The expected form is `projects/*/regions/*/workflowTemplates/*`.
+// The expected form is `projects/*/regions/*/workflowTemplates/*` or `projects/*/locations/*/workflowTemplates/*`.
 func (s *MockService) parseWorkflowTemplateName(name string) (*workflowTemplateName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "workflowTemplates" {
+	if len(tokens) == 6 && tokens[0] == "projects" && (tokens[2] == "regions" || tokens[2] == "locations") && tokens[4] == "workflowTemplates" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
 		name := &workflowTemplateName{
-			Project: project,
-			Region:  tokens[3],
-			Name:    tokens[5],
+			Project:      project,
+			LocationType: tokens[2],
+			Region:       tokens[3],
+			Name:         tokens[5],
 		}
 
 		return name, nil

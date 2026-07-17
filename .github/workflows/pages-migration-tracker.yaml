@@ -1,0 +1,69 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: deploy-migration-tracker-pages
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'dev/migration-tracker/**'
+  workflow_dispatch:
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: https://googlecloudplatform.github.io/k8s-config-connector/migration-tracker/
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write      # Required to deploy to GitHub Pages
+      id-token: write   # Required for OIDC authentication with Pages
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Prepare site directory structure
+        run: |
+          # Structure files inside a /migration-tracker subdirectory so Pages hosts it at /migration-tracker
+          mkdir -p _site/migration-tracker
+          cp -r dev/migration-tracker/* _site/migration-tracker/
+          
+          # Optional: Add a root redirect so visiting the base URL redirects to /migration-tracker
+          cat << 'EOF' > _site/index.html
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta http-equiv="refresh" content="0; url=./migration-tracker/" />
+            </head>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: './_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

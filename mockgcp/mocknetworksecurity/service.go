@@ -18,14 +18,14 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
+	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
-	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1beta1"
 )
 
 func init() {
@@ -57,21 +57,27 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityServer{MockService: s})
+	pbv1.RegisterNetworkSecurityServer(grpcServer, &NetworkSecurityV1Server{MockService: s})
+	pbv1.RegisterMirroringServer(grpcServer, &MirroringServer{MockService: s})
+	pbv1.RegisterInterceptServer(grpcServer, &InterceptServer{MockService: s})
+	pbv1.RegisterSSERealmServiceServer(grpcServer, &SSERealmServer{MockService: s})
+	pbv1.RegisterFirewallActivationServer(grpcServer, &FirewallActivationServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pbhttp.RegisterNetworkSecurityHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
-	)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+
+	mux.AddService(pb.NewNetworkSecurityClient(conn))
+	mux.AddService(pbv1.NewNetworkSecurityClient(conn))
+	mux.AddService(pbv1.NewMirroringClient(conn))
+	mux.AddService(pbv1.NewInterceptClient(conn))
+	mux.AddService(pbv1.NewSSERealmServiceClient(conn))
+	mux.AddService(pbv1.NewFirewallActivationClient(conn))
+	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

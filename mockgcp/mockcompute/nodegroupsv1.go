@@ -54,8 +54,8 @@ func (s *NodeGroupsV1) Insert(ctx context.Context, req *pb.InsertNodeGroupReques
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetNodeGroupResource()).(*pb.NodeGroup)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetNodeGroupResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#nodegroup")

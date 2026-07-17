@@ -19,69 +19,20 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krm_memorystore "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	krm_redis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeSubnetworkRef) (*refs.ComputeSubnetworkRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeSubnetwork, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeSubnetwork",
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	resourceID, err := refs.GetResourceID(computeSubnetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, computeSubnetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	region, _, _ := unstructured.NestedString(computeSubnetwork.Object, "spec", "region")
-	if region == "" {
-		return nil, fmt.Errorf("cannot get region from references ComputeSubnetwork %v: %w", key, err)
-	}
-
-	// convert to format `projects/<projectID>/regions/<region>/subnetworks/<subnetwork>`
-	return &refs.ComputeSubnetworkRef{
-		External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, resourceID),
-	}, nil
-}
-
-func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeAddressRef) (*refs.ComputeAddressRef, error) {
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *krm.ComputeAddressRef) (*krm.ComputeAddressRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -123,7 +74,7 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 	if err != nil || address == "" {
 		return nil, fmt.Errorf("cannot get address for referenced %s %v (status.observedState.address is empty)", computeAddress.GetKind(), computeAddress.GetNamespace())
 	}
-	return &refs.ComputeAddressRef{
+	return &krm.ComputeAddressRef{
 		External: address}, nil
 }
 
@@ -428,25 +379,119 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 		External: selfLink}, nil
 }
 
+func ResolveMemorystoreInstanceServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *krm.MemorystoreInstanceServiceAttachment) (*refs.ComputeServiceAttachmentRef, error) {
+	if ref.MemorystoreInstanceRef == nil || ref.MemorystoreInstanceRef.Name == "" {
+		return nil, fmt.Errorf("must provide memorystoreInstanceRef.Name")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.MemorystoreInstanceRef.Namespace,
+		Name:      ref.MemorystoreInstanceRef.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(krm_memorystore.MemorystoreInstanceGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced %v %v: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	instance := &krm_memorystore.MemorystoreInstance{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, instance); err != nil {
+		return nil, fmt.Errorf("error converting %v %v to MemorystoreInstance: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	// Read status.observedState.pscAttachmentDetails[MemorystoreInstanceServiceAttachmentIndex]
+	// to retrieve the service attachment external.
+
+	desiredConnectionType := ""
+	if ref.ConnectionType != nil {
+		desiredConnectionType = *ref.ConnectionType
+	}
+
+	observedState := instance.Status.ObservedState
+	if observedState != nil {
+		for _, item := range observedState.PscAttachmentDetails {
+			connectionType := valueOf(item.ConnectionType)
+			serviceAttachment := valueOf(item.ServiceAttachment)
+
+			if connectionType == desiredConnectionType {
+				if serviceAttachment != "" {
+					return &refs.ComputeServiceAttachmentRef{External: serviceAttachment}, nil
+				}
+			}
+		}
+	}
+
+	return nil, fmt.Errorf("no pscAttachmentDetails found for %s %v with connection type %q", instance.GroupVersionKind(), key, desiredConnectionType)
+}
+
+func ResolveRedisClusterServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *krm.RedisClusterServiceAttachment) (*refs.ComputeServiceAttachmentRef, error) {
+	if ref.RedisClusterRef == nil || ref.RedisClusterRef.Name == "" {
+		return nil, fmt.Errorf("must provide memorystoreInstanceRef.Name")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.RedisClusterRef.Namespace,
+		Name:      ref.RedisClusterRef.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(krm_redis.RedisClusterGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced %v %v: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	cluster := &krm_redis.RedisCluster{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, cluster); err != nil {
+		return nil, fmt.Errorf("error converting %v %v to RedisCluster: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	// Read status.observedState.pscServiceAttachments
+	// to retrieve the service attachment external.
+
+	desiredConnectionType := ""
+	if ref.ConnectionType != nil {
+		desiredConnectionType = *ref.ConnectionType
+	}
+
+	observedState := cluster.Status.ObservedState
+	if observedState != nil {
+		for _, item := range observedState.PSCServiceAttachments {
+			connectionType := valueOf(item.ConnectionType)
+			serviceAttachment := valueOf(item.ServiceAttachment)
+
+			if connectionType == desiredConnectionType {
+				if serviceAttachment != "" {
+					return &refs.ComputeServiceAttachmentRef{External: serviceAttachment}, nil
+				}
+			}
+		}
+	}
+
+	return nil, fmt.Errorf("no pscServiceAttachments found for %s %v with connection type %q", cluster.GroupVersionKind(), key, desiredConnectionType)
+}
+
+func valueOf[T any](v *T) T {
+	if v == nil {
+		var zero T
+		return zero
+	}
+	return *v
+}
+
 func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
-	// Get network
-	if obj.Spec.NetworkRef != nil {
-		err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj.Namespace)
-		if err != nil {
-			return err
-		}
-	}
-
-	// Get subnetwork
-	if obj.Spec.SubnetworkRef != nil {
-		subnetworkRef, err := ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.SubnetworkRef)
-		if err != nil {
-			return err
-
-		}
-		obj.Spec.SubnetworkRef.External = subnetworkRef.External
-	}
-
 	// Get backend service
 	if obj.Spec.BackendServiceRef != nil {
 		normalizedExternal, err := obj.Spec.BackendServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
@@ -457,18 +502,30 @@ func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *k
 		obj.Spec.BackendServiceRef.External = normalizedExternal
 	}
 
-	// Get ip address, ip address is optional
-	if obj.Spec.IpAddress != nil && obj.Spec.IpAddress.AddressRef != nil {
-		computeAddressRef, err := ResolveComputeAddress(ctx, reader, obj, obj.Spec.IpAddress.AddressRef)
-		if err != nil {
-			return err
-
-		}
-		obj.Spec.IpAddress.AddressRef.External = computeAddressRef.External
-	}
-
 	// Get target, target is optional
 	if obj.Spec.Target != nil {
+		// Get target MemorystoreInstanceServiceAttachmentRef
+		if memorystoreInstanceServiceAttachment := obj.Spec.Target.MemorystoreInstanceServiceAttachment; memorystoreInstanceServiceAttachment != nil {
+			serviceAttachmentRef, err := ResolveMemorystoreInstanceServiceAttachment(ctx, reader, obj, obj.Spec.Target.MemorystoreInstanceServiceAttachment)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.MemorystoreInstanceServiceAttachment = nil
+			obj.Spec.Target.ServiceAttachmentRef = serviceAttachmentRef
+		}
+
+		// Get target RedisClusterServiceAttachmentRef
+		if redisClusterServiceAttachment := obj.Spec.Target.RedisClusterServiceAttachment; redisClusterServiceAttachment != nil {
+			serviceAttachmentRef, err := ResolveRedisClusterServiceAttachment(ctx, reader, obj, obj.Spec.Target.RedisClusterServiceAttachment)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.RedisClusterServiceAttachment = nil
+			obj.Spec.Target.ServiceAttachmentRef = serviceAttachmentRef
+		}
+
 		// Get target ServiceAttachment
 		if obj.Spec.Target.ServiceAttachmentRef != nil {
 			serviceAttachmentRef, err := ResolveComputeServiceAttachment(ctx, reader, obj, obj.Spec.Target.ServiceAttachmentRef)

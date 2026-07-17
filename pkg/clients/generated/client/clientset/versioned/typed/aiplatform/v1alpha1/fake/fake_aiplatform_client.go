@@ -32,7 +32,27 @@ type FakeAiplatformV1alpha1 struct {
 }
 
 func (c *FakeAiplatformV1alpha1) AIPlatformModels(namespace string) v1alpha1.AIPlatformModelInterface {
-	return &FakeAIPlatformModels{c, namespace}
+	return newFakeAIPlatformModels(c, namespace)
+}
+
+func (c *FakeAiplatformV1alpha1) VertexAIFeatureOnlineStores(namespace string) v1alpha1.VertexAIFeatureOnlineStoreInterface {
+	return newFakeVertexAIFeatureOnlineStores(c, namespace)
+}
+
+func (c *FakeAiplatformV1alpha1) VertexAIPipelineJobs(namespace string) v1alpha1.VertexAIPipelineJobInterface {
+	return newFakeVertexAIPipelineJobs(c, namespace)
+}
+
+func (c *FakeAiplatformV1alpha1) VertexAISpecialistPools(namespace string) v1alpha1.VertexAISpecialistPoolInterface {
+	return newFakeVertexAISpecialistPools(c, namespace)
+}
+
+func (c *FakeAiplatformV1alpha1) VertexAIStudies(namespace string) v1alpha1.VertexAIStudyInterface {
+	return newFakeVertexAIStudies(c, namespace)
+}
+
+func (c *FakeAiplatformV1alpha1) VertexAITuningJobs(namespace string) v1alpha1.VertexAITuningJobInterface {
+	return newFakeVertexAITuningJobs(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

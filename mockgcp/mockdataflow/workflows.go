@@ -50,8 +50,10 @@ func (r *MockService) StopJob(fqn string) error {
 		obj.CurrentState = pb.JobState_JOB_STATE_DRAINED
 		obj.CurrentStateTime = timestamppb.New(now)
 		obj.RequestedState = pb.JobState_JOB_STATE_UNKNOWN
+	case pb.JobState_JOB_STATE_CANCELLED, pb.JobState_JOB_STATE_DRAINED:
+		return nil
 	default:
-		return fmt.Errorf("unexpected state for job, got=%q, expected=CANCELLING or DRAINING: %v", fqn, obj.CurrentState)
+		return fmt.Errorf("unexpected job state %v for stopping", obj.CurrentState)
 	}
 
 	if err := r.storage.Update(ctx, fqn, obj); err != nil {

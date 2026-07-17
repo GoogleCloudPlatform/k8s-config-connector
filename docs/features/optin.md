@@ -5,51 +5,14 @@
 Config Connector can be configured to enable experimental versions of direct
 controllers for reconciling specific resources. This will allow users to test
 the new direct controller code for bug fixes or features not available in
-legacy controllers. It is possible to enable the direct controller code on a
-per-resource basis, by setting an annotation for each custom resource.
+legacy controllers.
 
-We recommend only enabling the experimental direct controller if it is
-necessary to work around a legacy controller bug or to enable a new feature that
-is only available in the direct controller.
+## Enabling via ConfigConnectorContext (Recommended)
 
-
-## Enabling
-
-To enable the direct controller for a specific resource, update the resource and
-specify the annotation:
-
-```yaml
-metadata:
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
-```
-
-For example:
-
-```yaml
-apiVersion: sql.cnrm.cloud.google.com/v1beta1
-kind: SQLInstance
-metadata:
-  name: my-sqlinstance
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
-spec:
-  databaseVersion: POSTGRES_16
-  region: us-central1
-  settings:
-    tier: db-custom-1-3840
-```
-
-The only supported value for the annotation is "direct", to enable the
-direct controller.
-
-While adding an annotation to enable experimental direct controllers for resources
-that do not yet support experimental direct controllers should be harmless, we
-recommend against doing so. Adding such an annotation can be confusing and
-surprising when the functionality is added later.
-
-To revert back to using the legacy controller, remove the annotation.
-
+You can enable direct controllers for all resources of a specific kind
+within a namespace using the `experiments.controllerOverrides` field in the
+`ConfigConnectorContext` resource. For more details and examples, see the
+[Controller Implementation Overrides](./controller-configuration.md) documentation.
 
 ## Verifying
 
@@ -109,6 +72,6 @@ Also, verify that the direct controller is registered in `pkg/controller/direct/
 
 At this point, if there is both a legacy controller label on the CRD and a
 direct controller implemented + registered, then you can be reasonably sure
-there is a direct controller available. To try it out, add the label for a
-resource of that kind, and use the steps above to verify the direct controller
-is enabled.
+there is a direct controller available. To try it out, add the override in the
+`ConfigConnectorContext` for a resource of that kind, and use the steps above
+to verify the direct controller is enabled.

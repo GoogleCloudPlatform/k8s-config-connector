@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -73,7 +73,7 @@ func (s *metadataStoreService) CreateMetadataStore(ctx context.Context, req *pb.
 
 	now := time.Now()
 
-	obj := proto.Clone(req.MetadataStore).(*pb.MetadataStore)
+	obj := proto.CloneOf(req.MetadataStore)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -91,7 +91,7 @@ func (s *metadataStoreService) CreateMetadataStore(ctx context.Context, req *pb.
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.MetadataStore)
+		result := proto.CloneOf(obj)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 		return result, nil

@@ -58,6 +58,9 @@ type ControllerConfig struct {
 
 	// ProjectMapper maps between project ids and numbers
 	ProjectMapper *projects.ProjectMapper
+
+	// SkipNameValidation bypasses the duplicate controller name check during registration
+	SkipNameValidation bool
 }
 
 func (c *ControllerConfig) Init(ctx context.Context) error {

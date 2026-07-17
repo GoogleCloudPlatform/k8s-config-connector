@@ -21,6 +21,7 @@ import (
 	"regexp"
 	"testing"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
@@ -65,18 +66,201 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 	// Exceptions for templates that are known not to match CAI or are not in CAI.
 	// We use the normalized format for the key.
+	//
+	// NOTE ON "WRONG" PATTERNS / MISMATCHES:
+	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
-		// Add known exceptions here.
-		// Example: "//some.googleapis.com/foo/{}/bar": true,
-		"//storage.googleapis.com/projects/{}/buckets/{}":                        true,
-		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":      true,
-		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}": true,
-	}
+		// AI Platform
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}": true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":       true,
 
+		// AlloyDB
+		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
+
+		// Apigee Registry
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/apis/{}":      true,
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/instances/{}": true,
+
+		// APIHub
+		"//apihub.googleapis.com/projects/{}/locations/{}/apis/{}":                      true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}":               true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/externalApis/{}":              true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/plugins/{}":                   true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/runtimeProjectAttachments/{}": true,
+
+		// Artifact Registry
+		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
+
+		// AI Streams
+		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
+
+		// AutoML
+		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}": true,
+
+		// Batch
+		"//batch.googleapis.com/projects/{}/locations/{}/resourceAllowances/{}": true,
+
+		// BigLake
+		"//biglake.googleapis.com/projects/{}/locations/{}/catalogs/{}": true,
+
+		// BigQuery Connection
+		"//bigqueryconnection.googleapis.com/projects/{}/locations/{}/connections/{}": true,
+
+		// Bigtable
+		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}": true,
+
+		// Billing Budgets
+		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}": true,
+
+		// Cloud KMS
+		"//cloudkms.googleapis.com/projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}/ciphertext/{}": true,
+
+		// Cloud Security Compliance
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControls/{}":      true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControlGroups/{}": true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/controls/{}":           true,
+		"//cloudsecuritycompliance.googleapis.com/projects/{}/locations/{}/frameworks/{}":              true,
+		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworks/{}":         true,
+
+		// Compute
+		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                      true,
+		"//compute.googleapis.com/projects/{}/global/backendServices/{}/signedUrlKeys/{}": true,
+		"//compute.googleapis.com/projects/{}/global/images/family/{}":                    true,
+		"//compute.googleapis.com/projects/{}/zones/{}/disks/{}/{}":                       true,
+		"//compute.googleapis.com/projects/{}/zones/{}/futureReservations/{}":             true,
+		"//compute.googleapis.com/regions/{}/publicDelegatedPrefixes/{}":                  true,
+		"//compute.googleapis.com/projects/{}/regions/{}/routers/{}/interfaces/{}":        true,
+		"//compute.googleapis.com/projects/{}/regions/{}/routers/{}/{}":                   true,
+		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}/{}/{}/{}": true,
+		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}//{}/{}":   true,
+
+		// Config Delivery
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}": true,
+
+		// Connectors
+		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
+
+		// Contact Center Insights
+		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/conversations/{}": true,
+
+		// Content Warehouse
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}": true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":        true,
+
+		// Data Labeling
+		"//datalabeling.googleapis.com/projects/{}/annotationSpecSets/{}": true,
+		"//datalabeling.googleapis.com/projects/{}/datasets/{}":           true,
+		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}":     true,
+		"//datalabeling.googleapis.com/projects/{}/instructions/{}":       true,
+
+		// Dataplex
+		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":           true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataAttributeBindings/{}": true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":        true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":           true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":            true,
+
+		// Dataproc
+		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}": true,
+		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":        true,
+
+		// Dialogflow
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/conversationDatasets/{}": true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":           true,
+		"//dialogflow.googleapis.com/projects/{}/knowledgeBases/{}":                    true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/knowledgeBases/{}":       true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}":     true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/sipTrunks/{}":            true,
+
+		// Device Streaming
+		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
+
+		// Discovery Engine
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":      true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}": true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":       true,
+
+		// DLP
+		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
+
+		// DNS
+		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":    true,
+		"//dns.googleapis.com/projects/{}/responsePolicies/{}":          true,
+		"//dns.googleapis.com/projects/{}/responsePolicies/{}/rules/{}": true,
+
+		// Firestore
+		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
+		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}": true,
+
+		// IAM
+		"//iam.googleapis.com/policies/{}/denypolicies/{}": true,
+
+		// IAP
+		"//iap.googleapis.com/projects/{}/brands/{}": true,
+
+		// Logging
+		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}": true,
+		"//logging.googleapis.com/folders/{}/exclusions/{}":         true,
+		"//logging.googleapis.com/organizations/{}/exclusions/{}":   true,
+		"//logging.googleapis.com/projects/{}/exclusions/{}":        true,
+
+		// Monitoring
+		"//monitoring.googleapis.com/locations/global/metricsScopes/{}/projects/{}": true,
+		"//monitoring.googleapis.com/projects/{}/groups/{}":                         true,
+		"//monitoring.googleapis.com/projects/{}/metricDescriptors/{}":              true,
+		"//monitoring.googleapis.com/projects/{}/services/{}":                       true,
+
+		// Migration Center
+		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}": true,
+
+		// Network Connectivity
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}": true,
+
+		// Network Security
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/partnerSSEGateways/{}":           true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/securityProfiles/{}":             true,
+
+		// Network Services
+		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
+
+		// Notebooks
+		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":   true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/schedules/{}":    true,
+
+		// OSConfig
+		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
+
+		// Privileged Access Manager
+		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":       true,
+		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}": true,
+		"//privilegedaccessmanager.googleapis.com/projects/{}/locations/{}/entitlements/{}":      true,
+
+		// Service Usage
+		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
+
+		// Storage
+		"//storage.googleapis.com/projects/{}/buckets/{}": true,
+
+		// Storage Insights
+		"//storageinsights.googleapis.com/projects/{}/locations/{}/datasetConfigs/{}": true,
+
+		// Vision
+		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
+
+		// Workflow Executions
+		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
+
+		// Workload Manager
+		"//workloadmanager.googleapis.com/projects/{}/locations/{}/evaluations/{}": true,
+	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)
-
 		if tmpl.Host() == "" || tmpl.Host() == "example.com" {
 			continue
 		}

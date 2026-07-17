@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type CertificateAdditionalExtensions struct {
-	/* Immutable. Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
+	/* Immutable. Optional. Indicates whether or not this extension is critical. */
 	// +optional
 	Critical *bool `json:"critical,omitempty"`
 
@@ -51,39 +51,39 @@ type CertificateAdditionalExtensions struct {
 }
 
 type CertificateBaseKeyUsage struct {
-	/* Immutable. The key may be used to sign certificates. */
+	/* Immutable. Optional. The key may be used to sign certificates. */
 	// +optional
 	CertSign *bool `json:"certSign,omitempty"`
 
-	/* Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation". */
+	/* Immutable. Optional. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation". */
 	// +optional
 	ContentCommitment *bool `json:"contentCommitment,omitempty"`
 
-	/* Immutable. The key may be used sign certificate revocation lists. */
+	/* Immutable. Optional. The key may be used sign certificate revocation lists. */
 	// +optional
 	CrlSign *bool `json:"crlSign,omitempty"`
 
-	/* Immutable. The key may be used to encipher data. */
+	/* Immutable. Optional. The key may be used to encipher data. */
 	// +optional
 	DataEncipherment *bool `json:"dataEncipherment,omitempty"`
 
-	/* Immutable. The key may be used to decipher only. */
+	/* Immutable. Optional. The key may be used to decipher only. */
 	// +optional
 	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 
-	/* Immutable. The key may be used for digital signatures. */
+	/* Immutable. Optional. The key may be used for digital signatures. */
 	// +optional
 	DigitalSignature *bool `json:"digitalSignature,omitempty"`
 
-	/* Immutable. The key may be used to encipher only. */
+	/* Immutable. Optional. The key may be used to encipher only. */
 	// +optional
 	EncipherOnly *bool `json:"encipherOnly,omitempty"`
 
-	/* Immutable. The key may be used in a key agreement protocol. */
+	/* Immutable. Optional. The key may be used in a key agreement protocol. */
 	// +optional
 	KeyAgreement *bool `json:"keyAgreement,omitempty"`
 
-	/* Immutable. The key may be used to encipher other keys. */
+	/* Immutable. Optional. The key may be used to encipher other keys. */
 	// +optional
 	KeyEncipherment *bool `json:"keyEncipherment,omitempty"`
 }
@@ -93,7 +93,7 @@ type CertificateCaOptions struct {
 	// +optional
 	IsCa *bool `json:"isCa,omitempty"`
 
-	/* Immutable. Optional. Refers to the "path length constraint" in Basic Constraints extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. */
+	/* Immutable. Optional. Refers to the "path length constraint" in Basic Constraints extension. */
 	// +optional
 	MaxIssuerPathLength *int64 `json:"maxIssuerPathLength,omitempty"`
 
@@ -107,7 +107,7 @@ type CertificateCaOptions struct {
 }
 
 type CertificateConfig struct {
-	/* Immutable. Optional. The public key that corresponds to this config. This is, for example, used when issuing Certificates, but not when creating a self-signed CertificateAuthority or CertificateAuthority CSR. */
+	/* Immutable. Optional. The public key that corresponds to this config. */
 	// +optional
 	PublicKey *CertificatePublicKey `json:"publicKey,omitempty"`
 
@@ -119,41 +119,41 @@ type CertificateConfig struct {
 }
 
 type CertificateExtendedKeyUsage struct {
-	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS. */
+	/* Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS. */
 	// +optional
 	ClientAuth *bool `json:"clientAuth,omitempty"`
 
-	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication". */
+	/* Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication". */
 	// +optional
 	CodeSigning *bool `json:"codeSigning,omitempty"`
 
-	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection". */
+	/* Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection". */
 	// +optional
 	EmailProtection *bool `json:"emailProtection,omitempty"`
 
-	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses". */
+	/* Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses". */
 	// +optional
 	OcspSigning *bool `json:"ocspSigning,omitempty"`
 
-	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS. */
+	/* Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS. */
 	// +optional
 	ServerAuth *bool `json:"serverAuth,omitempty"`
 
-	/* Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time". */
+	/* Immutable. Optional. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time". */
 	// +optional
 	TimeStamping *bool `json:"timeStamping,omitempty"`
 }
 
 type CertificateKeyUsage struct {
-	/* Immutable. Describes high-level ways in which a key may be used. */
+	/* Immutable. Optional. Describes high-level ways in which a key may be used. */
 	// +optional
 	BaseKeyUsage *CertificateBaseKeyUsage `json:"baseKeyUsage,omitempty"`
 
-	/* Immutable. Detailed scenarios in which a key may be used. */
+	/* Immutable. Optional. Detailed scenarios in which a key may be used. */
 	// +optional
 	ExtendedKeyUsage *CertificateExtendedKeyUsage `json:"extendedKeyUsage,omitempty"`
 
-	/* Immutable. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
+	/* Immutable. Optional. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
 	// +optional
 	UnknownExtendedKeyUsages []CertificateUnknownExtendedKeyUsages `json:"unknownExtendedKeyUsages,omitempty"`
 }
@@ -177,53 +177,53 @@ type CertificatePublicKey struct {
 }
 
 type CertificateSubject struct {
-	/* Immutable. The "common name" of the subject. */
+	/* The "common name" of the subject. */
 	// +optional
 	CommonName *string `json:"commonName,omitempty"`
 
-	/* Immutable. The country code of the subject. */
+	/* The country code of the subject. */
 	// +optional
 	CountryCode *string `json:"countryCode,omitempty"`
 
-	/* Immutable. The locality or city of the subject. */
+	/* The locality or city of the subject. */
 	// +optional
 	Locality *string `json:"locality,omitempty"`
 
-	/* Immutable. The organization of the subject. */
+	/* The organization of the subject. */
 	// +optional
 	Organization *string `json:"organization,omitempty"`
 
-	/* Immutable. The organizational_unit of the subject. */
+	/* The organizational_unit of the subject. */
 	// +optional
 	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
 
-	/* Immutable. The postal code of the subject. */
+	/* The postal code of the subject. */
 	// +optional
 	PostalCode *string `json:"postalCode,omitempty"`
 
-	/* Immutable. The province, territory, or regional state of the subject. */
+	/* The province, territory, or regional state of the subject. */
 	// +optional
 	Province *string `json:"province,omitempty"`
 
-	/* Immutable. The street address of the subject. */
+	/* The street address of the subject. */
 	// +optional
 	StreetAddress *string `json:"streetAddress,omitempty"`
 }
 
 type CertificateSubjectAltName struct {
-	/* Immutable. Contains only valid, fully-qualified host names. */
+	/* Immutable. Optional. Contains only valid, fully-qualified host names. */
 	// +optional
 	DnsNames []string `json:"dnsNames,omitempty"`
 
-	/* Immutable. Contains only valid RFC 2822 E-mail addresses. */
+	/* Immutable. Optional. Contains only valid RFC 2822 E-mail addresses. */
 	// +optional
 	EmailAddresses []string `json:"emailAddresses,omitempty"`
 
-	/* Immutable. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses. */
+	/* Immutable. Optional. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses. */
 	// +optional
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 
-	/* Immutable. Contains only valid RFC 3986 URIs. */
+	/* Immutable. Optional. Contains only valid RFC 3986 URIs. */
 	// +optional
 	Uris []string `json:"uris,omitempty"`
 }
@@ -265,53 +265,53 @@ type CertificateX509Config struct {
 }
 
 type PrivateCACertificateSpec struct {
-	/* Immutable. */
+	/* Immutable. Required. The PrivateCACAPool that includes this Certificate. */
 	CaPoolRef v1alpha1.ResourceRef `json:"caPoolRef"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The PrivateCACertificateAuthority that issued this Certificate. */
 	// +optional
 	CertificateAuthorityRef *v1alpha1.ResourceRef `json:"certificateAuthorityRef,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Optional. The PrivateCACertificateTemplate used to issue this Certificate. */
 	// +optional
 	CertificateTemplateRef *v1alpha1.ResourceRef `json:"certificateTemplateRef,omitempty"`
 
-	/* Immutable. Immutable. A description of the certificate and key that does not require X.509 or ASN.1. */
+	/* Immutable. Optional. A description of the certificate and key that does not require X.509 or ASN.1. */
 	// +optional
 	Config *CertificateConfig `json:"config,omitempty"`
 
-	/* Immutable. Required. Immutable. The desired lifetime of a certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate. Note that the lifetime may be truncated if it would extend past the life of any certificate authority in the issuing chain. */
+	/* Immutable. Required. The desired lifetime of a certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate. */
 	Lifetime string `json:"lifetime"`
 
-	/* Immutable. The location for the resource */
+	/* Immutable. The location for the resource. */
 	Location string `json:"location"`
 
-	/* Immutable. Immutable. A pem-encoded X.509 certificate signing request (CSR). */
+	/* Immutable. Optional. A pem-encoded X.509 certificate signing request (CSR). */
 	// +optional
 	PemCsr *string `json:"pemCsr,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* Immutable. Required. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Immutable. Specifies how the Certificate's identity fields are to be decided. If this is omitted, the `DEFAULT` subject mode will be used. Possible values: SUBJECT_REQUEST_MODE_UNSPECIFIED, DEFAULT, REFLECTED_SPIFFE */
+	/* Immutable. Optional. Specifies how the Certificate's identity fields are to be decided. */
 	// +optional
 	SubjectMode *string `json:"subjectMode,omitempty"`
 }
 
 type CertificateAdditionalExtensionsStatus struct {
-	/* Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
+	/* Optional. Indicates whether or not this extension is critical. */
 	// +optional
 	Critical *bool `json:"critical,omitempty"`
 
-	/* Required. The OID for this X.509 extension. */
+	/* Optional. The OID for this X.509 extension. */
 	// +optional
 	ObjectId *CertificateObjectIdStatus `json:"objectId,omitempty"`
 
-	/* Required. The value of this X.509 extension. */
+	/* Optional. The value of this X.509 extension. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
@@ -323,39 +323,39 @@ type CertificateAuthorityKeyIdStatus struct {
 }
 
 type CertificateBaseKeyUsageStatus struct {
-	/* The key may be used to sign certificates. */
+	/* Optional. The key may be used to sign certificates. */
 	// +optional
 	CertSign *bool `json:"certSign,omitempty"`
 
-	/* The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation". */
+	/* Optional. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation". */
 	// +optional
 	ContentCommitment *bool `json:"contentCommitment,omitempty"`
 
-	/* The key may be used sign certificate revocation lists. */
+	/* Optional. The key may be used sign certificate revocation lists. */
 	// +optional
 	CrlSign *bool `json:"crlSign,omitempty"`
 
-	/* The key may be used to encipher data. */
+	/* Optional. The key may be used to encipher data. */
 	// +optional
 	DataEncipherment *bool `json:"dataEncipherment,omitempty"`
 
-	/* The key may be used to decipher only. */
+	/* Optional. The key may be used to decipher only. */
 	// +optional
 	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 
-	/* The key may be used for digital signatures. */
+	/* Optional. The key may be used for digital signatures. */
 	// +optional
 	DigitalSignature *bool `json:"digitalSignature,omitempty"`
 
-	/* The key may be used to encipher only. */
+	/* Optional. The key may be used to encipher only. */
 	// +optional
 	EncipherOnly *bool `json:"encipherOnly,omitempty"`
 
-	/* The key may be used in a key agreement protocol. */
+	/* Optional. The key may be used in a key agreement protocol. */
 	// +optional
 	KeyAgreement *bool `json:"keyAgreement,omitempty"`
 
-	/* The key may be used to encipher other keys. */
+	/* Optional. The key may be used to encipher other keys. */
 	// +optional
 	KeyEncipherment *bool `json:"keyEncipherment,omitempty"`
 }
@@ -371,175 +371,175 @@ type CertificateCaOptionsStatus struct {
 }
 
 type CertificateCertFingerprintStatus struct {
-	/* The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate. */
+	/* Optional. The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate. */
 	// +optional
 	Sha256Hash *string `json:"sha256Hash,omitempty"`
 }
 
 type CertificateCertificateDescriptionStatus struct {
-	/* Describes lists of issuer CA certificate URLs that appear in the "Authority Information Access" extension in the certificate. */
+	/* Optional. Describes lists of issuer CA certificate URLs that appear in the "Authority Information Access" extension in the certificate. */
 	// +optional
 	AiaIssuingCertificateUrls []string `json:"aiaIssuingCertificateUrls,omitempty"`
 
-	/* Identifies the subject_key_id of the parent certificate, per https://tools.ietf.org/html/rfc5280#section-4.2.1.1 */
+	/* Optional. Identifies the subject_key_id of the parent certificate, per https://tools.ietf.org/html/rfc5280#section-4.2.1.1. */
 	// +optional
 	AuthorityKeyId *CertificateAuthorityKeyIdStatus `json:"authorityKeyId,omitempty"`
 
-	/* The hash of the x.509 certificate. */
+	/* Optional. The hash of the x.509 certificate. */
 	// +optional
 	CertFingerprint *CertificateCertFingerprintStatus `json:"certFingerprint,omitempty"`
 
-	/* Describes a list of locations to obtain CRL information, i.e. the DistributionPoint.fullName described by https://tools.ietf.org/html/rfc5280#section-4.2.1.13 */
+	/* Optional. Describes a list of locations to obtain CRL information, i.e. the DistributionPoint.fullName described by https://tools.ietf.org/html/rfc5280#section-4.2.1.13. */
 	// +optional
 	CrlDistributionPoints []string `json:"crlDistributionPoints,omitempty"`
 
-	/* The public key that corresponds to an issued certificate. */
+	/* Optional. The public key that corresponds to an issued certificate. */
 	// +optional
 	PublicKey *CertificatePublicKeyStatus `json:"publicKey,omitempty"`
 
-	/* Describes some of the values in a certificate that are related to the subject and lifetime. */
+	/* Optional. Describes some of the values in a certificate that are related to the subject and lifetime. */
 	// +optional
 	SubjectDescription *CertificateSubjectDescriptionStatus `json:"subjectDescription,omitempty"`
 
-	/* Provides a means of identifiying certificates that contain a particular public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2. */
+	/* Optional. Provides a means of identifying certificates that contain a particular public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2. */
 	// +optional
 	SubjectKeyId *CertificateSubjectKeyIdStatus `json:"subjectKeyId,omitempty"`
 
-	/* Describes some of the technical X.509 fields in a certificate. */
+	/* Optional. Describes some of the technical X.509 fields in a certificate. */
 	// +optional
 	X509Description *CertificateX509DescriptionStatus `json:"x509Description,omitempty"`
 }
 
 type CertificateCustomSansStatus struct {
-	/* Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
+	/* Optional. Indicates whether or not this extension is critical. */
 	// +optional
 	Critical *bool `json:"critical,omitempty"`
 
-	/* Required. The OID for this X.509 extension. */
+	/* Optional. The OID for this X.509 extension. */
 	// +optional
 	ObjectId *CertificateObjectIdStatus `json:"objectId,omitempty"`
 
-	/* Required. The value of this X.509 extension. */
+	/* Optional. The value of this X.509 extension. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
 
 type CertificateExtendedKeyUsageStatus struct {
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS. */
+	/* Optional. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS. */
 	// +optional
 	ClientAuth *bool `json:"clientAuth,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication". */
+	/* Optional. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication". */
 	// +optional
 	CodeSigning *bool `json:"codeSigning,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection". */
+	/* Optional. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection". */
 	// +optional
 	EmailProtection *bool `json:"emailProtection,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses". */
+	/* Optional. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses". */
 	// +optional
 	OcspSigning *bool `json:"ocspSigning,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS. */
+	/* Optional. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS. */
 	// +optional
 	ServerAuth *bool `json:"serverAuth,omitempty"`
 
-	/* Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time". */
+	/* Optional. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time". */
 	// +optional
 	TimeStamping *bool `json:"timeStamping,omitempty"`
 }
 
 type CertificateKeyUsageStatus struct {
-	/* Describes high-level ways in which a key may be used. */
+	/* Optional. Describes high-level ways in which a key may be used. */
 	// +optional
 	BaseKeyUsage *CertificateBaseKeyUsageStatus `json:"baseKeyUsage,omitempty"`
 
-	/* Detailed scenarios in which a key may be used. */
+	/* Optional. Detailed scenarios in which a key may be used. */
 	// +optional
 	ExtendedKeyUsage *CertificateExtendedKeyUsageStatus `json:"extendedKeyUsage,omitempty"`
 
-	/* Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
+	/* Optional. Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
 	// +optional
 	UnknownExtendedKeyUsages []CertificateUnknownExtendedKeyUsagesStatus `json:"unknownExtendedKeyUsages,omitempty"`
 }
 
 type CertificateObjectIdStatus struct {
-	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	/* Optional. The parts of an OID path. The most significant parts of the path come first. */
 	// +optional
 	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
 }
 
 type CertificatePolicyIdsStatus struct {
-	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	/* Optional. The parts of an OID path. The most significant parts of the path come first. */
 	// +optional
 	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
 }
 
 type CertificatePublicKeyStatus struct {
-	/* Required. The format of the public key. Possible values: KEY_FORMAT_UNSPECIFIED, PEM */
+	/* Optional. The format of the public key. Possible values: KEY_FORMAT_UNSPECIFIED, PEM. */
 	// +optional
 	Format *string `json:"format,omitempty"`
 
-	/* Required. A public key. The padding and encoding must match with the `KeyFormat` value specified for the `format` field. */
+	/* Optional. A public key. The padding and encoding must match with the `KeyFormat` value specified for the `format` field. */
 	// +optional
 	Key *string `json:"key,omitempty"`
 }
 
 type CertificateRevocationDetailsStatus struct {
-	/* Indicates why a Certificate was revoked. Possible values: REVOCATION_REASON_UNSPECIFIED, KEY_COMPROMISE, CERTIFICATE_AUTHORITY_COMPROMISE, AFFILIATION_CHANGED, SUPERSEDED, CESSATION_OF_OPERATION, CERTIFICATE_HOLD, PRIVILEGE_WITHDRAWN, ATTRIBUTE_AUTHORITY_COMPROMISE */
+	/* Optional. Indicates why a Certificate was revoked. Possible values: REVOCATION_REASON_UNSPECIFIED, KEY_COMPROMISE, CERTIFICATE_AUTHORITY_COMPROMISE, AFFILIATION_CHANGED, SUPERSEDED, CESSATION_OF_OPERATION, CERTIFICATE_HOLD, PRIVILEGE_WITHDRAWN, ATTRIBUTE_AUTHORITY_COMPROMISE */
 	// +optional
 	RevocationState *string `json:"revocationState,omitempty"`
 
-	/* The time at which this Certificate was revoked. */
+	/* Optional. The time at which this Certificate was revoked. */
 	// +optional
 	RevocationTime *string `json:"revocationTime,omitempty"`
 }
 
 type CertificateSubjectAltNameStatus struct {
-	/* Contains additional subject alternative name values. */
+	/* Optional. Contains additional subject alternative name values. */
 	// +optional
 	CustomSans []CertificateCustomSansStatus `json:"customSans,omitempty"`
 
-	/* Contains only valid, fully-qualified host names. */
+	/* Optional. Contains only valid, fully-qualified host names. */
 	// +optional
 	DnsNames []string `json:"dnsNames,omitempty"`
 
-	/* Contains only valid RFC 2822 E-mail addresses. */
+	/* Optional. Contains only valid RFC 2822 E-mail addresses. */
 	// +optional
 	EmailAddresses []string `json:"emailAddresses,omitempty"`
 
-	/* Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses. */
+	/* Optional. Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses. */
 	// +optional
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 
-	/* Contains only valid RFC 3986 URIs. */
+	/* Optional. Contains only valid RFC 3986 URIs. */
 	// +optional
 	Uris []string `json:"uris,omitempty"`
 }
 
 type CertificateSubjectDescriptionStatus struct {
-	/* The serial number encoded in lowercase hexadecimal. */
+	/* Optional. The serial number encoded in lowercase hexadecimal. */
 	// +optional
 	HexSerialNumber *string `json:"hexSerialNumber,omitempty"`
 
-	/* For convenience, the actual lifetime of an issued certificate. */
+	/* Optional. For convenience, the actual lifetime of an issued certificate. */
 	// +optional
 	Lifetime *string `json:"lifetime,omitempty"`
 
-	/* The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to 'not_before_time' + 'lifetime' - 1 second. */
+	/* Optional. The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to 'not_before_time' + 'lifetime' - 1 second. */
 	// +optional
 	NotAfterTime *string `json:"notAfterTime,omitempty"`
 
-	/* The time at which the certificate becomes valid. */
+	/* Optional. The time at which the certificate becomes valid. */
 	// +optional
 	NotBeforeTime *string `json:"notBeforeTime,omitempty"`
 
-	/* Contains distinguished name fields such as the common name, location and / organization. */
+	/* Optional. Contains distinguished name fields such as the common name, location and / organization. */
 	// +optional
 	Subject *CertificateSubjectStatus `json:"subject,omitempty"`
 
-	/* The subject alternative name fields. */
+	/* Optional. The subject alternative name fields. */
 	// +optional
 	SubjectAltName *CertificateSubjectAltNameStatus `json:"subjectAltName,omitempty"`
 }
@@ -551,41 +551,41 @@ type CertificateSubjectKeyIdStatus struct {
 }
 
 type CertificateSubjectStatus struct {
-	/* The "common name" of the subject. */
+	/* Optional. The "common name" of the subject. */
 	// +optional
 	CommonName *string `json:"commonName,omitempty"`
 
-	/* The country code of the subject. */
+	/* Optional. The country code of the subject. */
 	// +optional
 	CountryCode *string `json:"countryCode,omitempty"`
 
-	/* The locality or city of the subject. */
+	/* Optional. The locality or city of the subject. */
 	// +optional
 	Locality *string `json:"locality,omitempty"`
 
-	/* The organization of the subject. */
+	/* Optional. The organization of the subject. */
 	// +optional
 	Organization *string `json:"organization,omitempty"`
 
-	/* The organizational_unit of the subject. */
+	/* Optional. The organizational_unit of the subject. */
 	// +optional
 	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
 
-	/* The postal code of the subject. */
+	/* Optional. The postal code of the subject. */
 	// +optional
 	PostalCode *string `json:"postalCode,omitempty"`
 
-	/* The province, territory, or regional state of the subject. */
+	/* Optional. The province, territory, or regional state of the subject. */
 	// +optional
 	Province *string `json:"province,omitempty"`
 
-	/* The street address of the subject. */
+	/* Optional. The street address of the subject. */
 	// +optional
 	StreetAddress *string `json:"streetAddress,omitempty"`
 }
 
 type CertificateUnknownExtendedKeyUsagesStatus struct {
-	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	/* Optional. The parts of an OID path. The most significant parts of the path come first. */
 	// +optional
 	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
 }

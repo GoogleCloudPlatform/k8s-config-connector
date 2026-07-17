@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,20 +19,24 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
 go run . generate-types \
-  --service google.dataflow.v1beta3 \
-  --api-version dataflow.cnrm.cloud.google.com/v1beta1  \
-  --resource DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment # Note: this is an unusual resource, and the mapping is not 1:1
+    --service google.dataflow.v1beta3 \
+    --api-version dataflow.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output \
+    --resource DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment \
+    --resource DataflowJob:Job
 
 go run . generate-mapper \
-  --service google.dataflow.v1beta3 \
-  --api-version dataflow.cnrm.cloud.google.com/v1beta1
+    --service google.dataflow.v1beta3 \
+    --api-version dataflow.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/dataflow/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/dataflow/

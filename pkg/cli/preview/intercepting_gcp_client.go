@@ -161,10 +161,7 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 	ctx := req.Context()
 	log := klog.FromContext(ctx)
 
-	requestIsAllowed := false
-	if req.Method == "GET" {
-		requestIsAllowed = true
-	}
+	requestIsAllowed := c.checkGCPRequestIsAllowed(req)
 	if c.qps > 0 {
 		limiter, err := c.getOrCreateRateLimiter(req.URL)
 		if err != nil {
@@ -194,6 +191,35 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 	}
 
 	return c.blockedHTTPMethod(req)
+}
+
+// checkGCPRequestIsAllowed determines if an outgoing HTTP request to the GCP API is permitted.
+// In preview mode, we want to allow read-only operations and block any modifications.
+func (c *interceptingGCPClient) checkGCPRequestIsAllowed(req *http.Request) bool {
+	// Allow all GET requests as they are read-only.
+	if req.Method == "GET" {
+		return true
+	}
+
+	// POST requests are blocked by default, unless they are specific read-only custom methods.
+	if req.Method == "POST" {
+		allowedCustomMethods := map[string]bool{
+			"getIamPolicy": true,
+			"getOrgPolicy": true,
+		}
+
+		// Check if the URL path ends with a custom method (e.g., ":getIamPolicy").
+		if idx := strings.LastIndex(req.URL.Path, ":"); idx != -1 {
+			// Ensure there is only one colon to avoid ambiguity in parsing.
+			if strings.Count(req.URL.Path, ":") == 1 {
+				customMethod := req.URL.Path[idx+1:]
+				if allowedCustomMethods[customMethod] {
+					return true
+				}
+			}
+		}
+	}
+	return false
 }
 
 // GRPCUnaryClientInterceptor intercepts GCP GRPC API calls.

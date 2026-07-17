@@ -14,4 +14,4 @@
 
 package clients
 
-//go:generate go run k8s.io/code-generator/cmd/deepcopy-gen@v0.29.0 -O zz_generated.deepcopy -h ../../hack/boilerplate_client_alpha.go.txt -i  github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/... --trim-path-prefix github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients
+//go:generate go run k8s.io/code-generator/cmd/deepcopy-gen@v0.36.1 --output-file zz_generated.deepcopy.go --go-header-file ../../hack/boilerplate_client_alpha.go.txt github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/...

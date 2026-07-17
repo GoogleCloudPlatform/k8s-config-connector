@@ -31,15 +31,40 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/deploy/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/google/uuid"
 )
 
-type cloudDeploy struct {
-	*MockService
-	pb.UnimplementedCloudDeployServer
+func (s *cloudDeploy) ListDeliveryPipelines(ctx context.Context, req *pb.ListDeliveryPipelinesRequest) (*pb.ListDeliveryPipelinesResponse, error) {
+	parent, err := s.parseLocationName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	var pipelines []*pb.DeliveryPipeline
+	pipelineKind := (&pb.DeliveryPipeline{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, pipelineKind, storage.ListOptions{}, func(obj proto.Message) error {
+		pipeline := obj.(*pb.DeliveryPipeline)
+		name, err := s.parseDeliveryPipelineName(pipeline.Name)
+		if err != nil {
+			return nil // Should not happen
+		}
+
+		if name.Project.ID == parent.Project.ID && name.Location == parent.Location {
+			// TODO: Support filtering? gcloud uses filter=serialPipeline.stages.targetId:"..."
+			pipelines = append(pipelines, pipeline)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListDeliveryPipelinesResponse{
+		DeliveryPipelines: pipelines,
+	}, nil
 }
 
 func (s *cloudDeploy) GetDeliveryPipeline(ctx context.Context, req *pb.GetDeliveryPipelineRequest) (*pb.DeliveryPipeline, error) {
@@ -69,7 +94,7 @@ func (s *cloudDeploy) CreateDeliveryPipeline(ctx context.Context, req *pb.Create
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(req.DeliveryPipeline).(*pb.DeliveryPipeline)
+	obj := proto.CloneOf(req.DeliveryPipeline)
 	obj.Name = fqn
 
 	obj.Uid = uuid.NewString()
@@ -110,24 +135,42 @@ func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.Update
 
 	obj := &pb.DeliveryPipeline{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
+		if status.Code(err) == codes.NotFound && req.AllowMissing {
+			obj = proto.CloneOf(req.DeliveryPipeline)
+			obj.Name = fqn
+			obj.Uid = uuid.NewString()
+			obj.CreateTime = timestamppb.New(time.Now())
+			obj.UpdateTime = timestamppb.New(time.Now())
 
-	req.DeliveryPipeline.Uid = obj.GetUid()
-	req.DeliveryPipeline.CreateTime = obj.GetCreateTime()
-	req.DeliveryPipeline.UpdateTime = timestamppb.New(time.Now())
+			if obj.Pipeline == nil {
+				obj.Pipeline = &pb.DeliveryPipeline_SerialPipeline{
+					SerialPipeline: &pb.SerialPipeline{},
+				}
+			}
 
-	// Apply the update mask to the object.
-	paths := req.GetUpdateMask().GetPaths()
-	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
-	}
-	if err := fields.UpdateByFieldMask(obj, req.DeliveryPipeline, req.UpdateMask.Paths); err != nil {
-		return nil, fmt.Errorf("update field_mask.paths: %w", err)
-	}
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	} else {
+		req.DeliveryPipeline.Uid = obj.GetUid()
+		req.DeliveryPipeline.CreateTime = obj.GetCreateTime()
+		req.DeliveryPipeline.UpdateTime = timestamppb.New(time.Now())
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
+		// Apply the update mask to the object.
+		paths := req.GetUpdateMask().GetPaths()
+		if len(paths) == 0 {
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+		}
+		if err := fields.UpdateByFieldMask(obj, req.DeliveryPipeline, req.UpdateMask.Paths); err != nil {
+			return nil, fmt.Errorf("update field_mask.paths: %w", err)
+		}
+
+		if err := s.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
 	}
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
@@ -186,6 +229,12 @@ func (s *MockService) parseDeliveryPipelineName(name string) (*deliveryPipelineN
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "deliveryPipelines" {
+		for i := 1; i < len(tokens); i += 2 {
+			if tokens[i] == "" {
+				return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+			}
+		}
+
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err

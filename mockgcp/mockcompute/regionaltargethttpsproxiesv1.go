@@ -42,6 +42,9 @@ func (s *RegionalTargetHTTPSProxiesV1) Get(ctx context.Context, req *pb.GetRegio
 
 	obj := &pb.TargetHttpsProxy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -59,14 +62,16 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetTargetHttpsProxyResource()).(*pb.TargetHttpsProxy)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetTargetHttpsProxyResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetHttpsProxy")
-
 	if obj.Fingerprint == nil {
 		obj.Fingerprint = PtrTo(computeFingerprint(obj))
+	}
+	if obj.TlsEarlyData == nil {
+		obj.TlsEarlyData = PtrTo("DISABLED")
 	}
 
 	if obj.SslCertificates != nil {
@@ -78,8 +83,9 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
 			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
 			if strings.Contains(cert, "certificates") {
-				cert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
-				tokens := strings.Split(cert, "/")
+				parsedCert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
+				parsedCert = strings.TrimPrefix(parsedCert, "//certificatemanager.googleapis.com/")
+				tokens := strings.Split(parsedCert, "/")
 				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
 				} else {
 					return nil, status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
@@ -91,7 +97,7 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 				if err != nil {
 					return nil, status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
 				}
-				certs = append(certs, buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name)))
+				certs = append(certs, BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name)))
 			}
 			obj.SslCertificates = certs
 		}
@@ -102,9 +108,9 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
 		}
-		obj.UrlMap = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
+		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
 	}
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -114,6 +120,38 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+// Updates a regional TargetHttpsProxy resource in the specified project using the data included in the request.
+// This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
+func (s *RegionalTargetHTTPSProxiesV1) Patch(ctx context.Context, req *pb.PatchRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/targetHttpsProxies/" + req.GetTargetHttpsProxy()
+	name, err := s.parseRegionalTargetHttpsProxyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.TargetHttpsProxy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	proto.Merge(obj, req.GetTargetHttpsProxyResource())
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
@@ -141,7 +179,7 @@ func (s *RegionalTargetHTTPSProxiesV1) SetUrlMap(ctx context.Context, req *pb.Se
 		if err != nil {
 			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
 		}
-		obj.UrlMap = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
+		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -170,6 +208,9 @@ func (s *RegionalTargetHTTPSProxiesV1) Delete(ctx context.Context, req *pb.Delet
 
 	deleted := &pb.TargetHttpsProxy{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

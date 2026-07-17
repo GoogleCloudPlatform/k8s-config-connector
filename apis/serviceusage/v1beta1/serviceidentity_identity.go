@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,107 +14,94 @@
 
 package v1beta1
 
-/*
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ServiceIdentityIdentity defines the resource reference to ServiceIdentity, which "External" field
-// holds the GCP identifier for the KRM object.
+var (
+	_ identity.IdentityV2 = &ServiceIdentityIdentity{}
+	_ identity.Resource   = &ServiceIdentity{}
+)
+
+var ServiceIdentityIdentityFormat = gcpurls.Template[ServiceIdentityIdentity]("serviceusage.googleapis.com", "projects/{project}/services/{service}/identity")
+
+// ServiceIdentityIdentity is the identity of a GCP ServiceIdentity resource.
+// +k8s:deepcopy-gen=false
 type ServiceIdentityIdentity struct {
-	parent *ServiceIdentityParent
-	id string
+	Project string
+	Service string
 }
 
 func (i *ServiceIdentityIdentity) String() string {
-	return  i.parent.String() + "/serviceidentitys/" + i.id
+	return ServiceIdentityIdentityFormat.ToString(*i)
 }
 
-func (i *ServiceIdentityIdentity) ID() string {
-	return i.id
-}
+func (i *ServiceIdentityIdentity) FromExternal(ref string) error {
+	// Strip optional scheme and host for manual parsing of legacy format
+	s := strings.TrimPrefix(ref, "https:")
+	s = strings.TrimPrefix(s, "http:")
+	s = strings.TrimPrefix(s, "//")
+	s = strings.TrimPrefix(s, "serviceusage.googleapis.com/")
+	s = strings.Trim(s, "/")
 
-func (i *ServiceIdentityIdentity) Parent() *ServiceIdentityParent {
-	return  i.parent
-}
+	// Support legacy format for backward compatibility:
+	// projects/{{projectID}}/locations/{{location}}/serviceidentitys/{{serviceidentityID}}
+	tokens := strings.Split(s, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "serviceidentitys" {
+		i.Project = tokens[1]
+		i.Service = tokens[5]
+		return nil
+	}
 
-type ServiceIdentityParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *ServiceIdentityParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-
-// New builds a ServiceIdentityIdentity from the Config Connector ServiceIdentity object.
-func NewServiceIdentityIdentity(ctx context.Context, reader client.Reader, obj *ServiceIdentity) (*ServiceIdentityIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	parsed, match, err := ServiceIdentityIdentityFormat.Parse(ref)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("format of ServiceIdentity external=%q was not known (use %s): %w", ref, ServiceIdentityIdentityFormat.CanonicalForm(), err)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	if !match {
+		return fmt.Errorf("format of ServiceIdentity external=%q was not known (use %s)", ref, ServiceIdentityIdentityFormat.CanonicalForm())
 	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	*i = *parsed
+	return nil
+}
+
+func (i *ServiceIdentityIdentity) Host() string {
+	return ServiceIdentityIdentityFormat.Host()
+}
+
+func (i *ServiceIdentityIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
+func getIdentityFromServiceIdentitySpec(ctx context.Context, reader client.Reader, obj *ServiceIdentity) (*ServiceIdentityIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseServiceIdentityExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
 	}
-	return &ServiceIdentityIdentity{
-		parent: &ServiceIdentityParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	identity := &ServiceIdentityIdentity{
+		Project: projectID,
+		Service: resourceID,
+	}
+	return identity, nil
 }
 
-func ParseServiceIdentityExternal(external string) (parent *ServiceIdentityParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "serviceidentitys" {
-		return nil, "", fmt.Errorf("format of ServiceIdentity external=%q was not known (use projects/{{projectID}}/locations/{{location}}/serviceidentitys/{{serviceidentityID}})", external)
+func (obj *ServiceIdentity) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromServiceIdentitySpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
-	parent = &ServiceIdentityParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return specIdentity, nil
 }
-*/

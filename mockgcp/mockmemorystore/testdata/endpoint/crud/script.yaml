@@ -1,0 +1,28 @@
+- pre: mkdir -p /tmp/tmp.${uniqueId}
+- pre: |
+    gcloud memorystore instances create test-instance-${uniqueId} --project=${projectId} --location=us-central1 --mode=cluster-disabled --zone-distribution-config-mode=single-zone --zone-distribution-config=us-central1-a --shard-count=1 --replica-count=0 --endpoints="connections=[{pscAutoConnection={network=\"projects/${projectId}/global/networks/default\",projectId=\"${projectId}\"}}]"
+    gcloud memorystore instances describe test-instance-${uniqueId} --project=${projectId} --location=us-central1 --format="value(pscAttachmentDetails[0].serviceAttachment)" > /tmp/tmp.${uniqueId}/service-attachment-1
+    gcloud memorystore instances describe test-instance-${uniqueId} --project=${projectId} --location=us-central1 --format="value(pscAttachmentDetails[1].serviceAttachment)" > /tmp/tmp.${uniqueId}/service-attachment-2
+- pre: gcloud compute networks create test-network-${uniqueId} --project=${projectId}  --subnet-mode=custom --bgp-routing-mode=regional
+- pre: gcloud compute networks subnets create test-subnet-${uniqueId} --project=${projectId} --network=projects/${projectId}/global/networks/test-network-${uniqueId} --region=us-central1 --range=10.0.0.248/29
+- pre: |
+    gcloud compute addresses create test-address-1-${uniqueId} --project=${projectId} --region=us-central1 --subnet=projects/${projectId}/regions/us-central1/subnetworks/test-subnet-${uniqueId} --purpose=GCE_ENDPOINT
+    gcloud compute addresses describe test-address-1-${uniqueId} --project=${projectId} --region=us-central1 --format="value(address)" > /tmp/tmp.${uniqueId}/address-1
+- pre: |
+    gcloud compute addresses create test-address-2-${uniqueId} --project=${projectId} --region=us-central1 --subnet=projects/${projectId}/regions/us-central1/subnetworks/test-subnet-${uniqueId} --purpose=GCE_ENDPOINT
+    gcloud compute addresses describe test-address-2-${uniqueId} --project=${projectId} --region=us-central1 --format="value(address)" > /tmp/tmp.${uniqueId}/address-2
+- pre: |
+    gcloud compute forwarding-rules create test-fwdrule-1-${uniqueId} --project=${projectId} --region=us-central1 --allow-psc-global-access --address=projects/${projectId}/regions/us-central1/addresses/test-address-1-${uniqueId} --network=projects/${projectId}/global/networks/test-network-${uniqueId} --subnet=projects/${projectId}/regions/us-central1/subnetworks/test-subnet-${uniqueId} --target-service-attachment=$(cat /tmp/tmp.${uniqueId}/service-attachment-1)
+    gcloud compute forwarding-rules describe test-fwdrule-1-${uniqueId} --project=${projectId} --region=us-central1 --format="value(pscConnectionId)" > /tmp/tmp.${uniqueId}/psc-connection-1
+- pre: |
+    gcloud compute forwarding-rules create test-fwdrule-2-${uniqueId} --project=${projectId} --region=us-central1 --allow-psc-global-access --address=projects/${projectId}/regions/us-central1/addresses/test-address-2-${uniqueId} --network=projects/${projectId}/global/networks/test-network-${uniqueId} --subnet=projects/${projectId}/regions/us-central1/subnetworks/test-subnet-${uniqueId} --target-service-attachment=$(cat /tmp/tmp.${uniqueId}/service-attachment-2)
+    gcloud compute forwarding-rules describe test-fwdrule-2-${uniqueId} --project=${projectId} --region=us-central1 --format="value(pscConnectionId)" > /tmp/tmp.${uniqueId}/psc-connection-2
+- exec: gcloud memorystore instances update test-instance-${uniqueId} --project=${projectId} --location=us-central1 --endpoints="connections=[{pscConnection={forwardingRule=\"projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-1-${uniqueId}\",ipAddress=\"$(cat /tmp/tmp.${uniqueId}/address-1)\",network=\"projects/${projectId}/global/networks/test-network-${uniqueId}\",pscConnectionId=\"$(cat /tmp/tmp.${uniqueId}/psc-connection-1)\",serviceAttachment=\"$(cat /tmp/tmp.${uniqueId}/service-attachment-1)\"}},{pscConnection={forwardingRule=\"projects/${projectId}/regions/us-central1/forwardingRules/test-fwdrule-2-${uniqueId}\",ipAddress=\"$(cat /tmp/tmp.${uniqueId}/address-2)\",network=\"projects/${projectId}/global/networks/test-network-${uniqueId}\",pscConnectionId=\"$(cat /tmp/tmp.${uniqueId}/psc-connection-2)\",serviceAttachment=\"$(cat /tmp/tmp.${uniqueId}/service-attachment-2)\"}}]"
+- post: gcloud compute forwarding-rules delete test-fwdrule-1-${uniqueId} --project=${projectId} --region=us-central1 --quiet
+- post: gcloud compute forwarding-rules delete test-fwdrule-2-${uniqueId} --project=${projectId} --region=us-central1 --quiet
+- exec: gcloud memorystore instances update test-instance-${uniqueId} --project=${projectId} --location=us-central1 --clear-endpoints
+- post: gcloud compute addresses delete test-address-1-${uniqueId} --project=${projectId} --region=us-central1 --quiet
+- post: gcloud compute addresses delete test-address-2-${uniqueId} --project=${projectId} --region=us-central1 --quiet
+- post: gcloud compute networks subnets delete test-subnet-${uniqueId} --project=${projectId}  --region=us-central1 --quiet
+- post: gcloud memorystore instances delete test-instance-${uniqueId} --project=${projectId} --location=us-central1 --async --quiet
+- post: rm -rf /tmp/tmp.${uniqueId}

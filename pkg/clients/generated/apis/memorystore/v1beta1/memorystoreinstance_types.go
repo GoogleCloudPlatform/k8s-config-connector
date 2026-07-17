@@ -44,16 +44,62 @@ type InstanceAofConfig struct {
 	AppendFsync *string `json:"appendFsync,omitempty"`
 }
 
+type InstanceAutomatedBackupConfig struct {
+	/* Optional. The automated backup mode. If the mode is disabled, the other fields will be ignored. */
+	// +optional
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	/* Optional. Trigger automated backups at a fixed frequency. */
+	// +optional
+	FixedFrequencySchedule *InstanceFixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	/* Optional. How long to keep automated backups before the backups are deleted. The value should be between 1 day and 365 days. If not specified, the default value is 35 days. */
+	// +optional
+	Retention *string `json:"retention,omitempty"`
+}
+
 type InstanceConnections struct {
 	/* Detailed information of a PSC connection that is created through service connectivity automation. */
 	// +optional
 	PscAutoConnection *InstancePscAutoConnection `json:"pscAutoConnection,omitempty"`
 }
 
+type InstanceCrossInstanceReplicationConfig struct {
+	/* Required. The role of the instance in cross instance replication. */
+	// +optional
+	InstanceRole *string `json:"instanceRole,omitempty"`
+
+	/* Optional. Details of the primary instance that is used as the replication
+	source for this secondary instance.
+
+	This field is only set for a secondary instance. */
+	// +optional
+	PrimaryInstance *InstancePrimaryInstance `json:"primaryInstance,omitempty"`
+
+	/* Optional. List of secondary instances that are replicating from this
+	primary instance.
+
+	This field is only set for a primary instance. */
+	// +optional
+	SecondaryInstances []InstanceSecondaryInstances `json:"secondaryInstances,omitempty"`
+}
+
 type InstanceEndpoints struct {
 	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
 	// +optional
 	Connections []InstanceConnections `json:"connections,omitempty"`
+}
+
+type InstanceFixedFrequencySchedule struct {
+	/* Required. The start time of every automated backup in UTC. It must be set to the start of an hour. This field is required. */
+	// +optional
+	StartTime *InstanceStartTime `json:"startTime,omitempty"`
+}
+
+type InstanceMaintenancePolicy struct {
+	/* Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_window is expected to be one. */
+	// +optional
+	WeeklyMaintenanceWindow []InstanceWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
 
 type InstancePersistenceConfig struct {
@@ -68,6 +114,12 @@ type InstancePersistenceConfig struct {
 	/* Optional. RDB configuration. This field will be ignored if mode is not RDB. */
 	// +optional
 	RdbConfig *InstanceRdbConfig `json:"rdbConfig,omitempty"`
+}
+
+type InstancePrimaryInstance struct {
+	/* Optional. The full resource path of the remote instance. */
+	// +optional
+	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 }
 
 type InstancePscAutoConnection struct {
@@ -88,6 +140,40 @@ type InstanceRdbConfig struct {
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
 }
 
+type InstanceSecondaryInstances struct {
+	/* Optional. The full resource path of the remote instance. */
+	// +optional
+	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+}
+
+type InstanceStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
+	// +optional
+	Hours *int32 `json:"hours,omitempty"`
+
+	/* Minutes of hour of day. Must be from 0 to 59. */
+	// +optional
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	// +optional
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
+}
+
+type InstanceWeeklyMaintenanceWindow struct {
+	/* Optional. Allows to define schedule that runs specified day of the week. */
+	// +optional
+	Day *string `json:"day,omitempty"`
+
+	/* Optional. Start time of the window in UTC. */
+	// +optional
+	StartTime *InstanceStartTime `json:"startTime,omitempty"`
+}
+
 type InstanceZoneDistributionConfig struct {
 	/* Optional. Current zone distribution mode. Defaults to MULTI_ZONE. */
 	// +optional
@@ -102,6 +188,14 @@ type MemorystoreInstanceSpec struct {
 	/* Optional. Immutable. Authorization mode of the instance. */
 	// +optional
 	AuthorizationMode *string `json:"authorizationMode,omitempty"`
+
+	/* Optional. The automated backup config for the instance. */
+	// +optional
+	AutomatedBackupConfig *InstanceAutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	/* Optional. The cross instance replication config for the instance. */
+	// +optional
+	CrossInstanceReplicationConfig *InstanceCrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
 
 	/* Optional. If set to true deletion of the instance will fail. */
 	// +optional
@@ -119,12 +213,24 @@ type MemorystoreInstanceSpec struct {
 	// +optional
 	EngineVersion *string `json:"engineVersion,omitempty"`
 
+	/* Optional. The KMS key reference for the instance. */
+	// +optional
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+
 	/* Optional. Labels to represent user-provided metadata. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Immutable. */
 	Location string `json:"location"`
+
+	/* Optional. The maintenance policy for the instance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	/* Optional. The maintenance version of the instance. */
+	// +optional
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 
 	/* Optional. The mode config for the instance. */
 	// +optional
@@ -168,10 +274,82 @@ type InstanceConnectionsStatus struct {
 	PscAutoConnection *InstancePscAutoConnectionStatus `json:"pscAutoConnection,omitempty"`
 }
 
+type InstanceCrossInstanceReplicationConfigStatus struct {
+	/* Output only. An output only view of all the member instances participating in the cross instance replication. This view will be provided by every member instance irrespective of its instance role(primary or secondary). */
+	// +optional
+	Membership *InstanceMembershipStatus `json:"membership,omitempty"`
+
+	/* Optional. Details of the primary instance that is used as the replication
+	source for this secondary instance.
+
+	This field is only set for a secondary instance. */
+	// +optional
+	PrimaryInstance *InstancePrimaryInstanceStatus `json:"primaryInstance,omitempty"`
+
+	/* Optional. List of secondary instances that are replicating from this
+	primary instance.
+
+	This field is only set for a primary instance. */
+	// +optional
+	SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
+
+	/* Output only. The last time cross instance replication config was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type InstanceEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. The state of the primary KMS key. */
+	// +optional
+	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
+
+	/* Output only. KMS key versions that are being used to protect the instance. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+
+	/* Output only. Latest update timestamp of the encryption info. */
+	// +optional
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
 type InstanceEndpointsStatus struct {
 	/* Optional. A group of PSC connections. They are created in the same VPC network, one for each service attachment in the cluster. */
 	// +optional
 	Connections []InstanceConnectionsStatus `json:"connections,omitempty"`
+}
+
+type InstanceMaintenancePolicyStatus struct {
+	/* Output only. The time when the policy was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. The time when the policy was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type InstanceMaintenanceScheduleStatus struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+type InstanceMembershipStatus struct {
+	/* Output only. The primary instance that acts as the source of replication for the secondary instances. */
+	// +optional
+	PrimaryInstance *InstancePrimaryInstanceStatus `json:"primaryInstance,omitempty"`
+
+	/* Output only. The list of secondary instances replicating from the primary instance. */
+	// +optional
+	SecondaryInstances []InstanceSecondaryInstancesStatus `json:"secondaryInstances,omitempty"`
 }
 
 type InstanceNodeConfigStatus struct {
@@ -181,17 +359,45 @@ type InstanceNodeConfigStatus struct {
 }
 
 type InstanceObservedStateStatus struct {
+	/* Output only. The list of available maintenance versions for the instance. */
+	// +optional
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
+
 	/* Output only. Creation timestamp of the instance. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Optional. The cross instance replication config for the instance. */
+	// +optional
+	CrossInstanceReplicationConfig *InstanceCrossInstanceReplicationConfigStatus `json:"crossInstanceReplicationConfig,omitempty"`
+
+	/* Output only. The current version of the maintenance schedule. */
+	// +optional
+	EffectiveMaintenanceVersion *string `json:"effectiveMaintenanceVersion,omitempty"`
+
+	/* Output only. Encryption information for the instance. */
+	// +optional
+	EncryptionInfo *InstanceEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
 
 	/* Optional. Endpoints for the instance. */
 	// +optional
 	Endpoints []InstanceEndpointsStatus `json:"endpoints,omitempty"`
 
+	/* Output only. User-defined weekly maintenance windows in which space is reserved for maintenance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
+	/* Output only. Upcoming maintenance schedule. */
+	// +optional
+	MaintenanceSchedule *InstanceMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
+
 	/* Output only. Configuration of individual nodes of the instance. */
 	// +optional
 	NodeConfig *InstanceNodeConfigStatus `json:"nodeConfig,omitempty"`
+
+	/* Output only. List of PSC connections for the instance. */
+	// +optional
+	PscAttachmentDetails []InstancePscAttachmentDetailsStatus `json:"pscAttachmentDetails,omitempty"`
 
 	/* Output only. Current state of the instance. */
 	// +optional
@@ -208,6 +414,26 @@ type InstanceObservedStateStatus struct {
 	/* Output only. Latest update timestamp of the instance. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type InstancePrimaryInstanceStatus struct {
+	/* Optional. The full resource path of the remote instance. */
+	// +optional
+	Instance *string `json:"instance,omitempty"`
+
+	/* Output only. The unique identifier of the remote instance. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+}
+
+type InstancePscAttachmentDetailsStatus struct {
+	/* Output only. Type of Psc endpoint. */
+	// +optional
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* Output only. Service attachment URI which your self-created PscConnection should use as target. */
+	// +optional
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 type InstancePscAutoConnectionStatus struct {
@@ -240,6 +466,16 @@ type InstancePscAutoConnectionStatus struct {
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
+type InstanceSecondaryInstancesStatus struct {
+	/* Optional. The full resource path of the remote instance. */
+	// +optional
+	Instance *string `json:"instance,omitempty"`
+
+	/* Output only. The unique identifier of the remote instance. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+}
+
 type InstanceStateInfoStatus struct {
 	/* Output only. Describes ongoing update when instance state is UPDATING. */
 	// +optional
@@ -247,6 +483,13 @@ type InstanceStateInfoStatus struct {
 }
 
 type InstanceUpdateInfoStatus struct {
+	/* Output only. Target number of replica nodes per shard for the instance. */
+	// +optional
+	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
+
+	/* Output only. Target number of shards for the instance. */
+	// +optional
+	TargetShardCount *int32 `json:"targetShardCount,omitempty"`
 }
 
 type MemorystoreInstanceStatus struct {

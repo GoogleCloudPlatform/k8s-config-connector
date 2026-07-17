@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -64,7 +64,7 @@ func (s *VMwareEngineV1) CreatePrivateCloud(ctx context.Context, req *pb.CreateP
 	fqn := name.String()
 	now := time.Now()
 
-	obj := proto.Clone(req.GetPrivateCloud()).(*pb.PrivateCloud)
+	obj := proto.CloneOf(req.GetPrivateCloud())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.PrivateCloud_CREATING

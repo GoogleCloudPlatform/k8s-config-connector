@@ -31,8 +31,9 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
+	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
 )
 
 type publisherService struct {
@@ -47,7 +48,7 @@ func (s *publisherService) CreateTopic(ctx context.Context, req *pb.Topic) (*pb.
 	}
 	fqn := name.String()
 
-	obj := proto.Clone(req).(*pb.Topic)
+	obj := proto.CloneOf(req)
 	obj.Name = name.String()
 
 	s.populateDefaultsForTopic(obj)
@@ -105,7 +106,7 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 
 	paths := req.GetUpdateMask().GetPaths()
@@ -126,10 +127,14 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 			}
 		case "labels":
 			updated.Labels = req.GetTopic().GetLabels()
-		case "schema_settings":
+		case "schema_settings", "schemaSettings":
 			updated.SchemaSettings = req.GetTopic().GetSchemaSettings()
-		case "message_retention_duration":
+		case "message_retention_duration", "messageRetentionDuration":
 			updated.MessageRetentionDuration = req.GetTopic().GetMessageRetentionDuration()
+		case "message_storage_policy", "messageStoragePolicy":
+			updated.MessageStoragePolicy = req.GetTopic().GetMessageStoragePolicy()
+		case "kms_key_name", "kmsKeyName":
+			updated.KmsKeyName = req.GetTopic().GetKmsKeyName()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

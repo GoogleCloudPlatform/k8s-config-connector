@@ -28,9 +28,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 )
 
 func (s *serviceMonitoringService) GetServiceLevelObjective(ctx context.Context, req *pb.GetServiceLevelObjectiveRequest) (*pb.ServiceLevelObjective, error) {
@@ -60,7 +60,7 @@ func (s *serviceMonitoringService) CreateServiceLevelObjective(ctx context.Conte
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.GetServiceLevelObjective()).(*pb.ServiceLevelObjective)
+	obj := proto.CloneOf(req.GetServiceLevelObjective())
 	obj.Name = fqn
 	s.populateDefaultsForServiceLevelObjective(obj)
 
@@ -87,7 +87,12 @@ func (s *serviceMonitoringService) UpdateServiceLevelObjective(ctx context.Conte
 		return nil, err
 	}
 
-	if err := fields.UpdateByFieldMask(obj, req.GetServiceLevelObjective(), req.GetUpdateMask().GetPaths()); err != nil {
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		paths = []string{"display_name", "goal", "rolling_period", "calendar_period", "service_level_indicator"}
+	}
+
+	if err := fields.UpdateByFieldMask(obj, req.GetServiceLevelObjective(), paths); err != nil {
 		return nil, err
 	}
 

@@ -47,11 +47,20 @@ type IAMV2PoliciesServer struct {
 }
 
 type attachmentPointName struct {
-	Project *projects.ProjectData
+	Project  *projects.ProjectData
+	FolderID string
+	OrgID    string
 }
 
 func (n *attachmentPointName) String() string {
-	s := fmt.Sprintf("cloudresourcemanager.googleapis.com/projects/%d", n.Project.Number)
+	var s string
+	if n.FolderID != "" {
+		s = fmt.Sprintf("cloudresourcemanager.googleapis.com/folders/%s", n.FolderID)
+	} else if n.OrgID != "" {
+		s = fmt.Sprintf("cloudresourcemanager.googleapis.com/organizations/%s", n.OrgID)
+	} else {
+		s = fmt.Sprintf("cloudresourcemanager.googleapis.com/projects/%d", n.Project.Number)
+	}
 	return url.PathEscape(s)
 }
 
@@ -68,7 +77,7 @@ func (n *policyName) String() string {
 }
 
 // parseAttachmentPointName parses a string into an attachmentPointName.
-// The expected form is the url-encoding of `cloudresourcemanager/projects/<project-id-or-number>`.
+// The expected form is the url-encoding of `cloudresourcemanager/projects/<project-id-or-number>`, `cloudresourcemanager/folders/<folder-id>`, or `cloudresourcemanager/organizations/<org-id>`.
 func (s *MockService) parseAttachmentPointName(escapedName string) (*attachmentPointName, error) {
 	name, err := url.PathUnescape(escapedName)
 	if err != nil {
@@ -76,15 +85,27 @@ func (s *MockService) parseAttachmentPointName(escapedName string) (*attachmentP
 	}
 
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 3 && tokens[0] == "cloudresourcemanager.googleapis.com" && tokens[1] == "projects" {
-		project, err := s.Projects.GetProjectByIDOrNumber(tokens[2])
-		if err != nil {
-			return nil, err
-		}
+	if len(tokens) == 3 && tokens[0] == "cloudresourcemanager.googleapis.com" {
+		if tokens[1] == "projects" {
+			project, err := s.Projects.GetProjectByIDOrNumber(tokens[2])
+			if err != nil {
+				return nil, err
+			}
 
-		return &attachmentPointName{
-			Project: project,
-		}, nil
+			return &attachmentPointName{
+				Project: project,
+			}, nil
+		}
+		if tokens[1] == "folders" {
+			return &attachmentPointName{
+				FolderID: tokens[2],
+			}, nil
+		}
+		if tokens[1] == "organizations" {
+			return &attachmentPointName{
+				OrgID: tokens[2],
+			}, nil
+		}
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not a valid IAM V2 attachment point", name)
 }
@@ -150,7 +171,7 @@ func (s *IAMV2PoliciesServer) ListPolicies(ctx context.Context, req *pb.ListPoli
 	if err := s.storage.List(ctx, policyKind, storage.ListOptions{Prefix: prefixToList}, func(objproto proto.Message) error {
 		obj := objproto.(*pb.Policy)
 		// Omit rules in list response as per documentation.
-		policyToList := proto.Clone(obj).(*pb.Policy)
+		policyToList := proto.CloneOf(obj)
 		policyToList.Rules = nil
 		response.Policies = append(response.Policies, policyToList)
 		return nil
@@ -181,7 +202,7 @@ func (s *IAMV2PoliciesServer) CreatePolicy(ctx context.Context, req *pb.CreatePo
 	fqn := name.String()
 
 	now := time.Now()
-	obj := proto.Clone(req.GetPolicy()).(*pb.Policy)
+	obj := proto.CloneOf(req.GetPolicy())
 
 	obj.Name = fqn
 	obj.Uid = uuid.NewString()
@@ -230,7 +251,7 @@ func (s *IAMV2PoliciesServer) UpdatePolicy(ctx context.Context, req *pb.UpdatePo
 		return nil, status.Errorf(codes.Aborted, "etag mismatch for policy %q", fqn)
 	}
 
-	updatedPolicy := proto.Clone(existing).(*pb.Policy)
+	updatedPolicy := proto.CloneOf(existing)
 
 	// Only 'display_name' and 'rules' can be updated.
 	updateRequestPolicy := req.GetPolicy()
@@ -283,7 +304,7 @@ func (s *IAMV2PoliciesServer) DeletePolicy(ctx context.Context, req *pb.DeletePo
 	}
 
 	// The LRO response type is Policy. Return the policy as it was, but mark it as deleted.
-	deletedPolicy := proto.Clone(existing).(*pb.Policy)
+	deletedPolicy := proto.CloneOf(existing)
 	deletedPolicy.DeleteTime = timestamppb.New(now)
 	deletedPolicy.UpdateTime = deletedPolicy.GetDeleteTime()   // Update time is also set to delete time
 	deletedPolicy.Etag = computeIAMV2PolicyEtag(deletedPolicy) // Etag changes upon deletion
@@ -297,7 +318,7 @@ func (s *IAMV2PoliciesServer) DeletePolicy(ctx context.Context, req *pb.DeletePo
 // computeIAMV2PolicyEtag computes a simple etag for a Policy object.
 func computeIAMV2PolicyEtag(obj *pb.Policy) string {
 	// Create a copy and clear output-only or server-set fields that shouldn't affect etag
-	temp := proto.Clone(obj).(*pb.Policy)
+	temp := proto.CloneOf(obj)
 	temp.Name = ""
 	temp.Uid = ""
 	temp.CreateTime = nil

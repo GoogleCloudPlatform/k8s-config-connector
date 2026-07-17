@@ -152,6 +152,7 @@ spec:
                   range of the subnet or network configured for this forwarding rule.
                 properties:
                   addressRef:
+                    description: ComputeAddressRef is a reference to a GCP ComputeAddress.
                     oneOf:
                     - not:
                         required:
@@ -168,14 +169,15 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
-                          when not managed by Config Connector.
+                        description: A reference to an externally managed ComputeAddress
+                          resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}"
+                          or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".
                         type: string
                       name:
-                        description: The `name` field of a `ComputeAddress` resource.
+                        description: The name of a ComputeAddress resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeAddress` resource.
+                        description: The namespace of a ComputeAddress resource.
                         type: string
                     type: object
                   ip:
@@ -305,9 +307,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeNetwork
-                      resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
-                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                     type: string
                   name:
                     description: The name of a ComputeNetwork resource.
@@ -458,14 +459,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                      when not managed by Config Connector.
+                    description: A reference to an externally managed ComputeSubnetwork
+                      resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
                     type: string
                   name:
-                    description: The `name` field of a `ComputeSubnetwork` resource.
+                    description: The name of a ComputeSubnetwork resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeSubnetwork` resource.
+                    description: The namespace of a ComputeSubnetwork resource.
                     type: string
                 type: object
               target:
@@ -476,6 +477,89 @@ spec:
                 properties:
                   googleAPIsBundle:
                     type: string
+                  memorystoreInstanceServiceAttachment:
+                    description: Target a serviceAttachment for a Memorystore for
+                      Valkey instance.
+                    properties:
+                      connectionType:
+                        description: The connection type of the serviceAttachment.
+                          A memorystore instance has multiple serviceAttachments,
+                          each with a different connection type. Use connectionType
+                          to control which serviceAttachment to target. The empty
+                          value matches a serviceAttachment with an empty connectionType.
+                        type: string
+                      memorystoreInstanceRef:
+                        description: A reference to a MemorystoreInstance resource.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    required:
+                    - memorystoreInstanceRef
+                    type: object
+                  redisClusterServiceAttachment:
+                    description: Target a serviceAttachment for a Redis Cluster.
+                    properties:
+                      connectionType:
+                        description: The connection type of the serviceAttachment.
+                          A redis cluster has multiple serviceAttachments, each with
+                          a different connection type. Use connectionType to control
+                          which serviceAttachment to target. The empty value matches
+                          a serviceAttachment with an empty connectionType.
+                        type: string
+                      redisClusterRef:
+                        description: A reference to a RedisCluster resource.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed RedisCluster
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                            type: string
+                          name:
+                            description: The name of a RedisCluster resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a RedisCluster resource.
+                            type: string
+                        type: object
+                    required:
+                    - redisClusterRef
+                    type: object
                   serviceAttachmentRef:
                     oneOf:
                     - not:
@@ -760,6 +844,9 @@ spec:
               serviceName:
                 description: The internal fully qualified service name for this Forwarding
                   Rule. This field is only used for INTERNAL load balancing.
+                type: string
+              target:
+                description: The target resource to receive the matched traffic.
                 type: string
             type: object
         type: object

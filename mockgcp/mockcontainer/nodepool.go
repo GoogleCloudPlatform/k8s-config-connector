@@ -26,7 +26,10 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	computepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRequest) (*pb.NodePool, error) {
@@ -41,8 +44,34 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	return obj, nil
+}
+
+func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePoolsRequest) (*pb.ListNodePoolsResponse, error) {
+	reqParent := req.GetParent()
+	if reqParent == "" && req.GetProjectId() != "" {
+		reqParent = fmt.Sprintf("projects/%s/locations/%s/clusters/%s", req.GetProjectId(), req.GetZone(), req.GetClusterId())
+	}
+	name, err := s.parseClusterName(reqParent)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	nodePoolPrefix := fqn + "/nodePools/"
+
+	var nodePools []*pb.NodePool
+	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListNodePoolsResponse{
+		NodePools: nodePools,
+	}, nil
 }
 
 func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*pb.Operation, error) {
@@ -60,7 +89,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.NodePool).(*pb.NodePool)
+	obj := proto.CloneOf(req.NodePool)
 
 	obj.SelfLink = buildSelfLink(ctx, fqn)
 
@@ -72,10 +101,14 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 		return nil, err
 	}
 
+	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, obj.InitialNodeCount); err != nil {
+		klog.Errorf("failed to create mock IGM: %v", err)
+	}
+
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_CREATE_NODE_POOL,
-		TargetLink:    obj.SelfLink,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -155,6 +188,7 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 	if obj.NetworkConfig.Subnetwork == "" {
 		obj.NetworkConfig.Subnetwork = cluster.NetworkConfig.Subnetwork
 	}
+	obj.NetworkConfig.Subnetwork = strings.TrimPrefix(obj.NetworkConfig.Subnetwork, "https://www.googleapis.com/compute/v1/")
 
 	if obj.PodIpv4CidrSize == 0 {
 		obj.PodIpv4CidrSize = 24
@@ -206,12 +240,15 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 
 	if obj.KubeletConfig == nil {
 		obj.KubeletConfig = &pb.NodeKubeletConfig{}
-	}
-	if obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
 		obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
-	}
-	if obj.KubeletConfig.MaxParallelImagePulls == 0 {
 		obj.KubeletConfig.MaxParallelImagePulls = 2
+	} else {
+		if obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+			obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+		if obj.KubeletConfig.MaxParallelImagePulls == 0 {
+			obj.KubeletConfig.MaxParallelImagePulls = 3
+		}
 	}
 
 	if obj.MachineType == "" {
@@ -254,6 +291,13 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 
 	if obj.WindowsNodeConfig == nil {
 		obj.WindowsNodeConfig = &pb.WindowsNodeConfig{}
+	}
+
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
 	}
 
 	return nil
@@ -336,12 +380,30 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	klog.Infof("UpdateNodePool %v", prototext.Format(req))
 
-	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
+	update := proto.CloneOf(req)
 	update.Name = ""
+	update.NodePoolId = ""
+	update.ProjectId = ""
+	update.Zone = ""
+	update.ClusterId = ""
 
 	if update.Taints != nil {
 		obj.Config.Taints = update.GetTaints().Taints
 		update.Taints = nil
+	}
+
+	if update.KubeletConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.KubeletConfig = update.GetKubeletConfig()
+		if obj.Config.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+			obj.Config.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+		if obj.Config.KubeletConfig.MaxParallelImagePulls == 0 {
+			obj.Config.KubeletConfig.MaxParallelImagePulls = 3
+		}
+		update.KubeletConfig = nil
 	}
 
 	// TODO: Support more updates!
@@ -356,7 +418,37 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	op := &pb.Operation{
 		Zone:       name.Location,
-		TargetLink: obj.SelfLink,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	if req.GetKubeletConfig() != nil {
+		op.OperationType = pb.Operation_UPGRADE_NODES
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodePoolSizeRequest) (*pb.Operation, error) {
+	name, err := s.parseNodePoolName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.NodePool{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.InitialNodeCount = req.NodeCount
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:       name.Location,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -369,6 +461,13 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 		return nil, err
 	}
 
+	clusterName := name.ClusterName()
+	clusterFqn := clusterName.String()
+	cluster := &pb.Cluster{}
+	if err := s.storage.Get(ctx, clusterFqn, cluster); err != nil {
+		return nil, err
+	}
+
 	fqn := name.String()
 
 	oldObj := &pb.NodePool{}
@@ -376,10 +475,32 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 		return nil, err
 	}
 
+	// Update the cluster's NodePools list after deletion
+	var newNodePools []*pb.NodePool
+	for _, np := range cluster.NodePools {
+		if np.Name != name.NodePool {
+			newNodePools = append(newNodePools, np)
+		}
+	}
+	cluster.NodePools = newNodePools
+
+	// To match realGCP, if the default node pool is deleted, remove NodeConfig on the cluster.
+	if name.NodePool == "default-pool" {
+		cluster.NodeConfig = nil
+	}
+
+	if err := s.storage.Update(ctx, clusterFqn, cluster); err != nil {
+		return nil, err
+	}
+
+	if err := s.deleteMockIGM(ctx, oldObj.InstanceGroupUrls); err != nil {
+		klog.Errorf("failed to delete mock IGM: %v", err)
+	}
+
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_DELETE_NODE_POOL,
-		TargetLink:    oldObj.SelfLink,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return oldObj, nil
@@ -395,6 +516,10 @@ type nodePoolName struct {
 
 func (n *nodePoolName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Cluster + "/nodePools/" + n.NodePool
+}
+
+func (n *nodePoolName) LinkWithNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/clusters/%s/nodePools/%s", n.Project.Number, n.Location, n.Cluster, n.NodePool)
 }
 
 func (n *nodePoolName) ClusterName() *clusterName {
@@ -427,4 +552,78 @@ func (s *MockService) parseNodePoolName(name string) (*nodePoolName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func (s *ClusterManagerV1) createMockIGM(ctx context.Context, project *projects.ProjectData, instanceGroupUrls []string, initialNodeCount int32) error {
+	for _, igmUrl := range instanceGroupUrls {
+		// Extract FQN from URL
+		// https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/%s
+		prefix := "https://www.googleapis.com/compute/v1/"
+		if !strings.HasPrefix(igmUrl, prefix) {
+			continue
+		}
+		fqn := strings.TrimPrefix(igmUrl, prefix)
+
+		tokens := strings.Split(fqn, "/")
+		if len(tokens) < 6 {
+			continue
+		}
+		igmName := tokens[5]
+		zone := tokens[3]
+
+		igm := &computepb.InstanceGroupManager{
+			Name:             PtrTo(igmName),
+			BaseInstanceName: PtrTo(strings.TrimSuffix(igmName, "-grp")),
+			TargetSize:       PtrTo(initialNodeCount),
+			SelfLink:         PtrTo(igmUrl),
+			Zone:             PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", project.ID, zone))),
+			Status: &computepb.InstanceGroupManagerStatus{
+				IsStable: PtrTo(true),
+			},
+			CurrentActions: &computepb.InstanceGroupManagerActionsSummary{
+				None: PtrTo(initialNodeCount),
+			},
+			Kind:              PtrTo("compute#instanceGroupManager"),
+			Id:                PtrTo(uint64(123456789012)),
+			CreationTimestamp: PtrTo("2024-04-01T12:34:56.123456Z"),
+			Fingerprint:       PtrTo("abcdef0123A="),
+			UpdatePolicy: &computepb.InstanceGroupManagerUpdatePolicy{
+				Type: PtrTo("OPPORTUNISTIC"),
+				MaxSurge: &computepb.FixedOrPercent{
+					Fixed: PtrTo(int32(1)),
+				},
+				MaxUnavailable: &computepb.FixedOrPercent{
+					Fixed: PtrTo(int32(1)),
+				},
+				MinimalAction:     PtrTo("REPLACE"),
+				ReplacementMethod: PtrTo("SUBSTITUTE"),
+			},
+			InstanceLifecyclePolicy: &computepb.InstanceGroupManagerInstanceLifecyclePolicy{
+				DefaultActionOnFailure: PtrTo("REPAIR"),
+				ForceUpdateOnRepair:    PtrTo("YES"),
+			},
+			InstanceGroup:    PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/instanceGroups/%s", project.ID, zone, igmName))),
+			InstanceTemplate: PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/instanceTemplates/%s", project.ID, strings.TrimSuffix(igmName, "-grp")))),
+		}
+
+		if err := s.storage.Create(ctx, fqn, igm); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *ClusterManagerV1) deleteMockIGM(ctx context.Context, instanceGroupUrls []string) error {
+	for _, igmUrl := range instanceGroupUrls {
+		prefix := "https://www.googleapis.com/compute/v1/"
+		if !strings.HasPrefix(igmUrl, prefix) {
+			continue
+		}
+		fqn := strings.TrimPrefix(igmUrl, prefix)
+
+		if err := s.storage.Delete(ctx, fqn, &computepb.InstanceGroupManager{}); err != nil {
+			return err
+		}
+	}
+	return nil
 }

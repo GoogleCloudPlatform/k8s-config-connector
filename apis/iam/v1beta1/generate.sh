@@ -19,19 +19,23 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
     --service google.iam.admin.v1 \
     --api-version iam.cnrm.cloud.google.com/v1beta1 \
-    --resource IAMServiceAccountKey:ServiceAccountKey
+    --include-skipped-output \
+    --resource IAMServiceAccountKey:ServiceAccountKey \
+    --resource IAMServiceAccount:ServiceAccount
 
 go run . generate-mapper \
     --service google.iam.admin.v1 \
-    --api-version iam.cnrm.cloud.google.com/v1beta1
+    --api-version iam.cnrm.cloud.google.com/v1beta1 \
+    --include-skipped-output
 
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/iam/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/iam/

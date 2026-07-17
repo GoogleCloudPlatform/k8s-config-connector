@@ -65,5 +65,11 @@ var (
 		Kind:    reflect.TypeOf(BatchTask{}).Name(),
 	}
 
+	CloudBatchResourceAllowanceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudBatchResourceAllowance{}).Name(),
+	}
+
 	batchAPIVersion = SchemeGroupVersion.String()
 )

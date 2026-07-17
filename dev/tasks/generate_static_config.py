@@ -31,18 +31,13 @@ def find_direct_controller_kinds(repo_root):
 
         # Heuristic: Find the main object's kind from its instantiation.
         # e.g. obj := &krm.MyKind{}
-        matches = re.findall(r':=\s*&krm\.(\w+)\{', content)
-        if matches:
-            direct_controller_kinds.add(matches[0])
-            continue
-
-        matches = re.findall(r':=\s*&krmv1beta1\.(\w+)\{', content)
+        matches = re.findall(r':=\s*&krm[a-zA-Z0-9]*\.(\w+)\{', content)
         if matches:
             direct_controller_kinds.add(matches[0])
             continue
 
         # Fallback to original logic.
-        matches = re.findall(r'RegisterModel\((?:krm|krmv1beta1)\.(\w+)GVK', content)
+        matches = re.findall(r'RegisterModel\((?:krm[a-zA-Z0-9]*)\.(\w+)GVK', content)
         for match in matches:
             direct_controller_kinds.add(match)
             

@@ -1,0 +1,247 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var ComputeFirewallGVK = GroupVersion.WithKind("ComputeFirewall")
+
+// +kcc:proto=google.cloud.compute.v1.Allowed
+type FirewallAllow struct {
+	/* An optional list of ports to which this rule applies. This field
+	is only applicable for UDP or TCP protocol. Each entry must be
+	either an integer or a range. If not specified, this rule
+	applies to connections through any port.
+
+	Example inputs include: ["22"], ["80","443"], and
+	["12345-12349"]. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Allowed.ports
+	Ports []string `json:"ports,omitempty"`
+
+	/* The IP protocol to which this rule applies. The protocol type is
+	required when creating a firewall rule. This value can either be
+	one of the following well known protocol strings (tcp, udp,
+	icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
+	// +kcc:proto:field=google.cloud.compute.v1.Allowed.I_p_protocol
+	IPProtocol string `json:"protocol"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.Denied
+type FirewallDeny struct {
+	/* An optional list of ports to which this rule applies. This field
+	is only applicable for UDP or TCP protocol. Each entry must be
+	either an integer or a range. If not specified, this rule
+	applies to connections through any port.
+
+	Example inputs include: ["22"], ["80","443"], and
+	["12345-12349"]. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Denied.ports
+	Ports []string `json:"ports,omitempty"`
+
+	/* The IP protocol to which this rule applies. The protocol type is
+	required when creating a firewall rule. This value can either be
+	one of the following well known protocol strings (tcp, udp,
+	icmp, esp, ah, sctp, ipip, all), or the IP protocol number. */
+	// +kcc:proto:field=google.cloud.compute.v1.Denied.I_p_protocol
+	IPProtocol string `json:"protocol"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.FirewallLogConfig
+type FirewallLogConfig struct {
+	/* This field denotes whether to include or exclude metadata for firewall logs. Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"]. */
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallLogConfig.metadata
+	Metadata string `json:"metadata"`
+}
+
+// ComputeFirewallSpec defines the desired state of ComputeFirewall
+// +kcc:spec:proto=google.cloud.compute.v1.Firewall
+type ComputeFirewallSpec struct {
+	/* The list of ALLOW rules specified by this firewall. Each rule
+	specifies a protocol and port-range tuple that describes a permitted
+	connection. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.allowed
+	Allow []FirewallAllow `json:"allow,omitempty"`
+
+	/* The list of DENY rules specified by this firewall. Each rule specifies
+	a protocol and port-range tuple that describes a denied connection. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.denied
+	Deny []FirewallDeny `json:"deny,omitempty"`
+
+	/* An optional description of this resource. Provide this property when
+	you create the resource. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.description
+	Description *string `json:"description,omitempty"`
+
+	/* If destination ranges are specified, the firewall will apply only to
+	traffic that has destination IP address in these ranges. These ranges
+	must be expressed in CIDR format. IPv4 or IPv6 ranges are supported. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.destination_ranges
+	DestinationRanges []string `json:"destinationRanges,omitempty"`
+
+	/* Immutable. Direction of traffic to which this firewall applies; default is
+	INGRESS. Note: For INGRESS traffic, one of 'source_ranges',
+	'source_tags' or 'source_service_accounts' is required. Possible values: ["INGRESS", "EGRESS"]. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.direction
+	Direction *string `json:"direction,omitempty"`
+
+	/* Denotes whether the firewall rule is disabled, i.e not applied to the
+	network it is associated with. When set to true, the firewall rule is
+	not enforced and the network behaves as if it did not exist. If this
+	is unspecified, the firewall rule will be enabled. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	/* DEPRECATED. Deprecated in favor of log_config. This field denotes whether to enable logging for a particular firewall rule. If logging is enabled, logs will be exported to Stackdriver. */
+	// +optional
+	EnableLogging *bool `json:"enableLogging,omitempty"`
+
+	/* This field denotes the logging options for a particular firewall rule.
+	If defined, logging is enabled, and logs will be exported to Cloud Logging. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.log_config
+	LogConfig *FirewallLogConfig `json:"logConfig,omitempty"`
+
+	/* The network to attach this firewall to. */
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.network
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
+
+	/* Priority for this rule. This is an integer between 0 and 65535, both
+	inclusive. When not specified, the value assumed is 1000. Relative
+	priorities determine precedence of conflicting rules. Lower value of
+	priority implies higher precedence (eg, a rule with priority 0 has
+	higher precedence than a rule with priority 1). DENY rules take
+	precedence over ALLOW rules having equal priority. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.priority
+	Priority *int64 `json:"priority,omitempty"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* If source ranges are specified, the firewall will apply only to
+	traffic that has source IP address in these ranges. These ranges must
+	be expressed in CIDR format. One or both of sourceRanges and
+	sourceTags may be set. If both properties are set, the firewall will
+	apply to traffic that has source IP address within sourceRanges OR the
+	source IP that belongs to a tag listed in the sourceTags property. The
+	connection does not need to match both properties for the firewall to
+	apply. IPv4 or IPv6 ranges are supported. For INGRESS traffic, one of
+	'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.source_ranges
+	SourceRanges []string `json:"sourceRanges,omitempty"`
+
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.source_service_accounts
+	SourceServiceAccounts []*refs.IAMServiceAccountRef `json:"sourceServiceAccounts,omitempty"`
+
+	/* If source tags are specified, the firewall will apply only to traffic
+	with source IP that belongs to a tag listed in source tags. Source
+	tags cannot be used to control traffic to an instance's external IP
+	address. Because tags are associated with an instance, not an IP
+	address. One or both of sourceRanges and sourceTags may be set. If
+	both properties are set, the firewall will apply to traffic that has
+	source IP address within sourceRanges OR the source IP that belongs to
+	a tag listed in the sourceTags property. The connection does not need
+	to match both properties for the firewall to apply. For INGRESS traffic,
+	one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.source_tags
+	SourceTags []string `json:"sourceTags,omitempty"`
+
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.target_service_accounts
+	TargetServiceAccounts []*refs.IAMServiceAccountRef `json:"targetServiceAccounts,omitempty"`
+
+	/* A list of instance tags indicating sets of instances located in the
+	network that may make network connections as specified in allowed[].
+	If no targetTags are specified, the firewall rule applies to all
+	instances on the specified network. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.target_tags
+	TargetTags []string `json:"targetTags,omitempty"`
+}
+
+// ComputeFirewallStatus defines the config connector machine state of ComputeFirewall
+// +kcc:status:proto=google.cloud.compute.v1.Firewall
+type ComputeFirewallStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ComputeFirewall's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* Creation timestamp in RFC3339 text format. */
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.Firewall.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputefirewall;gcpcomputefirewalls
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// ComputeFirewall is the Schema for the compute API
+// +k8s:openapi-gen=true
+type ComputeFirewall struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   ComputeFirewallSpec   `json:"spec,omitempty"`
+	Status ComputeFirewallStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ComputeFirewallList contains a list of ComputeFirewall
+type ComputeFirewallList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ComputeFirewall `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&ComputeFirewall{}, &ComputeFirewallList{})
+}

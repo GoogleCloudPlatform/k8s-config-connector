@@ -3,7 +3,6 @@ kind: PrivateCACertificateAuthority
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -43,10 +42,61 @@ spec:
   resourceID: privatecacertificateauthority-${uniqueId}
   type: SELF_SIGNED
 status:
+  caCertificateDescriptions:
+  - authorityKeyId:
+      keyId: 0123456789abcdef0123456789abcdef01234567
+    certFingerprint:
+      sha256Hash: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+    publicKey:
+      key: |
+        -----BEGIN PUBLIC KEY-----
+        MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArxkwuPhDFS6W5xH/1mLT
+        Saxs13N6zFbTWIF8hn/NY5qyIbaiwAXtENyNw6HRJgxGg4XIdEyLTjB+UMUUKaON
+        wtXRSQoBxdvV+Jyde/NcME33t2OwuP0QW66RtKjNvodyw4KLzaVjzOXOcF0WCMc/
+        F5xqNnPzNjUgqIAjz3Hy+z4NZcgOIg3wUtBQFSSRmzNksv30z8KB7WQrdhIVorn9
+        nYQOymuy6OOGK3qHQtYbMLaOhDF5Vrwjj3nU1y+P37QGY0tnJKuXlcpGxI7KdY29
+        4I3Qz+BGzb4ZYtXMnO3NdVUi4mxmxU0LmQ7VRdtzdLczq2CPJ2WbcM6dRWfTDh6+
+        c7CC+7+VAw9qymNJqW7L1obMJCnLzpppOUh4F3WSUtIuKqFvjZ5xS3QpEHblDZ2n
+        Ti65Nn2GbsyV+saqNJNuGfTJoS4I8ahjIcchCiu3D316nLs9D6c0rDK6llmJGtTK
+        flIQ2BFfcamWeeIyMSWH+u3kiJM66aau5Rk6QWYiJ14aik06k/+ZLFsLk5/mUwyQ
+        MaT1sOPd5gqRyK+th2UsdoZutNOdVX1gQ698qwUfMhNjdK3KeI35d/clnGauPeOJ
+        6fX2K/V7XSnT+pdcE11f3ESAYTB2nrIIx3+scawYjTDwD+wbPgJxdn0sZi93mWaJ
+        AOu5xB0NI+laxYOkOdxkbIUCAwEAAQ==
+        -----END PUBLIC KEY-----
+    subjectDescription:
+      hexSerialNumber: 0123456789abcdef
+      lifetime: 86400s
+      notAfterTime: "2024-04-01T12:34:56.123456Z"
+      notBeforeTime: "2024-04-01T12:34:56.123456Z"
+      subject:
+        commonName: my-certificate-authority
+        organization: Example
+      subjectAltName:
+        dnsNames:
+        - example.com
+    subjectKeyId:
+      keyId: 0123456789abcdef0123456789abcdef01234567
+    x509Description:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
     reason: UpToDate
     status: "True"
     type: Ready
+  createTime: "1970-01-01T00:00:00Z"
   observedGeneration: 2
+  pemCaCertificates:
+  - |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+  state: STAGED
+  tier: ENTERPRISE
+  updateTime: "1970-01-01T00:00:00Z"

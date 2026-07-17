@@ -107,7 +107,7 @@ func (s *configServiceV2) GetBucket(ctx context.Context, req *pb.GetBucketReques
 	obj := &pb.LogBucket{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Bucket `%s` does not exist", name.BucketName)
+			return nil, status.Errorf(codes.NotFound, "Bucket `%s` in location `%s` does not exist", name.BucketName, name.location)
 		}
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func (s *configServiceV2) CreateBucket(ctx context.Context, req *pb.CreateBucket
 	}
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.GetBucket()).(*pb.LogBucket)
+	obj := proto.CloneOf(req.GetBucket())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -186,7 +186,7 @@ func (s *configServiceV2) UpdateBucket(ctx context.Context, req *pb.UpdateBucket
 		return nil, err
 	}
 	now := time.Now()
-	updated := proto.Clone(existing).(*pb.LogBucket)
+	updated := proto.CloneOf(existing)
 	updated.CreateTime = existing.CreateTime
 	updated.UpdateTime = timestamppb.New(now)
 

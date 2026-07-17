@@ -27,6 +27,8 @@ controllers, CRDs, install bundles, and sample resource configurations.
 
 See https://cloud.google.com/config-connector/docs/overview.
 
+See [Config Connector CLI](./docs/cli/README.md) for documentation on the `config-connector` command-line tool.
+
 See
 [Choosing an installation type](https://cloud.google.com/config-connector/docs/concepts/installation-types)
 to decide how you want to install Config Connector.

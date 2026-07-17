@@ -22,6 +22,7 @@ import (
 	"log"
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
+	"os"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
@@ -52,17 +53,23 @@ func main() {
 	ctx := contexts.SetupSignalHandler()
 
 	var (
-		prometheusScrapeEndpoint string
-		scopedNamespace          string
-		userProjectOverride      bool
-		billingProject           string
-		enablePprof              bool
-		pprofPort                int
-		rateLimitQps             float32
-		rateLimitBurst           int
-		leaderElectionMode       string
+		scopedNamespace     string
+		userProjectOverride bool
+		billingProject      string
+		enablePprof         bool
+		pprofPort           int
+		rateLimitQps        float32
+		rateLimitBurst      int
+		leaderElectionMode  string
+		skipNameValidation  bool
+		syncingMode         string
 	)
-	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
+	// metricsOptions controls standard controller-runtime metrics versus OpenCensus/Default metrics.
+	// This is configured via the METRICS_VERSION=v2 environment variable.
+	var metricsOptions metrics.MetricsOptions
+	metricsOptions.ServeControllerRuntimeMetrics = (os.Getenv("METRICS_VERSION") == "v2")
+
+	flag.StringVar(&metricsOptions.Addr, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
 	flag.BoolVar(&userProjectOverride, "user-project-override", false, "option to use the resource project for preconditions, quota, and billing, instead of the project the credentials belong to; false by default")
 	flag.StringVar(&billingProject, "billing-project", "", "project to use for preconditions, quota, and billing if --user-project-override is enabled; empty by default; if this is left empty but --user-project-override is enabled, the resource's project will be used")
@@ -72,6 +79,8 @@ func main() {
 	flag.Float32Var(&rateLimitQps, "qps", 20.0, "The client-side token bucket rate limit qps.")
 	flag.IntVar(&rateLimitBurst, "burst", 30, "The client-side token bucket rate limit burst.")
 	flag.StringVar(&leaderElectionMode, "leader-election-type", "disabled", "Leader election mode. One of: default, multicluster.")
+	flag.BoolVar(&skipNameValidation, "skip-name-validation", false, "option to bypass the global controller name registry in controller-runtime; false by default")
+	flag.StringVar(&syncingMode, "syncing-mode", "disabled", "Enable integration with the KRMSyncer for suspending sync operations. One of: disabled, pull. Must be used with multi-cluster leader election.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -84,6 +93,20 @@ func main() {
 		multiClusterElection = true
 	default:
 		logging.Fatal(fmt.Errorf("invalid leader-election-mode: %v", leaderElectionMode), "error parsing flags")
+	}
+
+	var enableSyncing bool
+	switch syncingMode {
+	case "disabled":
+		enableSyncing = false
+	case "pull":
+		enableSyncing = true
+	default:
+		logging.Fatal(fmt.Errorf("invalid syncing-mode: %v", syncingMode), "error parsing flags")
+	}
+
+	if enableSyncing && !multiClusterElection {
+		logging.Fatal(fmt.Errorf("syncing-mode can only be enabled if leader-election-type is multicluster"), "error validating flags")
 	}
 
 	// Discard everything logged onto the Go standard logger. We do this since
@@ -116,7 +139,7 @@ func main() {
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, skipNameValidation, enableSyncing)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -135,7 +158,7 @@ func main() {
 
 	// Register the Prometheus exporter
 	logger.Info("Registering the Prometheus exporter")
-	if err = metrics.RegisterPrometheusExporter(prometheusScrapeEndpoint); err != nil {
+	if err = metrics.RegisterPrometheusExporter(metricsOptions); err != nil {
 		logging.Fatal(err, "error registering the Prometheus exporter.")
 	}
 
@@ -172,17 +195,24 @@ func main() {
 	logging.ExitInfo("main.go finished execution; exiting ...")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool) (manager.Manager, error) {
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, skipNameValidation bool, enableSyncing bool) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
-	controllersCfg := kccmanager.Config{
-		ManagerOptions: manager.Options{
-			Cache: cache.Options{
-				DefaultNamespaces: map[string]cache.Config{
-					scopedNamespace: {},
-				},
+
+	opts := manager.Options{}
+	if scopedNamespace != "" {
+		opts.Cache = cache.Options{
+			DefaultNamespaces: map[string]cache.Config{
+				scopedNamespace: {},
 			},
-		},
-		MultiClusterLease: multiclusterlease,
+		}
+	}
+
+	controllersCfg := kccmanager.Config{
+		ManagerOptions:     opts,
+		MultiClusterLease:  multiclusterlease,
+		SyncerIntegration:  enableSyncing,
+		SkipNameValidation: skipNameValidation,
+		ScopedNamespace:    scopedNamespace,
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride

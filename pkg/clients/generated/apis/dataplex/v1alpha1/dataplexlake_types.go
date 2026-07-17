@@ -53,6 +53,7 @@ type DataplexLakeSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* Optional. Settings to manage lake and Dataproc Metastore service instance association. */

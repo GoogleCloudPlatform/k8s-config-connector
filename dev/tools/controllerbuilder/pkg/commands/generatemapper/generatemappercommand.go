@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
@@ -101,7 +102,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		return fmt.Errorf("APIVersion %q is not valid: %w", o.APIVersion, err)
 	}
 
-	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath)
+	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath, o.GenerateOptions.ProtoOverlayPath)
 	if err != nil {
 		return fmt.Errorf("loading proto: %w", err)
 	}
@@ -113,13 +114,13 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "Request") {
 			return "", false
 		}
-		if strings.HasSuffix(fullName, "Response") {
+		if strings.HasSuffix(fullName, "Response") && !strings.HasSuffix(fullName, "FunctionResponse") {
 			return "", false
 		}
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
-		if strings.HasSuffix(fullName, "Metadata") {
+		if strings.HasSuffix(fullName, "Metadata") && !strings.HasSuffix(fullName, "VideoMetadata") {
 			return "", false
 		}
 		matchedService := false
@@ -197,6 +198,13 @@ func (o *GenerateMapperOptions) loadAndApplyConfig() error {
 
 	o.ServiceNames = []string{config.Service}
 	o.APIVersion = config.APIVersion
+	if o.ProtoOverlayPath == "" && config.ProtoOverlay != "" {
+		if filepath.IsAbs(config.ProtoOverlay) {
+			o.ProtoOverlayPath = config.ProtoOverlay
+		} else {
+			o.ProtoOverlayPath = filepath.Join(filepath.Dir(o.ConfigFilePath), config.ProtoOverlay)
+		}
+	}
 	return nil
 }
 

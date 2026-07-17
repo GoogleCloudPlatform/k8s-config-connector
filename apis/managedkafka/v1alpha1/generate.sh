@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +18,19 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types --config ${REPO_ROOT}/apis/managedkafka/v1alpha1/generatetypes.yaml
-# go run . generate-mapper --config ${REPO_ROOT}/apis/managedkafka/v1alpha1/generatetypes.yaml
+go run . generate-types \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource ManagedKafkaCluster:Cluster \
+  --resource ManagedKafkaConnectCluster:ConnectCluster \
+  --resource ManagedKafkaConsumerGroup:ConsumerGroup \
+  --resource ManagedKafkaTopic:Topic
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
-
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/managedkafka/

@@ -23,7 +23,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/apikeys/v2"
+	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
 )
 
 type APIKeysV2 struct {
@@ -79,7 +79,7 @@ func (s *APIKeysV2) CreateKey(ctx context.Context, req *pb.CreateKeyRequest) (*l
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Key).(*pb.Key)
+	obj := proto.CloneOf(req.Key)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

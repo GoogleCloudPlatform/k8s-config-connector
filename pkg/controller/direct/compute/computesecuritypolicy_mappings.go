@@ -17,6 +17,7 @@ package compute
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -37,7 +38,7 @@ func SecurityPolicyRecaptchaOptionsConfig_v1beta1_FromProto(mapCtx *direct.MapCo
 	}
 	out := &krm.SecurityPolicyRecaptchaOptionsConfig{}
 	if in.GetRedirectSiteKey() != "" {
-		out.RedirectSiteKeyRef = &krm.RecaptchaEnterpriseKeyRef{External: in.GetRedirectSiteKey()}
+		out.RedirectSiteKeyRef = &recaptchaenterprisev1beta1.RecaptchaEnterpriseKeyRef{External: in.GetRedirectSiteKey()}
 	}
 	return out
 }

@@ -33,7 +33,7 @@ spec:
             ipProtocol: tcp
             loadBalancerType: globalL7ilb
             networkRef:
-              name: default
+              name: network-${uniqueId}
             port: '80'
             projectRef:
               external: ${projectId}

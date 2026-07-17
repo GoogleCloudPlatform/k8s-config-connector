@@ -1,0 +1,26 @@
+1c1
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
+30c30
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies
+67c67,68
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+97c98
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
+136c137
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}
+166c167,168
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json

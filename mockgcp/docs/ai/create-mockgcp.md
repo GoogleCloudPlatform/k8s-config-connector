@@ -49,7 +49,13 @@ You will also need to register the service in mockgcp/register.go by adding an a
 
 Now you can run the test and capture the real GCP output (it will be written to `mock<service>/testdata/<resource>/crud/_http.log`)
 
-Run `dev/tasks/record-gcp mock<service>/testdata/<resource>/crud` - that should succeed and write the dev/tasks/record-gcp mock<service>/testdata/<resource>/crud/_http.log
+Run `hack/record-gcp mockgcp/mock<service>/testdata/<resource>/crud` - that should succeed and write the `mockgcp/mock<service>/testdata/<resource>/crud/_http.log`
+
+*   **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API is disabled or has not been used in the project before), enable the service using `gcloud` and try again:
+    ```bash
+    gcloud services enable <service-name>.googleapis.com
+    ```
+    *(For example: `gcloud services enable compute.googleapis.com` or `gcloud services enable run.googleapis.com`)*
 
 Note that the first time you write this, it will fail because it is updating the golden log.  If you run the test again, ideally the output will not change and the test should pass.
 
@@ -59,10 +65,10 @@ Once the output is stable (the tests pass), then please create a commit that is 
 
 ## Running the test against mockgcp
 
-Now run the test again against mockgcp (hint: `dev/tasks/compare-mock mockgcp/mock<service>/testdata/<resource>/crud`).
+Now run the test again against mockgcp (hint: `hack/compare-mock mockgcp/mock<service>/testdata/<resource>/crud`).
 
 You will probably need to implement the resource so that the tests pass.  Create a file called `<resource>.go`, and implement the required proto methods.  Please look at `mockgcp/mockprivateca/capool.go` for an example.
 
 You will also need to ensure that the GRPC services are registered in service.go, both in the `Register` function (which registers it for GRPC) and in `NewHTTPMux` (which registers it for HTTP).
 
-If you run dev/tasks/compare-mock, ideally everything will now pass.  If so, commit with a message like "mockgcp: support for <service> <resource>"
+If you run `hack/compare-mock`, ideally everything will now pass.  If so, commit with a message like "mockgcp: support for <service> <resource>"

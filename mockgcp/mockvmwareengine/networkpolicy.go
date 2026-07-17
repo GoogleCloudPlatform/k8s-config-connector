@@ -30,8 +30,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -70,7 +70,7 @@ func (s *VMwareEngineV1) CreateNetworkPolicy(ctx context.Context, req *pb.Create
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetNetworkPolicy()).(*pb.NetworkPolicy)
+	obj := proto.CloneOf(req.GetNetworkPolicy())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

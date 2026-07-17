@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: vmwareengine.cnrm.cloud.google.com
+  kind: VMwareEngineNetwork
+  name: vmwareenginenetwork-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

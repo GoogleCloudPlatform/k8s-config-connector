@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -73,7 +74,14 @@ type ParentReconciler struct {
 	reconcilers Reconcilers
 }
 
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers, opt controller.Options) error {
+	if opt.MaxConcurrentReconciles == 0 {
+		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
+	}
+	if opt.RateLimiter == nil {
+		opt.RateLimiter = ratelimiter.NewRateLimiter()
+	}
+
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
@@ -97,7 +105,7 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 		Named(controllerName).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicates...)).
 		WatchesRawSource(source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(opt).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new parent controller: %w", err)
@@ -156,7 +164,8 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		logger.V(1).Info("falling back to default controller type", "resource", req.NamespacedName, "type", controllerType)
 	}
 
-	logger.V(1).Info("routing to controller", "type", controllerType)
+	logger.V(1).Info("routing to controller", "resource", req.NamespacedName, "type", controllerType)
+	ctx = structuredreporting.ContextWithReconcilerType(ctx, controllerType)
 
 	switch controllerType {
 	case k8s.ReconcilerTypeTerraform:

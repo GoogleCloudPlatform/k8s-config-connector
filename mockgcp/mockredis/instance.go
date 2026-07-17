@@ -27,9 +27,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	commonpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/common"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/v1beta1"
 )
 
 type redisServer struct {
@@ -87,7 +87,7 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 
@@ -108,6 +108,10 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 	obj.PersistenceIamIdentity = fmt.Sprintf("serviceAccount:service-%d@cloud-redis.iam.gserviceaccount.com", name.Project.Number)
 
 	obj.Port = 6379
+
+	if obj.SecondaryIpRange == "auto" {
+		obj.SecondaryIpRange = "10.20.30.16/28"
+	}
 
 	if obj.RedisVersion == "" {
 		obj.RedisVersion = "REDIS_7_0"
@@ -189,13 +193,13 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name":
 			obj.DisplayName = req.GetInstance().GetDisplayName()
 		case "labels":
 			obj.Labels = req.GetInstance().GetLabels()
-		case "memorySizeGb":
+		case "memorySizeGb", "memory_size_gb":
 			obj.MemorySizeGb = req.GetInstance().GetMemorySizeGb()
-		case "redisConfig":
+		case "redisConfig", "redisConfigs", "redis_configs":
 			obj.RedisConfigs = req.GetInstance().GetRedisConfigs()
 
 		default:

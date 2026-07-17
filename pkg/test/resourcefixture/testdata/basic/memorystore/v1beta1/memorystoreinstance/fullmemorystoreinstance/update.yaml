@@ -48,3 +48,22 @@ spec:
   mode: CLUSTER
   labels:
     keyx: valx
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: WEDNESDAY
+      startTime:
+        hours: 6
+        minutes: 0
+        seconds: 0
+        nanos: 0
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 3
+        minutes: 0
+        seconds: 0
+        nanos: 0
+    retention: 432000s
+  kmsKeyRef:
+    name: key-${uniqueId}

@@ -43,7 +43,7 @@ type InstancegroupNamedPort struct {
 	Name string `json:"name"`
 
 	/* The port number to map the name to. */
-	Port int64 `json:"port"`
+	Port int32 `json:"port"`
 }
 
 type ComputeInstanceGroupSpec struct {
@@ -58,6 +58,7 @@ type ComputeInstanceGroupSpec struct {
 	// +optional
 	NamedPort []InstancegroupNamedPort `json:"namedPort,omitempty"`
 
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 

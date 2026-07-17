@@ -20,15 +20,17 @@ package mockbatch
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/batch/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	pb_v1alpha "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch/resourceallowance/pb"
 )
 
 // MockService represents a mocked batch service.
@@ -38,12 +40,18 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *BatchV1
+	v1      *BatchV1
+	v1alpha *BatchV1Alpha
 }
 
 type BatchV1 struct {
 	*MockService
 	pb.UnimplementedBatchServiceServer
+}
+
+type BatchV1Alpha struct {
+	*MockService
+	pb_v1alpha.UnimplementedBatchServiceServer
 }
 
 // New creates a MockService.
@@ -54,6 +62,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &BatchV1{MockService: s}
+	s.v1alpha = &BatchV1Alpha{MockService: s}
 	return s
 }
 
@@ -63,14 +72,17 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBatchServiceServer(grpcServer, s.v1)
+	pb_v1alpha.RegisterBatchServiceServer(grpcServer, s.v1alpha)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterBatchServiceHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building batch grpc mux: %w", err)
 	}
+
+	mux.AddService(pb.NewBatchServiceClient(conn))
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
 	return mux, nil
 }

@@ -668,3 +668,116 @@ func newTestResourceRCsThatSupportAuditConfigs() []*v1alpha1.ResourceConfig {
 	}
 	return rcs
 }
+
+func TestValidateDirectIAM(t *testing.T) {
+	dclSchemaLoader, err := dclschemaloader.New()
+	if err != nil {
+		t.Fatalf("error creating a new DCL schema loader: %v", err)
+	}
+	a := iamValidatorHandler{
+		smLoader:              testservicemappingloader.New(t),
+		serviceMetadataLoader: dclmetadata.New(),
+		schemaLoader:          dclSchemaLoader,
+	}
+
+	// GKEHubScope is a direct resource supporting IAM, registered in registry.IsIAMDirect.
+	refGKEHubScope := v1beta1.ResourceReference{
+		Kind:       "GKEHubScope",
+		Namespace:  "my-namespace",
+		Name:       "my-scope",
+		APIVersion: "gkehub.cnrm.cloud.google.com/v1alpha1",
+	}
+
+	t.Run("IAMPolicy without audit configs is allowed", func(t *testing.T) {
+		policy := &v1beta1.IAMPolicy{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1beta1.IAMPolicyGVK.Kind,
+				APIVersion: v1beta1.IAMPolicyGVK.GroupVersion().String(),
+			},
+			Spec: v1beta1.IAMPolicySpec{
+				ResourceReference: refGKEHubScope,
+			},
+		}
+		response := a.validateIAMPolicy(policy, false)
+		if !response.Allowed {
+			t.Errorf("expected allowed, got forbidden: %v", response.Result.Message)
+		}
+	})
+
+	t.Run("IAMPolicy with audit configs is forbidden", func(t *testing.T) {
+		policy := &v1beta1.IAMPolicy{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1beta1.IAMPolicyGVK.Kind,
+				APIVersion: v1beta1.IAMPolicyGVK.GroupVersion().String(),
+			},
+			Spec: v1beta1.IAMPolicySpec{
+				ResourceReference: refGKEHubScope,
+				AuditConfigs: []v1beta1.IAMPolicyAuditConfig{
+					{
+						Service: "allServices",
+					},
+				},
+			},
+		}
+		response := a.validateIAMPolicy(policy, false)
+		if response.Allowed {
+			t.Errorf("expected forbidden, got allowed")
+		}
+	})
+
+	t.Run("IAMPartialPolicy is allowed", func(t *testing.T) {
+		partialPolicy := &v1beta1.IAMPartialPolicy{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1beta1.IAMPartialPolicyGVK.Kind,
+				APIVersion: v1beta1.IAMPartialPolicyGVK.GroupVersion().String(),
+			},
+			Spec: v1beta1.IAMPartialPolicySpec{
+				ResourceReference: refGKEHubScope,
+			},
+		}
+		response := a.validateIAMPartialPolicy(partialPolicy, false)
+		if !response.Allowed {
+			t.Errorf("expected allowed, got forbidden: %v", response.Result.Message)
+		}
+	})
+
+	t.Run("IAMPolicyMember without conditions is allowed", func(t *testing.T) {
+		policyMember := &v1beta1.IAMPolicyMember{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1beta1.IAMPolicyMemberGVK.Kind,
+				APIVersion: v1beta1.IAMPolicyMemberGVK.GroupVersion().String(),
+			},
+			Spec: v1beta1.IAMPolicyMemberSpec{
+				ResourceReference: refGKEHubScope,
+				Role:              "roles/viewer",
+				Member:            "user:test@google.com",
+			},
+		}
+		response := a.validateIAMPolicyMember(policyMember, false)
+		if !response.Allowed {
+			t.Errorf("expected allowed, got forbidden: %v", response.Result.Message)
+		}
+	})
+
+	t.Run("IAMPolicyMember with conditions is forbidden", func(t *testing.T) {
+		policyMember := &v1beta1.IAMPolicyMember{
+			TypeMeta: metav1.TypeMeta{
+				Kind:       v1beta1.IAMPolicyMemberGVK.Kind,
+				APIVersion: v1beta1.IAMPolicyMemberGVK.GroupVersion().String(),
+			},
+			Spec: v1beta1.IAMPolicyMemberSpec{
+				ResourceReference: refGKEHubScope,
+				Role:              "roles/viewer",
+				Member:            "user:test@google.com",
+				Condition: &v1beta1.IAMCondition{
+					Title:      "always-true",
+					Expression: "true",
+				},
+			},
+		}
+		response := a.validateIAMPolicyMember(policyMember, false)
+		if response.Allowed {
+			t.Errorf("expected forbidden, got allowed")
+		}
+	})
+}

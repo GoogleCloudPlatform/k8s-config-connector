@@ -1,0 +1,228 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var DNSManagedZoneGVK = GroupVersion.WithKind("DNSManagedZone")
+
+// +openapi:DnsKeySpec
+type DnsKeySpec struct {
+	/* String mnemonic specifying the DNSSEC algorithm of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384", "rsasha1", "rsasha256", "rsasha512"]. */
+	// +optional
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	/* Length of the keys in bits. */
+	// +optional
+	KeyLength *int64 `json:"keyLength,omitempty"`
+
+	/* Specifies whether this is a key signing key (KSK) or a zone
+	signing key (ZSK). Key signing keys have the Secure Entry
+	Point flag set and, when active, will only be used to sign
+	resource record sets of type DNSKEY. Zone signing keys do
+	not have the Secure Entry Point flag set and will be used
+	to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"]. */
+	// +optional
+	KeyType *string `json:"keyType,omitempty"`
+
+	/* Identifies what kind of resource this is. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+}
+
+// +openapi:ManagedZoneDnsSecConfig
+type ManagedZoneDnsSecConfig struct {
+	/* Specifies parameters that will be used for generating initial DnsKeys
+	for this ManagedZone. If you provide a spec for keySigning or zoneSigning,
+	you must also provide one for the other.
+	default_key_specs can only be updated when the state is 'off'. */
+	// +optional
+	DefaultKeySpecs []DnsKeySpec `json:"defaultKeySpecs,omitempty"`
+
+	/* Identifies what kind of resource this is. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* Specifies the mechanism used to provide authenticated denial-of-existence responses.
+	non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"]. */
+	// +optional
+	NonExistence *string `json:"nonExistence,omitempty"`
+
+	/* Specifies whether DNSSEC is enabled, and what mode it is in Possible values: ["off", "on", "transfer"]. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+// +openapi:ManagedZonePrivateVisibilityConfigGKECluster
+type ManagedZonePrivateVisibilityConfigGKECluster struct {
+	// The resource name of the cluster to bind this ManagedZone to.
+	// This should be specified in the format like
+	// 'projects/*/locations/*/clusters/*'.
+	GkeClusterNameRef containerv1beta1.ContainerClusterRef `json:"gkeClusterNameRef"`
+}
+
+// +openapi:ManagedZoneServiceDirectoryConfigNamespace
+type ManagedZoneServiceDirectoryConfigNamespace struct {
+	/* The fully qualified or partial URL of the service directory namespace that should be
+	associated with the zone. This should be formatted like
+	'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}'
+	or simply 'projects/{project}/locations/{location}/namespaces/{namespace_id}'
+	Ignored for 'public' visibility zones. */
+	NamespaceUrl string `json:"namespaceUrl"`
+}
+
+// +openapi:ManagedZonePrivateVisibilityConfigNetwork
+type ManagedZonePrivateVisibilityConfigNetwork struct {
+	/* VPC network to bind to. */
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
+}
+
+// +openapi:ManagedZoneForwardingConfigNameServerTarget
+type ManagedZoneForwardingConfigNameServerTarget struct {
+	/* Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
+	decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
+	to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"]. */
+	// +optional
+	ForwardingPath *string `json:"forwardingPath,omitempty"`
+
+	/* IPv4 address of a target name server. */
+	Ipv4Address string `json:"ipv4Address"`
+}
+
+// +openapi:ManagedZonePeeringConfigTargetNetwork
+type ManagedZonePeeringConfigTargetNetwork struct {
+	/* VPC network to forward queries to. */
+	NetworkRef computerefs.ComputeNetworkRef `json:"networkRef"`
+}
+
+// DNSManagedZoneSpec defines the desired state of DNSManagedZone
+// +openapi:ManagedZone
+type DNSManagedZoneSpec struct {
+	/* Cloud logging configuration. */
+	// +optional
+	CloudLoggingConfig *ManagedZoneCloudLoggingConfig `json:"cloudLoggingConfig,omitempty"`
+
+	/* A textual description field. Defaults to 'Managed by Config Connector'. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Immutable. The DNS name of this managed zone, for instance "example.com.". */
+	DnsName string `json:"dnsName"`
+
+	/* DNSSEC configuration. */
+	// +optional
+	DnssecConfig *ManagedZoneDnsSecConfig `json:"dnssecConfig,omitempty"`
+
+	/* The presence for this field indicates that outbound forwarding is enabled
+	for this zone. The value of this field contains the set of destinations
+	to forward to. */
+	// +optional
+	ForwardingConfig *ManagedZoneForwardingConfig `json:"forwardingConfig,omitempty"`
+
+	/* The presence of this field indicates that DNS Peering is enabled for this
+	zone. The value of this field contains the network to peer with. */
+	// +optional
+	PeeringConfig *ManagedZonePeeringConfig `json:"peeringConfig,omitempty"`
+
+	/* For privately visible zones, the set of Virtual Private Cloud
+	resources that the zone is visible from. At least one of 'gke_clusters' or 'networks' must be specified. */
+	// +optional
+	PrivateVisibilityConfig *ManagedZonePrivateVisibilityConfig `json:"privateVisibilityConfig,omitempty"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse
+	lookup queries using automatically configured records for VPC resources. This only applies
+	to networks listed under 'private_visibility_config'. */
+	// +optional
+	ReverseLookup *bool `json:"reverseLookup,omitempty"`
+
+	/* Immutable. The presence of this field indicates that this zone is backed by Service Directory. The value of this field contains information related to the namespace associated with the zone. */
+	// +optional
+	ServiceDirectoryConfig *ManagedZoneServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	/* Immutable. The zone's visibility: public zones are exposed to the Internet,
+	while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"]. */
+	// +optional
+	Visibility *string `json:"visibility,omitempty"`
+}
+
+// DNSManagedZoneStatus defines the config connector machine state of DNSManagedZone
+type DNSManagedZoneStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DNSManagedZone's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* The time that this resource was created on the server.
+	This is in RFC3339 text format. */
+	// +optional
+	CreationTime *string `json:"creationTime,omitempty"`
+
+	/* Unique identifier for the resource; defined by the server. */
+	// +optional
+	ManagedZoneId *int64 `json:"managedZoneId,omitempty"`
+
+	/* Delegate your managed_zone to these virtual name servers;
+	defined by the server. */
+	// +optional
+	NameServers []string `json:"nameServers,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdnsmanagedzone;gcpdnsmanagedzones
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// DNSManagedZone is the Schema for the dns API
+// +k8s:openapi-gen=true
+type DNSManagedZone struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   DNSManagedZoneSpec   `json:"spec"`
+	Status DNSManagedZoneStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// DNSManagedZoneList contains a list of DNSManagedZone
+type DNSManagedZoneList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DNSManagedZone `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DNSManagedZone{}, &DNSManagedZoneList{})
+}

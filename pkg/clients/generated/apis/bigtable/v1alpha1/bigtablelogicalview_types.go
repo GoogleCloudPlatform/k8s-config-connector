@@ -43,7 +43,7 @@ type BigtableLogicalViewSpec struct {
 	// +optional
 	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 
-	/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
+	/* InstanceRef is a reference to a BigtableInstance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* The BigtableLogicalView's select query. */

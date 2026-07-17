@@ -27,3 +27,5 @@ spec:
   rrdatasRefs:
     - name: computeaddress-${uniqueId}
       kind: ComputeAddress
+  rrdatas: []
+

@@ -41,6 +41,9 @@ func (s *GlobalSSLCertificatesV1) Get(ctx context.Context, req *pb.GetSslCertifi
 
 	obj := &pb.SslCertificate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -58,11 +61,27 @@ func (s *GlobalSSLCertificatesV1) Insert(ctx context.Context, req *pb.InsertSslC
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetSslCertificateResource()).(*pb.SslCertificate)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetSslCertificateResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#sslCertificate")
+	obj.PrivateKey = nil
+
+	if obj.Type == nil {
+		obj.Type = PtrTo("SELF_MANAGED")
+	}
+	if obj.GetType() == "SELF_MANAGED" {
+		if obj.SelfManaged == nil {
+			obj.SelfManaged = &pb.SslCertificateSelfManagedSslCertificate{}
+		}
+		if obj.SelfManaged.Certificate == nil {
+			obj.SelfManaged.Certificate = obj.Certificate
+		}
+	}
+	if obj.ExpireTime == nil {
+		obj.ExpireTime = obj.CreationTimestamp
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -90,6 +109,9 @@ func (s *GlobalSSLCertificatesV1) Delete(ctx context.Context, req *pb.DeleteSslC
 
 	deleted := &pb.SslCertificate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -116,6 +138,12 @@ func (n *globalSSLCertificateName) String() string {
 // parseGlobalSslCertificateName parses a string into a globalSslCertificateName.
 // The expected form is `projects/*/global/sslcertificate/*`.
 func (s *MockService) parseGlobalSslCertificateName(name string) (*globalSSLCertificateName, error) {
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "/")
+
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "sslCertificates" {

@@ -15,18 +15,28 @@
 package mockredis
 
 import (
+	"bytes"
 	"context"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
+	pbcluster "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pbcluster "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/cluster/v1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/v1beta1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked redis service.
 type MockService struct {
@@ -36,7 +46,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -54,23 +64,62 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pbcluster.RegisterCloudRedisClusterServer(grpcServer, &clusterServer{MockService: s})
 }
 
+type responseWrapper struct {
+	http.ResponseWriter
+	body       *bytes.Buffer
+	statusCode int
+}
+
+func (w *responseWrapper) WriteHeader(statusCode int) {
+	w.statusCode = statusCode
+}
+
+func (w *responseWrapper) Write(b []byte) (int, error) {
+	return w.body.Write(b)
+}
+
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterCloudRedisHandler,
-		pbcluster.RegisterCloudRedisClusterHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, err
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
+	grpcMux.AddService(pb.NewCloudRedisClient(conn))
+	grpcMux.AddService(pbcluster.NewCloudRedisClusterClient(conn))
+
+	grpcMux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	rewriteV1ToBeta := func(w http.ResponseWriter, r *http.Request) {
+		isV1 := false
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/v1/projects/") && strings.Contains(u.Path, "/instances") {
+			isV1 = true
+			u2 := *u
+			u2.Path = "/v1beta1" + strings.TrimPrefix(u.Path, "/v1")
+			r = httpmux.RewriteRequest(r, &u2)
+		} else if strings.HasPrefix(u.Path, "/v1/projects/") && strings.Contains(u.Path, "/operations") {
+			isV1 = true
+		}
+
+		if isV1 {
+			rec := &responseWrapper{ResponseWriter: w, body: &bytes.Buffer{}}
+			grpcMux.ServeHTTP(rec, r)
+
+			respBytes := rec.body.Bytes()
+			respBytes = bytes.ReplaceAll(respBytes, []byte(`google.cloud.redis.v1beta1.Instance`), []byte(`google.cloud.redis.v1.Instance`))
+
+			w.Header().Set("Content-Length", fmt.Sprintf("%d", len(respBytes)))
+			if rec.statusCode != 0 {
+				w.WriteHeader(rec.statusCode)
+			} else {
+				w.WriteHeader(http.StatusOK)
+			}
+			w.Write(respBytes)
+		} else {
+			grpcMux.ServeHTTP(w, r)
 		}
 	}
 
-	return mux, nil
+	return http.HandlerFunc(rewriteV1ToBeta), nil
 }

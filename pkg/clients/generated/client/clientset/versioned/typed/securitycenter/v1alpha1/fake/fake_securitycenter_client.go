@@ -31,12 +31,20 @@ type FakeSecuritycenterV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeSecuritycenterV1alpha1) SecurityCenterBigQueryExports(namespace string) v1alpha1.SecurityCenterBigQueryExportInterface {
+	return newFakeSecurityCenterBigQueryExports(c, namespace)
+}
+
+func (c *FakeSecuritycenterV1alpha1) SecurityCenterMuteConfigs(namespace string) v1alpha1.SecurityCenterMuteConfigInterface {
+	return newFakeSecurityCenterMuteConfigs(c, namespace)
+}
+
 func (c *FakeSecuritycenterV1alpha1) SecurityCenterNotificationConfigs(namespace string) v1alpha1.SecurityCenterNotificationConfigInterface {
-	return &FakeSecurityCenterNotificationConfigs{c, namespace}
+	return newFakeSecurityCenterNotificationConfigs(c, namespace)
 }
 
 func (c *FakeSecuritycenterV1alpha1) SecurityCenterSources(namespace string) v1alpha1.SecurityCenterSourceInterface {
-	return &FakeSecurityCenterSources{c, namespace}
+	return newFakeSecurityCenterSources(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

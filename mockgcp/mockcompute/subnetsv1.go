@@ -65,7 +65,7 @@ func (s *SubnetsV1) List(ctx context.Context, req *pb.ListSubnetworksRequest) (*
 	response := &pb.SubnetworkList{}
 	response.Id = PtrTo("0123456789")
 	response.Kind = PtrTo("compute#subnetworkList")
-	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
 
 	findKind := (&pb.Subnetwork{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
@@ -100,7 +100,7 @@ func (s *SubnetsV1) AggregatedList(ctx context.Context, req *pb.AggregatedListSu
 	response := &pb.SubnetworkAggregatedList{}
 	response.Id = PtrTo("0123456789")
 	response.Kind = PtrTo("compute#subnetworkAggregatedList")
-	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/aggregated/subnetworks", name.Project.ID)))
+	response.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/aggregated/subnetworks", name.Project.ID)))
 	response.Items = make(map[string]*pb.SubnetworksScopedList)
 
 	// Add empty lists for all regions and zones (and global).
@@ -158,8 +158,8 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetSubnetworkResource()).(*pb.Subnetwork)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetSubnetworkResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#subnetwork")
@@ -175,15 +175,25 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if obj.Purpose == nil {
 		obj.Purpose = PtrTo("PRIVATE")
 	}
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
-	if obj.StackType == nil {
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
+	if obj.StackType == nil && obj.GetPurpose() != "PRIVATE_NAT" {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
+	obj.State = PtrTo("READY")
 	networkName, err := s.parseNetworkSelfLink(obj.GetNetwork())
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 	}
-	obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
+	obj.Network = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
+
+	if obj.GetIpCidrRange() == "" && obj.GetReservedInternalRange() != "" {
+		obj.IpCidrRange = PtrTo("10.128.0.0/20")
+	}
+	for i, sec := range obj.SecondaryIpRanges {
+		if sec.GetIpCidrRange() == "" && sec.GetReservedInternalRange() != "" {
+			sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+		}
+	}
 
 	cidrIP, _, err := net.ParseCIDR(obj.GetIpCidrRange())
 	if err != nil {
@@ -261,13 +271,16 @@ func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest)
 		networkFQN := networkName.String()
 		network := &pb.Network{}
 		if err := s.storage.Get(ctx, networkFQN, network); err != nil {
-			return nil, err
-		}
-
-		network.Subnetworks, _ = removeFromSlice(network.Subnetworks, deleted.GetSelfLink())
-
-		if err := s.storage.Update(ctx, networkFQN, network); err != nil {
-			return nil, err
+			if status.Code(err) == codes.NotFound {
+				// Parent network already deleted, skip updating its subnetworks list
+			} else {
+				return nil, err
+			}
+		} else {
+			network.Subnetworks, _ = removeFromSlice(network.Subnetworks, deleted.GetSelfLink())
+			if err := s.storage.Update(ctx, networkFQN, network); err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -311,6 +324,53 @@ func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPri
 	})
 }
 
+func (s *SubnetsV1) Patch(ctx context.Context, req *pb.PatchSubnetworkRequest) (*pb.Operation, error) {
+	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), req.GetSubnetwork())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Subnetwork{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if patch := req.GetSubnetworkResource(); patch != nil {
+		if patch.Description != nil {
+			obj.Description = patch.Description
+		}
+		if patch.PrivateIpGoogleAccess != nil {
+			obj.PrivateIpGoogleAccess = patch.PrivateIpGoogleAccess
+		}
+		if patch.Role != nil {
+			obj.Role = patch.Role
+		}
+		if patch.SecondaryIpRanges != nil {
+			obj.SecondaryIpRanges = patch.SecondaryIpRanges
+			for i, sec := range obj.SecondaryIpRanges {
+				if sec.GetIpCidrRange() == "" && sec.GetReservedInternalRange() != "" {
+					sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+				}
+			}
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 type subnetName struct {
 	Project *projects.ProjectData
 	Region  string
@@ -331,6 +391,17 @@ func (s *MockService) parseSubnetName(name string) (*subnetName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+// parseSubnetSelfLink parses a selfLink string into a subnetName.
+// The expected form is `https://www.googleapis.com/compute/{version}/projects/*/regions/*/subnetworks/*`.
+func (s *MockService) parseSubnetSelfLink(selfLink string) (*subnetName, error) {
+	name := selfLink
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/v1/")
+
+	return s.parseSubnetName(name)
 }
 
 // newSubnetName builds a normalized subnetName from the constituent parts.

@@ -58,11 +58,19 @@ type AutokeyconfigKeyProject struct {
 
 type KMSAutokeyConfigSpec struct {
 	/* Immutable. The folder that this resource belongs to. */
-	FolderRef v1alpha1.ResourceRef `json:"folderRef"`
+	// +optional
+	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* The Project that this resource belongs to. */
 	// +optional
 	KeyProject *AutokeyconfigKeyProject `json:"keyProject,omitempty"`
+
+	// +optional
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
+
+	/* Immutable. The project that this resource belongs to. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type AutokeyconfigObservedStateStatus struct {

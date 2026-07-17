@@ -28,8 +28,8 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 	"github.com/google/uuid"
 )
 
@@ -66,7 +66,7 @@ func (s *datasetService) CreateDataset(ctx context.Context, req *pb.CreateDatase
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Dataset).(*pb.Dataset)
+	obj := proto.CloneOf(req.Dataset)
 	obj.Name = fqn
 
 	obj.CreateTime = timestamppb.New(now)
@@ -96,7 +96,7 @@ func (s *datasetService) CreateDataset(ctx context.Context, req *pb.CreateDatase
 	opPrefix := name.String()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.Dataset)
+		result := proto.CloneOf(obj)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 		result.Etag = ""

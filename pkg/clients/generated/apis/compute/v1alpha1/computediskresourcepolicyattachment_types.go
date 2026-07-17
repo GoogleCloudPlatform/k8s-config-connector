@@ -39,6 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeDiskResourcePolicyAttachmentSpec struct {
+	/* ComputeDiskRef is a reference to a ComputeDisk. */
 	DiskRef v1alpha1.ResourceRef `json:"diskRef"`
 
 	/* The project that this resource belongs to. */

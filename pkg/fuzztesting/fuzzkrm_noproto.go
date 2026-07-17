@@ -28,10 +28,12 @@ import (
 func RegisterKRMFuzzer_NoProto(fuzzer KRMFuzzer_NoProto) {
 	RegisterFuzzer(fuzzer.FuzzSpec)
 	RegisterFuzzer(fuzzer.FuzzStatus)
+	registeredNoProtoFuzzers = append(registeredNoProtoFuzzers, fuzzer)
 }
 
 func RegisterKRMSpecFuzzer_NoProto(fuzzer KRMFuzzer_NoProto) {
 	RegisterFuzzer(fuzzer.FuzzSpec)
+	registeredNoProtoFuzzers = append(registeredNoProtoFuzzers, fuzzer)
 }
 
 type KRMTypedFuzzer_NoProto[APIType any, SpecType any, StatusType any] struct {
@@ -59,6 +61,16 @@ func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) SpecField(fieldP
 // StatusField marks the specified fieldPath as round-tripping to/from the Status
 func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) StatusField(fieldPath string) {
 	f.StatusFields.Insert(fieldPath)
+}
+
+// IdentityField marks the specified fieldPath as round-tripping to/from the resource Identity
+func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) IdentityField(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// Ignore_JSONBookkeeping marks the specified fieldPath as fields we expect to be missing, such as ServerResponse or ForceSendFields.
+func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) Ignore_JSONBookkeeping(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
 }
 
 // Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
@@ -98,6 +110,10 @@ func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) FuzzSpec(t *test
 }
 
 func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) FuzzStatus(t *testing.T, seed int64) {
+	if f.StatusFromAPI == nil || f.StatusToAPI == nil {
+		t.Skip("Status FromAPI or ToAPI is nil, skipping status fuzz test")
+		return
+	}
 	fuzzer := NewFuzzTest_NoProto(f.APIType, f.StatusFromAPI, f.StatusToAPI)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields

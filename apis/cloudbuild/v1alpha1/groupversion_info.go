@@ -1,5 +1,5 @@
 /*
-Copyright 2024.
+Copyright 2026 Google LLC.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -33,12 +33,4 @@ var (
 
 	// AddToScheme adds the types in this group-version to the given scheme.
 	AddToScheme = SchemeBuilder.AddToScheme
-
-	CloudBuildWorkerPoolKind = "CloudBuildWorkerPool"
-
-	GroupVersionKind = schema.GroupVersionKind{
-		Group:   GroupVersion.Group,
-		Version: GroupVersion.Version,
-		Kind:    CloudBuildWorkerPoolKind,
-	}
 )

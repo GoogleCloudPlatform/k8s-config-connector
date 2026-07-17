@@ -21,6 +21,7 @@ import (
 	"sync"
 	"time"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
@@ -49,11 +50,13 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
-	crlog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
@@ -68,12 +71,59 @@ type RegistrationControllerOptions struct {
 
 // AddDefaultControllers creates the registration controller with the default controller factory,
 // this will dynamically create the default controllers for each CRD.
-func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig) error {
+func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig, scopedNamespace string) error {
 	opt := RegistrationControllerOptions{
 		ControllerName: "registration-controller",
 	}
+
+	// Prefetch resource exclusion settings to avoid repeated API calls in the loop.
+	// We use mgr.GetAPIReader() because the manager's cache is not started yet.
+	// This results in a direct API call, which is acceptable for this one-time startup operation.
+	c := mgr.GetAPIReader()
+
+	// The `cccSettings` and `ccSettings` are fetched only once when `AddDefaultControllers` is called
+	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
+	// resources at runtime will not be reflected until the manager process is restarted.
+	var cccSettings *operatorv1beta1.ResourceSettings
+	if scopedNamespace != "" {
+		ccc := &operatorv1beta1.ConfigConnectorContext{}
+		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
+			if !errors.IsNotFound(err) {
+				return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
+			}
+			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
+		} else if ccc.Spec.Experiments != nil {
+			cccSettings = ccc.Spec.Experiments.ResourceSettings
+			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
+		}
+	} else {
+		fmt.Println("scopedNamespace is empty")
+	}
+
+	var ccSettings *operatorv1beta1.ResourceSettings
+	cc := &operatorv1beta1.ConfigConnector{}
+	if err := c.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
+		if !errors.IsNotFound(err) {
+			return fmt.Errorf("error getting ConfigConnector: %w", err)
+		}
+	} else if cc.Spec.Experiments != nil {
+		ccSettings = cc.Spec.Experiments.ResourceSettings
+	}
+
+	if ccSettings != nil && cccSettings != nil {
+		ccInclusive := ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
+		cccInclusive := cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude
+		if ccInclusive != cccInclusive {
+			return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
+		}
+	} else if (ccSettings == nil || ccSettings.Mode != operatorv1beta1.ResourceSettingsModeInclude) && (cccSettings != nil && cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude) {
+		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnectorContext, but ConfigConnector has no explicit ResourceSettings. Please update ConfigConnector to Inclusive mode for consistency.")
+	} else if (cccSettings == nil || cccSettings.Mode != operatorv1beta1.ResourceSettingsModeInclude) && (ccSettings != nil && ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude) {
+		log.FromContext(ctx).Info("Warning: Inclusive mode enabled via ConfigConnector, but ConfigConnectorContext has no explicit ResourceSettings for this namespace. Please update ConfigConnectorContext to Inclusive mode for consistency.")
+	}
+
 	if err := add(mgr, rd,
-		registerDefaultControllers(ctx, controllerConfig), opt); err != nil {
+		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings), opt); err != nil {
 		return fmt.Errorf("error adding default registration controller: %w", err)
 	}
 	return nil
@@ -86,7 +136,7 @@ func AddDeletionDefender(mgr manager.Manager, rd *controller.Deps) error {
 		ControllerName: "deletion-defender-registration-controller",
 	}
 
-	if err := add(mgr, &controller.Deps{}, registerDeletionDefenderController, opt); err != nil {
+	if err := add(mgr, rd, registerDeletionDefenderController, opt); err != nil {
 		return fmt.Errorf("error adding deletion-defender registration controller: %w", err)
 	}
 	return nil
@@ -105,13 +155,16 @@ func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 		if _, ok := k8s.IgnoredKindList[gvk.Kind]; ok {
 			return nil, nil
 		}
-		if err := unmanageddetector.Add(ctx, r.mgr, gvk); err != nil {
+		opt := crcontroller.Options{
+			SkipNameValidation: ptr.To(r.SkipNameValidation),
+		}
+		if err := unmanageddetector.Add(ctx, r.mgr, gvk, opt); err != nil {
 			return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", gvk.Kind, err)
 		}
 		return nil, nil
 	}
 
-	if err := add(mgr, &controller.Deps{}, registerUnmanagedDetectorController, opt); err != nil {
+	if err := add(mgr, rd, registerUnmanagedDetectorController, opt); err != nil {
 		return fmt.Errorf("error adding unmanaged-detector registration controller: %w", err)
 	}
 	return nil
@@ -143,11 +196,13 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		reconcilers:                make(map[schema.GroupVersionKind]*parent.Reconcilers),
 		immediateReconcileRequests: make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize),
 		resourceWatcherRoutines:    semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines),
+		SkipNameValidation:         rd.SkipNameValidation,
 	}
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
 			Reconciler:              r,
 			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			SkipNameValidation:      ptr.To(r.SkipNameValidation),
 		})
 	if err != nil {
 		return err
@@ -179,6 +234,8 @@ type ReconcileRegistration struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 
 	mu sync.Mutex
+
+	SkipNameValidation bool
 }
 
 type controllerContext struct {
@@ -190,7 +247,7 @@ type controllerContext struct {
 type registrationFunc func(*ReconcileRegistration, *apiextensions.CustomResourceDefinition, schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error)
 
 func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
-	logger := crlog.FromContext(ctx)
+	logger := log.FromContext(ctx)
 
 	// Fetch the TypeProvider tp
 	crd := &apiextensions.CustomResourceDefinition{}
@@ -246,17 +303,24 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig) registrationFunc { //nolint:revive
+func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(ctx, r, config, crd, gvk)
+		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings)
 	}
 }
 
-func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-	logger := crlog.FromContext(ctx)
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) (k8s.SchemaReferenceUpdater, error) {
+	logger := log.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
+
+	// Check if the resource is disabled by configuration (ConfigConnector or ConfigConnectorContext).
+	if disabled := isResourceDisabled(ctx, gvk, scopedNamespace, cccSettings, ccSettings); disabled {
+		logger.Info("Skipping controller registration because resource is disabled in ConfigConnector or ConfigConnectorContext", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+		return nil, nil
+	}
+
 	cds := controller.Deps{
 		TFProvider:   r.provider,
 		TFLoader:     r.smLoader,
@@ -265,6 +329,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 		//DependencyTracker: r.dependencyTracker,
+		SkipNameValidation: r.SkipNameValidation,
 	}
 
 	// todo acpana house in KCC mgr flag
@@ -294,7 +359,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		// register the controller to automatically create secrets for GSA keys
 		if isServiceAccountKeyCRD(crd) {
 			logger.Info("registering the GSA-Key-to-Secret generation controller")
-			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
+			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator, SkipNameValidation: r.SkipNameValidation}); err != nil {
 				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
@@ -338,12 +403,14 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 						IAMAdapterDeps: &directbase.IAMAdapterDeps{
 							KubeClient: r.Client,
 							ControllerDeps: &controller.Deps{
-								TFProvider:   r.provider,
-								TFLoader:     r.smLoader,
-								DCLConfig:    r.dclConfig,
-								DCLConverter: r.dclConverter,
+								TFProvider:         r.provider,
+								TFLoader:           r.smLoader,
+								DCLConfig:          r.dclConfig,
+								DCLConverter:       r.dclConverter,
+								SkipNameValidation: r.SkipNameValidation,
 							},
 						},
+						SkipNameValidation: r.SkipNameValidation,
 					}
 					reconcilers.Direct, err = directbase.NewReconciler(r.mgr, nil, nil, gvk, model, deps)
 					if err != nil {
@@ -352,7 +419,10 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				}
 			}
 			r.reconcilers[gvk] = reconcilers
-			if err := parent.Add(r.mgr, gvk, reconcilers); err != nil {
+			opt := crcontroller.Options{
+				SkipNameValidation: ptr.To(r.SkipNameValidation),
+			}
+			if err := parent.Add(r.mgr, gvk, reconcilers, opt); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
@@ -364,8 +434,54 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
-	if err := deletiondefender.Add(r.mgr, crd); err != nil {
+	opt := crcontroller.Options{
+		SkipNameValidation: ptr.To(r.SkipNameValidation),
+	}
+	if err := deletiondefender.Add(r.mgr, crd, opt); err != nil {
 		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil
+}
+
+func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) bool {
+	// Mode validation is already performed during controller startup,
+	// so ccSettings and cccSettings are guaranteed not to have conflicting modes at this point.
+	isInclusive := isInclusiveMode(ccSettings, cccSettings)
+
+	found := false
+	if scopedNamespace != "" && cccSettings != nil {
+		found = checkFound(cccSettings, gvk)
+	}
+	if !found && ccSettings != nil {
+		found = checkFound(ccSettings, gvk)
+	}
+
+	if isInclusive {
+		return !found // Enabled if found
+	}
+	return found // Disabled if found
+}
+
+func isInclusiveMode(ccSettings *operatorv1beta1.ResourceSettings, cccSettings *operatorv1beta1.ResourceSettings) bool {
+	if ccSettings != nil && ccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude {
+		return true
+	}
+	if cccSettings != nil && cccSettings.Mode == operatorv1beta1.ResourceSettingsModeInclude {
+		return true
+	}
+	return false
+}
+
+func checkFound(settings *operatorv1beta1.ResourceSettings, gvk schema.GroupVersionKind) bool {
+	if settings == nil {
+		return false
+	}
+	for _, s := range settings.Resources {
+		if s.Group != nil && *s.Group == gvk.Group {
+			if s.Kind == nil || *s.Kind == "" || *s.Kind == gvk.Kind {
+				return true
+			}
+		}
+	}
+	return false
 }

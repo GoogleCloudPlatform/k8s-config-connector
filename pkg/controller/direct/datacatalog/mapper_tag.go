@@ -37,7 +37,7 @@ func DataCatalogTagSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmv1a
 	out.Column = direct.LazyPtr(in.GetColumn())
 	out.Fields = make(map[string]krmv1alpha1.TagField)
 	for k, v := range in.GetFields() {
-		out.Fields[k] = *TagField_FromProto(mapCtx, v)
+		out.Fields[k] = *TagField_v1alpha1_FromProto(mapCtx, v)
 	}
 	return out
 }
@@ -77,11 +77,19 @@ func TagField_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TagField) *pb.T
 		out.Kind = &pb.TagField_TimestampValue{TimestampValue: direct.StringTimestamp_ToProto(mapCtx, in.TimestampValue)}
 	}
 	if in.EnumValue != nil {
-		out.Kind = &pb.TagField_EnumValue_{EnumValue: TagField_EnumValue_ToProto(mapCtx, in.EnumValue)}
+		out.Kind = &pb.TagField_EnumValue_{EnumValue: TagField_EnumValue_v1alpha1_ToProto(mapCtx, in.EnumValue)}
 	}
 	if in.RichtextValue != nil {
 		out.Kind = &pb.TagField_RichtextValue{RichtextValue: *in.RichtextValue}
 	}
 	// MISSING: Order
 	return out
+}
+
+func DataCatalogTagSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmv1alpha1.DataCatalogTagSpec {
+	return DataCatalogTagSpec_FromProto(mapCtx, in)
+}
+
+func DataCatalogTagSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagSpec) *pb.Tag {
+	return DataCatalogTagSpec_ToProto(mapCtx, in)
 }

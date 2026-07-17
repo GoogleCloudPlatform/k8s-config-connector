@@ -22,123 +22,38 @@
 package fake
 
 import (
-	"context"
-
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/documentai/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	documentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1alpha1"
+	gentype "k8s.io/client-go/gentype"
 )
 
-// FakeDocumentAIProcessorDefaultVersions implements DocumentAIProcessorDefaultVersionInterface
-type FakeDocumentAIProcessorDefaultVersions struct {
+// fakeDocumentAIProcessorDefaultVersions implements DocumentAIProcessorDefaultVersionInterface
+type fakeDocumentAIProcessorDefaultVersions struct {
+	*gentype.FakeClientWithList[*v1alpha1.DocumentAIProcessorDefaultVersion, *v1alpha1.DocumentAIProcessorDefaultVersionList]
 	Fake *FakeDocumentaiV1alpha1
-	ns   string
 }
 
-var documentaiprocessordefaultversionsResource = v1alpha1.SchemeGroupVersion.WithResource("documentaiprocessordefaultversions")
-
-var documentaiprocessordefaultversionsKind = v1alpha1.SchemeGroupVersion.WithKind("DocumentAIProcessorDefaultVersion")
-
-// Get takes name of the documentAIProcessorDefaultVersion, and returns the corresponding documentAIProcessorDefaultVersion object, and an error if there is any.
-func (c *FakeDocumentAIProcessorDefaultVersions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DocumentAIProcessorDefaultVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(documentaiprocessordefaultversionsResource, c.ns, name), &v1alpha1.DocumentAIProcessorDefaultVersion{})
-
-	if obj == nil {
-		return nil, err
+func newFakeDocumentAIProcessorDefaultVersions(fake *FakeDocumentaiV1alpha1, namespace string) documentaiv1alpha1.DocumentAIProcessorDefaultVersionInterface {
+	return &fakeDocumentAIProcessorDefaultVersions{
+		gentype.NewFakeClientWithList[*v1alpha1.DocumentAIProcessorDefaultVersion, *v1alpha1.DocumentAIProcessorDefaultVersionList](
+			fake.Fake,
+			namespace,
+			v1alpha1.SchemeGroupVersion.WithResource("documentaiprocessordefaultversions"),
+			v1alpha1.SchemeGroupVersion.WithKind("DocumentAIProcessorDefaultVersion"),
+			func() *v1alpha1.DocumentAIProcessorDefaultVersion {
+				return &v1alpha1.DocumentAIProcessorDefaultVersion{}
+			},
+			func() *v1alpha1.DocumentAIProcessorDefaultVersionList {
+				return &v1alpha1.DocumentAIProcessorDefaultVersionList{}
+			},
+			func(dst, src *v1alpha1.DocumentAIProcessorDefaultVersionList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DocumentAIProcessorDefaultVersionList) []*v1alpha1.DocumentAIProcessorDefaultVersion {
+				return gentype.ToPointerSlice(list.Items)
+			},
+			func(list *v1alpha1.DocumentAIProcessorDefaultVersionList, items []*v1alpha1.DocumentAIProcessorDefaultVersion) {
+				list.Items = gentype.FromPointerSlice(items)
+			},
+		),
+		fake,
 	}
-	return obj.(*v1alpha1.DocumentAIProcessorDefaultVersion), err
-}
-
-// List takes label and field selectors, and returns the list of DocumentAIProcessorDefaultVersions that match those selectors.
-func (c *FakeDocumentAIProcessorDefaultVersions) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.DocumentAIProcessorDefaultVersionList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(documentaiprocessordefaultversionsResource, documentaiprocessordefaultversionsKind, c.ns, opts), &v1alpha1.DocumentAIProcessorDefaultVersionList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1alpha1.DocumentAIProcessorDefaultVersionList{ListMeta: obj.(*v1alpha1.DocumentAIProcessorDefaultVersionList).ListMeta}
-	for _, item := range obj.(*v1alpha1.DocumentAIProcessorDefaultVersionList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested documentAIProcessorDefaultVersions.
-func (c *FakeDocumentAIProcessorDefaultVersions) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(documentaiprocessordefaultversionsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a documentAIProcessorDefaultVersion and creates it.  Returns the server's representation of the documentAIProcessorDefaultVersion, and an error, if there is any.
-func (c *FakeDocumentAIProcessorDefaultVersions) Create(ctx context.Context, documentAIProcessorDefaultVersion *v1alpha1.DocumentAIProcessorDefaultVersion, opts v1.CreateOptions) (result *v1alpha1.DocumentAIProcessorDefaultVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(documentaiprocessordefaultversionsResource, c.ns, documentAIProcessorDefaultVersion), &v1alpha1.DocumentAIProcessorDefaultVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DocumentAIProcessorDefaultVersion), err
-}
-
-// Update takes the representation of a documentAIProcessorDefaultVersion and updates it. Returns the server's representation of the documentAIProcessorDefaultVersion, and an error, if there is any.
-func (c *FakeDocumentAIProcessorDefaultVersions) Update(ctx context.Context, documentAIProcessorDefaultVersion *v1alpha1.DocumentAIProcessorDefaultVersion, opts v1.UpdateOptions) (result *v1alpha1.DocumentAIProcessorDefaultVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(documentaiprocessordefaultversionsResource, c.ns, documentAIProcessorDefaultVersion), &v1alpha1.DocumentAIProcessorDefaultVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DocumentAIProcessorDefaultVersion), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeDocumentAIProcessorDefaultVersions) UpdateStatus(ctx context.Context, documentAIProcessorDefaultVersion *v1alpha1.DocumentAIProcessorDefaultVersion, opts v1.UpdateOptions) (*v1alpha1.DocumentAIProcessorDefaultVersion, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(documentaiprocessordefaultversionsResource, "status", c.ns, documentAIProcessorDefaultVersion), &v1alpha1.DocumentAIProcessorDefaultVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DocumentAIProcessorDefaultVersion), err
-}
-
-// Delete takes name of the documentAIProcessorDefaultVersion and deletes it. Returns an error if one occurs.
-func (c *FakeDocumentAIProcessorDefaultVersions) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(documentaiprocessordefaultversionsResource, c.ns, name, opts), &v1alpha1.DocumentAIProcessorDefaultVersion{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeDocumentAIProcessorDefaultVersions) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(documentaiprocessordefaultversionsResource, c.ns, listOpts)
-
-	_, err := c.Fake.Invokes(action, &v1alpha1.DocumentAIProcessorDefaultVersionList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched documentAIProcessorDefaultVersion.
-func (c *FakeDocumentAIProcessorDefaultVersions) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.DocumentAIProcessorDefaultVersion, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(documentaiprocessordefaultversionsResource, c.ns, name, pt, data, subresources...), &v1alpha1.DocumentAIProcessorDefaultVersion{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1alpha1.DocumentAIProcessorDefaultVersion), err
 }

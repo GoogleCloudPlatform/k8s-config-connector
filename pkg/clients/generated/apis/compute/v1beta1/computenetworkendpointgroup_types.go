@@ -39,13 +39,11 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeNetworkEndpointGroupSpec struct {
-	/* Immutable. The default port used if the port number is not specified in the
-	network endpoint. */
+	/* Immutable. The default port used if the port number is not specified in the network endpoint. */
 	// +optional
 	DefaultPort *int64 `json:"defaultPort,omitempty"`
 
-	/* Immutable. An optional description of this resource. Provide this property when
-	you create the resource. */
+	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
@@ -64,8 +62,7 @@ type ComputeNetworkEndpointGroupSpec struct {
 	// +optional
 	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`
 
-	/* The network to which all network endpoints in the NEG belong. Uses
-	"default" project network if unspecified. */
+	/* The network to which all network endpoints in the NEG belong. Uses "default" project network if unspecified. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

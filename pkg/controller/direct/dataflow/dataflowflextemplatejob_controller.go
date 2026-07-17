@@ -346,7 +346,7 @@ func (a *dataflowFlexTemplateJobAdapter) Create(ctx context.Context, createOp *d
 	log := klog.FromContext(ctx)
 	log.V(0).Info("creating object", "u", u)
 
-	launchParameter := proto.Clone(a.desired).(*pb.LaunchFlexTemplateParameter)
+	launchParameter := proto.CloneOf(a.desired)
 	launchParameter.Update = false
 	launchParameter.TransformNameMappings = nil
 
@@ -451,7 +451,7 @@ func (a *dataflowFlexTemplateJobAdapter) Update(ctx context.Context, updateOp *d
 		return nil
 	}
 
-	launchParameter := proto.Clone(a.desired).(*pb.LaunchFlexTemplateParameter)
+	launchParameter := proto.CloneOf(a.desired)
 	launchParameter.Update = true
 
 	req := &pb.LaunchFlexTemplateRequest{

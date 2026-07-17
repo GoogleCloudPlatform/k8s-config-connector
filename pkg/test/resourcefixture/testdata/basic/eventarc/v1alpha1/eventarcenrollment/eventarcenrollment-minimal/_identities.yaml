@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: eventarc.cnrm.cloud.google.com
+  kind: EventarcEnrollment
+  name: eventarcenrollment-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

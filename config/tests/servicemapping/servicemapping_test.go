@@ -106,6 +106,7 @@ func TestServiceHostName(t *testing.T) {
 }
 
 func TestDirectResourceConfigsForMigrationOnly(t *testing.T) {
+	t.Parallel()
 	smLoader := testservicemappingloader.New(t)
 	var allDirectRCs []string
 	gvks := k8s.SortGVKsByKind(supportedgvks.BasedOnAllServiceMappings(smLoader))
@@ -489,6 +490,11 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 	// external-only resource references (DCL-based resources or unsupported
 	// resources).
 	ignoredGVKList := []k8sschema.GroupVersionKind{
+		{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "ComputePublicDelegatedPrefix",
+		},
 		{
 			Group:   "networksecurity.cnrm.cloud.google.com",
 			Version: "v1beta1",
@@ -1185,6 +1191,7 @@ func TestUnreadableResourcesShouldHaveZeroReconciliationInterval(t *testing.T) {
 // TestReconciliationIntervalConsistency makes sure the configured reconciliation intervals have
 // the same value for all resource configs mapped to the same GVK.
 func TestReconciliationIntervalConsistency(t *testing.T) {
+	t.Parallel()
 	smLoader := testservicemappingloader.New(t)
 	for _, gvk := range supportedgvks.BasedOnAllServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
@@ -1495,6 +1502,10 @@ func TestAlphaResourceAreNotReferencedByStableResource(t *testing.T) {
 
 func assertReferencedResourcesNotAlpha(t *testing.T, rc *v1alpha1.ResourceConfig) {
 	for _, refConfig := range rc.ResourceReferences {
+		// Allow stable ComputeSubnetwork to reference alpha NetworkConnectivityInternalRange (#7719)
+		if rc.Kind == "ComputeSubnetwork" && refConfig.TypeConfig.GVK.Kind == "NetworkConnectivityInternalRange" {
+			continue
+		}
 		if len(refConfig.Types) == 0 {
 			if refConfig.TypeConfig.GVK.Version == k8s.KCCAPIVersionV1Alpha1 {
 				t.Errorf("cannot reference %s resource %s in stable resource %s", k8s.KCCAPIVersionV1Alpha1, refConfig.TypeConfig.GVK.Kind, rc.Kind)

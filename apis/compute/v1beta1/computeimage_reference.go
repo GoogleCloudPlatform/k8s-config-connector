@@ -1,7 +1,7 @@
 // Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
-// you may not not use this file except in compliance with the License.
+// you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
 //      http://www.apache.org/licenses/LICENSE-2.0
@@ -16,27 +16,28 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var (
-	ComputeImageGVK = GroupVersion.WithKind("ComputeImage")
-)
-var _ refsv1beta1.Ref = &ComputeImageRef{}
+var ComputeImageGVK = schema.GroupVersionKind{
+	Group:   "compute.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "ComputeImage",
+}
 
-// ComputeImageRef is a reference to a ComputeImage resource.
+var _ refs.Ref = &ComputeImageRef{}
+
+// ComputeImageRef is a reference to a ComputeImage.
 type ComputeImageRef struct {
 	// A reference to an externally managed ComputeImage resource.
-	// Should be in the format "projects/{{project}}/global/images/{{name}}".
+	// Should be in the format "projects/{{project}}/global/images/{{name}}" or "projects/{{project}}/global/images/family/{{family}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeImage resource.
@@ -44,6 +45,10 @@ type ComputeImageRef struct {
 
 	// The namespace of a ComputeImage resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&ComputeImageRef{}, &ComputeImage{})
 }
 
 func (r *ComputeImageRef) GetGVK() schema.GroupVersionKind {
@@ -63,47 +68,37 @@ func (r *ComputeImageRef) GetExternal() string {
 
 func (r *ComputeImageRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *ComputeImageRef) ValidateExternal(ref string) error {
 	id := &ComputeImageIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ComputeImageRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	err := refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
-	if r.GetExternal() != "" {
-		// TODO: validate the external for legacy selfLink.
-		return err
+func (r *ComputeImageRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ComputeImageIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
+	return id, nil
+}
 
-	key := r.GetNamespacedName()
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
-	}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.GetGVK())
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+func (r *ComputeImageRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		obj, err := common.ToStructuredType[*ComputeImage](u)
+		if err != nil {
+			return ""
 		}
-		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
-	}
-	// `status.externalRef` is the preferred field to store externalRef. Since ComputeImage is not yet migrated to
-	// direct controller, so this field does not exist. We will use `.status.selfLink` instead.
-	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil || externalRef == "" {
-		if externalRef, _, err = unstructured.NestedString(u.Object, "status", "selfLink"); err != nil {
-			return err
+		identity, err := getIdentityFromComputeImageSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
 		}
-		if externalRef == "" {
-			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-		}
-		externalRef = strings.TrimPrefix(externalRef, "https://www.googleapis.com/compute/v1/")
+		return identity.String()
 	}
-	r.SetExternal(externalRef)
-	return r.ValidateExternal(externalRef)
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

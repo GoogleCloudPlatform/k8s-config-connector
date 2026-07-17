@@ -59,12 +59,12 @@ func (s *RegionNetworkEndpointGroupV1) Insert(ctx context.Context, req *pb.Inser
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetNetworkEndpointGroupResource()).(*pb.NetworkEndpointGroup)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetNetworkEndpointGroupResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#networkEndpointGroup")
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", req.GetProject(), req.GetRegion())))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", req.GetProject(), req.GetRegion())))
 	obj.Size = PtrTo(int32(0))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

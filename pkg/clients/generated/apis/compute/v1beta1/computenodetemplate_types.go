@@ -77,28 +77,22 @@ type ComputeNodeTemplateSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Node type to use for nodes group that are created from this template.
-	Only one of nodeTypeFlexibility and nodeType can be specified. */
+	/* Immutable. Node type to use for nodes group that are created from this template. Only one of nodeTypeFlexibility and nodeType can be specified. */
 	// +optional
 	NodeType *string `json:"nodeType,omitempty"`
 
-	/* Immutable. Flexible properties for the desired node type. Node groups that
-	use this node template will create nodes of a type that matches
-	these properties. Only one of nodeTypeFlexibility and nodeType can
-	be specified. */
+	/* Immutable. Flexible properties for the desired node type. Node groups that use this node template will create nodes of a type that matches these properties. Only one of nodeTypeFlexibility and nodeType can be specified. */
 	// +optional
 	NodeTypeFlexibility *NodetemplateNodeTypeFlexibility `json:"nodeTypeFlexibility,omitempty"`
 
-	/* Immutable. Region where nodes using the node template will be created.
-	If it is not provided, the provider region is used. */
+	/* Immutable. Region where nodes using the node template will be created. */
 	Region string `json:"region"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The server binding policy for nodes using this template. Determines
-	where the nodes should restart following a maintenance event. */
+	/* Immutable. The server binding policy for nodes using this template. Determines where the nodes should restart following a maintenance event. */
 	// +optional
 	ServerBinding *NodetemplateServerBinding `json:"serverBinding,omitempty"`
 }
@@ -111,10 +105,15 @@ type ComputeNodeTemplateStatus struct {
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
+	/* A unique specifier for the ComputeNodeTemplate resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* Server-defined URL for the resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }

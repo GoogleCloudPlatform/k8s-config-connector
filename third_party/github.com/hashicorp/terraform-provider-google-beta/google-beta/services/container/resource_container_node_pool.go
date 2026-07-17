@@ -371,6 +371,14 @@ var schemaNodePool = map[string]*schema.Schema{
 					ValidateFunc: verify.ValidateIpCidrRange,
 					Description:  `The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use.`,
 				},
+				"subnetwork": {
+					Type:             schema.TypeString,
+					Optional:         true,
+					ForceNew:         true,
+					Computed:         true,
+					DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+					Description:      `The name or self_link of the Google Cloud Compute Engine subnetwork in which the cluster's instances are launched.`,
+				},
 				"additional_node_network_configs": {
 					Type:        schema.TypeList,
 					Optional:    true,
@@ -437,6 +445,22 @@ var schemaNodePool = map[string]*schema.Schema{
 							},
 						},
 					},
+				},
+			},
+		},
+	},
+	"queued_provisioning": {
+		Type:        schema.TypeList,
+		Optional:    true,
+		MaxItems:    1,
+		ForceNew:    true,
+		Description: `Specifies the configuration of queued provisioning.`,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"enabled": {
+					Type:        schema.TypeBool,
+					Required:    true,
+					Description: `Denotes that this node pool is QRM specific, meaning nodes can be only obtained through queuing via the Cluster Autoscaler ProvisioningRequest API.`,
 				},
 			},
 		},
@@ -894,12 +918,13 @@ func expandNodePool(d *schema.ResourceData, prefix string) (*container.NodePool,
 	}
 
 	np := &container.NodePool{
-		Name:             name,
-		InitialNodeCount: int64(nodeCount),
-		Config:           expandNodeConfig(d.Get(prefix + "node_config")),
-		Locations:        locations,
-		Version:          d.Get(prefix + "version").(string),
-		NetworkConfig:    expandNodeNetworkConfig(d.Get(prefix + "network_config")),
+		Name:               name,
+		InitialNodeCount:   int64(nodeCount),
+		Config:             expandNodeConfig(d.Get(prefix + "node_config")),
+		Locations:          locations,
+		Version:            d.Get(prefix + "version").(string),
+		NetworkConfig:      expandNodeNetworkConfig(d.Get(prefix + "network_config")),
+		QueuedProvisioning: expandNodePoolQueuedProvisioning(d.Get(prefix + "queued_provisioning")),
 	}
 
 	if v, ok := d.GetOk(prefix + "autoscaling"); ok {
@@ -1046,6 +1071,28 @@ func flattenNodePoolUpgradeSettings(us *container.UpgradeSettings) []map[string]
 	return []map[string]interface{}{upgradeSettings}
 }
 
+func expandNodePoolQueuedProvisioning(v interface{}) *container.QueuedProvisioning {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	raw := l[0].(map[string]interface{})
+	return &container.QueuedProvisioning{
+		Enabled: raw["enabled"].(bool),
+	}
+}
+
+func flattenNodePoolQueuedProvisioning(qp *container.QueuedProvisioning) []map[string]interface{} {
+	if qp == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"enabled": qp.Enabled,
+		},
+	}
+}
+
 func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *container.NodePool, prefix string) (map[string]interface{}, error) {
 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
@@ -1091,6 +1138,7 @@ func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *c
 		"managed_instance_group_urls": managedIgmUrls,
 		"version":                     np.Version,
 		"network_config":              flattenNodeNetworkConfig(np.NetworkConfig, d, prefix),
+		"queued_provisioning":         flattenNodePoolQueuedProvisioning(np.QueuedProvisioning),
 	}
 
 	if np.Autoscaling != nil {
@@ -1146,6 +1194,7 @@ func flattenNodeNetworkConfig(c *container.NodeNetworkConfig, d *schema.Resource
 			"create_pod_range":                d.Get(prefix + "network_config.0.create_pod_range"), // API doesn't return this value so we set the old one. Field is ForceNew + Required
 			"pod_ipv4_cidr_block":             c.PodIpv4CidrBlock,
 			"pod_range":                       c.PodRange,
+			"subnetwork":                      c.Subnetwork,
 			"enable_private_nodes":            c.EnablePrivateNodes,
 			"pod_cidr_overprovision_config":   flattenPodCidrOverprovisionConfig(c.PodCidrOverprovisionConfig),
 			"additional_node_network_configs": flattenAdditionalNodeNetworkConfig(c.AdditionalNodeNetworkConfigs),
@@ -1207,6 +1256,13 @@ func expandNodeNetworkConfig(v interface{}) *container.NodeNetworkConfig {
 
 	if v, ok := networkNodeConfig["pod_ipv4_cidr_block"]; ok {
 		nnc.PodIpv4CidrBlock = v.(string)
+	}
+
+	// Allow user to set the top-level node-pool subnetwork via network_config.subnetwork
+	if v, ok := networkNodeConfig["subnetwork"]; ok {
+		if s, ok := v.(string); ok && s != "" {
+			nnc.Subnetwork = s
+		}
 	}
 
 	if v, ok := networkNodeConfig["enable_private_nodes"]; ok {
@@ -1680,6 +1736,40 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 			}
 
 			log.Printf("[INFO] Updated linux_node_config for node pool %s", name)
+		}
+		if d.HasChange(prefix + "node_config.0.windows_node_config") {
+			req := &container.UpdateNodePoolRequest{
+				NodePoolId: name,
+				WindowsNodeConfig: expandWindowsNodeConfig(
+					d.Get(prefix + "node_config.0.windows_node_config")),
+			}
+			if req.WindowsNodeConfig == nil {
+				req.WindowsNodeConfig = &container.WindowsNodeConfig{}
+				req.ForceSendFields = []string{"WindowsNodeConfig"}
+			}
+			updateF := func() error {
+				clusterNodePoolsUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Update(nodePoolInfo.fullyQualifiedName(name), req)
+				if config.UserProjectOverride {
+					clusterNodePoolsUpdateCall.Header().Add("X-Goog-User-Project", nodePoolInfo.project)
+				}
+				op, err := clusterNodePoolsUpdateCall.Do()
+				if err != nil {
+					return err
+				}
+
+				// Wait until it's updated
+				return ContainerOperationWait(config, op,
+					nodePoolInfo.project,
+					nodePoolInfo.location,
+					"updating GKE node pool windows_node_config", userAgent,
+					timeout)
+			}
+
+			if err := retryWhileIncompatibleOperation(timeout, npLockKey, updateF); err != nil {
+				return err
+			}
+
+			log.Printf("[INFO] Updated windows_node_config for node pool %s", name)
 		}
 		if d.HasChange(prefix + "node_config.0.fast_socket") {
 			req := &container.UpdateNodePoolRequest{

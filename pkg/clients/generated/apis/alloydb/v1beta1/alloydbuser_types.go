@@ -55,6 +55,7 @@ type UserValueFrom struct {
 }
 
 type AlloyDBUserSpec struct {
+	/* Immutable. */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* List of database roles this database user has. */

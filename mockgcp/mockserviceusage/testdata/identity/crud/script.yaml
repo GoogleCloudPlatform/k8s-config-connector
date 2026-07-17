@@ -1,2 +1,2 @@
-- exec: gcloud beta services enable container.googleapis.com --project=${projectId}
+- exec: gcloud services enable container.googleapis.com --project=${projectId}
 - exec: gcloud beta services identity create --service=container.googleapis.com --project=${projectId}

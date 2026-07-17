@@ -1,0 +1,6 @@
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/us-central1/mirroringDeployments/mirroringdep-${uniqueId}
+  group: networksecurity.cnrm.cloud.google.com
+  kind: NetworkSecurityMirroringDeployment
+  name: mirroringdep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

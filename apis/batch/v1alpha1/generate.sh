@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,28 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+# Generate ResourceAllowance from v1alpha
+go run . generate-types \
+    --service google.cloud.batch.v1alpha \
+    --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
+    --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto \
+    --resource CloudBatchResourceAllowance:ResourceAllowance
+
+mv ${REPO_ROOT}/apis/batch/v1alpha1/types.generated.go ${REPO_ROOT}/apis/batch/v1alpha1/resourceallowance_types.generated.go
+
+# Generate Job and Task from v1
 go run . generate-types \
     --service google.cloud.batch.v1 \
     --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
+    --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto \
+    --include-skipped-output \
     --resource BatchJob:Job \
     --resource BatchTask:Task
 
-
 go run . generate-mapper \
     --service google.cloud.batch.v1 \
-    --api-version "batch.cnrm.cloud.google.com/v1alpha1"
+    --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
+    --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/batch/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/batch/

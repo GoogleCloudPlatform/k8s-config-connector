@@ -32,8 +32,9 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
+	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
 )
 
 type subscriberService struct {
@@ -48,7 +49,7 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 	}
 	fqn := name.String()
 
-	obj := ProtoClone(req)
+	obj := proto.CloneOf(req)
 	obj.Name = name.String()
 
 	obj.State = pb.Subscription_ACTIVE
@@ -68,7 +69,7 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 		}
 	}()
 
-	ret := ProtoClone(obj)
+	ret := proto.CloneOf(obj)
 	// If the original subscription contains PushConfig then add the version attribute.
 	if req.PushConfig != nil {
 		if ret.PushConfig.Attributes == nil {
@@ -117,7 +118,7 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 	updated.Name = name.String()
 
 	// Required. The update mask applies to the resource.
@@ -131,12 +132,6 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 		updated.PushConfig = req.GetSubscription().PushConfig
 		updated.BigqueryConfig = req.GetSubscription().BigqueryConfig
 		updated.CloudStorageConfig = req.GetSubscription().CloudStorageConfig
-		if updated.CloudStorageConfig != nil {
-			updated.CloudStorageConfig.OutputFormat = &pb.CloudStorageConfig_TextConfig_{}
-			if updated.CloudStorageConfig.MaxDuration != nil && int64(updated.AckDeadlineSeconds) < updated.CloudStorageConfig.MaxDuration.Seconds {
-				updated.AckDeadlineSeconds = int32(updated.CloudStorageConfig.MaxDuration.Seconds)
-			}
-		}
 		updated.DeadLetterPolicy = req.GetSubscription().DeadLetterPolicy
 		updated.ExpirationPolicy = req.GetSubscription().ExpirationPolicy
 		updated.RetryPolicy = req.GetSubscription().RetryPolicy
@@ -146,18 +141,37 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		case "ackDeadlineSeconds":
+		case "ackDeadlineSeconds", "ack_deadline_seconds":
 			updated.AckDeadlineSeconds = req.GetSubscription().AckDeadlineSeconds
-		case "enableExactlyOnceDelivery":
+		case "enableExactlyOnceDelivery", "enable_exactly_once_delivery":
 			updated.EnableExactlyOnceDelivery = req.GetSubscription().EnableExactlyOnceDelivery
 		case "labels":
 			updated.Labels = req.GetSubscription().Labels
-		case "pushConfig":
+		case "pushConfig", "push_config":
 			updated.PushConfig = req.GetSubscription().PushConfig
-		// case "expirationPolicy":
-		// 	updated.ExpirationPolicy = req.GetSubscription().ExpirationPolicy
+		case "bigqueryConfig", "bigquery_config":
+			updated.BigqueryConfig = req.GetSubscription().BigqueryConfig
+		case "cloudStorageConfig", "cloud_storage_config":
+			updated.CloudStorageConfig = req.GetSubscription().CloudStorageConfig
+		case "deadLetterPolicy", "dead_letter_policy":
+			updated.DeadLetterPolicy = req.GetSubscription().DeadLetterPolicy
+		case "expirationPolicy", "expiration_policy":
+			updated.ExpirationPolicy = req.GetSubscription().ExpirationPolicy
+		case "retryPolicy", "retry_policy":
+			updated.RetryPolicy = req.GetSubscription().RetryPolicy
+		case "retainAckedMessages", "retain_acked_messages":
+			updated.RetainAckedMessages = req.GetSubscription().RetainAckedMessages
+		case "messageRetentionDuration", "message_retention_duration":
+			updated.MessageRetentionDuration = req.GetSubscription().MessageRetentionDuration
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock", path)
+		}
+	}
+
+	if updated.CloudStorageConfig != nil {
+		updated.CloudStorageConfig.OutputFormat = &pb.CloudStorageConfig_TextConfig_{}
+		if updated.CloudStorageConfig.MaxDuration != nil && int64(updated.AckDeadlineSeconds) < updated.CloudStorageConfig.MaxDuration.Seconds {
+			updated.AckDeadlineSeconds = int32(updated.CloudStorageConfig.MaxDuration.Seconds)
 		}
 	}
 
@@ -168,7 +182,7 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 	}
 
 	// Very unusual behaviour on the return value pushConfig ... maybe this is actually async also?
-	ret := ProtoClone(updated)
+	ret := proto.CloneOf(updated)
 	if ret.PushConfig == nil {
 		ret.PushConfig = &pb.PushConfig{}
 	}

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,9 @@ import (
 	"time"
 )
 
+// WaitForDoneOrTimeout is a simple helper to poll a condition.
+// Deprecated: Prefer using WaitForOperation instead, as it is type-safe and
+// allows verifying Done status first on retrieved operation messages.
 func WaitForDoneOrTimeout(ctx context.Context, pollInterval time.Duration, doneFunc func() (bool, error)) error {
 	for {
 		// Check for timeout
@@ -39,6 +42,33 @@ func WaitForDoneOrTimeout(ctx context.Context, pollInterval time.Duration, doneF
 		}
 
 		// Wait for pollInterval
+		time.Sleep(pollInterval)
+	}
+}
+
+// WaitForOperation polls a generic operation retrieval function until the doneFunc returns true or timeout occurs.
+func WaitForOperation[OperationT any](ctx context.Context, pollInterval time.Duration, doneFunc func(t OperationT) (bool, error), getFunc func() (OperationT, error)) (OperationT, error) {
+	for {
+		select {
+		case <-ctx.Done():
+			var zero OperationT
+			return zero, fmt.Errorf("timeout exceeded: %w", ctx.Err())
+		default:
+		}
+
+		current, err := getFunc()
+		if err != nil {
+			return current, err
+		}
+
+		done, err := doneFunc(current)
+		if err != nil {
+			return current, err
+		}
+		if done {
+			return current, nil
+		}
+
 		time.Sleep(pollInterval)
 	}
 }

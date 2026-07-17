@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: securitycenter.cnrm.cloud.google.com
+  kind: SecurityCenterSource
+  name: securitycentersource-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

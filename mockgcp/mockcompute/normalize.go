@@ -25,40 +25,211 @@ import (
 	"k8s.io/klog/v2"
 )
 
-const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 const PlaceholderFingerprint = "abcdef0123A="
 const PlaceholderID = "1234567890"
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// General
-	replacements.ReplacePath(".creationTimestamp", PlaceholderTimestamp)
-	replacements.ReplacePath(".items[].creationTimestamp", PlaceholderTimestamp)
+	if !strings.Contains(url, "compute.googleapis.com") && !strings.Contains(url, "/compute/") {
+		return
+	}
 
-	// Addresses
-	replacements.ReplacePath(".labelFingerprint", PlaceholderFingerprint)
-	replacements.ReplacePath(".items[].labelFingerprint", PlaceholderFingerprint)
+	replacements.TransformObject("", func(m map[string]any) {
+		isComputeResource := func(obj map[string]any) bool {
+			kind, _ := obj["kind"].(string)
+			if strings.HasPrefix(kind, "compute#") {
+				return true
+			}
+			if kind == "" {
+				// GCE Address request body:
+				if obj["address"] != nil && (obj["addressType"] != nil || obj["purpose"] != nil || obj["prefixLength"] != nil) {
+					return true
+				}
+				// GCE Subnetwork request body:
+				if obj["ipCidrRange"] != nil && (obj["network"] != nil || obj["privateIpGoogleAccess"] != nil) {
+					return true
+				}
+				// GCE Disk request body:
+				if (obj["sizeGb"] != nil && (obj["type"] != nil || obj["sourceImage"] != nil || obj["sourceDisk"] != nil || obj["replicaZones"] != nil)) || obj["sourceImage"] != nil || obj["sourceDisk"] != nil {
+					return true
+				}
+				// GCE Image request body:
+				if obj["sourceDisk"] != nil || obj["rawDisk"] != nil {
+					return true
+				}
+				// GCE Instance request body:
+				if obj["networkInterfaces"] != nil || obj["disks"] != nil || obj["machineType"] != nil {
+					return true
+				}
+				// GCE Route request body:
+				if obj["destRange"] != nil || obj["nextHopNetwork"] != nil {
+					return true
+				}
+				// GCE BackendService request body:
+				if obj["backends"] != nil || obj["healthChecks"] != nil || obj["loadBalancingScheme"] != nil {
+					return true
+				}
+				// GCE ForwardingRule request body:
+				if (obj["IPAddress"] != nil && (obj["loadBalancingScheme"] != nil || obj["IPProtocol"] != nil || obj["target"] != nil || obj["backendService"] != nil)) || (obj["loadBalancingScheme"] != nil && obj["IPProtocol"] != nil) {
+					return true
+				}
+			}
+			return false
+		}
 
-	replacements.ReplacePath(".address", "8.8.8.8")
-	replacements.ReplacePath(".items[].address", "8.8.8.8")
+		if !isComputeResource(m) {
+			return
+		}
+
+		cleanComputeResource := func(obj map[string]any) {
+			// Remove platform-specific/volatile fields
+			delete(obj, "enableConfidentialCompute")
+			delete(obj, "locked")
+			delete(obj, "multiWriter")
+			delete(obj, "satisfiesPzi")
+			delete(obj, "sizeGb")
+			delete(obj, "recommendedSize")
+
+			if obj["creationTimestamp"] != nil {
+				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp
+			}
+			if obj["expireTime"] != nil {
+				obj["expireTime"] = mockgcpregistry.PlaceholderTimestamp
+			}
+			if obj["labelFingerprint"] != nil {
+				obj["labelFingerprint"] = PlaceholderFingerprint
+			}
+			if obj["address"] != nil {
+				obj["address"] = "8.8.8.8"
+			}
+			if obj["IPAddress"] != nil {
+				obj["IPAddress"] = "8.8.8.8"
+			}
+		}
+
+		// Clean top-level
+		cleanComputeResource(m)
+
+		// Clean items slice if list
+		if items, ok := m["items"].([]any); ok {
+			for _, item := range items {
+				if itemMap, ok := item.(map[string]any); ok {
+					cleanComputeResource(itemMap)
+				}
+			}
+		}
+
+		// Handle aggregatedList (map of region/zone -> subnetwork/disk/instance list)
+		if itemsMap, ok := m["items"].(map[string]any); ok {
+			for _, val := range itemsMap {
+				if regionMap, ok := val.(map[string]any); ok {
+					for _, subList := range []string{"subnetworks", "disks", "instances", "addresses"} {
+						if subSlice, ok := regionMap[subList].([]any); ok {
+							for _, item := range subSlice {
+								if itemMap, ok := item.(map[string]any); ok {
+									cleanComputeResource(itemMap)
+									if itemMap["fingerprint"] != nil {
+										itemMap["fingerprint"] = PlaceholderFingerprint
+									}
+									if itemMap["id"] != nil {
+										itemMap["id"] = PlaceholderID
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	})
 
 	replacements.SortSlice(".subnetworks")
 
 	// Subnets
-	replacements.ReplacePath(".gatewayAddress", "10.0.0.1")
 	for _, region := range regions.GetAllRegions(context.Background()) {
 		prefix := fmt.Sprintf(".items.regions/%s.subnetworks[]", region.Name)
-		replacements.ReplacePath(prefix+".creationTimestamp", PlaceholderTimestamp)
+		replacements.ReplacePath(prefix+".creationTimestamp", mockgcpregistry.PlaceholderTimestamp)
 		replacements.ReplacePath(prefix+".fingerprint", PlaceholderFingerprint)
 		replacements.ReplacePath(prefix+".id", PlaceholderID)
 	}
 
-	// Routes
-	// replacements.ReplacePath(".items[].id", PlaceholderID)
-
 	// BackendService
 	replacements.SortSlice(".backends")
+
+	// FutureReservation
+	replacements.ReplacePath(".status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.status.existingMatchingUsageInfo.timestamp", mockgcpregistry.PlaceholderTimestamp)
+
+	transformComputeResources := func(m map[string]any) {
+		if m["kind"] == "compute#urlMap" {
+			delete(m, "status")
+		}
+		if m["kind"] == "compute#securityPolicy" {
+			delete(m, "selfLinkWithId")
+			if rules, ok := m["rules"].([]any); ok {
+				for _, r := range rules {
+					if ruleMap, ok := r.(map[string]any); ok {
+						delete(ruleMap, "ruleNumber")
+					}
+				}
+			}
+		}
+		if m["kind"] == "compute#router" {
+			if nats, ok := m["nats"].([]any); ok {
+				for _, natAny := range nats {
+					if nat, ok := natAny.(map[string]any); ok {
+						if subnetworks, ok := nat["subnetworks"].([]any); ok {
+							for _, subnetworkAny := range subnetworks {
+								if subnetwork, ok := subnetworkAny.(map[string]any); ok {
+									if name, ok := subnetwork["name"].(string); ok {
+										subnetwork["name"] = toRelativePath(name)
+									}
+								}
+							}
+						}
+						if rules, ok := nat["rules"].([]any); ok {
+							for _, ruleAny := range rules {
+								if rule, ok := ruleAny.(map[string]any); ok {
+									if action, ok := rule["action"].(map[string]any); ok {
+										if activeRanges, ok := action["sourceNatActiveRanges"].([]any); ok {
+											for i, r := range activeRanges {
+												if s, ok := r.(string); ok {
+													activeRanges[i] = toRelativePath(s)
+												}
+											}
+										}
+										if drainRanges, ok := action["sourceNatDrainRanges"].([]any); ok {
+											for i, r := range drainRanges {
+												if s, ok := r.(string); ok {
+													drainRanges[i] = toRelativePath(s)
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	replacements.TransformObject("", transformComputeResources)
+	replacements.TransformObject(".items[]", transformComputeResources)
+	replacements.TransformObject(".response", transformComputeResources)
+
+	// Route and Operation
+	replacements.TransformObject("", func(m map[string]any) {
+		if m["kind"] == "compute#route" {
+			delete(m, "description")
+			delete(m, "warnings")
+		}
+		if m["kind"] == "compute#operation" {
+			delete(m, "warnings")
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -101,10 +272,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 					placeholder = "${addressID}"
 				}
 
+				namePlaceholder := placeholder
+				switch kind {
+				case "routes":
+					namePlaceholder = "${routeName}"
+				}
+
 				// We _should_ differentiate between ID and number.
 				// But this causes too many diffs right now.
 
-				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q", targetLink, targetId, placeholder)
+				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q, kind=%q, namePlaceholder=%q", targetLink, targetId, placeholder, kind, namePlaceholder)
 
 				replacements.ReplaceStringValue(targetId, placeholder)
 
@@ -112,7 +289,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 					// Don't replace, "default" is a well-known value used for both subnetwork and network
 					// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
 				} else {
-					replacements.ReplaceStringValue(v, placeholder)
+					replacements.ReplaceStringValue(v, namePlaceholder)
 				}
 			}
 		}
@@ -167,6 +344,15 @@ func isComputeAPI(event mockgcpregistry.Event) bool {
 	switch u.Host {
 	case "compute.googleapis.com":
 		return true
+	case "www.googleapis.com":
+		return strings.Contains(u.Path, "/compute/")
 	}
 	return false
+}
+
+func toRelativePath(uri string) string {
+	uri = strings.TrimPrefix(uri, "https://www.googleapis.com/compute/beta/")
+	uri = strings.TrimPrefix(uri, "https://www.googleapis.com/compute/v1/")
+	uri = strings.TrimPrefix(uri, "https://www.googleapis.com/compute/alpha/")
+	return uri
 }

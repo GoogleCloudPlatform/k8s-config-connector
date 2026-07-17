@@ -57,7 +57,7 @@ type BigtableAuthorizedViewSpec struct {
 	// +optional
 	SubsetView *AuthorizedviewSubsetView `json:"subsetView,omitempty"`
 
-	/* TableRef defines the resource reference to BigtableTable, which "External" field holds the GCP identifier for the KRM object. */
+	/* TableRef is a reference to a BigtableTable. */
 	TableRef v1alpha1.ResourceRef `json:"tableRef"`
 }
 
@@ -86,6 +86,7 @@ type BigtableAuthorizedViewStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableauthorizedview;gcpbigtableauthorizedviews
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

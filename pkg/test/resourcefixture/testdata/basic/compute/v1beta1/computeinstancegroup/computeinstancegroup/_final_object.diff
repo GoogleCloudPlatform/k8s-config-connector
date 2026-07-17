@@ -1,0 +1,14 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 3
+---
+>   generation: 2
+26d24
+<   resourceID: ${instanceGroupID}
+35,36c33,34
+<   observedGeneration: 3
+<   selfLink: https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}
+---
+>   observedGeneration: 2
+>   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupID}

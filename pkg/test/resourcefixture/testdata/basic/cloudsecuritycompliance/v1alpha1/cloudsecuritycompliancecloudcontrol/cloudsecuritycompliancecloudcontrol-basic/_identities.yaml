@@ -1,0 +1,6 @@
+- caisURL: //cloudsecuritycompliance.googleapis.com/organizations/${TEST_ORG_ID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}
+  group: cloudsecuritycompliance.cnrm.cloud.google.com
+  kind: CloudSecurityComplianceCloudControl
+  name: cloudsecuritycompliancecloudcontrol-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

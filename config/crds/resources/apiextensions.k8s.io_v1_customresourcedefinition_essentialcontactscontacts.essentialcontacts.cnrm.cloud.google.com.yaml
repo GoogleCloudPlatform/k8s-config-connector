@@ -68,8 +68,7 @@ spec:
                   The email address does not need to be a Google Account.
                 type: string
               folderRef:
-                description: FolderRef represents the Folder that this resource belongs
-                  to.
+                description: The Folder that contains this resource.
                 oneOf:
                 - not:
                     required:
@@ -102,7 +101,7 @@ spec:
                 type: object
               languageTag:
                 description: Required. The preferred language for notifications, as
-                  a ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages)
+                  an ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages)
                   for a list of supported languages.
                 type: string
               notificationCategorySubscriptions:
@@ -272,8 +271,7 @@ spec:
                   The email address does not need to be a Google Account.
                 type: string
               folderRef:
-                description: FolderRef represents the Folder that this resource belongs
-                  to.
+                description: The Folder that contains this resource.
                 oneOf:
                 - not:
                     required:
@@ -306,7 +304,7 @@ spec:
                 type: object
               languageTag:
                 description: Required. The preferred language for notifications, as
-                  a ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages)
+                  an ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages)
                   for a list of supported languages.
                 type: string
               notificationCategorySubscriptions:

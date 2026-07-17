@@ -1,0 +1,18 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaasServiceMgmtRelease
+metadata:
+  name: saasservicemgmtrelease-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  unitKind: "my-unit-kind-${uniqueId}"
+  blueprint:
+    package: "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v2"
+  releaseRequirements:
+    upgradeableFromReleases:
+      - "projects/${projectId}/locations/us-central1/releases/old-release-v2"
+  inputVariableDefaults:
+    - variable: "my-var"
+      type: "string"
+      value: "updated-val"

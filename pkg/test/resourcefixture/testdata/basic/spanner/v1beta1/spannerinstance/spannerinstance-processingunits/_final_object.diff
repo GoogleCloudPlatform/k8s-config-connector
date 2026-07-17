@@ -1,0 +1,16 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 3
+---
+>   generation: 2
+20d18
+<   resourceID: spannerinstance-${uniqueId}
+28c26,30
+<   observedGeneration: 3
+---
+>   externalRef: projects/${projectId}/instances/spannerinstance-${uniqueId}
+>   observedGeneration: 2
+>   observedState:
+>     numNodes: 3
+>     processingUnits: 3000

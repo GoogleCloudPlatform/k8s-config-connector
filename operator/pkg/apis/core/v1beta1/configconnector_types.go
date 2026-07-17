@@ -75,6 +75,38 @@ type CCExperiments struct {
 	// MultiClusterLease defines configuration specific to multi-cluster leader election.
 	// +optional
 	MultiClusterLease *MultiClusterLeaseSpec `json:"multiClusterLease,omitempty"`
+
+	// ResourceSettings allows specifying which resources to enable or disable.
+	// +optional
+	ResourceSettings *ResourceSettings `json:"resourceSettings,omitempty"`
+}
+
+type ResourceSettingsMode string
+
+const (
+	ResourceSettingsModeInclude ResourceSettingsMode = "include"
+	ResourceSettingsModeExclude ResourceSettingsMode = "exclude"
+)
+
+type ResourceSettings struct {
+	// Mode controls whether the resources are included or excluded.
+	// Defaults to "exclude" (Exclusion mode).
+	// +optional
+	Mode ResourceSettingsMode `json:"mode,omitempty"`
+
+	// Resources is the list of resources to include or exclude.
+	// +optional
+	Resources []ResourceFilter `json:"resources,omitempty"`
+}
+
+type ResourceFilter struct {
+	// Group is the API group of the resource.
+	// +required
+	Group *string `json:"group"`
+
+	// Kind is the Kind of the resource.
+	// +optional
+	Kind *string `json:"kind,omitempty"`
 }
 
 // MultiClusterLeaseSpec defines the configuration for a multi-cluster lease.
@@ -88,6 +120,16 @@ type MultiClusterLeaseSpec struct {
 	//  This name must be unique across all the clusters that you are configuring the multi cluster set up for.
 	// +required
 	ClusterCandidateIdentity string `json:"clusterCandidateIdentity"`
+
+	// ResourceReplicationMode specifies how the resources will be synced to the passive clusters.
+	// Can be either 'Status', 'Full', or 'Disabled'.
+	// 'Status' (default) means only the status field (and occasionally essential fields like spec.resourceID) are synced.
+	// 'Full' means both the spec and status are synced.
+	// 'Disabled' means resource replication is completely turned off for this lease.
+	// +optional
+	// +kubebuilder:validation:Enum=Status;Full;Disabled
+	// +kubebuilder:default=Status
+	ResourceReplicationMode string `json:"resourceReplicationMode,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector

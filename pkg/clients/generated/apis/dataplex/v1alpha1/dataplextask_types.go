@@ -200,7 +200,7 @@ type DataplexTaskSpec struct {
 	/* Required. Spec related to how a task is executed. */
 	ExecutionSpec TaskExecutionSpec `json:"executionSpec"`
 
-	/* LakeRef defines the resource reference to DataplexLake, which "External" field holds the GCP identifier for the KRM object. */
+	/* LakeRef is a reference to a DataplexLake. */
 	// +optional
 	LakeRef *v1alpha1.ResourceRef `json:"lakeRef,omitempty"`
 

@@ -43,6 +43,8 @@ spec:
       enabled: true
     networkPolicyConfig:
       disabled: false
+    parallelstoreCsiDriverConfig:
+      enabled: true
   initialNodeCount: 1
   location: us-central1-a
   releaseChannel:

@@ -65,7 +65,7 @@ func (s *instanceAdminServer) CreateLogicalView(ctx context.Context, req *pb.Cre
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.LogicalView)
+	obj := proto.CloneOf(req.LogicalView)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -78,7 +78,7 @@ func (s *instanceAdminServer) CreateLogicalView(ctx context.Context, req *pb.Cre
 	zone := "us-central1-a" // TODO
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 
-	lroRet := ProtoClone(obj)
+	lroRet := proto.CloneOf(obj)
 
 	if isAsync {
 		return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
@@ -101,7 +101,7 @@ func (s *instanceAdminServer) UpdateLogicalView(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.CloneOf(existing)
 
 	// Required. The set of fields to update.
 	paths := req.GetUpdateMask().GetPaths()
@@ -131,7 +131,7 @@ func (s *instanceAdminServer) UpdateLogicalView(ctx context.Context, req *pb.Upd
 	zone := "us-central1-a" // TODO
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 
-	lroRet := ProtoClone(updated)
+	lroRet := proto.CloneOf(updated)
 	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
 	// Only return in LRO whatever has actually been updated/changed.
 	if !updatePaths.Has("query") {

@@ -42,6 +42,9 @@ func (s *InstancesV1) Get(ctx context.Context, req *pb.GetInstanceRequest) (*pb.
 
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -59,26 +62,34 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetInstanceResource()).(*pb.Instance)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetInstanceResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#instance")
-	obj.Zone = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
+	obj.Zone = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
 	obj.Status = PtrTo("RUNNING")
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
 	}
 	// if obj.MachineType == nil {
 	// 	machineType := "pd-standard"
-	// 	obj.MachineType = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", name.Project.ID, name.Zone, machineType)))
+	// 	obj.MachineType = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", name.Project.ID, name.Zone, machineType)))
 	// }
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a Instance resource in the specified project using the data included in the request.
@@ -102,7 +113,15 @@ func (s *InstancesV1) Update(ctx context.Context, req *pb.UpdateInstanceRequest)
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *InstancesV1) AttachDisk(ctx context.Context, req *pb.AttachDiskInstanceRequest) (*pb.Operation, error) {
@@ -118,7 +137,7 @@ func (s *InstancesV1) AttachDisk(ctx context.Context, req *pb.AttachDiskInstance
 		return nil, err
 	}
 
-	attachedDisk := proto.Clone(req.GetAttachedDiskResource()).(*pb.AttachedDisk)
+	attachedDisk := proto.CloneOf(req.GetAttachedDiskResource())
 	attachedDisk.Kind = PtrTo("compute#attachedDisk")
 	attachedDisk.Index = PtrTo(int32(len(obj.Disks)))
 
@@ -128,7 +147,15 @@ func (s *InstancesV1) AttachDisk(ctx context.Context, req *pb.AttachDiskInstance
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("attachDisk"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *InstancesV1) DetachDisk(ctx context.Context, req *pb.DetachDiskInstanceRequest) (*pb.Operation, error) {
@@ -156,7 +183,15 @@ func (s *InstancesV1) DetachDisk(ctx context.Context, req *pb.DetachDiskInstance
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("detachDisk"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *InstancesV1) Stop(ctx context.Context, req *pb.StopInstanceRequest) (*pb.Operation, error) {
@@ -178,7 +213,15 @@ func (s *InstancesV1) Stop(ctx context.Context, req *pb.StopInstanceRequest) (*p
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("stop"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *InstancesV1) Start(ctx context.Context, req *pb.StartInstanceRequest) (*pb.Operation, error) {
@@ -200,7 +243,15 @@ func (s *InstancesV1) Start(ctx context.Context, req *pb.StartInstanceRequest) (
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("start"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *InstancesV1) SetServiceAccount(ctx context.Context, req *pb.SetServiceAccountInstanceRequest) (*pb.Operation, error) {
@@ -227,7 +278,15 @@ func (s *InstancesV1) SetServiceAccount(ctx context.Context, req *pb.SetServiceA
 		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setServiceAccount"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *InstancesV1) SetMachineType(ctx context.Context, req *pb.SetMachineTypeInstanceRequest) (*pb.Operation, error) {
@@ -249,7 +308,15 @@ func (s *InstancesV1) SetMachineType(ctx context.Context, req *pb.SetMachineType
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setMachineType"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *InstancesV1) Delete(ctx context.Context, req *pb.DeleteInstanceRequest) (*pb.Operation, error) {
@@ -263,10 +330,21 @@ func (s *InstancesV1) Delete(ctx context.Context, req *pb.DeleteInstanceRequest)
 
 	deleted := &pb.Instance{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *InstancesV1) SetLabels(ctx context.Context, req *pb.SetLabelsInstanceRequest) (*pb.Operation, error) {
@@ -288,7 +366,105 @@ func (s *InstancesV1) SetLabels(ctx context.Context, req *pb.SetLabelsInstanceRe
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setLabels"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *InstancesV1) SetMetadata(ctx context.Context, req *pb.SetMetadataInstanceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instances/" + req.GetInstance()
+	name, err := s.parseZonalInstanceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Metadata = req.GetMetadataResource()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setMetadata"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *InstancesV1) SetTags(ctx context.Context, req *pb.SetTagsInstanceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instances/" + req.GetInstance()
+	name, err := s.parseZonalInstanceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Tags = req.GetTagsResource()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setTags"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *InstancesV1) SetScheduling(ctx context.Context, req *pb.SetSchedulingInstanceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/instances/" + req.GetInstance()
+	name, err := s.parseZonalInstanceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Scheduling = req.GetSchedulingResource()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setScheduling"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 type zonalInstanceName struct {

@@ -63,11 +63,17 @@ type RecordsetGeo struct {
 }
 
 type RecordsetHealthCheckedTargets struct {
+	/* The Internet IP addresses to be health checked. */
+	// +optional
+	ExternalEndpoints []string `json:"externalEndpoints,omitempty"`
+
 	/* The list of internal load balancers to health check. */
-	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+	// +optional
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers,omitempty"`
 }
 
 type RecordsetInternalLoadBalancers struct {
+	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
 	IpAddressRef v1alpha1.ResourceRef `json:"ipAddressRef"`
 
 	/* The configured IP protocol of the load balancer. This value is case-sensitive. Possible values: ["tcp", "udp"]. */
@@ -76,11 +82,13 @@ type RecordsetInternalLoadBalancers struct {
 	/* The type of load balancer. This value is case-sensitive. Possible values: ["regionalL4ilb", "regionalL7ilb", "globalL7ilb"]. */
 	LoadBalancerType string `json:"loadBalancerType"`
 
+	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
 	/* The configured port of the load balancer. */
 	Port string `json:"port"`
 
+	/* ProjectRef is a reference to a GCP Project. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	// +optional
@@ -88,8 +96,13 @@ type RecordsetInternalLoadBalancers struct {
 }
 
 type RecordsetPrimary struct {
+	/* The Internet IP addresses to be health checked. */
+	// +optional
+	ExternalEndpoints []string `json:"externalEndpoints,omitempty"`
+
 	/* The list of internal load balancers to health check. */
-	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+	// +optional
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers,omitempty"`
 }
 
 type RecordsetPrimaryBackup struct {
@@ -116,6 +129,9 @@ type RecordsetRoutingPolicy struct {
 	/* The configuration for Geo location based routing policy. */
 	// +optional
 	Geo []RecordsetGeo `json:"geo,omitempty"`
+
+	// +optional
+	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
 	/* The configuration for a primary-backup policy with global to regional failover. Queries are responded to with the global primary targets, but if none of the primary targets are healthy, then we fallback to a regional failover policy. */
 	// +optional
@@ -157,6 +173,7 @@ type RecordsetWrr struct {
 }
 
 type DNSRecordSetSpec struct {
+	/* DNSManagedZoneRef is a reference to a DNSManagedZone. */
 	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
 
 	/* Immutable. The DNS name this record set will apply to. */

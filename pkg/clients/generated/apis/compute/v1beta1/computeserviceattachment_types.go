@@ -43,6 +43,7 @@ type ServiceattachmentConsumerAcceptLists struct {
 	// +optional
 	ConnectionLimit *int64 `json:"connectionLimit,omitempty"`
 
+	/* ProjectRef is a reference to a GCP Project. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 

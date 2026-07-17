@@ -42,10 +42,7 @@ type ComputeTargetSSLProxySpec struct {
 	/* A reference to the ComputeBackendService resource. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
 
-	/* A reference to the CertificateMap resource uri that identifies a
-	certificate map associated with the given target proxy. This
-	field can only be set for global target proxies. Accepted format is
-	'//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'. */
+	/* A reference to the CertificateMap resource uri that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. Accepted format is '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'. */
 	// +optional
 	CertificateMapRef *v1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
 
@@ -53,8 +50,7 @@ type ComputeTargetSSLProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Specifies the type of proxy header to append before sending data to
-	the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
+	/* Specifies the type of proxy header to append before sending data to the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"]. */
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
@@ -65,10 +61,7 @@ type ComputeTargetSSLProxySpec struct {
 	// +optional
 	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
 
-	/* A reference to the ComputeSSLPolicy resource that will be
-	associated with the TargetSslProxy resource. If not set, the
-	ComputeTargetSSLProxy resource will not have any SSL policy
-	configured. */
+	/* A reference to the ComputeSSLPolicy resource that will be associated with the TargetSslProxy resource. If not set, the ComputeTargetSSLProxy resource will not have any SSL policy configured. */
 	// +optional
 	SslPolicyRef *v1alpha1.ResourceRef `json:"sslPolicyRef,omitempty"`
 }

@@ -19,6 +19,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -28,7 +29,8 @@ go run . generate-types \
   --api-version sql.cnrm.cloud.google.com/v1beta1  \
   --resource SQLInstance:DatabaseInstance \
   --skip-scaffold-files \
-  --include-skipped-output
+  --include-skipped-output \
+  --prune-unused-types=false
 
 go run . generate-mapper \
   --service google.cloud.sql.v1beta4 \
@@ -38,5 +40,5 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/sql/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/sql/
 

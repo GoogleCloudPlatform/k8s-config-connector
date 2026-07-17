@@ -26,7 +26,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
+	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 )
 
 func (s *CertificateManagerV1) GetCertificate(ctx context.Context, req *pb.GetCertificateRequest) (*pb.Certificate, error) {
@@ -54,8 +54,20 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Certificate).(*pb.Certificate)
+	obj := proto.CloneOf(req.Certificate)
 	obj.Name = fqn
+
+	if managed := obj.GetManaged(); managed != nil {
+		if managed.State == pb.Certificate_ManagedCertificate_STATE_UNSPECIFIED {
+			managed.State = pb.Certificate_ManagedCertificate_ACTIVE
+		}
+		for _, domain := range managed.Domains {
+			managed.AuthorizationAttemptInfo = append(managed.AuthorizationAttemptInfo, &pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo{
+				Domain: domain,
+				State:  pb.Certificate_ManagedCertificate_AuthorizationAttemptInfo_AUTHORIZED,
+			})
+		}
+	}
 
 	now := timestamppb.Now()
 
@@ -71,7 +83,7 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	}
 
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Certificate)
+		result := proto.CloneOf(obj)
 		result.Labels = nil
 		lroMetadata.RequestedCancellation = false
 		return result, nil
@@ -124,7 +136,7 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 	lroPrefix := fmt.Sprintf("projects/%s/locations/global", name.Project.ID)
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.Certificate)
+		result := proto.CloneOf(obj)
 		result.CreateTime = now
 		result.Labels = nil
 		return result, nil

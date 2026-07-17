@@ -1,0 +1,6 @@
+- caisURL: //dataproc.googleapis.com/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}
+  group: dataproc.cnrm.cloud.google.com
+  kind: DataprocSessionTemplate
+  name: dataprocsessiontemplate-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

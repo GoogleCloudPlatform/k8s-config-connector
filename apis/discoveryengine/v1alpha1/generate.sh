@@ -19,19 +19,32 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
 go run . generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineControl:Control \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
-  --resource DiscoveryEngineTargetSite:TargetSite
+  --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
+  --resource DiscoveryEngineTargetSite:TargetSite \
+  --resource DiscoveryEngineConversation:Conversation
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
+
+go run . generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineSampleQuerySet:SampleQuerySet
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
 go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
+mv ../../../pkg/controller/direct/discoveryengine/mapper.generated.go ../../../pkg/controller/direct/discoveryengine/v1_mapper.generated.go
+
+go run . generate-mapper --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
+mv ../../../pkg/controller/direct/discoveryengine/mapper.generated.go ../../../pkg/controller/direct/discoveryengine/v1beta_mapper.generated.go
 
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/discoveryengine/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/discoveryengine/

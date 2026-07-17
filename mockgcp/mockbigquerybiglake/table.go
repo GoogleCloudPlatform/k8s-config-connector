@@ -47,7 +47,7 @@ func (s *bigLakeService) CreateTable(ctx context.Context, req *pb.CreateTableReq
 
 	fqn := name.String()
 	now := time.Now()
-	obj := proto.Clone(req.GetTable()).(*pb.Table)
+	obj := proto.CloneOf(req.GetTable())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)

@@ -1,0 +1,17 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSnapshot
+metadata:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: pubsubsnapshot-full-${uniqueId}
+spec:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  projectRef:
+    external: ${projectId}
+  pubSubSubscriptionRef: null
+  resourceID: pubsubsnapshot-full-${uniqueId}
+  topicRef:
+    external: projects/${projectId}/topics/pubsubsnapshot-dep-${uniqueId}

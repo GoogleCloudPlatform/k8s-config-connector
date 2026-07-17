@@ -50,6 +50,6 @@ spec:
             serviceAccountRef:
               name: iampartialpolicy-dep-project
 ---
-# Observe reconciliaiton behavior on the IAMPartialPolicy reconciler
+# Observe reconciliation behavior on the IAMPartialPolicy reconciler
 kind: SystemRun
 duration: 60

@@ -55,6 +55,9 @@ func ResolveLegacyGCPManagedFields(r *Resource, liveState *terraform.InstanceSta
 		if err := resolveContainerNodePoolNodeCount(r, config); err != nil {
 			return err
 		}
+		if err := resolveContainerNodePoolNodeConfig(r, config); err != nil {
+			return err
+		}
 		return nil
 	case "ComputeBackendService":
 		return resolveComputeBackendServiceBackend(r, config)
@@ -317,13 +320,26 @@ func removeFromConfigIfNotApplied(r *Resource, config map[string]interface{}, pa
 	// in the KRM camelCase format.
 	_, found, err := getLastAppliedValue(r, path...)
 	if err != nil {
-		return fmt.Errorf("error finding last applied value for disk size: %w", err)
+		return fmt.Errorf("error finding last applied value for %s: %w", path, err)
 	}
 	if !found {
 		// The value was not found in the last applied configuration. Delegate
 		// instead to GCP by removing the field from the config. The live state's
 		// value will be substituted during the diff calculation.
 		unstructured.RemoveNestedField(config, path...)
+	}
+	return nil
+}
+
+func resolveContainerNodePoolNodeConfig(r *Resource, config map[string]interface{}) error {
+	if err := removeFromConfigIfNotApplied(r, config, "nodeConfig", "kubeletConfig"); err != nil {
+		return fmt.Errorf("error resolving kubeletConfig: %w", err)
+	}
+	if err := removeFromConfigIfNotApplied(r, config, "nodeConfig", "linuxNodeConfig"); err != nil {
+		return fmt.Errorf("error resolving linuxNodeConfig: %w", err)
+	}
+	if err := removeFromConfigIfNotApplied(r, config, "nodeConfig", "windowsNodeConfig"); err != nil {
+		return fmt.Errorf("error resolving windowsNodeConfig: %w", err)
 	}
 	return nil
 }

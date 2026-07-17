@@ -23,8 +23,13 @@ def main():
     parser = argparse.ArgumentParser(description="Diff CRDs against a base revision.")
     parser.add_argument(
         "--base",
-        default="upstream/master",
-        help="The base revision to compare against (default: upstream/master)",
+        default=None,
+        help="The base revision to compare against (default: upstream/master, resolved to merge-base with HEAD)",
+    )
+    parser.add_argument(
+        "--allow-status-external-ref-addition",
+        action="store_true",
+        help="Ignore additions of status.externalRef=string",
     )
     args = parser.parse_args()
 
@@ -39,10 +44,23 @@ def main():
 
     os.chdir(repo_root)
 
+    # Resolve base to merge-base with HEAD to compare against the common ancestor
+    # only if the user did not explicitly specify a base revision.
+    base_revision = args.base
+    if base_revision is None:
+        default_base = "upstream/master"
+        try:
+            merge_base = subprocess.check_output(
+                ["git", "merge-base", default_base, "HEAD"], text=True
+            ).strip()
+            base_revision = merge_base
+        except subprocess.CalledProcessError:
+            base_revision = default_base
+
     # Get changed files safely handling spaces using -z
     try:
         diff_output = subprocess.check_output(
-            ["git", "diff", "-z", "--name-only", args.base, "--", "config/crds"],
+            ["git", "diff", "-z", "--name-only", base_revision, "--", "config/crds"],
             text=True,
         )
     except subprocess.CalledProcessError as e:
@@ -59,7 +77,7 @@ def main():
         # Check if file exists in base
         if (
             subprocess.call(
-                ["git", "cat-file", "-e", f"{args.base}:{crd_file}"],
+                ["git", "cat-file", "-e", f"{base_revision}:{crd_file}"],
                 stderr=subprocess.DEVNULL,
             )
             != 0
@@ -70,7 +88,7 @@ def main():
 
         # Pipeline: git show base:${CRD_FILE} | go run ./dev/tools/crd-to-simple-schema ...
 
-        git_show_cmd = ["git", "show", f"{args.base}:{crd_file}"]
+        git_show_cmd = ["git", "show", f"{base_revision}:{crd_file}"]
 
         go_run_cmd = [
             "go",
@@ -81,6 +99,9 @@ def main():
             "--flatten",
             "--ignore-integer-type-differences",
         ]
+
+        if args.allow_status_external_ref_addition:
+            go_run_cmd.append("--allow-status-external-ref-addition")
 
         try:
             # Create the git show process

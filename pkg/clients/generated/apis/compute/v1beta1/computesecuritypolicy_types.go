@@ -233,6 +233,7 @@ type SecuritypolicyRateLimitThreshold struct {
 }
 
 type SecuritypolicyRecaptchaOptionsConfig struct {
+	/* RecaptchaEnterpriseKeyRef is a reference to a GCP RecaptchaEnterpriseKey. */
 	RedirectSiteKeyRef v1alpha1.ResourceRef `json:"redirectSiteKeyRef"`
 }
 
@@ -342,6 +343,10 @@ type ComputeSecurityPolicySpec struct {
 
 	// +optional
 	RecaptchaOptionsConfig *SecuritypolicyRecaptchaOptionsConfig `json:"recaptchaOptionsConfig,omitempty"`
+
+	/* Region represents the geographical location of the ComputeSecurityPolicy. Specify a region name or "global" for global resources. */
+	// +optional
+	Region *string `json:"region,omitempty"`
 
 	/* The ComputeSecurityPolicy name. If not given, the metadata.name will be used. */
 	// +optional

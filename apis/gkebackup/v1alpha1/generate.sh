@@ -19,6 +19,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
@@ -29,7 +30,8 @@ go run . generate-types \
     --resource GKEBackupBackupPlan:BackupPlan \
     --resource GKEBackupRestorePlan:RestorePlan \
     --resource GKEBackupBackup:Backup \
-    --resource GKEBackupRestore:Restore
+    --resource GKEBackupRestore:Restore \
+    --resource GKEBackupBackupChannel:BackupChannel
 
 go run . generate-mapper \
     --service google.cloud.gkebackup.v1 \
@@ -39,4 +41,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/gkebackup/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/gkebackup/

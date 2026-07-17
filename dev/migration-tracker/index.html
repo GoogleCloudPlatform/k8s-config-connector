@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCC Direct Migration Dashboard</title>
+    <meta name="description" content="Dashboard tracking the migration of KCC resources from Terraform/DCL to Google Cloud SDK Direct Controllers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+    <div id="error-console" style="display: none; background: #fce8e6; color: #d93025; padding: 16px 24px; font-family: monospace; font-size: 13px; border-bottom: 2px solid #d93025; z-index: 10000; position: relative;">
+        <strong>JavaScript Error:</strong> <span id="error-message"></span>
+    </div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">K</div>
+            <h1>KCC Migration</h1>
+        </div>
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active" id="menu-overview" onclick="switchTab('overview')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"></path></svg>
+                Dashboard Overview
+            </a>
+            <a href="#" class="menu-item" id="menu-matrix" onclick="switchTab('matrix')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                Resource Explorer
+            </a>
+            <a href="#" class="menu-item" id="menu-explorer" onclick="switchTab('explorer')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Dependency Topology
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <header>
+            <div class="header-title" id="active-tab-title">Dashboard Overview</div>
+            <div class="header-actions">
+                <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-body">
+            <!-- Tab 1: Overview -->
+            <section id="content-overview" class="tab-content active">
+                <div class="kpi-row">
+                    <div class="card-kpi blue">
+                        <div>
+                            <div class="kpi-label">Total KRM Resources</div>
+                            <div class="kpi-value" id="kpi-total">0</div>
+                        </div>
+                        <div class="kpi-sub">Total kinds tracked in dependencies</div>
+                    </div>
+                    <div class="card-kpi green">
+                        <div>
+                            <div class="kpi-label">Direct Controllers</div>
+                            <div class="kpi-value" id="kpi-migrated">0</div>
+                        </div>
+                        <div class="kpi-sub" id="kpi-adoption">0% adoption rate</div>
+                    </div>
+                    <div class="card-kpi yellow">
+                        <div>
+                            <div class="kpi-label">Active Migrations</div>
+                            <div class="kpi-value" id="kpi-progress">0</div>
+                        </div>
+                        <div class="kpi-sub">Resources In Progress or PR Sent</div>
+                    </div>
+                    <div class="card-kpi red">
+                        <div>
+                            <div class="kpi-label">Ready to Migrate</div>
+                            <div class="kpi-value" id="kpi-ready">0</div>
+                        </div>
+                        <div class="kpi-sub">Dependencies fully migrated</div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="card-chart">
+                        <div class="chart-header">Controller Types Distribution</div>
+                        <div class="chart-content-flex">
+                            <div class="donut-wrapper">
+                                <div class="css-donut" id="donut-controller">
+                                    <div class="css-donut-hole"></div>
+                                </div>
+                            </div>
+                            <div class="chart-legend" id="legend-controller">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-chart">
+                        <div class="chart-header">Migration States Progress</div>
+                        <div class="chart-content-flex">
+                            <div class="donut-wrapper">
+                                <div class="css-donut" id="donut-states">
+                                    <div class="css-donut-hole"></div>
+                                </div>
+                            </div>
+                            <div class="chart-legend" id="legend-states">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overview-split">
+                    <div class="card-section">
+                        <div class="section-header">GCP Service Group Completion</div>
+                        <div class="group-list" id="group-list">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                    <div class="card-section">
+                        <div class="section-header">
+                            Priority Migration Queue
+                            <span style="font-size: 11px; background-color: var(--google-blue); color: white; padding: 2px 8px; border-radius: 10px;" id="ready-badge">0 unblocked</span>
+                        </div>
+                        <div class="priority-list" id="priority-list">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 2: Resource Explorer -->
+            <section id="content-matrix" class="tab-content">
+                <div class="filter-panel">
+                    <div class="search-container">
+                        <svg class="search-icon-svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input type="text" class="search-input" id="search-input" placeholder="Search Kind, Group, or dependency..." oninput="filterAndRenderTable()">
+                    </div>
+                    <select class="filter-select" id="filter-controller" onchange="filterAndRenderTable()">
+                        <option value="All">All Controllers</option>
+                        <option value="Direct">Direct</option>
+                        <option value="Terraform">Terraform</option>
+                        <option value="DCL">DCL</option>
+                    </select>
+                    <select class="filter-select" id="filter-state" onchange="filterAndRenderTable()">
+                        <option value="All">All States</option>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="PR Sent">PR Sent</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                    <select class="filter-select" id="filter-group" onchange="filterAndRenderTable()">
+                        <option value="All">All Groups</option>
+                        <!-- Dynamic options -->
+                    </select>
+                    <div class="meta-count" id="meta-count">Showing 0 of 0 resources</div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 48px;"></th>
+                                    <th onclick="sortExplorer('kind')">Kind <span id="sort-kind"></span></th>
+                                    <th onclick="sortExplorer('group')">Group <span id="sort-group"></span></th>
+                                    <th onclick="sortExplorer('sortOrder')">Topo Order <span id="sort-sortOrder"></span></th>
+                                    <th onclick="sortExplorer('downstreamCount')">Downstream <span id="sort-downstreamCount"></span></th>
+                                    <th onclick="sortExplorer('controllerType')">Controller <span id="sort-controllerType"></span></th>
+                                    <th onclick="sortExplorer('state')">State <span id="sort-state"></span></th>
+                                    <th>Migration Checklist</th>
+                                    <th>Dependencies</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrix-tbody">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 3: Dependency Topology -->
+            <section id="content-explorer" class="tab-content">
+                <div class="explorer-card">
+                    <div class="explorer-header">
+                        <span style="font-weight: 500; font-size: 14px;">Select Resource:</span>
+                        <select class="filter-select" id="explorer-select" onchange="loadDependencyTree()" style="min-width: 320px;">
+                            <option value="">-- Choose a KRM Kind --</option>
+                            <!-- Dynamic options -->
+                        </select>
+                    </div>
+
+                    <div class="explorer-grid">
+                        <div class="explorer-col">
+                            <div class="col-header">Blocks (Downstream Dependency)</div>
+                            <div id="explorer-downstream-list" style="display: flex; flex-direction: column; gap: 10px;">
+                                <!-- Downstream items -->
+                            </div>
+                        </div>
+                        <div class="explorer-col" style="background-color: var(--google-blue-light); border-color: var(--google-blue);">
+                            <div class="col-header" style="color: var(--google-blue); border-color: var(--google-blue);">Selected target</div>
+                            <div id="explorer-target-box">
+                                <!-- Target item -->
+                            </div>
+                        </div>
+                        <div class="explorer-col">
+                            <div class="col-header">Depends On (Upstream Dependency)</div>
+                            <div id="explorer-upstream-list" style="display: flex; flex-direction: column; gap: 10px;">
+                                <!-- Upstream items -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="app.js?v=2"></script>
+</body>
+</html>

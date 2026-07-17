@@ -59,12 +59,12 @@ func (s *RegionalTargetTcpProxyV1) Insert(ctx context.Context, req *pb.InsertReg
 
 	id := s.generateID()
 
-	obj := proto.Clone(req.GetTargetTcpProxyResource()).(*pb.TargetTcpProxy)
-	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj := proto.CloneOf(req.GetTargetTcpProxyResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetTcpProxy")
-	obj.Region = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", req.GetProject(), req.GetRegion())))
+	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", req.GetProject(), req.GetRegion())))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

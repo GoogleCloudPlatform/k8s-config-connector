@@ -1,0 +1,19 @@
+- caisURL: unknown
+  error: not yet supported
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Folder
+  name: foldersink-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/foldersink${uniqueId}
+  group: bigquery.cnrm.cloud.google.com
+  kind: BigQueryDataset
+  name: foldersink${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //logging.googleapis.com/folders/${folderId}/sinks/foldersink-${uniqueId}
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogSink
+  name: foldersink-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

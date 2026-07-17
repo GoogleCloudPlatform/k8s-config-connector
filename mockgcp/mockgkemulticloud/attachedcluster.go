@@ -27,8 +27,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkemulticloud/v1"
 )
 
 type GKEMulticloudV1 struct {
@@ -65,7 +65,7 @@ func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.Cre
 	now := time.Now()
 	fqn := name.String()
 
-	obj := proto.Clone(req.AttachedCluster).(*pb.AttachedCluster)
+	obj := proto.CloneOf(req.AttachedCluster)
 	obj.Name = fqn
 
 	if obj.GetBinaryAuthorization() == nil {

@@ -18,5 +18,8 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.networkservices.v1
 // resource: NetworkServicesServiceBinding:ServiceBinding
+// resource: NetworkServicesLBRouteExtension:LbRouteExtension
+// resource: NetworkServicesWasmPlugin:WasmPlugin
+// resource: NetworkServicesAuthzExtension:AuthzExtension
 
 package v1alpha1

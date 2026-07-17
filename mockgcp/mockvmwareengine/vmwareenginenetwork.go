@@ -30,9 +30,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
 	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
@@ -67,7 +67,7 @@ func (s *VMwareEngineV1) CreateVmwareEngineNetwork(ctx context.Context, req *pb.
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetVmwareEngineNetwork()).(*pb.VmwareEngineNetwork)
+	obj := proto.CloneOf(req.GetVmwareEngineNetwork())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.VmwareEngineNetwork_ACTIVE
