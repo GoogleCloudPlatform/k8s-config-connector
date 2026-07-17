@@ -26,11 +26,6 @@ Content-Type: application/json
 
 {
   "displayName": "Sample Redis Instance",
-  "maintenanceSchedule": {
-    "endTime": "2023-08-01T16:29:22.045123456Z",
-    "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-    "startTime": "2023-08-01T15:29:22.045123456Z"
-  },
   "memorySizeGb": 16,
   "tier": 1
 }
@@ -46,9 +41,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "create"
@@ -74,8 +70,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -85,16 +81,12 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
+    "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "currentLocationId": "us-central1-a",
     "displayName": "Sample Redis Instance",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "maintenanceSchedule": {
-      "endTime": "2023-08-01T16:29:22.045123456Z",
-      "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-      "startTime": "2023-08-01T15:29:22.045123456Z"
-    },
     "memorySizeGb": 16,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
@@ -112,7 +104,8 @@ X-Xss-Protection: 0
     "redisVersion": "REDIS_7_0",
     "reservedIpRange": "10.1.2.0/24",
     "state": "READY",
-    "tier": "BASIC"
+    "tier": "BASIC",
+    "transitEncryptionMode": "DISABLED"
   }
 }
 
@@ -133,16 +126,12 @@ X-Xss-Protection: 0
 
 {
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
+  "connectMode": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentLocationId": "us-central1-a",
   "displayName": "Sample Redis Instance",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "maintenanceSchedule": {
-    "endTime": "2023-08-01T16:29:22.045123456Z",
-    "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-    "startTime": "2023-08-01T15:29:22.045123456Z"
-  },
   "memorySizeGb": 16,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
@@ -160,7 +149,8 @@ X-Xss-Protection: 0
   "redisVersion": "REDIS_7_0",
   "reservedIpRange": "10.1.2.0/24",
   "state": 2,
-  "tier": 1
+  "tier": 1,
+  "transitEncryptionMode": 2
 }
 
 ---
@@ -170,11 +160,6 @@ Content-Type: application/json
 
 {
   "displayName": "newDisplayName",
-  "maintenanceSchedule": {
-    "endTime": "2023-08-01T16:29:22.045123456Z",
-    "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-    "startTime": "2023-08-01T15:29:22.045123456Z"
-  },
   "memorySizeGb": 20,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "tier": 1
@@ -191,9 +176,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "update"
@@ -219,8 +205,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -230,16 +216,12 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
+    "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "currentLocationId": "us-central1-a",
     "displayName": "newDisplayName",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "maintenanceSchedule": {
-      "endTime": "2023-08-01T16:29:22.045123456Z",
-      "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-      "startTime": "2023-08-01T15:29:22.045123456Z"
-    },
     "memorySizeGb": 16,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
@@ -257,7 +239,8 @@ X-Xss-Protection: 0
     "redisVersion": "REDIS_7_0",
     "reservedIpRange": "10.1.2.0/24",
     "state": "READY",
-    "tier": "BASIC"
+    "tier": "BASIC",
+    "transitEncryptionMode": "DISABLED"
   }
 }
 
@@ -268,11 +251,6 @@ Content-Type: application/json
 
 {
   "displayName": "newDisplayName",
-  "maintenanceSchedule": {
-    "endTime": "2023-08-01T16:29:22.045123456Z",
-    "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-    "startTime": "2023-08-01T15:29:22.045123456Z"
-  },
   "memorySizeGb": 20,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "tier": 1
@@ -289,9 +267,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "update"
@@ -317,8 +296,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -328,16 +307,12 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
+    "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "currentLocationId": "us-central1-a",
     "displayName": "newDisplayName",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "maintenanceSchedule": {
-      "endTime": "2023-08-01T16:29:22.045123456Z",
-      "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-      "startTime": "2023-08-01T15:29:22.045123456Z"
-    },
     "memorySizeGb": 20,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
@@ -355,7 +330,8 @@ X-Xss-Protection: 0
     "redisVersion": "REDIS_7_0",
     "reservedIpRange": "10.1.2.0/24",
     "state": "READY",
-    "tier": "BASIC"
+    "tier": "BASIC",
+    "transitEncryptionMode": "DISABLED"
   }
 }
 
@@ -376,16 +352,12 @@ X-Xss-Protection: 0
 
 {
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
+  "connectMode": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentLocationId": "us-central1-a",
   "displayName": "newDisplayName",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "maintenanceSchedule": {
-    "endTime": "2023-08-01T16:29:22.045123456Z",
-    "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
-    "startTime": "2023-08-01T15:29:22.045123456Z"
-  },
   "memorySizeGb": 20,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
@@ -403,7 +375,8 @@ X-Xss-Protection: 0
   "redisVersion": "REDIS_7_0",
   "reservedIpRange": "10.1.2.0/24",
   "state": 2,
-  "tier": 1
+  "tier": 1,
+  "transitEncryptionMode": 2
 }
 
 ---
@@ -422,9 +395,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "delete"
@@ -450,8 +424,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",

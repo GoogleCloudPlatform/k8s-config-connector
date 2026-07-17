@@ -1,8 +1,6 @@
 apiVersion: redis.cnrm.cloud.google.com/v1beta1
 kind: RedisInstance
 metadata:
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
   labels:
     label-one: "value-one"
   name: redisinstances-${uniqueId}

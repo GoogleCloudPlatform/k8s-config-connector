@@ -172,7 +172,7 @@ type RedisInstanceSpec struct {
 	// +optional
 	MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
-	/* Upcoming maintenance schedule. */
+	/* Output only. Date and time of upcoming maintenance events which have been scheduled. */
 	// +optional
 	MaintenanceSchedule []InstanceMaintenanceSchedule `json:"maintenanceSchedule,omitempty"`
 
@@ -296,7 +296,7 @@ type RedisInstanceStatus struct {
 	// +optional
 	Host *string `json:"host,omitempty"`
 
-	/* Upcoming maintenance schedule. */
+	/* Output only. Date and time of upcoming maintenance events which have been scheduled. */
 	// +optional
 	MaintenanceSchedule []InstanceMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
 

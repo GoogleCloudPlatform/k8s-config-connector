@@ -412,7 +412,7 @@ transitEncryptionMode: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Upcoming maintenance schedule.</p>
+            <p>Output only. Date and time of upcoming maintenance events which have been scheduled.</p>
         </td>
     </tr>
     <tr>
@@ -748,7 +748,7 @@ serverCaCerts:
         <td><code>maintenanceSchedule</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Upcoming maintenance schedule.</p>
+            <p>Output only. Date and time of upcoming maintenance events which have been scheduled.</p>
         </td>
     </tr>
     <tr>
