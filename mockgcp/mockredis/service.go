@@ -23,7 +23,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 	pbcluster "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -90,15 +90,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	grpcMux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
-	rewriteV1ToBeta := func(w http.ResponseWriter, r *http.Request) {
+	// Terraform uses the /v1beta1/ endpoints, but we have protos only for v1.
+	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
 		isV1 := false
 		u := r.URL
-		if strings.HasPrefix(u.Path, "/v1/projects/") && strings.Contains(u.Path, "/instances") {
+		if strings.HasPrefix(u.Path, "/v1beta1/projects/") && strings.Contains(u.Path, "/instances") {
 			isV1 = true
 			u2 := *u
-			u2.Path = "/v1beta1" + strings.TrimPrefix(u.Path, "/v1")
+			u2.Path = "/v1" + strings.TrimPrefix(u.Path, "/v1beta1")
 			r = httpmux.RewriteRequest(r, &u2)
-		} else if strings.HasPrefix(u.Path, "/v1/projects/") && strings.Contains(u.Path, "/operations") {
+		} else if strings.HasPrefix(u.Path, "/v1beta1/projects/") && strings.Contains(u.Path, "/operations") {
 			isV1 = true
 		}
 
@@ -107,7 +108,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			grpcMux.ServeHTTP(rec, r)
 
 			respBytes := rec.body.Bytes()
-			respBytes = bytes.ReplaceAll(respBytes, []byte(`google.cloud.redis.v1beta1.Instance`), []byte(`google.cloud.redis.v1.Instance`))
+			respBytes = bytes.ReplaceAll(respBytes, []byte(`google.cloud.redis.v1.Instance`), []byte(`google.cloud.redis.v1beta1.Instance`))
 
 			w.Header().Set("Content-Length", fmt.Sprintf("%d", len(respBytes)))
 			if rec.statusCode != 0 {
@@ -121,5 +122,5 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	return http.HandlerFunc(rewriteV1ToBeta), nil
+	return http.HandlerFunc(rewriteBetaToV1), nil
 }

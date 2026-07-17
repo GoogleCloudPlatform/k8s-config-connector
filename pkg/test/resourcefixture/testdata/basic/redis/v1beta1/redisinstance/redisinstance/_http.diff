@@ -8,98 +8,86 @@
 > POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=redisinstances-${uniqueId}
 28d27
 <   "connectMode": "DIRECT_PEERING",
-30,33c29,32
-<   "labels": {
-<     "cnrm-test": "true",
-<     "label-one": "value-one",
-<     "managed-by-cnrm": "true"
----
->   "maintenanceSchedule": {
->     "endTime": "2023-08-01T16:29:22.045123456Z",
->     "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->     "startTime": "2023-08-01T15:29:22.045123456Z"
-36,38c35
-<   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
-<   "tier": "BASIC",
-<   "transitEncryptionMode": "DISABLED"
----
->   "tier": 1
-64c61
-< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
----
-> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-89c86
-<     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
----
->     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-91d87
-<     "connectMode": "DIRECT_PEERING",
-96,100d91
-<     "labels": {
-<       "cnrm-test": "true",
-<       "label-one": "value-one",
-<       "managed-by-cnrm": "true"
-<     },
-101a93,97
->     "maintenanceSchedule": {
->       "endTime": "2023-08-01T16:29:22.045123456Z",
->       "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->       "startTime": "2023-08-01T15:29:22.045123456Z"
->     },
-119,120c115
-<     "tier": "BASIC",
-<     "transitEncryptionMode": "DISABLED"
----
->     "tier": "BASIC"
-126c121
-< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
----
-> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-141d135
-<   "connectMode": "DIRECT_PEERING",
-146,150d139
+30,34d28
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-151a141,145
->   "maintenanceSchedule": {
->     "endTime": "2023-08-01T16:29:22.045123456Z",
->     "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->     "startTime": "2023-08-01T15:29:22.045123456Z"
->   },
-161c155
+36,38c30
+<   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+<   "tier": "BASIC",
+<   "transitEncryptionMode": "DISABLED"
+---
+>   "tier": 1
+54,55c46,47
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",
+65c57
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+81,82c73,74
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",
+90c82
+<     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
+97,101d88
+<     "labels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+127c114
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+142c129
+<   "connectMode": "DIRECT_PEERING",
+---
+>   "connectMode": 1,
+147,151d133
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+162c144
 <     "persistenceMode": "DISABLED"
 ---
 >     "persistenceMode": 1
-165c159
+166c148
 <   "readReplicasMode": "READ_REPLICAS_DISABLED",
 ---
 >   "readReplicasMode": 1,
-168,170c162,163
+169,171c151,153
 <   "state": "READY",
 <   "tier": "BASIC",
 <   "transitEncryptionMode": "DISABLED"
 ---
 >   "state": 2,
->   "tier": 1
-175c168
+>   "tier": 1,
+>   "transitEncryptionMode": 2
+176c158
 < PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName%2Clabels%2CmemorySizeGb
 ---
 > PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
-180,184c173,176
+181,186d162
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true",
 <     "newkey": "newval"
----
->   "maintenanceSchedule": {
->     "endTime": "2023-08-01T16:29:22.045123456Z",
->     "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->     "startTime": "2023-08-01T15:29:22.045123456Z"
-187,190c179,180
+<   },
+188,191c164,165
 <   "persistenceConfig": {
 <     "persistenceMode": "DISABLED"
 <   },
@@ -107,17 +95,27 @@
 ---
 >   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
 >   "tier": 1
-216c206
+207,208c181,182
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",
+218c192
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-241c231
+234,235c208,209
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",
+243c217
 <     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
 ---
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-243d232
-<     "connectMode": "DIRECT_PEERING",
-248,252c237,252
+250,254c224,234
 <     "labels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
@@ -125,11 +123,6 @@
 <       "newkey": "newval"
 ---
 >     "locationId": "us-central1-a",
->     "maintenanceSchedule": {
->       "endTime": "2023-08-01T16:29:22.045123456Z",
->       "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->       "startTime": "2023-08-01T15:29:22.045123456Z"
->     },
 >     "memorySizeGb": 16,
 >     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
 >     "nodes": [
@@ -140,14 +133,15 @@
 >     ],
 >     "persistenceConfig": {
 >       "persistenceMode": "DISABLED"
-253a254,334
+255a236,314
 >     "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
 >     "port": 6379,
 >     "readReplicasMode": "READ_REPLICAS_DISABLED",
 >     "redisVersion": "REDIS_7_0",
 >     "reservedIpRange": "10.1.2.0/24",
 >     "state": "READY",
->     "tier": "BASIC"
+>     "tier": "BASIC",
+>     "transitEncryptionMode": "DISABLED"
 >   }
 > }
 > 
@@ -158,11 +152,6 @@
 > 
 > {
 >   "displayName": "newDisplayName",
->   "maintenanceSchedule": {
->     "endTime": "2023-08-01T16:29:22.045123456Z",
->     "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->     "startTime": "2023-08-01T15:29:22.045123456Z"
->   },
 >   "memorySizeGb": 20,
 >   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
 >   "tier": 1
@@ -179,9 +168,10 @@
 > X-Xss-Protection: 0
 > 
 > {
+>   "done": false,
 >   "metadata": {
->     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
->     "apiVersion": "v1beta1",
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",
 >     "createTime": "2024-04-01T12:34:56.123456Z",
 >     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
 >     "verb": "update"
@@ -207,8 +197,8 @@
 > {
 >   "done": true,
 >   "metadata": {
->     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
->     "apiVersion": "v1beta1",
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",
 >     "createTime": "2024-04-01T12:34:56.123456Z",
 >     "endTime": "2024-04-01T12:34:56.123456Z",
 >     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -218,60 +208,59 @@
 >   "response": {
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
 >     "authorizedNetwork": "projects/${projectId}/global/networks/default",
+>     "connectMode": "DIRECT_PEERING",
 >     "createTime": "2024-04-01T12:34:56.123456Z",
 >     "currentLocationId": "us-central1-a",
 >     "displayName": "newDisplayName",
 >     "host": "10.1.2.3",
-254a336,340
->     "maintenanceSchedule": {
->       "endTime": "2023-08-01T16:29:22.045123456Z",
->       "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->       "startTime": "2023-08-01T15:29:22.045123456Z"
->     },
-272,273c358
-<     "tier": "BASIC",
-<     "transitEncryptionMode": "DISABLED"
----
->     "tier": "BASIC"
-279c364
+281c340
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-294d378
+296c355
 <   "connectMode": "DIRECT_PEERING",
-299,304d382
+---
+>   "connectMode": 1,
+301,306d359
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true",
 <     "newkey": "newval"
 <   },
-305a384,388
->   "maintenanceSchedule": {
->     "endTime": "2023-08-01T16:29:22.045123456Z",
->     "scheduleDeadlineTime": "2023-08-01T17:29:22.045123456Z",
->     "startTime": "2023-08-01T15:29:22.045123456Z"
->   },
-315c398
+317c370
 <     "persistenceMode": "DISABLED"
 ---
 >     "persistenceMode": 1
-319c402
+321c374
 <   "readReplicasMode": "READ_REPLICAS_DISABLED",
 ---
 >   "readReplicasMode": 1,
-322,324c405,406
+324,326c377,379
 <   "state": "READY",
 <   "tier": "BASIC",
 <   "transitEncryptionMode": "DISABLED"
 ---
 >   "state": 2,
->   "tier": 1
-329c411
+>   "tier": 1,
+>   "transitEncryptionMode": 2
+331c384
 < DELETE https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 ---
 > DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-355c437
+347,348c400,401
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",
+358c411
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+374,375c427,428
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+>     "apiVersion": "v1",

@@ -27,9 +27,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	commonpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/common"
 )
 
 type redisServer struct {
@@ -117,6 +116,10 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 		obj.RedisVersion = "REDIS_7_0"
 	}
 
+	if obj.AlternativeLocationId == "" {
+		obj.AlternativeLocationId = zone
+	}
+
 	obj.State = pb.Instance_CREATING
 
 	r.populateDefaultsForInstance(name, obj)
@@ -125,8 +128,8 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,
@@ -149,6 +152,14 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.Instance) {
 	if obj.AuthorizedNetwork == "" {
 		obj.AuthorizedNetwork = "projects/" + name.Project.ID + "/global/networks/default"
+	}
+
+	if obj.ConnectMode == pb.Instance_CONNECT_MODE_UNSPECIFIED {
+		obj.ConnectMode = pb.Instance_DIRECT_PEERING
+	}
+
+	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+		obj.TransitEncryptionMode = pb.Instance_DISABLED
 	}
 
 	if obj.PersistenceConfig == nil {
@@ -211,8 +222,8 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,
@@ -239,8 +250,8 @@ func (r *redisServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstance
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,

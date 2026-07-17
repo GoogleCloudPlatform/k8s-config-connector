@@ -228,7 +228,8 @@ spec:
                     type: array
                 type: object
               maintenanceSchedule:
-                description: Upcoming maintenance schedule.
+                description: Output only. Date and time of upcoming maintenance events
+                  which have been scheduled.
                 items:
                   properties:
                     endTime:
@@ -400,7 +401,8 @@ spec:
                   used by clients to connect to the service.
                 type: string
               maintenanceSchedule:
-                description: Upcoming maintenance schedule.
+                description: Output only. Date and time of upcoming maintenance events
+                  which have been scheduled.
                 items:
                   properties:
                     endTime:

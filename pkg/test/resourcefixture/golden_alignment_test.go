@@ -394,6 +394,11 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = doneTimeRegex.ReplaceAllString(realJSON, "")
 	mockJSON = doneTimeRegex.ReplaceAllString(mockJSON, "")
 
+	// Mock server does not return "done: false" in metadata
+	doneRegex := regexp.MustCompile(`\s*"done":\s*false,?\s*`)
+	realJSON = doneRegex.ReplaceAllString(realJSON, "")
+	mockJSON = doneRegex.ReplaceAllString(mockJSON, "")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {

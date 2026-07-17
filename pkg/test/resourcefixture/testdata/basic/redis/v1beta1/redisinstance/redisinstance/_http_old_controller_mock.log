@@ -50,8 +50,8 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "create"
@@ -77,8 +77,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -87,6 +87,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+    "alternativeLocationId": "us-central1-a",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
     "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -137,6 +138,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
   "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -202,8 +204,8 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "update"
@@ -229,8 +231,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -239,6 +241,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+    "alternativeLocationId": "us-central1-a",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
     "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -290,6 +293,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
   "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -341,8 +345,8 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "delete"
@@ -368,8 +372,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",

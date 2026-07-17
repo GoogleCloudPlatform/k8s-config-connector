@@ -49,6 +49,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
     "apiVersion": "v1beta1",
@@ -201,6 +202,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
     "apiVersion": "v1beta1",
@@ -340,6 +342,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
     "apiVersion": "v1beta1",
