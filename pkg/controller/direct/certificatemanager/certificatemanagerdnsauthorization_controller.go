@@ -293,12 +293,6 @@ func compareCertificateManagerDNSAuthorization(ctx context.Context, actual, desi
 	if err != nil {
 		return nil, nil, err
 	}
-	var allowedPaths []string
-	for _, path := range updateMask.Paths {
-		if path == "description" || path == "labels" {
-			allowedPaths = append(allowedPaths, path)
-		}
-	}
-	updateMask.Paths = allowedPaths
+
 	return diffs, updateMask, nil
 }
