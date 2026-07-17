@@ -39,6 +39,9 @@ func (s *CertificateManagerV1) GetDnsAuthorization(ctx context.Context, req *pb.
 
 	obj := &pb.DnsAuthorization{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "dnsAuthorization %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -97,6 +100,9 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	fqn := name.String()
 	obj := &pb.DnsAuthorization{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "dnsAuthorization %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -119,8 +125,13 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	}
 
 	now := timestamppb.Now()
+	obj.UpdateTime = now
+
 	lroPrefix := fmt.Sprintf("projects/%s/locations/global", name.Project.ID)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "dnsAuthorization %q not found", fqn)
+		}
 		return nil, err
 	}
 	lroMetadata := &pb.OperationMetadata{
@@ -148,6 +159,9 @@ func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *
 
 	oldObj := &pb.DnsAuthorization{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "dnsAuthorization %q not found", fqn)
+		}
 		return nil, err
 	}
 
