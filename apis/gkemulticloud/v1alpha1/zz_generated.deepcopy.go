@@ -372,6 +372,11 @@ func (in *GKEMulticloudAttachedClusterSpec) DeepCopyInto(out *GKEMulticloudAttac
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)

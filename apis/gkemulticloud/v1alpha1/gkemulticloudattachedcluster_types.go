@@ -32,7 +32,7 @@ type GKEMulticloudAttachedClusterSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	// Immutable. The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// Optional. A human readable description of this cluster.
 	//  Cannot be longer than 255 UTF-8 encoded bytes.
