@@ -545,6 +545,14 @@ type UrlmapTest struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* The expected output URL evaluated by the load balancer containing the scheme, host, path and query parameters. */
+	// +optional
+	ExpectedOutputURL *string `json:"expectedOutputURL,omitempty"`
+
+	/* For rules with urlRedirect, the test passes only if expectedRedirectResponseCode matches the HTTP status code in load balancer's redirect response. */
+	// +optional
+	ExpectedRedirectResponseCode *int32 `json:"expectedRedirectResponseCode,omitempty"`
+
 	/* Host portion of the URL. */
 	Host string `json:"host"`
 

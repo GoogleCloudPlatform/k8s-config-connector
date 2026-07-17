@@ -9208,8 +9208,8 @@ func UrlmapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) 
 	}
 	out := &krm.UrlmapTest{}
 	out.Description = in.Description
-	// MISSING: ExpectedOutputURL
-	// MISSING: ExpectedRedirectResponseCode
+	out.ExpectedOutputURL = in.ExpectedOutputUrl
+	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
 	// MISSING: Headers
 	out.Host = in.Host
 	out.Path = in.Path
@@ -9225,8 +9225,8 @@ func UrlmapTest_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.UrlmapTest) *
 	}
 	out := &pb.UrlMapTest{}
 	out.Description = in.Description
-	// MISSING: ExpectedOutputURL
-	// MISSING: ExpectedRedirectResponseCode
+	out.ExpectedOutputUrl = in.ExpectedOutputURL
+	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
 	// MISSING: Headers
 	out.Host = in.Host
 	out.Path = in.Path
