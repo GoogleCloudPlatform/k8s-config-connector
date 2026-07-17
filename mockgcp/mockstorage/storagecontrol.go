@@ -21,14 +21,18 @@ package mockstorage
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -194,4 +198,76 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 	}
 
 	return obj, nil
+}
+
+func parseManagedFolderName(name string) (bucket string, folder string, err error) {
+	idx := strings.Index(name, "/buckets/")
+	if idx != -1 {
+		name = name[idx+1:]
+	} else if !strings.HasPrefix(name, "buckets/") {
+		return "", "", fmt.Errorf("invalid managed folder name format: %q", name)
+	}
+	tokens := strings.Split(name, "/")
+	if len(tokens) < 4 || tokens[0] != "buckets" || tokens[2] != "managedFolders" {
+		return "", "", fmt.Errorf("invalid managed folder name format: %q", name)
+	}
+	bucket = tokens[1]
+	folder = strings.Join(tokens[3:], "/")
+	folder = strings.TrimSuffix(folder, "/")
+	return bucket, folder, nil
+}
+
+func (s *StorageControlService) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
+	bucket, folder, err := parseManagedFolderName(req.GetName())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	fqn := fmt.Sprintf("buckets/%s/managedFolders/%s", bucket, folder)
+	obj := &pb.ManagedFolder{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *StorageControlService) CreateManagedFolder(ctx context.Context, req *pb.CreateManagedFolderRequest) (*pb.ManagedFolder, error) {
+	bucket, folder, err := parseManagedFolderName(req.GetParent() + "/managedFolders/" + req.GetManagedFolderId())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	fqn := fmt.Sprintf("buckets/%s/managedFolders/%s", bucket, folder)
+	now := timestamppb.Now()
+
+	if req.GetManagedFolder() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "managed folder is required")
+	}
+	obj := proto.Clone(req.GetManagedFolder()).(*pb.ManagedFolder)
+	obj.Name = fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s/", bucket, folder)
+	obj.CreateTime = now
+	obj.UpdateTime = now
+	obj.Metageneration = 1
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *StorageControlService) DeleteManagedFolder(ctx context.Context, req *pb.DeleteManagedFolderRequest) (*emptypb.Empty, error) {
+	bucket, folder, err := parseManagedFolderName(req.GetName())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	fqn := fmt.Sprintf("buckets/%s/managedFolders/%s", bucket, folder)
+	deleted := &pb.ManagedFolder{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
