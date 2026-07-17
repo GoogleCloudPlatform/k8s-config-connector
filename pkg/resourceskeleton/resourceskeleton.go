@@ -239,6 +239,9 @@ func trimRegionPrefix(host string) string {
 	return parts[len(parts)-1]
 }
 
+// trimURLPathPrefix converts raw or batch API resource URL paths right into canonical resource identifiers for Terraform state import.
+// Input: A URL path string right right right such as "/batch/compute/v1/projects/my-proj/regions/us-central1/targetHttpsProxies/my-proxy".
+// Output: The canonical import ID starting across "projects/", "global/", or "regions/" (e.g., "projects/my-proj/regions/us-central1/targetHttpsProxies/my-proxy").
 func trimURLPathPrefix(path string) string {
 	cleanedPath := strings.TrimPrefix(path, "/")
 	if strings.HasPrefix(cleanedPath, "batch/compute/") {
