@@ -1910,6 +1910,7 @@ X-Xss-Protection: 0
     {
       "autoscaling": {
         "enabled": true,
+        "locationPolicy": "BALANCED",
         "maxNodeCount": 5,
         "minNodeCount": 1
       },
@@ -1978,7 +1979,6 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
-      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
