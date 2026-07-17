@@ -199,6 +199,10 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("nextRotationTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.nextRotationTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to GCS
+	addReplacement("autoclass.toggleTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("autoclass.terminalStorageClassUpdateTime", "2024-04-01T12:34:56.123456Z")
+
 	// Specific to datacatalog
 	addReplacement("dataCatalogTimestamps.createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("dataCatalogTimestamps.updateTime", "2024-04-01T12:34:56.123456Z")

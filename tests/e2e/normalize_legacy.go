@@ -235,6 +235,10 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to GCS
+	addReplacement("autoclass.toggleTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("autoclass.terminalStorageClassUpdateTime", "2024-04-01T12:34:56.123456Z")
+
 	// specific to apigateway
 	addReplacement("managedService", "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog")
 	addReplacement("response.managedService", "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog")

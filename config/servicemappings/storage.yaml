@@ -41,6 +41,7 @@ spec:
       observedFields:
         - soft_delete_policy.effective_time
         - soft_delete_policy.retention_duration_seconds
+        - storage_class
       idTemplate: "{{name}}"
       # odd resource where the project is 'optional', needs more thought -- also not supported by gcloud (yet), problem applies to all Storage resources
       idTemplateCanBeUsedToMatchResourceName: false

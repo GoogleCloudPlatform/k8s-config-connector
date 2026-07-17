@@ -127,6 +127,12 @@ func ResourceStorageBucket() *schema.Resource {
 				Optional:    true,
 				Default:     "STANDARD",
 				Description: `The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE.`,
+				DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+					if v, ok := d.GetOk("autoclass.0.enabled"); ok && v.(bool) && old != "" {
+						return true
+					}
+					return false
+				},
 			},
 
 			"lifecycle_rule": {
@@ -262,6 +268,12 @@ func ResourceStorageBucket() *schema.Resource {
 							Type:        schema.TypeBool,
 							Required:    true,
 							Description: `While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.`,
+						},
+						"terminal_storage_class": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: `The storage class that objects in the bucket eventually transition to if they are not read for a certain length of time. Supported values include: NEARLINE, ARCHIVE.`,
 						},
 					},
 				},
@@ -1369,6 +1381,9 @@ func expandBucketAutoclass(configured interface{}) *storage.BucketAutoclass {
 	bucketAutoclass := &storage.BucketAutoclass{}
 
 	bucketAutoclass.Enabled = autoclass["enabled"].(bool)
+	if autoclass["terminal_storage_class"] != "" {
+		bucketAutoclass.TerminalStorageClass = autoclass["terminal_storage_class"].(string)
+	}
 	bucketAutoclass.ForceSendFields = append(bucketAutoclass.ForceSendFields, "Enabled")
 
 	return bucketAutoclass
@@ -1396,7 +1411,8 @@ func flattenBucketAutoclass(bucketAutoclass *storage.BucketAutoclass) []map[stri
 	}
 
 	autoclass := map[string]interface{}{
-		"enabled": bucketAutoclass.Enabled,
+		"enabled":                bucketAutoclass.Enabled,
+		"terminal_storage_class": bucketAutoclass.TerminalStorageClass,
 	}
 	autoclassList = append(autoclassList, autoclass)
 	return autoclassList
