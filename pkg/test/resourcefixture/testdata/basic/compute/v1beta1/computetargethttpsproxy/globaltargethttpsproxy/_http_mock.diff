@@ -23,12 +23,11 @@
 <     "https://www.googleapis.com/compute/beta/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
 ---
 >     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
-699,763c700
+699c700
 <   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-< }
-< 
-< ---
-< 
+---
+>   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+704,768c705
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}/setQuicOverride?alt=json
 < Content-Type: application/json
 < 
@@ -89,9 +88,10 @@
 <   "targetId": "${targetHttpsProxyID}",
 <   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
 <   "user": "user@example.com"
----
->   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
-768c705
+< }
+< 
+< ---
+< 
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/targetHttpsProxies/${targetHttpsProxyID}/setUrlMap?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
@@ -127,7 +127,7 @@
 858c803
 <   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 ---
->   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+>   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 863c808
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
 ---

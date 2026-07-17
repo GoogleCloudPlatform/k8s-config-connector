@@ -19,6 +19,8 @@
 package compute
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
@@ -83,6 +85,13 @@ func computeTargetHTTPSProxyFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".self_link")
 
 	f.FilterSpec = func(in *pb.TargetHttpsProxy) {
+		if in.CertificateMap != nil && *in.CertificateMap != "" {
+			val := *in.CertificateMap
+			if !strings.HasPrefix(val, "//certificatemanager.googleapis.com/") {
+				val = "//certificatemanager.googleapis.com/" + val
+				in.CertificateMap = &val
+			}
+		}
 	}
 	f.FilterStatus = func(in *pb.TargetHttpsProxy) {
 	}

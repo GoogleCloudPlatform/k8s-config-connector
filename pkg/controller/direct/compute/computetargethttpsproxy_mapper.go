@@ -38,7 +38,11 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.Description = in.Description
 
 	if in.CertificateMapRef != nil {
-		out.CertificateMap = &in.CertificateMapRef.External
+		external := in.CertificateMapRef.External
+		if !strings.HasPrefix(external, "//certificatemanager.googleapis.com/") {
+			external = "//certificatemanager.googleapis.com/" + external
+		}
+		out.CertificateMap = &external
 	}
 	if in.UrlMapRef != nil {
 		out.UrlMap = &in.UrlMapRef.External
@@ -81,7 +85,9 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out.Description = in.Description
 
 	if in.CertificateMap != nil {
-		out.CertificateMapRef = &certificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: *in.CertificateMap}
+		external := *in.CertificateMap
+		external = strings.TrimPrefix(external, "//certificatemanager.googleapis.com/")
+		out.CertificateMapRef = &certificatemanagerv1beta1.CertificateManagerCertificateMapRef{External: external}
 	}
 	if in.UrlMap != nil {
 		out.UrlMapRef = &krm.ComputeURLMapRef{External: *in.UrlMap}

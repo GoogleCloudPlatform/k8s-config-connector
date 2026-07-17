@@ -804,7 +804,7 @@ X-Xss-Protection: 0
     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificates-${uniqueId}"
   ],
   "tlsEarlyData": "DISABLED",
-  "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 }
 
 ---
