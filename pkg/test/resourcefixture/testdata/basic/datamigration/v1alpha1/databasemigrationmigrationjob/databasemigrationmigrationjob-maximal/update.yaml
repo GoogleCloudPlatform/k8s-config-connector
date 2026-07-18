@@ -1,0 +1,31 @@
+apiVersion: datamigration.cnrm.cloud.google.com/v1alpha1
+kind: DatabaseMigrationMigrationJob
+metadata:
+  name: db-mj-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Maximal Migration Job Updated"
+  type: ONE_TIME
+  labels:
+    test-label: test-value-updated
+  sourceRef:
+    external: projects/${projectId}/locations/us-central1/connectionProfiles/src-profile-${uniqueId}
+  destinationRef:
+    external: projects/${projectId}/locations/us-central1/connectionProfiles/dest-profile-${uniqueId}
+  reverseSSHConnectivity:
+    vmIP: "1.2.3.4"
+    vmPort: 22
+    vmRef:
+      external: projects/${projectId}/zones/us-central1-a/instances/bastion-vm
+    vpcRef:
+      external: projects/${projectId}/global/networks/default
+  sourceDatabase:
+    engine: MYSQL
+    provider: CLOUDSQL
+  destinationDatabase:
+    engine: POSTGRESQL
+    provider: CLOUDSQL
+  performanceConfig:
+    dumpParallelLevel: MIN

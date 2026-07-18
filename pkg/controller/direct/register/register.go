@@ -69,6 +69,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datalabeling/datalabelinginstruction"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datamigration/databasemigrationconversionworkspace"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datamigration/databasemigrationmigrationjob"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataplex"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc/dataprocsessiontemplate"
