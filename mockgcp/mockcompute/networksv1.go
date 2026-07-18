@@ -49,6 +49,10 @@ func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Ne
 		return nil, err
 	}
 
+	if obj.EnableUlaInternalIpv6 != nil && !*obj.EnableUlaInternalIpv6 {
+		obj.EnableUlaInternalIpv6 = nil
+	}
+
 	return obj, nil
 }
 

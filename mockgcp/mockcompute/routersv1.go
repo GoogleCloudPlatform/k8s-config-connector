@@ -51,6 +51,10 @@ func (s *RoutersV1) Get(ctx context.Context, req *pb.GetRouterRequest) (*pb.Rout
 		return nil, err
 	}
 
+	if obj.EncryptedInterconnectRouter != nil && !*obj.EncryptedInterconnectRouter {
+		obj.EncryptedInterconnectRouter = nil
+	}
+
 	return obj, nil
 }
 
@@ -75,8 +79,8 @@ func (s *RoutersV1) Insert(ctx context.Context, req *pb.InsertRouterRequest) (*p
 		obj.Description = PtrTo("")
 	}
 
-	if obj.EncryptedInterconnectRouter == nil {
-		obj.EncryptedInterconnectRouter = PtrTo(false)
+	if obj.EncryptedInterconnectRouter != nil && !*obj.EncryptedInterconnectRouter {
+		obj.EncryptedInterconnectRouter = nil
 	}
 
 	if obj.Network != nil {

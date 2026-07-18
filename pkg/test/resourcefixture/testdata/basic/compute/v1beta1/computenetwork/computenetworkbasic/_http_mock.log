@@ -114,7 +114,6 @@ X-Xss-Protection: 0
 {
   "autoCreateSubnetworks": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableUlaInternalIpv6": false,
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",

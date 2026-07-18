@@ -1,6 +1,6 @@
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
@@ -26,7 +26,7 @@ X-Xss-Protection: 0
 
 POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions?%24alt=json%3Benum-encoding%3Dint&sessionId=dataprocsession-minimal-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 X-Goog-User-Project: ${projectId}
 
@@ -77,7 +77,7 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
 X-Goog-User-Project: ${projectId}
 
@@ -115,15 +115,44 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test-user@google.com",
+    "environmentConfig": {
+      "executionConfig": {
+        "idleTtl": "3600s",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "ttl": "86400s"
+      },
+      "peripheralsConfig": {
+        "sparkHistoryServerConfig": {}
+      }
+    },
     "jupyterSession": {
       "displayName": "test-kernel",
       "kernel": "PYTHON"
     },
     "labels": {
       "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "runtimeConfig": {
+      "properties": {
+        "dataproc:dataproc.tier": "premium",
+        "spark:spark.dataproc.engine": "default",
+        "spark:spark.dataproc.lightningEngine.runtime": "default",
+        "spark:spark.dataproc.scaling.version": "2",
+        "spark:spark.driver.cores": "4",
+        "spark:spark.driver.memory": "9600m",
+        "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+        "spark:spark.executor.cores": "4",
+        "spark:spark.executor.instances": "2",
+        "spark:spark.executor.memory": "9600m"
+      },
+      "version": "2.2.82"
+    },
     "runtimeInfo": {},
     "state": "ACTIVE",
     "stateHistory": [
@@ -141,7 +170,7 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
@@ -158,15 +187,44 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
+  "environmentConfig": {
+    "executionConfig": {
+      "idleTtl": "3600s",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "ttl": "86400s"
+    },
+    "peripheralsConfig": {
+      "sparkHistoryServerConfig": {}
+    }
+  },
   "jupyterSession": {
     "displayName": "test-kernel",
     "kernel": 1
   },
   "labels": {
     "cnrm-test": "true",
+    "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+    "goog-dataproc-location": "us-central1",
+    "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+    "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+  "runtimeConfig": {
+    "properties": {
+      "dataproc:dataproc.tier": "premium",
+      "spark:spark.dataproc.engine": "default",
+      "spark:spark.dataproc.lightningEngine.runtime": "default",
+      "spark:spark.dataproc.scaling.version": "2",
+      "spark:spark.driver.cores": "4",
+      "spark:spark.driver.memory": "9600m",
+      "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+      "spark:spark.executor.cores": "4",
+      "spark:spark.executor.instances": "2",
+      "spark:spark.executor.memory": "9600m"
+    },
+    "version": "2.2.82"
+  },
   "runtimeInfo": {},
   "state": 2,
   "stateHistory": [
@@ -183,7 +241,7 @@ X-Xss-Protection: 0
 
 DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
@@ -222,7 +280,7 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
 X-Goog-User-Project: ${projectId}
 
@@ -260,15 +318,44 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test-user@google.com",
+    "environmentConfig": {
+      "executionConfig": {
+        "idleTtl": "3600s",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "ttl": "86400s"
+      },
+      "peripheralsConfig": {
+        "sparkHistoryServerConfig": {}
+      }
+    },
     "jupyterSession": {
       "displayName": "test-kernel",
       "kernel": "PYTHON"
     },
     "labels": {
       "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "runtimeConfig": {
+      "properties": {
+        "dataproc:dataproc.tier": "premium",
+        "spark:spark.dataproc.engine": "default",
+        "spark:spark.dataproc.lightningEngine.runtime": "default",
+        "spark:spark.dataproc.scaling.version": "2",
+        "spark:spark.driver.cores": "4",
+        "spark:spark.driver.memory": "9600m",
+        "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+        "spark:spark.executor.cores": "4",
+        "spark:spark.executor.instances": "2",
+        "spark:spark.executor.memory": "9600m"
+      },
+      "version": "2.2.82"
+    },
     "runtimeInfo": {},
     "state": "ACTIVE",
     "stateHistory": [
