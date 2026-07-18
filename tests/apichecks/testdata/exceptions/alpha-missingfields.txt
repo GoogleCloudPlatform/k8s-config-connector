@@ -222,17 +222,20 @@
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiFunctionalRequirements.enumValues.values[].id" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiFunctionalRequirements.enumValues.values[].immutable" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiFunctionalRequirements.jsonValues.values[]" is not set in unstructured objects
+[missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiFunctionalRequirements.uriValues.values[]" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiRequirements.enumValues.values[].description" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiRequirements.enumValues.values[].displayName" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiRequirements.enumValues.values[].id" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiRequirements.enumValues.values[].immutable" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiRequirements.jsonValues.values[]" is not set in unstructured objects
+[missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiRequirements.uriValues.values[]" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiStyleRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiTechnicalRequirements.enumValues.values[].description" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiTechnicalRequirements.enumValues.values[].displayName" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiTechnicalRequirements.enumValues.values[].id" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiTechnicalRequirements.enumValues.values[].immutable" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiTechnicalRequirements.jsonValues.values[]" is not set in unstructured objects
+[missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiTechnicalRequirements.uriValues.values[]" is not set in unstructured objects
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributeRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributeRefs[].attributeRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.businessUnitRef" is not set; neither 'external' nor 'name' are set
@@ -241,6 +244,12 @@
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectedVersionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetUserRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.teamRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=apihubcurations.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=apihubcurations.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=apihubcurations.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoint.applicationIntegrationEndpointDetails.triggerID" is not set in unstructured objects
+[missing_field] crd=apihubcurations.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoint.applicationIntegrationEndpointDetails.uri" is not set in unstructured objects
+[missing_field] crd=apihubcurations.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=apihubcurations.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentTypeRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=apihubdeployments.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
@@ -273,6 +282,7 @@
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.enumValues.values[].immutable" is not set in unstructured objects
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.jsonValues.values[]" is not set in unstructured objects
 [missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.stringValues.values[]" is not set in unstructured objects
+[missing_field] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.uriValues.values[]" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.androidKeyRestrictions.allowedApplications[].packageName" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.androidKeyRestrictions.allowedApplications[].sha1Fingerprint" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.browserKeyRestrictions.allowedReferrers[]" is not set in unstructured objects
