@@ -37,6 +37,7 @@ go run . generate-types \
     --resource BackupDRBackupPlanAssociation:BackupPlanAssociation \
     --resource BackupDRBackupPlan:BackupPlan \
     --resource BackupDRBackupVault:BackupVault \
+    --resource BackupDRBackup:Backup \
 
 sed -i 's/\*common.Status/\*common.DeprecatedStatusWithDetails/g' ${REPO_ROOT}/apis/backupdr/v1beta1/types.generated.go
 
