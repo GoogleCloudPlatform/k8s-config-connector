@@ -87,15 +87,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The `id` of a `APIHubAttribute` resource, when
-                            not managed by Config Connector.
+                          description: A reference to an externally managed APIHubAttribute
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/attributes/{{attribute}}"
                           type: string
                         name:
-                          description: The `name` field of a `APIHubAttribute` resource.
+                          description: The name of an APIHubAttribute resource.
                           type: string
                         namespace:
-                          description: The `namespace` field of a `APIHubAttribute`
-                            resource.
+                          description: The namespace of an APIHubAttribute resource.
                           type: string
                       type: object
                     values:
