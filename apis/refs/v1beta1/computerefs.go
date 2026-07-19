@@ -205,3 +205,12 @@ type ComputeForwardingRuleRef struct {
 	/* The namespace field of a ComputeForwardingRule resource. */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type ComputeDiskTypeRef struct {
+	/* The ComputeDiskType in the form "projects/{{project}}/zones/{{zone}}/diskTypes/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeDiskType` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeDiskType` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
