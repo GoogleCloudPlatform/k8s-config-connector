@@ -62,6 +62,7 @@ func (m *tlsInspectionPolicyModel) client(ctx context.Context) (pb.NetworkSecuri
 		return nil, nil, err
 	}
 	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
+	opts = append(opts, option.WithScopes("https://www.googleapis.com/auth/cloud-platform"))
 	conn, err := grpc.Dial(ctx, opts...)
 	if err != nil {
 		return nil, nil, fmt.Errorf("dialing networksecurity service: %w", err)
