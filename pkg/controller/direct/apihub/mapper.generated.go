@@ -30,6 +30,58 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func APIHubAttributeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.APIHubAttributeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubAttributeObservedState{}
+	// MISSING: Name
+	out.DefinitionType = direct.Enum_FromProto(mapCtx, in.GetDefinitionType())
+	out.Mandatory = direct.LazyPtr(in.GetMandatory())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func APIHubAttributeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAttributeObservedState) *pb.Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute{}
+	// MISSING: Name
+	out.DefinitionType = direct.Enum_ToProto[pb.Attribute_DefinitionType](mapCtx, in.DefinitionType)
+	out.Mandatory = direct.ValueOf(in.Mandatory)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func APIHubAttributeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.APIHubAttributeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubAttributeSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
+	out.DataType = direct.Enum_FromProto(mapCtx, in.GetDataType())
+	out.AllowedValues = direct.Slice_FromProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_FromProto)
+	out.Cardinality = direct.LazyPtr(in.GetCardinality())
+	return out
+}
+func APIHubAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAttributeSpec) *pb.Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Scope = direct.Enum_ToProto[pb.Attribute_Scope](mapCtx, in.Scope)
+	out.DataType = direct.Enum_ToProto[pb.Attribute_DataType](mapCtx, in.DataType)
+	out.AllowedValues = direct.Slice_ToProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_ToProto)
+	out.Cardinality = direct.ValueOf(in.Cardinality)
+	return out
+}
 func APIHubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.APIHubDeploymentObservedState {
 	if in == nil {
 		return nil
