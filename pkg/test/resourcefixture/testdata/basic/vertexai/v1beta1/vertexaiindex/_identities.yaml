@@ -10,7 +10,7 @@
   name: iampolicymember-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/indexes/vertexaiindex-${uniqueId}
   group: vertexai.cnrm.cloud.google.com
   kind: VertexAIIndex
   name: vertexaiindex-${uniqueId}

@@ -19,6 +19,7 @@
 // proto.service: google.cloud.aiplatform.v1beta1
 // resource: VertexAIMetadataStore:MetadataStore
 // resource: VertexAIDataset:Dataset
+// resource: VertexAIIndex:Index
 
 package v1beta1
 
@@ -94,6 +95,19 @@ type Dataset struct {
 }
 */
 
+/* unreachable type DeployedIndexRef
+// +kcc:proto=google.cloud.aiplatform.v1beta1.DeployedIndexRef
+type DeployedIndexRef struct {
+	// Immutable. A resource name of the IndexEndpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DeployedIndexRef.index_endpoint
+	IndexEndpoint *string `json:"indexEndpoint,omitempty"`
+
+	// Immutable. The ID of the DeployedIndex in the above IndexEndpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DeployedIndexRef.deployed_index_id
+	DeployedIndexID *string `json:"deployedIndexID,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "EncryptionSpec", skipping
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
@@ -105,6 +119,70 @@ type EncryptionSpec struct {
 	//  created.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EncryptionSpec.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+}
+*/
+
+/* unreachable type Index
+// +kcc:proto=google.cloud.aiplatform.v1beta1.Index
+type Index struct {
+
+	// Required. The display name of the Index.
+	//  The name can be up to 128 characters long and can consist of any UTF-8
+	//  characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The description of the Index.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.description
+	Description *string `json:"description,omitempty"`
+
+	// Immutable. Points to a YAML file stored on Google Cloud Storage describing
+	//  additional information about the Index, that is specific to it. Unset if
+	//  the Index does not have any additional information. The schema is defined
+	//  as an OpenAPI 3.0.2 [Schema
+	//  Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject).
+	//  Note: The URI given on output will be immutable and probably different,
+	//  including the URI scheme, than the one given on input. The output URI will
+	//  point to a location where the user only has a read access.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.metadata_schema_uri
+	MetadataSchemaURI *string `json:"metadataSchemaURI,omitempty"`
+
+	// An additional information about the Index; the schema of the metadata can
+	//  be found in
+	//  [metadata_schema][google.cloud.aiplatform.v1beta1.Index.metadata_schema_uri].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.metadata
+	Metadata *Value `json:"metadata,omitempty"`
+
+	// Used to perform consistent read-modify-write updates. If not set, a blind
+	//  "overwrite" update happens.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// The labels with user-defined metadata to organize your Indexes.
+	//
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores and dashes. International characters are allowed.
+	//
+	//  See https://goo.gl/xmQnxf for more information and examples of labels.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Immutable. The update method to use with this Index. If not set,
+	//  BATCH_UPDATE will be used by default.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.index_update_method
+	IndexUpdateMethod *string `json:"indexUpdateMethod,omitempty"`
+
+	// Immutable. Customer-managed encryption key spec for an Index. If set, this
+	//  Index and all sub-resources of this Index will be secured by this key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.encryption_spec
+	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+}
+*/
+
+/* unreachable type IndexStats
+// +kcc:proto=google.cloud.aiplatform.v1beta1.IndexStats
+type IndexStats struct {
 }
 */
 
@@ -264,6 +342,82 @@ type DatasetObservedState struct {
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Dataset.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+*/
+
+/* unreachable type DeployedIndexRefObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.DeployedIndexRef
+type DeployedIndexRefObservedState struct {
+	// Immutable. A resource name of the IndexEndpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DeployedIndexRef.index_endpoint
+	IndexEndpoint *string `json:"indexEndpoint,omitempty"`
+
+	// Immutable. The ID of the DeployedIndex in the above IndexEndpoint.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DeployedIndexRef.deployed_index_id
+	DeployedIndexID *string `json:"deployedIndexID,omitempty"`
+
+	// Output only. The display name of the DeployedIndex.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DeployedIndexRef.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+*/
+
+/* unreachable type IndexObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.Index
+type IndexObservedState struct {
+	// Output only. The resource name of the Index.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The pointers to DeployedIndexes created from this Index.
+	//  An Index can be only deleted if all its DeployedIndexes had been undeployed
+	//  first.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.deployed_indexes
+	DeployedIndexes []DeployedIndexRefObservedState `json:"deployedIndexes,omitempty"`
+
+	// Output only. Timestamp when this Index was created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when this Index was most recently updated.
+	//  This also includes any update to the contents of the Index.
+	//  Note that Operations working on this Index may have their
+	//  [Operations.metadata.generic_metadata.update_time]
+	//  [google.cloud.aiplatform.v1beta1.GenericOperationMetadata.update_time] a
+	//  little after the value of this timestamp, yet that does not mean their
+	//  results are not already reflected in the Index. Result of any successfully
+	//  completed Operation on the Index is reflected in it.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Stats of the index resource.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.index_stats
+	IndexStats *IndexStatsObservedState `json:"indexStats,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Output only. Reserved for future use.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Index.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+*/
+
+/* unreachable type IndexStatsObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.IndexStats
+type IndexStatsObservedState struct {
+	// Output only. The number of dense vectors in the Index.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IndexStats.vectors_count
+	VectorsCount *int64 `json:"vectorsCount,omitempty"`
+
+	// Output only. The number of sparse vectors in the Index.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IndexStats.sparse_vectors_count
+	SparseVectorsCount *int64 `json:"sparseVectorsCount,omitempty"`
+
+	// Output only. The number of shards in the Index.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.IndexStats.shards_count
+	ShardsCount *int32 `json:"shardsCount,omitempty"`
 }
 */
 

@@ -2799,7 +2799,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "vertexai.cnrm.cloud.google.com",
-		Version: "v1beta1",
+		Version: "v1alpha1",
 		Kind:    "VertexAIIndex",
 	}: {
 		Terraform:   true,
@@ -2808,7 +2808,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "vertexai.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "VertexAIIndex",
 	}: {
 		Terraform:   true,

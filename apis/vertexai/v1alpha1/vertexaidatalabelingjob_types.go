@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -150,7 +151,7 @@ type VertexAIDataLabelingJobObservedState struct {
 	// Output only. DataLabelingJob errors. It is only populated when job's state
 	// is `JOB_STATE_FAILED` or `JOB_STATE_CANCELLED`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.DataLabelingJob.error
-	Error *Status `json:"error,omitempty"`
+	Error *common.Status `json:"error,omitempty"`
 }
 
 // +genclient

@@ -74,6 +74,7 @@ metadata:
   contentsDeltaUri: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 region: string
@@ -100,7 +101,7 @@ resourceID: string
     <tr>
         <td>
             <p><code>displayName</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -114,9 +115,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The update method to use with this Index. The value must be the followings. If not set, BATCH_UPDATE will be used by default.
-* BATCH_UPDATE: user can call indexes.patch with files on Cloud Storage of datapoints to update.
-* STREAM_UPDATE: user can call indexes.upsertDatapoints/DeleteDatapoints to update the Index and the updates will be applied in corresponding DeployedIndexes in nearly real-time.</p>
+            <p>Immutable. The update method to use with this Index. The value must be the followings. If not set, BATCH_UPDATE will be used by default. * BATCH_UPDATE: user can call indexes.patch with files on Cloud Storage of datapoints to update. * STREAM_UPDATE: user can call indexes.upsertDatapoints/DeleteDatapoints to update the Index and the updates will be applied in corresponding DeployedIndexes in nearly real-time.</p>
         </td>
     </tr>
     <tr>
@@ -156,8 +155,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Configuration options for using brute force search, which simply implements the
-standard linear search in the database for each query.</p>
+            <p>Configuration options for using brute force search, which simply implements the standard linear search in the database for each query.</p>
         </td>
     </tr>
     <tr>
@@ -167,8 +165,7 @@ standard linear search in the database for each query.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Configuration options for using the tree-AH algorithm (Shallow tree + Asymmetric Hashing).
-Please refer to this paper for more details: https://arxiv.org/abs/1908.10396.</p>
+            <p>Configuration options for using the tree-AH algorithm (Shallow tree + Asymmetric Hashing). Please refer to this paper for more details: https://arxiv.org/abs/1908.10396.</p>
         </td>
     </tr>
     <tr>
@@ -188,8 +185,7 @@ Please refer to this paper for more details: https://arxiv.org/abs/1908.10396.</
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The default percentage of leaf nodes that any query may be searched. Must be in
-range 1-100, inclusive. The default value is 10 (means 10%) if not set.</p>
+            <p>The default percentage of leaf nodes that any query may be searched. Must be in range 1-100, inclusive. The default value is 10 (means 10%) if not set.</p>
         </td>
     </tr>
     <tr>
@@ -199,10 +195,7 @@ range 1-100, inclusive. The default value is 10 (means 10%) if not set.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The default number of neighbors to find via approximate search before exact reordering is
-performed. Exact reordering is a procedure where results returned by an
-approximate search algorithm are reordered via a more expensive distance computation.
-Required if tree-AH algorithm is used.</p>
+            <p>The default number of neighbors to find via approximate search before exact reordering is performed. Exact reordering is a procedure where results returned by an approximate search algorithm are reordered via a more expensive distance computation. Required if tree-AH algorithm is used.</p>
         </td>
     </tr>
     <tr>
@@ -222,11 +215,7 @@ Required if tree-AH algorithm is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The distance measure used in nearest neighbor search. The value must be one of the followings:
-* SQUARED_L2_DISTANCE: Euclidean (L_2) Distance
-* L1_DISTANCE: Manhattan (L_1) Distance
-* COSINE_DISTANCE: Cosine Distance. Defined as 1 - cosine similarity.
-* DOT_PRODUCT_DISTANCE: Dot Product Distance. Defined as a negative of the dot product.</p>
+            <p>The distance measure used in nearest neighbor search. The value must be one of the followings: * SQUARED_L2_DISTANCE: Euclidean (L_2) Distance * L1_DISTANCE: Manhattan (L_1) Distance * COSINE_DISTANCE: Cosine Distance. Defined as 1 - cosine similarity. * DOT_PRODUCT_DISTANCE: Dot Product Distance. Defined as a negative of the dot product.</p>
         </td>
     </tr>
     <tr>
@@ -236,9 +225,7 @@ Required if tree-AH algorithm is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Type of normalization to be carried out on each vector. The value must be one of the followings:
-* UNIT_L2_NORM: Unit L2 normalization type
-* NONE: No normalization type is specified.</p>
+            <p>Type of normalization to be carried out on each vector. The value must be one of the followings: * UNIT_L2_NORM: Unit L2 normalization type * NONE: No normalization type is specified.</p>
         </td>
     </tr>
     <tr>
@@ -248,11 +235,7 @@ Required if tree-AH algorithm is used.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Index data is split into equal parts to be processed. These are called "shards".
-The shard size must be specified when creating an index. The value must be one of the followings:
-* SHARD_SIZE_SMALL: Small (2GB)
-* SHARD_SIZE_MEDIUM: Medium (20GB)
-* SHARD_SIZE_LARGE: Large (50GB).</p>
+            <p>Immutable. Index data is split into equal parts to be processed. These are called "shards". The shard size must be specified when creating an index. The value must be one of the followings: * SHARD_SIZE_SMALL: Small (2GB) * SHARD_SIZE_MEDIUM: Medium (20GB) * SHARD_SIZE_LARGE: Large (50GB).</p>
         </td>
     </tr>
     <tr>
@@ -262,20 +245,13 @@ The shard size must be specified when creating an index. The value must be one o
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allows creating or replacing the contents of the Matching Engine Index.
-When being updated, the existing content of the Index will be replaced by the data
-from the latest contentsDeltaUri.
-The string must be a valid Cloud Storage directory path. If this
-field is set when calling IndexService.UpdateIndex, then no other
-Index field can be also updated as part of the same call.
-The expected structure and format of the files this URI points to is
-described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format.</p>
+            <p>Allows creating or replacing the contents of the Matching Engine Index. When being updated, the existing content of the Index will be replaced by the data from the latest contentsDeltaUri. The string must be a valid Cloud Storage directory path. If this field is set when calling IndexService.UpdateIndex, then no other Index field can be also updated as part of the same call. The expected structure and format of the files this URI points to is described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format.</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -289,7 +265,17 @@ described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-match
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The kind of the Project resource; optional but must be `Project` if provided.</p>
         </td>
     </tr>
     <tr>
@@ -299,7 +285,7 @@ described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-match
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -309,13 +295,13 @@ described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-match
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>region</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -346,6 +332,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
 observedState:
   createTime: string
@@ -367,7 +354,7 @@ observedState:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the VertexAIIndex's current state.</p>
         </td>
     </tr>
     <tr>
@@ -410,6 +397,13 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Type is the type of the condition.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the VertexAIIndex resource in GCP.</p>
         </td>
     </tr>
     <tr>
