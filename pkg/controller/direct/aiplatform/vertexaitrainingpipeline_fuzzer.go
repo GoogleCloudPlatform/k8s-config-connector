@@ -145,20 +145,22 @@ func vertexAITrainingPipelineFuzzer() fuzztesting.KRMFuzzer {
 	f.FilterSpec = func(in *pb.TrainingPipeline) {
 		if in.TrainingTaskInputs != nil {
 			clearUnsupportedValueFields(in.TrainingTaskInputs)
+			if in.TrainingTaskInputs.GetKind() == nil {
+				in.TrainingTaskInputs = nil
+			}
 		}
 		if in.ModelToUpload != nil {
 			if in.ModelToUpload.Metadata != nil {
 				clearUnsupportedValueFields(in.ModelToUpload.Metadata)
+				if in.ModelToUpload.Metadata.GetKind() == nil {
+					in.ModelToUpload.Metadata = nil
+				}
 			}
 			if in.ModelToUpload.ExplanationSpec != nil {
 				if in.ModelToUpload.ExplanationSpec.Metadata != nil {
 					for _, input := range in.ModelToUpload.ExplanationSpec.Metadata.Inputs {
-						for _, b := range input.InputBaselines {
-							clearUnsupportedValueFields(b)
-						}
-						for _, b := range input.EncodedBaselines {
-							clearUnsupportedValueFields(b)
-						}
+						input.InputBaselines = filterValueSlice(input.InputBaselines)
+						input.EncodedBaselines = filterValueSlice(input.EncodedBaselines)
 						if input.Visualization != nil {
 							input.Visualization.Type = 0
 							input.Visualization.Polarity = 0
@@ -166,14 +168,34 @@ func vertexAITrainingPipelineFuzzer() fuzztesting.KRMFuzzer {
 						}
 					}
 					for _, output := range in.ModelToUpload.ExplanationSpec.Metadata.Outputs {
-						clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+						if mapping := output.GetIndexDisplayNameMapping(); mapping != nil {
+							clearUnsupportedValueFields(mapping)
+							if mapping.GetKind() == nil {
+								output.DisplayNameMapping = nil
+							}
+						}
 					}
 				}
 				if in.ModelToUpload.ExplanationSpec.Parameters != nil {
 					if in.ModelToUpload.ExplanationSpec.Parameters.GetExamples() != nil {
-						clearUnsupportedValueFields(in.ModelToUpload.ExplanationSpec.Parameters.GetExamples().GetNearestNeighborSearchConfig())
+						config := in.ModelToUpload.ExplanationSpec.Parameters.GetExamples()
+						if mapping := config.GetNearestNeighborSearchConfig(); mapping != nil {
+							clearUnsupportedValueFields(mapping)
+							if mapping.GetKind() == nil {
+								config.Config = nil
+							}
+						}
 					}
 				}
+			}
+		}
+	}
+
+	f.FilterStatus = func(in *pb.TrainingPipeline) {
+		if in.TrainingTaskMetadata != nil {
+			clearUnsupportedValueFields(in.TrainingTaskMetadata)
+			if in.TrainingTaskMetadata.GetKind() == nil {
+				in.TrainingTaskMetadata = nil
 			}
 		}
 	}

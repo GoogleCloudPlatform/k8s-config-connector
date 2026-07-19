@@ -86,11 +86,7 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.outputs" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.exampleGCSSource.dataFormat" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris[]" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.boolValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.nullValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.numberValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.stringValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig.structValue" is not set in unstructured objects
+[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.nearestNeighborSearchConfig" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.neighborCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.presets.modality" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.examples.presets.query" is not set in unstructured objects
@@ -110,11 +106,7 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.parameters.xraiAttribution.stepCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.boolValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.nullValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.numberValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.stringValue" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata.structValue" is not set in unstructured objects
+[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pipelineJob" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.instanceSchemaURI" is not set in unstructured objects
@@ -3853,6 +3845,37 @@
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicEndpointEnabled" is not set in unstructured objects
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.analysisInstanceSchemaURI" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableMonitoringPipelineLogs" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpointRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.logTTL" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingSamplingStrategy.randomSampleConfig.sampleRate" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].deployedModelID" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.explanationConfig.enableFeatureAttributes" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.explanationConfig.explanationBaseline.bigquery.outputURI" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.explanationConfig.explanationBaseline.gcs.outputURIPrefix" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.explanationConfig.explanationBaseline.predictionFormat" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.predictionDriftDetectionConfig.defaultDriftThreshold.value" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.trainingDataset.bigquerySource.inputURI" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.trainingDataset.dataFormat" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.trainingDataset.dataset" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.trainingDataset.gcsSource.uris[]" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.trainingDataset.loggingSamplingStrategy.randomSampleConfig.sampleRate" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.trainingDataset.targetField" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringObjectiveConfigs[].objectiveConfig.trainingPredictionSkewDetectionConfig.defaultSkewThreshold.value" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringScheduleConfig.monitorInterval" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelDeploymentMonitoringScheduleConfig.monitorWindow" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringAlertConfig.emailAlertConfig.userEmails[]" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringAlertConfig.enableLogging" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelMonitoringAlertConfig.notificationChannels[]" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictInstanceSchemaURI" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.samplePredictInstance" is not set in unstructured objects
+[missing_field] crd=vertexaimodeldeploymentmonitoringjobs.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.statsAnomaliesBaseDirectory.outputURIPrefix" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
@@ -4079,11 +4102,7 @@
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.metadata.outputs" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.exampleGCSSource.dataFormat" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris[]" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.nearestNeighborSearchConfig.boolValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.nearestNeighborSearchConfig.nullValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.nearestNeighborSearchConfig.numberValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.nearestNeighborSearchConfig.stringValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.nearestNeighborSearchConfig.structValue" is not set in unstructured objects
+[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.nearestNeighborSearchConfig" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.neighborCount" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.presets.modality" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.examples.presets.query" is not set in unstructured objects
@@ -4102,11 +4121,7 @@
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.xraiAttribution.smoothGradConfig.noisySampleCount" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.parameters.xraiAttribution.stepCount" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.labels" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.metadata.boolValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.metadata.nullValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.metadata.numberValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.metadata.stringValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.metadata.structValue" is not set in unstructured objects
+[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.metadata" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.metadataSchemaURI" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.pipelineJob" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.predictSchemata.instanceSchemaURI" is not set in unstructured objects
@@ -4114,10 +4129,6 @@
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.predictSchemata.predictionSchemaURI" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.versionAliases[]" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.versionDescription" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingTaskInputs.boolValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingTaskInputs.nullValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingTaskInputs.numberValue" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingTaskInputs.stringValue" is not set in unstructured objects
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModel" is not set in unstructured objects
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set

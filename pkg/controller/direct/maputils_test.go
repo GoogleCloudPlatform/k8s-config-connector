@@ -15,6 +15,7 @@
 package direct
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -22,6 +23,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 func TestStringDuration_FromProto(t *testing.T) {
@@ -167,5 +169,35 @@ func TestIsNotFound(t *testing.T) {
 				t.Errorf("IsNotFound(%v) = %v, want %v", tc.err, got, tc.want)
 			}
 		})
+	}
+}
+
+func TestJSON_FromProto(t *testing.T) {
+	mapCtx := &MapContext{}
+
+	// Test with a struct value
+	m := map[string]interface{}{
+		"a": 1.0,
+		"b": "hello",
+		"c": true,
+	}
+	v, err := structpb.NewValue(m)
+	if err != nil {
+		t.Fatalf("structpb.NewValue failed: %v", err)
+	}
+
+	jsonVal := JSON_FromProto(mapCtx, v)
+	if mapCtx.Err() != nil {
+		t.Fatalf("JSON_FromProto failed: %v", mapCtx.Err())
+	}
+
+	// Verify it's natural JSON (no "structValue" or "fields" at top level)
+	var decoded map[string]interface{}
+	if err := json.Unmarshal(jsonVal.Raw, &decoded); err != nil {
+		t.Fatalf("json.Unmarshal failed: %v", err)
+	}
+
+	if decoded["a"] != 1.0 || decoded["b"] != "hello" || decoded["c"] != true {
+		t.Errorf("decoded JSON mismatch: %v", decoded)
 	}
 }

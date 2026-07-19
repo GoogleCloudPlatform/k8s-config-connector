@@ -196,6 +196,28 @@ func VertexAIDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1be
 	return VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx, in)
 }
 
+func ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata) *krmv1alpha1.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata{
+		RunTime: direct.StringTimestamp_FromProto(mapCtx, in.GetRunTime()),
+		Status:  direct.Status_FromProto(mapCtx, in.GetStatus()),
+	}
+	return out
+}
+
+func ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata) *pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata{
+		RunTime: direct.StringTimestamp_ToProto(mapCtx, in.RunTime),
+		Status:  direct.Status_ToProto(mapCtx, in.Status),
+	}
+	return out
+}
+
 func Money_v1alpha1_FromProto(mapCtx *direct.MapContext, in *money.Money) *krmv1alpha1.Money {
 	if in == nil {
 		return nil

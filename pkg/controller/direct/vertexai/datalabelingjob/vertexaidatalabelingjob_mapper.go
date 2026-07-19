@@ -39,7 +39,7 @@ func VertexAIDataLabelingJobObservedState_FromProto(mapCtx *direct.MapContext, i
 	out.CurrentSpend = Money_FromProto(mapCtx, in.GetCurrentSpend())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
 	return out
 }
 
@@ -54,7 +54,7 @@ func VertexAIDataLabelingJobObservedState_ToProto(mapCtx *direct.MapContext, in 
 	out.CurrentSpend = Money_ToProto(mapCtx, in.CurrentSpend)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Error = Status_ToProto(mapCtx, in.Error)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
 	return out
 }
 
@@ -159,9 +159,8 @@ func Status_ToProto(mapCtx *direct.MapContext, in *common.Status) *status.Status
 	out.Message = direct.ValueOf(in.Message)
 	return out
 }
-
 func JSON_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *apiextensionsv1.JSON {
-	if in == nil {
+	if in == nil || in.GetKind() == nil {
 		return nil
 	}
 	b, err := protojson.Marshal(in)

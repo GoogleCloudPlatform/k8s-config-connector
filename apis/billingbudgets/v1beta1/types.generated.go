@@ -291,36 +291,7 @@ type ThresholdRule struct {
 type ListValue struct {
 	// Repeated field of dynamically typed values.
 	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-*/
-
-/* unreachable type Value
-// +kcc:proto=google.protobuf.Value
-type Value struct {
-	// Represents a null value.
-	// +kcc:proto:field=google.protobuf.Value.null_value
-	NullValue *string `json:"nullValue,omitempty"`
-
-	// Represents a double value.
-	// +kcc:proto:field=google.protobuf.Value.number_value
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	// Represents a string value.
-	// +kcc:proto:field=google.protobuf.Value.string_value
-	StringValue *string `json:"stringValue,omitempty"`
-
-	// Represents a boolean value.
-	// +kcc:proto:field=google.protobuf.Value.bool_value
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	// Represents a structured value.
-	// +kcc:proto:field=google.protobuf.Value.struct_value
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-
-	// Represents a repeated `Value`.
-	// +kcc:proto:field=google.protobuf.Value.list_value
-	ListValue *ListValue `json:"listValue,omitempty"`
+	Values []apiextensionsv1.JSON `json:"values,omitempty"`
 }
 */
 
