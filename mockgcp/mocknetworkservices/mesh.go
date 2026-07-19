@@ -17,12 +17,14 @@ package mocknetworkservices
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 )
@@ -55,8 +57,13 @@ func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMe
 
 	fqn := name.String()
 
+	now := time.Now()
+
 	obj := proto.CloneOf(req.Mesh)
 	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.SelfLink = buildSelfLink(ctx, fqn)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -85,18 +92,28 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	// the full request. A field will be overwritten if it is in the mask. If the
 	// user does not provide a mask then all fields will be overwritten.
 	paths := req.GetUpdateMask().GetPaths()
-	// TODO: Some sort of helper for fieldmask?
-	for _, path := range paths {
-		switch path {
-		case "description":
-			obj.Description = req.GetMesh().GetDescription()
-		case "interceptionPort":
-			obj.InterceptionPort = req.GetMesh().GetInterceptionPort()
-		case "labels":
-			obj.Labels = req.GetMesh().GetLabels()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+	if len(paths) == 0 {
+		now := time.Now()
+		req.Mesh.CreateTime = obj.CreateTime
+		req.Mesh.UpdateTime = timestamppb.New(now)
+		req.Mesh.Name = obj.Name
+		req.Mesh.SelfLink = buildSelfLink(ctx, fqn)
+		obj = req.Mesh
+	} else {
+		// TODO: Some sort of helper for fieldmask?
+		for _, path := range paths {
+			switch path {
+			case "description":
+				obj.Description = req.GetMesh().GetDescription()
+			case "interceptionPort":
+				obj.InterceptionPort = req.GetMesh().GetInterceptionPort()
+			case "labels":
+				obj.Labels = req.GetMesh().GetLabels()
+			default:
+				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+			}
 		}
+		obj.UpdateTime = timestamppb.New(time.Now())
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
