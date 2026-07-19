@@ -32,6 +32,62 @@ import (
 	monthpb "google.golang.org/genproto/googleapis/type/month"
 )
 
+func BackupDRBackupObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.BackupDRBackupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupDRBackupObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: EnforcedRetentionEndTime
+	// MISSING: ExpireTime
+	// MISSING: ConsistencyTime
+	// MISSING: Etag
+	// MISSING: State
+	// MISSING: ServiceLocks
+	// MISSING: BackupApplianceLocks
+	// MISSING: ComputeInstanceBackupProperties
+	// MISSING: CloudSQLInstanceBackupProperties
+	// MISSING: BackupApplianceBackupProperties
+	// MISSING: DiskBackupProperties
+	// MISSING: BackupType
+	// MISSING: GcpBackupPlanInfo
+	// MISSING: ResourceSizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func BackupDRBackupObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupObservedState) *pb.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backup{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: EnforcedRetentionEndTime
+	// MISSING: ExpireTime
+	// MISSING: ConsistencyTime
+	// MISSING: Etag
+	// MISSING: State
+	// MISSING: ServiceLocks
+	// MISSING: BackupApplianceLocks
+	// MISSING: ComputeInstanceBackupProperties
+	// MISSING: CloudSQLInstanceBackupProperties
+	// MISSING: BackupApplianceBackupProperties
+	// MISSING: DiskBackupProperties
+	// MISSING: BackupType
+	// MISSING: GcpBackupPlanInfo
+	// MISSING: ResourceSizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 func BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationObservedState {
 	if in == nil {
 		return nil
@@ -164,28 +220,86 @@ func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 }
 */
 
-/* found existing non-generated mapping function "BackupDRBackupPlanSpec_v1beta1_ToProto", skipping
-func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
+/*
+found existing non-generated mapping function "BackupDRBackupPlanSpec_v1beta1_ToProto", skipping
+
+	func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
+		if in == nil {
+			return nil
+		}
+		out := &pb.BackupPlan{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: Labels
+		out.BackupRules = direct.Slice_ToProto(mapCtx, in.BackupRules, BackupRule_v1beta1_ToProto)
+		out.ResourceType = direct.ValueOf(in.ResourceType)
+		// MISSING: Etag
+		if in.BackupVaultRef != nil {
+			out.BackupVault = in.BackupVaultRef.External
+		}
+		// MISSING: LogRetentionDays
+		// MISSING: SupportedResourceTypes
+		// MISSING: RevisionID
+		// MISSING: RevisionName
+		return out
+	}
+*/
+func BackupDRBackupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.BackupDRBackupSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.BackupPlan{}
+	out := &krm.BackupDRBackupSpec{}
 	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	// MISSING: Labels
-	out.BackupRules = direct.Slice_ToProto(mapCtx, in.BackupRules, BackupRule_v1beta1_ToProto)
-	out.ResourceType = direct.ValueOf(in.ResourceType)
+	// MISSING: EnforcedRetentionEndTime
+	// MISSING: ExpireTime
+	// MISSING: ConsistencyTime
 	// MISSING: Etag
-	if in.BackupVaultRef != nil {
-		out.BackupVault = in.BackupVaultRef.External
-	}
-	// MISSING: LogRetentionDays
-	// MISSING: SupportedResourceTypes
-	// MISSING: RevisionID
-	// MISSING: RevisionName
+	// MISSING: State
+	// MISSING: ServiceLocks
+	// MISSING: BackupApplianceLocks
+	// MISSING: ComputeInstanceBackupProperties
+	// MISSING: CloudSQLInstanceBackupProperties
+	// MISSING: BackupApplianceBackupProperties
+	// MISSING: DiskBackupProperties
+	// MISSING: BackupType
+	// MISSING: GcpBackupPlanInfo
+	// MISSING: ResourceSizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
-*/
+func BackupDRBackupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupSpec) *pb.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backup{}
+	// MISSING: Name
+	// MISSING: Description
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: EnforcedRetentionEndTime
+	// MISSING: ExpireTime
+	// MISSING: ConsistencyTime
+	// MISSING: Etag
+	// MISSING: State
+	// MISSING: ServiceLocks
+	// MISSING: BackupApplianceLocks
+	// MISSING: ComputeInstanceBackupProperties
+	// MISSING: CloudSQLInstanceBackupProperties
+	// MISSING: BackupApplianceBackupProperties
+	// MISSING: DiskBackupProperties
+	// MISSING: BackupType
+	// MISSING: GcpBackupPlanInfo
+	// MISSING: ResourceSizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 
 /* found existing non-generated mapping function "BackupDRBackupVaultObservedState_v1beta1_FromProto", skipping
 func BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
@@ -427,7 +541,7 @@ found existing non-generated mapping function "NetworkConfig_v1alpha1_FromProto"
 		}
 		out := &krmbackupdrv1alpha1.NetworkConfig{}
 		if in.GetNetwork() != "" {
-			out.NetworkRef = &computerefs.ComputeNetworkRef{External: in.GetNetwork()}
+			out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 		}
 		out.PeeringMode = direct.Enum_FromProto(mapCtx, in.GetPeeringMode())
 		return out
