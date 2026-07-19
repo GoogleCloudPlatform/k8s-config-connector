@@ -256,3 +256,92 @@ func HttprouteRetryPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRe
 	out.PerTryTimeout = direct.StringDuration_ToProto(mapCtx, in.PerTryTimeout)
 	return out
 }
+
+func HttprouteQueryParameters_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_QueryParameterMatch) *krm.HttprouteQueryParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HttprouteQueryParameters{}
+	out.QueryParameter = direct.LazyPtr(in.GetQueryParameter())
+
+	switch m := in.MatchType.(type) {
+	case *pb.HttpRoute_QueryParameterMatch_ExactMatch:
+		out.ExactMatch = &m.ExactMatch
+	case *pb.HttpRoute_QueryParameterMatch_RegexMatch:
+		out.RegexMatch = &m.RegexMatch
+	case *pb.HttpRoute_QueryParameterMatch_PresentMatch:
+		out.PresentMatch = &m.PresentMatch
+	}
+	return out
+}
+
+func HttprouteQueryParameters_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteQueryParameters) *pb.HttpRoute_QueryParameterMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_QueryParameterMatch{}
+	if in.ExactMatch != nil {
+		out.MatchType = &pb.HttpRoute_QueryParameterMatch_ExactMatch{ExactMatch: *in.ExactMatch}
+	}
+	if in.RegexMatch != nil {
+		out.MatchType = &pb.HttpRoute_QueryParameterMatch_RegexMatch{RegexMatch: *in.RegexMatch}
+	}
+	if in.PresentMatch != nil {
+		out.MatchType = &pb.HttpRoute_QueryParameterMatch_PresentMatch{PresentMatch: *in.PresentMatch}
+	}
+	out.QueryParameter = direct.ValueOf(in.QueryParameter)
+	return out
+}
+
+func HttprouteHeaders_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch) *krm.HttprouteHeaders {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HttprouteHeaders{}
+	out.Header = direct.LazyPtr(in.GetHeader())
+	out.InvertMatch = direct.LazyPtr(in.GetInvertMatch())
+
+	switch m := in.MatchType.(type) {
+	case *pb.HttpRoute_HeaderMatch_ExactMatch:
+		out.ExactMatch = &m.ExactMatch
+	case *pb.HttpRoute_HeaderMatch_RegexMatch:
+		out.RegexMatch = &m.RegexMatch
+	case *pb.HttpRoute_HeaderMatch_PrefixMatch:
+		out.PrefixMatch = &m.PrefixMatch
+	case *pb.HttpRoute_HeaderMatch_PresentMatch:
+		out.PresentMatch = &m.PresentMatch
+	case *pb.HttpRoute_HeaderMatch_SuffixMatch:
+		out.SuffixMatch = &m.SuffixMatch
+	case *pb.HttpRoute_HeaderMatch_RangeMatch:
+		out.RangeMatch = HttprouteRangeMatch_FromProto(mapCtx, m.RangeMatch)
+	}
+	return out
+}
+
+func HttprouteHeaders_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteHeaders) *pb.HttpRoute_HeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_HeaderMatch{}
+	if in.ExactMatch != nil {
+		out.MatchType = &pb.HttpRoute_HeaderMatch_ExactMatch{ExactMatch: *in.ExactMatch}
+	}
+	if in.RegexMatch != nil {
+		out.MatchType = &pb.HttpRoute_HeaderMatch_RegexMatch{RegexMatch: *in.RegexMatch}
+	}
+	if in.PrefixMatch != nil {
+		out.MatchType = &pb.HttpRoute_HeaderMatch_PrefixMatch{PrefixMatch: *in.PrefixMatch}
+	}
+	if in.PresentMatch != nil {
+		out.MatchType = &pb.HttpRoute_HeaderMatch_PresentMatch{PresentMatch: *in.PresentMatch}
+	}
+	if in.SuffixMatch != nil {
+		out.MatchType = &pb.HttpRoute_HeaderMatch_SuffixMatch{SuffixMatch: *in.SuffixMatch}
+	}
+	if in.RangeMatch != nil {
+		out.MatchType = &pb.HttpRoute_HeaderMatch_RangeMatch{RangeMatch: HttprouteRangeMatch_ToProto(mapCtx, in.RangeMatch)}
+	}
+	out.Header = direct.ValueOf(in.Header)
+	out.InvertMatch = direct.ValueOf(in.InvertMatch)
+	return out
+}

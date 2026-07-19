@@ -310,6 +310,8 @@ func HttprouteFaultInjectionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Ht
 	out.Abort = HttprouteAbort_ToProto(mapCtx, in.Abort)
 	return out
 }
+
+/* found existing non-generated mapping function "HttprouteHeaders_FromProto", skipping
 func HttprouteHeaders_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch) *krm.HttprouteHeaders {
 	if in == nil {
 		return nil
@@ -325,33 +327,39 @@ func HttprouteHeaders_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Head
 	out.InvertMatch = direct.LazyPtr(in.GetInvertMatch())
 	return out
 }
-func HttprouteHeaders_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteHeaders) *pb.HttpRoute_HeaderMatch {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "HttprouteHeaders_ToProto", skipping
+
+	func HttprouteHeaders_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteHeaders) *pb.HttpRoute_HeaderMatch {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HttpRoute_HeaderMatch{}
+		if oneof := HttprouteHeaders_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		if oneof := HttprouteHeaders_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		if oneof := HttprouteHeaders_PrefixMatch_ToProto(mapCtx, in.PrefixMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		if oneof := HttprouteHeaders_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		if oneof := HttprouteHeaders_SuffixMatch_ToProto(mapCtx, in.SuffixMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		if oneof := HttprouteRangeMatch_ToProto(mapCtx, in.RangeMatch); oneof != nil {
+			out.MatchType = &pb.HttpRoute_HeaderMatch_RangeMatch{RangeMatch: oneof}
+		}
+		out.Header = direct.ValueOf(in.Header)
+		out.InvertMatch = direct.ValueOf(in.InvertMatch)
+		return out
 	}
-	out := &pb.HttpRoute_HeaderMatch{}
-	if oneof := HttprouteHeaders_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	if oneof := HttprouteHeaders_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	if oneof := HttprouteHeaders_PrefixMatch_ToProto(mapCtx, in.PrefixMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	if oneof := HttprouteHeaders_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	if oneof := HttprouteHeaders_SuffixMatch_ToProto(mapCtx, in.SuffixMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	if oneof := HttprouteRangeMatch_ToProto(mapCtx, in.RangeMatch); oneof != nil {
-		out.MatchType = &pb.HttpRoute_HeaderMatch_RangeMatch{RangeMatch: oneof}
-	}
-	out.Header = direct.ValueOf(in.Header)
-	out.InvertMatch = direct.ValueOf(in.InvertMatch)
-	return out
-}
+*/
 func HttprouteHeaders_ExactMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HttpRoute_HeaderMatch_ExactMatch {
 	if in == nil {
 		return nil
@@ -432,6 +440,8 @@ func HttprouteMatches_RegexMatch_ToProto(mapCtx *direct.MapContext, in *string) 
 	}
 	return &pb.HttpRoute_RouteMatch_RegexMatch{RegexMatch: *in}
 }
+
+/* found existing non-generated mapping function "HttprouteQueryParameters_FromProto", skipping
 func HttprouteQueryParameters_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_QueryParameterMatch) *krm.HttprouteQueryParameters {
 	if in == nil {
 		return nil
@@ -443,23 +453,29 @@ func HttprouteQueryParameters_FromProto(mapCtx *direct.MapContext, in *pb.HttpRo
 	out.QueryParameter = direct.LazyPtr(in.GetQueryParameter())
 	return out
 }
-func HttprouteQueryParameters_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteQueryParameters) *pb.HttpRoute_QueryParameterMatch {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "HttprouteQueryParameters_ToProto", skipping
+
+	func HttprouteQueryParameters_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteQueryParameters) *pb.HttpRoute_QueryParameterMatch {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HttpRoute_QueryParameterMatch{}
+		if oneof := HttprouteQueryParameters_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		if oneof := HttprouteQueryParameters_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		if oneof := HttprouteQueryParameters_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
+			out.MatchType = oneof
+		}
+		out.QueryParameter = direct.ValueOf(in.QueryParameter)
+		return out
 	}
-	out := &pb.HttpRoute_QueryParameterMatch{}
-	if oneof := HttprouteQueryParameters_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	if oneof := HttprouteQueryParameters_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	if oneof := HttprouteQueryParameters_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
-		out.MatchType = oneof
-	}
-	out.QueryParameter = direct.ValueOf(in.QueryParameter)
-	return out
-}
+*/
 func HttprouteQueryParameters_ExactMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HttpRoute_QueryParameterMatch_ExactMatch {
 	if in == nil {
 		return nil
