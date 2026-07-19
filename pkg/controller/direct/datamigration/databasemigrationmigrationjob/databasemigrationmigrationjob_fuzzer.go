@@ -57,5 +57,9 @@ func fuzzDatabaseMigrationMigrationJob() fuzztesting.KRMFuzzer {
 	f.StatusField(".end_time")
 	f.StatusField(".state")
 
+	f.Unimplemented_NotYetTriaged(".error.details")
+	f.Unimplemented_NotYetTriaged(".error.details[].value")
+	f.Unimplemented_NotYetTriaged(".error.details[].type_url")
+
 	return f
 }
