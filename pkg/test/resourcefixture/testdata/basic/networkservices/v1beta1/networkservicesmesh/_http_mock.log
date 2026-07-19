@@ -1,6 +1,6 @@
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -24,7 +24,7 @@ X-Xss-Protection: 0
 
 POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes?alt=json&meshId=networkservicesmesh-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "description": "Original description",
@@ -36,6 +36,33 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
 }
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -49,14 +76,36 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.Mesh",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Original description",
+    "interceptionPort": 80,
+    "labels": {
+      "cnrm-test": "true",
+      "foo": "bar",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -69,6 +118,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Original description",
   "interceptionPort": 80,
   "labels": {
@@ -76,14 +126,16 @@ X-Xss-Protection: 0
     "foo": "bar",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
 PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json&updateMask=description%2CinterceptionPort%2Clabels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "description": "Updated description",
@@ -108,15 +160,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
+GET https://networkservices.googleapis.com/v1/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -129,6 +187,51 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.Mesh",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "interceptionPort": 81,
+    "labels": {
+      "cnrm-test": "true",
+      "foo": "bar",
+      "foo1": "bar1",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
   "interceptionPort": 81,
   "labels": {
@@ -137,14 +240,43 @@ X-Xss-Protection: 0
     "foo1": "bar1",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
 DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -158,14 +290,25 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8

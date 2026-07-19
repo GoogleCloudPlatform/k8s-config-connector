@@ -446,6 +446,22 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
+		delete(v, "done")
+		delete(v, "requestedCancellation")
+		delete(v, "endTime")
+		delete(v, "statusMessage")
+		delete(v, "createTime")
+		delete(v, "updateTime")
+		delete(v, "selfLink")
+		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
+			v["name"] = "operations/${operationID}"
+			delete(v, "metadata")
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
+			delete(v, "port")
+			delete(v, "portName")
+			delete(v, "protocol")
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#instanceGroupManager" {
 			return map[string]interface{}{"kind": kind}
 		}
