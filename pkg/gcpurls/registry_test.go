@@ -86,6 +86,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// APIHub
 		"//apihub.googleapis.com/projects/{}/locations/{}/apis/{}":                      true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/attributes/{}":                true,
 		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}":               true,
 		"//apihub.googleapis.com/projects/{}/locations/{}/externalApis/{}":              true,
 		"//apihub.googleapis.com/projects/{}/locations/{}/plugins/{}":                   true,
