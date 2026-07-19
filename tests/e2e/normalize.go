@@ -132,6 +132,17 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
+	// Specific to BigQueryMigration
+	if u.GroupVersionKind().Group == "bigquerymigration.cnrm.cloud.google.com" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			if path == ".status.observedState.name" {
+				re := regexp.MustCompile(`/workflows/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
+				s = re.ReplaceAllString(s, "/workflows/${workflowID}")
+			}
+			return s
+		})
+	}
+
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
@@ -1173,6 +1184,16 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 
 func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer, events test.LogEntries) {
 	visitor := newObjectWalker(t)
+
+	if strings.Contains(strings.ToLower(t.Name()), "bigquerymigration") {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			if (strings.HasPrefix(path, ".tasks.") && strings.HasSuffix(path, ".id")) ||
+				(strings.HasPrefix(path, ".response.tasks.") && strings.HasSuffix(path, ".id")) {
+				return "${taskID}"
+			}
+			return s
+		})
+	}
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")

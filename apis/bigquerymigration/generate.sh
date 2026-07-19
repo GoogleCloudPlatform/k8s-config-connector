@@ -27,6 +27,10 @@ go run . generate-types \
   --api-version bigquerymigration.cnrm.cloud.google.com/v1alpha1 \
   --resource BigQueryMigrationMigrationWorkflow:MigrationWorkflow
 
+go run . generate-mapper \
+  --service google.cloud.bigquery.migration.v2alpha \
+  --api-version bigquerymigration.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

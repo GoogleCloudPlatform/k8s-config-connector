@@ -32,8 +32,10 @@ import (
 )
 
 var mockGCPSkipFixtures = map[string]bool{
-	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
-	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal":                           true,
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal":                           true,
+	"bigquerymigration/v1alpha1/bigquerymigrationmigrationworkflow/bigquerymigrationmigrationworkflow-maximal": true,
+	"bigquerymigration/v1alpha1/bigquerymigrationmigrationworkflow/bigquerymigrationmigrationworkflow-minimal": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
