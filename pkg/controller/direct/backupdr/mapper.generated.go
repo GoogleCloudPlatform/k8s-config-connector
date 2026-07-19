@@ -38,24 +38,24 @@ func BackupDRBackupObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.BackupDRBackupObservedState{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.Description = in.Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	// MISSING: EnforcedRetentionEndTime
 	// MISSING: ExpireTime
-	// MISSING: ConsistencyTime
+	out.ConsistencyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetConsistencyTime())
 	// MISSING: Etag
-	// MISSING: State
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: ServiceLocks
 	// MISSING: BackupApplianceLocks
 	// MISSING: ComputeInstanceBackupProperties
 	// MISSING: CloudSQLInstanceBackupProperties
 	// MISSING: BackupApplianceBackupProperties
 	// MISSING: DiskBackupProperties
-	// MISSING: BackupType
+	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
 	// MISSING: GcpBackupPlanInfo
-	// MISSING: ResourceSizeBytes
+	out.ResourceSizeBytes = direct.LazyPtr(in.GetResourceSizeBytes())
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
@@ -66,24 +66,24 @@ func BackupDRBackupObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.Backup{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.Description = in.Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	// MISSING: EnforcedRetentionEndTime
 	// MISSING: ExpireTime
-	// MISSING: ConsistencyTime
+	out.ConsistencyTime = direct.StringTimestamp_ToProto(mapCtx, in.ConsistencyTime)
 	// MISSING: Etag
-	// MISSING: State
+	out.State = direct.Enum_ToProto[pb.Backup_State](mapCtx, in.State)
 	// MISSING: ServiceLocks
 	// MISSING: BackupApplianceLocks
 	// MISSING: ComputeInstanceBackupProperties
 	// MISSING: CloudSQLInstanceBackupProperties
 	// MISSING: BackupApplianceBackupProperties
 	// MISSING: DiskBackupProperties
-	// MISSING: BackupType
+	out.BackupType = direct.Enum_ToProto[pb.Backup_BackupType](mapCtx, in.BackupType)
 	// MISSING: GcpBackupPlanInfo
-	// MISSING: ResourceSizeBytes
+	out.ResourceSizeBytes = direct.ValueOf(in.ResourceSizeBytes)
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
@@ -250,24 +250,17 @@ func BackupDRBackupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Back
 	}
 	out := &krm.BackupDRBackupSpec{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: EnforcedRetentionEndTime
 	// MISSING: ExpireTime
-	// MISSING: ConsistencyTime
 	// MISSING: Etag
-	// MISSING: State
 	// MISSING: ServiceLocks
 	// MISSING: BackupApplianceLocks
 	// MISSING: ComputeInstanceBackupProperties
 	// MISSING: CloudSQLInstanceBackupProperties
 	// MISSING: BackupApplianceBackupProperties
 	// MISSING: DiskBackupProperties
-	// MISSING: BackupType
 	// MISSING: GcpBackupPlanInfo
-	// MISSING: ResourceSizeBytes
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
@@ -278,24 +271,17 @@ func BackupDRBackupSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Backu
 	}
 	out := &pb.Backup{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: Labels
 	// MISSING: EnforcedRetentionEndTime
 	// MISSING: ExpireTime
-	// MISSING: ConsistencyTime
 	// MISSING: Etag
-	// MISSING: State
 	// MISSING: ServiceLocks
 	// MISSING: BackupApplianceLocks
 	// MISSING: ComputeInstanceBackupProperties
 	// MISSING: CloudSQLInstanceBackupProperties
 	// MISSING: BackupApplianceBackupProperties
 	// MISSING: DiskBackupProperties
-	// MISSING: BackupType
 	// MISSING: GcpBackupPlanInfo
-	// MISSING: ResourceSizeBytes
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
