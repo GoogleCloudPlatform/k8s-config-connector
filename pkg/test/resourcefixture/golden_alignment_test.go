@@ -459,6 +459,55 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "updateTime")
 		delete(v, "selfLink")
 		delete(v, "internalMetadata")
+		if rc, ok := v["responseCode"]; ok {
+			if f, ok := rc.(float64); ok {
+				switch f {
+				case 1:
+					v["responseCode"] = "MOVED_PERMANENTLY_DEFAULT"
+				case 2:
+					v["responseCode"] = "FOUND"
+				case 3:
+					v["responseCode"] = "SEE_OTHER"
+				case 4:
+					v["responseCode"] = "TEMPORARY_REDIRECT"
+				case 5:
+					v["responseCode"] = "PERMANENT_REDIRECT"
+				}
+			}
+		}
+		if qp, ok := v["queryParameters"].([]interface{}); ok && len(qp) == 0 {
+			delete(v, "queryParameters")
+		}
+		if dest, ok := v["destinations"].([]interface{}); ok && len(dest) == 0 {
+			delete(v, "destinations")
+		}
+		if m, ok := v["matches"].([]interface{}); ok && len(m) == 0 {
+			delete(v, "matches")
+		}
+		if headers, ok := v["headers"].([]interface{}); ok && len(headers) == 0 {
+			delete(v, "headers")
+		}
+		if disabled, ok := v["disabled"].(bool); ok && !disabled {
+			delete(v, "disabled")
+		}
+		if allowCredentials, ok := v["allowCredentials"].(bool); ok && !allowCredentials {
+			delete(v, "allowCredentials")
+		}
+		if ignoreCase, ok := v["ignoreCase"].(bool); ok && !ignoreCase {
+			delete(v, "ignoreCase")
+		}
+		if invertMatch, ok := v["invertMatch"].(bool); ok && !invertMatch {
+			delete(v, "invertMatch")
+		}
+		if presentMatch, ok := v["presentMatch"].(bool); ok && !presentMatch {
+			delete(v, "presentMatch")
+		}
+		if httpsRedirect, ok := v["httpsRedirect"].(bool); ok && !httpsRedirect {
+			delete(v, "httpsRedirect")
+		}
+		if stripQuery, ok := v["stripQuery"].(bool); ok && !stripQuery {
+			delete(v, "stripQuery")
+		}
 		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
@@ -602,6 +651,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		})
 		return v
 	case string:
+		if strings.HasPrefix(v, "projects/projects/") {
+			v = v[len("projects/"):]
+		}
 		if idx := strings.Index(v, "projects/"); idx != -1 && (strings.HasPrefix(v, "https://") || strings.HasPrefix(v, "/") || strings.HasPrefix(v, "projects/")) {
 			return "projects/" + v[idx+len("projects/"):]
 		}

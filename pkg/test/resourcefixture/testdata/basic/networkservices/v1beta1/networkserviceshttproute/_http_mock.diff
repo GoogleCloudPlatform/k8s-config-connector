@@ -1,0 +1,284 @@
+801c801
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+824c824
+< POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes?alt=json&httpRouteId=networkserviceshttproute-${uniqueId}
+---
+> POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes?%24alt=json%3Benum-encoding%3Dint&httpRouteId=networkserviceshttproute-${uniqueId}
+830c830
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+842c842
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+866d865
+<           "disabled": false,
+875c874
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+879c878
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+909c908
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+1014c1013
+<           "responseCode": "MOVED_PERMANENTLY_DEFAULT",
+---
+>           "responseCode": 1,
+1024c1023
+<           "responseCode": "FOUND"
+---
+>           "responseCode": 2
+1033c1032
+<           "responseCode": "FOUND"
+---
+>           "responseCode": 2
+1063c1062
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+1092c1091
+<       "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+---
+>       "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+1104c1103
+<       "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+---
+>       "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+1136c1135
+<               "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>               "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1140c1139
+<               "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>               "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1170c1169
+<               "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>               "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+1305c1304
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1322c1321
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+1334c1333
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+1366c1365
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1370c1369
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1400c1399
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+1505c1504
+<           "responseCode": "MOVED_PERMANENTLY_DEFAULT",
+---
+>           "responseCode": 1,
+1515c1514
+<           "responseCode": "FOUND"
+---
+>           "responseCode": 2
+1524c1523
+<           "responseCode": "FOUND"
+---
+>           "responseCode": 2
+1535c1534
+< PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json&updateMask=description%2Cgateways%2Chostnames%2Clabels%2Cmeshes%2Crules
+---
+> PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cgateways%2Chostnames%2Clabels%2Cmeshes%2Crules
+1541c1540
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+1555c1554
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+1557c1556
+<   "name": "projects/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
+---
+>   "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
+1562d1560
+<           "allowCredentials": false,
+1588c1586
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1592c1590
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1622c1620
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+1660,1661c1658
+<           ],
+<           "queryParameters": []
+---
+>           ]
+1664,1667c1661
+<           "headers": [],
+<           "ignoreCase": false,
+<           "prefixMatch": "/foo2/",
+<           "queryParameters": []
+---
+>           "prefixMatch": "/foo2/"
+1670,1671d1663
+<           "headers": [],
+<           "queryParameters": [],
+1698d1689
+<               "invertMatch": false,
+1705,1706c1696
+<           "prefixMatch": "/",
+<           "queryParameters": []
+---
+>           "prefixMatch": "/"
+1709d1698
+<           "headers": [],
+1730d1718
+<         "destinations": [],
+1733d1720
+<           "httpsRedirect": false,
+1735,1736c1722
+<           "responseCode": "FOUND",
+<           "stripQuery": false
+---
+>           "responseCode": 2
+1738,1739c1724
+<       },
+<       "matches": []
+---
+>       }
+1743d1727
+<         "destinations": [],
+1747c1731
+<           "responseCode": "SEE_OTHER"
+---
+>           "responseCode": 3
+1749,1750c1733
+<       },
+<       "matches": []
+---
+>       }
+1754d1736
+<         "destinations": [],
+1758c1740
+<           "responseCode": "SEE_OTHER"
+---
+>           "responseCode": 3
+1760,1761c1742
+<       },
+<       "matches": []
+---
+>       }
+1789c1770
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+1818c1799
+<       "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+---
+>       "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+1832c1813
+<       "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+---
+>       "projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+1864c1845
+<               "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>               "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1868c1849
+<               "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>               "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+1898c1879
+<               "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>               "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+2030c2011
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+2047c2028
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/gateways/networkservicesgateway-2-${uniqueId}"
+2061c2042
+<     "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/meshes/networkservicesmesh-2-${uniqueId}"
+2093c2074
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+2097c2078
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+2127c2108
+<             "serviceName": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>             "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+2229c2210
+<           "responseCode": "FOUND"
+---
+>           "responseCode": 2
+2238c2219
+<           "responseCode": "SEE_OTHER"
+---
+>           "responseCode": 3
+2247c2228
+<           "responseCode": "SEE_OTHER"
+---
+>           "responseCode": 3
+2258c2239
+< DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+---
+> DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+2284c2265
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+2310,2332d2290
+<   }
+< }
+< 
+< ---
+< 
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Resource 'projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}' was not found",
+<     "status": "NOT_FOUND"
