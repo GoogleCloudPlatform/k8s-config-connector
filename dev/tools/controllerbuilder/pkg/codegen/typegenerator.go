@@ -237,6 +237,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
 					break
 				}
+				if name == "google.protobuf.Struct" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
+				}
 			}
 		}
 
@@ -289,6 +292,10 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		out := g.getOutputFile(k)
 
 		for _, field := range msgDetails.OutputFields {
+			goType, _ := GoTypeForField(field, true)
+			if strings.Contains(goType, "apiextensionsv1.") {
+				out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
+			}
 			if field.Message() != nil {
 				name := field.Message().FullName()
 				if name == "google.cloud.connectors.v1.Secret" {
