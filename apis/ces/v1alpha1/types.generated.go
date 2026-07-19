@@ -885,7 +885,7 @@ type Schema struct {
 
 	// Optional. Default value of the data.
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.default
-	Default *Value `json:"default,omitempty"`
+	Default apiextensionsv1.JSON `json:"default,omitempty"`
 
 	// Optional. Allows indirect references between schema nodes. The value should
 	//  be a valid reference to a child of the root `defs`.
@@ -978,44 +978,6 @@ type VPCScSettings struct {
 	//  not yet apply to Python tools that may make direct HTTP calls.
 	// +kcc:proto:field=google.cloud.ces.v1beta.VpcScSettings.allowed_origins
 	AllowedOrigins []string `json:"allowedOrigins,omitempty"`
-}
-*/
-
-/* unreachable type ListValue
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-*/
-
-/* unreachable type Value
-// +kcc:proto=google.protobuf.Value
-type Value struct {
-	// Represents a null value.
-	// +kcc:proto:field=google.protobuf.Value.null_value
-	NullValue *string `json:"nullValue,omitempty"`
-
-	// Represents a double value.
-	// +kcc:proto:field=google.protobuf.Value.number_value
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	// Represents a string value.
-	// +kcc:proto:field=google.protobuf.Value.string_value
-	StringValue *string `json:"stringValue,omitempty"`
-
-	// Represents a boolean value.
-	// +kcc:proto:field=google.protobuf.Value.bool_value
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	// Represents a structured value.
-	// +kcc:proto:field=google.protobuf.Value.struct_value
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-
-	// Represents a repeated `Value`.
-	// +kcc:proto:field=google.protobuf.Value.list_value
-	ListValue *ListValue `json:"listValue,omitempty"`
 }
 */
 
