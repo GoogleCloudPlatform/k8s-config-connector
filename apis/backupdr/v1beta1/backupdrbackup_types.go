@@ -63,6 +63,35 @@ type BackupDRBackupStatus struct {
 // BackupDRBackupObservedState is the state of the BackupDRBackup resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.backupdr.v1.Backup
 type BackupDRBackupObservedState struct {
+	// Output only. The description of the Backup instance (2048 characters or
+	//  less).
+	// +kcc:proto:field=google.cloud.backupdr.v1.Backup.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. The time when the instance was created.
+	// +kcc:proto:field=google.cloud.backupdr.v1.Backup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the instance was updated.
+	// +kcc:proto:field=google.cloud.backupdr.v1.Backup.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The point in time when this backup was captured from the
+	//  source.
+	// +kcc:proto:field=google.cloud.backupdr.v1.Backup.consistency_time
+	ConsistencyTime *string `json:"consistencyTime,omitempty"`
+
+	// Output only. The Backup resource instance state.
+	// +kcc:proto:field=google.cloud.backupdr.v1.Backup.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Type of the backup, unspecified, scheduled or ondemand.
+	// +kcc:proto:field=google.cloud.backupdr.v1.Backup.backup_type
+	BackupType *string `json:"backupType,omitempty"`
+
+	// Output only. source resource size in bytes at the time of the backup.
+	// +kcc:proto:field=google.cloud.backupdr.v1.Backup.resource_size_bytes
+	ResourceSizeBytes *int64 `json:"resourceSizeBytes,omitempty"`
 }
 
 // +genclient

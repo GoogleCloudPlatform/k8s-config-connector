@@ -220,6 +220,13 @@ func main() {
 			klog.Infof("skipping alpha resource %v", gvk)
 			continue
 		}
+
+		// Skip types-only Greenfield resources that do not have their controllers implemented yet
+		if gvk.Kind == "BackupDRBackup" {
+			klog.Infof("skipping types-only resource %v", gvk)
+			continue
+		}
+
 		// TODO: Add resource docs for all the v1beta1 resources and remove exceptions.
 		if err := docGenerator.generateDocForGVK(gvk, crdMap[gvk]); err != nil {
 			log.Fatal(fmt.Errorf("error generating doc for GVK %v: %w", gvk, err))
