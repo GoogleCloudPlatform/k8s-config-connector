@@ -267,6 +267,8 @@ import (
 	fakegkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1/fake"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
 	fakehealthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1/fake"
+	hypercomputeclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/hypercomputecluster/v1alpha1"
+	fakehypercomputeclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/hypercomputecluster/v1alpha1/fake"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
 	fakeiamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1/fake"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
@@ -283,6 +285,8 @@ import (
 	fakekmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1/fake"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
 	fakekmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1/fake"
+	licensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/licensemanager/v1alpha1"
+	fakelicensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/licensemanager/v1alpha1/fake"
 	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1"
 	fakelivestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1/fake"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
@@ -1124,6 +1128,11 @@ func (c *Clientset) HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1In
 	return &fakehealthcarev1alpha1.FakeHealthcareV1alpha1{Fake: &c.Fake}
 }
 
+// HypercomputeclusterV1alpha1 retrieves the HypercomputeclusterV1alpha1Client
+func (c *Clientset) HypercomputeclusterV1alpha1() hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Interface {
+	return &fakehypercomputeclusterv1alpha1.FakeHypercomputeclusterV1alpha1{Fake: &c.Fake}
+}
+
 // IamV1alpha1 retrieves the IamV1alpha1Client
 func (c *Clientset) IamV1alpha1() iamv1alpha1.IamV1alpha1Interface {
 	return &fakeiamv1alpha1.FakeIamV1alpha1{Fake: &c.Fake}
@@ -1162,6 +1171,11 @@ func (c *Clientset) KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface {
 // KmsV1beta1 retrieves the KmsV1beta1Client
 func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return &fakekmsv1beta1.FakeKmsV1beta1{Fake: &c.Fake}
+}
+
+// LicensemanagerV1alpha1 retrieves the LicensemanagerV1alpha1Client
+func (c *Clientset) LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface {
+	return &fakelicensemanagerv1alpha1.FakeLicensemanagerV1alpha1{Fake: &c.Fake}
 }
 
 // LivestreamV1alpha1 retrieves the LivestreamV1alpha1Client

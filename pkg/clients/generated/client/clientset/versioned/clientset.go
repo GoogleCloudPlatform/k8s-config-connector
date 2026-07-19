@@ -147,6 +147,7 @@ import (
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
 	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
+	hypercomputeclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/hypercomputecluster/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1"
@@ -155,6 +156,7 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
+	licensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/licensemanager/v1alpha1"
 	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1alpha1"
@@ -363,6 +365,7 @@ type Interface interface {
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
 	GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface
 	HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface
+	HypercomputeclusterV1alpha1() hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Interface
 	IamV1alpha1() iamv1alpha1.IamV1alpha1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
 	IapV1beta1() iapv1beta1.IapV1beta1Interface
@@ -371,6 +374,7 @@ type Interface interface {
 	K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface
 	KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface
 	KmsV1beta1() kmsv1beta1.KmsV1beta1Interface
+	LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface
 	LivestreamV1alpha1() livestreamv1alpha1.LivestreamV1alpha1Interface
 	LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface
 	ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1alpha1Interface
@@ -577,6 +581,7 @@ type Clientset struct {
 	gkehubV1beta1                    *gkehubv1beta1.GkehubV1beta1Client
 	gkemulticloudV1alpha1            *gkemulticloudv1alpha1.GkemulticloudV1alpha1Client
 	healthcareV1alpha1               *healthcarev1alpha1.HealthcareV1alpha1Client
+	hypercomputeclusterV1alpha1      *hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Client
 	iamV1alpha1                      *iamv1alpha1.IamV1alpha1Client
 	iamV1beta1                       *iamv1beta1.IamV1beta1Client
 	iapV1beta1                       *iapv1beta1.IapV1beta1Client
@@ -585,6 +590,7 @@ type Clientset struct {
 	k8sV1alpha1                      *k8sv1alpha1.K8sV1alpha1Client
 	kmsV1alpha1                      *kmsv1alpha1.KmsV1alpha1Client
 	kmsV1beta1                       *kmsv1beta1.KmsV1beta1Client
+	licensemanagerV1alpha1           *licensemanagerv1alpha1.LicensemanagerV1alpha1Client
 	livestreamV1alpha1               *livestreamv1alpha1.LivestreamV1alpha1Client
 	loggingV1beta1                   *loggingv1beta1.LoggingV1beta1Client
 	managedkafkaV1alpha1             *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
@@ -1276,6 +1282,11 @@ func (c *Clientset) HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1In
 	return c.healthcareV1alpha1
 }
 
+// HypercomputeclusterV1alpha1 retrieves the HypercomputeclusterV1alpha1Client
+func (c *Clientset) HypercomputeclusterV1alpha1() hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Interface {
+	return c.hypercomputeclusterV1alpha1
+}
+
 // IamV1alpha1 retrieves the IamV1alpha1Client
 func (c *Clientset) IamV1alpha1() iamv1alpha1.IamV1alpha1Interface {
 	return c.iamV1alpha1
@@ -1314,6 +1325,11 @@ func (c *Clientset) KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface {
 // KmsV1beta1 retrieves the KmsV1beta1Client
 func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return c.kmsV1beta1
+}
+
+// LicensemanagerV1alpha1 retrieves the LicensemanagerV1alpha1Client
+func (c *Clientset) LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface {
+	return c.licensemanagerV1alpha1
 }
 
 // LivestreamV1alpha1 retrieves the LivestreamV1alpha1Client
@@ -2243,6 +2259,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.hypercomputeclusterV1alpha1, err = hypercomputeclusterv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.iamV1alpha1, err = iamv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2272,6 +2292,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.kmsV1beta1, err = kmsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.licensemanagerV1alpha1, err = licensemanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2734,6 +2758,7 @@ func New(c rest.Interface) *Clientset {
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
 	cs.gkemulticloudV1alpha1 = gkemulticloudv1alpha1.New(c)
 	cs.healthcareV1alpha1 = healthcarev1alpha1.New(c)
+	cs.hypercomputeclusterV1alpha1 = hypercomputeclusterv1alpha1.New(c)
 	cs.iamV1alpha1 = iamv1alpha1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)
 	cs.iapV1beta1 = iapv1beta1.New(c)
@@ -2742,6 +2767,7 @@ func New(c rest.Interface) *Clientset {
 	cs.k8sV1alpha1 = k8sv1alpha1.New(c)
 	cs.kmsV1alpha1 = kmsv1alpha1.New(c)
 	cs.kmsV1beta1 = kmsv1beta1.New(c)
+	cs.licensemanagerV1alpha1 = licensemanagerv1alpha1.New(c)
 	cs.livestreamV1alpha1 = livestreamv1alpha1.New(c)
 	cs.loggingV1beta1 = loggingv1beta1.New(c)
 	cs.managedkafkaV1alpha1 = managedkafkav1alpha1.New(c)

@@ -35,6 +35,10 @@ func (c *FakeNetworkconnectivityV1alpha1) NetworkConnectivityInternalRanges(name
 	return newFakeNetworkConnectivityInternalRanges(c, namespace)
 }
 
+func (c *FakeNetworkconnectivityV1alpha1) NetworkConnectivityMulticloudDataTransferConfigs(namespace string) v1alpha1.NetworkConnectivityMulticloudDataTransferConfigInterface {
+	return newFakeNetworkConnectivityMulticloudDataTransferConfigs(c, namespace)
+}
+
 func (c *FakeNetworkconnectivityV1alpha1) NetworkConnectivityRegionalEndpoints(namespace string) v1alpha1.NetworkConnectivityRegionalEndpointInterface {
 	return newFakeNetworkConnectivityRegionalEndpoints(c, namespace)
 }
