@@ -15,6 +15,11 @@
 
 
 
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
+  exit 0
+fi
+
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -50,6 +55,12 @@ fi
 
 VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 
+if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
+    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    exit 0
+fi
+
 cd googleapis
 
 # Fetch only if we don't have the SHA locally
@@ -76,17 +87,6 @@ else
     fi
 fi
 
-
-if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
-    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
-    exit 0
-fi
-
-if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
-  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
-  exit 0
-fi
 
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
