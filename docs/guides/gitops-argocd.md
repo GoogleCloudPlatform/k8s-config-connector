@@ -25,9 +25,8 @@ Before setting up ArgoCD applications for Config Connector, ensure you meet the 
 ### Key considerations
 
 > [!NOTE]
-> **Raw upstream repository vs. rendered manifests**  
-> The raw source repository path (`operator/config/default`) contains release patch templates (`manager_image_patch_template.yaml`) that require build-time rendering. Attempting to point ArgoCD directly at raw upstream source paths without generating `manager_image_patch.yaml` results in Kustomize build errors.  
-> **Solution**: Use official published release bundles from Google Cloud Storage, or render the Kustomize targets using `./dev/tasks/build-release-bundle` in your CI pipeline before committing manifests to your GitOps repository.
+> **Direct upstream repository sync support**  
+> The open-source repository maintains committed default patch manifests and pre-rendered operator manifests in `config/installbundle/release-manifests/standard` (and `operator/config/default`). ArgoCD can point directly at these upstream repository paths without requiring local pre-rendering build steps. Alternatively, official release tarballs from Google Cloud Storage can be used.
 
 > [!IMPORTANT]
 > **Mandatory Server-Side Apply for CRDs**  
