@@ -180,7 +180,7 @@ func (in *ClusterKmsStatus) DeepCopyInto(out *ClusterKmsStatus) {
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Message != nil {
@@ -211,7 +211,7 @@ func (in *ClusterLocal) DeepCopyInto(out *ClusterLocal) {
 	}
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.NodeLocation != nil {
@@ -532,7 +532,7 @@ func (in *EdgeContainerClusterSpec) DeepCopyInto(out *EdgeContainerClusterSpec) 
 	}
 	if in.DefaultMaxPodsPerNode != nil {
 		in, out := &in.DefaultMaxPodsPerNode, &out.DefaultMaxPodsPerNode
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ExternalLoadBalancerIpv4AddressPools != nil {
@@ -609,6 +609,11 @@ func (in *EdgeContainerClusterStatus) DeepCopyInto(out *EdgeContainerClusterStat
 		*out = new(string)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.MaintenanceEvents != nil {
 		in, out := &in.MaintenanceEvents, &out.MaintenanceEvents
 		*out = make([]ClusterMaintenanceEventsStatus, len(*in))
@@ -628,7 +633,7 @@ func (in *EdgeContainerClusterStatus) DeepCopyInto(out *EdgeContainerClusterStat
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Status != nil {

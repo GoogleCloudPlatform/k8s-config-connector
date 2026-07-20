@@ -144,9 +144,7 @@ targetVersion: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>User that will be granted the cluster-admin role on the cluster, providing
-full access to the cluster. Currently, this is a singular field, but will
-be expanded to allow multiple admins in the future.</p>
+            <p>User that will be granted the cluster-admin role on the cluster, providing full access to the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -166,7 +164,7 @@ be expanded to allow multiple admins in the future.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `email` field of an `IAMServiceAccount` resource.</p>
+            <p>The `email` field of an `IAMServiceAccount` resource.</p>
         </td>
     </tr>
     <tr>
@@ -196,7 +194,7 @@ be expanded to allow multiple admins in the future.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The configuration of the cluster control plane.</p>
+            <p>Optional. The configuration of the cluster control plane.</p>
         </td>
     </tr>
     <tr>
@@ -216,9 +214,7 @@ be expanded to allow multiple admins in the future.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Only machines matching this filter will be allowed to host control
-plane nodes. The filtering language accepts strings like "name=<name>",
-and is documented here: [AIP-160](https://google.aip.dev/160).</p>
+            <p>Only machines matching this filter will be allowed to host control plane nodes.</p>
         </td>
     </tr>
     <tr>
@@ -228,8 +224,7 @@ and is documented here: [AIP-160](https://google.aip.dev/160).</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The number of nodes to serve as replicas of the Control Plane.
-Only 1 and 3 are supported.</p>
+            <p>The number of nodes to serve as replicas of the Control Plane. Only 1 and 3 are supported.</p>
         </td>
     </tr>
     <tr>
@@ -239,8 +234,7 @@ Only 1 and 3 are supported.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Name of the Google Distributed Cloud Edge zones where this node pool
-will be created. For example: 'us-central1-edge-customer-a'.</p>
+            <p>Immutable. Name of the Google Distributed Cloud Edge zones where this node pool will be created.</p>
         </td>
     </tr>
     <tr>
@@ -250,7 +244,7 @@ will be created. For example: 'us-central1-edge-customer-a'.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Policy configuration about how user applications are deployed. Possible values: ["SHARED_DEPLOYMENT_POLICY_UNSPECIFIED", "ALLOWED", "DISALLOWED"].</p>
+            <p>Policy configuration about how user applications are deployed.</p>
         </td>
     </tr>
     <tr>
@@ -270,8 +264,7 @@ will be created. For example: 'us-central1-edge-customer-a'.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Name of the Google Distributed Cloud Edge zones where this node pool
-will be created. For example: 'us-central1-edge-customer-a'.</p>
+            <p>Immutable. Name of the Google Distributed Cloud Edge zones where this node pool will be created.</p>
         </td>
     </tr>
     <tr>
@@ -281,8 +274,7 @@ will be created. For example: 'us-central1-edge-customer-a'.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Remote control plane disk encryption options. This field is only used when
-enabling CMEK support.</p>
+            <p>Optional. Remote control plane disk encryption options. This field is only used when enabling CMEK support.</p>
         </td>
     </tr>
     <tr>
@@ -292,8 +284,7 @@ enabling CMEK support.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The Cloud KMS CryptoKeyVersion currently in use for protecting control
-plane disks. Only applicable if kms_key is set.</p>
+            <p>Output only. The Cloud KMS CryptoKeyVersion currently in use for protecting control plane disks. Only applicable if kms_key is set.</p>
         </td>
     </tr>
     <tr>
@@ -303,7 +294,7 @@ plane disks. Only applicable if kms_key is set.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>The Cloud KMS CryptoKey to use for protecting control plane disks.</p>
         </td>
     </tr>
     <tr>
@@ -313,7 +304,7 @@ plane disks. Only applicable if kms_key is set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
         </td>
     </tr>
     <tr>
@@ -323,7 +314,7 @@ plane disks. Only applicable if kms_key is set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -333,7 +324,7 @@ plane disks. Only applicable if kms_key is set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
         </td>
     </tr>
     <tr>
@@ -343,10 +334,7 @@ plane disks. Only applicable if kms_key is set.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Availability of the Cloud KMS CryptoKey. If not 'KEY_AVAILABLE', then
-nodes may go offline as they cannot access their local data. This can be
-caused by a lack of permissions to use the key, or if the key is disabled
-or deleted.</p>
+            <p>Output only. Availability of the Cloud KMS CryptoKey.</p>
         </td>
     </tr>
     <tr>
@@ -356,9 +344,7 @@ or deleted.</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Error status returned by Cloud KMS when using this key. This field may be
-populated only if 'kms_key_state' is not 'KMS_KEY_STATE_KEY_AVAILABLE'.
-If populated, this field contains the error status reported by Cloud KMS.</p>
+            <p>Output only. Error status returned by Cloud KMS when using this key.</p>
         </td>
     </tr>
     <tr>
@@ -388,7 +374,7 @@ If populated, this field contains the error status reported by Cloud KMS.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.</p>
+            <p>A developer-facing error message, which should be in English.</p>
         </td>
     </tr>
     <tr>
@@ -398,9 +384,7 @@ If populated, this field contains the error status reported by Cloud KMS.</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The default maximum number of pods per node used if a maximum value is not
-specified explicitly for a node pool in this cluster. If unspecified, the
-Kubernetes default value will be used.</p>
+            <p>Optional. The default maximum number of pods per node used if a maximum value is not specified explicitly for a node pool in this cluster.</p>
         </td>
     </tr>
     <tr>
@@ -410,7 +394,7 @@ Kubernetes default value will be used.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Address pools for cluster data plane external load balancing.</p>
+            <p>Optional. IPv4 address pools for cluster data plane external load balancing.</p>
         </td>
     </tr>
     <tr>
@@ -430,10 +414,7 @@ Kubernetes default value will be used.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Fleet related configuration.
-Fleets are a Google Cloud concept for logically organizing clusters,
-letting you use and manage multi-cluster capabilities and apply
-consistent policies across your systems.</p>
+            <p>Immutable. Fleet related configuration.</p>
         </td>
     </tr>
     <tr>
@@ -443,9 +424,7 @@ consistent policies across your systems.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The name of the managed Hub Membership resource associated to this cluster.
-Membership names are formatted as
-'projects/<project-number>/locations/global/membership/<cluster-id>'.</p>
+            <p>The name of the managed Hub Membership resource associated to this cluster.</p>
         </td>
     </tr>
     <tr>
@@ -455,7 +434,7 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The number of the Fleet host project where this cluster will be registered.</p>
+            <p>Required. The number of the Fleet host project where this cluster will be registered.</p>
         </td>
     </tr>
     <tr>
@@ -465,7 +444,7 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `projects/{{value}}`, where {{value}} is the `number` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -475,7 +454,7 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -485,7 +464,7 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -535,9 +514,7 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how
-this window recurs. They go on for the span of time between the start and
-end time.</p>
+            <p>An RRULE for how this window recurs.</p>
         </td>
     </tr>
     <tr>
@@ -557,8 +534,7 @@ end time.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time that the window ends. The end time must take place after the
-start time.</p>
+            <p>The time that the window ends.</p>
         </td>
     </tr>
     <tr>
@@ -578,10 +554,7 @@ start time.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Fleet related configuration.
-Fleets are a Google Cloud concept for logically organizing clusters,
-letting you use and manage multi-cluster capabilities and apply
-consistent policies across your systems.</p>
+            <p>Fleet related configuration.</p>
         </td>
     </tr>
     <tr>
@@ -591,9 +564,7 @@ consistent policies across your systems.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. All pods in the cluster are assigned an RFC1918 IPv4 address from these
-blocks. Only a single block is supported. This field cannot be changed
-after creation.</p>
+            <p>Immutable. All pods in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation.</p>
         </td>
     </tr>
     <tr>
@@ -613,10 +584,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. If specified, dual stack mode is enabled and all pods in the cluster are
-assigned an IPv6 address from these blocks alongside from an IPv4
-address. Only a single block is supported. This field cannot be changed
-after creation.</p>
+            <p>Immutable. If specified, dual stack mode is enabled and all pods in the cluster are assigned an IPv6 address from these blocks alongside from an IPv4 address. Only a single block is supported. This field cannot be changed after creation.</p>
         </td>
     </tr>
     <tr>
@@ -636,7 +604,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>IP addressing type of this cluster i.e. SINGLESTACK_V4 vs DUALSTACK_V4_V6.</p>
+            <p>IP addressing type of this cluster.</p>
         </td>
     </tr>
     <tr>
@@ -646,9 +614,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. All services in the cluster are assigned an RFC1918 IPv4 address from these
-blocks. Only a single block is supported. This field cannot be changed
-after creation.</p>
+            <p>Immutable. All services in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation.</p>
         </td>
     </tr>
     <tr>
@@ -668,10 +634,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. If specified, dual stack mode is enabled and all services in the cluster are
-assigned an IPv6 address from these blocks alongside from an IPv4
-address. Only a single block is supported. This field cannot be changed
-after creation.</p>
+            <p>Immutable. If specified, dual stack mode is enabled and all services in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation.</p>
         </td>
     </tr>
     <tr>
@@ -701,7 +664,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -711,7 +674,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -721,7 +684,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -731,7 +694,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The release channel a cluster is subscribed to. Possible values: ["RELEASE_CHANNEL_UNSPECIFIED", "NONE", "REGULAR"].</p>
+            <p>Optional. The release channel a cluster is subscribed to.</p>
         </td>
     </tr>
     <tr>
@@ -761,9 +724,7 @@ after creation.</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Config for the Ingress add-on which allows customers to create an Ingress
-object to manage external access to the servers in a cluster. The add-on
-consists of istiod and istio-ingress.</p>
+            <p>Config for the Ingress add-on.</p>
         </td>
     </tr>
     <tr>
@@ -793,7 +754,7 @@ consists of istiod and istio-ingress.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The target cluster version. For example: "1.5.0".</p>
+            <p>Optional. The target cluster version. For example: "1.5.0".</p>
         </td>
     </tr>
 </tbody>
@@ -814,6 +775,7 @@ conditions:
 controlPlaneVersion: string
 createTime: string
 endpoint: string
+externalRef: string
 maintenanceEvents:
 - createTime: string
   endTime: string
@@ -843,14 +805,14 @@ updateTime: string
         <td><code>clusterCaCertificate</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The PEM-encoded public certificate of the cluster's CA.</p>
+            <p>Output only. The PEM-encoded public certificate of the cluster's CA.</p>
         </td>
     </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -899,29 +861,35 @@ updateTime: string
         <td><code>controlPlaneVersion</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The control plane release version.</p>
+            <p>Output only. The control plane release version.</p>
         </td>
     </tr>
     <tr>
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time the cluster was created, in RFC3339 text format.</p>
+            <p>Output only. The time the cluster was created, in RFC3339 text format.</p>
         </td>
     </tr>
     <tr>
         <td><code>endpoint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The IP address of the Kubernetes API server.</p>
+            <p>Output only. The IP address of the Kubernetes API server.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the EdgeContainerCluster resource in GCP.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>All the maintenance events scheduled for the cluster, including the ones
-ongoing, planned for the future and done in the past (up to 90 days).</p>
+            <p>Output only. All the maintenance events scheduled for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -935,83 +903,77 @@ ongoing, planned for the future and done in the past (up to 90 days).</p>
         <td><code>maintenanceEvents[].createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time when the maintenance event request was created.</p>
+            <p>Output only. The time when the maintenance event request was created.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].endTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time when the maintenance event ended, either successfully or not. If
-the maintenance event is split into multiple maintenance windows,
-end_time is only updated when the whole flow ends.</p>
+            <p>Output only. The time when the maintenance event ended, either successfully or not.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].operation</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The operation for running the maintenance event. Specified in the format
-projects/*/locations/*/operations/*. If the maintenance event is split
-into multiple operations (e.g. due to maintenance windows), the latest
-one is recorded.</p>
+            <p>Output only. The operation for running the maintenance event.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].schedule</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The schedule of the maintenance event.</p>
+            <p>Output only. The schedule of the maintenance event.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].startTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time when the maintenance event started.</p>
+            <p>Output only. The time when the maintenance event started.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Indicates the maintenance event state.</p>
+            <p>Output only. Indicates the maintenance event state.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].targetVersion</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The target version of the cluster.</p>
+            <p>Output only. The target version of the cluster.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].type</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Indicates the maintenance event type.</p>
+            <p>Output only. Indicates the maintenance event type.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time when the maintenance event message was updated.</p>
+            <p>Output only. The time when the maintenance event message was updated.</p>
         </td>
     </tr>
     <tr>
         <td><code>maintenanceEvents[].uuid</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>UUID of the maintenance event.</p>
+            <p>Output only. UUID of the maintenance event.</p>
         </td>
     </tr>
     <tr>
         <td><code>nodeVersion</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The lowest release version among all worker nodes. This field can be empty
-if the cluster does not have any worker nodes.</p>
+            <p>Output only. The lowest release version among all worker nodes. This field can be empty if the cluster does not have any worker nodes.</p>
         </td>
     </tr>
     <tr>
@@ -1025,21 +987,21 @@ if the cluster does not have any worker nodes.</p>
         <td><code>port</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>The port number of the Kubernetes API server.</p>
+            <p>Output only. The port number of the Kubernetes API server.</p>
         </td>
     </tr>
     <tr>
         <td><code>status</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Indicates the status of the cluster.</p>
+            <p>Output only. Indicates the status of the cluster.</p>
         </td>
     </tr>
     <tr>
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The time the cluster was last updated, in RFC3339 text format.</p>
+            <p>Output only. The time the cluster was last updated, in RFC3339 text format.</p>
         </td>
     </tr>
 </tbody>

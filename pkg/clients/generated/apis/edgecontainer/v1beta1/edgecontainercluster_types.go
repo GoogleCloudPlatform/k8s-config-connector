@@ -43,9 +43,7 @@ type ClusterAdminUsers struct {
 }
 
 type ClusterAuthorization struct {
-	/* User that will be granted the cluster-admin role on the cluster, providing
-	full access to the cluster. Currently, this is a singular field, but will
-	be expanded to allow multiple admins in the future. */
+	/* User that will be granted the cluster-admin role on the cluster, providing full access to the cluster. */
 	AdminUsers ClusterAdminUsers `json:"adminUsers"`
 }
 
@@ -60,36 +58,29 @@ type ClusterControlPlane struct {
 }
 
 type ClusterControlPlaneEncryption struct {
-	/* The Cloud KMS CryptoKeyVersion currently in use for protecting control
-	plane disks. Only applicable if kms_key is set. */
+	/* Output only. The Cloud KMS CryptoKeyVersion currently in use for protecting control plane disks. Only applicable if kms_key is set. */
 	// +optional
 	KmsKeyActiveVersion *string `json:"kmsKeyActiveVersion,omitempty"`
 
+	/* The Cloud KMS CryptoKey to use for protecting control plane disks. */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* Availability of the Cloud KMS CryptoKey. If not 'KEY_AVAILABLE', then
-	nodes may go offline as they cannot access their local data. This can be
-	caused by a lack of permissions to use the key, or if the key is disabled
-	or deleted. */
+	/* Output only. Availability of the Cloud KMS CryptoKey. */
 	// +optional
 	KmsKeyState *string `json:"kmsKeyState,omitempty"`
 
-	/* Error status returned by Cloud KMS when using this key. This field may be
-	populated only if 'kms_key_state' is not 'KMS_KEY_STATE_KEY_AVAILABLE'.
-	If populated, this field contains the error status reported by Cloud KMS. */
+	/* Output only. Error status returned by Cloud KMS when using this key. */
 	// +optional
 	KmsStatus []ClusterKmsStatus `json:"kmsStatus,omitempty"`
 }
 
 type ClusterFleet struct {
-	/* The name of the managed Hub Membership resource associated to this cluster.
-	Membership names are formatted as
-	'projects/<project-number>/locations/global/membership/<cluster-id>'. */
+	/* The name of the managed Hub Membership resource associated to this cluster. */
 	// +optional
 	Membership *string `json:"membership,omitempty"`
 
-	/* The number of the Fleet host project where this cluster will be registered. */
+	/* Required. The number of the Fleet host project where this cluster will be registered. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
@@ -106,31 +97,27 @@ type ClusterIngress struct {
 type ClusterKmsStatus struct {
 	/* The status code, which should be an enum value of google.rpc.Code. */
 	// +optional
-	Code *int64 `json:"code,omitempty"`
+	Code *int32 `json:"code,omitempty"`
 
-	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client. */
+	/* A developer-facing error message, which should be in English. */
 	// +optional
 	Message *string `json:"message,omitempty"`
 }
 
 type ClusterLocal struct {
-	/* Only machines matching this filter will be allowed to host control
-	plane nodes. The filtering language accepts strings like "name=<name>",
-	and is documented here: [AIP-160](https://google.aip.dev/160). */
+	/* Only machines matching this filter will be allowed to host control plane nodes. */
 	// +optional
 	MachineFilter *string `json:"machineFilter,omitempty"`
 
-	/* The number of nodes to serve as replicas of the Control Plane.
-	Only 1 and 3 are supported. */
+	/* The number of nodes to serve as replicas of the Control Plane. Only 1 and 3 are supported. */
 	// +optional
-	NodeCount *int64 `json:"nodeCount,omitempty"`
+	NodeCount *int32 `json:"nodeCount,omitempty"`
 
-	/* Immutable. Name of the Google Distributed Cloud Edge zones where this node pool
-	will be created. For example: 'us-central1-edge-customer-a'. */
+	/* Immutable. Name of the Google Distributed Cloud Edge zones where this node pool will be created. */
 	// +optional
 	NodeLocation *string `json:"nodeLocation,omitempty"`
 
-	/* Policy configuration about how user applications are deployed. Possible values: ["SHARED_DEPLOYMENT_POLICY_UNSPECIFIED", "ALLOWED", "DISALLOWED"]. */
+	/* Policy configuration about how user applications are deployed. */
 	// +optional
 	SharedDeploymentPolicy *string `json:"sharedDeploymentPolicy,omitempty"`
 }
@@ -141,39 +128,27 @@ type ClusterMaintenancePolicy struct {
 }
 
 type ClusterNetworking struct {
-	/* Immutable. All pods in the cluster are assigned an RFC1918 IPv4 address from these
-	blocks. Only a single block is supported. This field cannot be changed
-	after creation. */
+	/* Immutable. All pods in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation. */
 	ClusterIpv4CidrBlocks []string `json:"clusterIpv4CidrBlocks"`
 
-	/* Immutable. If specified, dual stack mode is enabled and all pods in the cluster are
-	assigned an IPv6 address from these blocks alongside from an IPv4
-	address. Only a single block is supported. This field cannot be changed
-	after creation. */
+	/* Immutable. If specified, dual stack mode is enabled and all pods in the cluster are assigned an IPv6 address from these blocks alongside from an IPv4 address. Only a single block is supported. This field cannot be changed after creation. */
 	// +optional
 	ClusterIpv6CidrBlocks []string `json:"clusterIpv6CidrBlocks,omitempty"`
 
-	/* IP addressing type of this cluster i.e. SINGLESTACK_V4 vs DUALSTACK_V4_V6. */
+	/* IP addressing type of this cluster. */
 	// +optional
 	NetworkType *string `json:"networkType,omitempty"`
 
-	/* Immutable. All services in the cluster are assigned an RFC1918 IPv4 address from these
-	blocks. Only a single block is supported. This field cannot be changed
-	after creation. */
+	/* Immutable. All services in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation. */
 	ServicesIpv4CidrBlocks []string `json:"servicesIpv4CidrBlocks"`
 
-	/* Immutable. If specified, dual stack mode is enabled and all services in the cluster are
-	assigned an IPv6 address from these blocks alongside from an IPv4
-	address. Only a single block is supported. This field cannot be changed
-	after creation. */
+	/* Immutable. If specified, dual stack mode is enabled and all services in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation. */
 	// +optional
 	ServicesIpv6CidrBlocks []string `json:"servicesIpv6CidrBlocks,omitempty"`
 }
 
 type ClusterRecurringWindow struct {
-	/* An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how
-	this window recurs. They go on for the span of time between the start and
-	end time. */
+	/* An RRULE for how this window recurs. */
 	// +optional
 	Recurrence *string `json:"recurrence,omitempty"`
 
@@ -183,23 +158,19 @@ type ClusterRecurringWindow struct {
 }
 
 type ClusterRemote struct {
-	/* Immutable. Name of the Google Distributed Cloud Edge zones where this node pool
-	will be created. For example: 'us-central1-edge-customer-a'. */
+	/* Immutable. Name of the Google Distributed Cloud Edge zones where this node pool will be created. */
 	// +optional
 	NodeLocation *string `json:"nodeLocation,omitempty"`
 }
 
 type ClusterSystemAddonsConfig struct {
-	/* Config for the Ingress add-on which allows customers to create an Ingress
-	object to manage external access to the servers in a cluster. The add-on
-	consists of istiod and istio-ingress. */
+	/* Config for the Ingress add-on. */
 	// +optional
 	Ingress *ClusterIngress `json:"ingress,omitempty"`
 }
 
 type ClusterWindow struct {
-	/* The time that the window ends. The end time must take place after the
-	start time. */
+	/* The time that the window ends. */
 	// +optional
 	EndTime *string `json:"endTime,omitempty"`
 
@@ -212,29 +183,23 @@ type EdgeContainerClusterSpec struct {
 	/* Immutable. RBAC policy that will be applied and managed by GEC. */
 	Authorization ClusterAuthorization `json:"authorization"`
 
-	/* The configuration of the cluster control plane. */
+	/* Optional. The configuration of the cluster control plane. */
 	// +optional
 	ControlPlane *ClusterControlPlane `json:"controlPlane,omitempty"`
 
-	/* Remote control plane disk encryption options. This field is only used when
-	enabling CMEK support. */
+	/* Optional. Remote control plane disk encryption options. This field is only used when enabling CMEK support. */
 	// +optional
 	ControlPlaneEncryption *ClusterControlPlaneEncryption `json:"controlPlaneEncryption,omitempty"`
 
-	/* The default maximum number of pods per node used if a maximum value is not
-	specified explicitly for a node pool in this cluster. If unspecified, the
-	Kubernetes default value will be used. */
+	/* Optional. The default maximum number of pods per node used if a maximum value is not specified explicitly for a node pool in this cluster. */
 	// +optional
-	DefaultMaxPodsPerNode *int64 `json:"defaultMaxPodsPerNode,omitempty"`
+	DefaultMaxPodsPerNode *int32 `json:"defaultMaxPodsPerNode,omitempty"`
 
-	/* Address pools for cluster data plane external load balancing. */
+	/* Optional. IPv4 address pools for cluster data plane external load balancing. */
 	// +optional
 	ExternalLoadBalancerIpv4AddressPools []string `json:"externalLoadBalancerIpv4AddressPools,omitempty"`
 
-	/* Immutable. Fleet related configuration.
-	Fleets are a Google Cloud concept for logically organizing clusters,
-	letting you use and manage multi-cluster capabilities and apply
-	consistent policies across your systems. */
+	/* Immutable. Fleet related configuration. */
 	Fleet ClusterFleet `json:"fleet"`
 
 	/* Immutable. The location of the resource. */
@@ -244,16 +209,13 @@ type EdgeContainerClusterSpec struct {
 	// +optional
 	MaintenancePolicy *ClusterMaintenancePolicy `json:"maintenancePolicy,omitempty"`
 
-	/* Fleet related configuration.
-	Fleets are a Google Cloud concept for logically organizing clusters,
-	letting you use and manage multi-cluster capabilities and apply
-	consistent policies across your systems. */
+	/* Fleet related configuration. */
 	Networking ClusterNetworking `json:"networking"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The release channel a cluster is subscribed to. Possible values: ["RELEASE_CHANNEL_UNSPECIFIED", "NONE", "REGULAR"]. */
+	/* Optional. The release channel a cluster is subscribed to. */
 	// +optional
 	ReleaseChannel *string `json:"releaseChannel,omitempty"`
 
@@ -265,54 +227,49 @@ type EdgeContainerClusterSpec struct {
 	// +optional
 	SystemAddonsConfig *ClusterSystemAddonsConfig `json:"systemAddonsConfig,omitempty"`
 
-	/* The target cluster version. For example: "1.5.0". */
+	/* Optional. The target cluster version. For example: "1.5.0". */
 	// +optional
 	TargetVersion *string `json:"targetVersion,omitempty"`
 }
 
 type ClusterMaintenanceEventsStatus struct {
-	/* The time when the maintenance event request was created. */
+	/* Output only. The time when the maintenance event request was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* The time when the maintenance event ended, either successfully or not. If
-	the maintenance event is split into multiple maintenance windows,
-	end_time is only updated when the whole flow ends. */
+	/* Output only. The time when the maintenance event ended, either successfully or not. */
 	// +optional
 	EndTime *string `json:"endTime,omitempty"`
 
-	/* The operation for running the maintenance event. Specified in the format
-	projects/* /locations/* /operations/*. If the maintenance event is split
-	into multiple operations (e.g. due to maintenance windows), the latest
-	one is recorded. */
+	/* Output only. The operation for running the maintenance event. */
 	// +optional
 	Operation *string `json:"operation,omitempty"`
 
-	/* The schedule of the maintenance event. */
+	/* Output only. The schedule of the maintenance event. */
 	// +optional
 	Schedule *string `json:"schedule,omitempty"`
 
-	/* The time when the maintenance event started. */
+	/* Output only. The time when the maintenance event started. */
 	// +optional
 	StartTime *string `json:"startTime,omitempty"`
 
-	/* Indicates the maintenance event state. */
+	/* Output only. Indicates the maintenance event state. */
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* The target version of the cluster. */
+	/* Output only. The target version of the cluster. */
 	// +optional
 	TargetVersion *string `json:"targetVersion,omitempty"`
 
-	/* Indicates the maintenance event type. */
+	/* Output only. Indicates the maintenance event type. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 
-	/* The time when the maintenance event message was updated. */
+	/* Output only. The time when the maintenance event message was updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	/* UUID of the maintenance event. */
+	/* Output only. UUID of the maintenance event. */
 	// +optional
 	Uuid *string `json:"uuid,omitempty"`
 }
@@ -321,29 +278,31 @@ type EdgeContainerClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EdgeContainerCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The PEM-encoded public certificate of the cluster's CA. */
+	/* Output only. The PEM-encoded public certificate of the cluster's CA. */
 	// +optional
 	ClusterCaCertificate *string `json:"clusterCaCertificate,omitempty"`
 
-	/* The control plane release version. */
+	/* Output only. The control plane release version. */
 	// +optional
 	ControlPlaneVersion *string `json:"controlPlaneVersion,omitempty"`
 
-	/* The time the cluster was created, in RFC3339 text format. */
+	/* Output only. The time the cluster was created, in RFC3339 text format. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* The IP address of the Kubernetes API server. */
+	/* Output only. The IP address of the Kubernetes API server. */
 	// +optional
 	Endpoint *string `json:"endpoint,omitempty"`
 
-	/* All the maintenance events scheduled for the cluster, including the ones
-	ongoing, planned for the future and done in the past (up to 90 days). */
+	/* A unique specifier for the EdgeContainerCluster resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* Output only. All the maintenance events scheduled for the cluster. */
 	// +optional
 	MaintenanceEvents []ClusterMaintenanceEventsStatus `json:"maintenanceEvents,omitempty"`
 
-	/* The lowest release version among all worker nodes. This field can be empty
-	if the cluster does not have any worker nodes. */
+	/* Output only. The lowest release version among all worker nodes. This field can be empty if the cluster does not have any worker nodes. */
 	// +optional
 	NodeVersion *string `json:"nodeVersion,omitempty"`
 
@@ -351,15 +310,15 @@ type EdgeContainerClusterStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The port number of the Kubernetes API server. */
+	/* Output only. The port number of the Kubernetes API server. */
 	// +optional
-	Port *int64 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 
-	/* Indicates the status of the cluster. */
+	/* Output only. Indicates the status of the cluster. */
 	// +optional
 	Status *string `json:"status,omitempty"`
 
-	/* The time the cluster was last updated, in RFC3339 text format. */
+	/* Output only. The time the cluster was last updated, in RFC3339 text format. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
