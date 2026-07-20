@@ -33,18 +33,18 @@ func authzPolicyFuzzer() fuzztesting.KRMFuzzer {
 		NetworkSecurityAuthzPolicyObservedState_v1alpha1_FromProto, NetworkSecurityAuthzPolicyObservedState_v1alpha1_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".target")
-	f.SpecFields.Insert(".http_rules")
-	f.SpecFields.Insert(".network_rules")
-	f.SpecFields.Insert(".action")
-	f.SpecFields.Insert(".custom_provider")
-	f.SpecFields.Insert(".policy_profile")
+	f.SpecField(".description")
+	f.SpecField(".target")
+	f.SpecField(".http_rules")
+	f.SpecField(".network_rules")
+	f.SpecField(".action")
+	f.SpecField(".custom_provider")
+	f.SpecField(".policy_profile")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
 
-	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_Identity(".name")
 	f.Unimplemented_NotYetTriaged(".labels")
 
 	return f

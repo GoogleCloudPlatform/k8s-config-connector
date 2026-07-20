@@ -2890,10 +2890,8 @@
 [missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.purpose[]" is not set in unstructured objects
 [missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.action" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProvider.authzExtension.resources[]" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProvider.cloudIAP.enabled" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.notSources[].ipBlocks[].length" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.notSources[].ipBlocks[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.notSources[].principals[].principal.contains" is not set in unstructured objects
@@ -2910,14 +2908,10 @@
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.notSources[].resources[].tagValueIDSet.tagValues[].external" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.notSources[].resources[].tagValueIDSet.tagValues[].name" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.notSources[].resources[].tagValueIDSet.tagValues[].namespace" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].ipBlocks[].length" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].ipBlocks[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].principals[].principal.contains" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].principals[].principal.exact" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].principals[].principal.ignoreCase" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].principals[].principal.prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].principals[].principal.suffix" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].principals[].principalSelector" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].resources[].iamServiceAccount.contains" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].resources[].iamServiceAccount.exact" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.sources[].resources[].iamServiceAccount.ignoreCase" is not set in unstructured objects
@@ -2962,8 +2956,6 @@
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].headerSet.headers[].value.prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].headerSet.headers[].value.suffix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].hosts[].contains" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].hosts[].exact" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].hosts[].ignoreCase" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].hosts[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].hosts[].suffix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].mcp.baseProtocolMethodsOption" is not set in unstructured objects
@@ -2973,19 +2965,15 @@
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].mcp.methods[].params[].ignoreCase" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].mcp.methods[].params[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].mcp.methods[].params[].suffix" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].methods[]" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].paths[].contains" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].paths[].exact" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].paths[].ignoreCase" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].paths[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].paths[].suffix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].snis[].contains" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].snis[].exact" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].snis[].ignoreCase" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].snis[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].to.operations[].snis[].suffix" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].when" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRules[].from.notSources[].ipBlocks[].length" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRules[].from.notSources[].ipBlocks[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRules[].from.notSources[].principals[].principal.contains" is not set in unstructured objects
@@ -3077,10 +3065,6 @@
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRules[].to.operations[].snis[].prefix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRules[].to.operations[].snis[].suffix" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRules[].when" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyProfile" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.loadBalancingScheme" is not set in unstructured objects
-[missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.resources[].external" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.resources[].name" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.resources[].namespace" is not set in unstructured objects
 [missing_field] crd=networksecuritybackendauthenticationconfigs.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientCertificateRef" is not set; neither 'external' nor 'name' are set
