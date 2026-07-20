@@ -208,7 +208,9 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	gatewayAddress[3] = 1
 	obj.GatewayAddress = PtrTo(gatewayAddress.String())
 
-	// obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
+	// if obj.AllowSubnetCidrRoutesOverlap == nil {
+	// 	obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
+	// }
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
