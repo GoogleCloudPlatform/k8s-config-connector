@@ -2001,6 +2001,12 @@ func ResourceContainerCluster() *schema.Resource {
 				Description: `Whether L4ILB Subsetting is enabled for this cluster.`,
 				Default:     false,
 			},
+			"disable_l4_lb_firewall_reconciliation": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Whether the cluster disables L4 LB firewall reconciliation.`,
+				Default:     false,
+			},
 			"enable_multi_networking": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -2256,6 +2262,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			DatapathProvider:                     d.Get("datapath_provider").(string),
 			PrivateIpv6GoogleAccess:              d.Get("private_ipv6_google_access").(string),
 			EnableL4ilbSubsetting:                d.Get("enable_l4_ilb_subsetting").(bool),
+			DisableL4LbFirewallReconciliation:    d.Get("disable_l4_lb_firewall_reconciliation").(bool),
 			DnsConfig:                            expandDnsConfig(d.Get("dns_config")),
 			GatewayApiConfig:                     expandGatewayApiConfig(d.Get("gateway_api_config")),
 			EnableMultiNetworking:                d.Get("enable_multi_networking").(bool),
@@ -2810,6 +2817,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("private_ipv6_google_access", cluster.NetworkConfig.PrivateIpv6GoogleAccess); err != nil {
 		return fmt.Errorf("Error setting private_ipv6_google_access: %s", err)
 	}
+	if err := d.Set("disable_l4_lb_firewall_reconciliation", cluster.NetworkConfig.DisableL4LbFirewallReconciliation); err != nil {
+		return fmt.Errorf("Error setting disable_l4_lb_firewall_reconciliation: %s", err)
+	}
 	if err := d.Set("authenticator_groups_config", flattenAuthenticatorGroupsConfig(cluster.AuthenticatorGroupsConfig)); err != nil {
 		return err
 	}
@@ -3286,6 +3296,23 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s FQDN Network Policy has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("disable_l4_lb_firewall_reconciliation") {
+		disabled := d.Get("disable_l4_lb_firewall_reconciliation").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredDisableL4LbFirewallReconciliation: disabled,
+				ForceSendFields:                          []string{"DesiredDisableL4LbFirewallReconciliation"},
+			},
+		}
+		updateF := updateFunc(req, "updating disable l4 lb firewall reconciliation")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Disable L4 LB Firewall Reconciliation has been updated to %v", d.Id(), disabled)
 	}
 
 	if d.HasChange("cost_management_config") {

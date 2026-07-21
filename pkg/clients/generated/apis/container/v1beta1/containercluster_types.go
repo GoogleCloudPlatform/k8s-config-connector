@@ -1178,6 +1178,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Whether the cluster disables L4 LB firewall reconciliation. */
+	// +optional
+	DisableL4LbFirewallReconciliation *bool `json:"disableL4LbFirewallReconciliation,omitempty"`
+
 	/* Immutable. Configuration for Cloud DNS for Kubernetes Engine. */
 	// +optional
 	DnsConfig *ClusterDnsConfig `json:"dnsConfig,omitempty"`

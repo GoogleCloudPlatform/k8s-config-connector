@@ -235,6 +235,9 @@ func locationToZone(location string) (string, error) {
 }
 
 func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*pb.Operation, error) {
+	if req.GetUpdate() == nil || proto.Equal(req.GetUpdate(), &pb.ClusterUpdate{}) {
+		return nil, status.Errorf(codes.InvalidArgument, "must specify a field to update")
+	}
 	reqName := req.GetName()
 
 	name, err := s.parseClusterName(reqName)
@@ -365,6 +368,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		}
 		obj.NetworkConfig.EnableCiliumClusterwideNetworkPolicy = update.DesiredEnableCiliumClusterwideNetworkPolicy
 		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
+	}
+
+	if update.DesiredDisableL4LbFirewallReconciliation != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.DisableL4LbFirewallReconciliation = update.DesiredDisableL4LbFirewallReconciliation
+		update.DesiredDisableL4LbFirewallReconciliation = nil
 	}
 
 	if update.DesiredAdditionalIpRangesConfig != nil {

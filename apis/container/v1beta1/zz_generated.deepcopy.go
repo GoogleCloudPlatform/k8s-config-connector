@@ -759,6 +759,11 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(DefaultSnatStatus)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.DisableL4LbFirewallReconciliation != nil {
+		in, out := &in.DisableL4LbFirewallReconciliation, &out.DisableL4LbFirewallReconciliation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
