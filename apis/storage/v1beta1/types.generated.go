@@ -18,8 +18,18 @@
 // krm.version: v1beta1
 // proto.service: google.storage.v1
 // resource: StorageBucket:Bucket
+// resource: StorageBucketObject:Object
 
 package v1beta1
+
+/* unreachable type UInt32Value
+// +kcc:proto=google.protobuf.UInt32Value
+type UInt32Value struct {
+	// The uint32 value.
+	// +kcc:proto:field=google.protobuf.UInt32Value.value
+	Value *uint32 `json:"value,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.storage.v1.Bucket", skipping
 
@@ -519,7 +529,219 @@ type BucketAccessControl struct {
 }
 */
 
-/* unreachable type ObjectAccessControl
+/* found existing non-generated go type with proto tag "google.storage.v1.Object", skipping
+
+// +kcc:proto=google.storage.v1.Object
+type Object struct {
+	// Content-Encoding of the object data, matching
+	//  [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
+	// +kcc:proto:field=google.storage.v1.Object.content_encoding
+	ContentEncoding *string `json:"contentEncoding,omitempty"`
+
+	// Content-Disposition of the object data, matching
+	//  [https://tools.ietf.org/html/rfc6266][RFC 6266].
+	// +kcc:proto:field=google.storage.v1.Object.content_disposition
+	ContentDisposition *string `json:"contentDisposition,omitempty"`
+
+	// Cache-Control directive for the object data, matching
+	//  [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+	//  If omitted, and the object is accessible to all anonymous users, the
+	//  default will be `public, max-age=3600`.
+	// +kcc:proto:field=google.storage.v1.Object.cache_control
+	CacheControl *string `json:"cacheControl,omitempty"`
+
+	// Access controls on the object.
+	// +kcc:proto:field=google.storage.v1.Object.acl
+	Acl []ObjectAccessControl `json:"acl,omitempty"`
+
+	// Content-Language of the object data, matching
+	//  [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+	// +kcc:proto:field=google.storage.v1.Object.content_language
+	ContentLanguage *string `json:"contentLanguage,omitempty"`
+
+	// The version of the metadata for this object at this generation. Used for
+	//  preconditions and for detecting changes in metadata. A metageneration
+	//  number is only meaningful in the context of a particular generation of a
+	//  particular object.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.metageneration
+	Metageneration *int64 `json:"metageneration,omitempty"`
+
+	// The deletion time of the object. Will be returned if and only if this
+	//  version of the object has been deleted.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.time_deleted
+	TimeDeleted *string `json:"timeDeleted,omitempty"`
+
+	// Content-Type of the object data, matching
+	//  [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+	//  If an object is stored without a Content-Type, it is served as
+	//  `application/octet-stream`.
+	// +kcc:proto:field=google.storage.v1.Object.content_type
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Content-Length of the object data in bytes, matching
+	//  [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.size
+	Size *int64 `json:"size,omitempty"`
+
+	// The creation time of the object.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.time_created
+	TimeCreated *string `json:"timeCreated,omitempty"`
+
+	// CRC32c checksum. For more information about using the CRC32c
+	//  checksum, see
+	//  [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
+	//  ETags: Best Practices]. This is a server determined value and should not be
+	//  supplied by the user when sending an Object. The server will ignore any
+	//  value provided. Users should instead use the object_checksums field on the
+	//  InsertObjectRequest when uploading an object.
+	// +kcc:proto:field=google.storage.v1.Object.crc32c
+	Crc32c *UInt32Value `json:"crc32c,omitempty"`
+
+	// Number of underlying components that make up this object. Components are
+	//  accumulated by compose operations.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.component_count
+	ComponentCount *int32 `json:"componentCount,omitempty"`
+
+	// MD5 hash of the data; encoded using base64 as per
+	//  [https://tools.ietf.org/html/rfc4648#section-4][RFC 4648 §4]. For more
+	//  information about using the MD5 hash, see
+	//  [https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes and
+	//  ETags: Best Practices]. This is a server determined value and should not be
+	//  supplied by the user when sending an Object. The server will ignore any
+	//  value provided. Users should instead use the object_checksums field on the
+	//  InsertObjectRequest when uploading an object.
+	// +kcc:proto:field=google.storage.v1.Object.md5_hash
+	Md5Hash *string `json:"md5Hash,omitempty"`
+
+	// HTTP 1.1 Entity tag for the object. See
+	//  [https://tools.ietf.org/html/rfc7232#section-2.3][RFC 7232 §2.3].
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// The modification time of the object metadata.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.updated
+	Updated *string `json:"updated,omitempty"`
+
+	// Storage class of the object.
+	// +kcc:proto:field=google.storage.v1.Object.storage_class
+	StorageClass *string `json:"storageClass,omitempty"`
+
+	// Cloud KMS Key used to encrypt this object, if the object is encrypted by
+	//  such a key.
+	// +kcc:proto:field=google.storage.v1.Object.kms_key_name
+	KMSKeyName *string `json:"kmsKeyName,omitempty"`
+
+	// The time at which the object's storage class was last changed. When the
+	//  object is initially created, it will be set to time_created.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.time_storage_class_updated
+	TimeStorageClassUpdated *string `json:"timeStorageClassUpdated,omitempty"`
+
+	// Whether an object is under temporary hold. While this flag is set to true,
+	//  the object is protected against deletion and overwrites.  A common use case
+	//  of this flag is regulatory investigations where objects need to be retained
+	//  while the investigation is ongoing. Note that unlike event-based hold,
+	//  temporary hold does not impact retention expiration time of an object.
+	// +kcc:proto:field=google.storage.v1.Object.temporary_hold
+	TemporaryHold *bool `json:"temporaryHold,omitempty"`
+
+	// A server-determined value that specifies the earliest time that the
+	//  object's retention period expires. This value is in
+	//  [https://tools.ietf.org/html/rfc3339][RFC 3339] format.
+	//  Note 1: This field is not provided for objects with an active event-based
+	//  hold, since retention expiration is unknown until the hold is removed.
+	//  Note 2: This value can be provided even when temporary hold is set (so that
+	//  the user can reason about policy without having to first unset the
+	//  temporary hold).
+	// +kcc:proto:field=google.storage.v1.Object.retention_expiration_time
+	RetentionExpirationTime *string `json:"retentionExpirationTime,omitempty"`
+
+	// User-provided metadata, in key/value pairs.
+	// +kcc:proto:field=google.storage.v1.Object.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// Whether an object is under event-based hold. Event-based hold is a way to
+	//  retain objects until an event occurs, which is signified by the
+	//  hold's release (i.e. this value is set to false). After being released (set
+	//  to false), such objects will be subject to bucket-level retention (if any).
+	//  One sample use case of this flag is for banks to hold loan documents for at
+	//  least 3 years after loan is paid in full. Here, bucket-level retention is 3
+	//  years and the event is the loan being paid in full. In this example, these
+	//  objects will be held intact for any number of years until the event has
+	//  occurred (event-based hold on the object is released) and then 3 more years
+	//  after that. That means retention duration of the objects begins from the
+	//  moment event-based hold transitioned from true to false.
+	// +kcc:proto:field=google.storage.v1.Object.event_based_hold
+	EventBasedHold *bool `json:"eventBasedHold,omitempty"`
+
+	// The name of the object.
+	//  Attempting to update this field after the object is created will result in
+	//  an error.
+	// +kcc:proto:field=google.storage.v1.Object.name
+	Name *string `json:"name,omitempty"`
+
+	// The ID of the object, including the bucket name, object name, and
+	//  generation number.
+	//  Attempting to update this field after the object is created will result in
+	//  an error.
+	// +kcc:proto:field=google.storage.v1.Object.id
+	ID *string `json:"id,omitempty"`
+
+	// The name of the bucket containing this object.
+	//  Attempting to update this field after the object is created will result in
+	//  an error.
+	// +kcc:proto:field=google.storage.v1.Object.bucket
+	Bucket *string `json:"bucket,omitempty"`
+
+	// The content generation of this object. Used for object versioning.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.generation
+	Generation *int64 `json:"generation,omitempty"`
+
+	// The owner of the object. This will always be the uploader of the object.
+	//  Attempting to set or update this field will result in a
+	//  [FieldViolation][google.rpc.BadRequest.FieldViolation].
+	// +kcc:proto:field=google.storage.v1.Object.owner
+	Owner *Owner `json:"owner,omitempty"`
+
+	// Metadata of customer-supplied encryption key, if the object is encrypted by
+	//  such a key.
+	// +kcc:proto:field=google.storage.v1.Object.customer_encryption
+	CustomerEncryption *Object_CustomerEncryption `json:"customerEncryption,omitempty"`
+
+	// A user-specified timestamp set on an object.
+	// +kcc:proto:field=google.storage.v1.Object.custom_time
+	CustomTime *string `json:"customTime,omitempty"`
+}
+*/
+
+// +kcc:proto=google.storage.v1.Object.CustomerEncryption
+type Object_CustomerEncryption struct {
+	// The encryption algorithm.
+	// +kcc:proto:field=google.storage.v1.Object.CustomerEncryption.encryption_algorithm
+	EncryptionAlgorithm *string `json:"encryptionAlgorithm,omitempty"`
+
+	// SHA256 hash value of the encryption key.
+	// +kcc:proto:field=google.storage.v1.Object.CustomerEncryption.key_sha256
+	KeySha256 *string `json:"keySha256,omitempty"`
+}
+
 // +kcc:proto=google.storage.v1.ObjectAccessControl
 type ObjectAccessControl struct {
 	// The access permission for the entity.
@@ -581,9 +803,7 @@ type ObjectAccessControl struct {
 	// +kcc:proto:field=google.storage.v1.ObjectAccessControl.project_team
 	ProjectTeam *ProjectTeam `json:"projectTeam,omitempty"`
 }
-*/
 
-/* unreachable type Owner
 // +kcc:proto=google.storage.v1.Owner
 type Owner struct {
 	// The entity, in the form `user-`*userId*.
@@ -594,9 +814,7 @@ type Owner struct {
 	// +kcc:proto:field=google.storage.v1.Owner.entity_id
 	EntityID *string `json:"entityID,omitempty"`
 }
-*/
 
-/* unreachable type ProjectTeam
 // +kcc:proto=google.storage.v1.ProjectTeam
 type ProjectTeam struct {
 	// The project number.
@@ -607,4 +825,3 @@ type ProjectTeam struct {
 	// +kcc:proto:field=google.storage.v1.ProjectTeam.team
 	Team *string `json:"team,omitempty"`
 }
-*/
