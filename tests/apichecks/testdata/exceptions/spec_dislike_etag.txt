@@ -1,0 +1,1 @@
+[spec_etag] crd=storagebucketobjects.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.acl[].etag" contains etag
