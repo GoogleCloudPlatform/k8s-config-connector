@@ -23,6 +23,215 @@
 
 package storage
 
+import (
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "google.golang.org/genproto/googleapis/storage/v1"
+)
+
+func ObjectAccessControl_FromProto(mapCtx *direct.MapContext, in *pb.ObjectAccessControl) *krm.ObjectAccessControl {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ObjectAccessControl{}
+	out.Role = direct.LazyPtr(in.GetRole())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Bucket = direct.LazyPtr(in.GetBucket())
+	out.Object = direct.LazyPtr(in.GetObject())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	out.Entity = direct.LazyPtr(in.GetEntity())
+	out.EntityID = direct.LazyPtr(in.GetEntityId())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	out.ProjectTeam = ProjectTeam_FromProto(mapCtx, in.GetProjectTeam())
+	return out
+}
+func ObjectAccessControl_ToProto(mapCtx *direct.MapContext, in *krm.ObjectAccessControl) *pb.ObjectAccessControl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ObjectAccessControl{}
+	out.Role = direct.ValueOf(in.Role)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Id = direct.ValueOf(in.ID)
+	out.Bucket = direct.ValueOf(in.Bucket)
+	out.Object = direct.ValueOf(in.Object)
+	out.Generation = direct.ValueOf(in.Generation)
+	out.Entity = direct.ValueOf(in.Entity)
+	out.EntityId = direct.ValueOf(in.EntityID)
+	out.Email = direct.ValueOf(in.Email)
+	out.Domain = direct.ValueOf(in.Domain)
+	out.ProjectTeam = ProjectTeam_ToProto(mapCtx, in.ProjectTeam)
+	return out
+}
+func Object_CustomerEncryption_FromProto(mapCtx *direct.MapContext, in *pb.Object_CustomerEncryption) *krm.Object_CustomerEncryption {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Object_CustomerEncryption{}
+	out.EncryptionAlgorithm = direct.LazyPtr(in.GetEncryptionAlgorithm())
+	out.KeySha256 = direct.LazyPtr(in.GetKeySha256())
+	return out
+}
+func Object_CustomerEncryption_ToProto(mapCtx *direct.MapContext, in *krm.Object_CustomerEncryption) *pb.Object_CustomerEncryption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Object_CustomerEncryption{}
+	out.EncryptionAlgorithm = direct.ValueOf(in.EncryptionAlgorithm)
+	out.KeySha256 = direct.ValueOf(in.KeySha256)
+	return out
+}
+func Owner_FromProto(mapCtx *direct.MapContext, in *pb.Owner) *krm.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Owner{}
+	out.Entity = direct.LazyPtr(in.GetEntity())
+	out.EntityID = direct.LazyPtr(in.GetEntityId())
+	return out
+}
+func Owner_ToProto(mapCtx *direct.MapContext, in *krm.Owner) *pb.Owner {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Owner{}
+	out.Entity = direct.ValueOf(in.Entity)
+	out.EntityId = direct.ValueOf(in.EntityID)
+	return out
+}
+func ProjectTeam_FromProto(mapCtx *direct.MapContext, in *pb.ProjectTeam) *krm.ProjectTeam {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProjectTeam{}
+	out.ProjectNumber = direct.LazyPtr(in.GetProjectNumber())
+	out.Team = direct.LazyPtr(in.GetTeam())
+	return out
+}
+func ProjectTeam_ToProto(mapCtx *direct.MapContext, in *krm.ProjectTeam) *pb.ProjectTeam {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProjectTeam{}
+	out.ProjectNumber = direct.ValueOf(in.ProjectNumber)
+	out.Team = direct.ValueOf(in.Team)
+	return out
+}
+
+/* found existing non-generated mapping function "StorageBucketObjectObservedState_FromProto", skipping
+func StorageBucketObjectObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Object) *krm.StorageBucketObjectObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageBucketObjectObservedState{}
+	out.Metageneration = direct.LazyPtr(in.GetMetageneration())
+	out.TimeDeleted = direct.StringTimestamp_FromProto(mapCtx, in.GetTimeDeleted())
+	out.Size = direct.LazyPtr(in.GetSize())
+	out.TimeCreated = direct.StringTimestamp_FromProto(mapCtx, in.GetTimeCreated())
+	// MISSING: Crc32c
+	// (near miss): "Crc32c" vs "Crc32C"
+	out.ComponentCount = direct.LazyPtr(in.GetComponentCount())
+	out.Md5Hash = direct.LazyPtr(in.GetMd5Hash())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Updated = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdated())
+	// MISSING: KMSKeyName
+	out.TimeStorageClassUpdated = direct.StringTimestamp_FromProto(mapCtx, in.GetTimeStorageClassUpdated())
+	out.RetentionExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRetentionExpirationTime())
+	// MISSING: Name
+	// MISSING: ID
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	out.Owner = Owner_FromProto(mapCtx, in.GetOwner())
+	out.CustomerEncryption = Object_CustomerEncryption_FromProto(mapCtx, in.GetCustomerEncryption())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "StorageBucketObjectObservedState_ToProto", skipping
+func StorageBucketObjectObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketObjectObservedState) *pb.Object {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Object{}
+	out.Metageneration = direct.ValueOf(in.Metageneration)
+	out.TimeDeleted = direct.StringTimestamp_ToProto(mapCtx, in.TimeDeleted)
+	out.Size = direct.ValueOf(in.Size)
+	out.TimeCreated = direct.StringTimestamp_ToProto(mapCtx, in.TimeCreated)
+	// MISSING: Crc32c
+	// (near miss): "Crc32c" vs "Crc32C"
+	out.ComponentCount = direct.ValueOf(in.ComponentCount)
+	out.Md5Hash = direct.ValueOf(in.Md5Hash)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Updated = direct.StringTimestamp_ToProto(mapCtx, in.Updated)
+	// MISSING: KMSKeyName
+	out.TimeStorageClassUpdated = direct.StringTimestamp_ToProto(mapCtx, in.TimeStorageClassUpdated)
+	out.RetentionExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.RetentionExpirationTime)
+	// MISSING: Name
+	// MISSING: ID
+	out.Generation = direct.ValueOf(in.Generation)
+	out.Owner = Owner_ToProto(mapCtx, in.Owner)
+	out.CustomerEncryption = Object_CustomerEncryption_ToProto(mapCtx, in.CustomerEncryption)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "StorageBucketObjectSpec_FromProto", skipping
+func StorageBucketObjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Object) *krm.StorageBucketObjectSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageBucketObjectSpec{}
+	out.ContentEncoding = direct.LazyPtr(in.GetContentEncoding())
+	out.ContentDisposition = direct.LazyPtr(in.GetContentDisposition())
+	out.CacheControl = direct.LazyPtr(in.GetCacheControl())
+	out.Acl = direct.Slice_FromProto(mapCtx, in.Acl, ObjectAccessControl_FromProto)
+	out.ContentLanguage = direct.LazyPtr(in.GetContentLanguage())
+	out.ContentType = direct.LazyPtr(in.GetContentType())
+	// MISSING: Crc32c
+	out.StorageClass = direct.LazyPtr(in.GetStorageClass())
+	// MISSING: KMSKeyName
+	out.TemporaryHold = direct.LazyPtr(in.GetTemporaryHold())
+	out.Metadata = in.Metadata
+	out.EventBasedHold = direct.BoolValue_FromProto(mapCtx, in.GetEventBasedHold())
+	// MISSING: Name
+	// MISSING: ID
+	if in.GetBucket() != "" {
+		out.BucketRef = &krm.StorageBucketRef{External: in.GetBucket()}
+	}
+	out.CustomTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCustomTime())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "StorageBucketObjectSpec_ToProto", skipping
+func StorageBucketObjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketObjectSpec) *pb.Object {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Object{}
+	out.ContentEncoding = direct.ValueOf(in.ContentEncoding)
+	out.ContentDisposition = direct.ValueOf(in.ContentDisposition)
+	out.CacheControl = direct.ValueOf(in.CacheControl)
+	out.Acl = direct.Slice_ToProto(mapCtx, in.Acl, ObjectAccessControl_ToProto)
+	out.ContentLanguage = direct.ValueOf(in.ContentLanguage)
+	out.ContentType = direct.ValueOf(in.ContentType)
+	// MISSING: Crc32c
+	out.StorageClass = direct.ValueOf(in.StorageClass)
+	// MISSING: KMSKeyName
+	out.TemporaryHold = direct.ValueOf(in.TemporaryHold)
+	out.Metadata = in.Metadata
+	out.EventBasedHold = direct.BoolValue_ToProto(mapCtx, in.EventBasedHold)
+	// MISSING: Name
+	// MISSING: ID
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
+	out.CustomTime = direct.StringTimestamp_ToProto(mapCtx, in.CustomTime)
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "StorageBucketSpec_FromProto", skipping
 func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.StorageBucketSpec {
 	if in == nil {
