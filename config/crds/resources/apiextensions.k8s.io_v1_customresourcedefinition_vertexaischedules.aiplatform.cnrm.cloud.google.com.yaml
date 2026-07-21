@@ -283,13 +283,38 @@ spec:
                           the [NotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookRuntimeTemplate]
                           has an encryption spec.
                         properties:
-                          kmsKeyName:
+                          kmsKeyRef:
                             description: 'Required. The Cloud KMS resource identifier
                               of the customer managed encryption key used to protect
                               a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
                               The key needs to be in the same region as where the
                               compute resource is created.'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                                type: string
+                              name:
+                                description: The `name` of a `KMSCryptoKey` resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` of a `KMSCryptoKey` resource.
+                                type: string
+                            type: object
                         type: object
                       executionTimeout:
                         description: Max running time of the execution job in seconds
@@ -303,20 +328,73 @@ spec:
                         description: 'The Cloud Storage url pointing to the ipynb
                           file. Format: `gs://bucket/notebook_file.ipynb`'
                         properties:
+                          bucketRef:
+                            description: Reference to a StorageBucket.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  StorageBucket resource. Should be in the format
+                                  "projects/{{projectID}}/buckets/{{bucketID}}".
+                                type: string
+                              name:
+                                description: The name of a StorageBucket resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a StorageBucket resource.
+                                type: string
+                            type: object
                           generation:
                             description: The version of the Cloud Storage object to
                               read. If unset, the current version of the object is
                               read. See https://cloud.google.com/storage/docs/metadata#generation-number.
                             type: string
-                          uri:
-                            description: 'The Cloud Storage uri pointing to the ipynb
-                              file. Format: `gs://bucket/notebook_file.ipynb`'
+                          object:
+                            description: Name of the Cloud Storage object.
                             type: string
                         type: object
-                      gcsOutputURI:
+                      gcsOutputRef:
                         description: 'The Cloud Storage location to upload the result
                           to. Format: `gs://bucket-name`'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed StorageBucket
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                            type: string
+                          name:
+                            description: The name of a StorageBucket resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a StorageBucket resource.
+                            type: string
+                        type: object
                       kernelName:
                         description: The name of the kernel to use during notebook
                           execution. If unset, the default kernel is used.
@@ -431,13 +509,38 @@ spec:
                           If set, this PipelineJob and all of its sub-resources will
                           be secured by this key.
                         properties:
-                          kmsKeyName:
+                          kmsKeyRef:
                             description: 'Required. The Cloud KMS resource identifier
                               of the customer managed encryption key used to protect
                               a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
                               The key needs to be in the same region as where the
                               compute resource is created.'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                                type: string
+                              name:
+                                description: The `name` of a `KMSCryptoKey` resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` of a `KMSCryptoKey` resource.
+                                type: string
+                            type: object
                         type: object
                       labels:
                         additionalProperties:

@@ -324,22 +324,30 @@ func DeployedModelRef_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModelRe
 	out.DeployedModelId = direct.ValueOf(in.DeployedModelID)
 	return out
 }
+
+/* found existing non-generated mapping function "EncryptionSpec_FromProto", skipping
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.EncryptionSpec{}
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	// MISSING: KMSKeyName
 	return out
 }
-func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "EncryptionSpec_ToProto", skipping
+
+	func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+		if in == nil {
+			return nil
+		}
+		out := &pb.EncryptionSpec{}
+		// MISSING: KMSKeyName
+		return out
 	}
-	out := &pb.EncryptionSpec{}
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	return out
-}
+*/
 func EnvVar_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krm.EnvVar {
 	if in == nil {
 		return nil
@@ -1086,7 +1094,7 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.DirectNotebookSource = NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx, in.GetDirectNotebookSource())
 	out.NotebookRuntimeTemplateResourceName = direct.LazyPtr(in.GetNotebookRuntimeTemplateResourceName())
 	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
-	out.GCSOutputURI = direct.LazyPtr(in.GetGcsOutputUri())
+	// MISSING: GCSOutputURI
 	out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
 	if in.GetServiceAccount() != "" {
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
@@ -1130,9 +1138,7 @@ found existing non-generated mapping function "NotebookExecutionJob_ToProto", sk
 		if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
 			out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
 		}
-		if oneof := NotebookExecutionJob_GcsOutputUri_ToProto(mapCtx, in.GCSOutputURI); oneof != nil {
-			out.ExecutionSink = oneof
-		}
+		// MISSING: GCSOutputURI
 		if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
 			out.ExecutionIdentity = oneof
 		}
@@ -1161,12 +1167,6 @@ func NotebookExecutionJob_NotebookRuntimeTemplateResourceName_ToProto(mapCtx *di
 		return nil
 	}
 	return &pb.NotebookExecutionJob_NotebookRuntimeTemplateResourceName{NotebookRuntimeTemplateResourceName: *in}
-}
-func NotebookExecutionJob_GcsOutputUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookExecutionJob_GcsOutputUri {
-	if in == nil {
-		return nil
-	}
-	return &pb.NotebookExecutionJob_GcsOutputUri{GcsOutputUri: *in}
 }
 func NotebookExecutionJob_ExecutionUser_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookExecutionJob_ExecutionUser {
 	if in == nil {
@@ -1290,24 +1290,32 @@ func NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx *direct.MapContext
 	out.Content = in.Content
 	return out
 }
+
+/* found existing non-generated mapping function "NotebookExecutionJob_GCSNotebookSource_FromProto", skipping
 func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_GcsNotebookSource) *krm.NotebookExecutionJob_GCSNotebookSource {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NotebookExecutionJob_GCSNotebookSource{}
-	out.URI = direct.LazyPtr(in.GetUri())
+	// MISSING: URI
 	out.Generation = direct.LazyPtr(in.GetGeneration())
 	return out
 }
-func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GCSNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NotebookExecutionJob_GCSNotebookSource_ToProto", skipping
+
+	func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GCSNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NotebookExecutionJob_GcsNotebookSource{}
+		// MISSING: URI
+		out.Generation = direct.ValueOf(in.Generation)
+		return out
 	}
-	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
-	out.Uri = direct.ValueOf(in.URI)
-	out.Generation = direct.ValueOf(in.Generation)
-	return out
-}
+*/
 func NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_WorkbenchRuntime) *krm.NotebookExecutionJob_WorkbenchRuntime {
 	if in == nil {
 		return nil

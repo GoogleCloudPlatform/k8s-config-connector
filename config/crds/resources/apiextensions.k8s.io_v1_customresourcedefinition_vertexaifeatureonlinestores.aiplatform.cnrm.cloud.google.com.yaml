@@ -165,13 +165,38 @@ spec:
                 description: Optional. Customer-managed encryption key spec for data
                   storage. If set, online store will be secured by this key.
                 properties:
-                  kmsKeyName:
+                  kmsKeyRef:
                     description: 'Required. The Cloud KMS resource identifier of the
                       customer managed encryption key used to protect a resource.
                       Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
                       The key needs to be in the same region as where the compute
                       resource is created.'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
                 type: object
               labels:
                 additionalProperties:

@@ -15,11 +15,14 @@
 package aiplatform
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -267,7 +270,11 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.DirectNotebookSource = NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx, in.GetDirectNotebookSource())
 	out.NotebookRuntimeTemplateResourceName = direct.LazyPtr(in.GetNotebookRuntimeTemplateResourceName())
 	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
-	out.GCSOutputURI = direct.LazyPtr(in.GetGcsOutputUri())
+	if in.GetGcsOutputUri() != "" {
+		out.GCSOutputRef = &storagev1beta1.StorageBucketRef{
+			External: in.GetGcsOutputUri(),
+		}
+	}
 	out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
 	if in.GetServiceAccount() != "" {
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
@@ -304,8 +311,15 @@ func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExe
 	if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
 		out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
 	}
-	if oneof := NotebookExecutionJob_GcsOutputUri_ToProto(mapCtx, in.GCSOutputURI); oneof != nil {
-		out.ExecutionSink = oneof
+	if in.GCSOutputRef != nil {
+		id := &storagev1beta1.StorageBucketIdentity{}
+		if err := id.FromExternal(in.GCSOutputRef.External); err != nil {
+			mapCtx.Errorf("gcsOutputRef: %v", err)
+		} else {
+			out.ExecutionSink = &pb.NotebookExecutionJob_GcsOutputUri{
+				GcsOutputUri: "gs://" + id.Bucket,
+			}
+		}
 	}
 	if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
 		out.ExecutionIdentity = oneof
@@ -324,5 +338,74 @@ func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExe
 	out.Labels = in.Labels
 	out.KernelName = direct.ValueOf(in.KernelName)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+
+func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_GcsNotebookSource) *krm.NotebookExecutionJob_GCSNotebookSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookExecutionJob_GCSNotebookSource{}
+	if in.GetUri() != "" {
+		uri := in.GetUri()
+		if strings.HasPrefix(uri, "gs://") {
+			trimmed := strings.TrimPrefix(uri, "gs://")
+			parts := strings.SplitN(trimmed, "/", 2)
+			if len(parts) > 0 && parts[0] != "" {
+				out.BucketRef = &storagev1beta1.StorageBucketRef{
+					External: parts[0],
+				}
+				if len(parts) > 1 {
+					out.Object = direct.LazyPtr(parts[1])
+				}
+			}
+		} else {
+			out.BucketRef = &storagev1beta1.StorageBucketRef{
+				External: uri,
+			}
+		}
+	}
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	return out
+}
+
+func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GCSNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
+	if in.BucketRef != nil {
+		id := &storagev1beta1.StorageBucketIdentity{}
+		if err := id.FromExternal(in.BucketRef.External); err != nil {
+			mapCtx.Errorf("gcsNotebookSource.bucketRef: %v", err)
+		} else {
+			bucket := id.Bucket
+			object := direct.ValueOf(in.Object)
+			out.Uri = "gs://" + bucket + "/" + object
+		}
+	}
+	out.Generation = direct.ValueOf(in.Generation)
+	return out
+}
+
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpec{}
+	if in.GetKmsKeyName() != "" {
+		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
+	return out
+}
+
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	if in.KmsKeyRef != nil {
+		out.KmsKeyName = in.KmsKeyRef.External
+	}
 	return out
 }

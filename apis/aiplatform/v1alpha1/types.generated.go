@@ -187,17 +187,6 @@ type DeployedModelRef struct {
 	DeployedModelID *string `json:"deployedModelID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec
-type EncryptionSpec struct {
-	// Required. The Cloud KMS resource identifier of the customer managed
-	//  encryption key used to protect a resource. Has the form:
-	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
-	//  The key needs to be in the same region as where the compute resource is
-	//  created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.EncryptionSpec.kms_key_name
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.EnvVar
 type EnvVar struct {
 	// Required. Name of the environment variable. Must be a valid C identifier.
@@ -1201,20 +1190,6 @@ type NotebookExecutionJob_DirectNotebookSource struct {
 	// The base64-encoded contents of the input notebook file.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DirectNotebookSource.content
 	Content []byte `json:"content,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource
-type NotebookExecutionJob_GCSNotebookSource struct {
-	// The Cloud Storage uri pointing to the ipynb file. Format:
-	//  `gs://bucket/notebook_file.ipynb`
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.uri
-	URI *string `json:"uri,omitempty"`
-
-	// The version of the Cloud Storage object to read. If unset, the current
-	//  version of the object is read. See
-	//  https://cloud.google.com/storage/docs/metadata#generation-number.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.generation
-	Generation *string `json:"generation,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.WorkbenchRuntime

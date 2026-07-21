@@ -19,6 +19,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -282,7 +283,7 @@ type NotebookExecutionJob struct {
 	// The Cloud Storage location to upload the result to. Format:
 	//  `gs://bucket-name`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.gcs_output_uri
-	GCSOutputURI *string `json:"gcsOutputURI,omitempty"`
+	GCSOutputRef *storagev1beta1.StorageBucketRef `json:"gcsOutputRef,omitempty"`
 
 	// The user email to run the execution as. Only supported by Colab runtimes.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.execution_user
@@ -412,3 +413,30 @@ type PipelineJob = VertexAIPipelineJobSpec
 
 // +k8s:deepcopy-gen=false
 type PipelineJobObservedState = VertexAIPipelineJobObservedState
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource
+type NotebookExecutionJob_GCSNotebookSource struct {
+	// Reference to a StorageBucket.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.uri
+	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
+
+	// Name of the Cloud Storage object.
+	Object *string `json:"object,omitempty"`
+
+	// The version of the Cloud Storage object to read. If unset, the current
+	//  version of the object is read. See
+	//  https://cloud.google.com/storage/docs/metadata#generation-number.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.generation
+	Generation *string `json:"generation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec
+type EncryptionSpec struct {
+	// Required. The Cloud KMS resource identifier of the customer managed
+	//  encryption key used to protect a resource. Has the form:
+	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+	//  The key needs to be in the same region as where the compute resource is
+	//  created.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.EncryptionSpec.kms_key_name
+	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
