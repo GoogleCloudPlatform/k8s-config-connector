@@ -30,7 +30,7 @@ type DiscoveryEngineSampleQuerySpec struct {
 
 	// Immutable. The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// Immutable. The DiscoveryEngineSampleQuerySet that this resource belongs to.
 	// +required

@@ -71,7 +71,7 @@ func getIdentityFromDiscoveryEngineSampleQuerySpec(ctx context.Context, reader c
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	location := sampleQuery.Spec.Location
+	location := common.ValueOf(sampleQuery.Spec.Location)
 	if location == "" {
 		return nil, fmt.Errorf("spec.location is not set")
 	}

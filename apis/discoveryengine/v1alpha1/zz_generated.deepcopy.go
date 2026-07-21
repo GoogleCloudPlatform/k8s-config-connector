@@ -2492,6 +2492,11 @@ func (in *DiscoveryEngineSampleQuerySpec) DeepCopyInto(out *DiscoveryEngineSampl
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.SampleQuerySetRef != nil {
 		in, out := &in.SampleQuerySetRef, &out.SampleQuerySetRef
 		*out = new(DiscoveryEngineSampleQuerySetRef)
