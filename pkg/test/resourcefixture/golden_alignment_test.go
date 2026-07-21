@@ -575,6 +575,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
 		delete(v, "policyProfile")
+		selfLink, _ := v["selfLink"].(string)
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
@@ -731,7 +732,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "networkConfig")
 		}
 		_, hasInitialNodeCount := v["initialNodeCount"]
-		selfLink, _ := v["selfLink"].(string)
 		isNodePool := hasInitialNodeCount || strings.Contains(selfLink, "/nodePools/")
 		if isNodePool {
 			delete(v, "initialNodeCount")
