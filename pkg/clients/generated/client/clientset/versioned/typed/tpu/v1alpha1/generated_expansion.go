@@ -23,4 +23,6 @@ package v1alpha1
 
 type TPUNodeExpansion interface{}
 
+type TPUQueuedResourceExpansion interface{}
+
 type TPUVirtualMachineExpansion interface{}

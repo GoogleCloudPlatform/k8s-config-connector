@@ -3517,6 +3517,47 @@
 [missing_field] crd=tpunodes.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" is not set in unstructured objects
 [missing_field] crd=tpunodes.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.schedulingConfig.preemptible" is not set in unstructured objects
 [missing_field] crd=tpunodes.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.useServiceNetworking" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.guaranteed.minDuration" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.queueingPolicy.validAfterDuration" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.queueingPolicy.validAfterTime" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.queueingPolicy.validInterval.endTime" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.queueingPolicy.validInterval.startTime" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.queueingPolicy.validUntilDuration" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.queueingPolicy.validUntilTime" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservationName" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.spot" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].multisliceParams.nodeCount" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].multisliceParams.nodeIDPrefix" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.acceleratorConfig.topology" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.acceleratorConfig.type" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.acceleratorType" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.cidrBlock" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.dataDisks[].mode" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.dataDisks[].sourceDisk" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.description" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.metadata" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfig.canIPForward" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfig.enableExternalIPs" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfig.networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfig.queueCount" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfig.subnetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfigs[].canIPForward" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfigs[].enableExternalIPs" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfigs[].networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfigs[].queueCount" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.networkConfigs[].subnetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.runtimeVersion" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.schedulingConfig.preemptible" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.schedulingConfig.reserved" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.schedulingConfig.spot" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.serviceAccount.scope[]" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.serviceAccount.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.shieldedInstanceConfig.enableSecureBoot" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].node.tags[]" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].nodeID" is not set in unstructured objects
+[missing_field] crd=tpuqueuedresources.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.tpu.nodeSpec[].parent" is not set in unstructured objects
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.acceleratorConfig.topology" is not set in unstructured objects
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.acceleratorConfig.type" is not set in unstructured objects
 [missing_field] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.acceleratorType" is not set in unstructured objects
