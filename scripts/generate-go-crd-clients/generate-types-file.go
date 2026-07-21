@@ -209,12 +209,6 @@ func getArrayOfNestedFieldKeys(m map[string][]*fieldProperties) []string {
 	for k := range m {
 		arr = append(arr, k)
 	}
-	sort.Slice(arr, func(i, j int) bool {
-		if len(arr[i]) == len(arr[j]) {
-			return arr[i] > arr[j]
-		}
-		return len(arr[i]) > len(arr[j])
-	})
 	return arr
 }
 
