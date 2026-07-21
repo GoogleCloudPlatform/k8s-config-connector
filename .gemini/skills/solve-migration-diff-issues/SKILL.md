@@ -75,7 +75,15 @@ Using the diff produced in Step 1, identify why the Direct controller sees a dif
    ```bash
    ./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$
    ```
-4. Confirm that the test passes with a perfect green status and there are no unexpected write operations in the real GCP traffic.
+4. Confirm that `./hack/record-gcp` passes with a perfect green status and records the updated HTTP cassettes (`_http_migration_phase1_legacy_create.log`, etc.) against live GCP.
+
+### GCP Recording PR Reporting Mandate
+When opening your Pull Request, you **MUST** explicitly state in the PR description whether Step 4 item 3 (`./hack/record-gcp`) succeeded against live GCP:
+- **If `./hack/record-gcp` succeeded**: State the GCP project used and confirm that updated live GCP HTTP cassettes are included in the PR.
+- **If `./hack/record-gcp` could not be run or failed** (e.g., due to disabled APIs, missing IAM permissions, or quota limits):
+  1. Document the exact `./hack/record-gcp` command you executed.
+  2. Quote the full error output.
+  3. Explicitly note that the cassettes were generated using mock GCP (`E2E_GCP_TARGET=mock`).
 
 ---
 
