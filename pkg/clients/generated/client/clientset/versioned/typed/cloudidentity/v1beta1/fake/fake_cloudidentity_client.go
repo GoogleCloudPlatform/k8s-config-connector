@@ -31,6 +31,10 @@ type FakeCloudidentityV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeCloudidentityV1beta1) CloudIdentityDevices(namespace string) v1beta1.CloudIdentityDeviceInterface {
+	return newFakeCloudIdentityDevices(c, namespace)
+}
+
 func (c *FakeCloudidentityV1beta1) CloudIdentityGroups(namespace string) v1beta1.CloudIdentityGroupInterface {
 	return newFakeCloudIdentityGroups(c, namespace)
 }

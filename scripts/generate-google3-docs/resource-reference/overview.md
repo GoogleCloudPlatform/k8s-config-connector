@@ -225,6 +225,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/identity/docs/">{{cloudid_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitydevice.md">CloudIdentityDevice</a></td>
+</tr>
+<tr>
+  <td><a href="/identity/docs/">{{cloudid_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitygroup.md">CloudIdentityGroup</a></td>
 </tr>
 <tr>
