@@ -27,7 +27,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.networkmanagement.v1 \
   --api-version networkmanagement.cnrm.cloud.google.com/v1alpha1  \
-  --resource NetworkManagementConnectivityTest:ConnectivityTest
+  --resource NetworkManagementConnectivityTest:ConnectivityTest \
+  --resource NetworkManagementVPCFlowLogsConfig:VpcFlowLogsConfig
 
 go run . generate-mapper \
   --service google.cloud.networkmanagement.v1 \

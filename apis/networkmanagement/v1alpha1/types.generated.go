@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.networkmanagement.v1
 // resource: NetworkManagementConnectivityTest:ConnectivityTest
+// resource: NetworkManagementVPCFlowLogsConfig:VpcFlowLogsConfig
 
 package v1alpha1
 

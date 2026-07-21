@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(NetworkManagementConnectivityTest{}).Name(),
 	}
 
+	NetworkManagementVPCFlowLogsConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkManagementVPCFlowLogsConfig{}).Name(),
+	}
+
 	networkmanagementAPIVersion = SchemeGroupVersion.String()
 )
