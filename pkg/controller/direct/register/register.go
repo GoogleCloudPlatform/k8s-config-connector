@@ -49,6 +49,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/billingbudgets"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/binaryauthorization"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/certificatemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudasset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudbuild"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/clouddeploy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/clouddeploy/clouddeploydeploypolicy"

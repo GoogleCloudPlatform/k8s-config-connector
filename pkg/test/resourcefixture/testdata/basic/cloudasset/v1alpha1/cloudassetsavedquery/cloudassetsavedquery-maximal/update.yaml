@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-./generate-proto.sh
-
-go run . generate-types \
-    --service google.cloud.asset.v1 \
-    --api-version "cloudasset.cnrm.cloud.google.com/v1alpha1" \
-    --resource CloudAssetSavedQuery:SavedQuery
-
-go run . generate-mapper \
-    --service google.cloud.asset.v1 \
-    --api-version "cloudasset.cnrm.cloud.google.com/v1alpha1"
+apiVersion: cloudasset.cnrm.cloud.google.com/v1alpha1
+kind: CloudAssetSavedQuery
+metadata:
+  name: ca-savedquery-max-${uniqueId}
+spec:
+  projectRef:
+    external: "${projectId}"
+  description: "An updated saved query with all fields for testing."
+  resourceID: "ca-savedquery-max-${uniqueId}"
+  content:
+    iamPolicyAnalysisQuery:
+      scope: projects/${projectId}
+      resourceSelector:
+        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectId}
+      identitySelector:
+        identity: user:updated-test-user@example.com

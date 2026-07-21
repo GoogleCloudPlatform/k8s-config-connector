@@ -113,6 +113,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Billing Budgets
 		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}": true,
 
+		// Cloud Asset
+		"//cloudasset.googleapis.com/v1/projects/{}/savedQueries/{}": true,
+
 		// Cloud KMS
 		"//cloudkms.googleapis.com/projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}/ciphertext/{}": true,
 
