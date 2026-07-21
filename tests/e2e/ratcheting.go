@@ -102,6 +102,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 	case schema.GroupKind{Group: "bigquerydatatransfer.cnrm.cloud.google.com", Kind: "BigQueryDataTransferConfig"}:
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryJob"}:
+	case schema.GroupKind{Group: "bigquerymigration.cnrm.cloud.google.com", Kind: "BigQueryMigrationMigrationWorkflow"}:
 	case schema.GroupKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Kind: "BigQueryReservationAssignment"}:
 	case schema.GroupKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Kind: "BigQueryReservationCapacityCommitment"}:
 	case schema.GroupKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Kind: "BigQueryReservationReservation"}:

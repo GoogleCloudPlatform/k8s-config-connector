@@ -36,6 +36,10 @@ var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
 		Group: "devicestreaming.cnrm.cloud.google.com",
 		Kind:  "DeviceStreamingSession",
 	}: true,
+	schema.GroupKind{
+		Group: "bigquerymigration.cnrm.cloud.google.com",
+		Kind:  "BigQueryMigrationMigrationWorkflow",
+	}: true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {

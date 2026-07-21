@@ -41,6 +41,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryconnection"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydataset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydatatransfer"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerymigration"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryreservation"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable/bigtableauthorizedview"
