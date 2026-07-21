@@ -263,6 +263,8 @@ import (
 	fakegkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1/fake"
 	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1"
 	fakegkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1/fake"
+	grafeasv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/grafeas/v1alpha1"
+	fakegrafeasv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/grafeas/v1alpha1/fake"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
 	fakehealthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1/fake"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
@@ -1104,6 +1106,11 @@ func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
 // GkemulticloudV1alpha1 retrieves the GkemulticloudV1alpha1Client
 func (c *Clientset) GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface {
 	return &fakegkemulticloudv1alpha1.FakeGkemulticloudV1alpha1{Fake: &c.Fake}
+}
+
+// GrafeasV1alpha1 retrieves the GrafeasV1alpha1Client
+func (c *Clientset) GrafeasV1alpha1() grafeasv1alpha1.GrafeasV1alpha1Interface {
+	return &fakegrafeasv1alpha1.FakeGrafeasV1alpha1{Fake: &c.Fake}
 }
 
 // HealthcareV1alpha1 retrieves the HealthcareV1alpha1Client
