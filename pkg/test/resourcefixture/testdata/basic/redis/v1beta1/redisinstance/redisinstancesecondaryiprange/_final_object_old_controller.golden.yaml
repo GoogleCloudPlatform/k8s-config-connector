@@ -35,6 +35,8 @@ status:
   nodes:
   - id: node-0
     zone: us-central1-a
+  - id: node-1
+    zone: us-central1-a
   observedGeneration: 3
   persistenceIamIdentity: serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com
   port: 6379

@@ -6,7 +6,7 @@
 >   generation: 2
 22d20
 <   resourceID: redisinstances-${uniqueId}
-38c36,37
+40c38,39
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2

@@ -87,7 +87,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
-    "alternativeLocationId": "us-central1-a",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
     "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -138,7 +137,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
   "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -241,7 +239,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
-    "alternativeLocationId": "us-central1-a",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
     "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -293,7 +290,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
   "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",

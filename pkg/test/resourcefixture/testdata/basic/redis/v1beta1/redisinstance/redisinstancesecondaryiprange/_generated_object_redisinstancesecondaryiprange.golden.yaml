@@ -33,6 +33,8 @@ status:
   nodes:
   - id: node-0
     zone: us-central1-a
+  - id: node-1
+    zone: us-central1-a
   observedGeneration: 2
   observedState: {}
   persistenceIamIdentity: serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com

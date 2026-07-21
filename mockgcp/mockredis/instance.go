@@ -90,38 +90,6 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 
-	zone := name.Location + "-a"
-	obj.CurrentLocationId = zone
-	obj.LocationId = zone
-
-	obj.Nodes = []*pb.NodeInfo{
-		{
-			Id:   "node-0",
-			Zone: zone,
-		},
-	}
-
-	obj.Host = "10.20.30.40"
-	obj.ReservedIpRange = "10.20.30.0/24"
-
-	obj.PersistenceIamIdentity = fmt.Sprintf("serviceAccount:service-%d@cloud-redis.iam.gserviceaccount.com", name.Project.Number)
-
-	obj.Port = 6379
-
-	if obj.SecondaryIpRange == "auto" {
-		obj.SecondaryIpRange = "10.20.30.16/28"
-	}
-
-	if obj.RedisVersion == "" {
-		obj.RedisVersion = "REDIS_7_0"
-	}
-
-	if obj.AlternativeLocationId == "" {
-		obj.AlternativeLocationId = zone
-	}
-
-	obj.State = pb.Instance_CREATING
-
 	r.populateDefaultsForInstance(name, obj)
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
@@ -150,6 +118,43 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 }
 
 func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.Instance) {
+	zone := name.Location + "-a"
+	obj.CurrentLocationId = zone
+	obj.LocationId = zone
+
+	obj.Host = "10.20.30.40"
+	obj.ReservedIpRange = "10.20.30.0/24"
+
+	obj.PersistenceIamIdentity = fmt.Sprintf("serviceAccount:service-%d@cloud-redis.iam.gserviceaccount.com", name.Project.Number)
+
+	obj.Port = 6379
+
+	if obj.SecondaryIpRange == "auto" {
+		obj.SecondaryIpRange = "10.20.30.16/28"
+	}
+
+	if obj.RedisVersion == "" {
+		obj.RedisVersion = "REDIS_7_0"
+	}
+
+	obj.State = pb.Instance_CREATING
+
+	obj.Nodes = []*pb.NodeInfo{
+		{
+			Id:   "node-0",
+			Zone: zone,
+		},
+	}
+
+	// alternativeLocationId will be present in the instance response if and only if the instance is created as STANDARD_HA tier
+	if obj.Tier == pb.Instance_STANDARD_HA && obj.AlternativeLocationId == "" {
+		obj.AlternativeLocationId = zone
+		obj.Nodes = append(obj.Nodes, &pb.NodeInfo{
+			Id:   "node-1",
+			Zone: zone,
+		})
+	}
+
 	if obj.AuthorizedNetwork == "" {
 		obj.AuthorizedNetwork = "projects/" + name.Project.ID + "/global/networks/default"
 	}
