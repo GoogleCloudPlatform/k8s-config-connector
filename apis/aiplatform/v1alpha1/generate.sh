@@ -32,7 +32,8 @@ go run . generate-types \
     --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
     --resource VertexAIPipelineJob:PipelineJob \
     --resource VertexAITuningJob:TuningJob \
-    --resource VertexAIStudy:Study
+    --resource VertexAIStudy:Study \
+    --resource VertexAINotebookRuntime:NotebookRuntime
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 

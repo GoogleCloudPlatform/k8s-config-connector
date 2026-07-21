@@ -3632,6 +3632,14 @@
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicEndpointEnabled" is not set in unstructured objects
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkTags[]" is not set in unstructured objects
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.notebookRuntimeTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexainotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeUser" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
