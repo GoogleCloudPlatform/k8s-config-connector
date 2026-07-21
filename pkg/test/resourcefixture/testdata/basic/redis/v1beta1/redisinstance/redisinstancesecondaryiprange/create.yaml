@@ -1,15 +1,13 @@
 apiVersion: redis.cnrm.cloud.google.com/v1beta1
 kind: RedisInstance
 metadata:
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
   labels:
     label-one: "value-one"
   name: redisinstances-${uniqueId}
 spec:
   displayName: Sample Redis Instance with Secondary IP Range
-  region: us-central1
+  #  Change to another region when seeing: Not enough zonal resources are available to fulfill the request
+  region: europe-west4
   tier: STANDARD_HA
   memorySizeGb: 16
   connectMode: DIRECT_PEERING
-  secondaryIpRange: auto

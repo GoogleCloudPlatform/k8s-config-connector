@@ -723,6 +723,8 @@
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedIpRange" should be ".spec.reservedIPRange"
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.secondaryIpRange" should be ".spec.secondaryIPRange"
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".status.currentLocationId" should be ".status.currentLocationID"
+[acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.lastAppliedValues.reservedIpRange" should be ".status.observedState.lastAppliedValues.reservedIPRange"
+[acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.lastAppliedValues.secondaryIpRange" should be ".status.observedState.lastAppliedValues.secondaryIPRange"
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".status.persistenceIamIdentity" should be ".status.persistenceIAMIdentity"
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".status.serverCaCerts" should be ".status.serverCACerts"
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".status.serverCaCerts[]" should be ".status.serverCACerts[]"

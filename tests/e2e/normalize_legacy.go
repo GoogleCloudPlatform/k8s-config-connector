@@ -262,9 +262,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.host", "10.1.2.3")
-	addReplacement("response.reservedIpRange", "10.1.2.0/24")
 	addReplacement("host", "10.1.2.3")
-	addReplacement("reservedIpRange", "10.1.2.0/24")
 	addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 
 	// Specific to Compute

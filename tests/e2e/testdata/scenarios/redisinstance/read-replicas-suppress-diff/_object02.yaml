@@ -9,28 +9,27 @@ metadata:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 4
-  labels:
-    cnrm-test: "true"
-    label-one: value-one
-    newkey: newval
-  name: redisinstances-${uniqueId}
-  namespace: ${uniqueId}
+  name: redisinstance-${uniqueId}
+  namespace: ${projectId}
 spec:
-  displayName: newDisplayName
-  maintenanceSchedule:
-  - endTime: "2023-08-01T16:29:22.045123456Z"
-    scheduleDeadlineTime: "2023-08-01T17:29:22.045123456Z"
-    startTime: "2023-08-01T15:29:22.045123456Z"
-  memorySizeGb: 20
+  displayName: Initial Display Name
+  memorySizeGb: 1
+  readReplicasMode: READ_REPLICAS_ENABLED
   region: us-central1
-  resourceID: redisinstances-${uniqueId}
-  tier: BASIC
+  replicaCount: 2
+  reservedIpRange: test-range-reserved
+  resourceID: redisinstance-${uniqueId}
+  secondaryIpRange: test-range-secondary
+  tier: STANDARD_HA
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: 'Update call failed: error applying desired state: summary: Error updating
+      Instance "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}":
+      googleapi: Error 400: Secondary IP Range can not be updated on instances that
+      use read replicas'
+    reason: UpdateFailed
+    status: "False"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
   currentLocationId: us-central1-a
@@ -41,3 +40,5 @@ status:
   observedGeneration: 4
   persistenceIamIdentity: serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com
   port: 6379
+  serverCaCerts:
+  - cert: '-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n'

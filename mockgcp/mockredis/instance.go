@@ -27,9 +27,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	commonpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/common"
 )
 
 type redisServer struct {
@@ -90,33 +89,18 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 	obj := proto.CloneOf(req.GetInstance())
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-
 	zone := name.Location + "-a"
 	obj.CurrentLocationId = zone
 	obj.LocationId = zone
-
 	obj.Nodes = []*pb.NodeInfo{
 		{
 			Id:   "node-0",
 			Zone: zone,
 		},
 	}
-
 	obj.Host = "10.20.30.40"
-	obj.ReservedIpRange = "10.20.30.0/24"
-
 	obj.PersistenceIamIdentity = fmt.Sprintf("serviceAccount:service-%d@cloud-redis.iam.gserviceaccount.com", name.Project.Number)
-
 	obj.Port = 6379
-
-	if obj.SecondaryIpRange == "auto" {
-		obj.SecondaryIpRange = "10.20.30.16/28"
-	}
-
-	if obj.RedisVersion == "" {
-		obj.RedisVersion = "REDIS_7_0"
-	}
-
 	obj.State = pb.Instance_CREATING
 
 	r.populateDefaultsForInstance(name, obj)
@@ -125,8 +109,8 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,
@@ -147,8 +131,31 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 }
 
 func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.Instance) {
+	if obj.RedisVersion == "" {
+		obj.RedisVersion = "REDIS_7_0"
+	}
+	if obj.AlternativeLocationId == "" {
+		obj.AlternativeLocationId = obj.LocationId
+	}
+	// The valid range for the Standard Tier with read replicas enabled is [1-5] and defaults to 2.
+	// If read replicas are not enabled for a Standard Tier instance, the only valid value is 1 and the default is 1.
+	// The valid value for basic tier is 0 and the default is also 0.
+	if obj.ReplicaCount == 0 && obj.Tier == pb.Instance_STANDARD_HA {
+		obj.ReplicaCount = 1
+		if obj.ReadReplicasMode == pb.Instance_READ_REPLICAS_ENABLED {
+			obj.ReplicaCount = 2
+		}
+	}
 	if obj.AuthorizedNetwork == "" {
 		obj.AuthorizedNetwork = "projects/" + name.Project.ID + "/global/networks/default"
+	}
+
+	if obj.ConnectMode == pb.Instance_CONNECT_MODE_UNSPECIFIED {
+		obj.ConnectMode = pb.Instance_DIRECT_PEERING
+	}
+
+	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+		obj.TransitEncryptionMode = pb.Instance_DISABLED
 	}
 
 	if obj.PersistenceConfig == nil {
@@ -158,9 +165,38 @@ func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.In
 	if obj.PersistenceConfig.PersistenceMode == pb.PersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
 		obj.PersistenceConfig.PersistenceMode = pb.PersistenceConfig_DISABLED
 	}
+	if obj.PersistenceConfig.PersistenceMode == pb.PersistenceConfig_RDB {
+		obj.PersistenceConfig.RdbSnapshotStartTime = timestamppb.New(time.Now())
+	}
 
 	if obj.ReadReplicasMode == pb.Instance_READ_REPLICAS_MODE_UNSPECIFIED {
 		obj.ReadReplicasMode = pb.Instance_READ_REPLICAS_DISABLED
+	}
+
+	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+		obj.TransitEncryptionMode = pb.Instance_DISABLED
+	}
+
+	if obj.ConnectMode == pb.Instance_CONNECT_MODE_UNSPECIFIED {
+		obj.ConnectMode = pb.Instance_DIRECT_PEERING
+	}
+
+	if obj.ReservedIpRange == "" {
+		obj.ReservedIpRange = "10.1.2.0/24"
+	}
+	if obj.ReservedIpRange != "" && !strings.Contains(obj.ReservedIpRange, "/") {
+		obj.ReservedIpRange = "10.20.30.0/24"
+	}
+
+	if obj.SecondaryIpRange != "" && obj.SecondaryIpRange != "auto" && !strings.Contains(obj.SecondaryIpRange, "/") {
+		obj.SecondaryIpRange = "10.87.192.0/28"
+	}
+
+	// The serverCaCerts field appears in the output when the instance is created with transitEncryptionMode enabled
+	if obj.TransitEncryptionMode == pb.Instance_SERVER_AUTHENTICATION {
+		cert := pb.TlsCertificate{Cert: "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"}
+		obj.ServerCaCerts = []*pb.TlsCertificate{}
+		obj.ServerCaCerts = append(obj.ServerCaCerts, &cert)
 	}
 }
 
@@ -179,6 +215,7 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+	updated := proto.CloneOf(obj)
 
 	// Required. Mask of fields to update. At least one path must be supplied in
 	// this field. The elements of the repeated paths field may only include these
@@ -194,25 +231,49 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 	for _, path := range paths {
 		switch path {
 		case "displayName", "display_name":
-			obj.DisplayName = req.GetInstance().GetDisplayName()
+			updated.DisplayName = req.GetInstance().GetDisplayName()
 		case "labels":
-			obj.Labels = req.GetInstance().GetLabels()
+			updated.Labels = req.GetInstance().GetLabels()
 		case "memorySizeGb", "memory_size_gb":
-			obj.MemorySizeGb = req.GetInstance().GetMemorySizeGb()
+			updated.MemorySizeGb = req.GetInstance().GetMemorySizeGb()
 		case "redisConfig", "redisConfigs", "redis_configs":
-			obj.RedisConfigs = req.GetInstance().GetRedisConfigs()
-
+			updated.RedisConfigs = req.GetInstance().GetRedisConfigs()
+		case "replicaCount", "replica_count":
+			updated.ReplicaCount = req.GetInstance().GetReplicaCount()
+		case "readReplicasMode", "read_replicas_mode":
+			updated.ReadReplicasMode = req.GetInstance().GetReadReplicasMode()
+			// SecondaryIpRange can only be set during Update call when enabling readReplicasMode, or it will be ignored.
+			// See https://b.corp.google.com/issues/374126107#comment6
+			updated.SecondaryIpRange = req.GetInstance().GetSecondaryIpRange()
+			if updated.ReadReplicasMode == pb.Instance_READ_REPLICAS_ENABLED {
+				if updated.SecondaryIpRange == "auto" {
+					updated.SecondaryIpRange = "10.20.30.16/28"
+				} else if updated.SecondaryIpRange != "" && !strings.Contains(updated.SecondaryIpRange, "/") {
+					updated.SecondaryIpRange = "10.87.192.0/28"
+				}
+				if updated.SecondaryIpRange == "" {
+					return nil, status.Errorf(codes.InvalidArgument, "Secondary IP Range is required when enabling read replicas on an existing instance.")
+				}
+			}
+		case "secondaryIpRange", "secondary_ip_range":
+			newVal := req.GetInstance().GetSecondaryIpRange()
+			// SecondaryIpRange cannot be updated on instances that already have readReplicasMode enabled.
+			if obj.ReadReplicasMode == pb.Instance_READ_REPLICAS_ENABLED {
+				if newVal != obj.SecondaryIpRange {
+					return nil, status.Errorf(codes.InvalidArgument, "Secondary IP Range can not be updated on instances that use read replicas")
+				}
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
 
-	if err := r.storage.Update(ctx, fqn, obj); err != nil {
+	if err := r.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,
@@ -221,7 +282,7 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
-		return obj, nil
+		return updated, nil
 	})
 }
 
@@ -239,8 +300,8 @@ func (r *redisServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstance
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,

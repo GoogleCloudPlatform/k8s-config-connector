@@ -1,0 +1,87 @@
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fredisinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alternativeLocationId": "us-central1-a",
+  "authorizedNetwork": "projects/${projectId}/global/networks/default",
+  "connectMode": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentLocationId": "us-central1-a",
+  "displayName": "Initial Display Name",
+  "host": "10.20.30.40",
+  "locationId": "us-central1-a",
+  "memorySizeGb": 1,
+  "name": "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}",
+  "nodes": [
+    {
+      "id": "node-0",
+      "zone": "us-central1-a"
+    }
+  ],
+  "persistenceConfig": {
+    "persistenceMode": 1
+  },
+  "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
+  "port": 6379,
+  "readReplicasMode": 2,
+  "redisVersion": "REDIS_7_0",
+  "replicaCount": 2,
+  "reservedIpRange": "10.20.30.0/24",
+  "secondaryIpRange": "10.87.192.0/28",
+  "serverCaCerts": [
+    {
+      "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+    }
+  ],
+  "state": 2,
+  "tier": 3,
+  "transitEncryptionMode": 2
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=secondaryIpRange
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fredisinstance-${uniqueId}
+
+{
+  "displayName": "Initial Display Name",
+  "memorySizeGb": 1,
+  "name": "projects/${projectId}/locations/us-central1/instances/redisinstance-${uniqueId}",
+  "readReplicasMode": 2,
+  "replicaCount": 2,
+  "reservedIpRange": "test-range-reserved",
+  "secondaryIpRange": "auto",
+  "tier": 3
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Secondary IP Range can not be updated on instances that use read replicas",
+    "status": "INVALID_ARGUMENT"
+  }
+}

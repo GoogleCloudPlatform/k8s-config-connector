@@ -54,12 +54,10 @@ type redisInstanceModel struct {
 var _ directbase.Model = &redisInstanceModel{}
 
 type redisInstanceAdapter struct {
-	id *krm.RedisInstanceIdentity
-
-	desired *redispb.Instance
+	id      *krm.RedisInstanceIdentity
+	client  *gcp.CloudRedisClient
 	actual  *redispb.Instance
-
-	client *gcp.CloudRedisClient
+	desired *redispb.Instance
 }
 
 // adapter implements the Adapter interface.
@@ -185,6 +183,9 @@ func (a *redisInstanceAdapter) Create(ctx context.Context, createOp *directbase.
 
 	parent := "projects/" + a.id.Project + "/locations/" + a.id.Location
 
+	// output-only spec field, migrated from legacy controller
+	a.desired.MaintenanceSchedule = nil
+
 	req := &redispb.CreateInstanceRequest{
 		Parent:     parent,
 		InstanceId: a.id.Instance,
@@ -224,12 +225,19 @@ func (a *redisInstanceAdapter) Update(ctx context.Context, updateOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
 
-	diffs, err := compareRedisInstance(ctx, a.actual, a.desired)
+	// output-only spec field, migrated from legacy controller
+	a.desired.MaintenanceSchedule = nil
+
+	lastAppliedReservedIpRange, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "lastAppliedValues", "reservedIpRange")
+	lastAppliedSecondaryIpRange, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "lastAppliedValues", "secondaryIpRange")
+
+	diffs, err := compareRedisInstance(ctx, a.actual, a.desired, lastAppliedReservedIpRange, lastAppliedSecondaryIpRange)
+
 	if err != nil {
 		return fmt.Errorf("comparing actual and desired RedisInstance: %w", err)
 	}
 
-	var latest *redispb.Instance
+	latest := a.actual
 	if diffs.HasDiff() {
 		diffs.Object = u
 		structuredreporting.ReportDiff(ctx, diffs)
@@ -267,7 +275,7 @@ func (a *redisInstanceAdapter) Update(ctx context.Context, updateOp *directbase.
 			latest = updated
 		}
 	} else {
-		latest = a.actual
+		log.V(2).Info("resource is up to date", "name", a.id)
 	}
 
 	status := &krm.RedisInstanceStatus{}
@@ -354,10 +362,28 @@ func (a *redisInstanceAdapter) populateStatus(ctx context.Context, status *krm.R
 		status.ObservedState.AuthString = direct.LazyPtr(authString)
 	}
 
+	// Save last applied values for comparison.
+	// Server converts ip range name(desired state) to ip address(actual state),
+	// so common compare diff does not work here.
+	hasReserved := a.desired.ReservedIpRange != "" && !strings.Contains(a.desired.ReservedIpRange, "/")
+	hasSecondary := a.desired.SecondaryIpRange != "" && !strings.Contains(a.desired.SecondaryIpRange, "/")
+
+	if hasReserved || hasSecondary {
+		lastApplied := &krm.LastAppliedValues{}
+		if hasReserved {
+			lastApplied.ReservedIpRange = direct.LazyPtr(a.desired.ReservedIpRange)
+		}
+		if hasSecondary {
+			lastApplied.SecondaryIpRange = direct.LazyPtr(a.desired.SecondaryIpRange)
+		}
+		status.ObservedState.LastAppliedValues = lastApplied
+	}
+
 	return nil
 }
 
-func compareRedisInstance(ctx context.Context, actual, desired *redispb.Instance) (*structuredreporting.Diff, error) {
+func compareRedisInstance(ctx context.Context, actual, desired *redispb.Instance,
+	lastAppliedReservedIpRange string, lastAppliedSecondaryIpRange string) (*structuredreporting.Diff, error) {
 	var maskedActual *redispb.Instance
 	{
 		// A "trick" to only compare spec fields - round trip via the spec
@@ -374,6 +400,36 @@ func compareRedisInstance(ctx context.Context, actual, desired *redispb.Instance
 
 	maskedActual = populateInstanceDefaults(maskedActual, nil)
 	desired = populateInstanceDefaults(proto.CloneOf(desired), maskedActual)
+
+	// Suppress diffs for reserved_ip_range and secondary_ip_range
+	// Immutable, server converts ip range name to ip address
+	suppressReserved := false
+	if lastAppliedReservedIpRange == desired.ReservedIpRange {
+		suppressReserved = true
+	}
+
+	if suppressReserved {
+		desired.ReservedIpRange = actual.ReservedIpRange
+	}
+
+	suppressSecondary := false
+	// SecondaryIpRange can only be set during Update call when enabling readReplicasMode, or it will be ignored.
+	// See https://b.corp.google.com/issues/374126107#comment6
+	// Suppress diff when enabling readReplicasMode.
+	if desired.ReadReplicasMode == redispb.Instance_READ_REPLICAS_ENABLED &&
+		actual.ReadReplicasMode == redispb.Instance_READ_REPLICAS_DISABLED &&
+		desired.SecondaryIpRange != "" &&
+		actual.SecondaryIpRange == "" {
+		suppressSecondary = true
+	}
+
+	if lastAppliedSecondaryIpRange == desired.SecondaryIpRange {
+		suppressSecondary = true
+	}
+
+	if suppressSecondary {
+		desired.SecondaryIpRange = actual.SecondaryIpRange
+	}
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -392,8 +448,23 @@ func populateInstanceDefaults(instance *redispb.Instance, actual *redispb.Instan
 	if instance.ReadReplicasMode == redispb.Instance_READ_REPLICAS_MODE_UNSPECIFIED {
 		instance.ReadReplicasMode = redispb.Instance_READ_REPLICAS_DISABLED
 	}
+	if instance.TransitEncryptionMode == redispb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+		instance.TransitEncryptionMode = redispb.Instance_DISABLED
+	}
+	if instance.ConnectMode == redispb.Instance_CONNECT_MODE_UNSPECIFIED {
+		instance.ConnectMode = redispb.Instance_DIRECT_PEERING
+	}
 
 	if actual != nil {
+		if instance.AlternativeLocationId == "" {
+			instance.AlternativeLocationId = actual.AlternativeLocationId
+		}
+
+		if instance.PersistenceConfig != nil {
+			if instance.PersistenceConfig.PersistenceMode == redispb.PersistenceConfig_RDB {
+				instance.PersistenceConfig.RdbSnapshotStartTime = actual.PersistenceConfig.RdbSnapshotStartTime
+			}
+		}
 		if instance.AuthorizedNetwork == "" && actual.AuthorizedNetwork != "" {
 			instance.AuthorizedNetwork = actual.AuthorizedNetwork
 		}
@@ -403,11 +474,18 @@ func populateInstanceDefaults(instance *redispb.Instance, actual *redispb.Instan
 		if instance.RedisVersion == "" && actual.RedisVersion != "" {
 			instance.RedisVersion = actual.RedisVersion
 		}
+		if instance.ReplicaCount == 0 {
+			instance.ReplicaCount = actual.ReplicaCount
+		}
 		if instance.ReservedIpRange == "" && actual.ReservedIpRange != "" {
 			instance.ReservedIpRange = actual.ReservedIpRange
 		}
-		if (instance.SecondaryIpRange == "" || instance.SecondaryIpRange == "auto") && actual.SecondaryIpRange != "" {
-			instance.SecondaryIpRange = actual.SecondaryIpRange
+
+		// output-only spec field, migrated from legacy controller
+		instance.MaintenanceSchedule = actual.MaintenanceSchedule
+
+		if instance.ConnectMode == redispb.Instance_CONNECT_MODE_UNSPECIFIED {
+			instance.ConnectMode = redispb.Instance_DIRECT_PEERING
 		}
 	}
 

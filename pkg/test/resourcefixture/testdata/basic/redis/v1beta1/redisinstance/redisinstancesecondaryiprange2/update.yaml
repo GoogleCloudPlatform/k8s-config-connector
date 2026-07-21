@@ -17,15 +17,26 @@ kind: RedisInstance
 metadata:
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: direct
-  labels:
-    label-one: "value-one"
   name: redisinstances-${uniqueId}
 spec:
-  displayName: Sample Redis Instance
-  region: us-central1
-  tier: BASIC
-  memorySizeGb: 16
-  maintenanceSchedule:
-  - endTime: 2023-08-01T16:29:22.045123456Z
-    scheduleDeadlineTime: 2023-08-01T17:29:22.045123456Z
-    startTime: 2023-08-01T15:29:22.045123456Z
+  alternativeLocationId: europe-west4-b
+  authEnabled: true
+  authorizedNetworkRef:
+    external: projects/${projectId}/global/networks/default
+  connectMode: PRIVATE_SERVICE_ACCESS
+  displayName: My Redis Instance
+  locationId: europe-west4-a
+  memorySizeGb: 10
+  persistenceConfig:
+    persistenceMode: RDB
+    rdbSnapshotPeriod: TWENTY_FOUR_HOURS
+  redisVersion: REDIS_7_2
+  region: europe-west4
+  replicaCount: 2
+  # enable readReplicasMode must provide secondaryIpRange
+  readReplicasMode: READ_REPLICAS_ENABLED
+  reservedIpRange: test-range-reserved
+  # secondary ip range can only be set when enabling readReplicasMode, or it will be ignored
+  secondaryIpRange: test-range-secondary
+  tier: STANDARD_HA
+  transitEncryptionMode: SERVER_AUTHENTICATION

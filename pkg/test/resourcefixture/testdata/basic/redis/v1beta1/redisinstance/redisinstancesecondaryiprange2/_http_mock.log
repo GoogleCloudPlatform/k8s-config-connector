@@ -25,10 +25,22 @@ POST https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west
 Content-Type: application/json
 
 {
-  "connectMode": 1,
-  "displayName": "Sample Redis Instance with Secondary IP Range",
-  "memorySizeGb": 16,
-  "tier": 3
+  "alternativeLocationId": "europe-west4-b",
+  "authEnabled": true,
+  "authorizedNetwork": "projects/${projectId}/global/networks/default",
+  "connectMode": 2,
+  "displayName": "My Redis Instance",
+  "locationId": "us-central1-a",
+  "memorySizeGb": 10,
+  "persistenceConfig": {
+    "persistenceMode": 2,
+    "rdbSnapshotPeriod": 6
+  },
+  "redisVersion": "REDIS_7_2",
+  "replicaCount": 1,
+  "reservedIpRange": "test-range-reserved",
+  "tier": 3,
+  "transitEncryptionMode": 1
 }
 
 200 OK
@@ -42,7 +54,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -81,39 +92,62 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-    "alternativeLocationId": "europe-west4-a",
+    "alternativeLocationId": "europe-west4-b",
+    "authEnabled": true,
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
-    "connectMode": "DIRECT_PEERING",
+    "connectMode": "PRIVATE_SERVICE_ACCESS",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "currentLocationId": "us-central1-a",
-    "displayName": "Sample Redis Instance with Secondary IP Range",
+    "displayName": "My Redis Instance",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 10,
     "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
         "id": "node-0",
         "zone": "us-central1-a"
-      },
-      {
-        "id": "node-1",
-        "zone": "us-central1-a"
       }
     ],
     "persistenceConfig": {
-      "persistenceMode": "DISABLED"
+      "persistenceMode": "RDB",
+      "rdbSnapshotPeriod": "TWENTY_FOUR_HOURS",
+      "rdbSnapshotStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
     "port": 6379,
     "readReplicasMode": "READ_REPLICAS_DISABLED",
-    "redisVersion": "REDIS_7_0",
+    "redisVersion": "REDIS_7_2",
     "replicaCount": 1,
-    "reservedIpRange": "10.1.2.0/24",
+    "reservedIpRange": "10.20.30.0/24",
+    "serverCaCerts": [
+      {
+        "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+      }
+    ],
     "state": "READY",
     "tier": "STANDARD_HA",
-    "transitEncryptionMode": "DISABLED"
+    "transitEncryptionMode": "SERVER_AUTHENTICATION"
   }
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}/authString?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authString": "secret-squirrel"
 }
 
 ---
@@ -132,138 +166,42 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternativeLocationId": "europe-west4-a",
+  "alternativeLocationId": "europe-west4-b",
+  "authEnabled": true,
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
-  "connectMode": 1,
+  "connectMode": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentLocationId": "us-central1-a",
-  "displayName": "Sample Redis Instance with Secondary IP Range",
+  "displayName": "My Redis Instance",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 10,
   "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
       "id": "node-0",
       "zone": "us-central1-a"
-    },
-    {
-      "id": "node-1",
-      "zone": "us-central1-a"
     }
   ],
   "persistenceConfig": {
-    "persistenceMode": 1
+    "persistenceMode": 2,
+    "rdbSnapshotPeriod": 6,
+    "rdbSnapshotStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
   "port": 6379,
   "readReplicasMode": 1,
-  "redisVersion": "REDIS_7_0",
+  "redisVersion": "REDIS_7_2",
   "replicaCount": 1,
-  "reservedIpRange": "10.1.2.0/24",
+  "reservedIpRange": "10.20.30.0/24",
+  "serverCaCerts": [
+    {
+      "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+    }
+  ],
   "state": 2,
   "tier": 3,
-  "transitEncryptionMode": 2
-}
-
----
-
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
-Content-Type: application/json
-
-{
-  "connectMode": 1,
-  "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
-  "memorySizeGb": 16,
-  "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
-  "readReplicasMode": 2,
-  "secondaryIpRange": "auto",
-  "tier": 3
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
-}
-
----
-
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-    "alternativeLocationId": "europe-west4-a",
-    "authorizedNetwork": "projects/${projectId}/global/networks/default",
-    "connectMode": "DIRECT_PEERING",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "currentLocationId": "us-central1-a",
-    "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
-    "host": "10.1.2.3",
-    "locationId": "us-central1-a",
-    "memorySizeGb": 16,
-    "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
-    "nodes": [
-      {
-        "id": "node-0",
-        "zone": "us-central1-a"
-      },
-      {
-        "id": "node-1",
-        "zone": "us-central1-a"
-      }
-    ],
-    "persistenceConfig": {
-      "persistenceMode": "DISABLED"
-    },
-    "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
-    "port": 6379,
-    "readReplicasMode": "READ_REPLICAS_DISABLED",
-    "redisVersion": "REDIS_7_0",
-    "replicaCount": 1,
-    "reservedIpRange": "10.1.2.0/24",
-    "state": "READY",
-    "tier": "STANDARD_HA",
-    "transitEncryptionMode": "DISABLED"
-  }
+  "transitEncryptionMode": 1
 }
 
 ---
@@ -272,13 +210,25 @@ PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-wes
 Content-Type: application/json
 
 {
-  "connectMode": 1,
-  "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
-  "memorySizeGb": 16,
+  "alternativeLocationId": "europe-west4-b",
+  "authEnabled": true,
+  "authorizedNetwork": "projects/${projectId}/global/networks/default",
+  "connectMode": 2,
+  "displayName": "My Redis Instance",
+  "locationId": "us-central1-a",
+  "memorySizeGb": 10,
   "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
+  "persistenceConfig": {
+    "persistenceMode": 2,
+    "rdbSnapshotPeriod": 6
+  },
   "readReplicasMode": 2,
-  "secondaryIpRange": "auto",
-  "tier": 3
+  "redisVersion": "REDIS_7_2",
+  "replicaCount": 2,
+  "reservedIpRange": "test-range-reserved",
+  "secondaryIpRange": "test-range-secondary",
+  "tier": 3,
+  "transitEncryptionMode": 1
 }
 
 200 OK
@@ -292,7 +242,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -331,42 +280,179 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-    "alternativeLocationId": "europe-west4-a",
+    "alternativeLocationId": "europe-west4-b",
+    "authEnabled": true,
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
-    "connectMode": "DIRECT_PEERING",
+    "connectMode": "PRIVATE_SERVICE_ACCESS",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "currentLocationId": "us-central1-a",
-    "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
+    "displayName": "My Redis Instance",
     "host": "10.1.2.3",
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 10,
     "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
         "id": "node-0",
         "zone": "us-central1-a"
-      },
+      }
+    ],
+    "persistenceConfig": {
+      "persistenceMode": "RDB",
+      "rdbSnapshotPeriod": "TWENTY_FOUR_HOURS",
+      "rdbSnapshotStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
+    "port": 6379,
+    "readReplicasMode": "READ_REPLICAS_ENABLED",
+    "redisVersion": "REDIS_7_2",
+    "replicaCount": 1,
+    "reservedIpRange": "10.20.30.0/24",
+    "secondaryIpRange": "10.87.192.0/28",
+    "serverCaCerts": [
       {
-        "id": "node-1",
+        "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+      }
+    ],
+    "state": "READY",
+    "tier": "STANDARD_HA",
+    "transitEncryptionMode": "SERVER_AUTHENTICATION"
+  }
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=replicaCount
+Content-Type: application/json
+
+{
+  "alternativeLocationId": "europe-west4-b",
+  "authEnabled": true,
+  "authorizedNetwork": "projects/${projectId}/global/networks/default",
+  "connectMode": 2,
+  "displayName": "My Redis Instance",
+  "locationId": "us-central1-a",
+  "memorySizeGb": 10,
+  "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
+  "persistenceConfig": {
+    "persistenceMode": 2,
+    "rdbSnapshotPeriod": 6
+  },
+  "readReplicasMode": 2,
+  "redisVersion": "REDIS_7_2",
+  "replicaCount": 2,
+  "reservedIpRange": "test-range-reserved",
+  "secondaryIpRange": "test-range-secondary",
+  "tier": 3,
+  "transitEncryptionMode": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
+    "alternativeLocationId": "europe-west4-b",
+    "authEnabled": true,
+    "authorizedNetwork": "projects/${projectId}/global/networks/default",
+    "connectMode": "PRIVATE_SERVICE_ACCESS",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentLocationId": "us-central1-a",
+    "displayName": "My Redis Instance",
+    "host": "10.1.2.3",
+    "locationId": "us-central1-a",
+    "memorySizeGb": 10,
+    "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
+    "nodes": [
+      {
+        "id": "node-0",
         "zone": "us-central1-a"
       }
     ],
     "persistenceConfig": {
-      "persistenceMode": "DISABLED"
+      "persistenceMode": "RDB",
+      "rdbSnapshotPeriod": "TWENTY_FOUR_HOURS",
+      "rdbSnapshotStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
     "port": 6379,
-    "readEndpoint": "10.187.87.117",
-    "readEndpointPort": 6379,
     "readReplicasMode": "READ_REPLICAS_ENABLED",
-    "redisVersion": "REDIS_7_0",
-    "replicaCount": 1,
-    "reservedIpRange": "10.1.2.0/24",
-    "secondaryIpRange": "10.213.59.48/28",
+    "redisVersion": "REDIS_7_2",
+    "replicaCount": 2,
+    "reservedIpRange": "10.20.30.0/24",
+    "secondaryIpRange": "10.87.192.0/28",
+    "serverCaCerts": [
+      {
+        "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+      }
+    ],
     "state": "READY",
     "tier": "STANDARD_HA",
-    "transitEncryptionMode": "DISABLED"
+    "transitEncryptionMode": "SERVER_AUTHENTICATION"
   }
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}/authString?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authString": "secret-squirrel"
 }
 
 ---
@@ -385,41 +471,43 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternativeLocationId": "europe-west4-a",
+  "alternativeLocationId": "europe-west4-b",
+  "authEnabled": true,
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
-  "connectMode": 1,
+  "connectMode": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentLocationId": "us-central1-a",
-  "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
+  "displayName": "My Redis Instance",
   "host": "10.1.2.3",
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 10,
   "name": "projects/${projectId}/locations/europe-west4/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
       "id": "node-0",
       "zone": "us-central1-a"
-    },
-    {
-      "id": "node-1",
-      "zone": "us-central1-a"
     }
   ],
   "persistenceConfig": {
-    "persistenceMode": 1
+    "persistenceMode": 2,
+    "rdbSnapshotPeriod": 6,
+    "rdbSnapshotStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
   "port": 6379,
-  "readEndpoint": "10.187.87.117",
-  "readEndpointPort": 6379,
   "readReplicasMode": 2,
-  "redisVersion": "REDIS_7_0",
-  "replicaCount": 1,
-  "reservedIpRange": "10.1.2.0/24",
-  "secondaryIpRange": "10.213.59.48/28",
+  "redisVersion": "REDIS_7_2",
+  "replicaCount": 2,
+  "reservedIpRange": "10.20.30.0/24",
+  "secondaryIpRange": "10.87.192.0/28",
+  "serverCaCerts": [
+    {
+      "cert": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+    }
+  ],
   "state": 2,
   "tier": 3,
-  "transitEncryptionMode": 2
+  "transitEncryptionMode": 1
 }
 
 ---
@@ -438,7 +526,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
     "apiVersion": "v1",

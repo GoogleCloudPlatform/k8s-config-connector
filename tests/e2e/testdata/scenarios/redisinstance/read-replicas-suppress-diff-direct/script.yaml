@@ -1,0 +1,84 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+# Step 1: Create RedisInstance with read replicas disabled
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisInstance
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+  name: redisinstance-${uniqueId}
+spec:
+  displayName: Initial Display Name
+  memorySizeGb: 1
+  region: us-central1
+  tier: STANDARD_HA
+  replicaCount: 1
+  reservedIpRange: test-range-reserved
+---
+# Step 2: Enable read replicas and set secondaryIpRange.
+# Secondary ip range can only be set during Update request on read-replica disabled instance.
+# The update should SUCCEED.
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisInstance
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+  name: redisinstance-${uniqueId}
+spec:
+  displayName: Initial Display Name
+  memorySizeGb: 1
+  region: us-central1
+  tier: STANDARD_HA
+  replicaCount: 1
+  readReplicasMode: READ_REPLICAS_ENABLED
+  reservedIpRange: test-range-reserved
+  secondaryIpRange: test-range-secondary
+---
+# Step 3: Update replicaCount to trigger a re-reconciliation.
+# The update should SUCCEED with diff suppression in direct controller.
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisInstance
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+  name: redisinstance-${uniqueId}
+spec:
+  displayName: Initial Display Name
+  memorySizeGb: 1
+  region: us-central1
+  tier: STANDARD_HA
+  replicaCount: 2
+  readReplicasMode: READ_REPLICAS_ENABLED
+  reservedIpRange: test-range-reserved
+  secondaryIpRange: test-range-secondary
+---
+# Step 4: Update secondaryIpRange to "auto".
+# The update should FAIL, updating secondaryIpRange on existing instances already have READ_REPLICAS_ENABLED is not allowed.
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisInstance
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+  name: redisinstance-${uniqueId}
+spec:
+  displayName: Initial Display Name
+  memorySizeGb: 1
+  region: us-central1
+  tier: STANDARD_HA
+  replicaCount: 2
+  readReplicasMode: READ_REPLICAS_ENABLED
+  reservedIpRange: test-range-reserved
+  secondaryIpRange: auto
