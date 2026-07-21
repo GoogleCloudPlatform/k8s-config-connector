@@ -59,6 +59,10 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQuerySets(namespace s
 	return newFakeDiscoveryEngineSampleQuerySets(c, namespace)
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSessions(namespace string) v1alpha1.DiscoveryEngineSessionInterface {
+	return newFakeDiscoveryEngineSessions(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDiscoveryengineV1alpha1) RESTClient() rest.Interface {

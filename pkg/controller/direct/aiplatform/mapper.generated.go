@@ -616,7 +616,9 @@ func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm
 	}
 	out := &krm.FunctionCall{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Args = direct.Struct_FromProto(mapCtx, in.GetArgs())
+	if v := direct.Struct_FromProto(mapCtx, in.GetArgs()); v != nil {
+		out.Args = *v
+	}
 	return out
 }
 */
@@ -628,7 +630,7 @@ func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.F
 	}
 	out := &pb.FunctionCall{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Args = direct.Struct_ToProto(mapCtx, in.Args)
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
 	return out
 }
 */
@@ -640,7 +642,9 @@ func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionRespon
 	}
 	out := &krm.FunctionResponse{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Response = direct.Struct_FromProto(mapCtx, in.GetResponse())
+	if v := direct.Struct_FromProto(mapCtx, in.GetResponse()); v != nil {
+		out.Response = *v
+	}
 	return out
 }
 */
@@ -654,7 +658,7 @@ found existing non-generated mapping function "FunctionResponse_ToProto", skippi
 		}
 		out := &pb.FunctionResponse{}
 		out.Name = direct.ValueOf(in.Name)
-		out.Response = direct.Struct_ToProto(mapCtx, in.Response)
+		out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
 		return out
 	}
 */

@@ -27,3 +27,9 @@
 - **Problem**: When a new resource is first added to `generate.sh`, its nested types (e.g., `Condition`, `Control_BoostAction`) are initially generated as "unreachable types" and commented out in `types.generated.go`.
 - **Solution**: First define the Spec fields referencing these types in `<resource>_types.go` and run `./generate.sh` again. The generator automatically identifies them as reachable, uncomments them, and makes them available.
 - **Impact**: This avoids the need to manually copy or define nested proto structs, keeping types.generated.go fully managed by the builder.
+
+### [2026-07-06] Handling Missing Imports (apiextensionsv1) in Generated Types
+- **Context**: Implementing initial KRM types and IdentityV2 for `DiscoveryEngineSession`.
+- **Problem**: Running `generate.sh` generated nested types (like `Session_Turn` and `Session_TurnObservedState`) which use `apiextensionsv1.JSON` for fields like `structData` under `Query`. However, because `apiextensionsv1` was not imported anywhere in the `v1alpha1` package (and wasn't generated into `v1_types.generated.go`), this resulted in a compilation failure (`use of unimported package "apiextensionsv1"`), which also broke the subsequent `controller-gen` (deepcopy & CRD) generators.
+- **Solution**: We added a custom `goimports` run on `apis/discoveryengine/v1alpha1/` inside `generate.sh` right after the sequential generation of both `v1` and `v1beta` types. This ensures `goimports` runs over the newly generated types files and automatically injects the missing `apiextensionsv1` (and any other package) imports before `controller-gen` is run, allowing the entire pipeline to compile and generate cleanly in a single script run.
+- **Impact**: Resolves the "unimported package" issue for any future resources under the same group that may reference nested protobuf fields utilizing `apiextensionsv1.JSON`.
