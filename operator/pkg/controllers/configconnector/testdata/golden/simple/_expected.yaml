@@ -3396,6 +3396,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - marketingplatformadmin.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - memcache.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5063,6 +5075,14 @@ rules:
   - watch
 - apiGroups:
   - managedkafka.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - marketingplatformadmin.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
