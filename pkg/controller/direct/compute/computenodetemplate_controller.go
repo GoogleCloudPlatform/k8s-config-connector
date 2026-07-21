@@ -260,9 +260,25 @@ func compareComputeNodeTemplate(ctx context.Context, actual, desired *computepb.
 				Type: direct.PtrTo("RESTART_NODE_ON_ANY_SERVER"),
 			}
 		}
+		if obj.CpuOvercommitType != nil && *obj.CpuOvercommitType == "" {
+			obj.CpuOvercommitType = nil
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	// Ignore CpuOvercommitType if it's not specified in the desired spec
+	if clonedDesired.CpuOvercommitType == nil {
+		maskedActual.CpuOvercommitType = nil
+	}
+
+	// Normalize Region URLs/paths to their last component
+	if maskedActual.Region != nil {
+		maskedActual.Region = direct.PtrTo(lastComponent(*maskedActual.Region))
+	}
+	if clonedDesired.Region != nil {
+		clonedDesired.Region = direct.PtrTo(lastComponent(*clonedDesired.Region))
+	}
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
