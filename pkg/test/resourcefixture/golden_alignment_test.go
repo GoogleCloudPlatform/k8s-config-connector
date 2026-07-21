@@ -545,10 +545,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if dyn, ok := v["enableDynamicPortAllocation"].(bool); ok && !dyn {
 			delete(v, "enableDynamicPortAllocation")
 		}
-		if kind, ok := v["kind"].(string); ok && kind == "compute#subnetwork" {
-			delete(v, "allowSubnetCidrRoutesOverlap")
-			delete(v, "enableFlowLogs")
-		}
 		if state, ok := v["state"].(string); ok && state == "READY" && v["kind"] == "compute#subnetwork" {
 			delete(v, "state")
 		}
