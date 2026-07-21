@@ -146,6 +146,7 @@ import (
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
 	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
+	hypercomputeclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/hypercomputecluster/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1"
@@ -358,6 +359,7 @@ type Interface interface {
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
 	GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface
 	HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface
+	HypercomputeclusterV1alpha1() hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Interface
 	IamV1alpha1() iamv1alpha1.IamV1alpha1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
 	IapV1beta1() iapv1beta1.IapV1beta1Interface
@@ -568,6 +570,7 @@ type Clientset struct {
 	gkehubV1beta1                   *gkehubv1beta1.GkehubV1beta1Client
 	gkemulticloudV1alpha1           *gkemulticloudv1alpha1.GkemulticloudV1alpha1Client
 	healthcareV1alpha1              *healthcarev1alpha1.HealthcareV1alpha1Client
+	hypercomputeclusterV1alpha1     *hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Client
 	iamV1alpha1                     *iamv1alpha1.IamV1alpha1Client
 	iamV1beta1                      *iamv1beta1.IamV1beta1Client
 	iapV1beta1                      *iapv1beta1.IapV1beta1Client
@@ -1257,6 +1260,11 @@ func (c *Clientset) GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV
 // HealthcareV1alpha1 retrieves the HealthcareV1alpha1Client
 func (c *Clientset) HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface {
 	return c.healthcareV1alpha1
+}
+
+// HypercomputeclusterV1alpha1 retrieves the HypercomputeclusterV1alpha1Client
+func (c *Clientset) HypercomputeclusterV1alpha1() hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Interface {
+	return c.hypercomputeclusterV1alpha1
 }
 
 // IamV1alpha1 retrieves the IamV1alpha1Client
@@ -2207,6 +2215,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.hypercomputeclusterV1alpha1, err = hypercomputeclusterv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.iamV1alpha1, err = iamv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2685,6 +2697,7 @@ func New(c rest.Interface) *Clientset {
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
 	cs.gkemulticloudV1alpha1 = gkemulticloudv1alpha1.New(c)
 	cs.healthcareV1alpha1 = healthcarev1alpha1.New(c)
+	cs.hypercomputeclusterV1alpha1 = hypercomputeclusterv1alpha1.New(c)
 	cs.iamV1alpha1 = iamv1alpha1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)
 	cs.iapV1beta1 = iapv1beta1.New(c)

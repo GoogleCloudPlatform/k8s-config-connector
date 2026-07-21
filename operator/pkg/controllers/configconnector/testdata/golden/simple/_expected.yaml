@@ -3312,6 +3312,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - hypercomputecluster.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - iam.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5007,6 +5019,14 @@ rules:
   - watch
 - apiGroups:
   - healthcare.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - hypercomputecluster.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

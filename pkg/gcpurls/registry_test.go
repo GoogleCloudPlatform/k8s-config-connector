@@ -197,6 +197,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// IAM
 		"//iam.googleapis.com/policies/{}/denypolicies/{}": true,
 
+		// Hypercompute Cluster
+		"//hypercomputecluster.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
+
 		// IAP
 		"//iap.googleapis.com/projects/{}/brands/{}": true,
 
