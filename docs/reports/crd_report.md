@@ -442,6 +442,7 @@
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityAuthzPolicy                      | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityBackendAuthenticationConfig      | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityClientTLSPolicy                  | False        | True        | False  | DCL        | True        |
+| networksecurity.cnrm.cloud.google.com         | NetworkSecurityDNSThreatDetector                | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityFirewallEndpointAssociation      | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityFirewallEndpoint                 | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com         | NetworkSecurityGatewaySecurityPolicy            | True         | False       | False  | Direct     | True        |

@@ -149,7 +149,7 @@ BLOCKED_KINDS=(
     "NetworkSecurityAuthzPolicy"
     "CloudRunInstance"
     "NetworkSecurityBackendAuthenticationConfig"
-    "NetworkSecurityDnsThreatDetector"
+    "NetworkSecurityDNSThreatDetector"
     "NetworkSecurityFirewallEndpoint"
     "NetworkSecurityFirewallEndpointAssociation"
     "NetworkSecurityInterceptDeployment"
