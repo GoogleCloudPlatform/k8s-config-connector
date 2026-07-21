@@ -395,6 +395,7 @@ kms.cnrm.cloud.google.com,KMSKeyHandle,True,True,False,Direct,True
 kms.cnrm.cloud.google.com,KMSKeyRingImportJob,True,False,False,Terraform,True
 kms.cnrm.cloud.google.com,KMSKeyRing,False,True,False,Terraform,True
 kms.cnrm.cloud.google.com,KMSSecretCiphertext,True,False,False,Terraform,True
+licensemanager.cnrm.cloud.google.com,LicenseManagerConfiguration,True,False,False,Direct,True
 livestream.cnrm.cloud.google.com,LiveStreamAsset,True,False,False,Direct,True
 logging.cnrm.cloud.google.com,LoggingLink,True,True,False,Direct,True
 logging.cnrm.cloud.google.com,LoggingLogBucket,False,True,False,DCL,True
