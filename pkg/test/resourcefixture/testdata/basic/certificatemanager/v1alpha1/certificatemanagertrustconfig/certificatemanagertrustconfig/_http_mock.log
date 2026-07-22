@@ -1,0 +1,353 @@
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtrustConfigs%2Ftrustconfig-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "trustConfig \"projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/trustConfigs?%24alt=json%3Benum-encoding%3Dint&trustConfigId=trustconfig-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "sample trust config description",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "production",
+    "managed-by-cnrm": "true"
+  },
+  "trustStores": [
+    {
+      "trustAnchors": [
+        {
+          "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+        }
+      ]
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.TrustConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "sample trust config description",
+    "labels": {
+      "cnrm-test": "true",
+      "env": "production",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "trustStores": [
+      {
+        "trustAnchors": [
+          {
+            "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+          }
+        ]
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtrustConfigs%2Ftrustconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "sample trust config description",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "production",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+  "trustStores": [
+    {
+      "trustAnchors": [
+        {
+          "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: trust_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtrustConfigs%2Ftrustconfig-${uniqueId}
+
+{
+  "description": "updated trust config description",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+  "trustStores": [
+    {
+      "trustAnchors": [
+        {
+          "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+        }
+      ]
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.TrustConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "updated trust config description",
+    "labels": {
+      "cnrm-test": "true",
+      "env": "staging",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "trustStores": [
+      {
+        "trustAnchors": [
+          {
+            "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+          }
+        ]
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtrustConfigs%2Ftrustconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "updated trust config description",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "staging",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+  "trustStores": [
+    {
+      "trustAnchors": [
+        {
+          "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n"
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtrustConfigs%2Ftrustconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

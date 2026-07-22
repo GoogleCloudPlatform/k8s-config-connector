@@ -183,3 +183,34 @@ func (s *MockService) parseCertificateMapEntryName(name string) (*certificateMap
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type trustConfigName struct {
+	Project         *projects.ProjectData
+	Location        string
+	TrustConfigName string
+}
+
+func (n *trustConfigName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/trustConfigs/" + n.TrustConfigName
+}
+
+func (s *MockService) parseTrustConfigName(name string) (*trustConfigName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "trustConfigs" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &trustConfigName{
+			Project:         project,
+			Location:        tokens[3],
+			TrustConfigName: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
