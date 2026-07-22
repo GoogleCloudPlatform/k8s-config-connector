@@ -196,6 +196,10 @@ spec:
               dataProfileSpec:
                 description: Settings for a data profile scan.
                 properties:
+                  catalogPublishingEnabled:
+                    description: Optional. If set, the latest DataScan job result
+                      will be published as Dataplex Universal Catalog metadata.
+                    type: boolean
                   excludeFields:
                     description: |-
                       Optional. The fields to exclude from data profile.
@@ -278,13 +282,10 @@ spec:
                         type: object
                     type: object
                   rowFilter:
-                    description: |-
-                      Optional. A filter applied to all rows in a single DataScan job.
-                       The filter needs to be a valid SQL expression for a [WHERE clause in
-                       GoogleSQL
-                       syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause).
-
-                       Example: col1 >= 0 AND col2 < 10
+                    description: 'Optional. A filter applied to all rows in a single
+                      DataScan job. The filter needs to be a valid SQL expression
+                      for a WHERE clause in BigQuery standard SQL syntax. Example:
+                      col1 >= 0 AND col2 < 10'
                     type: string
                   samplingPercent:
                     description: |-
@@ -300,6 +301,10 @@ spec:
               dataQualitySpec:
                 description: Settings for a data quality scan.
                 properties:
+                  catalogPublishingEnabled:
+                    description: Optional. If set, the latest DataScan job result
+                      will be published as Dataplex Universal Catalog metadata.
+                    type: boolean
                   postScanActions:
                     description: Optional. Actions to take upon job completion.
                     properties:
@@ -393,6 +398,24 @@ spec:
                           description: Optional. The unnested column which this rule
                             is evaluated against.
                           type: string
+                        debugQueries:
+                          description: Optional. Specifies the debug queries for this
+                            rule. Currently, only one query is supported, but this
+                            may be expanded in the future.
+                          items:
+                            properties:
+                              description:
+                                description: |-
+                                  Optional. Specifies the description of the debug query.
+
+                                   * The maximum length is 1,024 characters.
+                                type: string
+                              sqlStatement:
+                                description: Required. Specifies the SQL statement
+                                  to be executed.
+                                type: string
+                            type: object
+                          type: array
                         description:
                           description: |-
                             Optional. Description of the rule.
@@ -400,10 +423,10 @@ spec:
                              * The maximum length is 1,024 characters.
                           type: string
                         dimension:
-                          description: Required. The dimension a rule belongs to.
-                            Results are also aggregated at the dimension level. Supported
-                            dimensions are **["COMPLETENESS", "ACCURACY", "CONSISTENCY",
-                            "VALIDITY", "UNIQUENESS", "FRESHNESS", "VOLUME"]**
+                          description: Optional. The dimension a rule belongs to.
+                            Results are also aggregated at the dimension level. Custom
+                            dimension name is supported with all uppercase letters
+                            and maximum length of 30 characters.
                           type: string
                         ignoreNull:
                           description: |-
@@ -610,6 +633,20 @@ spec:
                         description: The scan runs once via `RunDataScan` API.
                         type: object
                         x-kubernetes-preserve-unknown-fields: true
+                      oneTime:
+                        description: The scan runs once, and does not create an associated
+                          ScanJob child resource.
+                        properties:
+                          ttlAfterScanCompletion:
+                            description: Optional. Time to live for OneTime scans.
+                              default value is 24 hours, minimum value is 0 seconds,
+                              and maximum value is 365 days. The time is calculated
+                              from the data scan job completion time. If value is
+                              set as 0 seconds, the scan will be immediately deleted
+                              upon job completion, regardless of whether the job succeeded
+                              or failed.
+                            type: string
+                        type: object
                       schedule:
                         description: The scan is scheduled to run periodically.
                         properties:
@@ -781,66 +818,75 @@ spec:
                   dataProfileResult:
                     description: Output only. The result of a data profile scan.
                     properties:
+                      catalogPublishingStatus:
+                        description: Output only. The status of publishing the data
+                          scan as Dataplex Universal Catalog metadata.
+                        properties:
+                          state:
+                            description: Output only. Execution state for publishing.
+                            type: string
+                        type: object
                       postScanActionsResult:
                         description: Output only. The result of post scan actions.
                         type: object
                         x-kubernetes-preserve-unknown-fields: true
                       profile:
-                        description: The profile information per field.
+                        description: Output only. The profile information per field.
                         properties:
                           fields:
-                            description: List of fields with structural and profile
-                              information for each field.
+                            description: Output only. List of fields with structural
+                              and profile information for each field.
                             items:
                               properties:
                                 mode:
                                   description: |-
-                                    The mode of the field. Possible values include:
+                                    Output only. The mode of the field. Possible values include:
 
                                      * REQUIRED, if it is a required field.
                                      * NULLABLE, if it is an optional field.
                                      * REPEATED, if it is a repeated field.
                                   type: string
                                 name:
-                                  description: The name of the field.
+                                  description: Output only. The name of the field.
                                   type: string
                                 profile:
-                                  description: Profile information for the corresponding
-                                    field.
+                                  description: Output only. Profile information for
+                                    the corresponding field.
                                   properties:
                                     distinctRatio:
-                                      description: Ratio of rows with distinct values
-                                        against total scanned rows. Not available
-                                        for complex non-groupable field type, including
-                                        RECORD, ARRAY, GEOGRAPHY, and JSON, as well
-                                        as fields with REPEATABLE mode.
+                                      description: Output only. Ratio of rows with
+                                        distinct values against total scanned rows.
+                                        Not available for complex non-groupable field
+                                        type, including RECORD, ARRAY, GEOGRAPHY,
+                                        and JSON, as well as fields with REPEATABLE
+                                        mode.
                                       type: number
                                     doubleProfile:
                                       description: Double type field information.
                                       properties:
                                         average:
-                                          description: Average of non-null values
-                                            in the scanned data. NaN, if the field
-                                            has a NaN.
+                                          description: Output only. Average of non-null
+                                            values in the scanned data. NaN, if the
+                                            field has a NaN.
                                           type: number
                                         max:
-                                          description: Maximum of non-null values
-                                            in the scanned data. NaN, if the field
-                                            has a NaN.
+                                          description: Output only. Maximum of non-null
+                                            values in the scanned data. NaN, if the
+                                            field has a NaN.
                                           type: number
                                         min:
-                                          description: Minimum of non-null values
-                                            in the scanned data. NaN, if the field
-                                            has a NaN.
+                                          description: Output only. Minimum of non-null
+                                            values in the scanned data. NaN, if the
+                                            field has a NaN.
                                           type: number
                                         quartiles:
-                                          description: 'A quartile divides the number
-                                            of data points into four parts, or quarters,
-                                            of more-or-less equal size. Three main
-                                            quartiles used are: The first quartile
-                                            (Q1) splits off the lowest 25% of data
-                                            from the highest 75%. It is also known
-                                            as the lower or 25th empirical quartile,
+                                          description: 'Output only. A quartile divides
+                                            the number of data points into four parts,
+                                            or quarters, of more-or-less equal size.
+                                            Three main quartiles used are: The first
+                                            quartile (Q1) splits off the lowest 25%
+                                            of data from the highest 75%. It is also
+                                            known as the lower or 25th empirical quartile,
                                             as 25% of the data is below this point.
                                             The second quartile (Q2) is the median
                                             of a data set. So, 50% of the data lies
@@ -856,39 +902,39 @@ spec:
                                             type: number
                                           type: array
                                         standardDeviation:
-                                          description: Standard deviation of non-null
-                                            values in the scanned data. NaN, if the
-                                            field has a NaN.
+                                          description: Output only. Standard deviation
+                                            of non-null values in the scanned data.
+                                            NaN, if the field has a NaN.
                                           type: number
                                       type: object
                                     integerProfile:
                                       description: Integer type field information.
                                       properties:
                                         average:
-                                          description: Average of non-null values
-                                            in the scanned data. NaN, if the field
-                                            has a NaN.
+                                          description: Output only. Average of non-null
+                                            values in the scanned data. NaN, if the
+                                            field has a NaN.
                                           type: number
                                         max:
-                                          description: Maximum of non-null values
-                                            in the scanned data. NaN, if the field
-                                            has a NaN.
+                                          description: Output only. Maximum of non-null
+                                            values in the scanned data. NaN, if the
+                                            field has a NaN.
                                           format: int64
                                           type: integer
                                         min:
-                                          description: Minimum of non-null values
-                                            in the scanned data. NaN, if the field
-                                            has a NaN.
+                                          description: Output only. Minimum of non-null
+                                            values in the scanned data. NaN, if the
+                                            field has a NaN.
                                           format: int64
                                           type: integer
                                         quartiles:
-                                          description: 'A quartile divides the number
-                                            of data points into four parts, or quarters,
-                                            of more-or-less equal size. Three main
-                                            quartiles used are: The first quartile
-                                            (Q1) splits off the lowest 25% of data
-                                            from the highest 75%. It is also known
-                                            as the lower or 25th empirical quartile,
+                                          description: 'Output only. A quartile divides
+                                            the number of data points into four parts,
+                                            or quarters, of more-or-less equal size.
+                                            Three main quartiles used are: The first
+                                            quartile (Q1) splits off the lowest 25%
+                                            of data from the highest 75%. It is also
+                                            known as the lower or 25th empirical quartile,
                                             as 25% of the data is below this point.
                                             The second quartile (Q2) is the median
                                             of a data set. So, 50% of the data lies
@@ -906,91 +952,96 @@ spec:
                                             type: integer
                                           type: array
                                         standardDeviation:
-                                          description: Standard deviation of non-null
-                                            values in the scanned data. NaN, if the
-                                            field has a NaN.
+                                          description: Output only. Standard deviation
+                                            of non-null values in the scanned data.
+                                            NaN, if the field has a NaN.
                                           type: number
                                       type: object
                                     nullRatio:
-                                      description: Ratio of rows with null value against
-                                        total scanned rows.
+                                      description: Output only. Ratio of rows with
+                                        null value against total scanned rows.
                                       type: number
                                     stringProfile:
                                       description: String type field information.
                                       properties:
                                         averageLength:
-                                          description: Average length of non-null
-                                            values in the scanned data.
+                                          description: Output only. Average length
+                                            of non-null values in the scanned data.
                                           type: number
                                         maxLength:
-                                          description: Maximum length of non-null
-                                            values in the scanned data.
+                                          description: Output only. Maximum length
+                                            of non-null values in the scanned data.
                                           format: int64
                                           type: integer
                                         minLength:
-                                          description: Minimum length of non-null
-                                            values in the scanned data.
+                                          description: Output only. Minimum length
+                                            of non-null values in the scanned data.
                                           format: int64
                                           type: integer
                                       type: object
                                     topNValues:
-                                      description: The list of top N non-null values,
-                                        frequency and ratio with which they occur
-                                        in the scanned data. N is 10 or equal to the
-                                        number of distinct values in the field, whichever
-                                        is smaller. Not available for complex non-groupable
-                                        field type, including RECORD, ARRAY, GEOGRAPHY,
-                                        and JSON, as well as fields with REPEATABLE
-                                        mode.
+                                      description: Output only. The list of top N
+                                        non-null values, frequency and ratio with
+                                        which they occur in the scanned data. N is
+                                        10 or equal to the number of distinct values
+                                        in the field, whichever is smaller. Not available
+                                        for complex non-groupable field type, including
+                                        RECORD, ARRAY, GEOGRAPHY, and JSON, as well
+                                        as fields with REPEATABLE mode.
                                       items:
                                         properties:
                                           count:
-                                            description: Count of the corresponding
-                                              value in the scanned data.
+                                            description: Output only. Count of the
+                                              corresponding value in the scanned data.
                                             format: int64
                                             type: integer
                                           ratio:
-                                            description: Ratio of the corresponding
-                                              value in the field against the total
-                                              number of rows in the scanned data.
+                                            description: Output only. Ratio of the
+                                              corresponding value in the field against
+                                              the total number of rows in the scanned
+                                              data.
                                             type: number
                                           value:
-                                            description: String value of a top N non-null
-                                              value.
+                                            description: Output only. String value
+                                              of a top N non-null value.
                                             type: string
                                         type: object
                                       type: array
                                   type: object
                                 type:
-                                  description: The data type retrieved from the schema
-                                    of the data source. For instance, for a BigQuery
-                                    native table, it is the [BigQuery Table Schema](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema).
-                                    For a Dataplex Entity, it is the [Entity Schema](https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3).
+                                  description: Output only. The data type retrieved
+                                    from the schema of the data source. For instance,
+                                    for a BigQuery native table, it is the [BigQuery
+                                    Table Schema](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema).
+                                    For a Dataplex Universal Catalog Entity, it is
+                                    the [Entity Schema](https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3).
                                   type: string
                               type: object
                             type: array
                         type: object
                       rowCount:
-                        description: The count of rows scanned.
+                        description: Output only. The count of rows scanned.
                         format: int64
                         type: integer
                       scannedData:
-                        description: The data scanned for this result.
+                        description: Output only. The data scanned for this result.
                         properties:
                           incrementalField:
                             description: The range denoted by values of an incremental
                               field
                             properties:
                               end:
-                                description: Value that marks the end of the range.
+                                description: Output only. Value that marks the end
+                                  of the range.
                                 type: string
                               field:
-                                description: The field that contains values which
-                                  monotonically increases over time (e.g. a timestamp
-                                  column).
+                                description: Output only. The field that contains
+                                  values which monotonically increases over time (e.g.
+                                  a timestamp column).
                                 type: string
                               start:
-                                description: Value that marks the start of the range.
+                                description: Output only. Value that marks the start
+                                  of the range.
                                 type: string
                             type: object
                         type: object
@@ -998,6 +1049,38 @@ spec:
                   dataQualityResult:
                     description: Output only. The result of a data quality scan.
                     properties:
+                      anomalyDetectionGeneratedAssets:
+                        description: Output only. The generated assets for anomaly
+                          detection.
+                        properties:
+                          dataIntermediateTable:
+                            description: 'Output only. The intermediate table for
+                              data anomaly detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID'
+                            type: string
+                          freshnessIntermediateTable:
+                            description: 'Output only. The intermediate table for
+                              freshness anomaly detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID'
+                            type: string
+                          resultTable:
+                            description: 'Output only. The result table for anomaly
+                              detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID If
+                              the result table is set at AnomalyDetectionAssets, the
+                              result table here would be the same as the one set in
+                              the AnomalyDetectionAssets.result_table.'
+                            type: string
+                          volumeIntermediateTable:
+                            description: 'Output only. The intermediate table for
+                              volume anomaly detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID'
+                            type: string
+                        type: object
+                      catalogPublishingStatus:
+                        description: Output only. The status of publishing the data
+                          scan as Dataplex Universal Catalog metadata.
+                        properties:
+                          state:
+                            description: Output only. Execution state for publishing.
+                            type: string
+                        type: object
                       columns:
                         description: |-
                           Output only. A list of results at the column level.
@@ -1045,15 +1128,17 @@ spec:
                               field
                             properties:
                               end:
-                                description: Value that marks the end of the range.
+                                description: Output only. Value that marks the end
+                                  of the range.
                                 type: string
                               field:
-                                description: The field that contains values which
-                                  monotonically increases over time (e.g. a timestamp
-                                  column).
+                                description: Output only. The field that contains
+                                  values which monotonically increases over time (e.g.
+                                  a timestamp column).
                                 type: string
                               start:
-                                description: Value that marks the start of the range.
+                                description: Output only. Value that marks the start
+                                  of the range.
                                 type: string
                             type: object
                         type: object
