@@ -23,6 +23,7 @@
 // resource: APIHubPlugin:Plugin
 // resource: APIHubExternalAPI:ExternalApi
 // resource: APIHubInstance:ApiHubInstance
+// resource: APIHubAttribute:Attribute
 
 package v1alpha1
 
