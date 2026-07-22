@@ -741,6 +741,16 @@ func canonicalizeNetworkFirewallPolicyRuleMatch(des, initial *NetworkFirewallPol
 	} else {
 		cDes.DestAddressGroups = des.DestAddressGroups
 	}
+	if dcl.StringCanonicalize(des.SrcNetworkContext, initial.SrcNetworkContext) {
+		cDes.SrcNetworkContext = initial.SrcNetworkContext
+	} else {
+		cDes.SrcNetworkContext = des.SrcNetworkContext
+	}
+	if dcl.StringCanonicalize(des.DestNetworkContext, initial.DestNetworkContext) {
+		cDes.DestNetworkContext = initial.DestNetworkContext
+	} else {
+		cDes.DestNetworkContext = des.DestNetworkContext
+	}
 
 	return cDes
 }
@@ -818,6 +828,12 @@ func canonicalizeNewNetworkFirewallPolicyRuleMatch(c *Client, des, nw *NetworkFi
 	}
 	if dcl.StringArrayCanonicalize(des.DestAddressGroups, nw.DestAddressGroups) {
 		nw.DestAddressGroups = des.DestAddressGroups
+	}
+	if dcl.StringCanonicalize(des.SrcNetworkContext, nw.SrcNetworkContext) {
+		nw.SrcNetworkContext = des.SrcNetworkContext
+	}
+	if dcl.StringCanonicalize(des.DestNetworkContext, nw.DestNetworkContext) {
+		nw.DestNetworkContext = des.DestNetworkContext
 	}
 
 	return nw
@@ -1456,6 +1472,20 @@ func compareNetworkFirewallPolicyRuleMatchNewStyle(d, a interface{}, fn dcl.Fiel
 		}
 		diffs = append(diffs, ds...)
 	}
+
+	if ds, err := dcl.Diff(desired.SrcNetworkContext, actual.SrcNetworkContext, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNetworkFirewallPolicyRulePatchRuleOperation")}, fn.AddNest("SrcNetworkContext")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.DestNetworkContext, actual.DestNetworkContext, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNetworkFirewallPolicyRulePatchRuleOperation")}, fn.AddNest("DestNetworkContext")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
 	return diffs, nil
 }
 
@@ -1848,6 +1878,12 @@ func expandNetworkFirewallPolicyRuleMatch(c *Client, f *NetworkFirewallPolicyRul
 	if v := f.DestAddressGroups; v != nil {
 		m["destAddressGroups"] = v
 	}
+	if v := f.SrcNetworkContext; v != nil {
+		m["srcNetworkContext"] = v
+	}
+	if v := f.DestNetworkContext; v != nil {
+		m["destNetworkContext"] = v
+	}
 
 	return m, nil
 }
@@ -1877,6 +1913,8 @@ func flattenNetworkFirewallPolicyRuleMatch(c *Client, i interface{}, res *Networ
 	r.DestFqdns = dcl.FlattenStringSlice(m["destFqdns"])
 	r.SrcAddressGroups = dcl.FlattenStringSlice(m["srcAddressGroups"])
 	r.DestAddressGroups = dcl.FlattenStringSlice(m["destAddressGroups"])
+	r.SrcNetworkContext = dcl.FlattenString(m["srcNetworkContext"])
+	r.DestNetworkContext = dcl.FlattenString(m["destNetworkContext"])
 
 	return r
 }

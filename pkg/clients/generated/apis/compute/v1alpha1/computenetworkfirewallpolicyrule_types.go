@@ -60,6 +60,10 @@ type NetworkfirewallpolicyruleMatch struct {
 	// +optional
 	DestIpRanges []string `json:"destIpRanges,omitempty"`
 
+	/* The network context of the traffic destination. */
+	// +optional
+	DestNetworkContext *string `json:"destNetworkContext,omitempty"`
+
 	/* The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is egress. */
 	// +optional
 	DestRegionCodes []string `json:"destRegionCodes,omitempty"`
@@ -82,6 +86,10 @@ type NetworkfirewallpolicyruleMatch struct {
 	/* CIDR IP address range. Maximum number of source CIDR IP ranges allowed is 5000. */
 	// +optional
 	SrcIpRanges []string `json:"srcIpRanges,omitempty"`
+
+	/* The network context of the traffic source. */
+	// +optional
+	SrcNetworkContext *string `json:"srcNetworkContext,omitempty"`
 
 	/* The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is ingress. */
 	// +optional
