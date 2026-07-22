@@ -392,7 +392,7 @@ func compareRedisInstance(ctx context.Context, actual, desired *redispb.Instance
 		suppressSecondary = true
 	}
 	if suppressSecondary {
-		desired.SecondaryIpRange = actual.SecondaryIpRange
+		desired.SecondaryIpRange = ""
 	}
 
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
