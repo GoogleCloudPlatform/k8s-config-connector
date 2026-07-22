@@ -1,0 +1,6 @@
+- caisURL: //certificatemanager.googleapis.com/projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-${uniqueId}
+  group: certificatemanager.cnrm.cloud.google.com
+  kind: CertificateManagerTrustConfig
+  name: trustconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
