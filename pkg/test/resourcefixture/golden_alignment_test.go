@@ -468,6 +468,10 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = doneRegex.ReplaceAllString(realJSON, "")
 	mockJSON = doneRegex.ReplaceAllString(mockJSON, "")
 
+	secretVersionRegex := regexp.MustCompile(`/secrets/kcc-test-([a-z-]+)/versions/[0-9]+`)
+	realJSON = secretVersionRegex.ReplaceAllString(realJSON, `/secrets/kcc-test-$1/versions/_version_`)
+	mockJSON = secretVersionRegex.ReplaceAllString(mockJSON, `/secrets/kcc-test-$1/versions/_version_`)
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
@@ -590,6 +594,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "currentMasterVersion")
 			delete(v, "currentNodeVersion")
 			delete(v, "initialClusterVersion")
+			delete(v, "releaseChannel")
 			delete(v, "currentNodeCount")
 			delete(v, "nodeCreationConfig")
 			delete(v, "controlPlaneEgress")
@@ -601,6 +606,19 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
 			delete(v, "zone")
+		}
+		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
+			delete(cluster, "initialClusterVersion")
+		}
+		if config, ok := v["config"].(map[string]interface{}); ok {
+			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
+				delete(containerdConfig, "registryHosts")
+				delete(containerdConfig, "writableCgroups")
+				delete(containerdConfig, "privateRegistryAccessConfig")
+			}
+		}
+		if containerdConfig, ok := v["containerdConfig"].(map[string]interface{}); ok {
+			delete(containerdConfig, "privateRegistryAccessConfig")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")

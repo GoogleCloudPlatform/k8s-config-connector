@@ -24,7 +24,5 @@ spec:
   location: us-central1-a
   initialNodeCount: 1
   minMasterVersion: "1.34"
-  releaseChannel:
-    channel: UNSPECIFIED
   loggingService: logging.googleapis.com/kubernetes
   monitoringService: monitoring.googleapis.com/kubernetes

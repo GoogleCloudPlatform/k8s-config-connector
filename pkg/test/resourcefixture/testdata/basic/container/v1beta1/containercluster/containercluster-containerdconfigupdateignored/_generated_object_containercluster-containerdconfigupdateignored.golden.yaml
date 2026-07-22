@@ -3,7 +3,7 @@ kind: ContainerCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"minMasterVersion":"1.34"}}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
@@ -18,6 +18,7 @@ metadata:
 spec:
   initialNodeCount: 1
   location: us-west2
+  minMasterVersion: "1.34"
   nodeConfig:
     containerdConfig:
       privateRegistryAccessConfig:
@@ -36,10 +37,10 @@ spec:
               external: projects/${projectId}/secrets/kcc-test-ca-cert/versions/2
           client:
           - cert:
-            - secretRef:
+              secretRef:
                 external: projects/${projectId}/secrets/kcc-test-client-cert/versions/2
             key:
-            - secretRef:
+              secretRef:
                 external: projects/${projectId}/secrets/kcc-test-client-key/versions/2
           host: https://my-registry.example.com
         server: my-registry.example.com
