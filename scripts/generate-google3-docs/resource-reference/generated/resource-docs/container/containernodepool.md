@@ -125,6 +125,47 @@ nodeConfig:
   confidentialNodes:
     confidentialInstanceType: string
     enabled: boolean
+  containerdConfig:
+    privateRegistryAccessConfig:
+      certificateAuthorityDomainConfig:
+      - fqdns:
+        - string
+        gcpSecretManagerCertificateConfig:
+          secretRef:
+            external: string
+            name: string
+            namespace: string
+      enabled: boolean
+    registryHosts:
+    - hosts:
+      - ca:
+        - secretRef:
+            external: string
+            name: string
+            namespace: string
+        capabilities:
+        - string
+        client:
+        - cert:
+          - secretRef:
+              external: string
+              name: string
+              namespace: string
+          key:
+          - secretRef:
+              external: string
+              name: string
+              namespace: string
+        dialTimeout: string
+        header:
+        - key: string
+          value:
+          - string
+        host: string
+        overridePath: boolean
+      server: string
+    writableCgroups:
+      enabled: boolean
   diskSizeGb: integer
   diskType: string
   ephemeralStorageConfig:
@@ -817,6 +858,496 @@ version: string
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Parameters for containerd customization.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Parameters for private container registries configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Private registry access configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[].fqdns</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>List of fully qualified domain names (FQDN). Specifying port is supported. Wildcards are NOT supported.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[].fqdns[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[].gcpSecretManagerCertificateConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Google Secret Manager (GCP) certificate configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[].gcpSecretManagerCertificateConfig.secretRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>SecretRef is a reference to a SecretManagerSecretVersion resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[].gcpSecretManagerCertificateConfig.secretRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[].gcpSecretManagerCertificateConfig.secretRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.certificateAuthorityDomainConfig[].gcpSecretManagerCertificateConfig.secretRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.privateRegistryAccessConfig.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Private registry access is enabled.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Configures containerd registry host configuration. Each registryHosts entry represents a hosts.toml file.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Configures a list of host-specific configurations for the server.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].ca</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Configures the registry host certificate.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].ca[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].ca[].secretRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Reference to SecretManagerSecretVersion for the CA certificate.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].ca[].secretRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].ca[].secretRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].ca[].secretRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].capabilities</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Represent the capabilities of the registry host, specifying what operations a host is capable of performing.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].capabilities[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Configures the registry host client certificate and key.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Configures the client certificate.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Reference to SecretManagerSecretVersion for the client certificate.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Configures the client private key.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Reference to SecretManagerSecretVersion for the client key.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p> If provided must be in the format `projects/*/secrets/*/versions/*`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].dialTimeout</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Specifies the maximum duration allowed for a connection attempt to complete.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].header</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Configures the registry host headers.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].header[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].header[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Configures the header key.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].header[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Configures the header value.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].header[].value[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].host</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Configures the registry host/mirror.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].overridePath</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Indicate the host's API root endpoint is defined in the URL path rather than by the API specification.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].server</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Defines the host name of the registry server.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.writableCgroups</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Parameters for writable cgroups configuration.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.containerdConfig.writableCgroups.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether writable cgroups are enabled.</p>
         </td>
     </tr>
     <tr>

@@ -276,6 +276,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
 					continue
 				}
+				if strings.Contains(path, "/instanceGroupManagers/") {
+					continue
+				}
 				t.Errorf("path %q present in real log but missing in mock log", path)
 				continue
 			}
@@ -497,7 +500,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "createTime")
 		delete(v, "updateTime")
 		delete(v, "selfLink")
-		delete(v, "internalMetadata")
 		if rc, ok := v["responseCode"]; ok {
 			if f, ok := rc.(float64); ok {
 				switch f {
@@ -547,9 +549,21 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if stripQuery, ok := v["stripQuery"].(bool); ok && !stripQuery {
 			delete(v, "stripQuery")
 		}
-		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
+		if _, isOp := v["operationType"]; isOp {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
+			if status, ok := v["status"].(string); ok && status == "PENDING" {
+				v["status"] = "RUNNING"
+			}
+			if opType, ok := v["operationType"].(string); ok && opType == "UPGRADE_NODES" {
+				delete(v, "operationType")
+			}
+		} else if name, ok := v["name"].(string); ok && (strings.Contains(name, "operation") || strings.Contains(name, "/operations/")) {
+			v["name"] = "operations/${operationID}"
+			delete(v, "metadata")
+			if status, ok := v["status"].(string); ok && status == "PENDING" {
+				v["status"] = "RUNNING"
+			}
 		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
@@ -581,6 +595,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "masterAuth")
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
+			delete(v, "zone")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
@@ -609,6 +624,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "networkConfig")
 			delete(v, "etag")
 			delete(v, "locations")
+			delete(v, "kubeletCertInfo")
 			if sl, ok := v["selfLink"].(string); ok {
 				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
 			}

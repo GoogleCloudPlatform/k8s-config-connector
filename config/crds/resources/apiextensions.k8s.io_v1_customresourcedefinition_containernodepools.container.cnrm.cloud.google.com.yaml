@@ -414,6 +414,247 @@ spec:
                     required:
                     - enabled
                     type: object
+                  containerdConfig:
+                    description: Parameters for containerd customization.
+                    properties:
+                      privateRegistryAccessConfig:
+                        description: Parameters for private container registries configuration.
+                        properties:
+                          certificateAuthorityDomainConfig:
+                            description: Private registry access configuration.
+                            items:
+                              properties:
+                                fqdns:
+                                  description: List of fully qualified domain names
+                                    (FQDN). Specifying port is supported. Wildcards
+                                    are NOT supported.
+                                  items:
+                                    type: string
+                                  type: array
+                                gcpSecretManagerCertificateConfig:
+                                  description: Google Secret Manager (GCP) certificate
+                                    configuration.
+                                  properties:
+                                    secretRef:
+                                      description: SecretRef is a reference to a SecretManagerSecretVersion
+                                        resource.
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: ' If provided must be in the
+                                            format `projects/*/secrets/*/versions/*`.'
+                                          type: string
+                                        name:
+                                          description: The `name` field of a `SecretManagerSecretVersion`
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The `metadata.namespace` field
+                                            of a `SecretManagerSecretVersion` resource.
+                                          type: string
+                                      type: object
+                                  type: object
+                              type: object
+                            type: array
+                          enabled:
+                            description: Private registry access is enabled.
+                            type: boolean
+                        type: object
+                      registryHosts:
+                        description: Configures containerd registry host configuration.
+                          Each registryHosts entry represents a hosts.toml file.
+                        items:
+                          properties:
+                            hosts:
+                              description: Configures a list of host-specific configurations
+                                for the server.
+                              items:
+                                properties:
+                                  ca:
+                                    description: Configures the registry host certificate.
+                                    items:
+                                      properties:
+                                        secretRef:
+                                          description: Reference to SecretManagerSecretVersion
+                                            for the CA certificate.
+                                          oneOf:
+                                          - not:
+                                              required:
+                                              - external
+                                            required:
+                                            - name
+                                          - not:
+                                              anyOf:
+                                              - required:
+                                                - name
+                                              - required:
+                                                - namespace
+                                            required:
+                                            - external
+                                          properties:
+                                            external:
+                                              description: ' If provided must be in
+                                                the format `projects/*/secrets/*/versions/*`.'
+                                              type: string
+                                            name:
+                                              description: The `name` field of a `SecretManagerSecretVersion`
+                                                resource.
+                                              type: string
+                                            namespace:
+                                              description: The `metadata.namespace`
+                                                field of a `SecretManagerSecretVersion`
+                                                resource.
+                                              type: string
+                                          type: object
+                                      type: object
+                                    type: array
+                                  capabilities:
+                                    description: Represent the capabilities of the
+                                      registry host, specifying what operations a
+                                      host is capable of performing.
+                                    items:
+                                      type: string
+                                    type: array
+                                  client:
+                                    description: Configures the registry host client
+                                      certificate and key.
+                                    items:
+                                      properties:
+                                        cert:
+                                          description: Configures the client certificate.
+                                          items:
+                                            properties:
+                                              secretRef:
+                                                description: Reference to SecretManagerSecretVersion
+                                                  for the client certificate.
+                                                oneOf:
+                                                - not:
+                                                    required:
+                                                    - external
+                                                  required:
+                                                  - name
+                                                - not:
+                                                    anyOf:
+                                                    - required:
+                                                      - name
+                                                    - required:
+                                                      - namespace
+                                                  required:
+                                                  - external
+                                                properties:
+                                                  external:
+                                                    description: ' If provided must
+                                                      be in the format `projects/*/secrets/*/versions/*`.'
+                                                    type: string
+                                                  name:
+                                                    description: The `name` field
+                                                      of a `SecretManagerSecretVersion`
+                                                      resource.
+                                                    type: string
+                                                  namespace:
+                                                    description: The `metadata.namespace`
+                                                      field of a `SecretManagerSecretVersion`
+                                                      resource.
+                                                    type: string
+                                                type: object
+                                            type: object
+                                          type: array
+                                        key:
+                                          description: Configures the client private
+                                            key.
+                                          items:
+                                            properties:
+                                              secretRef:
+                                                description: Reference to SecretManagerSecretVersion
+                                                  for the client key.
+                                                oneOf:
+                                                - not:
+                                                    required:
+                                                    - external
+                                                  required:
+                                                  - name
+                                                - not:
+                                                    anyOf:
+                                                    - required:
+                                                      - name
+                                                    - required:
+                                                      - namespace
+                                                  required:
+                                                  - external
+                                                properties:
+                                                  external:
+                                                    description: ' If provided must
+                                                      be in the format `projects/*/secrets/*/versions/*`.'
+                                                    type: string
+                                                  name:
+                                                    description: The `name` field
+                                                      of a `SecretManagerSecretVersion`
+                                                      resource.
+                                                    type: string
+                                                  namespace:
+                                                    description: The `metadata.namespace`
+                                                      field of a `SecretManagerSecretVersion`
+                                                      resource.
+                                                    type: string
+                                                type: object
+                                            type: object
+                                          type: array
+                                      type: object
+                                    type: array
+                                  dialTimeout:
+                                    description: Specifies the maximum duration allowed
+                                      for a connection attempt to complete.
+                                    type: string
+                                  header:
+                                    description: Configures the registry host headers.
+                                    items:
+                                      properties:
+                                        key:
+                                          description: Configures the header key.
+                                          type: string
+                                        value:
+                                          description: Configures the header value.
+                                          items:
+                                            type: string
+                                          type: array
+                                      type: object
+                                    type: array
+                                  host:
+                                    description: Configures the registry host/mirror.
+                                    type: string
+                                  overridePath:
+                                    description: Indicate the host's API root endpoint
+                                      is defined in the URL path rather than by the
+                                      API specification.
+                                    type: boolean
+                                type: object
+                              type: array
+                            server:
+                              description: Defines the host name of the registry server.
+                              type: string
+                          type: object
+                        type: array
+                      writableCgroups:
+                        description: Parameters for writable cgroups configuration.
+                        properties:
+                          enabled:
+                            description: Whether writable cgroups are enabled.
+                            type: boolean
+                        type: object
+                    type: object
                   diskSizeGb:
                     description: Immutable. Size of the disk attached to each node,
                       specified in GB. The smallest allowed disk size is 10GB.
