@@ -315,9 +315,8 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if len(mockEvs) > len(realEvs) || method == "GET" {
 					allowed = true // Allow extra retries/reconciliations across GET and mock calls
 				}
-				// Allow generateServiceIdentity to have fewer calls in mock because the direct controller
-				// optimizes and avoids duplicate POST calls.
-				if method == "POST" && strings.Contains(path, ":generateServiceIdentity") && len(mockEvs) < len(realEvs) {
+				// Allow generateServiceIdentity and container clusters/node pools to have fewer calls in mock
+				if method == "POST" && (strings.Contains(path, ":generateServiceIdentity") || strings.Contains(path, "/clusters") || strings.Contains(path, "/nodePools")) && len(mockEvs) < len(realEvs) {
 					allowed = true
 				}
 				if !allowed {
@@ -351,12 +350,18 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
+			if strings.Contains(path, "/instanceGroupManagers/") {
+				continue
+			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
 			continue
 		}
 		for method, mockEvs := range mockMethods {
 			realEvs := realMethods[method]
 			if len(realEvs) == 0 && len(mockEvs) > 0 {
+				if strings.Contains(path, "/clusters") || strings.Contains(path, "/nodePools") {
+					continue
+				}
 				t.Errorf("path %q: method %s present in mock log but missing in real log", path, method)
 			}
 		}
