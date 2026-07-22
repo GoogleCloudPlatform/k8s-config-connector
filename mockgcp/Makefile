@@ -59,6 +59,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/dataform/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
@@ -124,7 +125,8 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/video/stitcher/v1/*.proto \
 		./third_party/googleapis/google/cloud/dialogflow/v2beta1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
-		./third_party/googleapis/google/cloud/apihub/v1/*.proto
+		./third_party/googleapis/google/cloud/apihub/v1/*.proto \
+		./third_party/googleapis/google/cloud/dataform/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

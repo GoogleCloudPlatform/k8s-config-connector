@@ -1,0 +1,117 @@
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "teamFolder \"projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}\" not found"
+}
+
+---
+
+POST https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "Maximal Team Folder",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "creatorIamPrincipal": "",
+  "displayName": "Maximal Team Folder",
+  "internalMetadata": "",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}",
+  "updateTime": null
+}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-max-${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "creatorIamPrincipal": "",
+  "displayName": "Maximal Team Folder",
+  "internalMetadata": "",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}",
+  "updateTime": null
+}
+
+---
+
+PATCH https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: team_folder.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-max-${uniqueId}
+
+{
+  "displayName": "Maximal Team Folder Updated",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "creatorIamPrincipal": "",
+  "displayName": "Maximal Team Folder Updated",
+  "internalMetadata": "",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}",
+  "updateTime": null
+}
+
+---
+
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-max-${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "creatorIamPrincipal": "",
+  "displayName": "Maximal Team Folder Updated",
+  "internalMetadata": "",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}",
+  "updateTime": null
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-max-${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+Grpc-Metadata-X-Http-Code: 204
+
+{}

@@ -43,6 +43,10 @@ func (i *DataformTeamFolderIdentity) String() string {
 	return DataformTeamFolderIdentityFormat.ToString(*i)
 }
 
+func (i *DataformTeamFolderIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *DataformTeamFolderIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataformTeamFolderIdentityFormat.Parse(ref)
 	if err != nil {

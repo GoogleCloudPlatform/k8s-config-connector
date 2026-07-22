@@ -43,9 +43,10 @@ go run . generate-types \
   --proto-source-path ${PROTO_OUT}
 
 go run . generate-mapper \
-  --service google.cloud.dataform.v1beta1 \
+  --service google.cloud.dataform.v1beta1,google.cloud.dataform.v1 \
   --api-version dataform.cnrm.cloud.google.com/v1beta1 \
-  --proto-source-path ${PROTO_OUT}
+  --proto-source-path ${PROTO_OUT} \
+  --multiversion
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds
