@@ -3672,6 +3672,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - rapidmigrationassessment.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - recaptchaenterprise.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5283,6 +5295,14 @@ rules:
   - watch
 - apiGroups:
   - pubsublite.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - rapidmigrationassessment.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
