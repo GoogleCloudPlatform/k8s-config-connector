@@ -119,6 +119,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionTargetTcpProxiesServer(grpcServer, &RegionalTargetTcpProxyV1{MockService: s})
 
 	pb.RegisterRegionNetworkEndpointGroupsServer(grpcServer, &RegionNetworkEndpointGroupV1{MockService: s})
+	pb.RegisterNetworkEndpointGroupsServer(grpcServer, &NetworkEndpointGroupV1{MockService: s})
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
 
@@ -329,6 +330,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterRegionNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 
 	if err := pb.RegisterServiceAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
@@ -483,10 +487,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 
 		isRouter := strings.Contains(r.URL.Path, "/routers")
+		isNEG := strings.Contains(r.URL.Path, "/networkEndpointGroups")
 
 		var captured *responseCapture
 		var originalWriter http.ResponseWriter = w
-		if isLegacyHealthCheck || isRouter {
+		if isLegacyHealthCheck || isRouter || isNEG {
 			captured = &responseCapture{ResponseWriter: w}
 			w = captured
 		}
@@ -514,6 +519,14 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			if isRouter {
 				if len(bodyBytes) > 0 && captured.code < 400 {
 					if rewritten, err := rewriteRouterResponse(bodyBytes); err == nil {
+						bodyBytes = rewritten
+					}
+				}
+			}
+
+			if isNEG {
+				if len(bodyBytes) > 0 && captured.code < 400 {
+					if rewritten, err := rewriteNetworkEndpointGroupResponse(bodyBytes); err == nil {
 						bodyBytes = rewritten
 					}
 				}
@@ -649,6 +662,51 @@ func rewriteRouterResponse(bodyBytes []byte) ([]byte, error) {
 						populateNatFields(router)
 					}
 				}
+			}
+		}
+	}
+
+	return json.Marshal(data)
+}
+
+func rewriteNetworkEndpointGroupResponse(bodyBytes []byte) ([]byte, error) {
+	var data map[string]any
+	if err := json.Unmarshal(bodyBytes, &data); err != nil {
+		return bodyBytes, nil
+	}
+
+	populateLoadBalancerField := func(neg map[string]any) {
+		if kind, ok := neg["kind"].(string); ok && kind == "compute#networkEndpointGroup" {
+			if _, exists := neg["loadBalancer"]; !exists {
+				// Only populate loadBalancer for zonal network endpoint groups (which have a zone field)
+				if _, hasZone := neg["zone"]; hasZone {
+					lb := make(map[string]any)
+					if defaultPort, ok := neg["defaultPort"]; ok {
+						lb["defaultPort"] = defaultPort
+					}
+					if network, ok := neg["network"].(string); ok {
+						lb["network"] = strings.ReplaceAll(network, "/compute/v1/", "/compute/beta/")
+					}
+					if subnetwork, ok := neg["subnetwork"].(string); ok {
+						lb["subnetwork"] = strings.ReplaceAll(subnetwork, "/compute/v1/", "/compute/beta/")
+					}
+					if zone, ok := neg["zone"].(string); ok {
+						lb["zone"] = strings.ReplaceAll(zone, "/compute/v1/", "/compute/beta/")
+					}
+					if len(lb) > 0 {
+						neg["loadBalancer"] = lb
+					}
+				}
+			}
+		}
+	}
+
+	populateLoadBalancerField(data)
+
+	if items, ok := data["items"].([]any); ok {
+		for _, item := range items {
+			if neg, ok := item.(map[string]any); ok {
+				populateLoadBalancerField(neg)
 			}
 		}
 	}
