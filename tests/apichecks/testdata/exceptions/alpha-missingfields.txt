@@ -2444,6 +2444,13 @@
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.queryEntry.query" is not set in unstructured objects
+[missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.queryEntry.targets[].pageNumbers[]" is not set in unstructured objects
+[missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.queryEntry.targets[].score" is not set in unstructured objects
+[missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.queryEntry.targets[].uri" is not set in unstructured objects
+[missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sampleQuerySetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects

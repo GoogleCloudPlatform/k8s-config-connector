@@ -89,6 +89,12 @@ var (
 		Kind:    reflect.TypeOf(DiscoveryEngineIdentityMappingStore{}).Name(),
 	}
 
+	DiscoveryEngineSampleQueryGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineSampleQuery{}).Name(),
+	}
+
 	DiscoveryEngineSampleQuerySetGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
