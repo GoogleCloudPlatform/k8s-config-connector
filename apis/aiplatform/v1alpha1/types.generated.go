@@ -23,6 +23,7 @@
 // resource: VertexAIPipelineJob:PipelineJob
 // resource: VertexAITuningJob:TuningJob
 // resource: VertexAIStudy:Study
+// resource: VertexAITrainingPipeline:TrainingPipeline
 
 package v1alpha1
 
@@ -91,6 +92,23 @@ type Artifact struct {
 	Description *string `json:"description,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.aiplatform.v1.BigQueryDestination
+type BigQueryDestination struct {
+	// Required. BigQuery URI to a project or table, up to 2000 characters long.
+	//
+	//  When only the project is specified, the Dataset and Table is created.
+	//  When the full table reference is specified, the Dataset must exist and
+	//  table must not exist.
+	//
+	//  Accepted forms:
+	//
+	//  *  BigQuery path. For example:
+	//  `bq://projectId` or `bq://projectId.bqDatasetId` or
+	//  `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BigQueryDestination.output_uri
+	OutputURI *string `json:"outputURI,omitempty"`
+}
 
 // +kcc:proto=google.cloud.aiplatform.v1.Blob
 type Blob struct {
@@ -495,6 +513,54 @@ type FileData struct {
 	FileURI *string `json:"fileURI,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.FilterSplit
+type FilterSplit struct {
+	// Required. A filter on DataItems of the Dataset. DataItems that match
+	//  this filter are used to train the Model. A filter with same syntax
+	//  as the one used in
+	//  [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+	//  may be used. If a single DataItem is matched by more than one of the
+	//  FilterSplit filters, then it is assigned to the first set that applies to
+	//  it in the training, validation, test order.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.training_filter
+	TrainingFilter *string `json:"trainingFilter,omitempty"`
+
+	// Required. A filter on DataItems of the Dataset. DataItems that match
+	//  this filter are used to validate the Model. A filter with same syntax
+	//  as the one used in
+	//  [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+	//  may be used. If a single DataItem is matched by more than one of the
+	//  FilterSplit filters, then it is assigned to the first set that applies to
+	//  it in the training, validation, test order.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.validation_filter
+	ValidationFilter *string `json:"validationFilter,omitempty"`
+
+	// Required. A filter on DataItems of the Dataset. DataItems that match
+	//  this filter are used to test the Model. A filter with same syntax
+	//  as the one used in
+	//  [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+	//  may be used. If a single DataItem is matched by more than one of the
+	//  FilterSplit filters, then it is assigned to the first set that applies to
+	//  it in the training, validation, test order.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.test_filter
+	TestFilter *string `json:"testFilter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FractionSplit
+type FractionSplit struct {
+	// The fraction of the input data that is to be used to train the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FractionSplit.training_fraction
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to validate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FractionSplit.validation_fraction
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to evaluate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FractionSplit.test_fraction
+	TestFraction *float64 `json:"testFraction,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.FunctionCall
 type FunctionCall struct {
 	// Required. The name of the function to call.
@@ -523,6 +589,16 @@ type FunctionResponse struct {
 	Response apiextensionsv1.JSON `json:"response,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.GcsDestination
+type GCSDestination struct {
+	// Required. Google Cloud Storage URI to output directory. If the uri doesn't
+	//  end with
+	//  '/', a '/' will be automatically appended. The directory is created if it
+	//  doesn't exist.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsDestination.output_uri_prefix
+	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.GcsSource
 type GCSSource struct {
 	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
@@ -537,6 +613,155 @@ type GenieSource struct {
 	// Required. The public base model URI.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GenieSource.base_model_uri
 	BaseModelURI *string `json:"baseModelURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.InputDataConfig
+type InputDataConfig struct {
+	// Split based on fractions defining the size of each set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.fraction_split
+	FractionSplit *FractionSplit `json:"fractionSplit,omitempty"`
+
+	// Split based on the provided filters for each set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.filter_split
+	FilterSplit *FilterSplit `json:"filterSplit,omitempty"`
+
+	// Supported only for tabular Datasets.
+	//
+	//  Split based on a predefined key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.predefined_split
+	PredefinedSplit *PredefinedSplit `json:"predefinedSplit,omitempty"`
+
+	// Supported only for tabular Datasets.
+	//
+	//  Split based on the timestamp of the input data pieces.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.timestamp_split
+	TimestampSplit *TimestampSplit `json:"timestampSplit,omitempty"`
+
+	// Supported only for tabular Datasets.
+	//
+	//  Split based on the distribution of the specified column.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.stratified_split
+	StratifiedSplit *StratifiedSplit `json:"stratifiedSplit,omitempty"`
+
+	// The Cloud Storage location where the training data is to be
+	//  written to. In the given directory a new directory is created with
+	//  name:
+	//  `dataset-<dataset-id>-<annotation-type>-<timestamp-of-training-call>`
+	//  where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
+	//  All training input data is written into that directory.
+	//
+	//  The Vertex AI environment variables representing Cloud Storage
+	//  data URIs are represented in the Cloud Storage wildcard
+	//  format to support sharded data. e.g.: "gs://.../training-*.jsonl"
+	//
+	//  * AIP_DATA_FORMAT = "jsonl" for non-tabular data, "csv" for tabular data
+	//  * AIP_TRAINING_DATA_URI =
+	//  "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/training-*.${AIP_DATA_FORMAT}"
+	//
+	//  * AIP_VALIDATION_DATA_URI =
+	//  "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/validation-*.${AIP_DATA_FORMAT}"
+	//
+	//  * AIP_TEST_DATA_URI =
+	//  "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/test-*.${AIP_DATA_FORMAT}"
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.gcs_destination
+	GCSDestination *GCSDestination `json:"gcsDestination,omitempty"`
+
+	// Only applicable to custom training with tabular Dataset with BigQuery
+	//  source.
+	//
+	//  The BigQuery project location where the training data is to be written
+	//  to. In the given project a new dataset is created with name
+	//  `dataset_<dataset-id>_<annotation-type>_<timestamp-of-training-call>`
+	//  where timestamp is in YYYY_MM_DDThh_mm_ss_sssZ format. All training
+	//  input data is written into that dataset. In the dataset three
+	//  tables are created, `training`, `validation` and `test`.
+	//
+	//  * AIP_DATA_FORMAT = "bigquery".
+	//  * AIP_TRAINING_DATA_URI  =
+	//  "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.training"
+	//
+	//  * AIP_VALIDATION_DATA_URI =
+	//  "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.validation"
+	//
+	//  * AIP_TEST_DATA_URI =
+	//  "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.test"
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.bigquery_destination
+	BigqueryDestination *BigQueryDestination `json:"bigqueryDestination,omitempty"`
+
+	// Required. The ID of the Dataset in the same Project and Location which data
+	//  will be used to train the Model. The Dataset must use schema compatible
+	//  with Model being trained, and what is compatible should be described in the
+	//  used TrainingPipeline's [training_task_definition]
+	//  [google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition].
+	//  For tabular Datasets, all their data is exported to training, to pick
+	//  and choose from.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Applicable only to Datasets that have DataItems and Annotations.
+	//
+	//  A filter on Annotations of the Dataset. Only Annotations that both
+	//  match this filter and belong to DataItems not ignored by the split method
+	//  are used in respectively training, validation or test role, depending on
+	//  the role of the DataItem they are on (for the auto-assigned that role is
+	//  decided by Vertex AI). A filter with same syntax as the one used in
+	//  [ListAnnotations][google.cloud.aiplatform.v1.DatasetService.ListAnnotations]
+	//  may be used, but note here it filters across all Annotations of the
+	//  Dataset, and not just within a single DataItem.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.annotations_filter
+	AnnotationsFilter *string `json:"annotationsFilter,omitempty"`
+
+	// Applicable only to custom training with Datasets that have DataItems and
+	//  Annotations.
+	//
+	//  Cloud Storage URI that points to a YAML file describing the annotation
+	//  schema. The schema is defined as an OpenAPI 3.0.2 [Schema
+	//  Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject).
+	//  The schema files that can be used here are found in
+	//  gs://google-cloud-aiplatform/schema/dataset/annotation/ , note that the
+	//  chosen schema must be consistent with
+	//  [metadata][google.cloud.aiplatform.v1.Dataset.metadata_schema_uri] of the
+	//  Dataset specified by
+	//  [dataset_id][google.cloud.aiplatform.v1.InputDataConfig.dataset_id].
+	//
+	//  Only Annotations that both match this schema and belong to DataItems not
+	//  ignored by the split method are used in respectively training, validation
+	//  or test role, depending on the role of the DataItem they are on.
+	//
+	//  When used in conjunction with
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter],
+	//  the Annotations used for training are filtered by both
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter]
+	//  and
+	//  [annotation_schema_uri][google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri
+	AnnotationSchemaURI *string `json:"annotationSchemaURI,omitempty"`
+
+	// Only applicable to Datasets that have SavedQueries.
+	//
+	//  The ID of a SavedQuery (annotation set) under the Dataset specified by
+	//  [dataset_id][google.cloud.aiplatform.v1.InputDataConfig.dataset_id] used
+	//  for filtering Annotations for training.
+	//
+	//  Only Annotations that are associated with this SavedQuery are used in
+	//  respectively training. When used in conjunction with
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter],
+	//  the Annotations used for training are filtered by both
+	//  [saved_query_id][google.cloud.aiplatform.v1.InputDataConfig.saved_query_id]
+	//  and
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter].
+	//
+	//  Only one of
+	//  [saved_query_id][google.cloud.aiplatform.v1.InputDataConfig.saved_query_id]
+	//  and
+	//  [annotation_schema_uri][google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri]
+	//  should be specified as both of them represent the same thing: problem type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.saved_query_id
+	SavedQueryID *string `json:"savedQueryID,omitempty"`
+
+	// Whether to persist the ML use assignment to data item system labels.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.persist_ml_use_assignment
+	PersistMlUseAssignment *bool `json:"persistMlUseAssignment,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.IntegratedGradientsAttribution
@@ -993,6 +1218,18 @@ type Port struct {
 	ContainerPort *int32 `json:"containerPort,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.PredefinedSplit
+type PredefinedSplit struct {
+	// Required. The key is a name of one of the Dataset's data columns.
+	//  The value of the key (either the label's value or value in the column)
+	//  must be one of {`training`, `validation`, `test`}, and it defines to which
+	//  set the given piece of data is assigned. If for a piece of data the key
+	//  is not present or has an invalid value, that piece is ignored by the
+	//  pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PredefinedSplit.key
+	Key *string `json:"key,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.PredictSchemata
 type PredictSchemata struct {
 	// Immutable. Points to a YAML file stored on Google Cloud Storage describing
@@ -1238,6 +1475,26 @@ type SmoothGradConfig struct {
 	//  Valid range of its value is [1, 50]. Defaults to 3.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SmoothGradConfig.noisy_sample_count
 	NoisySampleCount *int32 `json:"noisySampleCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StratifiedSplit
+type StratifiedSplit struct {
+	// The fraction of the input data that is to be used to train the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.training_fraction
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to validate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.validation_fraction
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to evaluate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.test_fraction
+	TestFraction *float64 `json:"testFraction,omitempty"`
+
+	// Required. The key is a name of one of the Dataset's data columns.
+	//  The key provided must be for a categorical column.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.key
+	Key *string `json:"key,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.StudySpec
@@ -1660,6 +1917,29 @@ type SupervisedTuningSpec struct {
 	//  checkpoints for SFT. Default is false.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SupervisedTuningSpec.export_last_checkpoint_only
 	ExportLastCheckpointOnly *bool `json:"exportLastCheckpointOnly,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.TimestampSplit
+type TimestampSplit struct {
+	// The fraction of the input data that is to be used to train the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.training_fraction
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to validate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.validation_fraction
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to evaluate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.test_fraction
+	TestFraction *float64 `json:"testFraction,omitempty"`
+
+	// Required. The key is a name of one of the Dataset's data columns.
+	//  The values of the key (the values in the column) must be in RFC 3339
+	//  `date-time` format, where `time-offset` = `"Z"`
+	//  (e.g. 1985-04-12T23:20:50.52Z). If for a piece of data the key is not
+	//  present or has an invalid value, that piece is ignored by the pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.key
+	Key *string `json:"key,omitempty"`
 }
 
 /* unreachable type TunedModel

@@ -51,6 +51,10 @@ func (c *FakeAiplatformV1alpha1) VertexAIStudies(namespace string) v1alpha1.Vert
 	return newFakeVertexAIStudies(c, namespace)
 }
 
+func (c *FakeAiplatformV1alpha1) VertexAITrainingPipelines(namespace string) v1alpha1.VertexAITrainingPipelineInterface {
+	return newFakeVertexAITrainingPipelines(c, namespace)
+}
+
 func (c *FakeAiplatformV1alpha1) VertexAITuningJobs(namespace string) v1alpha1.VertexAITuningJobInterface {
 	return newFakeVertexAITuningJobs(c, namespace)
 }
