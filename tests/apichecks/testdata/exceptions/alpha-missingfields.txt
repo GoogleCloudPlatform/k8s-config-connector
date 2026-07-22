@@ -2808,6 +2808,12 @@
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=mapmanagementmapconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=mapmanagementmapconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=mapmanagementmapconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.mapFeatures.poiBoostLevel" is not set in unstructured objects
+[missing_field] crd=mapmanagementmapconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.mapFeatures.simpleFeatures[]" is not set in unstructured objects
+[missing_field] crd=mapmanagementmapconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.mapType" is not set in unstructured objects
+[missing_field] crd=mapmanagementmapconfigs.mapmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstanceendpoints.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.port" is not set in unstructured objects
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.databaseType" is not set in unstructured objects
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
