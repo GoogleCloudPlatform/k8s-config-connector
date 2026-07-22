@@ -421,6 +421,10 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = doneRegex.ReplaceAllString(realJSON, "")
 	mockJSON = doneRegex.ReplaceAllString(mockJSON, "")
 
+	// Normalize certificate manager prefix
+	realJSON = strings.ReplaceAll(realJSON, "//certificatemanager.googleapis.com/", "")
+	mockJSON = strings.ReplaceAll(mockJSON, "//certificatemanager.googleapis.com/", "")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {

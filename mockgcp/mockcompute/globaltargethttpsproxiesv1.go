@@ -51,6 +51,44 @@ func (s *GlobalTargetHTTPSProxiesV1) Get(ctx context.Context, req *pb.GetTargetH
 	return obj, nil
 }
 
+func (s *GlobalTargetHTTPSProxiesV1) expandFields(ctx context.Context, obj *pb.TargetHttpsProxy) error {
+	if obj.SslCertificates != nil {
+		var certs []string
+		for _, cert := range obj.GetSslCertificates() {
+			// todo(yuhou): this is a strange design of TF/GCP API.
+			// GCP field `sslCertificates` refers to SSL Certificate resource or Certificate Manager Certificate resource,
+			// Mixing Classic Certificates and Certificate Manager Certificates is not allowed.
+			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
+			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
+			if strings.Contains(cert, "certificates") {
+				parsedCert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
+				parsedCert = strings.TrimPrefix(parsedCert, "//certificatemanager.googleapis.com/")
+				tokens := strings.Split(parsedCert, "/")
+				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
+				} else {
+					return status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
+				}
+				certs = append(certs, fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/global/certificates/%s", tokens[1], tokens[5]))
+			} else {
+				sslCertName, err := s.parseGlobalSslCertificateName(cert)
+				if err != nil {
+					return status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
+				}
+				certs = append(certs, BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Name)))
+			}
+		}
+		obj.SslCertificates = certs
+	}
+	if obj.UrlMap != nil {
+		mapName, err := s.parseGlobalUrlMapName(obj.GetUrlMap())
+		if err != nil {
+			return status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
+		}
+		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/urlMaps/%s", mapName.Project.ID, mapName.Name)))
+	}
+	return nil
+}
+
 func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertTargetHttpsProxyRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/global" + "/targetHttpsProxies/" + req.GetTargetHttpsProxyResource().GetName()
 	name, err := s.parseGlobalTargetHttpsProxyName(reqName)
@@ -73,40 +111,12 @@ func (s *GlobalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertT
 	if obj.TlsEarlyData == nil {
 		obj.TlsEarlyData = PtrTo("DISABLED")
 	}
-
-	if obj.SslCertificates != nil {
-		var certs []string
-		for _, cert := range obj.GetSslCertificates() {
-			// todo(yuhou): this is a strange design of TF/GCP API.
-			// GCP field `sslCertificates` refers to SSL Certificate resource or Certificate Manager Certificate resource,
-			// Mixing Classic Certificates and Certificate Manager Certificates is not allowed.
-			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
-			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
-			if strings.Contains(cert, "certificates") {
-				parsedCert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
-				parsedCert = strings.TrimPrefix(parsedCert, "//certificatemanager.googleapis.com/")
-				tokens := strings.Split(parsedCert, "/")
-				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
-				} else {
-					return nil, status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
-				}
-				certs = append(certs, fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/global/certificates/%s", tokens[1], tokens[5]))
-			} else {
-				sslCertName, err := s.parseGlobalSslCertificateName(cert)
-				if err != nil {
-					return nil, status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
-				}
-				certs = append(certs, BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Name)))
-			}
-			obj.SslCertificates = certs
-		}
+	if obj.QuicOverride == nil {
+		obj.QuicOverride = PtrTo("NONE")
 	}
-	if obj.UrlMap != nil {
-		mapName, err := s.parseGlobalUrlMapName(obj.GetUrlMap())
-		if err != nil {
-			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
-		}
-		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/urlMaps/%s", mapName.Project.ID, mapName.Name)))
+
+	if err := s.expandFields(ctx, obj); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -139,8 +149,18 @@ func (s *GlobalTargetHTTPSProxiesV1) Patch(ctx context.Context, req *pb.PatchTar
 		return nil, err
 	}
 
-	// TODO: Implement helper to implement the full rules here
-	proto.Merge(obj, req.GetTargetHttpsProxyResource())
+	patched := req.GetTargetHttpsProxyResource()
+	if err := s.expandFields(ctx, patched); err != nil {
+		return nil, err
+	}
+
+	if patched.SslCertificates != nil {
+		obj.SslCertificates = append(obj.SslCertificates, patched.SslCertificates...)
+	}
+
+	patchedCopy := proto.Clone(patched).(*pb.TargetHttpsProxy)
+	patchedCopy.SslCertificates = nil
+	proto.Merge(obj, patchedCopy)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

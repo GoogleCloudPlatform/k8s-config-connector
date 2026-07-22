@@ -601,7 +601,7 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targ
 Content-Type: application/json
 
 {
-  "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+  "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
   "description": "test description",
   "name": "${targetHttpsProxyID}",
   "quicOverride": "DISABLE",
@@ -680,7 +680,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+  "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "test description",
   "fingerprint": "abcdef0123A=",
@@ -699,7 +699,7 @@ PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/tar
 Content-Type: application/json
 
 {
-  "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+  "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
   "description": "test description",
   "name": "${targetHttpsProxyID}",
   "quicOverride": "ENABLE",
@@ -778,7 +778,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+  "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "test description",
   "fingerprint": "abcdef0123A=",
@@ -788,7 +788,7 @@ X-Xss-Protection: 0
   "quicOverride": "ENABLE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
   "tlsEarlyData": "DISABLED",
-  "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 }
 
 ---
