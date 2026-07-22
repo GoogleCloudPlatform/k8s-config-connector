@@ -24,3 +24,10 @@
 - **Problem**: `NetworkSecuritySecurityProfile` contains two references to endpoint groups (`mirroringEndpointGroup` and `interceptEndpointGroup`), which did not have pre-existing reference structs in `apis/refs/v1beta1/networksecurityrefs.go`.
 - **Solution**: Defined `NetworkSecurityMirroringEndpointGroupRef` and `NetworkSecurityInterceptEndpointGroupRef` in `apis/refs/v1beta1/networksecurityrefs.go` to provide structured validation for endpoint group references, and used them in `CustomMirroringProfile` and `CustomInterceptProfile` respectively.
 - **Impact**: Enables strict validation and clean reference resolution for endpoint group fields within a SecurityProfile definition.
+
+### [2026-07-20] Delete Idempotency Alignment for NetworkSecurityAuthzPolicy Direct Controller
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `NetworkSecurityAuthzPolicy` (Issue #11531).
+- **Problem**: In the existing `NetworkSecurityAuthzPolicy` direct controller's `Delete` method, returning `false, nil` when the resource is already deleted (`direct.IsNotFound(err)`) fails the expectation of direct controller idempotency, where successful/no-op deletion should return `true, nil`.
+- **Solution**: Updated `Delete` in `networksecurityauthzpolicy_controller.go` to return `true, nil` on `direct.IsNotFound(err)`.
+- **Impact**: Ensures that if the resource is deleted out-of-band or already finalized on GCP, the KCC reconciler treats the deletion as completed and successfully finishes reconciliation without getting stuck in a retry loop.
+

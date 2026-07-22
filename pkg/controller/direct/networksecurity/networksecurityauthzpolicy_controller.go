@@ -266,7 +266,7 @@ func (a *authzPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	op, err := a.gcpClient.DeleteAuthzPolicy(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			return false, nil
+			return true, nil
 		}
 		return false, fmt.Errorf("deleting networksecurity authz policy %s: %w", a.id.String(), err)
 	}
