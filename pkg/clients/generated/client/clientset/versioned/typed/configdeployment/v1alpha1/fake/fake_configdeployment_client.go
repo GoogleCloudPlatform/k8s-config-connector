@@ -22,34 +22,22 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdeployment/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeCloudassetV1alpha1 struct {
+type FakeConfigdeploymentV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeCloudassetV1alpha1) CloudAssetFolderFeeds(namespace string) v1alpha1.CloudAssetFolderFeedInterface {
-	return newFakeCloudAssetFolderFeeds(c, namespace)
-}
-
-func (c *FakeCloudassetV1alpha1) CloudAssetOrganizationFeeds(namespace string) v1alpha1.CloudAssetOrganizationFeedInterface {
-	return newFakeCloudAssetOrganizationFeeds(c, namespace)
-}
-
-func (c *FakeCloudassetV1alpha1) CloudAssetProjectFeeds(namespace string) v1alpha1.CloudAssetProjectFeedInterface {
-	return newFakeCloudAssetProjectFeeds(c, namespace)
-}
-
-func (c *FakeCloudassetV1alpha1) CloudAssetSavedQueries(namespace string) v1alpha1.CloudAssetSavedQueryInterface {
-	return newFakeCloudAssetSavedQueries(c, namespace)
+func (c *FakeConfigdeploymentV1alpha1) ConfigDeploymentGroups(namespace string) v1alpha1.ConfigDeploymentGroupInterface {
+	return newFakeConfigDeploymentGroups(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeCloudassetV1alpha1) RESTClient() rest.Interface {
+func (c *FakeConfigdeploymentV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

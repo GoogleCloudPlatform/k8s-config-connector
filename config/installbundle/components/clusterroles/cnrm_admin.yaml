@@ -644,6 +644,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - configdeployment.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - connectors.cnrm.cloud.google.com
   resources:
   - '*'

@@ -28,12 +28,12 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1alpha1 contains API Schema definitions for the cloudasset v1alpha1 API group.
+// Package v1alpha1 contains API Schema definitions for the configdeployment v1alpha1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
-// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/cloudasset
+// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/configdeployment
 // +k8s:defaulter-gen=TypeMeta
-// +groupName=cloudasset.cnrm.cloud.google.com
+// +groupName=configdeployment.cnrm.cloud.google.com
 package v1alpha1
 
 import (
@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "cloudasset.cnrm.cloud.google.com", Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "configdeployment.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
@@ -53,29 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	CloudAssetFolderFeedGVK = schema.GroupVersionKind{
+	ConfigDeploymentGroupGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudAssetFolderFeed{}).Name(),
+		Kind:    reflect.TypeOf(ConfigDeploymentGroup{}).Name(),
 	}
 
-	CloudAssetOrganizationFeedGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudAssetOrganizationFeed{}).Name(),
-	}
-
-	CloudAssetProjectFeedGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudAssetProjectFeed{}).Name(),
-	}
-
-	CloudAssetSavedQueryGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CloudAssetSavedQuery{}).Name(),
-	}
-
-	cloudassetAPIVersion = SchemeGroupVersion.String()
+	configdeploymentAPIVersion = SchemeGroupVersion.String()
 )
