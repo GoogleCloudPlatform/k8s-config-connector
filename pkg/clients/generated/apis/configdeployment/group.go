@@ -28,5 +28,5 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package config contains config API versions.
-package config
+// Package configdeployment contains configdeployment API versions.
+package configdeployment

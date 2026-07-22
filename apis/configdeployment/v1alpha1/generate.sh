@@ -25,7 +25,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
   --service google.cloud.config.v1 \
-  --api-version config.cnrm.cloud.google.com/v1alpha1 \
+  --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
   --resource ConfigDeploymentGroup:DeploymentGroup
 
 cd ${REPO_ROOT}

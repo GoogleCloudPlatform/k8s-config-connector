@@ -22,22 +22,22 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/config/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdeployment/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeConfigV1alpha1 struct {
+type FakeConfigdeploymentV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeConfigV1alpha1) ConfigDeploymentGroups(namespace string) v1alpha1.ConfigDeploymentGroupInterface {
+func (c *FakeConfigdeploymentV1alpha1) ConfigDeploymentGroups(namespace string) v1alpha1.ConfigDeploymentGroupInterface {
 	return newFakeConfigDeploymentGroups(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeConfigV1alpha1) RESTClient() rest.Interface {
+func (c *FakeConfigdeploymentV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

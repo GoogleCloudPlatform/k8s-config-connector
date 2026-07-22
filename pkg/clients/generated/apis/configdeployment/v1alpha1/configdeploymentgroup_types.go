@@ -38,7 +38,7 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type DeploymentgroupDeploymentUnits struct {
+type GroupDeploymentUnits struct {
 	/* Required. The IDs of the deployment units within the deployment group that this unit depends on. */
 	// +optional
 	Dependencies []string `json:"dependencies,omitempty"`
@@ -59,7 +59,7 @@ type ConfigDeploymentGroupSpec struct {
 
 	/* The deployment units of the deployment group in a DAG like structure. When a deployment group is being provisioned, the deployment units are deployed in a DAG order. The provided units must be in a DAG order, otherwise an error will be returned. */
 	// +optional
-	DeploymentUnits []DeploymentgroupDeploymentUnits `json:"deploymentUnits,omitempty"`
+	DeploymentUnits []GroupDeploymentUnits `json:"deploymentUnits,omitempty"`
 
 	/* Optional. User-defined metadata for the deployment group. */
 	// +optional
@@ -76,14 +76,14 @@ type ConfigDeploymentGroupSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type DeploymentgroupObservedStateStatus struct {
+type GroupObservedStateStatus struct {
 	/* Output only. Time when the deployment group was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. The error status of the deployment group provisioning or deprovisioning. */
 	// +optional
-	ProvisioningError *DeploymentgroupProvisioningErrorStatus `json:"provisioningError,omitempty"`
+	ProvisioningError *GroupProvisioningErrorStatus `json:"provisioningError,omitempty"`
 
 	/* Output only. The provisioning state of the deployment group. */
 	// +optional
@@ -106,7 +106,7 @@ type DeploymentgroupObservedStateStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type DeploymentgroupProvisioningErrorStatus struct {
+type GroupProvisioningErrorStatus struct {
 	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
 	// +optional
 	Code *int32 `json:"code,omitempty"`
@@ -130,7 +130,7 @@ type ConfigDeploymentGroupStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *DeploymentgroupObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *GroupObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -145,7 +145,7 @@ type ConfigDeploymentGroupStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// ConfigDeploymentGroup is the Schema for the config API
+// ConfigDeploymentGroup is the Schema for the configdeployment API
 // +k8s:openapi-gen=true
 type ConfigDeploymentGroup struct {
 	metav1.TypeMeta   `json:",inline"`

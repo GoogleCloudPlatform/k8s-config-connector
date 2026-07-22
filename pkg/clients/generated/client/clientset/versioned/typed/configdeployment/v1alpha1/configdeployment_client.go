@@ -24,29 +24,29 @@ package v1alpha1
 import (
 	http "net/http"
 
-	configv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/config/v1alpha1"
+	configdeploymentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdeployment/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
-type ConfigV1alpha1Interface interface {
+type ConfigdeploymentV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	ConfigDeploymentGroupsGetter
 }
 
-// ConfigV1alpha1Client is used to interact with features provided by the config.cnrm.cloud.google.com group.
-type ConfigV1alpha1Client struct {
+// ConfigdeploymentV1alpha1Client is used to interact with features provided by the configdeployment.cnrm.cloud.google.com group.
+type ConfigdeploymentV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *ConfigV1alpha1Client) ConfigDeploymentGroups(namespace string) ConfigDeploymentGroupInterface {
+func (c *ConfigdeploymentV1alpha1Client) ConfigDeploymentGroups(namespace string) ConfigDeploymentGroupInterface {
 	return newConfigDeploymentGroups(c, namespace)
 }
 
-// NewForConfig creates a new ConfigV1alpha1Client for the given config.
+// NewForConfig creates a new ConfigdeploymentV1alpha1Client for the given config.
 // NewForConfig is equivalent to NewForConfigAndClient(c, httpClient),
 // where httpClient was generated with rest.HTTPClientFor(c).
-func NewForConfig(c *rest.Config) (*ConfigV1alpha1Client, error) {
+func NewForConfig(c *rest.Config) (*ConfigdeploymentV1alpha1Client, error) {
 	config := *c
 	setConfigDefaults(&config)
 	httpClient, err := rest.HTTPClientFor(&config)
@@ -56,21 +56,21 @@ func NewForConfig(c *rest.Config) (*ConfigV1alpha1Client, error) {
 	return NewForConfigAndClient(&config, httpClient)
 }
 
-// NewForConfigAndClient creates a new ConfigV1alpha1Client for the given config and http client.
+// NewForConfigAndClient creates a new ConfigdeploymentV1alpha1Client for the given config and http client.
 // Note the http client provided takes precedence over the configured transport values.
-func NewForConfigAndClient(c *rest.Config, h *http.Client) (*ConfigV1alpha1Client, error) {
+func NewForConfigAndClient(c *rest.Config, h *http.Client) (*ConfigdeploymentV1alpha1Client, error) {
 	config := *c
 	setConfigDefaults(&config)
 	client, err := rest.RESTClientForConfigAndClient(&config, h)
 	if err != nil {
 		return nil, err
 	}
-	return &ConfigV1alpha1Client{client}, nil
+	return &ConfigdeploymentV1alpha1Client{client}, nil
 }
 
-// NewForConfigOrDie creates a new ConfigV1alpha1Client for the given config and
+// NewForConfigOrDie creates a new ConfigdeploymentV1alpha1Client for the given config and
 // panics if there is an error in the config.
-func NewForConfigOrDie(c *rest.Config) *ConfigV1alpha1Client {
+func NewForConfigOrDie(c *rest.Config) *ConfigdeploymentV1alpha1Client {
 	client, err := NewForConfig(c)
 	if err != nil {
 		panic(err)
@@ -78,13 +78,13 @@ func NewForConfigOrDie(c *rest.Config) *ConfigV1alpha1Client {
 	return client
 }
 
-// New creates a new ConfigV1alpha1Client for the given RESTClient.
-func New(c rest.Interface) *ConfigV1alpha1Client {
-	return &ConfigV1alpha1Client{c}
+// New creates a new ConfigdeploymentV1alpha1Client for the given RESTClient.
+func New(c rest.Interface) *ConfigdeploymentV1alpha1Client {
+	return &ConfigdeploymentV1alpha1Client{c}
 }
 
 func setConfigDefaults(config *rest.Config) {
-	gv := configv1alpha1.SchemeGroupVersion
+	gv := configdeploymentv1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
 	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
@@ -96,7 +96,7 @@ func setConfigDefaults(config *rest.Config) {
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *ConfigV1alpha1Client) RESTClient() rest.Interface {
+func (c *ConfigdeploymentV1alpha1Client) RESTClient() rest.Interface {
 	if c == nil {
 		return nil
 	}

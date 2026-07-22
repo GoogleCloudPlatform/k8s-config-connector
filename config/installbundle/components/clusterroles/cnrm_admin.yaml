@@ -620,18 +620,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - config.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - configcontroller.cnrm.cloud.google.com
   resources:
   - '*'
@@ -645,6 +633,18 @@ rules:
   - delete
 - apiGroups:
   - configdelivery.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - configdeployment.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -10,9 +10,9 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: configdeploymentgroups.config.cnrm.cloud.google.com
+  name: configdeploymentgroups.configdeployment.cnrm.cloud.google.com
 spec:
-  group: config.cnrm.cloud.google.com
+  group: configdeployment.cnrm.cloud.google.com
   names:
     categories:
     - gcp

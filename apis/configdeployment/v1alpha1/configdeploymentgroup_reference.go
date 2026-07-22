@@ -27,7 +27,7 @@ import (
 var _ refs.Ref = &ConfigDeploymentRef{}
 
 var ConfigDeploymentGVK = schema.GroupVersionKind{
-	Group:   "config.cnrm.cloud.google.com",
+	Group:   "configdeployment.cnrm.cloud.google.com",
 	Version: "v1alpha1",
 	Kind:    "ConfigDeployment",
 }

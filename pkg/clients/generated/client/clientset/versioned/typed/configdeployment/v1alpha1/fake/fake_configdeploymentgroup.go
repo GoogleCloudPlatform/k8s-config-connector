@@ -22,18 +22,18 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/config/v1alpha1"
-	configv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/config/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdeployment/v1alpha1"
+	configdeploymentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdeployment/v1alpha1"
 	gentype "k8s.io/client-go/gentype"
 )
 
 // fakeConfigDeploymentGroups implements ConfigDeploymentGroupInterface
 type fakeConfigDeploymentGroups struct {
 	*gentype.FakeClientWithList[*v1alpha1.ConfigDeploymentGroup, *v1alpha1.ConfigDeploymentGroupList]
-	Fake *FakeConfigV1alpha1
+	Fake *FakeConfigdeploymentV1alpha1
 }
 
-func newFakeConfigDeploymentGroups(fake *FakeConfigV1alpha1, namespace string) configv1alpha1.ConfigDeploymentGroupInterface {
+func newFakeConfigDeploymentGroups(fake *FakeConfigdeploymentV1alpha1, namespace string) configdeploymentv1alpha1.ConfigDeploymentGroupInterface {
 	return &fakeConfigDeploymentGroups{
 		gentype.NewFakeClientWithList[*v1alpha1.ConfigDeploymentGroup, *v1alpha1.ConfigDeploymentGroupList](
 			fake.Fake,

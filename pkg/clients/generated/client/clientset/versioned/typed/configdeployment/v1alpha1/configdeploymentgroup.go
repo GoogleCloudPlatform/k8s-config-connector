@@ -24,7 +24,7 @@ package v1alpha1
 import (
 	context "context"
 
-	configv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/config/v1alpha1"
+	configdeploymentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdeployment/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
@@ -40,34 +40,38 @@ type ConfigDeploymentGroupsGetter interface {
 
 // ConfigDeploymentGroupInterface has methods to work with ConfigDeploymentGroup resources.
 type ConfigDeploymentGroupInterface interface {
-	Create(ctx context.Context, configDeploymentGroup *configv1alpha1.ConfigDeploymentGroup, opts v1.CreateOptions) (*configv1alpha1.ConfigDeploymentGroup, error)
-	Update(ctx context.Context, configDeploymentGroup *configv1alpha1.ConfigDeploymentGroup, opts v1.UpdateOptions) (*configv1alpha1.ConfigDeploymentGroup, error)
+	Create(ctx context.Context, configDeploymentGroup *configdeploymentv1alpha1.ConfigDeploymentGroup, opts v1.CreateOptions) (*configdeploymentv1alpha1.ConfigDeploymentGroup, error)
+	Update(ctx context.Context, configDeploymentGroup *configdeploymentv1alpha1.ConfigDeploymentGroup, opts v1.UpdateOptions) (*configdeploymentv1alpha1.ConfigDeploymentGroup, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, configDeploymentGroup *configv1alpha1.ConfigDeploymentGroup, opts v1.UpdateOptions) (*configv1alpha1.ConfigDeploymentGroup, error)
+	UpdateStatus(ctx context.Context, configDeploymentGroup *configdeploymentv1alpha1.ConfigDeploymentGroup, opts v1.UpdateOptions) (*configdeploymentv1alpha1.ConfigDeploymentGroup, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*configv1alpha1.ConfigDeploymentGroup, error)
-	List(ctx context.Context, opts v1.ListOptions) (*configv1alpha1.ConfigDeploymentGroupList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*configdeploymentv1alpha1.ConfigDeploymentGroup, error)
+	List(ctx context.Context, opts v1.ListOptions) (*configdeploymentv1alpha1.ConfigDeploymentGroupList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *configv1alpha1.ConfigDeploymentGroup, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *configdeploymentv1alpha1.ConfigDeploymentGroup, err error)
 	ConfigDeploymentGroupExpansion
 }
 
 // configDeploymentGroups implements ConfigDeploymentGroupInterface
 type configDeploymentGroups struct {
-	*gentype.ClientWithList[*configv1alpha1.ConfigDeploymentGroup, *configv1alpha1.ConfigDeploymentGroupList]
+	*gentype.ClientWithList[*configdeploymentv1alpha1.ConfigDeploymentGroup, *configdeploymentv1alpha1.ConfigDeploymentGroupList]
 }
 
 // newConfigDeploymentGroups returns a ConfigDeploymentGroups
-func newConfigDeploymentGroups(c *ConfigV1alpha1Client, namespace string) *configDeploymentGroups {
+func newConfigDeploymentGroups(c *ConfigdeploymentV1alpha1Client, namespace string) *configDeploymentGroups {
 	return &configDeploymentGroups{
-		gentype.NewClientWithList[*configv1alpha1.ConfigDeploymentGroup, *configv1alpha1.ConfigDeploymentGroupList](
+		gentype.NewClientWithList[*configdeploymentv1alpha1.ConfigDeploymentGroup, *configdeploymentv1alpha1.ConfigDeploymentGroupList](
 			"configdeploymentgroups",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *configv1alpha1.ConfigDeploymentGroup { return &configv1alpha1.ConfigDeploymentGroup{} },
-			func() *configv1alpha1.ConfigDeploymentGroupList { return &configv1alpha1.ConfigDeploymentGroupList{} },
+			func() *configdeploymentv1alpha1.ConfigDeploymentGroup {
+				return &configdeploymentv1alpha1.ConfigDeploymentGroup{}
+			},
+			func() *configdeploymentv1alpha1.ConfigDeploymentGroupList {
+				return &configdeploymentv1alpha1.ConfigDeploymentGroupList{}
+			},
 		),
 	}
 }
