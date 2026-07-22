@@ -210,7 +210,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	desired := a.desired.DeepCopy()
 	mapCtx := &direct.MapContext{}
-	resource := DataformRepositorySpec_ToProto(mapCtx, &desired.Spec)
+	resource := DataformRepositorySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("converting DataformRepository spec to api: %w", mapCtx.Err())
 	}
@@ -241,7 +241,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if a.desired.Spec.GitRemoteSettings != nil {
 		mapCtx := &direct.MapContext{}
-		protoDesired := RepositoryGitRemoteSettings_ToProto(mapCtx, a.desired.Spec.GitRemoteSettings)
+		protoDesired := RepositoryGitRemoteSettings_v1beta1_ToProto(mapCtx, a.desired.Spec.GitRemoteSettings)
 		if mapCtx.Err() != nil {
 			return fmt.Errorf("converting GitRemoteSettings to api: %w", mapCtx.Err())
 		}
@@ -254,7 +254,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if a.desired.Spec.WorkspaceCompilationOverrides != nil {
 		mapCtx := &direct.MapContext{}
-		protoDesired := RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx, a.desired.Spec.WorkspaceCompilationOverrides)
+		protoDesired := RepositoryWorkspaceCompilationOverrides_v1beta1_ToProto(mapCtx, a.desired.Spec.WorkspaceCompilationOverrides)
 		if mapCtx.Err() != nil {
 			return fmt.Errorf("converting WorkspaceCompilationOverrides to api: %w", mapCtx.Err())
 		}
@@ -300,7 +300,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	desired := a.desired.DeepCopy()
 	mapCtx := &direct.MapContext{}
-	resource := DataformRepositorySpec_ToProto(mapCtx, &desired.Spec)
+	resource := DataformRepositorySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("converting DataformRepository spec to api: %w", mapCtx.Err())
 	}
@@ -326,7 +326,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.DataformRepository{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DataformRepositorySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DataformRepositorySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
