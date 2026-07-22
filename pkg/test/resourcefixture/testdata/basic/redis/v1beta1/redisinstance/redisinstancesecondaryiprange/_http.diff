@@ -6,168 +6,121 @@
 < POST https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances?alt=json&instanceId=redisinstances-${uniqueId}
 ---
 > POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=redisinstances-${uniqueId}
-28d27
+28c28
 <   "connectMode": "DIRECT_PEERING",
-30,34d28
+---
+>   "connectMode": 1,
+30,34d29
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-36,38c30
+36d30
 <   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
-<   "tier": "BASIC",
+38,39c32
+<   "tier": "STANDARD_HA",
 <   "transitEncryptionMode": "DISABLED"
 ---
->   "tier": 1
-54,55c46,47
+>   "tier": 3
+55,56c48,49
 <     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
 <     "apiVersion": "v1beta1",
 ---
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
 >     "apiVersion": "v1",
-65c57
+66c59
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-81,82c73,74
+82,83c75,76
 <     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
 <     "apiVersion": "v1beta1",
 ---
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
 >     "apiVersion": "v1",
-90c82
+91,92c84,85
 <     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+<     "alternativeLocationId": "us-central1-c",
 ---
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-97,101d88
+>     "alternativeLocationId": "us-central1-a",
+99,103d91
 <     "labels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
 <       "managed-by-cnrm": "true"
 <     },
-127c114
+134c122
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-142c129
+148c136
+<   "alternativeLocationId": "us-central1-c",
+---
+>   "alternativeLocationId": "us-central1-a",
+150c138
 <   "connectMode": "DIRECT_PEERING",
 ---
 >   "connectMode": 1,
-147,151d133
+155,159d142
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-162c144
+174c157
 <     "persistenceMode": "DISABLED"
 ---
 >     "persistenceMode": 1
-166c148
+178c161
 <   "readReplicasMode": "READ_REPLICAS_DISABLED",
 ---
 >   "readReplicasMode": 1,
-169,171c151,153
+182,184c165,167
 <   "state": "READY",
-<   "tier": "BASIC",
+<   "tier": "STANDARD_HA",
 <   "transitEncryptionMode": "DISABLED"
 ---
 >   "state": 2,
->   "tier": 1,
+>   "tier": 3,
 >   "transitEncryptionMode": 2
-176c158
-< PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName%2Clabels%2CmemorySizeGb
+189c172
+< PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=secondaryIpRange
 ---
 > PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
-181,186d162
+193,198c176,177
+<   "displayName": "Sample Redis Instance with Secondary IP Range",
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
-<     "managed-by-cnrm": "true",
-<     "newkey": "newval"
+<     "managed-by-cnrm": "true"
 <   },
-188,191c164,165
+---
+>   "connectMode": 1,
+>   "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
+200,205c179,181
 <   "persistenceConfig": {
 <     "persistenceMode": "DISABLED"
 <   },
-<   "readReplicasMode": "READ_REPLICAS_DISABLED"
+<   "readReplicasMode": "READ_REPLICAS_DISABLED",
+<   "replicaCount": 1,
+<   "secondaryIpRange": "auto"
 ---
 >   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->   "tier": 1
-207,208c181,182
-<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-<     "apiVersion": "v1beta1",
+>   "secondaryIpRange": "auto",
+>   "tier": 3
+208c184
+< 400 Bad Request
 ---
->     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
->     "apiVersion": "v1",
-218c192
-< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
----
-> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-234,235c208,209
-<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-<     "apiVersion": "v1beta1",
----
->     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
->     "apiVersion": "v1",
-243c217
-<     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
----
->     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-250,254c224,234
-<     "labels": {
-<       "cnrm-test": "true",
-<       "label-one": "value-one",
-<       "managed-by-cnrm": "true",
-<       "newkey": "newval"
----
->     "locationId": "us-central1-a",
->     "memorySizeGb": 16,
->     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->     "nodes": [
->       {
->         "id": "node-0",
->         "zone": "us-central1-a"
->       }
->     ],
->     "persistenceConfig": {
->       "persistenceMode": "DISABLED"
-255a236,314
->     "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
->     "port": 6379,
->     "readReplicasMode": "READ_REPLICAS_DISABLED",
->     "redisVersion": "REDIS_7_0",
->     "reservedIpRange": "10.1.2.0/24",
->     "state": "READY",
->     "tier": "BASIC",
->     "transitEncryptionMode": "DISABLED"
->   }
-> }
-> 
-> ---
-> 
-> PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=memorySizeGb
-> Content-Type: application/json
-> 
-> {
->   "displayName": "newDisplayName",
->   "memorySizeGb": 20,
->   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->   "tier": 1
-> }
-> 
 > 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
+219,223c195,203
+<   "error": {
+<     "code": 400,
+<     "message": "com.google.apps.framework.request.StatusException: \u003ceye3 title='INVALID_ARGUMENT'/\u003e generic::INVALID_ARGUMENT: Secondary IP range can only be updated while enabling read replicas",
+<     "status": "INVALID_ARGUMENT"
+<   }
+---
 >   "done": false,
 >   "metadata": {
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
@@ -177,24 +130,23 @@
 >     "verb": "update"
 >   },
 >   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-> }
-> 
-> ---
-> 
+228c208
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-> Content-Type: application/json
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
+242,252c222,229
+<   "alternativeLocationId": "us-central1-c",
+<   "authorizedNetwork": "projects/${projectId}/global/networks/default",
+<   "connectMode": "DIRECT_PEERING",
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "currentLocationId": "us-central1-a",
+<   "displayName": "Sample Redis Instance with Secondary IP Range",
+<   "host": "10.1.2.3",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
 >   "done": true,
 >   "metadata": {
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
@@ -203,62 +155,145 @@
 >     "endTime": "2024-04-01T12:34:56.123456Z",
 >     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
 >     "verb": "update"
->   },
+254,260c231,255
+<   "locationId": "us-central1-a",
+<   "memorySizeGb": 16,
+<   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+<   "nodes": [
+<     {
+<       "id": "node-0",
+<       "zone": "us-central1-a"
+---
 >   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
 >   "response": {
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
+>     "alternativeLocationId": "us-central1-a",
 >     "authorizedNetwork": "projects/${projectId}/global/networks/default",
 >     "connectMode": "DIRECT_PEERING",
 >     "createTime": "2024-04-01T12:34:56.123456Z",
 >     "currentLocationId": "us-central1-a",
->     "displayName": "newDisplayName",
+>     "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
 >     "host": "10.1.2.3",
-281c340
-< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+>     "locationId": "us-central1-a",
+>     "memorySizeGb": 16,
+>     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+>     "nodes": [
+>       {
+>         "id": "node-0",
+>         "zone": "us-central1-a"
+>       },
+>       {
+>         "id": "node-1",
+>         "zone": "us-central1-a"
+>       }
+>     ],
+>     "persistenceConfig": {
+>       "persistenceMode": "DISABLED"
+262,278c257,266
+<     {
+<       "id": "node-1",
+<       "zone": "us-central1-a"
+<     }
+<   ],
+<   "persistenceConfig": {
+<     "persistenceMode": "DISABLED"
+<   },
+<   "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
+<   "port": 6379,
+<   "readReplicasMode": "READ_REPLICAS_DISABLED",
+<   "redisVersion": "REDIS_7_0",
+<   "replicaCount": 1,
+<   "reservedIpRange": "10.1.2.0/24",
+<   "state": "READY",
+<   "tier": "STANDARD_HA",
+<   "transitEncryptionMode": "DISABLED"
 ---
-> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-296c355
-<   "connectMode": "DIRECT_PEERING",
+>     "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
+>     "port": 6379,
+>     "readReplicasMode": "READ_REPLICAS_DISABLED",
+>     "redisVersion": "REDIS_7_0",
+>     "replicaCount": 1,
+>     "reservedIpRange": "10.1.2.0/24",
+>     "state": "READY",
+>     "tier": "STANDARD_HA",
+>     "transitEncryptionMode": "DISABLED"
+>   }
+283c271
+< PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName%2CsecondaryIpRange
 ---
+> PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=secondaryIpRange
+286a275
 >   "connectMode": 1,
-301,306d359
+288,292d276
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
-<     "managed-by-cnrm": "true",
-<     "newkey": "newval"
+<     "managed-by-cnrm": "true"
 <   },
-317c370
+294,299c278,280
+<   "persistenceConfig": {
+<     "persistenceMode": "DISABLED"
+<   },
+<   "readReplicasMode": "READ_REPLICAS_DISABLED",
+<   "replicaCount": 1,
+<   "secondaryIpRange": "auto"
+---
+>   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+>   "secondaryIpRange": "auto",
+>   "tier": 3
+322c303
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+336c317
+<   "alternativeLocationId": "us-central1-c",
+---
+>   "alternativeLocationId": "us-central1-a",
+338c319
+<   "connectMode": "DIRECT_PEERING",
+---
+>   "connectMode": 1,
+341c322
+<   "displayName": "Sample Redis Instance with Secondary IP Range",
+---
+>   "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
+343,347d323
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+362c338
 <     "persistenceMode": "DISABLED"
 ---
 >     "persistenceMode": 1
-321c374
+366c342
 <   "readReplicasMode": "READ_REPLICAS_DISABLED",
 ---
 >   "readReplicasMode": 1,
-324,326c377,379
+370,372c346,348
 <   "state": "READY",
-<   "tier": "BASIC",
+<   "tier": "STANDARD_HA",
 <   "transitEncryptionMode": "DISABLED"
 ---
 >   "state": 2,
->   "tier": 1,
+>   "tier": 3,
 >   "transitEncryptionMode": 2
-331c384
+377c353
 < DELETE https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 ---
 > DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-347,348c400,401
+393,394c369,370
 <     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
 <     "apiVersion": "v1beta1",
 ---
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
 >     "apiVersion": "v1",
-358c411
+404c380
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-374,375c427,428
+420,421c396,397
 <     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
 <     "apiVersion": "v1beta1",
 ---

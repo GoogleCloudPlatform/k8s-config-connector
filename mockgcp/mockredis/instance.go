@@ -27,9 +27,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/redis/apiv1beta1/redispb"
+	pb "cloud.google.com/go/redis/apiv1/redispb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	commonpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/common"
 )
 
 type redisServer struct {
@@ -91,42 +90,14 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 
-	zone := name.Location + "-a"
-	obj.CurrentLocationId = zone
-	obj.LocationId = zone
-
-	obj.Nodes = []*pb.NodeInfo{
-		{
-			Id:   "node-0",
-			Zone: zone,
-		},
-	}
-
-	obj.Host = "10.20.30.40"
-	obj.ReservedIpRange = "10.20.30.0/24"
-
-	obj.PersistenceIamIdentity = fmt.Sprintf("serviceAccount:service-%d@cloud-redis.iam.gserviceaccount.com", name.Project.Number)
-
-	obj.Port = 6379
-
-	if obj.SecondaryIpRange == "auto" {
-		obj.SecondaryIpRange = "10.20.30.16/28"
-	}
-
-	if obj.RedisVersion == "" {
-		obj.RedisVersion = "REDIS_7_0"
-	}
-
-	obj.State = pb.Instance_CREATING
-
 	r.populateDefaultsForInstance(name, obj)
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,
@@ -147,8 +118,53 @@ func (r *redisServer) CreateInstance(ctx context.Context, req *pb.CreateInstance
 }
 
 func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.Instance) {
+	zone := name.Location + "-a"
+	obj.CurrentLocationId = zone
+	obj.LocationId = zone
+
+	obj.Host = "10.20.30.40"
+	obj.ReservedIpRange = "10.20.30.0/24"
+
+	obj.PersistenceIamIdentity = fmt.Sprintf("serviceAccount:service-%d@cloud-redis.iam.gserviceaccount.com", name.Project.Number)
+
+	obj.Port = 6379
+
+	if obj.SecondaryIpRange == "auto" {
+		obj.SecondaryIpRange = "10.20.30.16/28"
+	}
+
+	if obj.RedisVersion == "" {
+		obj.RedisVersion = "REDIS_7_0"
+	}
+
+	obj.State = pb.Instance_CREATING
+
+	obj.Nodes = []*pb.NodeInfo{
+		{
+			Id:   "node-0",
+			Zone: zone,
+		},
+	}
+
+	// alternativeLocationId will be present in the instance response if and only if the instance is created as STANDARD_HA tier
+	if obj.Tier == pb.Instance_STANDARD_HA && obj.AlternativeLocationId == "" {
+		obj.AlternativeLocationId = zone
+		obj.Nodes = append(obj.Nodes, &pb.NodeInfo{
+			Id:   "node-1",
+			Zone: zone,
+		})
+	}
+
 	if obj.AuthorizedNetwork == "" {
 		obj.AuthorizedNetwork = "projects/" + name.Project.ID + "/global/networks/default"
+	}
+
+	if obj.ConnectMode == pb.Instance_CONNECT_MODE_UNSPECIFIED {
+		obj.ConnectMode = pb.Instance_DIRECT_PEERING
+	}
+
+	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+		obj.TransitEncryptionMode = pb.Instance_DISABLED
 	}
 
 	if obj.PersistenceConfig == nil {
@@ -211,8 +227,8 @@ func (r *redisServer) UpdateInstance(ctx context.Context, req *pb.UpdateInstance
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,
@@ -239,8 +255,8 @@ func (r *redisServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstance
 		return nil, err
 	}
 
-	metadata := &commonpb.OperationMetadata{
-		ApiVersion:      "v1beta1",
+	metadata := &pb.OperationMetadata{
+		ApiVersion:      "v1",
 		CancelRequested: false,
 		CreateTime:      timestamppb.New(now),
 		Target:          fqn,

@@ -6,225 +6,138 @@
 < POST https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances?alt=json&instanceId=redisinstances-${uniqueId}
 ---
 > POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=redisinstances-${uniqueId}
-28d27
+28c28
 <   "connectMode": "DIRECT_PEERING",
-30,34d28
+---
+>   "connectMode": 1,
+30,34d29
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-36,38c30
+36d30
 <   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
-<   "tier": "BASIC",
+38,39c32
+<   "tier": "STANDARD_HA",
 <   "transitEncryptionMode": "DISABLED"
 ---
->   "tier": 1
-64c56
+>   "tier": 3
+65c58
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-89c81
+90c83
 <     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
 ---
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-97,101d88
+98,102d90
 <     "labels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
 <       "managed-by-cnrm": "true"
 <     },
-127c114
+129c117
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-143c130
+145c133
 <   "connectMode": "DIRECT_PEERING",
 ---
 >   "connectMode": 1,
-148,152d134
+150,154d137
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-163c145
+165c148
 <     "persistenceMode": "DISABLED"
 ---
 >     "persistenceMode": 1
-167c149
+169c152
 <   "readReplicasMode": "READ_REPLICAS_DISABLED",
 ---
 >   "readReplicasMode": 1,
-170,172c152,154
+173,175c156,158
 <   "state": "READY",
-<   "tier": "BASIC",
+<   "tier": "STANDARD_HA",
 <   "transitEncryptionMode": "DISABLED"
 ---
 >   "state": 2,
->   "tier": 1,
+>   "tier": 3,
 >   "transitEncryptionMode": 2
-177c159
-< PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName%2Clabels%2CmemorySizeGb
+180c163
+< PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName
 ---
 > PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
-182,187d163
+183a167
+>   "connectMode": 1,
+185,189d168
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
-<     "managed-by-cnrm": "true",
-<     "newkey": "newval"
+<     "managed-by-cnrm": "true"
 <   },
-189,192c165,166
+191,195c170,172
 <   "persistenceConfig": {
 <     "persistenceMode": "DISABLED"
 <   },
-<   "readReplicasMode": "READ_REPLICAS_DISABLED"
+<   "readReplicasMode": "READ_REPLICAS_DISABLED",
+<   "secondaryIpRange": "10.20.30.16/28"
 ---
 >   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->   "tier": 1
-218c192
+>   "secondaryIpRange": "auto",
+>   "tier": 3
+221c198
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-243c217
+246c223
 <     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
 ---
 >     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
-251,255c225,235
+254,258d230
 <     "labels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
-<       "managed-by-cnrm": "true",
-<       "newkey": "newval"
----
->     "locationId": "us-central1-a",
->     "memorySizeGb": 16,
->     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->     "nodes": [
->       {
->         "id": "node-0",
->         "zone": "us-central1-a"
->       }
->     ],
->     "persistenceConfig": {
->       "persistenceMode": "DISABLED"
-256a237,315
->     "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
->     "port": 6379,
->     "readReplicasMode": "READ_REPLICAS_DISABLED",
->     "redisVersion": "REDIS_7_0",
->     "reservedIpRange": "10.1.2.0/24",
->     "state": "READY",
->     "tier": "BASIC",
->     "transitEncryptionMode": "DISABLED"
->   }
-> }
-> 
-> ---
-> 
-> PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=memorySizeGb
-> Content-Type: application/json
-> 
-> {
->   "displayName": "newDisplayName",
->   "memorySizeGb": 20,
->   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->   "tier": 1
-> }
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "metadata": {
->     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
->     "apiVersion": "v1",
->     "createTime": "2024-04-01T12:34:56.123456Z",
->     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->     "verb": "update"
->   },
->   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-> }
-> 
-> ---
-> 
-> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
-> Content-Type: application/json
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "done": true,
->   "metadata": {
->     "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
->     "apiVersion": "v1",
->     "createTime": "2024-04-01T12:34:56.123456Z",
->     "endTime": "2024-04-01T12:34:56.123456Z",
->     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
->     "verb": "update"
->   },
->   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
->   "response": {
->     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
->     "alternativeLocationId": "us-central1-a",
->     "authorizedNetwork": "projects/${projectId}/global/networks/default",
->     "connectMode": "DIRECT_PEERING",
->     "createTime": "2024-04-01T12:34:56.123456Z",
->     "currentLocationId": "us-central1-a",
->     "displayName": "newDisplayName",
->     "host": "10.1.2.3",
-282c341
+<       "managed-by-cnrm": "true"
+<     },
+285c257
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-298c357
+301c273
 <   "connectMode": "DIRECT_PEERING",
 ---
 >   "connectMode": 1,
-303,308d361
+306,310d277
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
-<     "managed-by-cnrm": "true",
-<     "newkey": "newval"
+<     "managed-by-cnrm": "true"
 <   },
-319c372
+321c288
 <     "persistenceMode": "DISABLED"
 ---
 >     "persistenceMode": 1
-323c376
+325c292
 <   "readReplicasMode": "READ_REPLICAS_DISABLED",
 ---
 >   "readReplicasMode": 1,
-326,328c379,381
+329,331c296,298
 <   "state": "READY",
-<   "tier": "BASIC",
+<   "tier": "STANDARD_HA",
 <   "transitEncryptionMode": "DISABLED"
 ---
 >   "state": 2,
->   "tier": 1,
+>   "tier": 3,
 >   "transitEncryptionMode": 2
-333c386
+336c303
 < DELETE https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 ---
 > DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-359c412
+362c329
 < GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}

@@ -2,7 +2,6 @@ apiVersion: redis.cnrm.cloud.google.com/v1beta1
 kind: RedisInstance
 metadata:
   annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
@@ -33,6 +32,8 @@ status:
   host: 10.20.30.40
   nodes:
   - id: node-0
+    zone: us-central1-a
+  - id: node-1
     zone: us-central1-a
   observedGeneration: 2
   observedState: {}

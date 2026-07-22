@@ -1,4 +1,4 @@
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -21,15 +21,22 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=redisinstances-${uniqueId}
+POST https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances?alt=json&instanceId=redisinstances-${uniqueId}
 Content-Type: application/json
 
 {
-  "connectMode": 1,
+  "connectMode": "DIRECT_PEERING",
   "displayName": "Sample Redis Instance with Secondary IP Range",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "memorySizeGb": 16,
+  "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "secondaryIpRange": "auto",
-  "tier": 3
+  "tier": "STANDARD_HA",
+  "transitEncryptionMode": "DISABLED"
 }
 
 200 OK
@@ -44,8 +51,8 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "create"
@@ -55,7 +62,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -71,8 +78,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -80,19 +87,29 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+    "alternativeLocationId": "us-central1-a",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
     "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "currentLocationId": "us-central1-a",
     "displayName": "Sample Redis Instance with Secondary IP Range",
     "host": "10.1.2.3",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
     "locationId": "us-central1-a",
     "memorySizeGb": 16,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
         "id": "node-0",
+        "zone": "us-central1-a"
+      },
+      {
+        "id": "node-1",
         "zone": "us-central1-a"
       }
     ],
@@ -106,13 +123,14 @@ X-Xss-Protection: 0
     "reservedIpRange": "10.1.2.0/24",
     "secondaryIpRange": "10.20.30.16/28",
     "state": "READY",
-    "tier": "STANDARD_HA"
+    "tier": "STANDARD_HA",
+    "transitEncryptionMode": "DISABLED"
   }
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -126,12 +144,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
-  "connectMode": 1,
+  "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentLocationId": "us-central1-a",
   "displayName": "Sample Redis Instance with Secondary IP Range",
   "host": "10.1.2.3",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "locationId": "us-central1-a",
   "memorySizeGb": 16,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -139,33 +163,44 @@ X-Xss-Protection: 0
     {
       "id": "node-0",
       "zone": "us-central1-a"
+    },
+    {
+      "id": "node-1",
+      "zone": "us-central1-a"
     }
   ],
   "persistenceConfig": {
-    "persistenceMode": 1
+    "persistenceMode": "DISABLED"
   },
   "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
   "port": 6379,
-  "readReplicasMode": 1,
+  "readReplicasMode": "READ_REPLICAS_DISABLED",
   "redisVersion": "REDIS_7_0",
   "reservedIpRange": "10.1.2.0/24",
   "secondaryIpRange": "10.20.30.16/28",
-  "state": 2,
-  "tier": 3
+  "state": "READY",
+  "tier": "STANDARD_HA",
+  "transitEncryptionMode": "DISABLED"
 }
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName
 Content-Type: application/json
 
 {
-  "connectMode": 1,
   "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "memorySizeGb": 16,
-  "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
-  "secondaryIpRange": "auto",
-  "tier": 3
+  "persistenceConfig": {
+    "persistenceMode": "DISABLED"
+  },
+  "readReplicasMode": "READ_REPLICAS_DISABLED",
+  "secondaryIpRange": "10.20.30.16/28"
 }
 
 200 OK
@@ -180,8 +215,8 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "update"
@@ -191,7 +226,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -207,8 +242,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -216,19 +251,29 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
+    "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+    "alternativeLocationId": "us-central1-a",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
     "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "currentLocationId": "us-central1-a",
     "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
     "host": "10.1.2.3",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
     "locationId": "us-central1-a",
     "memorySizeGb": 16,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
         "id": "node-0",
+        "zone": "us-central1-a"
+      },
+      {
+        "id": "node-1",
         "zone": "us-central1-a"
       }
     ],
@@ -242,13 +287,14 @@ X-Xss-Protection: 0
     "reservedIpRange": "10.1.2.0/24",
     "secondaryIpRange": "10.20.30.16/28",
     "state": "READY",
-    "tier": "STANDARD_HA"
+    "tier": "STANDARD_HA",
+    "transitEncryptionMode": "DISABLED"
   }
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -262,12 +308,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
-  "connectMode": 1,
+  "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentLocationId": "us-central1-a",
   "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
   "host": "10.1.2.3",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "locationId": "us-central1-a",
   "memorySizeGb": 16,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
@@ -275,24 +327,29 @@ X-Xss-Protection: 0
     {
       "id": "node-0",
       "zone": "us-central1-a"
+    },
+    {
+      "id": "node-1",
+      "zone": "us-central1-a"
     }
   ],
   "persistenceConfig": {
-    "persistenceMode": 1
+    "persistenceMode": "DISABLED"
   },
   "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
   "port": 6379,
-  "readReplicasMode": 1,
+  "readReplicasMode": "READ_REPLICAS_DISABLED",
   "redisVersion": "REDIS_7_0",
   "reservedIpRange": "10.1.2.0/24",
   "secondaryIpRange": "10.20.30.16/28",
-  "state": 2,
-  "tier": 3
+  "state": "READY",
+  "tier": "STANDARD_HA",
+  "transitEncryptionMode": "DISABLED"
 }
 
 ---
 
-DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -307,8 +364,8 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "verb": "delete"
@@ -318,7 +375,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -334,8 +391,8 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.redis.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
