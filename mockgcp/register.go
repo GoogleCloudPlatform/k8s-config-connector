@@ -70,6 +70,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrun"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuritycenter"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicedirectory"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"

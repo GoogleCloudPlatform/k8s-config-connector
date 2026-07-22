@@ -1,0 +1,169 @@
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "muteConfig \"organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "muteConfig \"organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs?%24alt=json%3Benum-encoding%3Dint&muteConfigId=scmuteconfig-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=organizations%2F${organizationID}
+
+{
+  "description": "Maximal SecurityCenterMuteConfig description",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"LOW\"",
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal SecurityCenterMuteConfig description",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"LOW\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal SecurityCenterMuteConfig description",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"LOW\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cfilter
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: mute_config.name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-max-${uniqueId}
+
+{
+  "description": "Updated Maximal SecurityCenterMuteConfig description",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"MEDIUM\"",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}",
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal SecurityCenterMuteConfig description",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"MEDIUM\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal SecurityCenterMuteConfig description",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"MEDIUM\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

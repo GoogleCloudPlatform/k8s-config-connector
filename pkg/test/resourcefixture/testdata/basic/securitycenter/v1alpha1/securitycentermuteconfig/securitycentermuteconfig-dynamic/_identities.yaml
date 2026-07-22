@@ -1,6 +1,4 @@
-- caisURL: unknown
-  error: 'cannot resolve organization: format of Organization external="${TEST_ORG_ID}"
-    was not known (use organizations/{organizationID})'
+- caisURL: //securitycenter.googleapis.com/organizations/${TEST_ORG_ID}/muteConfigs/scmuteconfig-dyn-${uniqueId}
   group: securitycenter.cnrm.cloud.google.com
   kind: SecurityCenterMuteConfig
   name: scmuteconfig-dyn-${uniqueId}
