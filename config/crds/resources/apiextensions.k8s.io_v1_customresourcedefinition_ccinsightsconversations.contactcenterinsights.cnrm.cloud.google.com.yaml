@@ -287,7 +287,7 @@ spec:
                           matchers to use (if any). If not specified, all annotators
                           will be run.
                         properties:
-                          issueModels:
+                          issueModelRefs:
                             description: The issue model to run. If not provided,
                               the most recently deployed topic model will be used.
                               The provided issue model will only be used for inference
@@ -296,16 +296,76 @@ spec:
                               only the first provided issue model will be used for
                               inference.
                             items:
-                              type: string
+                              description: CCInsightsIssueModelRef is a reference
+                                to a CCInsightsIssueModel.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    CCInsightsIssueModel resource. Should be in the
+                                    format "projects/{{projectID}}/locations/{{location}}/issueModels/{{issueModelID}}".
+                                  type: string
+                                name:
+                                  description: The name of a CCInsightsIssueModel
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a CCInsightsIssueModel
+                                    resource.
+                                  type: string
+                              type: object
                             type: array
-                          phraseMatchers:
+                          phraseMatcherRefs:
                             description: 'The list of phrase matchers to run. If not
                               provided, all active phrase matchers will be used. If
                               inactive phrase matchers are provided, they will not
                               be used. Phrase matchers will be run only if run_phrase_matcher_annotator
                               is set to true. Format: projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}'
                             items:
-                              type: string
+                              description: CCInsightsPhraseMatcherRef is a reference
+                                to a CCInsightsPhraseMatcher.
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    CCInsightsPhraseMatcher resource. Should be in
+                                    the format "projects/{{projectID}}/locations/{{location}}/phraseMatchers/{{phraseMatcherID}}".
+                                  type: string
+                                name:
+                                  description: The name of a CCInsightsPhraseMatcher
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a CCInsightsPhraseMatcher
+                                    resource.
+                                  type: string
+                              type: object
                             type: array
                           qaConfig:
                             description: Configuration for the QA annotator.
@@ -353,10 +413,38 @@ spec:
                           summarizationConfig:
                             description: Configuration for the summarization annotator.
                             properties:
-                              conversationProfile:
+                              conversationProfileRef:
                                 description: 'Resource name of the Dialogflow conversation
                                   profile. Format: projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}'
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      DialogflowConversationProfile resource. Should
+                                      be in the format "projects/{{projectID}}/locations/{{location}}/conversationProfiles/{{conversationProfile}}".
+                                    type: string
+                                  name:
+                                    description: The name of a DialogflowConversationProfile
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a DialogflowConversationProfile
+                                      resource.
+                                    type: string
+                                type: object
                               summarizationModel:
                                 description: Default summarization model to be used.
                                 type: string

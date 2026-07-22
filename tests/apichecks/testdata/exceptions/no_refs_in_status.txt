@@ -1,0 +1,5 @@
+[no_refs_in_status] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.latestAnalysis.annotatorSelector.issueModelRefs" should not be in status
+[no_refs_in_status] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.latestAnalysis.annotatorSelector.issueModelRefs[]" should not be in status
+[no_refs_in_status] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.latestAnalysis.annotatorSelector.phraseMatcherRefs" should not be in status
+[no_refs_in_status] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.latestAnalysis.annotatorSelector.phraseMatcherRefs[]" should not be in status
+[no_refs_in_status] crd=ccinsightsconversations.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.latestAnalysis.annotatorSelector.summarizationConfig.conversationProfileRef" should not be in status

@@ -69,7 +69,7 @@ func BigQueryDataPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryD
 	}
 	out := &pb.DataPolicy{}
 	if in.PolicyTagRef != nil {
-		out.PolicyTag = in.PolicyTagRef.External
+		out.MatchingLabel = &pb.DataPolicy_PolicyTag{PolicyTag: in.PolicyTagRef.External}
 	}
 	if oneof := DataMaskingPolicy_ToProto(mapCtx, in.DataMaskingPolicy); oneof != nil {
 		out.Policy = &pb.DataPolicy_DataMaskingPolicy{DataMaskingPolicy: oneof}
