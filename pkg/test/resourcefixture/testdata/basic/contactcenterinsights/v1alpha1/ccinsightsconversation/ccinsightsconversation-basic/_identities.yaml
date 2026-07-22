@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: contactcenterinsights.cnrm.cloud.google.com
+  kind: CCInsightsConversation
+  name: ccinsightsconversation-basic
+  namespace: ${uniqueId}
+  version: v1alpha1

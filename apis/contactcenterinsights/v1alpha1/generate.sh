@@ -35,6 +35,10 @@ go run . generate-types \
   --resource CCInsightsQAScorecard:QaScorecard \
   --prune-unused-types=false
 
+go run . generate-mapper \
+  --service google.cloud.contactcenterinsights.v1 \
+  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
