@@ -17,6 +17,8 @@ kind: ComputeNetworkFirewallPolicyRule
 metadata:
   name: nfpr-${uniqueId}
 spec:
+  projectRef:
+    external: projects/${projectId}
   action: "deny"
   description: "A Firewall Policy Rule"
   direction: "INGRESS"

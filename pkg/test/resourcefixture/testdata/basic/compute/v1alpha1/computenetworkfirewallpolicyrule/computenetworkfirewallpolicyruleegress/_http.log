@@ -270,36 +270,6 @@ X-Xss-Protection: 0
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Service account projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Service account projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -405,7 +375,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1000
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1001
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -425,11 +395,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Invalid value for field 'priority': '1000'. The firewall policy does not contain a rule at priority 1000.",
+        "message": "Invalid value for field 'priority': '1001'. The firewall policy does not contain a rule at priority 1001.",
         "reason": "invalid"
       }
     ],
-    "message": "Invalid value for field 'priority': '1000'. The firewall policy does not contain a rule at priority 1000."
+    "message": "Invalid value for field 'priority': '1001'. The firewall policy does not contain a rule at priority 1001."
   }
 }
 
@@ -441,15 +411,18 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "action": "deny",
-  "description": "A Firewall Policy Rule",
-  "direction": "INGRESS",
+  "description": "An egress Firewall Policy Rule",
+  "direction": "EGRESS",
   "disabled": false,
   "enableLogging": false,
   "firewallPolicy": "${firewallPolicyID}",
   "match": {
     "destAddressGroups": [],
     "destFqdns": [],
-    "destIpRanges": [],
+    "destIpRanges": [
+      "10.100.0.1/32"
+    ],
+    "destNetworkContext": "INTERNET",
     "destRegionCodes": [],
     "destThreatIntelligences": [],
     "layer4Configs": [
@@ -460,15 +433,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     ],
     "srcAddressGroups": [],
     "srcFqdns": [],
-    "srcIpRanges": [
-      "10.100.0.1/32"
-    ],
-    "srcNetworkContext": "INTERNET",
+    "srcIpRanges": [],
     "srcRegionCodes": [],
     "srcSecureTags": [],
     "srcThreatIntelligences": []
   },
-  "priority": 1000,
+  "priority": 1001,
   "targetSecureTags": [],
   "targetServiceAccounts": [
     "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -535,7 +505,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1000
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1001
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -551,24 +521,24 @@ X-Xss-Protection: 0
 
 {
   "action": "deny",
-  "description": "A Firewall Policy Rule",
-  "direction": "INGRESS",
+  "description": "An egress Firewall Policy Rule",
+  "direction": "EGRESS",
   "disabled": false,
   "enableLogging": false,
   "kind": "compute#firewallPolicyRule",
   "match": {
+    "destIpRanges": [
+      "10.100.0.1/32"
+    ],
+    "destNetworkContext": "INTERNET",
+    "destNetworkScope": "INTERNET",
     "layer4Configs": [
       {
         "ipProtocol": "tcp"
       }
-    ],
-    "srcIpRanges": [
-      "10.100.0.1/32"
-    ],
-    "srcNetworkContext": "INTERNET",
-    "srcNetworkScope": "INTERNET"
+    ]
   },
-  "priority": 1000,
+  "priority": 1001,
   "ruleTupleCount": 3,
   "targetServiceAccounts": [
     "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -579,20 +549,24 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/patchRule?alt=json&priority=1000
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/patchRule?alt=json&priority=1001
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "action": "deny",
-  "description": "A Firewall Policy Rule",
-  "direction": "INGRESS",
+  "description": "An egress Firewall Policy Rule",
+  "direction": "EGRESS",
   "disabled": false,
   "enableLogging": false,
   "match": {
     "destAddressGroups": [],
     "destFqdns": [],
-    "destIpRanges": [],
+    "destIpRanges": [
+      "10.100.0.1/32",
+      "172.20.0.0/16"
+    ],
+    "destNetworkContext": "NON_INTERNET",
     "destRegionCodes": [],
     "destThreatIntelligences": [],
     "layer4Configs": [
@@ -603,11 +577,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     ],
     "srcAddressGroups": [],
     "srcFqdns": [],
-    "srcIpRanges": [
-      "10.100.0.1/32",
-      "172.20.0.0/16"
-    ],
-    "srcNetworkContext": "INTRA_VPC",
+    "srcIpRanges": [],
     "srcRegionCodes": [],
     "srcSecureTags": [],
     "srcThreatIntelligences": []
@@ -677,7 +647,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1000
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1001
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -693,25 +663,25 @@ X-Xss-Protection: 0
 
 {
   "action": "deny",
-  "description": "A Firewall Policy Rule",
-  "direction": "INGRESS",
+  "description": "An egress Firewall Policy Rule",
+  "direction": "EGRESS",
   "disabled": false,
   "enableLogging": false,
   "kind": "compute#firewallPolicyRule",
   "match": {
+    "destIpRanges": [
+      "10.100.0.1/32",
+      "172.20.0.0/16"
+    ],
+    "destNetworkContext": "NON_INTERNET",
+    "destNetworkScope": "NON_INTERNET",
     "layer4Configs": [
       {
         "ipProtocol": "tcp"
       }
-    ],
-    "srcIpRanges": [
-      "10.100.0.1/32",
-      "172.20.0.0/16"
-    ],
-    "srcNetworkContext": "INTRA_VPC",
-    "srcNetworkScope": "INTRA_VPC"
+    ]
   },
-  "priority": 1000,
+  "priority": 1001,
   "ruleTupleCount": 4,
   "targetServiceAccounts": [
     "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com"
@@ -721,7 +691,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/removeRule?alt=json&priority=1000
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/removeRule?alt=json&priority=1001
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -784,7 +754,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1000
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}/getRule?alt=json&priority=1001
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -804,11 +774,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Invalid value for field 'priority': '1000'. The firewall policy does not contain a rule at priority 1000.",
+        "message": "Invalid value for field 'priority': '1001'. The firewall policy does not contain a rule at priority 1001.",
         "reason": "invalid"
       }
     ],
-    "message": "Invalid value for field 'priority': '1000'. The firewall policy does not contain a rule at priority 1000."
+    "message": "Invalid value for field 'priority': '1001'. The firewall policy does not contain a rule at priority 1001."
   }
 }
 
