@@ -7,7 +7,6 @@
 [naming_violation] file=apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycompliancecontrol_identity.go prefix=cloudsecuritycompliancecontrol (expected a valid resource kind prefix)
 [naming_violation] file=apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycompliancecontrol_reference.go prefix=cloudsecuritycompliancecontrol (expected a valid resource kind prefix)
 [naming_violation] file=apis/compute/v1beta1/computepublicdelegatedprefix_reference.go prefix=computepublicdelegatedprefix (expected a valid resource kind prefix)
-[naming_violation] file=apis/config/v1alpha1/configdeployment_reference.go prefix=configdeployment (expected a valid resource kind prefix)
 [naming_violation] file=apis/connector/v1/provider_identity.go prefix=provider (expected a valid resource kind prefix)
 [naming_violation] file=apis/connector/v1/provider_identity_test.go prefix=provider (expected a valid resource kind prefix)
 [naming_violation] file=apis/connector/v1/provider_reference.go prefix=provider (expected a valid resource kind prefix)
