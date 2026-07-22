@@ -132,7 +132,9 @@ def match_resources(gcp_resources, kcc_resources):
         gcp_service_base = info['service']
         gcp_name = info['name']
         matched_kcc_service = None
-        if gcp_service_base in kcc_map:
+        if gcp_type == "iam.googleapis.com/AccessPolicy":
+            matched_kcc_service = "accesscontextmanager"
+        elif gcp_service_base in kcc_map:
             matched_kcc_service = gcp_service_base
         elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
             matched_kcc_service = gcp_service_base[:-1]
@@ -316,7 +318,9 @@ def main():
         gcp_service_base = info['service']
         gcp_name = info['name']
         matched_kcc_service = None
-        if gcp_service_base in kcc_map:
+        if key == "iam/AccessPolicy":
+            matched_kcc_service = "accesscontextmanager"
+        elif gcp_service_base in kcc_map:
             matched_kcc_service = gcp_service_base
         elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
             matched_kcc_service = gcp_service_base[:-1]
