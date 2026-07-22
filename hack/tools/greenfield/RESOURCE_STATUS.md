@@ -47,7 +47,6 @@ This file tracks the progress of new "Direct" resource implementations.
 | CCInsightsView | contactcenterinsights | [#9300](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9300) | - | - | 1 | MERGED | - |
 | CertificateManagerTrustConfig | certificatemanager | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | - | 2 | OPEN | - |
 | CESApp | ces | [#9100](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9100) | [#9037](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9037) | - | 1 | OPEN | - |
-| CloudAssetSavedQuery | cloudasset | [#8696](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8696) | - | - | 1 | OPEN | - |
 | CloudBatchResourceAllowance | batch | [#8702](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8702) | [#8838](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8838) | - | 2 | MERGED | - |
 | CloudBuildConnection | cloudbuild | [#8700](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8700) | - | - | 1 | OPEN | - |
 | CloudIdentityDevice | cloudidentity | [#8077](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8077) | [#8077](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8077) | - | 2 | OPEN | - |
