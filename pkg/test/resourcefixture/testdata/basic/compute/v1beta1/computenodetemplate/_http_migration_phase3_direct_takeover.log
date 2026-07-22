@@ -1,0 +1,38 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: project=${projectId}&region=us-central1&node_template=computenodetemplate-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cpuOvercommitType": "NONE",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+  "id": "000000000000000000000",
+  "kind": "compute#nodeTemplate",
+  "name": "computenodetemplate-${uniqueId}",
+  "nodeAffinityLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "memory_guarantee": "false"
+  },
+  "nodeTypeFlexibility": {
+    "cpus": "96",
+    "memory": "any"
+  },
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}",
+  "serverBinding": {
+    "type": "RESTART_NODE_ON_ANY_SERVER"
+  },
+  "status": "READY"
+}
