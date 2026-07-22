@@ -20,6 +20,7 @@ import (
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/genproto/googleapis/type/money"
 )
 
 func Featurestore_OnlineServingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krmv1alpha1.Featurestore_OnlineServingConfig {
@@ -186,4 +187,54 @@ func VertexAIDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Da
 
 func VertexAIDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.VertexAIDatasetObservedState) *pb.Dataset {
 	return VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx, in)
+}
+
+func VertexAIModelDeploymentMonitoringJobSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in string) string {
+	return in
+}
+
+func ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata) *krmv1alpha1.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata{
+		RunTime: direct.StringTimestamp_FromProto(mapCtx, in.GetRunTime()),
+		Status:  direct.Status_FromProto(mapCtx, in.GetStatus()),
+	}
+	return out
+}
+
+func ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata) *pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata{
+		RunTime: direct.StringTimestamp_ToProto(mapCtx, in.RunTime),
+		Status:  direct.Status_ToProto(mapCtx, in.Status),
+	}
+	return out
+}
+
+func Money_v1alpha1_FromProto(mapCtx *direct.MapContext, in *money.Money) *krmv1alpha1.Money {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Money{
+		CurrencyCode: direct.LazyPtr(in.GetCurrencyCode()),
+		Units:        direct.LazyPtr(in.GetUnits()),
+		Nanos:        direct.LazyPtr(in.GetNanos()),
+	}
+	return out
+}
+
+func Money_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Money) *money.Money {
+	if in == nil {
+		return nil
+	}
+	out := &money.Money{
+		CurrencyCode: direct.ValueOf(in.CurrencyCode),
+		Units:        direct.ValueOf(in.Units),
+		Nanos:        direct.ValueOf(in.Nanos),
+	}
+	return out
 }

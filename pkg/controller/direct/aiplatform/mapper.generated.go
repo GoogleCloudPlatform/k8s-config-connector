@@ -107,7 +107,9 @@ func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm
 	// MISSING: DefaultCheckpointID
 	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
 	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	if val := direct.JSON_FromProto(mapCtx, in.GetMetadata()); val != nil {
+		out.Metadata = *val
+	}
 	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
 	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
 	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
@@ -138,7 +140,7 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		// MISSING: DefaultCheckpointID
 		out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
 		out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-		out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+		out.Metadata = direct.JSON_ToProto(mapCtx, &in.Metadata)
 		out.PipelineJob = direct.ValueOf(in.PipelineJob)
 		out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
 		out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
@@ -340,7 +342,9 @@ func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Example
 	}
 	out := &krm.Examples{}
 	out.ExampleGCSSource = Examples_ExampleGCSSource_FromProto(mapCtx, in.GetExampleGcsSource())
-	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	if val := direct.JSON_FromProto(mapCtx, in.GetNearestNeighborSearchConfig()); val != nil {
+		out.NearestNeighborSearchConfig = *val
+	}
 	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
 	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
 	return out
@@ -353,7 +357,7 @@ func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples 
 	if oneof := Examples_ExampleGCSSource_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
 		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
 	}
-	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+	if oneof := direct.JSON_ToProto(mapCtx, &in.NearestNeighborSearchConfig); oneof != nil {
 		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
 	}
 	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
@@ -616,8 +620,8 @@ func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm
 	}
 	out := &krm.FunctionCall{}
 	out.Name = direct.LazyPtr(in.GetName())
-	if v := direct.Struct_FromProto(mapCtx, in.GetArgs()); v != nil {
-		out.Args = *v
+	if val := direct.Struct_FromProto(mapCtx, in.GetArgs()); val != nil {
+		out.Args = *val
 	}
 	return out
 }
@@ -642,8 +646,8 @@ func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionRespon
 	}
 	out := &krm.FunctionResponse{}
 	out.Name = direct.LazyPtr(in.GetName())
-	if v := direct.Struct_FromProto(mapCtx, in.GetResponse()); v != nil {
-		out.Response = *v
+	if val := direct.Struct_FromProto(mapCtx, in.GetResponse()); val != nil {
+		out.Response = *val
 	}
 	return out
 }
