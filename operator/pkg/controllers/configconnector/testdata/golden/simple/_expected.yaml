@@ -4044,6 +4044,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - websecurityscanner.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - workflowexecutions.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5543,6 +5555,14 @@ rules:
   - watch
 - apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - websecurityscanner.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -1247,6 +1247,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - websecurityscanner.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - workflowexecutions.cnrm.cloud.google.com
   resources:
   - '*'
