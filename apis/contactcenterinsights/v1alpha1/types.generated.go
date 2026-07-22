@@ -21,6 +21,7 @@
 // resource: CCInsightsPhraseMatcher:PhraseMatcher
 // resource: CCInsightsIssueModel:IssueModel
 // resource: CCInsightsConversation:Conversation
+// resource: CCInsightsQAScorecard:QaScorecard
 
 package v1alpha1
 
@@ -1005,6 +1006,26 @@ type QaAnswer_AnswerValue struct {
 	Key *string `json:"key,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecard", skipping
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecard
+type QaScorecard struct {
+	// Identifier. The scorecard name.
+	//  Format:
+	//  projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.name
+	Name *string `json:"name,omitempty"`
+
+	// The user-specified display name of the scorecard.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// A text description explaining the intent of the scorecard.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.contactcenterinsights.v1.QaScorecardResult
 type QaScorecardResult struct {
 	// Identifier. The name of the scorecard result.
@@ -1521,6 +1542,20 @@ type QaAnswer_AnswerValueObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue.normalized_score
 	NormalizedScore *float64 `json:"normalizedScore,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.QaScorecard", skipping
+
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecard
+type QaScorecardObservedState struct {
+	// Output only. The time at which this scorecard was created.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The most recent time at which the scorecard was updated.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaScorecard.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaScorecardResult
 type QaScorecardResultObservedState struct {

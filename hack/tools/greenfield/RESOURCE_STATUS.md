@@ -43,7 +43,7 @@ This file tracks the progress of new "Direct" resource implementations.
 | CCInsightsConversation | contactcenterinsights | [#9327](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9327) | - | - | 1 | OPEN | - |
 | CCInsightsIssueModel | contactcenterinsights | [#9334](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9334) | - | - | 1 | OPEN | - |
 | CCInsightsPhraseMatcher | contactcenterinsights | [#9335](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9335) | - | - | 1 | MERGED | - |
-| CCInsightsQaScorecard | contactcenterinsights | [#8701](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8701) | - | - | 1 | OPEN | - |
+| CCInsightsQAScorecard | contactcenterinsights | [#8701](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8701) | - | - | 1 | OPEN | - |
 | CCInsightsView | contactcenterinsights | [#9300](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9300) | - | - | 1 | MERGED | - |
 | CertificateManagerTrustConfig | certificatemanager | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | - | 2 | OPEN | - |
 | CESApp | ces | [#9100](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9100) | [#9037](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9037) | - | 1 | OPEN | - |

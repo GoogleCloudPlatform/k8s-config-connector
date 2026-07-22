@@ -121,7 +121,7 @@ BLOCKED_KINDS=(
     "ApigeeRegistryInstance"
     "BlockchainNodeEngineNode"
     "CloudSecurityFramework"
-    "CCInsightsQaScorecard"
+    "CCInsightsQAScorecard"
     "ContentWarehouseSchema"
     "DataLineageProcess"
     "DevConnectConnection"
