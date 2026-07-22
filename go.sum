@@ -1379,6 +1379,8 @@ cloud.google.com/go/talent v1.6.3/go.mod h1:xoDO97Qd4AK43rGjJvyBHMskiEf3KulgYzcH
 cloud.google.com/go/talent v1.6.4/go.mod h1:QsWvi5eKeh6gG2DlBkpMaFYZYrYUnIpo34f6/V5QykY=
 cloud.google.com/go/talent v1.6.5/go.mod h1:Mf5cma696HmE+P2BWJ/ZwYqeJXEeU0UqjHFXVLadEDI=
 cloud.google.com/go/talent v1.6.6/go.mod h1:y/WQDKrhVz12WagoarpAIyKKMeKGKHWPoReZ0g8tseQ=
+cloud.google.com/go/talent v1.13.0 h1:/nZYKG20ZHfZDr7ikRuDnssxk8fuaDxGR+KH3iB4gak=
+cloud.google.com/go/talent v1.13.0/go.mod h1:GSwli9V25WQdzeuJDJWH9TlQmA8lPFn7yKsxowdxW9Y=
 cloud.google.com/go/texttospeech v1.4.0/go.mod h1:FX8HQHA6sEpJ7rCMSfXuzBcysDAuWusNNNvN9FELDd8=
 cloud.google.com/go/texttospeech v1.5.0/go.mod h1:oKPLhR4n4ZdQqWKURdwxMy0uiTS1xU161C8W57Wkea4=
 cloud.google.com/go/texttospeech v1.6.0/go.mod h1:YmwmFT8pj1aBblQOI3TfKmwibnsfvhIBzPXcW4EBovc=

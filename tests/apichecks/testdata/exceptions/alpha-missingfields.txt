@@ -1020,6 +1020,18 @@
 [missing_field] crd=cloudsecurityframeworks.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=cloudsecurityframeworks.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudsecurityframeworks.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.careerSiteURI" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.eeoText" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.externalID" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.headquartersAddress" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiringAgency" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.imageURI" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.keywordSearchableJobCustomAttributes[]" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.size" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.tenant" is not set in unstructured objects
+[missing_field] crd=cloudtalentsolutioncompanies.cloudtalentsolution.cnrm.cloud.google.com version=v1alpha1: field ".spec.websiteURI" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkTags[]" is not set in unstructured objects
