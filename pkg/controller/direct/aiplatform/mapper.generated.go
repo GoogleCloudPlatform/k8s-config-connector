@@ -1298,7 +1298,7 @@ func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krm.NotebookExecutionJob_GCSNotebookSource{}
 	// MISSING: URI
-	out.Generation = direct.LazyPtr(in.GetGeneration())
+	// MISSING: Generation
 	return out
 }
 */
@@ -1312,7 +1312,7 @@ found existing non-generated mapping function "NotebookExecutionJob_GCSNotebookS
 		}
 		out := &pb.NotebookExecutionJob_GcsNotebookSource{}
 		// MISSING: URI
-		out.Generation = direct.ValueOf(in.Generation)
+		// MISSING: Generation
 		return out
 	}
 */

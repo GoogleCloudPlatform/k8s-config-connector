@@ -328,43 +328,15 @@ spec:
                         description: 'The Cloud Storage url pointing to the ipynb
                           file. Format: `gs://bucket/notebook_file.ipynb`'
                         properties:
-                          bucketRef:
-                            description: Reference to a StorageBucket.
-                            oneOf:
-                            - not:
-                                required:
-                                - external
-                              required:
-                              - name
-                            - not:
-                                anyOf:
-                                - required:
-                                  - name
-                                - required:
-                                  - namespace
-                              required:
-                              - external
+                          objectRef:
+                            description: Reference to a StorageBucketObject.
                             properties:
                               external:
                                 description: A reference to an externally managed
-                                  StorageBucket resource. Should be in the format
-                                  "projects/{{projectID}}/buckets/{{bucketID}}".
-                                type: string
-                              name:
-                                description: The name of a StorageBucket resource.
-                                type: string
-                              namespace:
-                                description: The namespace of a StorageBucket resource.
+                                  StorageBucketObject resource. Should be in the format
+                                  "projects/{{projectID}}/buckets/{{bucket}}/objects/{{object}}".
                                 type: string
                             type: object
-                          generation:
-                            description: The version of the Cloud Storage object to
-                              read. If unset, the current version of the object is
-                              read. See https://cloud.google.com/storage/docs/metadata#generation-number.
-                            type: string
-                          object:
-                            description: Name of the Cloud Storage object.
-                            type: string
                         type: object
                       gcsOutputRef:
                         description: 'The Cloud Storage location to upload the result

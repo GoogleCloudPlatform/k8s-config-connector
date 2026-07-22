@@ -22,6 +22,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -352,20 +353,28 @@ func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext,
 			trimmed := strings.TrimPrefix(uri, "gs://")
 			parts := strings.SplitN(trimmed, "/", 2)
 			if len(parts) > 0 && parts[0] != "" {
-				out.BucketRef = &storagev1beta1.StorageBucketRef{
-					External: parts[0],
-				}
+				bucket := parts[0]
+				object := ""
 				if len(parts) > 1 {
-					out.Object = direct.LazyPtr(parts[1])
+					object = parts[1]
+				}
+				if in.GetGeneration() != "" {
+					if object != "" {
+						object = object + "#" + in.GetGeneration()
+					} else {
+						object = "#" + in.GetGeneration()
+					}
+				}
+				out.ObjectRef = &storagev1alpha1.StorageBucketObjectRef{
+					External: "projects/_/buckets/" + bucket + "/objects/" + object,
 				}
 			}
 		} else {
-			out.BucketRef = &storagev1beta1.StorageBucketRef{
+			out.ObjectRef = &storagev1alpha1.StorageBucketObjectRef{
 				External: uri,
 			}
 		}
 	}
-	out.Generation = direct.LazyPtr(in.GetGeneration())
 	return out
 }
 
@@ -374,17 +383,24 @@ func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
-	if in.BucketRef != nil {
-		id := &storagev1beta1.StorageBucketIdentity{}
-		if err := id.FromExternal(in.BucketRef.External); err != nil {
-			mapCtx.Errorf("gcsNotebookSource.bucketRef: %v", err)
+	if in.ObjectRef != nil {
+		id := &storagev1alpha1.StorageBucketObjectIdentity{}
+		if err := id.FromExternal(in.ObjectRef.External); err != nil {
+			mapCtx.Errorf("gcsNotebookSource.objectRef: %v", err)
 		} else {
 			bucket := id.Bucket
-			object := direct.ValueOf(in.Object)
+			object := id.Object
+			generation := ""
+			if parts := strings.SplitN(object, "#", 2); len(parts) == 2 {
+				object = parts[0]
+				generation = parts[1]
+			}
 			out.Uri = "gs://" + bucket + "/" + object
+			if generation != "" {
+				out.Generation = generation
+			}
 		}
 	}
-	out.Generation = direct.ValueOf(in.Generation)
 	return out
 }
 
