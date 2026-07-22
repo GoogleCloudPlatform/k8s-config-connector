@@ -29,6 +29,7 @@ spec:
     - ipProtocol: "tcp"
     srcIpRanges:
     - "10.100.0.1/32"
+    srcNetworkContext: "INTERNET"
   targetServiceAccountRefs:
   - name: "gsa-1-${uniqueId}"
   - name: "gsa-2-${uniqueId}"
