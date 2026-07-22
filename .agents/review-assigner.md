@@ -58,16 +58,17 @@ The `k8s-config-connector-team` is composed of the following GitHub handles:
 
 Run the following commands and logic in sequence:
 
-### Step 1: Audit Current Team Workloads
-Fetch all open PRs in `GoogleCloudPlatform/k8s-config-connector` and compute the current open review request count ($C_{user}$) for each member of `k8s-config-connector-team`:
+### Step 1: Audit Current Team Workloads & Workflow Mapping
+Fetch all open PRs in `GoogleCloudPlatform/k8s-config-connector`:
 
 ```bash
-# Query open PRs and their requested reviewers
+# Query open PRs, requested reviewers, and descriptions
 gh pr list --repo GoogleCloudPlatform/k8s-config-connector --state open --limit 500 --json number,title,body,reviewRequests
 ```
 
-- Build a `workload` dictionary mapping each `k8s-config-connector-team` user to their count of open requested reviews ($C_{user}$).
-- Build a `workflow_reviewers` map linking tracking issue numbers (extracted from PR title/body like `#11684` or `Fixes #11684`) to the team member currently assigned to review that workflow.
+Build the following data structures in memory:
+1. **`workload`**: Maps each `k8s-config-connector-team` member to their count of open assigned reviews ($C_{user}$).
+2. **`tracking_issue_to_reviewer`**: Maps parent/tracking issue numbers (extracted from PR titles and bodies via regex matching `#<NUMBER>`, `Fixes #<NUMBER>`, or `Issue: #<NUMBER>`) to the `k8s-config-connector-team` member currently assigned to review open PRs for that tracking issue.
 
 ### Step 2: Fetch Unassigned Candidate PRs
 Query open PRs labeled `ready-for-human`:
@@ -79,26 +80,30 @@ gh pr list --repo GoogleCloudPlatform/k8s-config-connector --label "ready-for-hu
 - Filter candidate PRs to those that do NOT currently have any member of `k8s-config-connector-team` listed in `reviewRequests`.
 
 ### Step 3: Assignment Algorithm
-Iterate through the candidate `ready-for-human` PRs:
+Iterate through each unassigned candidate `ready-for-human` PR:
 
-1. **Identify Eligible Underloaded Members**:
-   - Find all members where $C_{user} < 5$.
+1. **Extract Workflow Tracking Issue**:
+   - Parse the candidate PR's title and body for parent tracking issue references (e.g. `#11684`).
 
-2. **Match Workflow Affinity**:
-   - Extract any tracking issue reference (e.g., `#11684`) from the candidate PR title or body.
-   - If a matching tracking issue exists in `workflow_reviewers`, and that reviewer's count $C_{reviewer} < 10$, select that reviewer.
+2. **Select Reviewer by Priority**:
+   - **Priority 1 (Workflow Affinity)**: If the PR references a tracking issue $I$ present in `tracking_issue_to_reviewer`, and that reviewer's count $C_{reviewer} < 10$, **select that reviewer**.
+   - **Priority 2 (Underloaded Balancing, $C_{user} < 5$)**: Otherwise, if any team members have $C_{user} < 5$, **select the member with the lowest $C_{user}$**.
+   - **Priority 3 (Capacity Absorption, $5 \le C_{user} < 10$)**: Otherwise, if all team members have reached $C_{user} \ge 5$ but unassigned candidate PRs remain, **select the member with the lowest $C_{user}$ who has $C_{user} < 10$**.
+   - **Ceiling Reached**: If all team members have $C_{user} = 10$, skip further assignments.
 
-3. **Fallback to Least-Loaded Member**:
-   - If no workflow match exists (or the workflow reviewer is at 10 PRs), select the member with the lowest $C_{user}$ among members with $C_{user} < 5$.
+3. **Update State & Queue Assignment**:
+   - If a reviewer is selected for PR $P$:
+     - Increment `workload[selected_user]` ($C_{user} \leftarrow C_{user} + 1$).
+     - If PR $P$ has a tracking issue $I$, set `tracking_issue_to_reviewer[I] = selected_user`.
+     - Queue assignment command:
+       ```bash
+       gh pr edit <PR_NUMBER> --repo GoogleCloudPlatform/k8s-config-connector --add-reviewer <SELECTED_USER>
+       ```
 
-4. **Apply Assignment**:
-   - If a reviewer is selected, increment their $C_{user}$ count and queue the assignment command:
-     ```bash
-     gh pr edit <PR_NUMBER> --repo GoogleCloudPlatform/k8s-config-connector --add-reviewer <SELECTED_USER>
-     ```
-
-5. **Termination Condition**:
-   - Stop assigning when all candidate `ready-for-human` PRs are assigned, OR when all team members have reached $C_{user} \ge 5$ (or max ceiling 10).
+4. **Termination Condition**:
+   - Stop assigning when either:
+     a) All candidate `ready-for-human` PRs have been assigned.
+     b) Every team member has reached the hard ceiling of 10 assigned open reviews ($C_{user} = 10$).
 
 ### Step 4: Execute Assignments & Exit
-Execute the `gh pr edit --add-reviewer` commands for all selected assignments. Print a summary log of assignments made, then exit.
+Execute the `gh pr edit --add-reviewer` commands for all queued assignments. Print a summary log of assignments made, then exit.
