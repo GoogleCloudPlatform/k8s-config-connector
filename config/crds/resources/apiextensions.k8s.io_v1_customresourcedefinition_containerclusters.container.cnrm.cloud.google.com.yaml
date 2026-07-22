@@ -1269,83 +1269,79 @@ spec:
                                       properties:
                                         cert:
                                           description: Configures the client certificate.
-                                          items:
-                                            properties:
-                                              secretRef:
-                                                description: Reference to SecretManagerSecretVersion
-                                                  for the client certificate.
-                                                oneOf:
-                                                - not:
-                                                    required:
-                                                    - external
-                                                  required:
-                                                  - name
-                                                - not:
-                                                    anyOf:
-                                                    - required:
-                                                      - name
-                                                    - required:
-                                                      - namespace
+                                          properties:
+                                            secretRef:
+                                              description: Reference to SecretManagerSecretVersion
+                                                for the client certificate.
+                                              oneOf:
+                                              - not:
                                                   required:
                                                   - external
-                                                properties:
-                                                  external:
-                                                    description: ' If provided must
-                                                      be in the format `projects/*/secrets/*/versions/*`.'
-                                                    type: string
-                                                  name:
-                                                    description: The `name` field
-                                                      of a `SecretManagerSecretVersion`
-                                                      resource.
-                                                    type: string
-                                                  namespace:
-                                                    description: The `metadata.namespace`
-                                                      field of a `SecretManagerSecretVersion`
-                                                      resource.
-                                                    type: string
-                                                type: object
-                                            type: object
-                                          type: array
+                                                required:
+                                                - name
+                                              - not:
+                                                  anyOf:
+                                                  - required:
+                                                    - name
+                                                  - required:
+                                                    - namespace
+                                                required:
+                                                - external
+                                              properties:
+                                                external:
+                                                  description: ' If provided must
+                                                    be in the format `projects/*/secrets/*/versions/*`.'
+                                                  type: string
+                                                name:
+                                                  description: The `name` field of
+                                                    a `SecretManagerSecretVersion`
+                                                    resource.
+                                                  type: string
+                                                namespace:
+                                                  description: The `metadata.namespace`
+                                                    field of a `SecretManagerSecretVersion`
+                                                    resource.
+                                                  type: string
+                                              type: object
+                                          type: object
                                         key:
                                           description: Configures the client private
                                             key.
-                                          items:
-                                            properties:
-                                              secretRef:
-                                                description: Reference to SecretManagerSecretVersion
-                                                  for the client key.
-                                                oneOf:
-                                                - not:
-                                                    required:
-                                                    - external
-                                                  required:
-                                                  - name
-                                                - not:
-                                                    anyOf:
-                                                    - required:
-                                                      - name
-                                                    - required:
-                                                      - namespace
+                                          properties:
+                                            secretRef:
+                                              description: Reference to SecretManagerSecretVersion
+                                                for the client key.
+                                              oneOf:
+                                              - not:
                                                   required:
                                                   - external
-                                                properties:
-                                                  external:
-                                                    description: ' If provided must
-                                                      be in the format `projects/*/secrets/*/versions/*`.'
-                                                    type: string
-                                                  name:
-                                                    description: The `name` field
-                                                      of a `SecretManagerSecretVersion`
-                                                      resource.
-                                                    type: string
-                                                  namespace:
-                                                    description: The `metadata.namespace`
-                                                      field of a `SecretManagerSecretVersion`
-                                                      resource.
-                                                    type: string
-                                                type: object
-                                            type: object
-                                          type: array
+                                                required:
+                                                - name
+                                              - not:
+                                                  anyOf:
+                                                  - required:
+                                                    - name
+                                                  - required:
+                                                    - namespace
+                                                required:
+                                                - external
+                                              properties:
+                                                external:
+                                                  description: ' If provided must
+                                                    be in the format `projects/*/secrets/*/versions/*`.'
+                                                  type: string
+                                                name:
+                                                  description: The `name` field of
+                                                    a `SecretManagerSecretVersion`
+                                                    resource.
+                                                  type: string
+                                                namespace:
+                                                  description: The `metadata.namespace`
+                                                    field of a `SecretManagerSecretVersion`
+                                                    resource.
+                                                  type: string
+                                              type: object
+                                          type: object
                                       type: object
                                     type: array
                                   dialTimeout:

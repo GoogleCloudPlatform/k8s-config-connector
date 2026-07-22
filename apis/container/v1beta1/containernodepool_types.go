@@ -540,10 +540,10 @@ type RegistryCA struct {
 // +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Client
 type RegistryClient struct {
 	/* Configures the client certificate. */
-	Cert []RegistryClientCert `json:"cert,omitempty"`
+	Cert *RegistryClientCert `json:"cert,omitempty"`
 
 	/* Configures the client private key. */
-	Key []RegistryClientKey `json:"key,omitempty"`
+	Key *RegistryClientKey `json:"key,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.ClientCert

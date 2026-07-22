@@ -45,8 +45,8 @@ spec:
                     external: "projects/${projectId}/secrets/kcc-test-ca-cert/versions/2"
               client:
                 - cert:
-                    - secretRef:
-                        external: "projects/${projectId}/secrets/kcc-test-client-cert/versions/2"
+                    secretRef:
+                      external: "projects/${projectId}/secrets/kcc-test-client-cert/versions/2"
                   key:
-                    - secretRef:
-                        external: "projects/${projectId}/secrets/kcc-test-client-key/versions/2"
+                    secretRef:
+                      external: "projects/${projectId}/secrets/kcc-test-client-key/versions/2"

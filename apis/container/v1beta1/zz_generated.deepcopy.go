@@ -4015,17 +4015,13 @@ func (in *RegistryClient) DeepCopyInto(out *RegistryClient) {
 	*out = *in
 	if in.Cert != nil {
 		in, out := &in.Cert, &out.Cert
-		*out = make([]RegistryClientCert, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(RegistryClientCert)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Key != nil {
 		in, out := &in.Key, &out.Key
-		*out = make([]RegistryClientKey, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(RegistryClientKey)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
