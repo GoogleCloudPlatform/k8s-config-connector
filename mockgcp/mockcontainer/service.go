@@ -79,8 +79,15 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		if r.Body != nil {
 			bodyBytes, err := io.ReadAll(r.Body)
 			if err == nil {
+				if bytes.Contains(bodyBytes, []byte(`"OS_2022"`)) {
+					// Convert to OS_VERSION_UNSPECIFIED so protojson parses it without error
+					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_UNSPECIFIED"`))
+					// Append invalid OS version query param to propagate to context metadata
+					q := r.URL.Query()
+					q.Set("mockgcp-invalid-os-version", "OS_2022")
+					r.URL.RawQuery = q.Encode()
+				}
 				// Replace short enum names with full proto enum names
-				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_LTSC2022"`))
 				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2019"`), []byte(`"OS_VERSION_LTSC2019"`))
 				r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
 				r.ContentLength = int64(len(bodyBytes))

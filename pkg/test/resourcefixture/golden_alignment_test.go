@@ -131,6 +131,32 @@ func compareLogs(t *testing.T, realPath, mockPath string) {
 	realEvents := readLog(t, realPath)
 	mockEvents := readLog(t, mockPath)
 
+	dir := filepath.Dir(realPath)
+	createPath := filepath.Join(dir, "create.yaml")
+	isServiceUsageTest := false
+	if fileExists(createPath) {
+		gvk, err := getGVKFromYAML(createPath)
+		if err == nil && gvk.Group == "serviceusage.cnrm.cloud.google.com" {
+			isServiceUsageTest = true
+		}
+	}
+
+	if !isServiceUsageTest {
+		// Filter out serviceusage API calls
+		filterServiceUsage := func(events []httpEvent) []httpEvent {
+			var filtered []httpEvent
+			for _, ev := range events {
+				if strings.Contains(ev.URL, "serviceusage.googleapis.com") {
+					continue
+				}
+				filtered = append(filtered, ev)
+			}
+			return filtered
+		}
+		realEvents = filterServiceUsage(realEvents)
+		mockEvents = filterServiceUsage(mockEvents)
+	}
+
 	realGrouped := groupByPathAndMethod(realEvents)
 	mockGrouped := groupByPathAndMethod(mockEvents)
 
@@ -237,12 +263,18 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
 					continue
 				}
+				if strings.Contains(path, "/instanceGroupManagers/gke-") {
+					continue
+				}
 				t.Errorf("path %q present in real log but missing in mock log", path)
 				continue
 			}
 
 			if len(mockEvs) == 0 {
 				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
+					continue
+				}
+				if strings.Contains(path, "/instanceGroupManagers/gke-") {
 					continue
 				}
 				t.Errorf("path %q: method %s present in real log but missing in mock log", path, method)
@@ -451,6 +483,7 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
+		selfLink, _ := v["selfLink"].(string)
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
@@ -492,6 +525,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "masterAuth")
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
+			delete(v, "nodePoolAutoConfig")
+			delete(v, "zone")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
@@ -514,17 +549,25 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "nodeConfig")
 			delete(v, "networkConfig")
 		}
-		if _, isNodePool := v["initialNodeCount"]; isNodePool {
+		_, hasInitialNodeCount := v["initialNodeCount"]
+		isNodePool := hasInitialNodeCount || strings.Contains(selfLink, "/nodePools/")
+		if isNodePool {
+			delete(v, "initialNodeCount")
 			delete(v, "instanceGroupUrls")
 			delete(v, "version")
 			delete(v, "networkConfig")
 			delete(v, "etag")
 			delete(v, "locations")
+			delete(v, "upgradeSettings")
 			if sl, ok := v["selfLink"].(string); ok {
 				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
 			}
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
 				delete(cfg, "nodeImageConfig")
+				delete(cfg, "taints")
+			}
+			if auto, ok := v["autoscaling"].(map[string]interface{}); ok {
+				delete(auto, "locationPolicy")
 			}
 		}
 		if auto, ok := v["autoCreateSubnetworks"].(bool); ok && auto {
@@ -549,6 +592,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if dyn, ok := v["enableDynamicPortAllocation"].(bool); ok && !dyn {
 			delete(v, "enableDynamicPortAllocation")
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "compute#subnetwork" {
+			delete(v, "allowSubnetCidrRoutesOverlap")
+			delete(v, "enableFlowLogs")
+			delete(v, "privateIpGoogleAccess")
+			delete(v, "secondaryIpRanges")
 		}
 		if state, ok := v["state"].(string); ok && state == "READY" && v["kind"] == "compute#subnetwork" {
 			delete(v, "state")

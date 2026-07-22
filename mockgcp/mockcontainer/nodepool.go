@@ -42,7 +42,7 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 
 	obj := &pb.NodePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 	return obj, nil
 }
@@ -75,6 +75,10 @@ func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePo
 }
 
 func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	reqName := req.GetParent() + "/nodePools/" + req.GetNodePool().GetName()
 
 	name, err := s.parseNodePoolName(reqName)
@@ -199,6 +203,12 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 			MaxSurge:       1,
 			MaxUnavailable: 0,
 			Strategy:       PtrTo(pb.NodePoolUpdateStrategy_SURGE),
+		}
+	}
+
+	if obj.Autoscaling != nil {
+		if obj.Autoscaling.LocationPolicy == pb.NodePoolAutoscaling_LOCATION_POLICY_UNSPECIFIED {
+			obj.Autoscaling.LocationPolicy = pb.NodePoolAutoscaling_BALANCED
 		}
 	}
 
@@ -365,6 +375,10 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 }
 
 func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNodePoolRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	reqName := req.GetName()
 
 	name, err := s.parseNodePoolName(reqName)
@@ -375,7 +389,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	fqn := name.String()
 	obj := &pb.NodePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 
 	klog.Infof("UpdateNodePool %v", prototext.Format(req))
@@ -424,8 +438,9 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	}
 
 	op := &pb.Operation{
-		Zone:       name.Location,
-		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+		Zone:          name.Location,
+		OperationType: pb.Operation_UPGRADE_NODES,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	if req.GetKubeletConfig() != nil {
 		op.OperationType = pb.Operation_UPGRADE_NODES
@@ -444,7 +459,7 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 	fqn := name.String()
 	obj := &pb.NodePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 
 	obj.InitialNodeCount = req.NodeCount
@@ -454,8 +469,9 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 	}
 
 	op := &pb.Operation{
-		Zone:       name.Location,
-		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+		Zone:          name.Location,
+		OperationType: pb.Operation_SET_NODE_POOL_SIZE,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -479,7 +495,7 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 
 	oldObj := &pb.NodePool{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not found: node pool %q not found.", name.NodePool)
 	}
 
 	// Update the cluster's NodePools list after deletion
@@ -578,6 +594,11 @@ func (s *ClusterManagerV1) createMockIGM(ctx context.Context, project *projects.
 		igmName := tokens[5]
 		zone := tokens[3]
 
+		region := zone
+		if idx := strings.LastIndex(zone, "-"); idx != -1 {
+			region = zone[:idx]
+		}
+
 		igm := &computepb.InstanceGroupManager{
 			Name:             PtrTo(igmName),
 			BaseInstanceName: PtrTo(strings.TrimSuffix(igmName, "-grp")),
@@ -609,8 +630,8 @@ func (s *ClusterManagerV1) createMockIGM(ctx context.Context, project *projects.
 				DefaultActionOnFailure: PtrTo("REPAIR"),
 				ForceUpdateOnRepair:    PtrTo("YES"),
 			},
-			InstanceGroup:    PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/instanceGroups/%s", project.ID, zone, igmName))),
-			InstanceTemplate: PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/instanceTemplates/%s", project.ID, strings.TrimSuffix(igmName, "-grp")))),
+			InstanceGroup:    PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/zones/%s/instanceGroups/%s", project.ID, zone, igmName)),
+			InstanceTemplate: PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/regions/%s/instanceTemplates/%s", project.ID, region, strings.TrimSuffix(igmName, "-grp"))),
 		}
 
 		if err := s.storage.Create(ctx, fqn, igm); err != nil {

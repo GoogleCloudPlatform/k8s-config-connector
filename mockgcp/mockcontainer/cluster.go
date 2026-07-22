@@ -79,6 +79,10 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 }
 
 func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClusterRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	reqName := req.GetParent() + "/clusters/" + req.GetCluster().GetName()
 	name, err := s.parseClusterName(reqName)
 	if err != nil {
@@ -235,9 +239,14 @@ func locationToZone(location string) (string, error) {
 }
 
 func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*pb.Operation, error) {
+	if err := checkInvalidOSVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	if req.GetUpdate() == nil || proto.Equal(req.GetUpdate(), &pb.ClusterUpdate{}) {
 		return nil, status.Errorf(codes.InvalidArgument, "must specify a field to update")
 	}
+
 	reqName := req.GetName()
 
 	name, err := s.parseClusterName(reqName)
@@ -401,12 +410,10 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 	}
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
-
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
 
 	if err := s.populateClusterDefaults(name.Project, obj, false); err != nil {
-
 		return nil, err
 	}
 
@@ -414,10 +421,15 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		return nil, err
 	}
 
+	targetLink := buildTargetLink(ctx, name)
+	if req.GetUpdate().GetDesiredNodePoolId() != "" {
+		targetLink += "/nodePools/" + req.GetUpdate().GetDesiredNodePoolId()
+	}
+
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_UPDATE_CLUSTER,
-		TargetLink:    buildTargetLink(ctx, name),
+		TargetLink:    targetLink,
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
