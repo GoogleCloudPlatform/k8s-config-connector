@@ -557,6 +557,7 @@
 | tags.cnrm.cloud.google.com                    | TagsTagKey                                      | False        | True        | False  | Terraform  | True        |
 | tags.cnrm.cloud.google.com                    | TagsTagValue                                    | False        | True        | False  | Terraform  | True        |
 | cloudtasks.cnrm.cloud.google.com              | TasksQueue                                      | True         | False       | False  | Direct     | True        |
+| telcoautomation.cnrm.cloud.google.com         | TelcoAutomationEdgeSlm                          | True         | False       | False  | Direct     | True        |
 | testing.cnrm.cloud.google.com                 | TestingDeviceSession                            | True         | False       | False  | Direct     | True        |
 | tpu.cnrm.cloud.google.com                     | TPUNode                                         | True         | False       | False  | Terraform  | False       |
 | tpu.cnrm.cloud.google.com                     | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |

@@ -1167,6 +1167,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - telcoautomation.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - testing.cnrm.cloud.google.com
   resources:
   - '*'
