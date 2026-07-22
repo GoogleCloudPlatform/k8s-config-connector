@@ -147,12 +147,12 @@ nodeConfig:
         - string
         client:
         - cert:
-          - secretRef:
+            secretRef:
               external: string
               name: string
               namespace: string
           key:
-          - secretRef:
+            secretRef:
               external: string
               name: string
               namespace: string
@@ -1126,23 +1126,13 @@ version: string
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (object)</code></p>
+            <p><code class="apitype">object</code></p>
             <p>Configures the client certificate.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p></p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert.secretRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1152,7 +1142,7 @@ version: string
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef.external</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert.secretRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1162,7 +1152,7 @@ version: string
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef.name</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert.secretRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1172,7 +1162,7 @@ version: string
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert[].secretRef.namespace</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].cert.secretRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1186,23 +1176,13 @@ version: string
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (object)</code></p>
+            <p><code class="apitype">object</code></p>
             <p>Configures the client private key.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p></p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key.secretRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1212,7 +1192,7 @@ version: string
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef.external</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key.secretRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1222,7 +1202,7 @@ version: string
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef.name</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key.secretRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1232,7 +1212,7 @@ version: string
     </tr>
     <tr>
         <td>
-            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key[].secretRef.namespace</code></p>
+            <p><code>nodeConfig.containerdConfig.registryHosts[].hosts[].client[].key.secretRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
