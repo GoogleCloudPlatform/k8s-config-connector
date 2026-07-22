@@ -21,17 +21,7 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.gkehub.v1.BinaryAuthorizationConfig
-type BinaryAuthorizationConfig struct {
-	// Optional. Mode of operation for binauthz policy evaluation.
-	// +kcc:proto:field=google.cloud.gkehub.v1.BinaryAuthorizationConfig.evaluation_mode
-	EvaluationMode *string `json:"evaluationMode,omitempty"`
-
-	// Optional. Binauthz policies that apply to this cluster.
-	// +kcc:proto:field=google.cloud.gkehub.v1.BinaryAuthorizationConfig.policy_bindings
-	PolicyBindings []BinaryAuthorizationConfig_PolicyBinding `json:"policyBindings,omitempty"`
-}
-
+/* unreachable type BinaryAuthorizationConfig_PolicyBinding
 // +kcc:proto=google.cloud.gkehub.v1.BinaryAuthorizationConfig.PolicyBinding
 type BinaryAuthorizationConfig_PolicyBinding struct {
 	// The relative resource name of the binauthz platform policy to audit. GKE
@@ -40,6 +30,7 @@ type BinaryAuthorizationConfig_PolicyBinding struct {
 	// +kcc:proto:field=google.cloud.gkehub.v1.BinaryAuthorizationConfig.PolicyBinding.name
 	Name *string `json:"name,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.gkehub.v1.CompliancePostureConfig
 type CompliancePostureConfig struct {

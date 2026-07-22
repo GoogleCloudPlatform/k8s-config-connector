@@ -71,5 +71,11 @@ var (
 		Kind:    reflect.TypeOf(CloudAssetProjectFeed{}).Name(),
 	}
 
+	CloudAssetSavedQueryGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudAssetSavedQuery{}).Name(),
+	}
+
 	cloudassetAPIVersion = SchemeGroupVersion.String()
 )

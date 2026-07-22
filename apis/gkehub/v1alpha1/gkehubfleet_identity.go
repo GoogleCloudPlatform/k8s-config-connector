@@ -111,7 +111,7 @@ func (obj *GKEHubFleet) GetIdentity(ctx context.Context, reader client.Reader) (
 		resourceID = obj.GetName()
 	}
 
-	location := obj.Spec.Location
+	location := direct.ValueOf(obj.Spec.Location)
 	if location == "" {
 		location = "global"
 	}
