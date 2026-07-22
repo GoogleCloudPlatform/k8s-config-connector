@@ -15,12 +15,24 @@
 package v1alpha1
 
 import (
+	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/binaryauthorization/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var GKEHubFleetGVK = GroupVersion.WithKind("GKEHubFleet")
+
+// +kcc:proto=google.cloud.gkehub.v1.BinaryAuthorizationConfig
+type BinaryAuthorizationConfig struct {
+	// Optional. Mode of operation for binauthz policy evaluation.
+	// +kcc:proto:field=google.cloud.gkehub.v1.BinaryAuthorizationConfig.evaluation_mode
+	EvaluationMode *string `json:"evaluationMode,omitempty"`
+
+	// Optional. Binauthz policies that apply to this cluster.
+	// +kcc:proto:field=google.cloud.gkehub.v1.BinaryAuthorizationConfig.policy_bindings
+	PolicyBindingsRefs []binaryauthorizationv1alpha1.BinaryAuthorizationPlatformPolicyRef `json:"policyBindingsRefs,omitempty"`
+}
 
 // GKEHubFleetSpec defines the desired state of GKEHubFleet
 // +kcc:spec:proto=google.cloud.gkehub.v1.Fleet
@@ -29,7 +41,7 @@ type GKEHubFleetSpec struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The GKEHubFleet name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

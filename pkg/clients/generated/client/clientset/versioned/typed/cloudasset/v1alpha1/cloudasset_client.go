@@ -34,6 +34,7 @@ type CloudassetV1alpha1Interface interface {
 	CloudAssetFolderFeedsGetter
 	CloudAssetOrganizationFeedsGetter
 	CloudAssetProjectFeedsGetter
+	CloudAssetSavedQueriesGetter
 }
 
 // CloudassetV1alpha1Client is used to interact with features provided by the cloudasset.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *CloudassetV1alpha1Client) CloudAssetOrganizationFeeds(namespace string)
 
 func (c *CloudassetV1alpha1Client) CloudAssetProjectFeeds(namespace string) CloudAssetProjectFeedInterface {
 	return newCloudAssetProjectFeeds(c, namespace)
+}
+
+func (c *CloudassetV1alpha1Client) CloudAssetSavedQueries(namespace string) CloudAssetSavedQueryInterface {
+	return newCloudAssetSavedQueries(c, namespace)
 }
 
 // NewForConfig creates a new CloudassetV1alpha1Client for the given config.

@@ -45,7 +45,7 @@ type FleetBinaryAuthorizationConfig struct {
 
 	/* Optional. Binauthz policies that apply to this cluster. */
 	// +optional
-	PolicyBindings []FleetPolicyBindings `json:"policyBindings,omitempty"`
+	PolicyBindingsRefs []v1alpha1.ResourceRef `json:"policyBindingsRefs,omitempty"`
 }
 
 type FleetCompliancePostureConfig struct {
@@ -76,12 +76,6 @@ type FleetDefaultClusterConfig struct {
 	/* Enable/Disable Security Posture features for the cluster. */
 	// +optional
 	SecurityPostureConfig *FleetSecurityPostureConfig `json:"securityPostureConfig,omitempty"`
-}
-
-type FleetPolicyBindings struct {
-	/* The relative resource name of the binauthz platform policy to audit. GKE platform policies have the following format: `projects/{project_number}/platforms/gke/policies/{policy_id}`. */
-	// +optional
-	Name *string `json:"name,omitempty"`
 }
 
 type FleetSecurityPostureConfig struct {

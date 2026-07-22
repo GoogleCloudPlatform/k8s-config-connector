@@ -74,15 +74,36 @@ spec:
                         description: Optional. Mode of operation for binauthz policy
                           evaluation.
                         type: string
-                      policyBindings:
+                      policyBindingsRefs:
                         description: Optional. Binauthz policies that apply to this
                           cluster.
                         items:
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
                           properties:
+                            external:
+                              description: A reference to an externally managed BinaryAuthorizationPlatformPolicy
+                                resource. Should be in the format "projects/{{projectID}}/platforms/{{platform}}/policies/{{policy}}".
+                              type: string
                             name:
-                              description: 'The relative resource name of the binauthz
-                                platform policy to audit. GKE platform policies have
-                                the following format: `projects/{project_number}/platforms/gke/policies/{policy_id}`.'
+                              description: The name of a BinaryAuthorizationPlatformPolicy
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a BinaryAuthorizationPlatformPolicy
+                                resource.
                               type: string
                           type: object
                         type: array
