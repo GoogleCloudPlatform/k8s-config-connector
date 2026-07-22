@@ -26,7 +26,6 @@
 [schema_violation] file=basic/compute/v1alpha1/computemachineimage/machineimageautogen gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeInstance: [].spec.networkInterface[0]: Invalid value: "network": spec.networkInterface[0].network in body is a forbidden property
 [schema_violation] file=basic/compute/v1alpha1/computemachineimage/machineimageautogen gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeInstance: [].spec.zone: Required value
 [schema_violation] file=basic/compute/v1alpha1/computemachineimage/machineimageautogen gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeInstance: []: Invalid value: "": "spec" must validate at least one schema (anyOf)
-[schema_violation] file=basic/compute/v1alpha1/computenetworkfirewallpolicyrule/computenetworkfirewallpolicyrulebasic gvk=compute.cnrm.cloud.google.com/v1alpha1, Kind=ComputeNetworkFirewallPolicyRule: [].spec.projectRef: Required value
 [schema_violation] file=basic/compute/v1alpha1/computeregiondiskresourcepolicyattachment/regiondiskresourcepolicyattachmentautogen gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeDisk: [].spec: Invalid value: "image": spec.image in body is a forbidden property
 [schema_violation] file=basic/compute/v1beta1/computenetworkfirewallpolicy gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeNetworkFirewallPolicy: [].spec.projectRef: Required value
 [schema_violation] file=basic/compute/v1beta1/computenetworkfirewallpolicyassociation gvk=compute.cnrm.cloud.google.com/v1beta1, Kind=ComputeNetworkFirewallPolicy: [].spec.projectRef: Required value
