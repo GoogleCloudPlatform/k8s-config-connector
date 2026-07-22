@@ -37,5 +37,6 @@ status:
     softDeletePolicy:
       effectiveTime: "1970-01-01T00:00:00Z"
       retentionDurationSeconds: 604800
+    storageClass: STANDARD
   selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-merge-${uniqueId}
   url: gs://storagebucket-merge-${uniqueId}

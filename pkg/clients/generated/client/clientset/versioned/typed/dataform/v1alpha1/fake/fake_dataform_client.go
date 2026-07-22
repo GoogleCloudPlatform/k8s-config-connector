@@ -35,6 +35,10 @@ func (c *FakeDataformV1alpha1) DataformFolders(namespace string) v1alpha1.Datafo
 	return newFakeDataformFolders(c, namespace)
 }
 
+func (c *FakeDataformV1alpha1) DataformTeamFolders(namespace string) v1alpha1.DataformTeamFolderInterface {
+	return newFakeDataformTeamFolders(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDataformV1alpha1) RESTClient() rest.Interface {

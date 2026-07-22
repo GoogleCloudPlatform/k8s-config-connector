@@ -34,6 +34,7 @@ Content-Type: application/json
   "autoCreateSubnetworks": false,
   "enableUlaInternalIpv6": false,
   "name": "${networkID}",
+  "networkProfile": "projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon",
   "routingConfig": {
     "routingMode": "REGIONAL"
   }
@@ -113,11 +114,11 @@ X-Xss-Protection: 0
 {
   "autoCreateSubnetworks": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableUlaInternalIpv6": false,
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "networkProfile": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon",
   "routingConfig": {
     "bgpBestPathSelectionMode": "LEGACY",
     "routingMode": "REGIONAL"
@@ -132,12 +133,7 @@ PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/net
 Content-Type: application/json
 
 {
-  "autoCreateSubnetworks": false,
-  "enableUlaInternalIpv6": true,
-  "name": "${networkID}",
-  "routingConfig": {
-    "routingMode": "GLOBAL"
-  }
+  "enableUlaInternalIpv6": true
 }
 
 200 OK
@@ -155,7 +151,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.networks.patch",
+  "operationType": "updateNetwork",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -186,7 +182,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.networks.patch",
+  "operationType": "updateNetwork",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -214,14 +210,16 @@ X-Xss-Protection: 0
 {
   "autoCreateSubnetworks": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableUlaInternalIpv6": false,
+  "enableUlaInternalIpv6": true,
   "id": "000000000000000000000",
+  "internalIpv6Range": "fd20:eb5:88a:0:0:0:0:0/48",
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "networkProfile": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon",
   "routingConfig": {
     "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "GLOBAL"
+    "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"

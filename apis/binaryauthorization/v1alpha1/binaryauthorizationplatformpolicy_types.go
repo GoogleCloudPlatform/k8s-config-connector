@@ -40,6 +40,7 @@ type BinaryAuthorizationPlatformPolicySpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// Optional. GKE platform-specific policy.
+	// +kcc:proto:field=google.cloud.binaryauthorization.v1.PlatformPolicy.gke_policy
 	GKEPolicy *GKEPolicy `json:"gkePolicy,omitempty"`
 }
 

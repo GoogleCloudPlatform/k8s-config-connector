@@ -20,6 +20,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm_memorystore "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	krm_redis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -430,6 +431,58 @@ func ResolveMemorystoreInstanceServiceAttachment(ctx context.Context, reader cli
 	return nil, fmt.Errorf("no pscAttachmentDetails found for %s %v with connection type %q", instance.GroupVersionKind(), key, desiredConnectionType)
 }
 
+func ResolveRedisClusterServiceAttachment(ctx context.Context, reader client.Reader, src client.Object, ref *krm.RedisClusterServiceAttachment) (*refs.ComputeServiceAttachmentRef, error) {
+	if ref.RedisClusterRef == nil || ref.RedisClusterRef.Name == "" {
+		return nil, fmt.Errorf("must provide memorystoreInstanceRef.Name")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.RedisClusterRef.Namespace,
+		Name:      ref.RedisClusterRef.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(krm_redis.RedisClusterGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced %v %v: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	cluster := &krm_redis.RedisCluster{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, cluster); err != nil {
+		return nil, fmt.Errorf("error converting %v %v to RedisCluster: %w", u.GroupVersionKind().Kind, key, err)
+	}
+
+	// Read status.observedState.pscServiceAttachments
+	// to retrieve the service attachment external.
+
+	desiredConnectionType := ""
+	if ref.ConnectionType != nil {
+		desiredConnectionType = *ref.ConnectionType
+	}
+
+	observedState := cluster.Status.ObservedState
+	if observedState != nil {
+		for _, item := range observedState.PSCServiceAttachments {
+			connectionType := valueOf(item.ConnectionType)
+			serviceAttachment := valueOf(item.ServiceAttachment)
+
+			if connectionType == desiredConnectionType {
+				if serviceAttachment != "" {
+					return &refs.ComputeServiceAttachmentRef{External: serviceAttachment}, nil
+				}
+			}
+		}
+	}
+
+	return nil, fmt.Errorf("no pscServiceAttachments found for %s %v with connection type %q", cluster.GroupVersionKind(), key, desiredConnectionType)
+}
+
 func valueOf[T any](v *T) T {
 	if v == nil {
 		var zero T
@@ -459,6 +512,17 @@ func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *k
 
 			}
 			obj.Spec.Target.MemorystoreInstanceServiceAttachment = nil
+			obj.Spec.Target.ServiceAttachmentRef = serviceAttachmentRef
+		}
+
+		// Get target RedisClusterServiceAttachmentRef
+		if redisClusterServiceAttachment := obj.Spec.Target.RedisClusterServiceAttachment; redisClusterServiceAttachment != nil {
+			serviceAttachmentRef, err := ResolveRedisClusterServiceAttachment(ctx, reader, obj, obj.Spec.Target.RedisClusterServiceAttachment)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.RedisClusterServiceAttachment = nil
 			obj.Spec.Target.ServiceAttachmentRef = serviceAttachmentRef
 		}
 

@@ -649,6 +649,22 @@ type KubeletConfig struct {
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.pod_pids_limit
 	PodPidsLimit *int `json:"podPidsLimit,omitempty"`
+
+	/* Percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_low_threshold_percent
+	ImageGcLowThresholdPercent *int `json:"imageGcLowThresholdPercent,omitempty"`
+
+	/* Percent of disk usage after which image garbage collection is always run. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_gc_high_threshold_percent
+	ImageGcHighThresholdPercent *int `json:"imageGcHighThresholdPercent,omitempty"`
+
+	/* Minimum age for an unused image before it is garbage collected. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_minimum_gc_age
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
+	/* Maximum age an image can be unused before it is garbage collected. */
+	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.image_maximum_gc_age
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.LinuxNodeConfig
@@ -958,6 +974,10 @@ type NodeConfig struct {
 	// +kcc:proto:field=google.container.v1.NodeConfig.resource_labels
 	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
+	/* The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}. */
+	// +kcc:proto:field=google.container.v1.NodeConfig.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+
 	/* Immutable. Sandbox configuration for this node. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.sandbox_config
 	SandboxConfig *SandboxConfig `json:"sandboxConfig,omitempty"`
@@ -1006,6 +1026,10 @@ type NodePoolAutoConfig struct {
 	/* Collection of Compute Engine network tags that can be applied to a node's underlying VM instance. */
 	// +kcc:proto:field=google.container.v1.NetworkTags.tags
 	NetworkTags *NetworkTags `json:"networkTags,omitempty"`
+
+	/* Collection of Resource Manager tags to be applied to GKE Autopilot node pools. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}. */
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.NodePoolDefaults
@@ -1378,6 +1402,10 @@ type ContainerClusterSpec struct {
 	/* Whether the cluster disables default in-node sNAT rules. In-node sNAT rules will be disabled when defaultSnatStatus is disabled. */
 	// +kcc:proto:field=google.container.v1.Cluster.default_snat_status
 	DefaultSnatStatus *DefaultSnatStatus `json:"defaultSnatStatus,omitempty"`
+
+	/* Whether the cluster disables L4 LB firewall reconciliation. */
+	// +kcc:proto:field=google.container.v1.Cluster.network_config.disable_l4_lb_firewall_reconciliation
+	DisableL4LbFirewallReconciliation *bool `json:"disableL4LbFirewallReconciliation,omitempty"`
 
 	/* Immutable.  Description of the cluster. */
 	// +kcc:proto:field=google.container.v1.Cluster.description

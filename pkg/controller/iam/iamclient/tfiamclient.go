@@ -83,8 +83,11 @@ func (t *TFIAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1
 
 	// Report diff to structured-reporting subsystem
 	{
-		report := &structuredreporting.Diff{}
+		report := &structuredreporting.Diff{
+			Controller: k8s.ReconcilerTypeIAMPolicyMember,
+		}
 		u, err := resource.MarshalAsUnstructured()
+
 		if err != nil {
 			log := log.FromContext(ctx)
 			log.Error(err, "error reporting diff")
@@ -283,6 +286,29 @@ func (t *TFIAMClient) SetAuditConfig(ctx context.Context, auditConfig *v1beta1.I
 	if diff.Empty() {
 		logger.Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(auditConfig))
 		return auditConfig, nil
+	}
+	// Report diff to structured-reporting subsystem
+	{
+		report := &structuredreporting.Diff{
+			Controller: k8s.ReconcilerTypeIAMAuditConfig,
+		}
+		u, err := resource.MarshalAsUnstructured()
+		if err != nil {
+			log := log.FromContext(ctx)
+			log.Error(err, "error reporting diff")
+		}
+		report.Object = u
+		if diff != nil {
+			for k, attr := range diff.Attributes {
+				report.Fields = append(report.Fields, structuredreporting.DiffField{
+					ID:  k,
+					Old: attr.Old,
+					New: attr.New,
+				})
+			}
+		}
+		report.IsNewObject = liveState.Empty()
+		structuredreporting.ReportDiff(ctx, report)
 	}
 	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {

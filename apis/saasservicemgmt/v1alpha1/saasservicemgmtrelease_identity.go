@@ -39,6 +39,10 @@ type SaasServiceMgmtReleaseIdentity struct {
 	Release  string
 }
 
+func (i *SaasServiceMgmtReleaseIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *SaasServiceMgmtReleaseIdentity) String() string {
 	return SaasServiceMgmtReleaseIdentityFormat.ToString(*i)
 }

@@ -1436,6 +1436,11 @@ func ResourceContainerCluster() *schema.Resource {
 								},
 							},
 						},
+						"resource_manager_tags": {
+							Type:        schema.TypeMap,
+							Optional:    true,
+							Description: `A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty.`,
+						},
 					},
 				},
 			},
@@ -1996,6 +2001,12 @@ func ResourceContainerCluster() *schema.Resource {
 				Description: `Whether L4ILB Subsetting is enabled for this cluster.`,
 				Default:     false,
 			},
+			"disable_l4_lb_firewall_reconciliation": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Whether the cluster disables L4 LB firewall reconciliation.`,
+				Default:     false,
+			},
 			"enable_multi_networking": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -2251,6 +2262,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			DatapathProvider:                     d.Get("datapath_provider").(string),
 			PrivateIpv6GoogleAccess:              d.Get("private_ipv6_google_access").(string),
 			EnableL4ilbSubsetting:                d.Get("enable_l4_ilb_subsetting").(bool),
+			DisableL4LbFirewallReconciliation:    d.Get("disable_l4_lb_firewall_reconciliation").(bool),
 			DnsConfig:                            expandDnsConfig(d.Get("dns_config")),
 			GatewayApiConfig:                     expandGatewayApiConfig(d.Get("gateway_api_config")),
 			EnableMultiNetworking:                d.Get("enable_multi_networking").(bool),
@@ -2805,6 +2817,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("private_ipv6_google_access", cluster.NetworkConfig.PrivateIpv6GoogleAccess); err != nil {
 		return fmt.Errorf("Error setting private_ipv6_google_access: %s", err)
 	}
+	if err := d.Set("disable_l4_lb_firewall_reconciliation", cluster.NetworkConfig.DisableL4LbFirewallReconciliation); err != nil {
+		return fmt.Errorf("Error setting disable_l4_lb_firewall_reconciliation: %s", err)
+	}
 	if err := d.Set("authenticator_groups_config", flattenAuthenticatorGroupsConfig(cluster.AuthenticatorGroupsConfig)); err != nil {
 		return err
 	}
@@ -3283,6 +3298,23 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		log.Printf("[INFO] GKE cluster %s FQDN Network Policy has been updated to %v", d.Id(), enabled)
 	}
 
+	if d.HasChange("disable_l4_lb_firewall_reconciliation") {
+		disabled := d.Get("disable_l4_lb_firewall_reconciliation").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredDisableL4LbFirewallReconciliation: disabled,
+				ForceSendFields:                          []string{"DesiredDisableL4LbFirewallReconciliation"},
+			},
+		}
+		updateF := updateFunc(req, "updating disable l4 lb firewall reconciliation")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Disable L4 LB Firewall Reconciliation has been updated to %v", d.Id(), disabled)
+	}
+
 	if d.HasChange("cost_management_config") {
 		c := d.Get("cost_management_config")
 		req := &container.UpdateClusterRequest{
@@ -3697,6 +3729,42 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			log.Printf("[INFO] GKE cluster %s: image type has been updated to %s", d.Id(), it)
+		}
+
+		if d.HasChange("node_config.0.resource_manager_tags") {
+			rmtags := d.Get("node_config.0.resource_manager_tags")
+			req := &container.UpdateNodePoolRequest{
+				Name: "default-pool",
+				ResourceManagerTags: expandResourceManagerTags(rmtags),
+			}
+			if req.ResourceManagerTags == nil {
+				req.ResourceManagerTags = &container.ResourceManagerTags{
+					Tags: make(map[string]string),
+				}
+			}
+
+			updateF := func() error {
+				name := containerClusterFullName(project, location, clusterName)
+				nodePoolName := name + "/nodePools/default-pool"
+				clusterNodePoolsUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Update(nodePoolName, req)
+				if config.UserProjectOverride {
+					clusterNodePoolsUpdateCall.Header().Add("X-Goog-User-Project", project)
+				}
+				op, err := clusterNodePoolsUpdateCall.Do()
+				if err != nil {
+					return err
+				}
+
+				// Wait until it's updated
+				return ContainerOperationWait(config, op, project, location, "updating GKE default node pool resource manager tags", userAgent, d.Timeout(schema.TimeoutUpdate))
+			}
+
+			// Call update serially.
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+				return err
+			}
+
+			log.Printf("[INFO] GKE cluster %s: default node pool resource manager tags have been updated", d.Id())
 		}
 	}
 
@@ -4185,6 +4253,24 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s node pool auto config network tags have been updated", d.Id())
+	}
+
+	if d.HasChange("node_pool_auto_config.0.resource_manager_tags") {
+		rmtags := d.Get("node_pool_auto_config.0.resource_manager_tags")
+
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredNodePoolAutoConfigResourceManagerTags: expandResourceManagerTags(rmtags),
+			},
+		}
+
+		updateF := updateFunc(req, "updating GKE cluster node pool auto config resource manager tags")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s node pool auto config resource manager tags have been updated", d.Id())
 	}
 
 	d.Partial(false)
@@ -5550,6 +5636,9 @@ func expandNodePoolAutoConfig(configured interface{}) *container.NodePoolAutoCon
 	if v, ok := config["network_tags"]; ok && len(v.([]interface{})) > 0 {
 		npac.NetworkTags = expandNodePoolAutoConfigNetworkTags(v)
 	}
+	if v, ok := config["resource_manager_tags"]; ok && len(v.(map[string]interface{})) > 0 {
+		npac.ResourceManagerTags = expandResourceManagerTags(v)
+	}
 	return npac
 }
 
@@ -6365,6 +6454,9 @@ func flattenNodePoolAutoConfig(c *container.NodePoolAutoConfig) []map[string]int
 	result := make(map[string]interface{})
 	if c.NetworkTags != nil {
 		result["network_tags"] = flattenNodePoolAutoConfigNetworkTags(c.NetworkTags)
+	}
+	if c.ResourceManagerTags != nil {
+		result["resource_manager_tags"] = flattenResourceManagerTags(c.ResourceManagerTags)
 	}
 
 	return []map[string]interface{}{result}

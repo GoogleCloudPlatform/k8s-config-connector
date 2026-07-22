@@ -32,12 +32,17 @@ import (
 type NetworksecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NetworkSecurityAddressGroupsGetter
+	NetworkSecurityAuthzPoliciesGetter
 	NetworkSecurityBackendAuthenticationConfigsGetter
+	NetworkSecurityDNSThreatDetectorsGetter
+	NetworkSecurityFirewallEndpointsGetter
 	NetworkSecurityFirewallEndpointAssociationsGetter
+	NetworkSecurityGatewaySecurityPoliciesGetter
 	NetworkSecurityInterceptDeploymentsGetter
 	NetworkSecurityInterceptEndpointGroupsGetter
 	NetworkSecurityMirroringDeploymentsGetter
 	NetworkSecurityMirroringEndpointGroupsGetter
+	NetworkSecurityPartnerSSEGatewaysGetter
 	NetworkSecurityPartnerSSERealmsGetter
 	NetworkSecuritySACRealmsGetter
 	NetworkSecuritySecurityProfilesGetter
@@ -53,12 +58,28 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityAddressGroups(namespace s
 	return newNetworkSecurityAddressGroups(c, namespace)
 }
 
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityAuthzPolicies(namespace string) NetworkSecurityAuthzPolicyInterface {
+	return newNetworkSecurityAuthzPolicies(c, namespace)
+}
+
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityBackendAuthenticationConfigs(namespace string) NetworkSecurityBackendAuthenticationConfigInterface {
 	return newNetworkSecurityBackendAuthenticationConfigs(c, namespace)
 }
 
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityDNSThreatDetectors(namespace string) NetworkSecurityDNSThreatDetectorInterface {
+	return newNetworkSecurityDNSThreatDetectors(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpoints(namespace string) NetworkSecurityFirewallEndpointInterface {
+	return newNetworkSecurityFirewallEndpoints(c, namespace)
+}
+
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityFirewallEndpointAssociations(namespace string) NetworkSecurityFirewallEndpointAssociationInterface {
 	return newNetworkSecurityFirewallEndpointAssociations(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityGatewaySecurityPolicies(namespace string) NetworkSecurityGatewaySecurityPolicyInterface {
+	return newNetworkSecurityGatewaySecurityPolicies(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityInterceptDeployments(namespace string) NetworkSecurityInterceptDeploymentInterface {
@@ -75,6 +96,10 @@ func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringDeployments(name
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityMirroringEndpointGroups(namespace string) NetworkSecurityMirroringEndpointGroupInterface {
 	return newNetworkSecurityMirroringEndpointGroups(c, namespace)
+}
+
+func (c *NetworksecurityV1alpha1Client) NetworkSecurityPartnerSSEGateways(namespace string) NetworkSecurityPartnerSSEGatewayInterface {
+	return newNetworkSecurityPartnerSSEGateways(c, namespace)
 }
 
 func (c *NetworksecurityV1alpha1Client) NetworkSecurityPartnerSSERealms(namespace string) NetworkSecurityPartnerSSERealmInterface {

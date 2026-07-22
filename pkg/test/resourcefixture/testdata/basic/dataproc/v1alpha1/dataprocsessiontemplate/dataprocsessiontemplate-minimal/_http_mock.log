@@ -1,0 +1,209 @@
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "sessionTemplate \"projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "jupyterSession": {
+    "displayName": "test-kernel",
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "jupyterSession": {
+    "displayName": "test-kernel",
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "00000000-0000-0000-0000-000000000001"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "jupyterSession": {
+    "displayName": "test-kernel",
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "00000000-0000-0000-0000-000000000001"
+}
+
+---
+
+PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: session_template.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "Updated description for test-template",
+  "jupyterSession": {
+    "displayName": "test-kernel-updated",
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "description": "Updated description for test-template",
+  "jupyterSession": {
+    "displayName": "test-kernel-updated",
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "00000000-0000-0000-0000-000000000001"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "description": "Updated description for test-template",
+  "jupyterSession": {
+    "displayName": "test-kernel-updated",
+    "kernel": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "00000000-0000-0000-0000-000000000001"
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

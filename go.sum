@@ -434,6 +434,8 @@ cloud.google.com/go/contactcenterinsights v1.11.3/go.mod h1:HHX5wrz5LHVAwfI2smIo
 cloud.google.com/go/contactcenterinsights v1.12.0/go.mod h1:HHX5wrz5LHVAwfI2smIotQG9x8Qd6gYilaHcLLLmNis=
 cloud.google.com/go/contactcenterinsights v1.12.1/go.mod h1:HHX5wrz5LHVAwfI2smIotQG9x8Qd6gYilaHcLLLmNis=
 cloud.google.com/go/contactcenterinsights v1.13.0/go.mod h1:ieq5d5EtHsu8vhe2y3amtZ+BE+AQwX5qAy7cpo0POsI=
+cloud.google.com/go/contactcenterinsights v1.22.0 h1:VzNZG5RxHhRWlhmPg3GHUmPDqsZXbHq1GJ9yw6ISJbY=
+cloud.google.com/go/contactcenterinsights v1.22.0/go.mod h1:2Crd36H59Lwkt4gWrLgmnbnF59IIZIa3XYt1gtNqJkQ=
 cloud.google.com/go/container v1.6.0/go.mod h1:Xazp7GjJSeUYo688S+6J5V+n/t+G5sKBTFkKNudGRxg=
 cloud.google.com/go/container v1.7.0/go.mod h1:Dp5AHtmothHGX3DwwIHPgq45Y8KmNsgN3amoYfxVkLo=
 cloud.google.com/go/container v1.13.1/go.mod h1:6wgbMPeQRw9rSnKBCAJXnds3Pzj03C4JHamr8asWKy4=
@@ -520,6 +522,8 @@ cloud.google.com/go/datalabeling v0.8.2/go.mod h1:cyDvGHuJWu9U/cLDA7d8sb9a0tWLEl
 cloud.google.com/go/datalabeling v0.8.3/go.mod h1:tvPhpGyS/V7lqjmb3V0TaDdGvhzgR1JoW7G2bpi2UTI=
 cloud.google.com/go/datalabeling v0.8.4/go.mod h1:Z1z3E6LHtffBGrNUkKwbwbDxTiXEApLzIgmymj8A3S8=
 cloud.google.com/go/datalabeling v0.8.5/go.mod h1:IABB2lxQnkdUbMnQaOl2prCOfms20mcPxDBm36lps+s=
+cloud.google.com/go/datalabeling v0.14.0 h1:hlmO3GBCfiU23UovEKnJoKDKzr+7Du5x1UxXm+4U5AY=
+cloud.google.com/go/datalabeling v0.14.0/go.mod h1:DYjvP4RhQ0332YgO22APYlBjCebb+SCaS0e2KApDq/Q=
 cloud.google.com/go/dataplex v1.3.0/go.mod h1:hQuRtDg+fCiFgC8j0zV222HvzFQdRd+SVX8gdmFcZzA=
 cloud.google.com/go/dataplex v1.4.0/go.mod h1:X51GfLXEMVJ6UN47ESVqvlsRplbLhcsAt0kZCCKsU0A=
 cloud.google.com/go/dataplex v1.5.2/go.mod h1:cVMgQHsmfRoI5KFYq4JtIBEUbYwc3c7tXmIDhRmNNVQ=
@@ -595,6 +599,8 @@ cloud.google.com/go/deploy v1.17.0/go.mod h1:XBr42U5jIr64t92gcpOXxNrqL2PStQCXHuK
 cloud.google.com/go/deploy v1.17.1/go.mod h1:SXQyfsXrk0fBmgBHRzBjQbZhMfKZ3hMQBw5ym7MN/50=
 cloud.google.com/go/deploy v1.32.0 h1:vA9yH8EEXOsq1caJpvkJl9wJYA9VU8xuU45V7iC9XHk=
 cloud.google.com/go/deploy v1.32.0/go.mod h1:lUG7maG/NkoTXmQ8G1mtcVymnbizfDJh6ER7vljVa/U=
+cloud.google.com/go/devicestreaming v1.0.0 h1:+yVSFN0uTmhUFd5U8nu6MSLpkNd4DFGHDVIQLmTTx1I=
+cloud.google.com/go/devicestreaming v1.0.0/go.mod h1:9qJYACHii1+4yiv9TewXrFpsX4jc77ZAqcEuapi7lJ4=
 cloud.google.com/go/dialogflow v1.15.0/go.mod h1:HbHDWs33WOGJgn6rfzBW1Kv807BE3O1+xGbn59zZWI4=
 cloud.google.com/go/dialogflow v1.16.1/go.mod h1:po6LlzGfK+smoSmTBnbkIZY2w8ffjz/RcGSS+sh1el0=
 cloud.google.com/go/dialogflow v1.17.0/go.mod h1:YNP09C/kXA1aZdBgC/VtXX74G/TKn7XVCcVumTflA+8=
@@ -1373,6 +1379,8 @@ cloud.google.com/go/talent v1.6.3/go.mod h1:xoDO97Qd4AK43rGjJvyBHMskiEf3KulgYzcH
 cloud.google.com/go/talent v1.6.4/go.mod h1:QsWvi5eKeh6gG2DlBkpMaFYZYrYUnIpo34f6/V5QykY=
 cloud.google.com/go/talent v1.6.5/go.mod h1:Mf5cma696HmE+P2BWJ/ZwYqeJXEeU0UqjHFXVLadEDI=
 cloud.google.com/go/talent v1.6.6/go.mod h1:y/WQDKrhVz12WagoarpAIyKKMeKGKHWPoReZ0g8tseQ=
+cloud.google.com/go/talent v1.13.0 h1:/nZYKG20ZHfZDr7ikRuDnssxk8fuaDxGR+KH3iB4gak=
+cloud.google.com/go/talent v1.13.0/go.mod h1:GSwli9V25WQdzeuJDJWH9TlQmA8lPFn7yKsxowdxW9Y=
 cloud.google.com/go/texttospeech v1.4.0/go.mod h1:FX8HQHA6sEpJ7rCMSfXuzBcysDAuWusNNNvN9FELDd8=
 cloud.google.com/go/texttospeech v1.5.0/go.mod h1:oKPLhR4n4ZdQqWKURdwxMy0uiTS1xU161C8W57Wkea4=
 cloud.google.com/go/texttospeech v1.6.0/go.mod h1:YmwmFT8pj1aBblQOI3TfKmwibnsfvhIBzPXcW4EBovc=
@@ -1413,6 +1421,8 @@ cloud.google.com/go/translate v1.9.2/go.mod h1:E3Tc6rUTsQkVrXW6avbUhKJSr7ZE3j7zN
 cloud.google.com/go/translate v1.9.3/go.mod h1:Kbq9RggWsbqZ9W5YpM94Q1Xv4dshw/gr/SHfsl5yCZ0=
 cloud.google.com/go/translate v1.10.0/go.mod h1:Kbq9RggWsbqZ9W5YpM94Q1Xv4dshw/gr/SHfsl5yCZ0=
 cloud.google.com/go/translate v1.10.1/go.mod h1:adGZcQNom/3ogU65N9UXHOnnSvjPwA/jKQUMnsYXOyk=
+cloud.google.com/go/translate v1.17.0 h1:6ecjspRHAOHU+x+e4HOK/2o+bzw7KHwu//eyLVf4TuM=
+cloud.google.com/go/translate v1.17.0/go.mod h1:3mErnHTQBu9yeLiL35K0HBBuaM6Vk2fD/vyWFz790VU=
 cloud.google.com/go/video v1.8.0/go.mod h1:sTzKFc0bUSByE8Yoh8X0mn8bMymItVGPfTuUBUyRgxk=
 cloud.google.com/go/video v1.9.0/go.mod h1:0RhNKFRF5v92f8dQt0yhaHrEuH95m068JYOvLZYnJSw=
 cloud.google.com/go/video v1.12.0/go.mod h1:MLQew95eTuaNDEGriQdcYn0dTwf9oWiA4uYebxM5kdg=

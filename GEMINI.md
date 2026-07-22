@@ -161,9 +161,15 @@ We have custom linters in `dev/linters`.
 
 When asked to work with github issues, use the `gh issue` tool to read/update issues.
 
-# Github Pull Requests
+# Github Pull Requests and Remote Pushes
 
-When asked to send or update a pull request, please use the `send-pr` skill. It provides a script that handles formatting and git pushing safely.
+When asked to send or update a pull request, or push any commit to a remote branch, NEVER run raw `git push` directly without running full pre-push validations.
+
+To protect local terminal runs from unvalidated `git push` commands, configure repository git hooks by running `./dev/tasks/install-git-hooks` (or `make setup-hooks`). Once installed, Git's `pre-push` hook (`dev/git-hooks/pre-push`) automatically intercepts any `git push` and runs canonical pre-push validation (`make fmt`, `go vet ./...`, `./dev/ci/presubmits/validate-generated-files`, and `./dev/ci/presubmits/unit-tests`) before allowing commits to be published.
+
+When automating or pushing manually, you MUST:
+1. Use `./dev/tasks/validate-and-push [remote] [branch]` (or `make validate`) to execute pre-push presubmit checks safely; OR
+2. Ensure repository git hooks (`make setup-hooks`) are active so standard `git push` commands automatically run the canonical pre-push checks.
 
 # Import Alias Convention
 

@@ -13,6 +13,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+
 {
   "error": {
     "code": 404,
@@ -48,12 +49,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
     "verb": "create"
   },
@@ -77,6 +76,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+
 {
   "done": true,
   "metadata": {
@@ -84,7 +84,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
     "verb": "create"
   },
@@ -119,6 +118,7 @@ Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
+
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -160,12 +160,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
     "verb": "update"
   },
@@ -189,6 +187,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+
 {
   "done": true,
   "metadata": {
@@ -196,7 +195,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
     "verb": "update"
   },
@@ -232,6 +230,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "This is an updated maximal migration group description",
@@ -261,13 +260,12 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
     "verb": "delete"
   },
@@ -291,6 +289,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
+
 {
   "done": true,
   "metadata": {
@@ -298,7 +297,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}",
     "verb": "delete"
   },

@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
+    "message": "Resource 'folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -67,7 +67,7 @@ X-Goog-Request-Params: parent=folders%2F123451001%2Flocations%2Fglobal
   "maxRequestDuration": "1800s",
   "privilegedAccess": {
     "gcpIamAccess": {
-      "resource": "//cloudresourcemanager.googleapis.com/folders/123451001",
+      "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
       "resourceType": "cloudresourcemanager.googleapis.com/Folder",
       "roleBindings": [
         {
@@ -97,10 +97,10 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "create"
   },
-  "name": "folders/123451001/locations/global/operations/${operationID}"
+  "name": "folders/${folderID}/locations/global/operations/${operationID}"
 }
 
 ---
@@ -127,10 +127,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "target": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "verb": "create"
   },
-  "name": "folders/123451001/locations/global/operations/${operationID}",
+  "name": "folders/${folderID}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.privilegedaccessmanager.v1.Entitlement",
     "additionalNotificationTargets": {
@@ -171,10 +171,10 @@ X-Xss-Protection: 0
     ],
     "etag": "abcdef0123A=",
     "maxRequestDuration": "1800s",
-    "name": "folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
+    "name": "folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}",
     "privilegedAccess": {
       "gcpIamAccess": {
-        "resource": "//cloudresourcemanager.googleapis.com/folders/123451001",
+        "resource": "//cloudresourcemanager.googleapis.com/folders/${folderID}",
         "resourceType": "cloudresourcemanager.googleapis.com/Folder",
         "roleBindings": [
           {

@@ -42,7 +42,7 @@ type EnvironmentRef struct {
 }
 
 func init() {
-	refs.Register(&EnvironmentRef{})
+	refs.Register(&EnvironmentRef{}, &NotebooksEnvironment{})
 }
 
 func (r *EnvironmentRef) GetGVK() schema.GroupVersionKind {

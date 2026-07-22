@@ -33,7 +33,10 @@ type AiplatformV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	AIPlatformModelsGetter
 	VertexAIFeatureOnlineStoresGetter
+	VertexAIPipelineJobsGetter
 	VertexAISpecialistPoolsGetter
+	VertexAIStudiesGetter
+	VertexAITrainingPipelinesGetter
 	VertexAITuningJobsGetter
 }
 
@@ -50,8 +53,20 @@ func (c *AiplatformV1alpha1Client) VertexAIFeatureOnlineStores(namespace string)
 	return newVertexAIFeatureOnlineStores(c, namespace)
 }
 
+func (c *AiplatformV1alpha1Client) VertexAIPipelineJobs(namespace string) VertexAIPipelineJobInterface {
+	return newVertexAIPipelineJobs(c, namespace)
+}
+
 func (c *AiplatformV1alpha1Client) VertexAISpecialistPools(namespace string) VertexAISpecialistPoolInterface {
 	return newVertexAISpecialistPools(c, namespace)
+}
+
+func (c *AiplatformV1alpha1Client) VertexAIStudies(namespace string) VertexAIStudyInterface {
+	return newVertexAIStudies(c, namespace)
+}
+
+func (c *AiplatformV1alpha1Client) VertexAITrainingPipelines(namespace string) VertexAITrainingPipelineInterface {
+	return newVertexAITrainingPipelines(c, namespace)
 }
 
 func (c *AiplatformV1alpha1Client) VertexAITuningJobs(namespace string) VertexAITuningJobInterface {

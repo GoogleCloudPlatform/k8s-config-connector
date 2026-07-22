@@ -1,7 +1,7 @@
 ---
 name: Greenfield Direct Controller
 description: Identifies greenfield resources that have completed Phase 1 (types and identity) but lack a controller, and creates minimal issues for them.
-schedule: "@daily"
+schedule: "never"
 skipPR: true
 ---
 

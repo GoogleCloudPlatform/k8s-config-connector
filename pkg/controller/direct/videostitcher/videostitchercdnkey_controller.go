@@ -217,7 +217,7 @@ func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 
 	externalRef := a.id.String()
 	status.ExternalRef = &externalRef
-	return op.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, &status, nil)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -276,6 +276,19 @@ func (a *Adapter) compareCDNKey(ctx context.Context, actual, desired *pb.CdnKey)
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+
+	// Since private keys and token keys are write-only fields and not returned by GCP,
+	// we preserve the desired secrets in maskedActual to avoid false drifts.
+	if desired.GetGoogleCdnKey() != nil && maskedActual.GetGoogleCdnKey() != nil {
+		maskedActual.GetGoogleCdnKey().PrivateKey = desired.GetGoogleCdnKey().PrivateKey
+	}
+	if desired.GetMediaCdnKey() != nil && maskedActual.GetMediaCdnKey() != nil {
+		maskedActual.GetMediaCdnKey().PrivateKey = desired.GetMediaCdnKey().PrivateKey
+	}
+	if desired.GetAkamaiCdnKey() != nil && maskedActual.GetAkamaiCdnKey() != nil {
+		maskedActual.GetAkamaiCdnKey().TokenKey = desired.GetAkamaiCdnKey().TokenKey
+	}
+
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err

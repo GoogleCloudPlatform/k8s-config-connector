@@ -1219,6 +1219,26 @@ func (in *ClusterKubeletConfig) DeepCopyInto(out *ClusterKubeletConfig) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ImageGcHighThresholdPercent != nil {
+		in, out := &in.ImageGcHighThresholdPercent, &out.ImageGcHighThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageGcLowThresholdPercent != nil {
+		in, out := &in.ImageGcLowThresholdPercent, &out.ImageGcLowThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageMaximumGcAge != nil {
+		in, out := &in.ImageMaximumGcAge, &out.ImageMaximumGcAge
+		*out = new(string)
+		**out = **in
+	}
+	if in.ImageMinimumGcAge != nil {
+		in, out := &in.ImageMinimumGcAge, &out.ImageMinimumGcAge
+		*out = new(string)
+		**out = **in
+	}
 	if in.PodPidsLimit != nil {
 		in, out := &in.PodPidsLimit, &out.PodPidsLimit
 		*out = new(int64)
@@ -1795,6 +1815,13 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 			(*out)[key] = val
 		}
 	}
+	if in.ResourceManagerTags != nil {
+		in, out := &in.ResourceManagerTags, &out.ResourceManagerTags
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.SandboxConfig != nil {
 		in, out := &in.SandboxConfig, &out.SandboxConfig
 		*out = new(ClusterSandboxConfig)
@@ -1881,6 +1908,13 @@ func (in *ClusterNodePoolAutoConfig) DeepCopyInto(out *ClusterNodePoolAutoConfig
 		in, out := &in.NetworkTags, &out.NetworkTags
 		*out = new(ClusterNetworkTags)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceManagerTags != nil {
+		in, out := &in.ResourceManagerTags, &out.ResourceManagerTags
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
 	}
 	return
 }
@@ -2743,6 +2777,11 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableL4LbFirewallReconciliation != nil {
+		in, out := &in.DisableL4LbFirewallReconciliation, &out.DisableL4LbFirewallReconciliation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DnsConfig != nil {
 		in, out := &in.DnsConfig, &out.DnsConfig
 		*out = new(ClusterDnsConfig)
@@ -3600,6 +3639,26 @@ func (in *NodepoolKubeletConfig) DeepCopyInto(out *NodepoolKubeletConfig) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ImageGcHighThresholdPercent != nil {
+		in, out := &in.ImageGcHighThresholdPercent, &out.ImageGcHighThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageGcLowThresholdPercent != nil {
+		in, out := &in.ImageGcLowThresholdPercent, &out.ImageGcLowThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageMaximumGcAge != nil {
+		in, out := &in.ImageMaximumGcAge, &out.ImageMaximumGcAge
+		*out = new(string)
+		**out = **in
+	}
+	if in.ImageMinimumGcAge != nil {
+		in, out := &in.ImageMinimumGcAge, &out.ImageMinimumGcAge
+		*out = new(string)
+		**out = **in
+	}
 	if in.PodPidsLimit != nil {
 		in, out := &in.PodPidsLimit, &out.PodPidsLimit
 		*out = new(int64)
@@ -3910,6 +3969,13 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.ResourceLabels != nil {
 		in, out := &in.ResourceLabels, &out.ResourceLabels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.ResourceManagerTags != nil {
+		in, out := &in.ResourceManagerTags, &out.ResourceManagerTags
 		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val

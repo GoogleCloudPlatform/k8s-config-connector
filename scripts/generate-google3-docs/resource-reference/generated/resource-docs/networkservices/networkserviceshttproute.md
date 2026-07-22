@@ -197,7 +197,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>NetworkServicesGatewayRef is a reference to a GCP NetworkServicesGateway.</p>
         </td>
     </tr>
     <tr>
@@ -207,7 +207,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `NetworkServicesGateway` resource.</p>
+            <p>A reference to an externally managed NetworkServicesGateway resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/gateways/{{gatewayID}}".</p>
         </td>
     </tr>
     <tr>
@@ -217,7 +217,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a NetworkServicesGateway resource.</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +227,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a NetworkServicesGateway resource.</p>
         </td>
     </tr>
     <tr>
@@ -257,7 +257,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The location for the resource</p>
+            <p>Immutable. The location of this resource.</p>
         </td>
     </tr>
     <tr>
@@ -277,7 +277,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p></p>
+            <p>NetworkServicesMeshRef is a reference to a NetworkServicesMesh.</p>
         </td>
     </tr>
     <tr>
@@ -287,7 +287,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `NetworkServicesMesh` resource.</p>
+            <p>A reference to an externally managed NetworkServicesMesh resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/meshes/{{meshID}}".</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +297,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a NetworkServicesMesh resource.</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +307,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a NetworkServicesMesh resource.</p>
         </td>
     </tr>
     <tr>
@@ -327,9 +327,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -339,7 +337,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -349,7 +347,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -569,9 +567,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The URL of a BackendService to route traffic to.
-
-Allowed value: The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).</p>
+            <p>The value of an externally managed ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -581,7 +577,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -591,7 +587,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -841,9 +837,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The URL of a BackendService to route traffic to.
-
-Allowed value: The Google Cloud resource name of a `ComputeBackendService` resource (format: `projects/{{project}}/global/backendServices/{{name}}`).</p>
+            <p>The value of an externally managed ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -853,7 +847,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -863,7 +857,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeBackendService resource.</p>
         </td>
     </tr>
     <tr>
@@ -1285,7 +1279,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>

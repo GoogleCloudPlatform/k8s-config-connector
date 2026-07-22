@@ -547,6 +547,56 @@ func NotebooksExecutionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmn
 	out.OutputNotebookFile = direct.ValueOf(in.OutputNotebookFile)
 	return out
 }
+func NotebooksScheduleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krmnotebooksv1alpha1.NotebooksScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.NotebooksScheduleObservedState{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.RecentExecutions = direct.Slice_FromProto(mapCtx, in.RecentExecutions, NotebooksExecutionObservedState_v1alpha1_FromProto)
+	return out
+}
+func NotebooksScheduleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebooksScheduleObservedState) *pb.Schedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schedule{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.RecentExecutions = direct.Slice_ToProto(mapCtx, in.RecentExecutions, NotebooksExecutionObservedState_v1alpha1_ToProto)
+	return out
+}
+func NotebooksScheduleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Schedule) *krmnotebooksv1alpha1.NotebooksScheduleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.NotebooksScheduleSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CronSchedule = direct.LazyPtr(in.GetCronSchedule())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.ExecutionTemplate = ExecutionTemplate_v1alpha1_FromProto(mapCtx, in.GetExecutionTemplate())
+	return out
+}
+func NotebooksScheduleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebooksScheduleSpec) *pb.Schedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schedule{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.State = direct.Enum_ToProto[pb.Schedule_State](mapCtx, in.State)
+	out.CronSchedule = direct.ValueOf(in.CronSchedule)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.ExecutionTemplate = ExecutionTemplate_v1alpha1_ToProto(mapCtx, in.ExecutionTemplate)
+	return out
+}
 func ReservationAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil

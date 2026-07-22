@@ -79,12 +79,14 @@ func ResourceComputeSubnetwork() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"ip_cidr_range": {
 				Type:         schema.TypeString,
-				Required:     true,
+				Computed:     true,
+				Optional:     true,
 				ValidateFunc: verify.ValidateIpCidrRange,
 				Description: `The range of internal addresses that are owned by this subnetwork.
 Provide this property when you create the subnetwork. For example,
 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and
-non-overlapping within a network. Only IPv4 is supported.`,
+non-overlapping within a network. Only IPv4 is supported.
+Field is optional when 'reserved_internal_range' is defined, otherwise required.`,
 			},
 			"name": {
 				Type:         schema.TypeString,
@@ -220,6 +222,14 @@ If unspecified, the purpose defaults to 'PRIVATE_RFC_1918'.`,
 				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `The GCP region for this subnetwork.`,
 			},
+			"reserved_internal_range": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+				Description: `The ID of the reserved internal range. Must be prefixed with 'networkconnectivity.googleapis.com'
+E.g. 'networkconnectivity.googleapis.com/projects/{project}/locations/global/internalRanges/{rangeId}'`,
+			},
 			"role": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -249,12 +259,14 @@ For more details about this behavior, see [this section](https://www.terraform.i
 					Schema: map[string]*schema.Schema{
 						"ip_cidr_range": {
 							Type:         schema.TypeString,
-							Required:     true,
+							Computed:     true,
+							Optional:     true,
 							ValidateFunc: verify.ValidateIpCidrRange,
 							Description: `The range of IP addresses belonging to this subnetwork secondary
 range. Provide this property when you create the subnetwork.
 Ranges must be unique and non-overlapping with all primary and
-secondary IP ranges within a network. Only IPv4 is supported.`,
+secondary IP ranges within a network. Only IPv4 is supported.
+Field is optional when 'reserved_internal_range' is defined, otherwise required.`,
 						},
 						"range_name": {
 							Type:         schema.TypeString,
@@ -264,6 +276,13 @@ secondary IP ranges within a network. Only IPv4 is supported.`,
 when adding an alias IP range to a VM instance. The name must
 be 1-63 characters long, and comply with RFC1035. The name
 must be unique within the subnetwork.`,
+						},
+						"reserved_internal_range": {
+							Type:             schema.TypeString,
+							Optional:         true,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+							Description: `The ID of the reserved internal range. Must be prefixed with 'networkconnectivity.googleapis.com'
+E.g. 'networkconnectivity.googleapis.com/projects/{project}/locations/global/internalRanges/{rangeId}'`,
 						},
 					},
 				},
@@ -384,6 +403,12 @@ func resourceComputeSubnetworkCreate(d *schema.ResourceData, meta interface{}) e
 		return err
 	} else if v, ok := d.GetOkExists("ip_cidr_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipCidrRangeProp)) && (ok || !reflect.DeepEqual(v, ipCidrRangeProp)) {
 		obj["ipCidrRange"] = ipCidrRangeProp
+	}
+	reservedInternalRangeProp, err := expandComputeSubnetworkReservedInternalRange(d.Get("reserved_internal_range"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("reserved_internal_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(reservedInternalRangeProp)) && (ok || !reflect.DeepEqual(v, reservedInternalRangeProp)) {
+		obj["reservedInternalRange"] = reservedInternalRangeProp
 	}
 	nameProp, err := expandComputeSubnetworkName(d.Get("name"), d, config)
 	if err != nil {
@@ -580,6 +605,9 @@ func resourceComputeSubnetworkRead(d *schema.ResourceData, meta interface{}) err
 		return fmt.Errorf("Error reading Subnetwork: %s", err)
 	}
 	if err := d.Set("region", flattenComputeSubnetworkRegion(res["region"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Subnetwork: %s", err)
+	}
+	if err := d.Set("reserved_internal_range", flattenComputeSubnetworkReservedInternalRange(res["reservedInternalRange"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Subnetwork: %s", err)
 	}
 	if err := d.Set("log_config", flattenComputeSubnetworkLogConfig(res["logConfig"], d, config)); err != nil {
@@ -1108,8 +1136,9 @@ func flattenComputeSubnetworkSecondaryIpRange(v interface{}, d *schema.ResourceD
 			continue
 		}
 		transformed = append(transformed, map[string]interface{}{
-			"range_name":    flattenComputeSubnetworkSecondaryIpRangeRangeName(original["rangeName"], d, config),
-			"ip_cidr_range": flattenComputeSubnetworkSecondaryIpRangeIpCidrRange(original["ipCidrRange"], d, config),
+			"range_name":              flattenComputeSubnetworkSecondaryIpRangeRangeName(original["rangeName"], d, config),
+			"ip_cidr_range":           flattenComputeSubnetworkSecondaryIpRangeIpCidrRange(original["ipCidrRange"], d, config),
+			"reserved_internal_range": flattenComputeSubnetworkSecondaryIpRangeReservedInternalRange(original["reservedInternalRange"], d, config),
 		})
 	}
 	return transformed
@@ -1120,6 +1149,30 @@ func flattenComputeSubnetworkSecondaryIpRangeRangeName(v interface{}, d *schema.
 
 func flattenComputeSubnetworkSecondaryIpRangeIpCidrRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
+}
+
+func flattenComputeSubnetworkReservedInternalRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return v
+	}
+	// Normalize the URL to the prefixed format: networkconnectivity.googleapis.com/projects/...
+	path, err := tpgresource.GetRelativePath(v.(string))
+	if err != nil {
+		return v
+	}
+	return "networkconnectivity.googleapis.com/" + path
+}
+
+func flattenComputeSubnetworkSecondaryIpRangeReservedInternalRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return v
+	}
+	// Normalize the URL to the prefixed format: networkconnectivity.googleapis.com/projects/...
+	path, err := tpgresource.GetRelativePath(v.(string))
+	if err != nil {
+		return v
+	}
+	return "networkconnectivity.googleapis.com/" + path
 }
 
 func flattenComputeSubnetworkPrivateIpGoogleAccess(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -1242,9 +1295,35 @@ func expandComputeSubnetworkSecondaryIpRange(v interface{}, d tpgresource.Terraf
 			transformed["ipCidrRange"] = transformedIpCidrRange
 		}
 
+		transformedReservedInternalRange, err := expandComputeSubnetworkSecondaryIpRangeReservedInternalRange(original["reserved_internal_range"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedReservedInternalRange); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["reservedInternalRange"] = transformedReservedInternalRange
+		}
+
 		req = append(req, transformed)
 	}
 	return req, nil
+}
+
+func prefixInternalRangeURL(v interface{}) interface{} {
+	if v == nil {
+		return v
+	}
+	s, ok := v.(string)
+	if !ok || s == "" {
+		return v
+	}
+	path, err := tpgresource.GetRelativePath(s)
+	if err != nil {
+		return v
+	}
+	return "networkconnectivity.googleapis.com/" + path
+}
+
+func expandComputeSubnetworkReservedInternalRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return prefixInternalRangeURL(v), nil
 }
 
 func expandComputeSubnetworkSecondaryIpRangeRangeName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
@@ -1253,6 +1332,10 @@ func expandComputeSubnetworkSecondaryIpRangeRangeName(v interface{}, d tpgresour
 
 func expandComputeSubnetworkSecondaryIpRangeIpCidrRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
+}
+
+func expandComputeSubnetworkSecondaryIpRangeReservedInternalRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return prefixInternalRangeURL(v), nil
 }
 
 func expandComputeSubnetworkPrivateIpGoogleAccess(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {

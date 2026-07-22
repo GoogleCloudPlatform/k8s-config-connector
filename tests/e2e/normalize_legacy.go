@@ -31,6 +31,11 @@ import (
 // we should avoid adding to this function and instead add to the per-service normalization functions.
 // Deprecated: add functionality to the per-service normalization instead.
 func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject, uniqueID string, events test.LogEntries) (string, []func(string) string) {
+	if strings.Contains(strings.ToLower(t.Name()), "cloudbatchresourceallowance") {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			return !strings.Contains(e.Request.URL, "pubsub.googleapis.com")
+		})
+	}
 
 	r := NewReplacements()
 
@@ -229,6 +234,10 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+	// Specific to GCS
+	addReplacement("autoclass.toggleTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("autoclass.terminalStorageClassUpdateTime", "2024-04-01T12:34:56.123456Z")
 
 	// specific to apigateway
 	addReplacement("managedService", "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog")
@@ -437,6 +446,55 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	// Specific to CertificateManager
 	addReplacement("response.dnsResourceRecord.data", uniqueID)
 	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if !strings.Contains(requestURL, "/dnsAuthorizations") {
+			return
+		}
+		if record, found, _ := unstructured.NestedMap(obj, "dnsResourceRecord"); found {
+			if data, found, _ := unstructured.NestedString(record, "data"); found {
+				if strings.HasSuffix(data, "authorize.certificatemanager.goog.") {
+					record["data"] = "dns-resource-record-data-placeholder"
+					if err := unstructured.SetNestedMap(obj, record, "dnsResourceRecord"); err != nil {
+						t.Fatalf("FAIL: setting dnsResourceRecord map: %v", err)
+					}
+				}
+			}
+			if name, found, _ := unstructured.NestedString(record, "name"); found {
+				if strings.HasPrefix(name, "_acme-challenge") {
+					record["name"] = fmt.Sprintf("_acme-challenge.%s.hashicorptest.com.", uniqueID)
+					if err := unstructured.SetNestedMap(obj, record, "dnsResourceRecord"); err != nil {
+						t.Fatalf("FAIL: setting dnsResourceRecord map: %v", err)
+					}
+				}
+			}
+		}
+		if response, found, _ := unstructured.NestedMap(obj, "response"); found {
+			if record, found, _ := unstructured.NestedMap(response, "dnsResourceRecord"); found {
+				if data, found, _ := unstructured.NestedString(record, "data"); found {
+					if strings.HasSuffix(data, "authorize.certificatemanager.goog.") {
+						record["data"] = "dns-resource-record-data-placeholder"
+						if err := unstructured.SetNestedMap(response, record, "dnsResourceRecord"); err != nil {
+							t.Fatalf("FAIL: setting dnsResourceRecord map: %v", err)
+						}
+						if err := unstructured.SetNestedMap(obj, response, "response"); err != nil {
+							t.Fatalf("FAIL: setting response map: %v", err)
+						}
+					}
+				}
+				if name, found, _ := unstructured.NestedString(record, "name"); found {
+					if strings.HasPrefix(name, "_acme-challenge") {
+						record["name"] = fmt.Sprintf("_acme-challenge.%s.hashicorptest.com.", uniqueID)
+						if err := unstructured.SetNestedMap(response, record, "dnsResourceRecord"); err != nil {
+							t.Fatalf("FAIL: setting dnsResourceRecord map: %v", err)
+						}
+						if err := unstructured.SetNestedMap(obj, response, "response"); err != nil {
+							t.Fatalf("FAIL: setting response map: %v", err)
+						}
+					}
+				}
+			}
+		}
+	})
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 		if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
 			// Only run this mutator for sql instance objects.
 			return
@@ -504,8 +562,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	})
 
-	// Specific to ComputeNetwork
-	if strings.Contains(t.Name(), "computeaddress") {
+	if strings.Contains(t.Name(), "computeaddress") || strings.Contains(t.Name(), "containercluster") {
 		jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 			normalizeNetwork := func(o map[string]any) {
 				if val, found, err := unstructured.NestedString(o, "kind"); err == nil && found && val == "compute#network" {
@@ -767,6 +824,12 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("lastModifiedTime", "123456789")
 
 	events.PrettifyJSON(jsonMutators...)
+
+	if strings.Contains(t.Name(), "osconfig") {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			return strings.Contains(e.Request.URL, "osconfig.googleapis.com")
+		})
+	}
 
 	NormalizeHTTPLog(t, events, h.RegisteredServices(), project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
 

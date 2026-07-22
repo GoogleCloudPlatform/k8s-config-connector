@@ -184,6 +184,7 @@ defaultMaxPodsPerNode: integer
 defaultSnatStatus:
   disabled: boolean
 description: string
+disableL4LbFirewallReconciliation: boolean
 dnsConfig:
   clusterDns: string
   clusterDnsDomain: string
@@ -323,6 +324,10 @@ nodeConfig:
     cpuCfsQuota: boolean
     cpuCfsQuotaPeriod: string
     cpuManagerPolicy: string
+    imageGcHighThresholdPercent: integer
+    imageGcLowThresholdPercent: integer
+    imageMaximumGcAge: string
+    imageMinimumGcAge: string
     podPidsLimit: integer
   labels:
     string: string
@@ -351,6 +356,8 @@ nodeConfig:
     values:
     - string
   resourceLabels:
+    string: string
+  resourceManagerTags:
     string: string
   sandboxConfig:
     sandboxType: string
@@ -383,6 +390,8 @@ nodePoolAutoConfig:
   networkTags:
     tags:
     - string
+  resourceManagerTags:
+    string: string
 nodePoolDefaults:
   nodeConfigDefaults:
     gcfsConfig:
@@ -1460,6 +1469,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable.  Description of the cluster.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>disableL4LbFirewallReconciliation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Whether the cluster disables L4 LB firewall reconciliation.</p>
         </td>
     </tr>
     <tr>
@@ -2904,6 +2923,46 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.kubeletConfig.imageGcHighThresholdPercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Percent of disk usage after which image garbage collection is always run.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.imageGcLowThresholdPercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.imageMaximumGcAge</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Maximum age an image can be unused before it is garbage collected.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.imageMinimumGcAge</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Minimum age for an unused image before it is garbage collected.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.kubeletConfig.podPidsLimit</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -3150,6 +3209,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>The GCE resource labels (a map of key/value pairs) to be applied to the node pool.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}.</p>
         </td>
     </tr>
     <tr>
@@ -3480,6 +3549,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolAutoConfig.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>Collection of Resource Manager tags to be applied to GKE Autopilot node pools. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}.</p>
         </td>
     </tr>
     <tr>

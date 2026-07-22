@@ -15,6 +15,8 @@
 package privateca
 
 import (
+	"fmt"
+
 	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/kmsrefs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
@@ -741,12 +743,20 @@ func PrivateCACertificateAuthorityStatus_FromProto(mapCtx *direct.MapContext, in
 	out.AccessUrls = CertificateAuthority_AccessUrls_FromProto(mapCtx, in.GetAccessUrls())
 	out.CaCertificateDescriptions = direct.Slice_FromProto(mapCtx, in.GetCaCertificateDescriptions(), CertificateDescription_FromProto)
 	if in.GetConfig() != nil {
-		out.Config = &krm.CertificateAuthority_ConfigStatus{}
-		out.Config.PublicKey = PublicKey_FromProto(mapCtx, in.GetConfig().GetPublicKey())
-		if in.GetConfig().GetX509Config() != nil {
-			out.Config.X509Config = &krm.CertificateAuthority_X509ConfigStatus{
+		var configStatus krm.CertificateAuthority_ConfigStatus
+		hasConfig := false
+		if pubKey := PublicKey_FromProto(mapCtx, in.GetConfig().GetPublicKey()); pubKey != nil {
+			configStatus.PublicKey = pubKey
+			hasConfig = true
+		}
+		if in.GetConfig().GetX509Config() != nil && len(in.GetConfig().GetX509Config().GetAiaOcspServers()) > 0 {
+			configStatus.X509Config = &krm.CertificateAuthority_X509ConfigStatus{
 				AiaOcspServers: in.GetConfig().GetX509Config().GetAiaOcspServers(),
 			}
+			hasConfig = true
+		}
+		if hasConfig {
+			out.Config = &configStatus
 		}
 	}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -840,5 +850,730 @@ func CertificateAuthority_AccessUrls_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.CertificateAuthority_AccessUrls{}
 	out.CaCertificateAccessUrl = direct.ValueOf(in.CaCertificateAccessUrl)
 	out.CrlAccessUrls = in.CrlAccessUrls
+	return out
+}
+
+func CertificatePublicKey_FromProto(mapCtx *direct.MapContext, in *pb.PublicKey) *krm.CertificatePublicKey {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificatePublicKey{}
+	out.Key = string(in.GetKey())
+	if format := direct.Enum_FromProto(mapCtx, in.GetFormat()); format != nil {
+		out.Format = *format
+	}
+	return out
+}
+
+func CertificatePublicKey_ToProto(mapCtx *direct.MapContext, in *krm.CertificatePublicKey) *pb.PublicKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicKey{}
+	out.Key = []byte(in.Key)
+	out.Format = direct.Enum_ToProto[pb.PublicKey_KeyFormat](mapCtx, direct.LazyPtr(in.Format))
+	return out
+}
+
+func CertificateSubjectAltName_FromProto(mapCtx *direct.MapContext, in *pb.SubjectAltNames) *krm.CertificateSubjectAltName {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateSubjectAltName{}
+	out.DnsNames = in.GetDnsNames()
+	out.EmailAddresses = in.GetEmailAddresses()
+	out.IpAddresses = in.GetIpAddresses()
+	out.Uris = in.GetUris()
+	return out
+}
+
+func CertificateSubjectAltName_ToProto(mapCtx *direct.MapContext, in *krm.CertificateSubjectAltName) *pb.SubjectAltNames {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SubjectAltNames{}
+	out.DnsNames = in.DnsNames
+	out.EmailAddresses = in.EmailAddresses
+	out.IpAddresses = in.IpAddresses
+	out.Uris = in.Uris
+	return out
+}
+
+func CertificateAdditionalExtensions_FromProto(mapCtx *direct.MapContext, in *pb.X509Extension) *krm.CertificateAdditionalExtensions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAdditionalExtensions{}
+	if objID := in.GetObjectId(); objID != nil {
+		out.ObjectId = krm.CertificateObjectId{
+			ObjectIdPath: int32To64Slice(objID.GetObjectIdPath()),
+		}
+	}
+	out.Critical = direct.LazyPtr(in.GetCritical())
+	out.Value = string(in.GetValue())
+	return out
+}
+
+func CertificateAdditionalExtensions_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAdditionalExtensions) *pb.X509Extension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.X509Extension{}
+	if in.ObjectId.ObjectIdPath != nil {
+		out.ObjectId = &pb.ObjectId{
+			ObjectIdPath: int64To32Slice(in.ObjectId.ObjectIdPath),
+		}
+	}
+	out.Critical = direct.ValueOf(in.Critical)
+	out.Value = []byte(in.Value)
+	return out
+}
+
+func CertificatePolicyIds_FromProto(mapCtx *direct.MapContext, in *pb.ObjectId) *krm.CertificatePolicyIds {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificatePolicyIds{}
+	out.ObjectIdPath = int32To64Slice(in.GetObjectIdPath())
+	return out
+}
+
+func CertificatePolicyIds_ToProto(mapCtx *direct.MapContext, in *krm.CertificatePolicyIds) *pb.ObjectId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ObjectId{}
+	out.ObjectIdPath = int64To32Slice(in.ObjectIdPath)
+	return out
+}
+
+func CertificateUnknownExtendedKeyUsages_FromProto(mapCtx *direct.MapContext, in *pb.ObjectId) *krm.CertificateUnknownExtendedKeyUsages {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateUnknownExtendedKeyUsages{}
+	out.ObjectIdPath = in.GetObjectIdPath()
+	return out
+}
+
+func CertificateUnknownExtendedKeyUsages_ToProto(mapCtx *direct.MapContext, in *krm.CertificateUnknownExtendedKeyUsages) *pb.ObjectId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ObjectId{}
+	out.ObjectIdPath = in.ObjectIdPath
+	return out
+}
+
+func CertificateCaOptions_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_CaOptions) *krm.CertificateCaOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateCaOptions{}
+	if in.IsCa != nil {
+		out.IsCa = direct.PtrTo(*in.IsCa)
+	}
+	if in.MaxIssuerPathLength != nil {
+		out.MaxIssuerPathLength = direct.PtrTo(int64(*in.MaxIssuerPathLength))
+	}
+	return out
+}
+
+func CertificateCaOptions_ToProto(mapCtx *direct.MapContext, in *krm.CertificateCaOptions) *pb.X509Parameters_CaOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.X509Parameters_CaOptions{}
+	if in.IsCa != nil {
+		out.IsCa = direct.PtrTo(direct.ValueOf(in.IsCa))
+	} else if in.NonCa != nil && direct.ValueOf(in.NonCa) {
+		out.IsCa = direct.PtrTo(false)
+	}
+
+	if in.MaxIssuerPathLength != nil {
+		out.MaxIssuerPathLength = direct.PtrTo(int32(direct.ValueOf(in.MaxIssuerPathLength)))
+	} else if in.ZeroMaxIssuerPathLength != nil && direct.ValueOf(in.ZeroMaxIssuerPathLength) {
+		out.MaxIssuerPathLength = direct.PtrTo(int32(0))
+	}
+	return out
+}
+
+func PrivateCACertificateSpec_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krm.PrivateCACertificateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateCACertificateSpec{}
+	if in.GetPemCsr() != "" {
+		out.PemCsr = direct.LazyPtr(in.GetPemCsr())
+	}
+	out.Config = Certificate_Config_FromProto(mapCtx, in.GetConfig())
+	if lifetime := direct.StringDuration_FromProto(mapCtx, in.GetLifetime()); lifetime != nil {
+		out.Lifetime = *lifetime
+	}
+	if in.GetCertificateTemplate() != "" {
+		out.CertificateTemplateRef = &krm.PrivateCACertificateTemplateRef{External: in.GetCertificateTemplate()}
+	}
+	out.SubjectMode = direct.Enum_FromProto(mapCtx, in.GetSubjectMode())
+	return out
+}
+
+func PrivateCACertificateSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACertificateSpec) *pb.Certificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Certificate{}
+	if in.PemCsr != nil {
+		out.CertificateConfig = &pb.Certificate_PemCsr{
+			PemCsr: direct.ValueOf(in.PemCsr),
+		}
+	}
+	if in.Config != nil {
+		out.CertificateConfig = &pb.Certificate_Config{
+			Config: Certificate_Config_ToProto(mapCtx, in.Config),
+		}
+	}
+	out.Lifetime = direct.StringDuration_ToProto(mapCtx, direct.LazyPtr(in.Lifetime))
+	if in.CertificateTemplateRef != nil {
+		out.CertificateTemplate = in.CertificateTemplateRef.External
+	}
+	out.SubjectMode = direct.Enum_ToProto[pb.SubjectRequestMode](mapCtx, in.SubjectMode)
+	return out
+}
+
+func CertificateRevocationDetailsStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate_RevocationDetails) *krm.CertificateRevocationDetailsStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateRevocationDetailsStatus{}
+	out.RevocationState = direct.Enum_FromProto(mapCtx, in.GetRevocationState())
+	out.RevocationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevocationTime())
+	return out
+}
+
+func CertificateRevocationDetailsStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateRevocationDetailsStatus) *pb.Certificate_RevocationDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Certificate_RevocationDetails{}
+	out.RevocationState = direct.Enum_ToProto[pb.RevocationReason](mapCtx, in.RevocationState)
+	out.RevocationTime = direct.StringTimestamp_ToProto(mapCtx, in.RevocationTime)
+	return out
+}
+
+func CertificateCertificateDescriptionStatus_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription) *krm.CertificateCertificateDescriptionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateCertificateDescriptionStatus{}
+	out.AiaIssuingCertificateUrls = in.GetAiaIssuingCertificateUrls()
+	if in.GetAuthorityKeyId() != nil {
+		out.AuthorityKeyId = &krm.CertificateAuthorityKeyIdStatus{
+			KeyId: direct.LazyPtr(in.GetAuthorityKeyId().GetKeyId()),
+		}
+	}
+	if in.GetCertFingerprint() != nil {
+		out.CertFingerprint = &krm.CertificateCertFingerprintStatus{
+			Sha256Hash: direct.LazyPtr(in.GetCertFingerprint().GetSha256Hash()),
+		}
+	}
+	out.CrlDistributionPoints = in.GetCrlDistributionPoints()
+	if in.GetPublicKey() != nil {
+		out.PublicKey = &krm.CertificatePublicKeyStatus{
+			Format: direct.Enum_FromProto(mapCtx, in.GetPublicKey().GetFormat()),
+			Key:    direct.LazyPtr(string(in.GetPublicKey().GetKey())),
+		}
+	}
+	if in.GetSubjectDescription() != nil {
+		sd := in.GetSubjectDescription()
+		out.SubjectDescription = &krm.CertificateSubjectDescriptionStatus{
+			HexSerialNumber: direct.LazyPtr(sd.GetHexSerialNumber()),
+		}
+		if sd.Lifetime != nil {
+			out.SubjectDescription.Lifetime = direct.StringDuration_FromProto(mapCtx, sd.Lifetime)
+		}
+		if sd.NotAfterTime != nil {
+			out.SubjectDescription.NotAfterTime = direct.StringTimestamp_FromProto(mapCtx, sd.NotAfterTime)
+		}
+		if sd.NotBeforeTime != nil {
+			out.SubjectDescription.NotBeforeTime = direct.StringTimestamp_FromProto(mapCtx, sd.NotBeforeTime)
+		}
+		if sd.GetSubject() != nil {
+			subj := sd.GetSubject()
+			out.SubjectDescription.Subject = &krm.CertificateSubjectStatus{
+				CommonName:         direct.LazyPtr(subj.GetCommonName()),
+				CountryCode:        direct.LazyPtr(subj.GetCountryCode()),
+				Locality:           direct.LazyPtr(subj.GetLocality()),
+				Organization:       direct.LazyPtr(subj.GetOrganization()),
+				OrganizationalUnit: direct.LazyPtr(subj.GetOrganizationalUnit()),
+				PostalCode:         direct.LazyPtr(subj.GetPostalCode()),
+				Province:           direct.LazyPtr(subj.GetProvince()),
+				StreetAddress:      direct.LazyPtr(subj.GetStreetAddress()),
+			}
+		}
+		if sd.GetSubjectAltName() != nil {
+			san := sd.GetSubjectAltName()
+			out.SubjectDescription.SubjectAltName = &krm.CertificateSubjectAltNameStatus{
+				DnsNames:       san.GetDnsNames(),
+				EmailAddresses: san.GetEmailAddresses(),
+				IpAddresses:    san.GetIpAddresses(),
+				Uris:           san.GetUris(),
+			}
+			for _, cs := range san.GetCustomSans() {
+				var objID *krm.CertificateObjectIdStatus
+				if cs.ObjectId != nil {
+					objID = &krm.CertificateObjectIdStatus{
+						ObjectIdPath: int32To64Slice(cs.GetObjectId().GetObjectIdPath()),
+					}
+				}
+				out.SubjectDescription.SubjectAltName.CustomSans = append(out.SubjectDescription.SubjectAltName.CustomSans, krm.CertificateCustomSansStatus{
+					Critical: direct.LazyPtr(cs.GetCritical()),
+					Value:    direct.LazyPtr(string(cs.GetValue())),
+					ObjectId: objID,
+				})
+			}
+		}
+	}
+	if in.GetSubjectKeyId() != nil {
+		out.SubjectKeyId = &krm.CertificateSubjectKeyIdStatus{
+			KeyId: direct.LazyPtr(in.GetSubjectKeyId().GetKeyId()),
+		}
+	}
+	if in.GetX509Description() != nil {
+		x509 := in.GetX509Description()
+		out.X509Description = &krm.CertificateX509DescriptionStatus{
+			AiaOcspServers: x509.GetAiaOcspServers(),
+		}
+		if x509.GetCaOptions() != nil {
+			out.X509Description.CaOptions = &krm.CertificateCaOptionsStatus{}
+			if x509.GetCaOptions().IsCa != nil {
+				out.X509Description.CaOptions.IsCa = direct.PtrTo(*x509.GetCaOptions().IsCa)
+			}
+			if x509.GetCaOptions().MaxIssuerPathLength != nil {
+				out.X509Description.CaOptions.MaxIssuerPathLength = direct.PtrTo(int64(*x509.GetCaOptions().MaxIssuerPathLength))
+			}
+		}
+		if x509.GetKeyUsage() != nil {
+			ku := x509.GetKeyUsage()
+			out.X509Description.KeyUsage = &krm.CertificateKeyUsageStatus{}
+			if ku.GetBaseKeyUsage() != nil {
+				bku := ku.GetBaseKeyUsage()
+				out.X509Description.KeyUsage.BaseKeyUsage = &krm.CertificateBaseKeyUsageStatus{
+					CertSign:          direct.LazyPtr(bku.GetCertSign()),
+					ContentCommitment: direct.LazyPtr(bku.GetContentCommitment()),
+					CrlSign:           direct.LazyPtr(bku.GetCrlSign()),
+					DataEncipherment:  direct.LazyPtr(bku.GetDataEncipherment()),
+					DecipherOnly:      direct.LazyPtr(bku.GetDecipherOnly()),
+					DigitalSignature:  direct.LazyPtr(bku.GetDigitalSignature()),
+					EncipherOnly:      direct.LazyPtr(bku.GetEncipherOnly()),
+					KeyAgreement:      direct.LazyPtr(bku.GetKeyAgreement()),
+					KeyEncipherment:   direct.LazyPtr(bku.GetKeyEncipherment()),
+				}
+			}
+			if ku.GetExtendedKeyUsage() != nil {
+				eku := ku.GetExtendedKeyUsage()
+				out.X509Description.KeyUsage.ExtendedKeyUsage = &krm.CertificateExtendedKeyUsageStatus{
+					ClientAuth:      direct.LazyPtr(eku.GetClientAuth()),
+					CodeSigning:     direct.LazyPtr(eku.GetCodeSigning()),
+					EmailProtection: direct.LazyPtr(eku.GetEmailProtection()),
+					OcspSigning:     direct.LazyPtr(eku.GetOcspSigning()),
+					ServerAuth:      direct.LazyPtr(eku.GetServerAuth()),
+					TimeStamping:    direct.LazyPtr(eku.GetTimeStamping()),
+				}
+			}
+			for _, ueku := range ku.GetUnknownExtendedKeyUsages() {
+				out.X509Description.KeyUsage.UnknownExtendedKeyUsages = append(out.X509Description.KeyUsage.UnknownExtendedKeyUsages, krm.CertificateUnknownExtendedKeyUsagesStatus{
+					ObjectIdPath: int32To64Slice(ueku.GetObjectIdPath()),
+				})
+			}
+		}
+		for _, pol := range x509.GetPolicyIds() {
+			out.X509Description.PolicyIds = append(out.X509Description.PolicyIds, krm.CertificatePolicyIdsStatus{
+				ObjectIdPath: int32To64Slice(pol.GetObjectIdPath()),
+			})
+		}
+		for _, ext := range x509.GetAdditionalExtensions() {
+			var objID *krm.CertificateObjectIdStatus
+			if ext.ObjectId != nil {
+				objID = &krm.CertificateObjectIdStatus{
+					ObjectIdPath: int32To64Slice(ext.GetObjectId().GetObjectIdPath()),
+				}
+			}
+			out.X509Description.AdditionalExtensions = append(out.X509Description.AdditionalExtensions, krm.CertificateAdditionalExtensionsStatus{
+				Critical: direct.LazyPtr(ext.GetCritical()),
+				Value:    direct.LazyPtr(string(ext.GetValue())),
+				ObjectId: objID,
+			})
+		}
+	}
+	return out
+}
+
+func PrivateCACertificateStatus_FromProto(mapCtx *direct.MapContext, in *pb.Certificate) *krm.PrivateCACertificateStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateCACertificateStatus{}
+	out.CertificateDescription = CertificateCertificateDescriptionStatus_FromProto(mapCtx, in.GetCertificateDescription())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	if in.GetIssuerCertificateAuthority() != "" {
+		out.IssuerCertificateAuthority = direct.LazyPtr(in.GetIssuerCertificateAuthority())
+	}
+	out.PemCertificate = direct.LazyPtr(in.GetPemCertificate())
+	out.PemCertificateChain = in.GetPemCertificateChain()
+	out.RevocationDetails = CertificateRevocationDetailsStatus_FromProto(mapCtx, in.GetRevocationDetails())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func PrivateCACertificateStatus_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACertificateStatus) *pb.Certificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Certificate{}
+	out.CertificateDescription = CertificateCertificateDescriptionStatus_ToProto(mapCtx, in.CertificateDescription)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	if in.IssuerCertificateAuthority != nil {
+		out.IssuerCertificateAuthority = *in.IssuerCertificateAuthority
+	}
+	if in.PemCertificate != nil {
+		out.PemCertificate = *in.PemCertificate
+	}
+	out.PemCertificateChain = in.PemCertificateChain
+	out.RevocationDetails = CertificateRevocationDetailsStatus_ToProto(mapCtx, in.RevocationDetails)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func CertificateCertificateDescriptionStatus_ToProto(mapCtx *direct.MapContext, in *krm.CertificateCertificateDescriptionStatus) *pb.CertificateDescription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription{}
+	out.AiaIssuingCertificateUrls = in.AiaIssuingCertificateUrls
+	if in.AuthorityKeyId != nil {
+		out.AuthorityKeyId = &pb.CertificateDescription_KeyId{
+			KeyId: direct.ValueOf(in.AuthorityKeyId.KeyId),
+		}
+	}
+	if in.CertFingerprint != nil {
+		out.CertFingerprint = &pb.CertificateDescription_CertificateFingerprint{
+			Sha256Hash: direct.ValueOf(in.CertFingerprint.Sha256Hash),
+		}
+	}
+	out.CrlDistributionPoints = in.CrlDistributionPoints
+	if in.PublicKey != nil {
+		out.PublicKey = &pb.PublicKey{
+			Format: direct.Enum_ToProto[pb.PublicKey_KeyFormat](mapCtx, in.PublicKey.Format),
+			Key:    []byte(direct.ValueOf(in.PublicKey.Key)),
+		}
+	}
+	if in.SubjectDescription != nil {
+		sd := in.SubjectDescription
+		out.SubjectDescription = &pb.CertificateDescription_SubjectDescription{
+			HexSerialNumber: direct.ValueOf(sd.HexSerialNumber),
+			NotBeforeTime:   direct.StringTimestamp_ToProto(mapCtx, sd.NotBeforeTime),
+			NotAfterTime:    direct.StringTimestamp_ToProto(mapCtx, sd.NotAfterTime),
+		}
+		if sd.Lifetime != nil {
+			out.SubjectDescription.Lifetime = direct.StringDuration_ToProto(mapCtx, sd.Lifetime)
+		}
+		if sd.Subject != nil {
+			subj := sd.Subject
+			out.SubjectDescription.Subject = &pb.Subject{
+				CommonName:         direct.ValueOf(subj.CommonName),
+				CountryCode:        direct.ValueOf(subj.CountryCode),
+				Locality:           direct.ValueOf(subj.Locality),
+				Organization:       direct.ValueOf(subj.Organization),
+				OrganizationalUnit: direct.ValueOf(subj.OrganizationalUnit),
+				PostalCode:         direct.ValueOf(subj.PostalCode),
+				Province:           direct.ValueOf(subj.Province),
+				StreetAddress:      direct.ValueOf(subj.StreetAddress),
+			}
+		}
+		if sd.SubjectAltName != nil {
+			san := sd.SubjectAltName
+			out.SubjectDescription.SubjectAltName = &pb.SubjectAltNames{
+				DnsNames:       san.DnsNames,
+				EmailAddresses: san.EmailAddresses,
+				IpAddresses:    san.IpAddresses,
+				Uris:           san.Uris,
+			}
+			for _, cs := range san.CustomSans {
+				var objID *pb.ObjectId
+				if cs.ObjectId != nil {
+					objID = &pb.ObjectId{
+						ObjectIdPath: int64To32Slice(cs.ObjectId.ObjectIdPath),
+					}
+				}
+				out.SubjectDescription.SubjectAltName.CustomSans = append(out.SubjectDescription.SubjectAltName.CustomSans, &pb.X509Extension{
+					Critical: direct.ValueOf(cs.Critical),
+					Value:    []byte(direct.ValueOf(cs.Value)),
+					ObjectId: objID,
+				})
+			}
+		}
+	}
+	if in.SubjectKeyId != nil {
+		out.SubjectKeyId = &pb.CertificateDescription_KeyId{
+			KeyId: direct.ValueOf(in.SubjectKeyId.KeyId),
+		}
+	}
+	if in.X509Description != nil {
+		x509 := in.X509Description
+		out.X509Description = &pb.X509Parameters{
+			AiaOcspServers: x509.AiaOcspServers,
+		}
+		if x509.CaOptions != nil {
+			out.X509Description.CaOptions = &pb.X509Parameters_CaOptions{}
+			if x509.CaOptions.IsCa != nil {
+				isCa := direct.ValueOf(x509.CaOptions.IsCa)
+				out.X509Description.CaOptions.IsCa = &isCa
+			}
+			if x509.CaOptions.MaxIssuerPathLength != nil {
+				maxLen := int32(direct.ValueOf(x509.CaOptions.MaxIssuerPathLength))
+				out.X509Description.CaOptions.MaxIssuerPathLength = &maxLen
+			}
+		}
+		if x509.KeyUsage != nil {
+			ku := x509.KeyUsage
+			out.X509Description.KeyUsage = &pb.KeyUsage{}
+			if ku.BaseKeyUsage != nil {
+				bku := ku.BaseKeyUsage
+				out.X509Description.KeyUsage.BaseKeyUsage = &pb.KeyUsage_KeyUsageOptions{
+					CertSign:          direct.ValueOf(bku.CertSign),
+					ContentCommitment: direct.ValueOf(bku.ContentCommitment),
+					CrlSign:           direct.ValueOf(bku.CrlSign),
+					DataEncipherment:  direct.ValueOf(bku.DataEncipherment),
+					DecipherOnly:      direct.ValueOf(bku.DecipherOnly),
+					DigitalSignature:  direct.ValueOf(bku.DigitalSignature),
+					EncipherOnly:      direct.ValueOf(bku.EncipherOnly),
+					KeyAgreement:      direct.ValueOf(bku.KeyAgreement),
+					KeyEncipherment:   direct.ValueOf(bku.KeyEncipherment),
+				}
+			}
+			if ku.ExtendedKeyUsage != nil {
+				eku := ku.ExtendedKeyUsage
+				out.X509Description.KeyUsage.ExtendedKeyUsage = &pb.KeyUsage_ExtendedKeyUsageOptions{
+					ClientAuth:      direct.ValueOf(eku.ClientAuth),
+					CodeSigning:     direct.ValueOf(eku.CodeSigning),
+					EmailProtection: direct.ValueOf(eku.EmailProtection),
+					OcspSigning:     direct.ValueOf(eku.OcspSigning),
+					ServerAuth:      direct.ValueOf(eku.ServerAuth),
+					TimeStamping:    direct.ValueOf(eku.TimeStamping),
+				}
+			}
+			for _, ueku := range ku.UnknownExtendedKeyUsages {
+				out.X509Description.KeyUsage.UnknownExtendedKeyUsages = append(out.X509Description.KeyUsage.UnknownExtendedKeyUsages, &pb.ObjectId{
+					ObjectIdPath: int64To32Slice(ueku.ObjectIdPath),
+				})
+			}
+		}
+		for _, pol := range x509.PolicyIds {
+			out.X509Description.PolicyIds = append(out.X509Description.PolicyIds, &pb.ObjectId{
+				ObjectIdPath: int64To32Slice(pol.ObjectIdPath),
+			})
+		}
+		for _, ext := range x509.AdditionalExtensions {
+			var objID *pb.ObjectId
+			if ext.ObjectId != nil {
+				objID = &pb.ObjectId{
+					ObjectIdPath: int64To32Slice(ext.ObjectId.ObjectIdPath),
+				}
+			}
+			out.X509Description.AdditionalExtensions = append(out.X509Description.AdditionalExtensions, &pb.X509Extension{
+				Critical: direct.ValueOf(ext.Critical),
+				Value:    []byte(direct.ValueOf(ext.Value)),
+				ObjectId: objID,
+			})
+		}
+	}
+	return out
+}
+
+func CertificateKeyUsage_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage) *krm.CertificateKeyUsage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateKeyUsage{}
+	out.BaseKeyUsage = CertificateBaseKeyUsage_FromProto(mapCtx, in.GetBaseKeyUsage())
+	out.ExtendedKeyUsage = CertificateExtendedKeyUsage_FromProto(mapCtx, in.GetExtendedKeyUsage())
+	out.UnknownExtendedKeyUsages = direct.Slice_FromProto(mapCtx, in.GetUnknownExtendedKeyUsages(), CertificateUnknownExtendedKeyUsages_FromProto)
+	return out
+}
+
+func CertificateKeyUsage_ToProto(mapCtx *direct.MapContext, in *krm.CertificateKeyUsage) *pb.KeyUsage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyUsage{}
+	out.BaseKeyUsage = CertificateBaseKeyUsage_ToProto(mapCtx, in.BaseKeyUsage)
+	out.ExtendedKeyUsage = CertificateExtendedKeyUsage_ToProto(mapCtx, in.ExtendedKeyUsage)
+	out.UnknownExtendedKeyUsages = direct.Slice_ToProto(mapCtx, in.UnknownExtendedKeyUsages, CertificateUnknownExtendedKeyUsages_ToProto)
+	return out
+}
+
+func CertificateBaseKeyUsage_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage_KeyUsageOptions) *krm.CertificateBaseKeyUsage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateBaseKeyUsage{}
+	out.CertSign = direct.LazyPtr(in.GetCertSign())
+	out.ContentCommitment = direct.LazyPtr(in.GetContentCommitment())
+	out.CrlSign = direct.LazyPtr(in.GetCrlSign())
+	out.DataEncipherment = direct.LazyPtr(in.GetDataEncipherment())
+	out.DecipherOnly = direct.LazyPtr(in.GetDecipherOnly())
+	out.DigitalSignature = direct.LazyPtr(in.GetDigitalSignature())
+	out.EncipherOnly = direct.LazyPtr(in.GetEncipherOnly())
+	out.KeyAgreement = direct.LazyPtr(in.GetKeyAgreement())
+	out.KeyEncipherment = direct.LazyPtr(in.GetKeyEncipherment())
+	return out
+}
+
+func CertificateBaseKeyUsage_ToProto(mapCtx *direct.MapContext, in *krm.CertificateBaseKeyUsage) *pb.KeyUsage_KeyUsageOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyUsage_KeyUsageOptions{}
+	out.CertSign = direct.ValueOf(in.CertSign)
+	out.ContentCommitment = direct.ValueOf(in.ContentCommitment)
+	out.CrlSign = direct.ValueOf(in.CrlSign)
+	out.DataEncipherment = direct.ValueOf(in.DataEncipherment)
+	out.DecipherOnly = direct.ValueOf(in.DecipherOnly)
+	out.DigitalSignature = direct.ValueOf(in.DigitalSignature)
+	out.EncipherOnly = direct.ValueOf(in.EncipherOnly)
+	out.KeyAgreement = direct.ValueOf(in.KeyAgreement)
+	out.KeyEncipherment = direct.ValueOf(in.KeyEncipherment)
+	return out
+}
+
+func CertificateExtendedKeyUsage_FromProto(mapCtx *direct.MapContext, in *pb.KeyUsage_ExtendedKeyUsageOptions) *krm.CertificateExtendedKeyUsage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateExtendedKeyUsage{}
+	out.ClientAuth = direct.LazyPtr(in.GetClientAuth())
+	out.CodeSigning = direct.LazyPtr(in.GetCodeSigning())
+	out.EmailProtection = direct.LazyPtr(in.GetEmailProtection())
+	out.OcspSigning = direct.LazyPtr(in.GetOcspSigning())
+	out.ServerAuth = direct.LazyPtr(in.GetServerAuth())
+	out.TimeStamping = direct.LazyPtr(in.GetTimeStamping())
+	return out
+}
+
+func CertificateExtendedKeyUsage_ToProto(mapCtx *direct.MapContext, in *krm.CertificateExtendedKeyUsage) *pb.KeyUsage_ExtendedKeyUsageOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyUsage_ExtendedKeyUsageOptions{}
+	out.ClientAuth = direct.ValueOf(in.ClientAuth)
+	out.CodeSigning = direct.ValueOf(in.CodeSigning)
+	out.EmailProtection = direct.ValueOf(in.EmailProtection)
+	out.OcspSigning = direct.ValueOf(in.OcspSigning)
+	out.ServerAuth = direct.ValueOf(in.ServerAuth)
+	out.TimeStamping = direct.ValueOf(in.TimeStamping)
+	return out
+}
+
+func int32To64Slice(in []int32) []int64 {
+	if in == nil {
+		return nil
+	}
+	out := make([]int64, len(in))
+	for i, v := range in {
+		out[i] = int64(v)
+	}
+	return out
+}
+
+func CertificateDescription_KeyID_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription_KeyId) *krm.CertificateDescription_KeyID {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateDescription_KeyID{}
+	out.KeyId = direct.LazyPtr(in.GetKeyId())
+	return out
+}
+
+func CertificateDescription_KeyID_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription_KeyID) *pb.CertificateDescription_KeyId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription_KeyId{}
+	out.KeyId = direct.ValueOf(in.KeyId)
+	return out
+}
+
+func CertificateDescription_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription) *krm.CertificateDescription {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateDescription{}
+	out.SubjectDescription = CertificateDescription_SubjectDescription_FromProto(mapCtx, in.GetSubjectDescription())
+	out.X509Description = CertificateDescription_X509Description_FromProto(mapCtx, in.GetX509Description())
+	out.PublicKey = PublicKey_FromProto(mapCtx, in.GetPublicKey())
+	out.SubjectKeyId = CertificateDescription_KeyID_FromProto(mapCtx, in.GetSubjectKeyId())
+	out.AuthorityKeyId = CertificateDescription_KeyID_FromProto(mapCtx, in.GetAuthorityKeyId())
+	out.CrlDistributionPoints = in.GetCrlDistributionPoints()
+	out.AiaIssuingCertificateUrls = in.GetAiaIssuingCertificateUrls()
+	out.CertFingerprint = CertificateDescription_CertificateFingerprint_FromProto(mapCtx, in.GetCertFingerprint())
+	return out
+}
+
+func CertificateDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription) *pb.CertificateDescription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription{}
+	out.SubjectDescription = CertificateDescription_SubjectDescription_ToProto(mapCtx, in.SubjectDescription)
+	out.X509Description = CertificateDescription_X509Description_ToProto(mapCtx, in.X509Description)
+	out.PublicKey = PublicKey_ToProto(mapCtx, in.PublicKey)
+	out.SubjectKeyId = CertificateDescription_KeyID_ToProto(mapCtx, in.SubjectKeyId)
+	out.AuthorityKeyId = CertificateDescription_KeyID_ToProto(mapCtx, in.AuthorityKeyId)
+	out.CrlDistributionPoints = in.CrlDistributionPoints
+	out.AiaIssuingCertificateUrls = in.AiaIssuingCertificateUrls
+	out.CertFingerprint = CertificateDescription_CertificateFingerprint_ToProto(mapCtx, in.CertFingerprint)
+	return out
+}
+
+func CertificateDescription_SubjectDescription_FromProto(mapCtx *direct.MapContext, in *pb.CertificateDescription_SubjectDescription) *krm.CertificateDescription_SubjectDescription {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateDescription_SubjectDescription{}
+	out.Subject = Subject_FromProto(mapCtx, in.GetSubject())
+	out.SubjectAltName = SubjectAltNamesStatus_FromProto(mapCtx, in.GetSubjectAltName())
+	out.HexSerialNumber = direct.LazyPtr(in.GetHexSerialNumber())
+	if in.GetLifetime() != nil {
+		seconds := in.GetLifetime().GetSeconds()
+		lifetimeStr := fmt.Sprintf("%ds", seconds)
+		out.Lifetime = &lifetimeStr
+	}
+	out.NotAfterTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNotAfterTime())
+	out.NotBeforeTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNotBeforeTime())
+	return out
+}
+
+func int64To32Slice(in []int64) []int32 {
+	if in == nil {
+		return nil
+	}
+	out := make([]int32, len(in))
+	for i, v := range in {
+		out[i] = int32(v)
+	}
+	return out
+}
+
+func CertificateDescription_SubjectDescription_ToProto(mapCtx *direct.MapContext, in *krm.CertificateDescription_SubjectDescription) *pb.CertificateDescription_SubjectDescription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CertificateDescription_SubjectDescription{}
+	out.Subject = Subject_ToProto(mapCtx, in.Subject)
+	out.SubjectAltName = SubjectAltNamesStatus_ToProto(mapCtx, in.SubjectAltName)
+	out.HexSerialNumber = direct.ValueOf(in.HexSerialNumber)
+	out.Lifetime = direct.StringDuration_ToProto(mapCtx, in.Lifetime)
+	out.NotAfterTime = direct.StringTimestamp_ToProto(mapCtx, in.NotAfterTime)
+	out.NotBeforeTime = direct.StringTimestamp_ToProto(mapCtx, in.NotBeforeTime)
 	return out
 }

@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //notebooks.googleapis.com/projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}
   group: notebooks.cnrm.cloud.google.com
   kind: NotebooksEnvironment
   name: notebooksenvironment-${uniqueId}

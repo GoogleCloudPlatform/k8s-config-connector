@@ -29,8 +29,8 @@ func init() {
 
 func sacRealmFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.SACRealm{},
-		NetworkSecuritySACRealmSpec_FromProto, NetworkSecuritySACRealmSpec_ToProto,
-		NetworkSecuritySACRealmObservedState_FromProto, NetworkSecuritySACRealmObservedState_ToProto,
+		NetworkSecuritySACRealmSpec_v1alpha1_FromProto, NetworkSecuritySACRealmSpec_v1alpha1_ToProto,
+		NetworkSecuritySACRealmObservedState_v1alpha1_FromProto, NetworkSecuritySACRealmObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecField(".labels")

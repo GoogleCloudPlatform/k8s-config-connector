@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: eventarc.cnrm.cloud.google.com
+  kind: EventarcChannel
+  name: eventarcchannel-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: eventarc.cnrm.cloud.google.com
+  kind: EventarcChannelConnection
+  name: eacc-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

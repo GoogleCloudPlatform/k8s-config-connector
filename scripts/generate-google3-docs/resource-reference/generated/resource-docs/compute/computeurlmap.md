@@ -475,6 +475,8 @@ pathMatcher:
 resourceID: string
 test:
 - description: string
+  expectedOutputURL: string
+  expectedRedirectResponseCode: integer
   host: string
   path: string
   service:
@@ -5004,6 +5006,26 @@ the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENT
         <td>
             <p><code class="apitype">string</code></p>
             <p>Description of this test case.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>test[].expectedOutputURL</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The expected output URL evaluated by the load balancer containing the scheme, host, path and query parameters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>test[].expectedRedirectResponseCode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>For rules with urlRedirect, the test passes only if expectedRedirectResponseCode matches the HTTP status code in load balancer's redirect response.</p>
         </td>
     </tr>
     <tr>

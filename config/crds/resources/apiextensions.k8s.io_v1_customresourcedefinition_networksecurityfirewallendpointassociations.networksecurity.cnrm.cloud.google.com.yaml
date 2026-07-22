@@ -86,15 +86,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The firewall endpoint selflink, when not managed
-                      by Config Connector.
+                    description: A reference to an externally managed NetworkSecurityFirewallEndpoint
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/firewallEndpoints/{{firewall_endpoint}}"
+                      or "organizations/{{organizationID}}/locations/{{location}}/firewallEndpoints/{{firewall_endpoint}}".
                     type: string
                   name:
-                    description: The `name` field of a `NetworkSecurityFirewallEndpoint`
-                      resource.
+                    description: The name of a NetworkSecurityFirewallEndpoint resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `NetworkSecurityFirewallEndpoint`
+                    description: The namespace of a NetworkSecurityFirewallEndpoint
                       resource.
                     type: string
                 type: object

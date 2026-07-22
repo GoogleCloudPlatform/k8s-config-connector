@@ -1,5 +1,4 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
@@ -23,7 +22,6 @@ X-Xss-Protection: 0
 
 POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "permissions": [
@@ -51,7 +49,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -84,7 +81,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -126,7 +122,6 @@ X-Xss-Protection: 0
 
 PUT https://cloudbilling.googleapis.com/v1/projects/project-1-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "billingAccountName": "billingAccounts/${billingAccountId}"
@@ -152,7 +147,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-1-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -174,7 +168,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -205,7 +198,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-1-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -227,7 +219,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -258,7 +249,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-1-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -280,7 +270,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
@@ -304,7 +293,6 @@ X-Xss-Protection: 0
 
 POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "permissions": [
@@ -332,7 +320,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -365,7 +352,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -407,7 +393,6 @@ X-Xss-Protection: 0
 
 PUT https://cloudbilling.googleapis.com/v1/projects/project-2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "billingAccountName": "billingAccounts/${billingAccountId}"
@@ -433,7 +418,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -455,7 +439,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -486,7 +469,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -508,7 +490,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -539,7 +520,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -562,7 +542,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -586,7 +565,6 @@ X-Xss-Protection: 0
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -617,7 +595,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -641,7 +618,6 @@ X-Xss-Protection: 0
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "displayName": "monitoringnotificationchannel-1-${uniqueId}",
@@ -692,7 +668,6 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -730,7 +705,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -754,7 +728,6 @@ X-Xss-Protection: 0
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -785,7 +758,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -809,7 +781,6 @@ X-Xss-Protection: 0
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "displayName": "monitoringnotificationchannel-2-${uniqueId}",
@@ -860,7 +831,6 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -896,1332 +866,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-{
-  "budget": {
-    "allUpdatesRule": {
-      "disableDefaultIamRecipients": false,
-      "monitoringNotificationChannels": [
-        "projects/${projectId}/notificationChannels/${notificationChannelID}"
-      ],
-      "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-      "schemaVersion": "1.0"
-    },
-    "amount": {
-      "specifiedAmount": {
-        "currencyCode": "USD",
-        "nanos": 0,
-        "units": 9000000
-      }
-    },
-    "budgetFilter": {
-      "calendarPeriod": "MONTH",
-      "creditTypes": [
-        "DISCOUNT"
-      ],
-      "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-      "labels": {
-        "label-one": [
-          "value-one"
-        ]
-      },
-      "projects": [
-        "projects/project-1-${uniqueId}"
-      ],
-      "services": [
-        "services/0245-C3C9-3864"
-      ]
-    },
-    "displayName": "sample-budget",
-    "thresholdRules": [
-      {
-        "spendBasis": "CURRENT_SPEND",
-        "thresholdPercent": 0.5
-      }
-    ]
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "units": "9000000"
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "MONTH",
-    "creditTypes": [
-      "DISCOUNT"
-    ],
-    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ]
-    },
-    "projects": [
-      "projects/project-1-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "CURRENT_SPEND",
-      "thresholdPercent": 0.5
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-1-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-1-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-PATCH https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json&updateMask=allUpdatesRule.disableDefaultIamRecipients%2CallUpdatesRule.monitoringNotificationChannels%2CallUpdatesRule.pubsubTopic%2Camount.specifiedAmount.nanos%2Camount.specifiedAmount.units%2CbudgetFilter.calendarPeriod%2CbudgetFilter.creditTypesTreatment%2CbudgetFilter.labels%2CbudgetFilter.projects%2CdisplayName%2CthresholdRules
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-{
-  "budget": {
-    "allUpdatesRule": {
-      "disableDefaultIamRecipients": true,
-      "monitoringNotificationChannels": [
-        "projects/${projectId}/notificationChannels/${notificationChannelID}"
-      ],
-      "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-      "schemaVersion": "1.0"
-    },
-    "amount": {
-      "specifiedAmount": {
-        "currencyCode": "USD",
-        "nanos": 1,
-        "units": 0
-      }
-    },
-    "budgetFilter": {
-      "calendarPeriod": "YEAR",
-      "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
-      "labels": {
-        "label-one": [
-          "value-one"
-        ],
-        "label-two": [
-          "value-two"
-        ]
-      },
-      "projects": [
-        "projects/project-2-${uniqueId}"
-      ],
-      "services": [
-        "services/0245-C3C9-3864"
-      ]
-    },
-    "displayName": "updated-sample-budget",
-    "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-    "thresholdRules": [
-      {
-        "spendBasis": "FORECASTED_SPEND",
-        "thresholdPercent": 0.6
-      }
-    ]
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "disableDefaultIamRecipients": true,
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "nanos": 1
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "YEAR",
-    "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ],
-      "label-two": [
-        "value-two"
-      ]
-    },
-    "projects": [
-      "projects/project-2-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "updated-sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "FORECASTED_SPEND",
-      "thresholdPercent": 0.6
-    }
-  ]
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "disableDefaultIamRecipients": true,
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "nanos": 1
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "YEAR",
-    "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ],
-      "label-two": [
-        "value-two"
-      ]
-    },
-    "projects": [
-      "projects/project-2-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "updated-sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "FORECASTED_SPEND",
-      "thresholdPercent": 0.6
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-2-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-2-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "disableDefaultIamRecipients": true,
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "nanos": 1
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "YEAR",
-    "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ],
-      "label-two": [
-        "value-two"
-      ]
-    },
-    "projects": [
-      "projects/project-2-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "updated-sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "FORECASTED_SPEND",
-      "thresholdPercent": 0.6
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-2-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-2-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "allUpdatesRule": {
-    "disableDefaultIamRecipients": true,
-    "monitoringNotificationChannels": [
-      "projects/${projectId}/notificationChannels/${notificationChannelID}"
-    ],
-    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
-    "schemaVersion": "1.0"
-  },
-  "amount": {
-    "specifiedAmount": {
-      "currencyCode": "USD",
-      "nanos": 1
-    }
-  },
-  "budgetFilter": {
-    "calendarPeriod": "YEAR",
-    "creditTypesTreatment": "EXCLUDE_ALL_CREDITS",
-    "labels": {
-      "label-one": [
-        "value-one"
-      ],
-      "label-two": [
-        "value-two"
-      ]
-    },
-    "projects": [
-      "projects/project-2-${uniqueId}"
-    ],
-    "services": [
-      "services/0245-C3C9-3864"
-    ]
-  },
-  "displayName": "updated-sample-budget",
-  "etag": "abcdef0123A=",
-  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
-  "thresholdRules": [
-    {
-      "spendBasis": "FORECASTED_SPEND",
-      "thresholdPercent": 0.6
-    }
-  ]
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "project-2-${uniqueId}",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "project-2-${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-DELETE https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -2236,7 +882,255 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "budget \"billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}\" not found",
+    "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": 1,
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": 3,
+    "labels": {
+      "label-one": [
+        "value-one"
+      ]
+    },
+    "projects": [
+      "projects/project-1-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "sample-budget",
+  "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}",
+  "notificationsRule": {
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "thresholdRules": [
+    {
+      "spendBasis": 1,
+      "thresholdPercent": 0.5
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": 1,
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": 3,
+    "labels": {
+      "label-one": [
+        "value-one"
+      ]
+    },
+    "projects": [
+      "projects/project-1-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "sample-budget",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
+  "notificationsRule": {
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "thresholdRules": [
+    {
+      "spendBasis": 1,
+      "thresholdPercent": 0.5
+    }
+  ]
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "nanos": 1
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": 3,
+    "creditTypesTreatment": 2,
+    "labels": {
+      "label-one": [
+        "value-one"
+      ],
+      "label-two": [
+        "value-two"
+      ]
+    },
+    "projects": [
+      "projects/project-2-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "updated-sample-budget",
+  "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}",
+  "notificationsRule": {
+    "disableDefaultIamRecipients": true,
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "thresholdRules": [
+    {
+      "spendBasis": 2,
+      "thresholdPercent": 0.6
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "nanos": 1
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": 3,
+    "creditTypesTreatment": 2,
+    "labels": {
+      "label-one": [
+        "value-one"
+      ],
+      "label-two": [
+        "value-two"
+      ]
+    },
+    "projects": [
+      "projects/project-2-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "updated-sample-budget",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
+  "notificationsRule": {
+    "disableDefaultIamRecipients": true,
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "thresholdRules": [
+    {
+      "spendBasis": 2,
+      "thresholdPercent": 0.6
+    }
+  ]
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -2245,7 +1139,6 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2283,7 +1176,6 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2301,7 +1193,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2325,7 +1216,6 @@ X-Xss-Protection: 0
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2343,7 +1233,6 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2381,7 +1270,6 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2399,7 +1287,6 @@ X-Xss-Protection: 0
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2423,7 +1310,6 @@ X-Xss-Protection: 0
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2440,7 +1326,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2471,7 +1356,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2493,7 +1377,6 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://cloudresourcemanager.googleapis.com/v1/projects/project-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2510,7 +1393,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2541,7 +1423,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-1-${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2563,7 +1444,6 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://cloudresourcemanager.googleapis.com/v1/projects/project-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

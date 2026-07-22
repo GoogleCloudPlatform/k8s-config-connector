@@ -185,6 +185,9 @@ func (a *redisInstanceAdapter) Create(ctx context.Context, createOp *directbase.
 
 	parent := "projects/" + a.id.Project + "/locations/" + a.id.Location
 
+	// output-only spec field, migrated from legacy controller
+	a.desired.MaintenanceSchedule = nil
+
 	req := &redispb.CreateInstanceRequest{
 		Parent:     parent,
 		InstanceId: a.id.Instance,
@@ -223,6 +226,9 @@ func (a *redisInstanceAdapter) Update(ctx context.Context, updateOp *directbase.
 
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
+
+	// output-only spec field, migrated from legacy controller
+	a.desired.MaintenanceSchedule = nil
 
 	diffs, err := compareRedisInstance(ctx, a.actual, a.desired)
 	if err != nil {
@@ -392,8 +398,17 @@ func populateInstanceDefaults(instance *redispb.Instance, actual *redispb.Instan
 	if instance.ReadReplicasMode == redispb.Instance_READ_REPLICAS_MODE_UNSPECIFIED {
 		instance.ReadReplicasMode = redispb.Instance_READ_REPLICAS_DISABLED
 	}
+	if instance.TransitEncryptionMode == redispb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+		instance.TransitEncryptionMode = redispb.Instance_DISABLED
+	}
+	if instance.ConnectMode == redispb.Instance_CONNECT_MODE_UNSPECIFIED {
+		instance.ConnectMode = redispb.Instance_DIRECT_PEERING
+	}
 
 	if actual != nil {
+		if instance.AlternativeLocationId == "" {
+			instance.AlternativeLocationId = actual.AlternativeLocationId
+		}
 		if instance.AuthorizedNetwork == "" && actual.AuthorizedNetwork != "" {
 			instance.AuthorizedNetwork = actual.AuthorizedNetwork
 		}
@@ -403,9 +418,18 @@ func populateInstanceDefaults(instance *redispb.Instance, actual *redispb.Instan
 		if instance.RedisVersion == "" && actual.RedisVersion != "" {
 			instance.RedisVersion = actual.RedisVersion
 		}
+		if instance.ReplicaCount == 0 {
+			instance.ReplicaCount = actual.ReplicaCount
+		}
 		if instance.ReservedIpRange == "" && actual.ReservedIpRange != "" {
 			instance.ReservedIpRange = actual.ReservedIpRange
 		}
+		if (instance.SecondaryIpRange == "" || instance.SecondaryIpRange == "auto") && actual.SecondaryIpRange != "" {
+			instance.SecondaryIpRange = actual.SecondaryIpRange
+		}
+
+		// output-only spec field, migrated from legacy controller
+		instance.MaintenanceSchedule = actual.MaintenanceSchedule
 	}
 
 	return instance

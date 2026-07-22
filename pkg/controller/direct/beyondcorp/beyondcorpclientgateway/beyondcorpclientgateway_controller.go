@@ -23,6 +23,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	directcommon "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -67,6 +68,10 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := directcommon.NormalizeReferences(ctx, op.Reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.ParseClientGatewayIdentity(common.ValueOf(obj.Status.ExternalRef))
 	if err != nil {
 		// Fallback to spec identity if external ref is not set
@@ -77,6 +82,12 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		id = identity.(*krm.BeyondCorpClientGatewayIdentity)
 	}
 
+	mapCtx := &direct.MapContext{}
+	desired := BeyondCorpClientGatewaySpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	// Get GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -85,7 +96,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -97,7 +108,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 type Adapter struct {
 	id        *krm.BeyondCorpClientGatewayIdentity
 	gcpClient *gcp.Client
-	desired   *krm.BeyondCorpClientGateway
+	desired   *beyondcorppb.ClientGateway
 	actual    *beyondcorppb.ClientGateway
 }
 
@@ -123,60 +134,39 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BeyondCorpClientGateway", "name", a.id.String())
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := BeyondCorpClientGatewaySpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 
 	req := &beyondcorppb.CreateClientGatewayRequest{
-		Parent:          parent,
+		Parent:          a.id.ParentString(),
 		ClientGatewayId: a.id.ID(),
-		ClientGateway:   resource,
+		ClientGateway:   a.desired,
 	}
 	op, err := a.gcpClient.CreateClientGateway(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating BeyondCorpClientGateway %s: %w", a.id.String(), err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
+	if _, err := op.Wait(ctx); err != nil {
 		return fmt.Errorf("BeyondCorpClientGateway %s waiting creation: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created BeyondCorpClientGateway", "name", a.id.String())
 
-	status := &krm.BeyondCorpClientGatewayStatus{}
-	status.ObservedState = BeyondCorpClientGatewayObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	// Fetch full latest state after LRO completes to avoid status clearance
+	latest, err := a.gcpClient.GetClientGateway(ctx, &beyondcorppb.GetClientGatewayRequest{Name: a.id.String()})
+	if err != nil {
+		return fmt.Errorf("getting BeyondCorpClientGateway %s after creation: %w", a.id.String(), err)
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+
+	return a.updateStatus(ctx, createOp, latest)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BeyondCorpClientGateway", "name", a.id.String())
-	mapCtx := &direct.MapContext{}
 
-	// The ClientGateway resource has NO update method in the proto definition.
-	// Only Create, Get, List, Delete.
-	// If fields could be updated, there would be an UpdateClientGatewayRequest.
-	// Since there isn't, we just check if it's identical, if not it's an error.
-
-	// actually for a resource with no user-specifiable fields (except Name),
-	// it can't really be updated. We just update the status.
-
-	status := &krm.BeyondCorpClientGatewayStatus{}
-	status.ObservedState = BeyondCorpClientGatewayObservedState_FromProto(mapCtx, a.actual)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return updateOp.UpdateStatus(ctx, status, nil)
+	// Since BeyondCorpClientGateway is completely immutable, we check for spec diffs.
+	// But in this case, BeyondCorpClientGatewaySpec only has ProjectRef, Location, ResourceID
+	// which are immutable anyway.
+	// Let's do a basic check.
+	return a.updateStatus(ctx, updateOp, a.actual)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -193,8 +183,6 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	obj.Spec = *spec
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 	obj.Spec.Location = a.id.Location
-	// For identity it's usually resourceID
-	// obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -226,4 +214,15 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	}
 	log.V(2).Info("successfully deleted BeyondCorpClientGateway", "name", a.id.String())
 	return true, nil
+}
+
+func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *beyondcorppb.ClientGateway) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.BeyondCorpClientGatewayStatus{}
+	status.ObservedState = BeyondCorpClientGatewayObservedState_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return op.UpdateStatus(ctx, status, nil)
 }

@@ -259,6 +259,20 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 				continue
 			}
 
+			// Do not attempt to update immutable fields if desired left them unspecified.
+			if path == "node_type" && desired.NodeType == memorystorepb.Instance_NODE_TYPE_UNSPECIFIED {
+				log.V(2).Info("skipping update for node_type since desired value is unspecified", "name", a.id)
+				continue
+			}
+			if path == "mode" && desired.Mode == memorystorepb.Instance_MODE_UNSPECIFIED {
+				log.V(2).Info("skipping update for mode since desired value is unspecified", "name", a.id)
+				continue
+			}
+			if path == "zone_distribution_config" && desired.ZoneDistributionConfig == nil {
+				log.V(2).Info("skipping update for zone_distribution_config since desired value is unspecified", "name", a.id)
+				continue
+			}
+
 			updateMask := &fieldmaskpb.FieldMask{
 				Paths: []string{path},
 			}
@@ -354,18 +368,115 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 	}
 
 	maskedActual = populateDefaults(maskedActual)
-	desired = populateDefaults(proto.CloneOf(desired))
+	desired = proto.CloneOf(desired)
+
+	// If desired leaves immutable / optional default fields unspecified, inherit existing actual values to avoid false diffs on immutable/default fields.
+	if maskedActual != nil {
+		if desired.NodeType == memorystorepb.Instance_NODE_TYPE_UNSPECIFIED && maskedActual.NodeType != memorystorepb.Instance_NODE_TYPE_UNSPECIFIED {
+			desired.NodeType = maskedActual.NodeType
+		}
+		if desired.Mode == memorystorepb.Instance_MODE_UNSPECIFIED && maskedActual.Mode != memorystorepb.Instance_MODE_UNSPECIFIED {
+			desired.Mode = maskedActual.Mode
+		}
+		if desired.ZoneDistributionConfig == nil && maskedActual.ZoneDistributionConfig != nil {
+			desired.ZoneDistributionConfig = maskedActual.ZoneDistributionConfig
+		}
+		if desired.AuthorizationMode == memorystorepb.Instance_AUTHORIZATION_MODE_UNSPECIFIED && maskedActual.AuthorizationMode != memorystorepb.Instance_AUTHORIZATION_MODE_UNSPECIFIED {
+			desired.AuthorizationMode = maskedActual.AuthorizationMode
+		}
+		if desired.TransitEncryptionMode == memorystorepb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED && maskedActual.TransitEncryptionMode != memorystorepb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
+			desired.TransitEncryptionMode = maskedActual.TransitEncryptionMode
+		}
+	}
+
+	desired = populateDefaults(desired)
 
 	// If CrossInstanceReplicationConfig is unspecified, use the actual value as default
 	if desired.CrossInstanceReplicationConfig == nil {
 		desired.CrossInstanceReplicationConfig = maskedActual.CrossInstanceReplicationConfig
 	}
 
+	// Align actual endpoints/connections with desired when desired is a subset of actual.
+	alignEndpointsWithDesired(maskedActual, desired)
+
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
 	}
 	return diffs, nil
+}
+
+// alignEndpointsWithDesired aligns actual endpoints with desired when desired is a subset of actual.
+// It matches each desired endpoint to a corresponding actual endpoint and retains only matched endpoints
+// in actual so that unmanaged server-generated extra endpoints do not trigger false drift.
+func alignEndpointsWithDesired(actual, desired *memorystorepb.Instance) {
+	if len(desired.Endpoints) == 0 {
+		actual.Endpoints = nil
+		return
+	}
+
+	alignedEndpoints := make([]*memorystorepb.Instance_InstanceEndpoint, 0, len(desired.Endpoints))
+
+	for _, desiredEndpoint := range desired.Endpoints {
+		for _, actualEndpoint := range actual.Endpoints {
+			if isConnectionSubset(desiredEndpoint.GetConnections(), actualEndpoint.GetConnections()) {
+				matchedEndpoint := &memorystorepb.Instance_InstanceEndpoint{
+					Connections: desiredEndpoint.Connections,
+				}
+				alignedEndpoints = append(alignedEndpoints, matchedEndpoint)
+				break
+			}
+		}
+	}
+
+	if len(alignedEndpoints) == len(desired.Endpoints) {
+		actual.Endpoints = alignedEndpoints
+	}
+}
+
+// isConnectionSubset checks if every desired connection is matched by at least one actual connection.
+func isConnectionSubset(desiredConnections, actualConnections []*memorystorepb.Instance_ConnectionDetail) bool {
+	for _, desiredConn := range desiredConnections {
+		matched := false
+
+		for _, actualConn := range actualConnections {
+			if connectionsMatch(desiredConn, actualConn) {
+				matched = true
+				break
+			}
+		}
+
+		if !matched {
+			return false
+		}
+	}
+
+	return true
+}
+
+// connectionsMatch checks if all specified fields in a desired connection match an actual connection.
+func connectionsMatch(desired, actual *memorystorepb.Instance_ConnectionDetail) bool {
+	if desired == nil || actual == nil {
+		return desired == actual
+	}
+
+	desiredPsc := desired.GetPscAutoConnection()
+	actualPsc := actual.GetPscAutoConnection()
+	if desiredPsc == nil || actualPsc == nil {
+		return desiredPsc == actualPsc
+	}
+
+	// Only match against project and network since CRD implementation uses project and network refs.
+	// So no PSC fields will be present in the desired spec.
+	if desiredPsc.GetProjectId() != "" && desiredPsc.GetProjectId() != actualPsc.GetProjectId() {
+		return false
+	}
+
+	if desiredPsc.GetNetwork() != "" && desiredPsc.GetNetwork() != actualPsc.GetNetwork() {
+		return false
+	}
+
+	return true
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

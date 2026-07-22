@@ -20,11 +20,95 @@
 // resource: VertexAISpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
 // resource: VertexAIFeatureOnlineStore:FeatureOnlineStore
+// resource: VertexAIPipelineJob:PipelineJob
 // resource: VertexAITuningJob:TuningJob
+// resource: VertexAIStudy:Study
+// resource: VertexAITrainingPipeline:TrainingPipeline
 
 package v1alpha1
 
 import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
+/* unreachable type Artifact
+// +kcc:proto=google.cloud.aiplatform.v1.Artifact
+type Artifact struct {
+
+	// User provided display name of the Artifact.
+	//  May be up to 128 Unicode characters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The uniform resource identifier of the artifact file.
+	//  May be empty if there is no actual artifact file.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.uri
+	URI *string `json:"uri,omitempty"`
+
+	// An eTag used to perform consistent read-modify-write updates. If not set, a
+	//  blind "overwrite" update happens.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// The labels with user-defined metadata to organize your Artifacts.
+	//
+	//  Label keys and values can be no longer than 64 characters
+	//  (Unicode codepoints), can only contain lowercase letters, numeric
+	//  characters, underscores and dashes. International characters are allowed.
+	//  No more than 64 user labels can be associated with one Artifact (System
+	//  labels are excluded).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// The state of this Artifact. This is a property of the Artifact, and does
+	//  not imply or capture any ongoing process. This property is managed by
+	//  clients (such as Vertex AI Pipelines), and the system does not prescribe
+	//  or check the validity of state transitions.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.state
+	State *string `json:"state,omitempty"`
+
+	// The title of the schema describing the metadata.
+	//
+	//  Schema title and version is expected to be registered in earlier Create
+	//  Schema calls. And both are used together as unique identifiers to identify
+	//  schemas within the local metadata store.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.schema_title
+	SchemaTitle *string `json:"schemaTitle,omitempty"`
+
+	// The version of the schema in schema_name to use.
+	//
+	//  Schema title and version is expected to be registered in earlier Create
+	//  Schema calls. And both are used together as unique identifiers to identify
+	//  schemas within the local metadata store.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.schema_version
+	SchemaVersion *string `json:"schemaVersion,omitempty"`
+
+	// Properties of the Artifact.
+	//  Top level metadata keys' heading and trailing spaces will be trimmed.
+	//  The size of this field should not exceed 200KB.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.metadata
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
+
+	// Description of the Artifact
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1.BigQueryDestination
+type BigQueryDestination struct {
+	// Required. BigQuery URI to a project or table, up to 2000 characters long.
+	//
+	//  When only the project is specified, the Dataset and Table is created.
+	//  When the full table reference is specified, the Dataset must exist and
+	//  table must not exist.
+	//
+	//  Accepted forms:
+	//
+	//  *  BigQuery path. For example:
+	//  `bq://projectId` or `bq://projectId.bqDatasetId` or
+	//  `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.BigQueryDestination.output_uri
+	OutputURI *string `json:"outputURI,omitempty"`
+}
 
 // +kcc:proto=google.cloud.aiplatform.v1.Blob
 type Blob struct {
@@ -429,6 +513,54 @@ type FileData struct {
 	FileURI *string `json:"fileURI,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.FilterSplit
+type FilterSplit struct {
+	// Required. A filter on DataItems of the Dataset. DataItems that match
+	//  this filter are used to train the Model. A filter with same syntax
+	//  as the one used in
+	//  [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+	//  may be used. If a single DataItem is matched by more than one of the
+	//  FilterSplit filters, then it is assigned to the first set that applies to
+	//  it in the training, validation, test order.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.training_filter
+	TrainingFilter *string `json:"trainingFilter,omitempty"`
+
+	// Required. A filter on DataItems of the Dataset. DataItems that match
+	//  this filter are used to validate the Model. A filter with same syntax
+	//  as the one used in
+	//  [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+	//  may be used. If a single DataItem is matched by more than one of the
+	//  FilterSplit filters, then it is assigned to the first set that applies to
+	//  it in the training, validation, test order.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.validation_filter
+	ValidationFilter *string `json:"validationFilter,omitempty"`
+
+	// Required. A filter on DataItems of the Dataset. DataItems that match
+	//  this filter are used to test the Model. A filter with same syntax
+	//  as the one used in
+	//  [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+	//  may be used. If a single DataItem is matched by more than one of the
+	//  FilterSplit filters, then it is assigned to the first set that applies to
+	//  it in the training, validation, test order.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.test_filter
+	TestFilter *string `json:"testFilter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.FractionSplit
+type FractionSplit struct {
+	// The fraction of the input data that is to be used to train the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FractionSplit.training_fraction
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to validate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FractionSplit.validation_fraction
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to evaluate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FractionSplit.test_fraction
+	TestFraction *float64 `json:"testFraction,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.FunctionCall
 type FunctionCall struct {
 	// Required. The name of the function to call.
@@ -457,6 +589,16 @@ type FunctionResponse struct {
 	Response apiextensionsv1.JSON `json:"response,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.GcsDestination
+type GCSDestination struct {
+	// Required. Google Cloud Storage URI to output directory. If the uri doesn't
+	//  end with
+	//  '/', a '/' will be automatically appended. The directory is created if it
+	//  doesn't exist.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsDestination.output_uri_prefix
+	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.GcsSource
 type GCSSource struct {
 	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
@@ -471,6 +613,155 @@ type GenieSource struct {
 	// Required. The public base model URI.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GenieSource.base_model_uri
 	BaseModelURI *string `json:"baseModelURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.InputDataConfig
+type InputDataConfig struct {
+	// Split based on fractions defining the size of each set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.fraction_split
+	FractionSplit *FractionSplit `json:"fractionSplit,omitempty"`
+
+	// Split based on the provided filters for each set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.filter_split
+	FilterSplit *FilterSplit `json:"filterSplit,omitempty"`
+
+	// Supported only for tabular Datasets.
+	//
+	//  Split based on a predefined key.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.predefined_split
+	PredefinedSplit *PredefinedSplit `json:"predefinedSplit,omitempty"`
+
+	// Supported only for tabular Datasets.
+	//
+	//  Split based on the timestamp of the input data pieces.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.timestamp_split
+	TimestampSplit *TimestampSplit `json:"timestampSplit,omitempty"`
+
+	// Supported only for tabular Datasets.
+	//
+	//  Split based on the distribution of the specified column.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.stratified_split
+	StratifiedSplit *StratifiedSplit `json:"stratifiedSplit,omitempty"`
+
+	// The Cloud Storage location where the training data is to be
+	//  written to. In the given directory a new directory is created with
+	//  name:
+	//  `dataset-<dataset-id>-<annotation-type>-<timestamp-of-training-call>`
+	//  where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
+	//  All training input data is written into that directory.
+	//
+	//  The Vertex AI environment variables representing Cloud Storage
+	//  data URIs are represented in the Cloud Storage wildcard
+	//  format to support sharded data. e.g.: "gs://.../training-*.jsonl"
+	//
+	//  * AIP_DATA_FORMAT = "jsonl" for non-tabular data, "csv" for tabular data
+	//  * AIP_TRAINING_DATA_URI =
+	//  "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/training-*.${AIP_DATA_FORMAT}"
+	//
+	//  * AIP_VALIDATION_DATA_URI =
+	//  "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/validation-*.${AIP_DATA_FORMAT}"
+	//
+	//  * AIP_TEST_DATA_URI =
+	//  "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/test-*.${AIP_DATA_FORMAT}"
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.gcs_destination
+	GCSDestination *GCSDestination `json:"gcsDestination,omitempty"`
+
+	// Only applicable to custom training with tabular Dataset with BigQuery
+	//  source.
+	//
+	//  The BigQuery project location where the training data is to be written
+	//  to. In the given project a new dataset is created with name
+	//  `dataset_<dataset-id>_<annotation-type>_<timestamp-of-training-call>`
+	//  where timestamp is in YYYY_MM_DDThh_mm_ss_sssZ format. All training
+	//  input data is written into that dataset. In the dataset three
+	//  tables are created, `training`, `validation` and `test`.
+	//
+	//  * AIP_DATA_FORMAT = "bigquery".
+	//  * AIP_TRAINING_DATA_URI  =
+	//  "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.training"
+	//
+	//  * AIP_VALIDATION_DATA_URI =
+	//  "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.validation"
+	//
+	//  * AIP_TEST_DATA_URI =
+	//  "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.test"
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.bigquery_destination
+	BigqueryDestination *BigQueryDestination `json:"bigqueryDestination,omitempty"`
+
+	// Required. The ID of the Dataset in the same Project and Location which data
+	//  will be used to train the Model. The Dataset must use schema compatible
+	//  with Model being trained, and what is compatible should be described in the
+	//  used TrainingPipeline's [training_task_definition]
+	//  [google.cloud.aiplatform.v1.TrainingPipeline.training_task_definition].
+	//  For tabular Datasets, all their data is exported to training, to pick
+	//  and choose from.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Applicable only to Datasets that have DataItems and Annotations.
+	//
+	//  A filter on Annotations of the Dataset. Only Annotations that both
+	//  match this filter and belong to DataItems not ignored by the split method
+	//  are used in respectively training, validation or test role, depending on
+	//  the role of the DataItem they are on (for the auto-assigned that role is
+	//  decided by Vertex AI). A filter with same syntax as the one used in
+	//  [ListAnnotations][google.cloud.aiplatform.v1.DatasetService.ListAnnotations]
+	//  may be used, but note here it filters across all Annotations of the
+	//  Dataset, and not just within a single DataItem.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.annotations_filter
+	AnnotationsFilter *string `json:"annotationsFilter,omitempty"`
+
+	// Applicable only to custom training with Datasets that have DataItems and
+	//  Annotations.
+	//
+	//  Cloud Storage URI that points to a YAML file describing the annotation
+	//  schema. The schema is defined as an OpenAPI 3.0.2 [Schema
+	//  Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject).
+	//  The schema files that can be used here are found in
+	//  gs://google-cloud-aiplatform/schema/dataset/annotation/ , note that the
+	//  chosen schema must be consistent with
+	//  [metadata][google.cloud.aiplatform.v1.Dataset.metadata_schema_uri] of the
+	//  Dataset specified by
+	//  [dataset_id][google.cloud.aiplatform.v1.InputDataConfig.dataset_id].
+	//
+	//  Only Annotations that both match this schema and belong to DataItems not
+	//  ignored by the split method are used in respectively training, validation
+	//  or test role, depending on the role of the DataItem they are on.
+	//
+	//  When used in conjunction with
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter],
+	//  the Annotations used for training are filtered by both
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter]
+	//  and
+	//  [annotation_schema_uri][google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri
+	AnnotationSchemaURI *string `json:"annotationSchemaURI,omitempty"`
+
+	// Only applicable to Datasets that have SavedQueries.
+	//
+	//  The ID of a SavedQuery (annotation set) under the Dataset specified by
+	//  [dataset_id][google.cloud.aiplatform.v1.InputDataConfig.dataset_id] used
+	//  for filtering Annotations for training.
+	//
+	//  Only Annotations that are associated with this SavedQuery are used in
+	//  respectively training. When used in conjunction with
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter],
+	//  the Annotations used for training are filtered by both
+	//  [saved_query_id][google.cloud.aiplatform.v1.InputDataConfig.saved_query_id]
+	//  and
+	//  [annotations_filter][google.cloud.aiplatform.v1.InputDataConfig.annotations_filter].
+	//
+	//  Only one of
+	//  [saved_query_id][google.cloud.aiplatform.v1.InputDataConfig.saved_query_id]
+	//  and
+	//  [annotation_schema_uri][google.cloud.aiplatform.v1.InputDataConfig.annotation_schema_uri]
+	//  should be specified as both of them represent the same thing: problem type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.saved_query_id
+	SavedQueryID *string `json:"savedQueryID,omitempty"`
+
+	// Whether to persist the ML use assignment to data item system labels.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.persist_ml_use_assignment
+	PersistMlUseAssignment *bool `json:"persistMlUseAssignment,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.IntegratedGradientsAttribution
@@ -900,12 +1191,43 @@ type Part struct {
 	VideoMetadata *VideoMetadata `json:"videoMetadata,omitempty"`
 }
 
+/* unreachable type PipelineJob_RuntimeConfig_InputArtifact
+// +kcc:proto=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.InputArtifact
+type PipelineJob_RuntimeConfig_InputArtifact struct {
+	// Artifact resource id from MLMD. Which is the last portion of an
+	//  artifact resource name:
+	//  `projects/{project}/locations/{location}/metadataStores/default/artifacts/{artifact_id}`.
+	//  The artifact must stay within the same project, location and default
+	//  metadatastore as the pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.InputArtifact.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
+}
+*/
+
+/* unreachable type PipelineTaskDetail_ArtifactList
+// +kcc:proto=google.cloud.aiplatform.v1.PipelineTaskDetail.ArtifactList
+type PipelineTaskDetail_ArtifactList struct {
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.Port
 type Port struct {
 	// The number of the port to expose on the pod's IP address.
 	//  Must be a valid port number, between 1 and 65535 inclusive.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Port.container_port
 	ContainerPort *int32 `json:"containerPort,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PredefinedSplit
+type PredefinedSplit struct {
+	// Required. The key is a name of one of the Dataset's data columns.
+	//  The value of the key (either the label's value or value in the column)
+	//  must be one of {`training`, `validation`, `test`}, and it defines to which
+	//  set the given piece of data is assigned. If for a piece of data the key
+	//  is not present or has an invalid value, that piece is ignored by the
+	//  pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PredefinedSplit.key
+	Key *string `json:"key,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.PredictSchemata
@@ -1155,6 +1477,391 @@ type SmoothGradConfig struct {
 	NoisySampleCount *int32 `json:"noisySampleCount,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.StratifiedSplit
+type StratifiedSplit struct {
+	// The fraction of the input data that is to be used to train the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.training_fraction
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to validate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.validation_fraction
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to evaluate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.test_fraction
+	TestFraction *float64 `json:"testFraction,omitempty"`
+
+	// Required. The key is a name of one of the Dataset's data columns.
+	//  The key provided must be for a categorical column.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.key
+	Key *string `json:"key,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec
+type StudySpec struct {
+	// The automated early stopping spec using decay curve rule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.decay_curve_stopping_spec
+	DecayCurveStoppingSpec *StudySpec_DecayCurveAutomatedStoppingSpec `json:"decayCurveStoppingSpec,omitempty"`
+
+	// The automated early stopping spec using median rule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.median_automated_stopping_spec
+	MedianAutomatedStoppingSpec *StudySpec_MedianAutomatedStoppingSpec `json:"medianAutomatedStoppingSpec,omitempty"`
+
+	// The automated early stopping spec using convex stopping rule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.convex_automated_stopping_spec
+	ConvexAutomatedStoppingSpec *StudySpec_ConvexAutomatedStoppingSpec `json:"convexAutomatedStoppingSpec,omitempty"`
+
+	// Required. Metric specs for the Study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.metrics
+	Metrics []StudySpec_MetricSpec `json:"metrics,omitempty"`
+
+	// Required. The set of parameters to tune.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.parameters
+	Parameters []StudySpec_ParameterSpec `json:"parameters,omitempty"`
+
+	// The search algorithm specified for the Study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.algorithm
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	// The observation noise level of the study.
+	//  Currently only supported by the Vertex AI Vizier service. Not supported by
+	//  HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.observation_noise
+	ObservationNoise *string `json:"observationNoise,omitempty"`
+
+	// Describe which measurement selection type will be used
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.measurement_selection_type
+	MeasurementSelectionType *string `json:"measurementSelectionType,omitempty"`
+
+	// Conditions for automated stopping of a Study. Enable automated stopping by
+	//  configuring at least one condition.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.study_stopping_config
+	StudyStoppingConfig *StudySpec_StudyStoppingConfig `json:"studyStoppingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec
+type StudySpec_ConvexAutomatedStoppingSpec struct {
+	// Steps used in predicting the final objective for early stopped trials. In
+	//  general, it's set to be the same as the defined steps in training /
+	//  tuning. If not defined, it will learn it from the completed trials. When
+	//  use_steps is false, this field is set to the maximum elapsed seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.max_step_count
+	MaxStepCount *int64 `json:"maxStepCount,omitempty"`
+
+	// Minimum number of steps for a trial to complete. Trials which do not have
+	//  a measurement with step_count > min_step_count won't be considered for
+	//  early stopping. It's ok to set it to 0, and a trial can be early stopped
+	//  at any stage. By default, min_step_count is set to be one-tenth of the
+	//  max_step_count.
+	//  When use_elapsed_duration is true, this field is set to the minimum
+	//  elapsed seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.min_step_count
+	MinStepCount *int64 `json:"minStepCount,omitempty"`
+
+	// The minimal number of measurements in a Trial.  Early-stopping checks
+	//  will not trigger if less than min_measurement_count+1 completed trials or
+	//  pending trials with less than min_measurement_count measurements. If not
+	//  defined, the default value is 5.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.min_measurement_count
+	MinMeasurementCount *int64 `json:"minMeasurementCount,omitempty"`
+
+	// The hyper-parameter name used in the tuning job that stands for learning
+	//  rate. Leave it blank if learning rate is not in a parameter in tuning.
+	//  The learning_rate is used to estimate the objective value of the ongoing
+	//  trial.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.learning_rate_parameter_name
+	LearningRateParameterName *string `json:"learningRateParameterName,omitempty"`
+
+	// This bool determines whether or not the rule is applied based on
+	//  elapsed_secs or steps. If use_elapsed_duration==false, the early stopping
+	//  decision is made according to the predicted objective values according to
+	//  the target steps. If use_elapsed_duration==true, elapsed_secs is used
+	//  instead of steps. Also, in this case, the parameters max_num_steps and
+	//  min_num_steps are overloaded to contain max_elapsed_seconds and
+	//  min_elapsed_seconds.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.use_elapsed_duration
+	UseElapsedDuration *bool `json:"useElapsedDuration,omitempty"`
+
+	// ConvexAutomatedStoppingSpec by default only updates the trials that needs
+	//  to be early stopped using a newly trained auto-regressive model. When
+	//  this flag is set to True, all stopped trials from the beginning are
+	//  potentially updated in terms of their `final_measurement`. Also, note
+	//  that the training logic of autoregressive models is different in this
+	//  case. Enabling this option has shown better results and this may be the
+	//  default option in the future.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ConvexAutomatedStoppingSpec.update_all_stopped_trials
+	UpdateAllStoppedTrials *bool `json:"updateAllStoppedTrials,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.DecayCurveAutomatedStoppingSpec
+type StudySpec_DecayCurveAutomatedStoppingSpec struct {
+	// True if
+	//  [Measurement.elapsed_duration][google.cloud.aiplatform.v1.Measurement.elapsed_duration]
+	//  is used as the x-axis of each Trials Decay Curve. Otherwise,
+	//  [Measurement.step_count][google.cloud.aiplatform.v1.Measurement.step_count]
+	//  will be used as the x-axis.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.DecayCurveAutomatedStoppingSpec.use_elapsed_duration
+	UseElapsedDuration *bool `json:"useElapsedDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.MedianAutomatedStoppingSpec
+type StudySpec_MedianAutomatedStoppingSpec struct {
+	// True if median automated stopping rule applies on
+	//  [Measurement.elapsed_duration][google.cloud.aiplatform.v1.Measurement.elapsed_duration].
+	//  It means that elapsed_duration field of latest measurement of current
+	//  Trial is used to compute median objective value for each completed
+	//  Trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MedianAutomatedStoppingSpec.use_elapsed_duration
+	UseElapsedDuration *bool `json:"useElapsedDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.MetricSpec
+type StudySpec_MetricSpec struct {
+	// Required. The ID of the metric. Must not contain whitespaces and must be
+	//  unique amongst all MetricSpecs.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.metric_id
+	MetricID *string `json:"metricID,omitempty"`
+
+	// Required. The optimization goal of the metric.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.goal
+	Goal *string `json:"goal,omitempty"`
+
+	// Used for safe search. In the case, the metric will be a safety
+	//  metric. You must provide a separate metric for objective metric.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.safety_config
+	SafetyConfig *StudySpec_MetricSpec_SafetyMetricConfig `json:"safetyConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.MetricSpec.SafetyMetricConfig
+type StudySpec_MetricSpec_SafetyMetricConfig struct {
+	// Safety threshold (boundary value between safe and unsafe). NOTE that if
+	//  you leave SafetyMetricConfig unset, a default value of 0 will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.SafetyMetricConfig.safety_threshold
+	SafetyThreshold *float64 `json:"safetyThreshold,omitempty"`
+
+	// Desired minimum fraction of safe trials (over total number of trials)
+	//  that should be targeted by the algorithm at any time during the
+	//  study (best effort). This should be between 0.0 and 1.0 and a value of
+	//  0.0 means that there is no minimum and an algorithm proceeds without
+	//  targeting any specific fraction. A value of 1.0 means that the
+	//  algorithm attempts to only Suggest safe Trials.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.SafetyMetricConfig.desired_min_safe_trials_fraction
+	DesiredMinSafeTrialsFraction *float64 `json:"desiredMinSafeTrialsFraction,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec
+type StudySpec_ParameterSpec struct {
+	// The value spec for a 'DOUBLE' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.double_value_spec
+	DoubleValueSpec *StudySpec_ParameterSpec_DoubleValueSpec `json:"doubleValueSpec,omitempty"`
+
+	// The value spec for an 'INTEGER' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.integer_value_spec
+	IntegerValueSpec *StudySpec_ParameterSpec_IntegerValueSpec `json:"integerValueSpec,omitempty"`
+
+	// The value spec for a 'CATEGORICAL' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.categorical_value_spec
+	CategoricalValueSpec *StudySpec_ParameterSpec_CategoricalValueSpec `json:"categoricalValueSpec,omitempty"`
+
+	// The value spec for a 'DISCRETE' parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.discrete_value_spec
+	DiscreteValueSpec *StudySpec_ParameterSpec_DiscreteValueSpec `json:"discreteValueSpec,omitempty"`
+
+	// Required. The ID of the parameter. Must not contain whitespaces and must
+	//  be unique amongst all ParameterSpecs.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.parameter_id
+	ParameterID *string `json:"parameterID,omitempty"`
+
+	// How the parameter should be scaled.
+	//  Leave unset for `CATEGORICAL` parameters.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.scale_type
+	ScaleType *string `json:"scaleType,omitempty"`
+
+	// A conditional parameter node is active if the parameter's value matches
+	//  the conditional node's parent_value_condition.
+	//
+	//  If two items in conditional_parameter_specs have the same name, they
+	//  must have disjoint parent_value_condition.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.conditional_parameter_specs
+	ConditionalParameterSpecs []StudySpec_ParameterSpec_ConditionalParameterSpec `json:"conditionalParameterSpecs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.CategoricalValueSpec
+type StudySpec_ParameterSpec_CategoricalValueSpec struct {
+	// Required. The list of possible categories.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.CategoricalValueSpec.values
+	Values []string `json:"values,omitempty"`
+
+	// A default value for a `CATEGORICAL` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.CategoricalValueSpec.default_value
+	DefaultValue *string `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.CategoricalValueCondition
+type StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition struct {
+	// Required. Matches values of the parent parameter of 'CATEGORICAL'
+	//  type. All values must exist in `categorical_value_spec` of parent
+	//  parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.CategoricalValueCondition.values
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.DiscreteValueCondition
+type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition struct {
+	// Required. Matches values of the parent parameter of 'DISCRETE' type.
+	//  All values must exist in `discrete_value_spec` of parent parameter.
+	//
+	//  The Epsilon of the value matching is 1e-10.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.DiscreteValueCondition.values
+	Values []float64 `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.IntValueCondition
+type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition struct {
+	// Required. Matches values of the parent parameter of 'INTEGER' type.
+	//  All values must lie in `integer_value_spec` of parent parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.IntValueCondition.values
+	Values []int64 `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec
+type StudySpec_ParameterSpec_DiscreteValueSpec struct {
+	// Required. A list of possible values.
+	//  The list should be in increasing order and at least 1e-10 apart.
+	//  For instance, this parameter might have possible settings of 1.5, 2.5,
+	//  and 4.0. This list should not contain more than 1,000 values.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec.values
+	Values []float64 `json:"values,omitempty"`
+
+	// A default value for a `DISCRETE` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.  It automatically rounds to the
+	//  nearest feasible discrete point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec.default_value
+	DefaultValue *float64 `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec
+type StudySpec_ParameterSpec_DoubleValueSpec struct {
+	// Required. Inclusive minimum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.min_value
+	MinValue *float64 `json:"minValue,omitempty"`
+
+	// Required. Inclusive maximum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.max_value
+	MaxValue *float64 `json:"maxValue,omitempty"`
+
+	// A default value for a `DOUBLE` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.default_value
+	DefaultValue *float64 `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec
+type StudySpec_ParameterSpec_IntegerValueSpec struct {
+	// Required. Inclusive minimum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.min_value
+	MinValue *int64 `json:"minValue,omitempty"`
+
+	// Required. Inclusive maximum value of the parameter.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.max_value
+	MaxValue *int64 `json:"maxValue,omitempty"`
+
+	// A default value for an `INTEGER` parameter that is assumed to be a
+	//  relatively good starting point.  Unset value signals that there is no
+	//  offered starting point.
+	//
+	//  Currently only supported by the Vertex AI Vizier service. Not supported
+	//  by HyperparameterTuningJob or TrainingPipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.default_value
+	DefaultValue *int64 `json:"defaultValue,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig
+type StudySpec_StudyStoppingConfig struct {
+	// If true, a Study enters STOPPING_ASAP whenever it would normally enters
+	//  STOPPING state.
+	//
+	//  The bottom line is: set to true if you want to interrupt on-going
+	//  evaluations of Trials as soon as the study stopping condition is met.
+	//  (Please see Study.State documentation for the source of truth).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.should_stop_asap
+	ShouldStopAsap *bool `json:"shouldStopAsap,omitempty"`
+
+	// Each "stopping rule" in this proto specifies an "if" condition. Before
+	//  Vizier would generate a new suggestion, it first checks each specified
+	//  stopping rule, from top to bottom in this list.
+	//  Note that the first few rules (e.g. minimum_runtime_constraint,
+	//  min_num_trials) will prevent other stopping rules from being evaluated
+	//  until they are met. For example, setting `min_num_trials=5` and
+	//  `always_stop_after= 1 hour` means that the Study will ONLY stop after it
+	//  has 5 COMPLETED trials, even if more than an hour has passed since its
+	//  creation. It follows the first applicable rule (whose "if" condition is
+	//  satisfied) to make a stopping decision. If none of the specified rules
+	//  are applicable, then Vizier decides that the study should not stop.
+	//  If Vizier decides that the study should stop, the study enters
+	//  STOPPING state (or STOPPING_ASAP if should_stop_asap = true).
+	//  IMPORTANT: The automatic study state transition happens precisely as
+	//  described above; that is, deleting trials or updating StudyConfig NEVER
+	//  automatically moves the study state back to ACTIVE. If you want to
+	//  _resume_ a Study that was stopped, 1) change the stopping conditions if
+	//  necessary, 2) activate the study, and then 3) ask for suggestions.
+	//  If the specified time or duration has not passed, do not stop the
+	//  study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.minimum_runtime_constraint
+	MinimumRuntimeConstraint *StudyTimeConstraint `json:"minimumRuntimeConstraint,omitempty"`
+
+	// If the specified time or duration has passed, stop the study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.maximum_runtime_constraint
+	MaximumRuntimeConstraint *StudyTimeConstraint `json:"maximumRuntimeConstraint,omitempty"`
+
+	// If there are fewer than this many COMPLETED trials, do not stop the
+	//  study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.min_num_trials
+	MinNumTrials *Int32Value `json:"minNumTrials,omitempty"`
+
+	// If there are more than this many trials, stop the study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.max_num_trials
+	MaxNumTrials *Int32Value `json:"maxNumTrials,omitempty"`
+
+	// If the objective value has not improved for this many consecutive
+	//  trials, stop the study.
+	//
+	//  WARNING: Effective only for single-objective studies.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.max_num_trials_no_progress
+	MaxNumTrialsNoProgress *Int32Value `json:"maxNumTrialsNoProgress,omitempty"`
+
+	// If the objective value has not improved for this much time, stop the
+	//  study.
+	//
+	//  WARNING: Effective only for single-objective studies.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.StudyStoppingConfig.max_duration_no_progress
+	MaxDurationNoProgress *string `json:"maxDurationNoProgress,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.StudyTimeConstraint
+type StudyTimeConstraint struct {
+	// Counts the wallclock time passed since the creation of this Study.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudyTimeConstraint.max_duration
+	MaxDuration *string `json:"maxDuration,omitempty"`
+
+	// Compares the wallclock time to this time. Must use UTC timezone.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.StudyTimeConstraint.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.SupervisedHyperParameters
 type SupervisedHyperParameters struct {
 	// Optional. Number of complete passes the model makes over the entire
@@ -1210,6 +1917,29 @@ type SupervisedTuningSpec struct {
 	//  checkpoints for SFT. Default is false.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SupervisedTuningSpec.export_last_checkpoint_only
 	ExportLastCheckpointOnly *bool `json:"exportLastCheckpointOnly,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.TimestampSplit
+type TimestampSplit struct {
+	// The fraction of the input data that is to be used to train the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.training_fraction
+	TrainingFraction *float64 `json:"trainingFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to validate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.validation_fraction
+	ValidationFraction *float64 `json:"validationFraction,omitempty"`
+
+	// The fraction of the input data that is to be used to evaluate the Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.test_fraction
+	TestFraction *float64 `json:"testFraction,omitempty"`
+
+	// Required. The key is a name of one of the Dataset's data columns.
+	//  The values of the key (the values in the column) must be in RFC 3339
+	//  `date-time` format, where `time-offset` = `"Z"`
+	//  (e.g. 1985-04-12T23:20:50.52Z). If for a piece of data the key is not
+	//  present or has an invalid value, that piece is ignored by the pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.key
+	Key *string `json:"key,omitempty"`
 }
 
 /* unreachable type TunedModel
@@ -1285,6 +2015,13 @@ type XraiAttribution struct {
 	//  https://arxiv.org/abs/2004.03383
 	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Int32Value
+type Int32Value struct {
+	// The int32 value.
+	// +kcc:proto:field=google.protobuf.Int32Value.value
+	Value *int32 `json:"value,omitempty"`
 }
 
 /* unreachable type Model_ExportFormatObservedState

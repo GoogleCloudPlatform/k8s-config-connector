@@ -55,6 +55,17 @@ test: generate fmt vet manifests
 	dev/ci/presubmits/unit-tests
 	dev/ci/presubmits/unit-tests-operator
 
+# Setup repository git hooks for automated pre-push presubmit validation
+.PHONY: setup-hooks
+setup-hooks:
+	dev/tasks/install-git-hooks
+
+# Run canonical presubmit / validation checks without pushing
+.PHONY: presubmit validate
+validate presubmit:
+	dev/tasks/validate-and-push --validate-only
+
+
 # Build config-connector binary
 .PHONY: config-connector
 config-connector: generate fmt vet
@@ -280,12 +291,16 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint lint-custom manifests generate-go-client ensure fmt
+ready-pr: lint lint-custom manifests ensure fmt
 	python3 dev/tasks/generate_static_config.py
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
-release-check: resource-docs
+release-check: resource-docs generate-go-client generate-resource-report
+
+.PHONY: generate-resource-report
+generate-resource-report:
+	dev/tasks/generate-resource-report
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl

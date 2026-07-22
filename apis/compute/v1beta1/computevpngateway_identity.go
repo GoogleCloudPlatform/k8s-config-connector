@@ -63,6 +63,10 @@ func (i *ComputeVPNGatewayIdentity) Host() string {
 	return ComputeVPNGatewayIdentityFormat.Host()
 }
 
+func (i *ComputeVPNGatewayIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/regions/%s", i.Project, i.Region)
+}
+
 func ParseComputeVPNGatewayExternal(external string) (*ComputeVPNGatewayIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("empty ComputeVPNGateway external value")

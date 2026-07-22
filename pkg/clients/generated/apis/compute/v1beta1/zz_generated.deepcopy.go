@@ -224,22 +224,22 @@ func (in *BackendserviceBackend) DeepCopyInto(out *BackendserviceBackend) {
 	in.Group.DeepCopyInto(&out.Group)
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxConnectionsPerEndpoint != nil {
 		in, out := &in.MaxConnectionsPerEndpoint, &out.MaxConnectionsPerEndpoint
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxConnectionsPerInstance != nil {
 		in, out := &in.MaxConnectionsPerInstance, &out.MaxConnectionsPerInstance
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxRate != nil {
 		in, out := &in.MaxRate, &out.MaxRate
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxRatePerEndpoint != nil {
@@ -275,7 +275,7 @@ func (in *BackendserviceBaseEjectionTime) DeepCopyInto(out *BackendserviceBaseEj
 	*out = *in
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -378,17 +378,17 @@ func (in *BackendserviceCdnPolicy) DeepCopyInto(out *BackendserviceCdnPolicy) {
 	}
 	if in.ClientTtl != nil {
 		in, out := &in.ClientTtl, &out.ClientTtl
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.DefaultTtl != nil {
 		in, out := &in.DefaultTtl, &out.DefaultTtl
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxTtl != nil {
 		in, out := &in.MaxTtl, &out.MaxTtl
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.NegativeCaching != nil {
@@ -405,7 +405,7 @@ func (in *BackendserviceCdnPolicy) DeepCopyInto(out *BackendserviceCdnPolicy) {
 	}
 	if in.ServeWhileStale != nil {
 		in, out := &in.ServeWhileStale, &out.ServeWhileStale
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.SignedUrlCacheMaxAgeSec != nil {
@@ -436,27 +436,27 @@ func (in *BackendserviceCircuitBreakers) DeepCopyInto(out *BackendserviceCircuit
 	}
 	if in.MaxConnections != nil {
 		in, out := &in.MaxConnections, &out.MaxConnections
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxPendingRequests != nil {
 		in, out := &in.MaxPendingRequests, &out.MaxPendingRequests
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxRequests != nil {
 		in, out := &in.MaxRequests, &out.MaxRequests
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxRequestsPerConnection != nil {
 		in, out := &in.MaxRequestsPerConnection, &out.MaxRequestsPerConnection
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.MaxRetries != nil {
 		in, out := &in.MaxRetries, &out.MaxRetries
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -477,7 +477,7 @@ func (in *BackendserviceConnectTimeout) DeepCopyInto(out *BackendserviceConnectT
 	*out = *in
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -508,7 +508,7 @@ func (in *BackendserviceConnectionTrackingPolicy) DeepCopyInto(out *Backendservi
 	}
 	if in.IdleTimeoutSec != nil {
 		in, out := &in.IdleTimeoutSec, &out.IdleTimeoutSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.TrackingMode != nil {
@@ -736,7 +736,7 @@ func (in *BackendserviceInterval) DeepCopyInto(out *BackendserviceInterval) {
 	*out = *in
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -809,7 +809,7 @@ func (in *BackendserviceNegativeCachingPolicy) DeepCopyInto(out *BackendserviceN
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Ttl != nil {
@@ -866,27 +866,27 @@ func (in *BackendserviceOutlierDetection) DeepCopyInto(out *BackendserviceOutlie
 	}
 	if in.ConsecutiveErrors != nil {
 		in, out := &in.ConsecutiveErrors, &out.ConsecutiveErrors
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ConsecutiveGatewayFailure != nil {
 		in, out := &in.ConsecutiveGatewayFailure, &out.ConsecutiveGatewayFailure
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.EnforcingConsecutiveErrors != nil {
 		in, out := &in.EnforcingConsecutiveErrors, &out.EnforcingConsecutiveErrors
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.EnforcingConsecutiveGatewayFailure != nil {
 		in, out := &in.EnforcingConsecutiveGatewayFailure, &out.EnforcingConsecutiveGatewayFailure
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.EnforcingSuccessRate != nil {
 		in, out := &in.EnforcingSuccessRate, &out.EnforcingSuccessRate
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Interval != nil {
@@ -896,22 +896,22 @@ func (in *BackendserviceOutlierDetection) DeepCopyInto(out *BackendserviceOutlie
 	}
 	if in.MaxEjectionPercent != nil {
 		in, out := &in.MaxEjectionPercent, &out.MaxEjectionPercent
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.SuccessRateMinimumHosts != nil {
 		in, out := &in.SuccessRateMinimumHosts, &out.SuccessRateMinimumHosts
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.SuccessRateRequestVolume != nil {
 		in, out := &in.SuccessRateRequestVolume, &out.SuccessRateRequestVolume
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.SuccessRateStdevFactor != nil {
 		in, out := &in.SuccessRateStdevFactor, &out.SuccessRateStdevFactor
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -986,7 +986,7 @@ func (in *BackendserviceTtl) DeepCopyInto(out *BackendserviceTtl) {
 	*out = *in
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -1426,7 +1426,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	*out = *in
 	if in.AffinityCookieTtlSec != nil {
 		in, out := &in.AffinityCookieTtlSec, &out.AffinityCookieTtlSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.Backend != nil {
@@ -1453,7 +1453,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.ConnectionDrainingTimeoutSec != nil {
 		in, out := &in.ConnectionDrainingTimeoutSec, &out.ConnectionDrainingTimeoutSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.ConnectionTrackingPolicy != nil {
@@ -1582,7 +1582,7 @@ func (in *ComputeBackendServiceSpec) DeepCopyInto(out *ComputeBackendServiceSpec
 	}
 	if in.TimeoutSec != nil {
 		in, out := &in.TimeoutSec, &out.TimeoutSec
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	return
@@ -5463,6 +5463,11 @@ func (in *ComputeNetworkSpec) DeepCopyInto(out *ComputeNetworkSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NetworkProfile != nil {
+		in, out := &in.NetworkProfile, &out.NetworkProfile
+		*out = new(string)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -6974,6 +6979,11 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.EndpointTypes != nil {
+		in, out := &in.EndpointTypes, &out.EndpointTypes
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	if in.IcmpIdleTimeoutSec != nil {
 		in, out := &in.IcmpIdleTimeoutSec, &out.IcmpIdleTimeoutSec
 		*out = new(int64)
@@ -7032,6 +7042,11 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 	if in.TcpTransitoryIdleTimeoutSec != nil {
 		in, out := &in.TcpTransitoryIdleTimeoutSec, &out.TcpTransitoryIdleTimeoutSec
 		*out = new(int64)
+		**out = **in
+	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
+		*out = new(string)
 		**out = **in
 	}
 	if in.UdpIdleTimeoutSec != nil {
@@ -7693,6 +7708,11 @@ func (in *ComputeSecurityPolicySpec) DeepCopyInto(out *ComputeSecurityPolicySpec
 	if in.RecaptchaOptionsConfig != nil {
 		in, out := &in.RecaptchaOptionsConfig, &out.RecaptchaOptionsConfig
 		*out = new(SecuritypolicyRecaptchaOptionsConfig)
+		**out = **in
+	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -8385,6 +8405,11 @@ func (in *ComputeSubnetworkSpec) DeepCopyInto(out *ComputeSubnetworkSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IpCidrRange != nil {
+		in, out := &in.IpCidrRange, &out.IpCidrRange
+		*out = new(string)
+		**out = **in
+	}
 	if in.Ipv6AccessType != nil {
 		in, out := &in.Ipv6AccessType, &out.Ipv6AccessType
 		*out = new(string)
@@ -8411,6 +8436,11 @@ func (in *ComputeSubnetworkSpec) DeepCopyInto(out *ComputeSubnetworkSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ReservedInternalRangeRef != nil {
+		in, out := &in.ReservedInternalRangeRef, &out.ReservedInternalRangeRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -8424,7 +8454,9 @@ func (in *ComputeSubnetworkSpec) DeepCopyInto(out *ComputeSubnetworkSpec) {
 	if in.SecondaryIpRange != nil {
 		in, out := &in.SecondaryIpRange, &out.SecondaryIpRange
 		*out = make([]SubnetworkSecondaryIpRange, len(*in))
-		copy(*out, *in)
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.StackType != nil {
 		in, out := &in.StackType, &out.StackType
@@ -10674,6 +10706,28 @@ func (in *ForwardingruleMetadataFilters) DeepCopy() *ForwardingruleMetadataFilte
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *ForwardingruleRedisClusterServiceAttachment) DeepCopyInto(out *ForwardingruleRedisClusterServiceAttachment) {
+	*out = *in
+	if in.ConnectionType != nil {
+		in, out := &in.ConnectionType, &out.ConnectionType
+		*out = new(string)
+		**out = **in
+	}
+	out.RedisClusterRef = in.RedisClusterRef
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ForwardingruleRedisClusterServiceAttachment.
+func (in *ForwardingruleRedisClusterServiceAttachment) DeepCopy() *ForwardingruleRedisClusterServiceAttachment {
+	if in == nil {
+		return nil
+	}
+	out := new(ForwardingruleRedisClusterServiceAttachment)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ForwardingruleServiceDirectoryRegistrations) DeepCopyInto(out *ForwardingruleServiceDirectoryRegistrations) {
 	*out = *in
 	if in.Namespace != nil {
@@ -10710,6 +10764,11 @@ func (in *ForwardingruleTarget) DeepCopyInto(out *ForwardingruleTarget) {
 	if in.MemorystoreInstanceServiceAttachment != nil {
 		in, out := &in.MemorystoreInstanceServiceAttachment, &out.MemorystoreInstanceServiceAttachment
 		*out = new(ForwardingruleMemorystoreInstanceServiceAttachment)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.RedisClusterServiceAttachment != nil {
+		in, out := &in.RedisClusterServiceAttachment, &out.RedisClusterServiceAttachment
+		*out = new(ForwardingruleRedisClusterServiceAttachment)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ServiceAttachmentRef != nil {
@@ -14293,8 +14352,18 @@ func (in *RouternatAction) DeepCopyInto(out *RouternatAction) {
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
+	if in.SourceNatActiveRangesRefs != nil {
+		in, out := &in.SourceNatActiveRangesRefs, &out.SourceNatActiveRangesRefs
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
+	}
 	if in.SourceNatDrainIpsRefs != nil {
 		in, out := &in.SourceNatDrainIpsRefs, &out.SourceNatDrainIpsRefs
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
+	}
+	if in.SourceNatDrainRangesRefs != nil {
+		in, out := &in.SourceNatDrainRangesRefs, &out.SourceNatDrainRangesRefs
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
@@ -15419,6 +15488,16 @@ func (in *SubnetworkLogConfig) DeepCopy() *SubnetworkLogConfig {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *SubnetworkSecondaryIpRange) DeepCopyInto(out *SubnetworkSecondaryIpRange) {
 	*out = *in
+	if in.IpCidrRange != nil {
+		in, out := &in.IpCidrRange, &out.IpCidrRange
+		*out = new(string)
+		**out = **in
+	}
+	if in.ReservedInternalRangeRef != nil {
+		in, out := &in.ReservedInternalRangeRef, &out.ReservedInternalRangeRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	return
 }
 
@@ -16387,6 +16466,16 @@ func (in *UrlmapTest) DeepCopyInto(out *UrlmapTest) {
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.ExpectedOutputURL != nil {
+		in, out := &in.ExpectedOutputURL, &out.ExpectedOutputURL
+		*out = new(string)
+		**out = **in
+	}
+	if in.ExpectedRedirectResponseCode != nil {
+		in, out := &in.ExpectedRedirectResponseCode, &out.ExpectedRedirectResponseCode
+		*out = new(int32)
 		**out = **in
 	}
 	in.Service.DeepCopyInto(&out.Service)

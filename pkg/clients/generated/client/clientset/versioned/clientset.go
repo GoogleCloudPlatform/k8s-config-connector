@@ -86,6 +86,7 @@ import (
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
+	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
 	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1beta1"
@@ -93,6 +94,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
+	configdeploymentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdeployment/v1alpha1"
 	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/connectors/v1alpha1"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
@@ -144,6 +146,7 @@ import (
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
+	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
@@ -153,9 +156,11 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
+	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1alpha1"
 	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1"
+	mapmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mapmanagement/v1alpha1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
@@ -187,6 +192,7 @@ import (
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1"
 	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1alpha1"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
+	redisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1alpha1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
 	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1alpha1"
@@ -208,20 +214,25 @@ import (
 	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sqladmin/v1alpha1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
+	storageinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storageinsights/v1alpha1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	testingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/testing/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
+	translatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/translate/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1"
+	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1"
+	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	workflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
+	workloadmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workloadmanager/v1alpha1"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
@@ -291,6 +302,7 @@ type Interface interface {
 	CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface
+	CloudtalentsolutionV1alpha1() cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Interface
 	CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface
 	ColabV1alpha1() colabv1alpha1.ColabV1alpha1Interface
 	ComposerV1beta1() composerv1beta1.ComposerV1beta1Interface
@@ -298,6 +310,7 @@ type Interface interface {
 	ComputeV1beta1() computev1beta1.ComputeV1beta1Interface
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface
+	ConfigdeploymentV1alpha1() configdeploymentv1alpha1.ConfigdeploymentV1alpha1Interface
 	ConnectorsV1alpha1() connectorsv1alpha1.ConnectorsV1alpha1Interface
 	ContactcenterinsightsV1alpha1() contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
@@ -349,6 +362,7 @@ type Interface interface {
 	GkebackupV1alpha1() gkebackupv1alpha1.GkebackupV1alpha1Interface
 	GkehubV1alpha1() gkehubv1alpha1.GkehubV1alpha1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
+	GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface
 	HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface
 	IamV1alpha1() iamv1alpha1.IamV1alpha1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
@@ -358,9 +372,11 @@ type Interface interface {
 	K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface
 	KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface
 	KmsV1beta1() kmsv1beta1.KmsV1beta1Interface
+	LivestreamV1alpha1() livestreamv1alpha1.LivestreamV1alpha1Interface
 	LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface
 	ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1alpha1Interface
 	ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta1Interface
+	MapmanagementV1alpha1() mapmanagementv1alpha1.MapmanagementV1alpha1Interface
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
 	MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface
 	MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface
@@ -392,6 +408,7 @@ type Interface interface {
 	PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Interface
 	RecaptchaenterpriseV1alpha1() recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Interface
 	RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface
+	RedisV1alpha1() redisv1alpha1.RedisV1alpha1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
 	RunV1alpha1() runv1alpha1.RunV1alpha1Interface
@@ -413,20 +430,25 @@ type Interface interface {
 	SqladminV1alpha1() sqladminv1alpha1.SqladminV1alpha1Interface
 	StorageV1alpha1() storagev1alpha1.StorageV1alpha1Interface
 	StorageV1beta1() storagev1beta1.StorageV1beta1Interface
+	StorageinsightsV1alpha1() storageinsightsv1alpha1.StorageinsightsV1alpha1Interface
 	StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	TestingV1alpha1() testingv1alpha1.TestingV1alpha1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
+	TranslateV1alpha1() translatev1alpha1.TranslateV1alpha1Interface
 	VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
 	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
 	VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface
+	VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface
+	VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
 	VmwareengineV1beta1() vmwareenginev1beta1.VmwareengineV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
 	WorkflowexecutionsV1alpha1() workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Interface
 	WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Interface
+	WorkloadmanagerV1alpha1() workloadmanagerv1alpha1.WorkloadmanagerV1alpha1Interface
 	WorkstationsV1beta1() workstationsv1beta1.WorkstationsV1beta1Interface
 }
 
@@ -494,6 +516,7 @@ type Clientset struct {
 	cloudquotaV1beta1               *cloudquotav1beta1.CloudquotaV1beta1Client
 	cloudschedulerV1beta1           *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	cloudsecuritycomplianceV1alpha1 *cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Client
+	cloudtalentsolutionV1alpha1     *cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Client
 	cloudtasksV1alpha1              *cloudtasksv1alpha1.CloudtasksV1alpha1Client
 	colabV1alpha1                   *colabv1alpha1.ColabV1alpha1Client
 	composerV1beta1                 *composerv1beta1.ComposerV1beta1Client
@@ -501,6 +524,7 @@ type Clientset struct {
 	computeV1beta1                  *computev1beta1.ComputeV1beta1Client
 	configcontrollerV1beta1         *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	configdeliveryV1alpha1          *configdeliveryv1alpha1.ConfigdeliveryV1alpha1Client
+	configdeploymentV1alpha1        *configdeploymentv1alpha1.ConfigdeploymentV1alpha1Client
 	connectorsV1alpha1              *connectorsv1alpha1.ConnectorsV1alpha1Client
 	contactcenterinsightsV1alpha1   *contactcenterinsightsv1alpha1.ContactcenterinsightsV1alpha1Client
 	containerV1beta1                *containerv1beta1.ContainerV1beta1Client
@@ -552,6 +576,7 @@ type Clientset struct {
 	gkebackupV1alpha1               *gkebackupv1alpha1.GkebackupV1alpha1Client
 	gkehubV1alpha1                  *gkehubv1alpha1.GkehubV1alpha1Client
 	gkehubV1beta1                   *gkehubv1beta1.GkehubV1beta1Client
+	gkemulticloudV1alpha1           *gkemulticloudv1alpha1.GkemulticloudV1alpha1Client
 	healthcareV1alpha1              *healthcarev1alpha1.HealthcareV1alpha1Client
 	iamV1alpha1                     *iamv1alpha1.IamV1alpha1Client
 	iamV1beta1                      *iamv1beta1.IamV1beta1Client
@@ -561,9 +586,11 @@ type Clientset struct {
 	k8sV1alpha1                     *k8sv1alpha1.K8sV1alpha1Client
 	kmsV1alpha1                     *kmsv1alpha1.KmsV1alpha1Client
 	kmsV1beta1                      *kmsv1beta1.KmsV1beta1Client
+	livestreamV1alpha1              *livestreamv1alpha1.LivestreamV1alpha1Client
 	loggingV1beta1                  *loggingv1beta1.LoggingV1beta1Client
 	managedkafkaV1alpha1            *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
 	managedkafkaV1beta1             *managedkafkav1beta1.ManagedkafkaV1beta1Client
+	mapmanagementV1alpha1           *mapmanagementv1alpha1.MapmanagementV1alpha1Client
 	memcacheV1beta1                 *memcachev1beta1.MemcacheV1beta1Client
 	memorystoreV1alpha1             *memorystorev1alpha1.MemorystoreV1alpha1Client
 	memorystoreV1beta1              *memorystorev1beta1.MemorystoreV1beta1Client
@@ -595,6 +622,7 @@ type Clientset struct {
 	pubsubliteV1beta1               *pubsublitev1beta1.PubsubliteV1beta1Client
 	recaptchaenterpriseV1alpha1     *recaptchaenterprisev1alpha1.RecaptchaenterpriseV1alpha1Client
 	recaptchaenterpriseV1beta1      *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
+	redisV1alpha1                   *redisv1alpha1.RedisV1alpha1Client
 	redisV1beta1                    *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1          *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
 	runV1alpha1                     *runv1alpha1.RunV1alpha1Client
@@ -616,20 +644,25 @@ type Clientset struct {
 	sqladminV1alpha1                *sqladminv1alpha1.SqladminV1alpha1Client
 	storageV1alpha1                 *storagev1alpha1.StorageV1alpha1Client
 	storageV1beta1                  *storagev1beta1.StorageV1beta1Client
+	storageinsightsV1alpha1         *storageinsightsv1alpha1.StorageinsightsV1alpha1Client
 	storagetransferV1alpha1         *storagetransferv1alpha1.StoragetransferV1alpha1Client
 	storagetransferV1beta1          *storagetransferv1beta1.StoragetransferV1beta1Client
 	tagsV1beta1                     *tagsv1beta1.TagsV1beta1Client
 	testingV1alpha1                 *testingv1alpha1.TestingV1alpha1Client
 	tpuV1alpha1                     *tpuv1alpha1.TpuV1alpha1Client
+	translateV1alpha1               *translatev1alpha1.TranslateV1alpha1Client
 	vectorsearchV1alpha1            *vectorsearchv1alpha1.VectorsearchV1alpha1Client
 	vertexaiV1alpha1                *vertexaiv1alpha1.VertexaiV1alpha1Client
 	vertexaiV1beta1                 *vertexaiv1beta1.VertexaiV1beta1Client
 	videostitcherV1alpha1           *videostitcherv1alpha1.VideostitcherV1alpha1Client
+	visionV1alpha1                  *visionv1alpha1.VisionV1alpha1Client
+	visionaiV1alpha1                *visionaiv1alpha1.VisionaiV1alpha1Client
 	vmwareengineV1alpha1            *vmwareenginev1alpha1.VmwareengineV1alpha1Client
 	vmwareengineV1beta1             *vmwareenginev1beta1.VmwareengineV1beta1Client
 	vpcaccessV1beta1                *vpcaccessv1beta1.VpcaccessV1beta1Client
 	workflowexecutionsV1alpha1      *workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Client
 	workflowsV1alpha1               *workflowsv1alpha1.WorkflowsV1alpha1Client
+	workloadmanagerV1alpha1         *workloadmanagerv1alpha1.WorkloadmanagerV1alpha1Client
 	workstationsV1beta1             *workstationsv1beta1.WorkstationsV1beta1Client
 }
 
@@ -938,6 +971,11 @@ func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1a
 	return c.cloudsecuritycomplianceV1alpha1
 }
 
+// CloudtalentsolutionV1alpha1 retrieves the CloudtalentsolutionV1alpha1Client
+func (c *Clientset) CloudtalentsolutionV1alpha1() cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Interface {
+	return c.cloudtalentsolutionV1alpha1
+}
+
 // CloudtasksV1alpha1 retrieves the CloudtasksV1alpha1Client
 func (c *Clientset) CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface {
 	return c.cloudtasksV1alpha1
@@ -971,6 +1009,11 @@ func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.Configcont
 // ConfigdeliveryV1alpha1 retrieves the ConfigdeliveryV1alpha1Client
 func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface {
 	return c.configdeliveryV1alpha1
+}
+
+// ConfigdeploymentV1alpha1 retrieves the ConfigdeploymentV1alpha1Client
+func (c *Clientset) ConfigdeploymentV1alpha1() configdeploymentv1alpha1.ConfigdeploymentV1alpha1Interface {
+	return c.configdeploymentV1alpha1
 }
 
 // ConnectorsV1alpha1 retrieves the ConnectorsV1alpha1Client
@@ -1228,6 +1271,11 @@ func (c *Clientset) GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface {
 	return c.gkehubV1beta1
 }
 
+// GkemulticloudV1alpha1 retrieves the GkemulticloudV1alpha1Client
+func (c *Clientset) GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface {
+	return c.gkemulticloudV1alpha1
+}
+
 // HealthcareV1alpha1 retrieves the HealthcareV1alpha1Client
 func (c *Clientset) HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface {
 	return c.healthcareV1alpha1
@@ -1273,6 +1321,11 @@ func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return c.kmsV1beta1
 }
 
+// LivestreamV1alpha1 retrieves the LivestreamV1alpha1Client
+func (c *Clientset) LivestreamV1alpha1() livestreamv1alpha1.LivestreamV1alpha1Interface {
+	return c.livestreamV1alpha1
+}
+
 // LoggingV1beta1 retrieves the LoggingV1beta1Client
 func (c *Clientset) LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface {
 	return c.loggingV1beta1
@@ -1286,6 +1339,11 @@ func (c *Clientset) ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1al
 // ManagedkafkaV1beta1 retrieves the ManagedkafkaV1beta1Client
 func (c *Clientset) ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta1Interface {
 	return c.managedkafkaV1beta1
+}
+
+// MapmanagementV1alpha1 retrieves the MapmanagementV1alpha1Client
+func (c *Clientset) MapmanagementV1alpha1() mapmanagementv1alpha1.MapmanagementV1alpha1Interface {
+	return c.mapmanagementV1alpha1
 }
 
 // MemcacheV1beta1 retrieves the MemcacheV1beta1Client
@@ -1443,6 +1501,11 @@ func (c *Clientset) RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.Reca
 	return c.recaptchaenterpriseV1beta1
 }
 
+// RedisV1alpha1 retrieves the RedisV1alpha1Client
+func (c *Clientset) RedisV1alpha1() redisv1alpha1.RedisV1alpha1Interface {
+	return c.redisV1alpha1
+}
+
 // RedisV1beta1 retrieves the RedisV1beta1Client
 func (c *Clientset) RedisV1beta1() redisv1beta1.RedisV1beta1Interface {
 	return c.redisV1beta1
@@ -1548,6 +1611,11 @@ func (c *Clientset) StorageV1beta1() storagev1beta1.StorageV1beta1Interface {
 	return c.storageV1beta1
 }
 
+// StorageinsightsV1alpha1 retrieves the StorageinsightsV1alpha1Client
+func (c *Clientset) StorageinsightsV1alpha1() storageinsightsv1alpha1.StorageinsightsV1alpha1Interface {
+	return c.storageinsightsV1alpha1
+}
+
 // StoragetransferV1alpha1 retrieves the StoragetransferV1alpha1Client
 func (c *Clientset) StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface {
 	return c.storagetransferV1alpha1
@@ -1573,6 +1641,11 @@ func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return c.tpuV1alpha1
 }
 
+// TranslateV1alpha1 retrieves the TranslateV1alpha1Client
+func (c *Clientset) TranslateV1alpha1() translatev1alpha1.TranslateV1alpha1Interface {
+	return c.translateV1alpha1
+}
+
 // VectorsearchV1alpha1 retrieves the VectorsearchV1alpha1Client
 func (c *Clientset) VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface {
 	return c.vectorsearchV1alpha1
@@ -1591,6 +1664,16 @@ func (c *Clientset) VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface {
 // VideostitcherV1alpha1 retrieves the VideostitcherV1alpha1Client
 func (c *Clientset) VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface {
 	return c.videostitcherV1alpha1
+}
+
+// VisionV1alpha1 retrieves the VisionV1alpha1Client
+func (c *Clientset) VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface {
+	return c.visionV1alpha1
+}
+
+// VisionaiV1alpha1 retrieves the VisionaiV1alpha1Client
+func (c *Clientset) VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface {
+	return c.visionaiV1alpha1
 }
 
 // VmwareengineV1alpha1 retrieves the VmwareengineV1alpha1Client
@@ -1616,6 +1699,11 @@ func (c *Clientset) WorkflowexecutionsV1alpha1() workflowexecutionsv1alpha1.Work
 // WorkflowsV1alpha1 retrieves the WorkflowsV1alpha1Client
 func (c *Clientset) WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Interface {
 	return c.workflowsV1alpha1
+}
+
+// WorkloadmanagerV1alpha1 retrieves the WorkloadmanagerV1alpha1Client
+func (c *Clientset) WorkloadmanagerV1alpha1() workloadmanagerv1alpha1.WorkloadmanagerV1alpha1Interface {
+	return c.workloadmanagerV1alpha1
 }
 
 // WorkstationsV1beta1 retrieves the WorkstationsV1beta1Client
@@ -1911,6 +1999,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudtalentsolutionV1alpha1, err = cloudtalentsolutionv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudtasksV1alpha1, err = cloudtasksv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1936,6 +2028,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.configdeliveryV1alpha1, err = configdeliveryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.configdeploymentV1alpha1, err = configdeploymentv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2143,6 +2239,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.gkemulticloudV1alpha1, err = gkemulticloudv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.healthcareV1alpha1, err = healthcarev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2179,6 +2279,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.livestreamV1alpha1, err = livestreamv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.loggingV1beta1, err = loggingv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2188,6 +2292,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.managedkafkaV1beta1, err = managedkafkav1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.mapmanagementV1alpha1, err = mapmanagementv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2315,6 +2423,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.redisV1alpha1, err = redisv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.redisV1beta1, err = redisv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2399,6 +2511,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.storageinsightsV1alpha1, err = storageinsightsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.storagetransferV1alpha1, err = storagetransferv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2419,6 +2535,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.translateV1alpha1, err = translatev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vectorsearchV1alpha1, err = vectorsearchv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2432,6 +2552,14 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.videostitcherV1alpha1, err = videostitcherv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.visionV1alpha1, err = visionv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.visionaiV1alpha1, err = visionaiv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2452,6 +2580,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.workflowsV1alpha1, err = workflowsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.workloadmanagerV1alpha1, err = workloadmanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2541,6 +2673,7 @@ func New(c rest.Interface) *Clientset {
 	cs.cloudquotaV1beta1 = cloudquotav1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.cloudsecuritycomplianceV1alpha1 = cloudsecuritycompliancev1alpha1.New(c)
+	cs.cloudtalentsolutionV1alpha1 = cloudtalentsolutionv1alpha1.New(c)
 	cs.cloudtasksV1alpha1 = cloudtasksv1alpha1.New(c)
 	cs.colabV1alpha1 = colabv1alpha1.New(c)
 	cs.composerV1beta1 = composerv1beta1.New(c)
@@ -2548,6 +2681,7 @@ func New(c rest.Interface) *Clientset {
 	cs.computeV1beta1 = computev1beta1.New(c)
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.configdeliveryV1alpha1 = configdeliveryv1alpha1.New(c)
+	cs.configdeploymentV1alpha1 = configdeploymentv1alpha1.New(c)
 	cs.connectorsV1alpha1 = connectorsv1alpha1.New(c)
 	cs.contactcenterinsightsV1alpha1 = contactcenterinsightsv1alpha1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
@@ -2599,6 +2733,7 @@ func New(c rest.Interface) *Clientset {
 	cs.gkebackupV1alpha1 = gkebackupv1alpha1.New(c)
 	cs.gkehubV1alpha1 = gkehubv1alpha1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
+	cs.gkemulticloudV1alpha1 = gkemulticloudv1alpha1.New(c)
 	cs.healthcareV1alpha1 = healthcarev1alpha1.New(c)
 	cs.iamV1alpha1 = iamv1alpha1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)
@@ -2608,9 +2743,11 @@ func New(c rest.Interface) *Clientset {
 	cs.k8sV1alpha1 = k8sv1alpha1.New(c)
 	cs.kmsV1alpha1 = kmsv1alpha1.New(c)
 	cs.kmsV1beta1 = kmsv1beta1.New(c)
+	cs.livestreamV1alpha1 = livestreamv1alpha1.New(c)
 	cs.loggingV1beta1 = loggingv1beta1.New(c)
 	cs.managedkafkaV1alpha1 = managedkafkav1alpha1.New(c)
 	cs.managedkafkaV1beta1 = managedkafkav1beta1.New(c)
+	cs.mapmanagementV1alpha1 = mapmanagementv1alpha1.New(c)
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
 	cs.memorystoreV1alpha1 = memorystorev1alpha1.New(c)
 	cs.memorystoreV1beta1 = memorystorev1beta1.New(c)
@@ -2642,6 +2779,7 @@ func New(c rest.Interface) *Clientset {
 	cs.pubsubliteV1beta1 = pubsublitev1beta1.New(c)
 	cs.recaptchaenterpriseV1alpha1 = recaptchaenterprisev1alpha1.New(c)
 	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.New(c)
+	cs.redisV1alpha1 = redisv1alpha1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)
 	cs.runV1alpha1 = runv1alpha1.New(c)
@@ -2663,20 +2801,25 @@ func New(c rest.Interface) *Clientset {
 	cs.sqladminV1alpha1 = sqladminv1alpha1.New(c)
 	cs.storageV1alpha1 = storagev1alpha1.New(c)
 	cs.storageV1beta1 = storagev1beta1.New(c)
+	cs.storageinsightsV1alpha1 = storageinsightsv1alpha1.New(c)
 	cs.storagetransferV1alpha1 = storagetransferv1alpha1.New(c)
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.testingV1alpha1 = testingv1alpha1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
+	cs.translateV1alpha1 = translatev1alpha1.New(c)
 	cs.vectorsearchV1alpha1 = vectorsearchv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
 	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)
 	cs.videostitcherV1alpha1 = videostitcherv1alpha1.New(c)
+	cs.visionV1alpha1 = visionv1alpha1.New(c)
+	cs.visionaiV1alpha1 = visionaiv1alpha1.New(c)
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)
 	cs.vmwareengineV1beta1 = vmwareenginev1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)
 	cs.workflowexecutionsV1alpha1 = workflowexecutionsv1alpha1.New(c)
 	cs.workflowsV1alpha1 = workflowsv1alpha1.New(c)
+	cs.workloadmanagerV1alpha1 = workloadmanagerv1alpha1.New(c)
 	cs.workstationsV1beta1 = workstationsv1beta1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)

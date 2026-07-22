@@ -33,9 +33,9 @@ def main():
         print(f"Error: Could not find data.json at {data_path}")
         return
 
-    # Filter out resources that are already completed
+    # Filter out resources that are already completed or have GCP API deprecated
     # Any state other than 'Completed' is considered not migrated
-    unmigrated = [r for r in data if r.get('state') != 'Completed']
+    unmigrated = [r for r in data if r.get('state') != 'Completed' and not r.get('edgeCases', {}).get('gcpAPIDeprecated')]
 
     # Sort by sortOrder (topological order calculated by generate_data.py)
     # Use 9999 as a fallback for missing sort orders

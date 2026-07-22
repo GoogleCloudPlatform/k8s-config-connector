@@ -1,7 +1,7 @@
 ---
 name: Issue for Generate and Types
 description: Periodically for TF and DCL resources to be migrated to Direct and create issue for creating generate.sh and types.go files.
-schedule: "@daily"
+schedule: "never"
 skipPR: true
 ---
 

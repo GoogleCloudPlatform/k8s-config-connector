@@ -191,6 +191,22 @@ type NodepoolKubeletConfig struct {
 	/* Control the CPU management policy on the node. */
 	CpuManagerPolicy string `json:"cpuManagerPolicy"`
 
+	/* Percent of disk usage after which image garbage collection is always run. */
+	// +optional
+	ImageGcHighThresholdPercent *int64 `json:"imageGcHighThresholdPercent,omitempty"`
+
+	/* Percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to. */
+	// +optional
+	ImageGcLowThresholdPercent *int64 `json:"imageGcLowThresholdPercent,omitempty"`
+
+	/* Maximum age an image can be unused before it is garbage collected. */
+	// +optional
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
+
+	/* Minimum age for an unused image before it is garbage collected. */
+	// +optional
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +optional
 	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`
@@ -374,6 +390,10 @@ type NodepoolNodeConfig struct {
 	/* The GCE resource labels (a map of key/value pairs) to be applied to the node pool. */
 	// +optional
 	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
+
+	/* The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}. */
+	// +optional
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 
 	/* Immutable. Sandbox configuration for this node. */
 	// +optional

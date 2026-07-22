@@ -1,6 +1,5 @@
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -24,7 +23,6 @@ X-Xss-Protection: 0
 
 POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?alt=json&caPoolId=privatecacapool-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "issuancePolicy": {
@@ -162,7 +160,6 @@ X-Xss-Protection: 0
 
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -281,7 +278,6 @@ X-Xss-Protection: 0
 
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -385,9 +381,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -409,9 +404,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities?alt=json&certificateAuthorityId=privatecacertificateauthority-${uniqueId}
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities?%24alt=json%3Benum-encoding%3Dint&certificateAuthorityId=privatecacertificateauthority-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "config": {
@@ -442,7 +436,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     }
   },
   "keySpec": {
-    "algorithm": "RSA_PKCS1_4096_SHA256"
+    "algorithm": 8
   },
   "labels": {
     "cnrm-test": "true",
@@ -450,8 +444,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "lifetime": "86400s",
-  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
-  "type": "SELF_SIGNED"
+  "type": 1
 }
 
 200 OK
@@ -477,9 +470,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -601,9 +593,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -691,7 +682,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "keySpec": {
-    "algorithm": "RSA_PKCS1_4096_SHA256"
+    "algorithm": 8
   },
   "labels": {
     "cnrm-test": "true",
@@ -704,25 +695,57 @@ X-Xss-Protection: 0
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
   "satisfiesPzi": true,
-  "state": "STAGED",
-  "tier": "ENTERPRISE",
-  "type": "SELF_SIGNED",
+  "state": 3,
+  "tier": 1,
+  "type": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
+  "config": {
+    "subjectConfig": {
+      "subject": {
+        "commonName": "my-certificate-authority",
+        "organization": "Example"
+      },
+      "subjectAltName": {
+        "dnsNames": [
+          "example.com"
+        ]
+      }
+    },
+    "x509Config": {
+      "caOptions": {
+        "isCa": true
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": true,
+          "crlSign": true
+        },
+        "extendedKeyUsage": {
+          "serverAuth": true
+        }
+      }
+    }
+  },
+  "keySpec": {
+    "algorithm": 8
+  },
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  }
+  },
+  "lifetime": "86400s",
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+  "type": 1
 }
 
 200 OK
@@ -748,9 +771,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -829,6 +851,7 @@ X-Xss-Protection: 0
         },
         "subjectAltName": {
           "dnsNames": [
+            "example.com",
             "example.com"
           ]
         }
@@ -873,9 +896,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -942,6 +964,7 @@ X-Xss-Protection: 0
       },
       "subjectAltName": {
         "dnsNames": [
+          "example.com",
           "example.com"
         ]
       }
@@ -963,7 +986,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "keySpec": {
-    "algorithm": "RSA_PKCS1_4096_SHA256"
+    "algorithm": 8
   },
   "labels": {
     "cnrm-test": "true",
@@ -977,17 +1000,16 @@ X-Xss-Protection: 0
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
   "satisfiesPzi": true,
-  "state": "STAGED",
-  "tier": "ENTERPRISE",
-  "type": "SELF_SIGNED",
+  "state": 3,
+  "tier": 1,
+  "type": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&ignoreActiveCertificates=true
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&ignoreActiveCertificates=true
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1012,9 +1034,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1093,6 +1114,7 @@ X-Xss-Protection: 0
         },
         "subjectAltName": {
           "dnsNames": [
+            "example.com",
             "example.com"
           ]
         }

@@ -71,6 +71,15 @@ type ComputeNetworkSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Network.network_firewall_policy_enforcement_order
 	NetworkFirewallPolicyEnforcementOrder *string `json:"networkFirewallPolicyEnforcementOrder,omitempty"`
 
+	// Note: Since the NetworkProfile API only supports get and list, KCC does not manage this resource.
+	// So we define this field as a standard string rather than a reference, even though the description
+	// notes that it expects a network profile url
+
+	// Immutable. A full or partial URL of the network profile to apply to this network.
+	// This field can be set only at resource creation time.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.network_profile
+	NetworkProfile *string `json:"networkProfile,omitempty"`
+
 	// The network-wide routing mode to use. If set to 'REGIONAL', this
 	// network's cloud routers will only advertise routes with subnetworks
 	// of this network in the same region as the router. If set to 'GLOBAL',

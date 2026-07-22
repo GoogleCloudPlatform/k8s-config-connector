@@ -18,5 +18,40 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1beta
 // resource: DiscoveryEngineSampleQuerySet:SampleQuerySet
+// resource: DiscoveryEngineSampleQuery:SampleQuery
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry
+type SampleQuery_QueryEntry struct {
+	// Required. The query.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry.query
+	Query *string `json:"query,omitempty"`
+
+	// List of targets for the query.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry.targets
+	Targets []SampleQuery_QueryEntry_Target `json:"targets,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry.Target
+type SampleQuery_QueryEntry_Target struct {
+	// Expected uri of the target.
+	//
+	//  This field must be a UTF-8 encoded string with a length limit of 2048
+	//  characters.
+	//
+	//  Example of valid uris: `https://example.com/abc`,
+	//  `gcs://example/example.pdf`.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry.Target.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Expected page numbers of the target.
+	//
+	//  Each page number must be non negative.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry.Target.page_numbers
+	PageNumbers []int32 `json:"pageNumbers,omitempty"`
+
+	// Relevance score of the target.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry.Target.score
+	Score *float64 `json:"score,omitempty"`
+}

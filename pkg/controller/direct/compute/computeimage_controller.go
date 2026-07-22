@@ -42,6 +42,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -105,7 +106,25 @@ func (m *computeImageModel) AdapterForObject(ctx context.Context, op *directbase
 }
 
 func (m *computeImageModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.ComputeImageIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+	imagesClient, err := gcpClient.newImagesClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ComputeImageAdapter{
+		gcpClient: imagesClient,
+		id:        id,
+	}, nil
 }
 
 type ComputeImageAdapter struct {
@@ -260,16 +279,20 @@ func (a *ComputeImageAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Image)
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
+	u.Object = uObj
 	u.SetName(a.id.Image)
 	u.SetGroupVersionKind(krm.ComputeImageGVK)
 
-	u.Object = uObj
-	u.SetLabels(a.actual.Labels)
+	export.SetProjectID(u, a.id.Project)
+	export.SetLabels(u, a.actual.Labels)
 	return u, nil
 }
 

@@ -300,6 +300,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 						opt.Updates = append(opt.Updates, u)
 					}
 
+					if strings.Contains(fixture.Name, "regionaltargethttpsproxy") {
+						opt.CreateInOrder = true
+					}
+
 					// We want to use SSA everywhere, but some of our tests are broken by SSA
 					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
 					case "bigtable.cnrm.cloud.google.com",
@@ -428,13 +432,6 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 			oldKey = "_http_old_controller.log"
 			newKey = "_http.log"
 			diffKey = "_http.diff"
-		} else {
-			mockPath := filepath.Join(dir, newKey)
-			if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-				oldKey = "_http_old_controller.log"
-				newKey = "_http.log"
-				diffKey = "_http.diff"
-			}
 		}
 
 		oldPath := filepath.Join(dir, oldKey)
@@ -870,14 +867,6 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 							key = "_http.log"
 							if options.FallbackToOldController {
 								key = "_http_old_controller.log"
-							}
-						} else {
-							mockPath := filepath.Join(fixture.AbsoluteSourceDir, key)
-							if _, err := os.Stat(mockPath); err != nil && os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-								key = "_http.log"
-								if options.FallbackToOldController {
-									key = "_http_old_controller.log"
-								}
 							}
 						}
 						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, key)

@@ -46,11 +46,15 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 }
 
 func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) *objectWalker {
+	// Note: Avoid adding service-specific normalization logic here if possible. Instead, prefer adding per-service normalization in e.g. mockcloudresourcemanager/normalize.go.
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
 	if folderID != "" {
 		replacements.PathIDs[folderID] = "${folderID}"
+	}
+	if testgcp.TestFolderID.Get() != "" {
+		replacements.PathIDs[testgcp.TestFolderID.Get()] = "${folderID}"
 	}
 
 	annotations := u.GetAnnotations()
@@ -132,8 +136,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
 	// Specific to Dataproc
-	{
+	if u.GroupVersionKind().Group == "dataproc.cnrm.cloud.google.com" {
 		visitor.ReplacePath(".status.clusterUuid", "${clusterUuid}")
+		visitor.ReplacePath(".status.observedState.uuid", "00000000-0000-0000-0000-000000000001")
 		visitor.ReplacePath(".status.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".status.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 
@@ -146,6 +151,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.stateTime"] = mockgcpregistry.PlaceholderTimestamp
 		visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
 		visitor.replacePaths[".status.observedState.status.stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.creator"] = "${creatorID}"
 		visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
 	}
 
@@ -289,6 +295,18 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 				switch tokens[len(tokens)-2] {
 				case "alertPolicies":
 					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".notificationChannels[]") || strings.HasSuffix(path, ".notificationChannels[].external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "notificationChannels":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${notificationChannelID}")
 				}
 			}
 		}
@@ -1120,6 +1138,15 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+		for _, event := range events {
+			for i, ua := range event.Request.Header["User-Agent"] {
+				if !strings.HasSuffix(ua, "(mockgcp)") {
+					event.Request.Header["User-Agent"][i] = ua + " (mockgcp)"
+				}
+			}
+		}
+	}
 	// Remove header in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
@@ -1149,6 +1176,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+	if strings.Contains(t.Name(), "/dnsauthorization") {
+		visitor.removePaths.Insert(".metadata.requestedCancellation")
+		visitor.removePaths.Insert(".metadata.endTime")
+		visitor.removePaths.Insert(".response.metadata.requestedCancellation")
+		visitor.removePaths.Insert(".response.metadata.endTime")
+	}
 
 	if !strings.Contains(t.Name(), "/containercluster") && !strings.Contains(t.Name(), "/containernodepool") {
 		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {

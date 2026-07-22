@@ -35,3 +35,10 @@
   - Implemented `ccinsightsconversation_identity.go` (implementing `identity.IdentityV2` and `identity.Resource`) and `ccinsightsconversation_reference.go` (implementing `refs.Ref`), ensuring standard camelCase mapping (e.g., `{conversation}` to `Conversation` in the struct fields) to prevent initialization panic in `gcpurls.Template`.
   - Added unit testing to verify the URL-parsing behavior of the identity structure.
 - **Impact**: Provides a robust foundation for the future controller and mapper implementation of CCInsightsConversation.
+
+### [2026-07-06] CCInsightsPhraseMatcher Controller Implementation
+- **Context**: Implementing Phase 2 (Controller and E2E Tests) for CCInsightsPhraseMatcher.
+- **Problem**: `CreatePhraseMatcherRequest` in `google.cloud.contactcenterinsights.v1` does not have a separate `phrase_matcher_id` field, which is unusual for GCP APIs that allow user-provided IDs.
+- **Solution**: Set the full resource name (including the user-provided ID) on the `PhraseMatcher.Name` field in the `Create` request.
+- **Impact**: Other resources in `contactcenterinsights` (like `View`) likely follow this same pattern.
+

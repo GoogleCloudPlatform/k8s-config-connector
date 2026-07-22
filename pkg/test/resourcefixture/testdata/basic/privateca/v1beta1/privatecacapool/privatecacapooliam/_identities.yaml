@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/capool-${uniqueId}
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: privatecacapool-dep

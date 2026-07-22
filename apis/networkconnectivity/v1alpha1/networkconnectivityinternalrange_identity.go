@@ -20,47 +20,18 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
-	_ identity.IdentityV2 = &InternalRangeIdentity{}
-	_ identity.Resource   = &NetworkConnectivityInternalRange{}
+	_ identity.Resource = &NetworkConnectivityInternalRange{}
 )
 
-var InternalRangeIdentityFormat = gcpurls.Template[InternalRangeIdentity]("networkconnectivity.googleapis.com", "projects/{project}/locations/{location}/internalRanges/{internalRange}")
+var NetworkConnectivityInternalRangeIdentityFormat = networkconnectivityrefs.NetworkConnectivityInternalRangeIdentityFormat
 
-// +k8s:deepcopy-gen=false
-type InternalRangeIdentity struct {
-	Project       string
-	Location      string
-	InternalRange string
-}
-
-func (i *InternalRangeIdentity) String() string {
-	return InternalRangeIdentityFormat.ToString(*i)
-}
-
-func (i *InternalRangeIdentity) FromExternal(ref string) error {
-	parsed, match, err := InternalRangeIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of NetworkConnectivityInternalRange external=%q was not known (use %s): %w", ref, InternalRangeIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of NetworkConnectivityInternalRange external=%q was not known (use %s)", ref, InternalRangeIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
-func (i *InternalRangeIdentity) Host() string {
-	return InternalRangeIdentityFormat.Host()
-}
-
-func getIdentityFromInternalRangeSpec(ctx context.Context, reader client.Reader, obj client.Object) (*InternalRangeIdentity, error) {
+func getIdentityFromInternalRangeSpec(ctx context.Context, reader client.Reader, obj client.Object) (*networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -76,7 +47,7 @@ func getIdentityFromInternalRangeSpec(ctx context.Context, reader client.Reader,
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &InternalRangeIdentity{
+	identity := &networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity{
 		Project:       projectID,
 		Location:      location,
 		InternalRange: resourceID,
@@ -94,7 +65,7 @@ func (obj *NetworkConnectivityInternalRange) GetIdentity(ctx context.Context, re
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &InternalRangeIdentity{}
+		statusIdentity := &networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}

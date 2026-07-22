@@ -33,6 +33,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
+	networkconnectivityrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -68,7 +69,7 @@ func (m *internalRangeModel) AdapterForObject(ctx context.Context, op *directbas
 	if err != nil {
 		return nil, err
 	}
-	id := idIdentity.(*krm.InternalRangeIdentity)
+	id := idIdentity.(*networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity)
 
 	// normalize reference fields
 	if obj.Spec.NetworkRef != nil {
@@ -100,7 +101,7 @@ func (m *internalRangeModel) AdapterForURL(ctx context.Context, url string) (dir
 
 type internalRangeAdapter struct {
 	gcpClient *api.Service
-	id        *krm.InternalRangeIdentity
+	id        *networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity
 	desired   *krm.NetworkConnectivityInternalRange
 	actual    *pb.InternalRange
 }
@@ -170,7 +171,10 @@ func (a *internalRangeAdapter) Create(ctx context.Context, createOp *directbase.
 	if err := convertAPIToProto(created, &createdPB); err != nil {
 		return err
 	}
-	status := &krm.NetworkConnectivityInternalRangeStatus{}
+	externalRef := fqn
+	status := &krm.NetworkConnectivityInternalRangeStatus{
+		ExternalRef: &externalRef,
+	}
 	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, createdPB)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -207,6 +211,10 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 	if desired.Spec.Peering != nil && !reflect.DeepEqual(resource.Peering, a.actual.Peering) {
 		report.AddField("peering", a.actual.Peering, resource.Peering)
 		paths = append(paths, "peering")
+	}
+	if desired.Spec.AllocationOptions != nil && !reflect.DeepEqual(resource.AllocationOptions, a.actual.AllocationOptions) {
+		report.AddField("allocation_options", a.actual.AllocationOptions, resource.AllocationOptions)
+		paths = append(paths, "allocationOptions")
 	}
 	if desired.Spec.PrefixLength != nil && !reflect.DeepEqual(resource.PrefixLength, a.actual.PrefixLength) {
 		report.AddField("prefix_length", a.actual.PrefixLength, resource.PrefixLength)
@@ -246,7 +254,10 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 		}
 	}
 
-	status := &krm.NetworkConnectivityInternalRangeStatus{}
+	externalRef := a.id.String()
+	status := &krm.NetworkConnectivityInternalRangeStatus{
+		ExternalRef: &externalRef,
+	}
 	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

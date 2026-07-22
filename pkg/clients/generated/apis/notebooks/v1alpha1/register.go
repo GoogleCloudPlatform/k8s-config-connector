@@ -65,5 +65,11 @@ var (
 		Kind:    reflect.TypeOf(NotebooksExecution{}).Name(),
 	}
 
+	NotebooksScheduleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NotebooksSchedule{}).Name(),
+	}
+
 	notebooksAPIVersion = SchemeGroupVersion.String()
 )

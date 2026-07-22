@@ -29,6 +29,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -71,23 +72,91 @@ func (s *sessionControllerServer) CreateSession(ctx context.Context, req *pb.Cre
 	obj.Creator = "test-user@google.com"
 	obj.StateHistory = []*pb.Session_SessionStateHistory{
 		{
-			State:          pb.Session_ACTIVE,
+			State:          pb.Session_CREATING,
 			StateStartTime: timestamppb.New(now),
 		},
+	}
+	obj.RuntimeInfo = &pb.RuntimeInfo{}
+
+	if obj.Labels == nil {
+		obj.Labels = make(map[string]string)
+	}
+	for k, v := range map[string]string{
+		"goog-dataproc-drz-resource-uuid": "session-" + obj.Uuid,
+		"goog-dataproc-location":          name.Location,
+		"goog-dataproc-session-id":        name.Session,
+		"goog-dataproc-session-uuid":      obj.Uuid,
+	} {
+		if _, ok := obj.Labels[k]; !ok {
+			obj.Labels[k] = v
+		}
+	}
+	if obj.EnvironmentConfig == nil {
+		obj.EnvironmentConfig = &pb.EnvironmentConfig{}
+	}
+	if obj.EnvironmentConfig.ExecutionConfig == nil {
+		obj.EnvironmentConfig.ExecutionConfig = &pb.ExecutionConfig{}
+	}
+	if obj.EnvironmentConfig.ExecutionConfig.IdleTtl == nil {
+		obj.EnvironmentConfig.ExecutionConfig.IdleTtl = &durationpb.Duration{Seconds: 3600}
+	}
+	if obj.EnvironmentConfig.ExecutionConfig.Ttl == nil {
+		obj.EnvironmentConfig.ExecutionConfig.Ttl = &durationpb.Duration{Seconds: 86400}
+	}
+	if obj.EnvironmentConfig.ExecutionConfig.ServiceAccount == "" {
+		project, _ := s.Projects.GetProjectByID(name.Project)
+		if project != nil {
+			obj.EnvironmentConfig.ExecutionConfig.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", project.Number)
+		} else {
+			obj.EnvironmentConfig.ExecutionConfig.ServiceAccount = fmt.Sprintf("%s-compute@developer.gserviceaccount.com", name.Project)
+		}
+	}
+	if obj.EnvironmentConfig.PeripheralsConfig == nil {
+		obj.EnvironmentConfig.PeripheralsConfig = &pb.PeripheralsConfig{
+			SparkHistoryServerConfig: &pb.SparkHistoryServerConfig{},
+		}
+	}
+	if obj.RuntimeConfig == nil {
+		obj.RuntimeConfig = &pb.RuntimeConfig{}
+	}
+	if obj.RuntimeConfig.Version == "" {
+		obj.RuntimeConfig.Version = "2.2.82"
+	}
+	if obj.RuntimeConfig.Properties == nil {
+		obj.RuntimeConfig.Properties = map[string]string{
+			"dataproc:dataproc.tier":                                "premium",
+			"spark:spark.dataproc.engine":                           "default",
+			"spark:spark.dataproc.lightningEngine.runtime":          "default",
+			"spark:spark.dataproc.scaling.version":                  "2",
+			"spark:spark.driver.cores":                              "4",
+			"spark:spark.driver.memory":                             "9600m",
+			"spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+			"spark:spark.executor.cores":                            "4",
+			"spark:spark.executor.instances":                        "2",
+			"spark:spark.executor.memory":                           "9600m",
+		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
-		OperationType: pb.SessionOperationMetadata_SESSION_OPERATION_TYPE_UNSPECIFIED,
-		Description:   "Create Session",
+		OperationType: pb.SessionOperationMetadata_CREATE,
+		Description:   "Create session",
 		SessionUuid:   obj.Uuid,
 		CreateTime:    timestamppb.New(now),
 		DoneTime:      timestamppb.New(now),
+		Labels: map[string]string{
+			"cnrm-test":                       "true",
+			"goog-dataproc-drz-resource-uuid": "session-" + obj.Uuid,
+			"goog-dataproc-location":          name.Location,
+			"goog-dataproc-session-id":        name.Session,
+			"goog-dataproc-session-uuid":      obj.Uuid,
+			"managed-by-cnrm":                 "true",
+		},
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return obj, nil
@@ -107,13 +176,22 @@ func (s *sessionControllerServer) DeleteSession(ctx context.Context, req *pb.Del
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
-		OperationType: pb.SessionOperationMetadata_SESSION_OPERATION_TYPE_UNSPECIFIED,
-		Description:   "Delete Session",
+		OperationType: pb.SessionOperationMetadata_DELETE,
+		Description:   "Delete session",
+		SessionUuid:   deleted.Uuid,
 		CreateTime:    timestamppb.New(time.Now()),
 		DoneTime:      timestamppb.New(time.Now()),
+		Labels: map[string]string{
+			"cnrm-test":                       "true",
+			"goog-dataproc-drz-resource-uuid": "session-" + deleted.Uuid,
+			"goog-dataproc-location":          name.Location,
+			"goog-dataproc-session-id":        name.Session,
+			"goog-dataproc-session-uuid":      deleted.Uuid,
+			"managed-by-cnrm":                 "true",
+		},
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return deleted, nil
@@ -138,13 +216,22 @@ func (s *sessionControllerServer) TerminateSession(ctx context.Context, req *pb.
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project, name.Location)
+	lroPrefix := fmt.Sprintf("projects/%s/regions/%s", name.Project, name.Location)
 	lroMetadata := &pb.SessionOperationMetadata{
 		Session:       fqn,
-		OperationType: pb.SessionOperationMetadata_SESSION_OPERATION_TYPE_UNSPECIFIED,
-		Description:   "Terminate Session",
+		OperationType: pb.SessionOperationMetadata_TERMINATE,
+		Description:   "Terminate session",
+		SessionUuid:   obj.Uuid,
 		CreateTime:    timestamppb.New(time.Now()),
 		DoneTime:      timestamppb.New(time.Now()),
+		Labels: map[string]string{
+			"cnrm-test":                       "true",
+			"goog-dataproc-drz-resource-uuid": "session-" + obj.Uuid,
+			"goog-dataproc-location":          name.Location,
+			"goog-dataproc-session-id":        name.Session,
+			"goog-dataproc-session-uuid":      obj.Uuid,
+			"managed-by-cnrm":                 "true",
+		},
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return obj, nil

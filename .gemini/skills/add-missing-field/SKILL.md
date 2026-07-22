@@ -31,6 +31,11 @@ This skill guides an automated agent through adding a missing field to a GCP res
 4. **Run `generate.sh`**
    - Run the code generator script (e.g., `./apis/group/vX/generate.sh` or the global `dev/tasks/generate-types-and-mappers`) to regenerate CRDs and other boilerplate.
 
+4b. **Verify Fuzzer with Focused Tests**
+   - To quickly verify that your mappers and fuzzer mapping logic are correct and round-trip successfully, run focused fuzzer tests using the `FOCUS` environment variable:
+     `FOCUS=MyResourceKind go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`
+     *(For example: `FOCUS=ComputeNetwork go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`)*
+
 5. **Create a Test**
    - Find existing tests under `pkg/test/resourcefixture/testdata/basic/group/version/kind/`.
    - If the new field can be added to an existing test without conflict, do so.
@@ -47,8 +52,8 @@ This skill guides an automated agent through adding a missing field to a GCP res
    - If the tests fail because mockgcp doesn't support the field, you might need to implement a stub in mockgcp.
    - This stub just needs to behave reasonably so tests pass; full realgcp parity will be checked in separate E2E testing.
 
-8. **Regenerate Go Client**
-   - Please run 'make ready-pr' or 'make generate-go-client ensure fmt'.
+8. **Run Pre-PR Checks**
+   - Please run `make ready-pr`.
 
 9. **Reference Mapping Tips**
    - **Use capital KMS**: If you add a reference like `KMSKeyRef`, naming it all-caps `KMSKeyRef *refs.KMSCryptoKeyRef` instead of `KmsKeyRef` allows the controller builder to automatically identify it as a reference field and generate its mapping logic.

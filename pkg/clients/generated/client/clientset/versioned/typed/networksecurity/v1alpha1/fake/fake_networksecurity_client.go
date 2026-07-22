@@ -35,12 +35,28 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityAddressGroups(namespace str
 	return newFakeNetworkSecurityAddressGroups(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityAuthzPolicies(namespace string) v1alpha1.NetworkSecurityAuthzPolicyInterface {
+	return newFakeNetworkSecurityAuthzPolicies(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityBackendAuthenticationConfigs(namespace string) v1alpha1.NetworkSecurityBackendAuthenticationConfigInterface {
 	return newFakeNetworkSecurityBackendAuthenticationConfigs(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityDNSThreatDetectors(namespace string) v1alpha1.NetworkSecurityDNSThreatDetectorInterface {
+	return newFakeNetworkSecurityDNSThreatDetectors(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityFirewallEndpoints(namespace string) v1alpha1.NetworkSecurityFirewallEndpointInterface {
+	return newFakeNetworkSecurityFirewallEndpoints(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityFirewallEndpointAssociations(namespace string) v1alpha1.NetworkSecurityFirewallEndpointAssociationInterface {
 	return newFakeNetworkSecurityFirewallEndpointAssociations(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityGatewaySecurityPolicies(namespace string) v1alpha1.NetworkSecurityGatewaySecurityPolicyInterface {
+	return newFakeNetworkSecurityGatewaySecurityPolicies(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityInterceptDeployments(namespace string) v1alpha1.NetworkSecurityInterceptDeploymentInterface {
@@ -57,6 +73,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringDeployments(namesp
 
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityMirroringEndpointGroups(namespace string) v1alpha1.NetworkSecurityMirroringEndpointGroupInterface {
 	return newFakeNetworkSecurityMirroringEndpointGroups(c, namespace)
+}
+
+func (c *FakeNetworksecurityV1alpha1) NetworkSecurityPartnerSSEGateways(namespace string) v1alpha1.NetworkSecurityPartnerSSEGatewayInterface {
+	return newFakeNetworkSecurityPartnerSSEGateways(c, namespace)
 }
 
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityPartnerSSERealms(namespace string) v1alpha1.NetworkSecurityPartnerSSERealmInterface {

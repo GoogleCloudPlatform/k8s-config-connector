@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -164,6 +165,7 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 	}
 
 	logger.V(1).Info("routing to controller", "resource", req.NamespacedName, "type", controllerType)
+	ctx = structuredreporting.ContextWithReconcilerType(ctx, controllerType)
 
 	switch controllerType {
 	case k8s.ReconcilerTypeTerraform:

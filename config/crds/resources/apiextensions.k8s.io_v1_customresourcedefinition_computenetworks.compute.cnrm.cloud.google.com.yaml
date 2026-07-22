@@ -107,6 +107,11 @@ spec:
                   are evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
                   values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"].'
                 type: string
+              networkProfile:
+                description: Immutable. A full or partial URL of the network profile
+                  to apply to this network. This field can be set only at resource
+                  creation time.
+                type: string
               resourceID:
                 description: The ComputeNetwork name. If not given, the metadata.name
                   will be used.

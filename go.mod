@@ -33,14 +33,17 @@ require (
 	cloud.google.com/go/cloudtasks v1.18.0
 	cloud.google.com/go/compute v1.63.0
 	cloud.google.com/go/configdelivery v0.1.1
+	cloud.google.com/go/contactcenterinsights v1.22.0
 	cloud.google.com/go/container v1.52.0
 	cloud.google.com/go/datacatalog v1.32.0
 	cloud.google.com/go/dataflow v0.16.0
 	cloud.google.com/go/dataform v1.0.0
+	cloud.google.com/go/datalabeling v0.14.0
 	cloud.google.com/go/dataplex v1.34.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
+	cloud.google.com/go/devicestreaming v1.0.0
 	cloud.google.com/go/dialogflow v1.82.0
 	cloud.google.com/go/discoveryengine v1.22.0
 	cloud.google.com/go/documentai v1.48.0
@@ -86,6 +89,8 @@ require (
 	cloud.google.com/go/spanner v1.91.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/talent v1.13.0
+	cloud.google.com/go/translate v1.17.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/workflows v1.19.0

@@ -9,245 +9,201 @@ This file tracks the progress of new "Direct" resource implementations.
 
 ## Resource Tracker
 
-| Resource | Service | Phase 1 PR | Phase 2 PR | Phase 3 PR | Current Phase | State |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| AIStreamsCluster | aistreams | [#8801](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8801) | [#8792](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8792) | - | 2 | MERGED |
-| ApigeeApiProduct | apigee | [#8078](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8078) | [#8078](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8078) | - | 2 | OPEN |
-| ApigeeRegistryApi | apigeeregistry | [#8413](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8413) | - | - | 1 | OPEN |
-| ApigeeRegistryArtifact | apigeeregistry | [#9298](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9298) | - | - | 1 | OPEN |
-| ApigeeRegistryInstance | apigeeregistry | [#8684](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8684) | - | - | 1 | MERGED |
-| APIHubAPI | apihub | [#8631](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8631) | [#9150](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9150) | - | 2 | OPEN |
-| ApiHubAttribute | apihub | [#8412](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8412) | - | - | 1 | OPEN |
-| ApiHubCuration | apihub | [#8406](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8406) | - | - | 1 | OPEN |
-| ApiHubDependency | apihub | [#8410](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8410) | - | - | 1 | OPEN |
-| ApiHubDeployment | apihub | [#8988](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8988) | [#8790](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8790) | - | 2 | OPEN |
-| ApiHubInstance | apihub | [#8424](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8424) | - | - | 1 | OPEN |
-| ApiHubPlugin | apihub | [#9323](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9323) | - | - | 1 | MERGED |
-| ApiHubRuntimeProjectAttachment | apihub | [#9338](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9338) | - | - | 1 | MERGED |
-| AppHubServiceProjectAttachment | apphub | [#8874](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8874) | [#8791](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8791) | - | 2 | OPEN |
-| AppOptimizeReport | appoptimize | [#9028](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9028) | - | - | 1 | OPEN |
-| ArtifactRegistryVPCSCConfig | artifactregistry | [#8073](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8073) | - | - | 1 | OPEN |
-| AutoMLDataset | automl | [#9212](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9212) | - | - | 2 | MERGED |
-| BeyondCorpClientConnectorService | beyondcorp | [#8837](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8837) | [#8795](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8795) | - | 2 | OPEN |
-| BeyondCorpClientGateway | beyondcorp | [#8419](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8419) | - | - | 1 | MERGED |
-| BigLakeCatalog | biglake | [#9454](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9454) | [#9615](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9615) | [#8626](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8626) | 3 | CLOSED |
-| BigQueryAnalyticsHubDataExchange | analyticshub | [#8471](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8471) | [#9371](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9371) | [#7530](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7530) | 2 | OPEN |
-| BigQueryDataTransferTransferConfig | bigquerydatatransfer | [#9030](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9030) | - | - | 1 | OPEN |
-| BigQueryMigrationMigrationWorkflow | bigquerymigration | [#9029](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9029) | - | - | 1 | OPEN |
-| BigQueryMigrationWorkflow | bigquerymigration | [#8699](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8699) | - | - | 1 | OPEN |
-| BigQueryReservationReservationGroup | bigqueryreservation | [#9041](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9041) | - | - | 1 | OPEN |
-| BinaryAuthorizationPlatformPolicy | binaryauthorization | [#8521](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8521) | [#8599](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8599) | - | 2 | OPEN |
-| BlockchainNodeEngineBlockchainNode | blockchainnodeengine | [#9032](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9032) | - | - | 1 | OPEN |
-| BlockchainNodeEngineNode | blockchainnodeengine | - | - | - | 1 | OPEN |
-| CCInsightsAnalysisRule | contactcenterinsights | [#9322](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9322) | - | - | 1 | OPEN |
-| CCInsightsConversation | contactcenterinsights | [#9327](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9327) | - | - | 1 | OPEN |
-| CCInsightsIssueModel | contactcenterinsights | [#9334](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9334) | - | - | 1 | OPEN |
-| CCInsightsPhraseMatcher | contactcenterinsights | [#9335](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9335) | - | - | 1 | MERGED |
-| CCInsightsQaScorecard | contactcenterinsights | [#8701](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8701) | - | - | 1 | OPEN |
-| CCInsightsView | contactcenterinsights | [#9300](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9300) | - | - | 1 | MERGED |
-| CertificateManagerTrustConfig | certificatemanager | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | - | 2 | OPEN |
-| CESApp | ces | [#9100](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9100) | [#9037](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9037) | - | 1 | OPEN |
-| CloudAssetSavedQuery | cloudasset | [#8696](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8696) | - | - | 1 | OPEN |
-| CloudBatchResourceAllowance | batch | [#8702](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8702) | [#8838](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8838) | - | 2 | MERGED |
-| CloudBuildConnection | cloudbuild | [#8700](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8700) | - | - | 1 | OPEN |
-| CloudIdentityDevice | cloudidentity | [#8077](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8077) | [#8077](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8077) | - | 2 | OPEN |
-| CloudRunInstance | run | [#8766](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8766) | - | - | 1 | OPEN |
-| CloudRunWorkerPool | run | [#8749](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8749) | - | - | 1 | OPEN |
-| CloudSecurityComplianceCloudControl | cloudsecuritycompliance | [#9040](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9040) | [#9373](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9373) | - | 2 | OPEN |
-| CloudSecurityComplianceFramework | cloudsecuritycompliance | [#9321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9321) | - | - | 1 | MERGED |
-| CloudSecurityComplianceFrameworkDeployment | cloudsecuritycompliance | [#9308](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9308) | - | - | 1 | OPEN |
-| CloudSecurityFramework | cloudsecuritycompliance | [#8841](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8841) | - | - | 1 | OPEN |
-| CloudTasksQueue | cloudtasks | - | - | - | 1 | MERGED |
-| ConfigDeliveryFleetPackage | configdelivery | [#9297](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9297) | - | - | 1 | MERGED |
-| ConfigDeploymentGroup | config | [#9039](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9039) | - | - | 1 | OPEN |
-| ConnectorsConnection | connectors | [#8687](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8687) | - | - | 1 | OPEN |
-| ContactCenterInsightsConversation | contactcenterinsights | [#9026](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9026) | - | - | 1 | OPEN |
-| ContentWarehouseDocument | contentwarehouse | [#9101](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9101) | - | - | 1 | OPEN |
-| ContentWarehouseRuleSet | contentwarehouse | [#9317](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9317) | - | - | 1 | OPEN |
-| ContentWarehouseSchema | contentwarehouse | [#8686](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8686) | - | - | 1 | MERGED |
-| ContentWarehouseSynonymSet | contentwarehouse | [#9295](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9295) | - | - | 1 | OPEN |
-| DatabaseMigrationConnectionProfile | datamigration | [#9330](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9330) | - | - | 1 | OPEN |
-| DatabaseMigrationConversionWorkspace | datamigration | [#9299](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9299) | - | - | 1 | MERGED |
-| DatabaseMigrationJob | datamigration | - | - | - | 1 | OPEN |
-| DatabaseMigrationMigrationJob | datamigration | [#9345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9345) | - | - | 1 | MERGED |
-| DatabaseMigrationPrivateConnection | datamigration | [#9324](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9324) | - | - | 1 | OPEN |
-| DataformFolder | dataform | [#9051](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9051) | - | - | 1 | OPEN |
-| DataformTeamFolder | dataform | [#9306](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9306) | - | - | 1 | OPEN |
-| DataLabelingAnnotationSpecSet | datalabeling | [#9318](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9318) | - | - | 1 | MERGED |
-| DataLabelingDataset | datalabeling | [#9320](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9320) | - | - | 1 | OPEN |
-| DataLabelingEvaluationJob | datalabeling | [#9328](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9328) | - | - | 1 | OPEN |
-| DataLabelingInstruction | datalabeling | [#9347](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9347) | - | - | 1 | MERGED |
-| DataLineageProcess | datalineage | [#9110](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9110) | - | - | 1 | OPEN |
-| DataplexAspectType | dataplex | [#9346](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9346) | - | - | 1 | OPEN |
-| DataplexDataAttributeBinding | dataplex | [#9333](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9333) | - | - | 1 | OPEN |
-| DataplexDataProduct | dataplex | [#9304](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9304) | - | - | 1 | OPEN |
-| DataplexDataScan | dataplex | [#8693](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8693) | - | - | 1 | OPEN |
-| DataplexDataTaxonomy | dataplex | [#9326](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9326) | - | - | 1 | OPEN |
-| DataplexGlossary | dataplex | [#9311](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9311) | - | - | 1 | OPEN |
-| DataplexMetadataFeed | dataplex | [#9344](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9344) | - | - | 1 | OPEN |
-| DataplexMetadataJob | dataplex | [#9339](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9339) | - | - | 1 | OPEN |
-| DataprocSession | dataproc | [#8695](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8695) | [#8890](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8890) | - | 2 | OPEN |
-| DataprocSessionTemplate | dataproc | [#9332](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9332) | - | - | 1 | MERGED |
-| DevConnectAccountConnector | developerconnect | [#9313](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9313) | - | - | 1 | MERGED |
-| DevConnectConnection | developerconnect | [#8685](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8685) | - | - | 1 | OPEN |
-| DevConnectInsightsConfig | developerconnect | [#9319](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9319) | - | - | 1 | MERGED |
-| DeviceStreamingSession | devicestreaming | [#8698](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8698) | [#8839](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8839) | - | 2 | OPEN |
-| DialogflowConversationDataset | dialogflow | [#8703](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8703) | - | - | 1 | OPEN |
-| DialogflowGenerator | dialogflow | [#9302](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9302) | - | - | 1 | MERGED |
-| DialogflowKnowledgeBase | dialogflow | [#9331](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9331) | - | - | 1 | MERGED |
-| DialogflowSecuritySettings | dialogflow | [#9329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9329) | - | - | 1 | OPEN |
-| DialogflowSipTrunk | dialogflow | [#9342](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9342) | - | - | 1 | OPEN |
-| DialogflowTool | dialogflow | [#9336](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9336) | - | - | 1 | OPEN |
-| DiscoveryEngineControl | discoveryengine | [#9243](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9243) | - | - | 1 | OPEN |
-| DiscoveryEngineConversation | discoveryengine | [#9244](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9244) | - | - | 1 | MERGED |
-| DiscoveryEngineIdentityMappingStore | discoveryengine | [#8775](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8775) | [#8889](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8889) | - | 2 | OPEN |
-| DiscoveryEngineSampleQuery | discoveryengine | [#9309](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9309) | - | - | 1 | OPEN |
-| DiscoveryEngineSampleQuerySet | discoveryengine | [#9055](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9055) | - | - | 1 | OPEN |
-| DiscoveryEngineSession | discoveryengine | [#9316](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9316) | - | - | 1 | OPEN |
-| DLPConnection | dlp | [#9305](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9305) | - | - | 1 | OPEN |
-| DLPDiscoveryConfig | dlp | [#9312](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9312) | - | - | 1 | OPEN |
-| EnterpriseKnowledgeGraphEntityReconciliationJob | enterpriseknowledgegraph | [#9340](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9340) | - | - | 1 | OPEN |
-| EventarcChannelConnection | eventarc | [#9325](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9325) | - | - | 1 | MERGED |
-| EventarcEnrollment | eventarc | [#8660](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8660) | - | [#9146](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9146) | 2 | OPEN |
-| InfraManagerDeploymentGroup | config | [#8688](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8688) | - | - | 1 | OPEN |
-| KMSEKMConnection | kms | [#8076](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8076) | - | - | 1 | CLOSED |
-| ModelArmorTemplate | modelarmor | [#8774](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8774) | - | - | 1 | MERGED |
-| NetworkConnectivityRegionalEndpoint | networkconnectivity | [#8656](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8656) | [#8794](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8794) | - | 2 | MERGED |
-| NetworkSecurityAddressGroup | networksecurity | [#8755](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8755) | - | - | 3 | OPEN |
-| NetworkSecurityAuthzPolicy | networksecurity | [#8760](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8760) | - | - | 1 | OPEN |
-| NetworkSecurityBackendAuthenticationConfig | networksecurity | [#8746](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8746) | - | [#8869](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8869) | 2 | OPEN |
-| NetworkSecurityDnsThreatDetector | networksecurity | [#8758](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8758) | - | - | 1 | OPEN |
-| NetworkSecurityFirewallEndpoint | networksecurity | [#8768](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8768) | - | - | 1 | OPEN |
-| NetworkSecurityFirewallEndpointAssociation | networksecurity | [#8756](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8756) | - | - | 1 | OPEN |
-| NetworkSecurityGatewaySecurityPolicy | networksecurity | [#7942](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7942) | [#7615](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7615) | - | 2 | OPEN |
-| NetworkSecurityInterceptDeployment | networksecurity | [#8748](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8748) | [#8867](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8867) | - | 2 | OPEN |
-| NetworkSecurityInterceptDeploymentGroup | networksecurity | [#8769](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8769) | - | - | 1 | OPEN |
-| NetworkSecurityInterceptEndpointGroup | networksecurity | [#8757](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8757) | [#8835](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8835) | - | 2 | OPEN |
-| NetworkSecurityInterceptEndpointGroupAssociation | networksecurity | [#8767](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8767) | - | - | 1 | OPEN |
-| NetworkSecurityMirroringDeployment | networksecurity | [#8743](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8743) | [#9049](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9049) | - | 2 | OPEN |
-| NetworkSecurityMirroringDeploymentGroup | networksecurity | [#8750](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8750) | - | - | 1 | OPEN |
-| NetworkSecurityMirroringEndpointGroup | networksecurity | [#8773](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8773) | [#9048](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9048) | - | 2 | MERGED |
-| NetworkSecurityMirroringEndpointGroupAssociation | networksecurity | [#9053](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9053) | - | - | 1 | OPEN |
-| NetworkSecurityPartnerSSEGateway | networksecurity | [#8770](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8770) | - | - | 1 | OPEN |
-| NetworkSecurityPartnerSSERealm | networksecurity | [#8741](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8741) | - | - | 1 | OPEN |
-| NetworkSecuritySACRealm | networksecurity | [#9054](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9054) | - | - | 2 | MERGED |
-| NetworkSecuritySecurityProfile | networksecurity | [#9047](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9047) | - | - | 1 | OPEN |
-| NetworkSecuritySecurityProfileGroup | networksecurity | [#8820](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8820) | - | - | 1 | OPEN |
-| NetworkSecurityTLSInspectionPolicy | networksecurity | [#7943](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7943) | - | - | 1 | OPEN |
-| NetworkSecurityUrlList | networksecurity | [#7941](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7941) | - | [#9050](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9050) | 1 | OPEN |
-| NotebookRuntime | notebooks | [#8075](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8075) | [#8075](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8075) | - | 2 | OPEN |
-| NotebooksExecution | notebooks | [#9315](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9315) | - | - | 1 | MERGED |
-| NotebooksSchedule | notebooks | [#9314](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9314) | - | - | 1 | OPEN |
-| SecretManagerRegionalSecret | secretmanager | [#8080](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8080) | - | - | 1 | OPEN |
-| SecurityCenterBigQueryExport | securitycenter | [#8762](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8762) | [#8833](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8833) | - | 2 | MERGED |
-| SecurityCenterManagementEventThreatDetectionCustomModule | securitycentermanagement | [#8777](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8777) | - | - | 1 | OPEN |
-| SecurityCenterManagementSecurityHealthAnalyticsCustomModule | securitycentermanagement | [#8765](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8765) | - | - | 1 | OPEN |
-| SecurityCenterMuteConfig | securitycenter | [#8899](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8899) | [#8831](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8831) | - | 2 | MERGED |
-| VertexAICachedContent | vertexai | [#8650](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8650) | - | - | 1 | OPEN |
-| VertexAICustomJob | vertexai | [#8118](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8118) | - | - | 1 | OPEN |
-| VertexAIDataset | vertexai | [#7991](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7991) | [#9787](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9787) | - | 3 | MERGED |
-| VertexAIDeploymentResourcePool | vertexai | [#8433](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8433) | [#8610](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8610) | - | 2 | OPEN |
-| VertexAIEndpoint | vertexai | [#7994](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7994) | - | - | 3 | MERGED |
-| VertexAIExampleStore | vertexai | [#8545](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8545) | [#8611](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8611) | - | 2 | MERGED |
-| VertexAIFeatureGroup | aiplatform | [#8414](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8414) | - | - | 1 | OPEN |
-| VertexAIFeatureOnlineStore | aiplatform | [#8408](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8408) | - | - | 1 | OPEN |
-| VertexAIHyperparameterTuningJob | aiplatform | [#8415](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8415) | - | - | 1 | OPEN |
-| VertexAIIndex | aiplatform | [#8421](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8421) | - | - | 3 | CLOSED |
-| VertexAIIndexEndpoint | aiplatform | [#8422](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8422) | - | - | 1 | OPEN |
-| VertexAIModelDeploymentMonitoringJob | aiplatform | [#8425](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8425) | - | - | 1 | OPEN |
-| VertexAIPersistentResource | aiplatform | [#9296](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9296) | - | - | 1 | OPEN |
-| VertexAIPipelineJob | aiplatform | [#9457](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9457) | - | - | 1 | OPEN |
-| VertexAIRagCorpus | aiplatform | [#9343](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9343) | - | - | 1 | OPEN |
-| VertexAISchedule | aiplatform | [#9303](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9303) | - | - | 1 | OPEN |
-| VertexAISpecialistPool | aiplatform | [#9341](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9341) | - | - | 1 | OPEN |
-| VertexAIStudy | aiplatform | [#9301](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9301) | - | - | 1 | OPEN |
-| VertexAITrainingPipeline | aiplatform | [#9337](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9337) | - | - | 1 | OPEN |
-| VertexAITuningJob | aiplatform | [#9310](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9310) | - | - | 1 | OPEN |
-| BackupdrBackup | backupdr | - | - | - | - | PLANNED |
-| BigLakeLock | biglake | [#10355](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10355) | - | - | 1 | OPEN 
-|
-| EventarcGoogleApiSource | eventarc | [#10274](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10274) | - | - | 1 | OPEN |
-| FilestoreBackup | filestore | [#10323](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10323) | - | - | 1 | OPEN 
-|
-| FinancialServicesInstance | financialservices | [#10343](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10343) | - | - | 1 | OPEN 
-|
-| GDCHardwareManagementHardware | gdchardwaremanagement | [#10330](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10330) | - | - | 1 | OPEN 
-|
-| GeminiDataAnalyticsConversation | geminidataanalytics | - | - | - | 1 | MERGED 
-|
-| GKEBackupBackupChannel | gkebackup | [#10326](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10326) | - | - | 1 | OPEN 
-|
-| GKEHubFleet | gkehub | [#10347](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10347) | - | - | 1 | OPEN 
-|
-| GKEMulticloudAttachedCluster | gkemulticloud | [#10304](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10304) | - | - | 1 | OPEN 
-|
-| GrafeasNote | grafeas | [#10289](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10289) | - | - | 1 | OPEN 
-|
-| GSuiteAddonsDeployment | gsuiteaddons | [#10349](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10349) | - | - | 1 | OPEN 
-|
-| HypercomputeClusterCluster | hypercomputecluster | - | - | [#10333](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10333) | 1 | OPEN 
-|
-| IamAccessPolicy | iam | - | - | [#10321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10321) | 1 | OPEN 
-|
-| CloudTalentSolutionCompany | cloudtalentsolution | [#10319](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10319) | - | - | 1 | OPEN 
-|
-| LicenseManagerConfiguration | licensemanager | [#10338](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10338) | - | - | 1 | OPEN 
-|
-| LiveStreamAsset | livestream | [#10344](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10344) | - | - | 1 | OPEN 
-|
-| ManagedKafkaConnectCluster | managedkafka | [#10299](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10299) | - | - | 1 | OPEN 
-|
-| MapManagementMapConfig | mapmanagement | - | - | [#10337](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10337) | 1 | OPEN 
-|
-| MapsPlatformDatasetsDataset | mapsplatformdatasets | [#10296](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10296) | - | - | 1 | OPEN 
-|
-| MarketingPlatformAdminAnalyticsAccountLink | marketingplatformadmin | [#10336](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10336) | - | - | 1 | OPEN 
-|
-| MigrationCenterGroup | migrationcenter | [#10345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10345) | - | - | 1 | OPEN 
-|
-| NetworkConnectivityMulticloudDataTransferConfig | networkconnectivity | [#10301](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10301) | - | - | 1 | OPEN 
-|
-| NetworkManagementVpcFlowLogsConfig | networkmanagement | [#10332](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10332) | - | - | 1 | OPEN 
-|
-| NetworkServicesAuthzExtension | networkservices | [#10339](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10339) | - | - | 1 | OPEN 
-|
-| OracleDatabaseAutonomousDatabase | oracledatabase | [#10346](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10346) | - | - | 1 | OPEN 
-|
-| ParallelstoreInstance | parallelstore | [#10334](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10334) | - | - | 1 | OPEN 
-|
-| RapidMigrationAssessmentCollector | rapidmigrationassessment | [#10340](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10340) | - | - | 1 | OPEN 
-|
-| SaasServiceMgmtRelease | saasservicemgmt | [#10341](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10341) | - | - | 1 | OPEN 
-|
-| SQLAdminBackup | sql | [#10315](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10315) | - | - | 1 | OPEN 
-|
-| StorageBatchOperationsJob | storage | [#10335](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10335) | - | - | 1 | OPEN 
-|
-| StorageInsightsDatasetConfig | storageinsights | [#10316](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10316) | - | - | 1 | OPEN 
-|
-| TelcoAutomationEdgeSlm | telcoautomation | [#10348](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10348) | - | - | 1 | OPEN 
-|
-| TestingDeviceSession | testing | [#10342](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10342) | - | - | 1 | OPEN 
-|
-| TPUQueuedResource | tpu | - | - | - | 1 | OPEN 
-|
-| TranscoderJob | transcoder | [#10325](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10325) | - | - | 1 | OPEN 
-|
-| TranslateAdaptiveMtDataset | translate | [#10328](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10328) | - | - | 1 | OPEN 
-|
-| VectorSearchCollection | vectorsearch | - | - | - | 1 | MERGED 
-|
-| VideoStitcherCDNKey | videostitcher | [#10329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10329) | - | - | 1 | OPEN 
-|
-| VisionProduct | vision | [#10350](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10350) | - | - | 1 | OPEN 
-|
-| VisionAIApplication | visionai | [#10351](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10351) | - | - | 1 | OPEN 
-|
-| VMMigrationGroup | vmmigration | [#10327](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10327) | - | - | 1 | OPEN 
-|
-| VMwareEnginePrivateConnection | vmwareengine | [#10353](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10353) | - | - | 1 | OPEN 
-|
-| WebSecurityScannerScanConfig | websecurityscanner | [#10352](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10352) | - | - | 1 | OPEN 
-|
-| WorkloadManagerEvaluation | workloadmanager | [#10356](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10356) | - | - | 1 | OPEN 
-|
+| Resource | Service | Phase 1 PR | Phase 2 PR | Phase 3 PR | Current Phase | State | RELEASED |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| AIStreamsCluster | aistreams | [#8801](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8801) | [#8792](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8792) | - | 2 | MERGED | - |
+| ApigeeApiProduct | apigee | [#8078](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8078) | [#8078](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8078) | - | 2 | OPEN | - |
+| ApigeeRegistryApi | apigeeregistry | [#8413](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8413) | - | - | 1 | OPEN | X |
+| ApigeeRegistryArtifact | apigeeregistry | [#9298](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9298) | - | - | 1 | OPEN | - |
+| ApigeeRegistryInstance | apigeeregistry | [#8684](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8684) | - | - | 1 | MERGED | - |
+| APIHubAPI | apihub | [#8631](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8631) | [#9150](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9150) | - | 2 | OPEN | - |
+| ApiHubAttribute | apihub | [#8412](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8412) | - | - | 1 | OPEN | - |
+| ApiHubCuration | apihub | [#8406](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8406) | - | - | 1 | OPEN | - |
+| ApiHubDependency | apihub | [#8410](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8410) | - | - | 1 | OPEN | - |
+| ApiHubDeployment | apihub | [#8988](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8988) | [#8790](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8790) | - | 2 | OPEN | - |
+| ApiHubInstance | apihub | [#8424](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8424) | - | - | 1 | OPEN | - |
+| ApiHubPlugin | apihub | [#9323](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9323) | - | - | 1 | MERGED | - |
+| ApiHubRuntimeProjectAttachment | apihub | [#9338](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9338) | - | - | 1 | MERGED | - |
+| AppHubServiceProjectAttachment | apphub | [#8874](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8874) | [#8791](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8791) | - | 2 | OPEN | - |
+| AppOptimizeReport | appoptimize | [#9028](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9028) | - | - | 1 | OPEN | - |
+| ArtifactRegistryVPCSCConfig | artifactregistry | [#8073](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8073) | - | - | 1 | OPEN | - |
+| AutoMLDataset | automl | [#9212](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9212) | - | - | 2 | MERGED | - |
+| BeyondCorpClientConnectorService | beyondcorp | [#8837](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8837) | [#8795](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8795) | - | 2 | OPEN | - |
+| BeyondCorpClientGateway | beyondcorp | [#8419](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8419) | - | - | 1 | MERGED | - |
+| BigLakeCatalog | biglake | [#9454](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9454) | [#9615](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9615) | [#8626](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8626) | 3 | CLOSED | - |
+| BigQueryAnalyticsHubDataExchange | analyticshub | [#8471](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8471) | [#9371](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9371) | [#7530](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7530) | 2 | OPEN | - |
+| BigQueryDataTransferTransferConfig | bigquerydatatransfer | [#9030](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9030) | - | - | 1 | OPEN | - |
+| BigQueryMigrationMigrationWorkflow | bigquerymigration | [#9029](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9029) | - | - | 1 | OPEN | - |
+| BigQueryMigrationWorkflow | bigquerymigration | [#8699](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8699) | - | - | 1 | OPEN | - |
+| BigQueryReservationReservationGroup | bigqueryreservation | [#9041](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9041) | - | - | 1 | OPEN | - |
+| BinaryAuthorizationPlatformPolicy | binaryauthorization | [#8521](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8521) | [#8599](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8599) | - | 2 | OPEN | - |
+| BlockchainNodeEngineBlockchainNode | blockchainnodeengine | [#9032](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9032) | - | - | 1 | OPEN | - |
+| BlockchainNodeEngineNode | blockchainnodeengine | - | - | - | 1 | OPEN | - |
+| CCInsightsAnalysisRule | contactcenterinsights | [#9322](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9322) | - | - | 1 | OPEN | - |
+| CCInsightsConversation | contactcenterinsights | [#9327](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9327) | - | - | 1 | OPEN | - |
+| CCInsightsIssueModel | contactcenterinsights | [#9334](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9334) | - | - | 1 | OPEN | - |
+| CCInsightsPhraseMatcher | contactcenterinsights | [#9335](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9335) | - | - | 1 | MERGED | - |
+| CCInsightsQAScorecard | contactcenterinsights | [#8701](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8701) | - | - | 1 | OPEN | - |
+| CCInsightsView | contactcenterinsights | [#9300](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9300) | - | - | 1 | MERGED | - |
+| CertificateManagerTrustConfig | certificatemanager | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | [#8072](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8072) | - | 2 | OPEN | - |
+| CESApp | ces | [#9100](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9100) | [#9037](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9037) | - | 1 | OPEN | - |
+| CloudBatchResourceAllowance | batch | [#8702](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8702) | [#8838](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8838) | - | 2 | MERGED | - |
+| CloudBuildConnection | cloudbuild | [#8700](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8700) | - | - | 1 | OPEN | - |
+| CloudIdentityDevice | cloudidentity | [#8077](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8077) | [#8077](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8077) | - | 2 | OPEN | - |
+| CloudRunInstance | run | [#8766](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8766) | - | - | 1 | OPEN | - |
+| CloudRunWorkerPool | run | [#8749](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8749) | - | - | 1 | OPEN | - |
+| CloudSecurityComplianceCloudControl | cloudsecuritycompliance | [#9040](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9040) | [#9373](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9373) | - | 2 | OPEN | - |
+| CloudSecurityComplianceFramework | cloudsecuritycompliance | [#9321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9321) | - | - | 1 | MERGED | - |
+| CloudSecurityComplianceFrameworkDeployment | cloudsecuritycompliance | [#9308](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9308) | - | - | 1 | OPEN | - |
+| CloudSecurityFramework | cloudsecuritycompliance | [#8841](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8841) | - | - | 1 | OPEN | - |
+| CloudTasksQueue | cloudtasks | - | - | - | 1 | MERGED | - |
+| ConfigDeliveryFleetPackage | configdelivery | [#9297](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9297) | - | - | 1 | MERGED | - |
+| ConfigDeploymentGroup | config | [#9039](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9039) | - | - | 1 | OPEN | - |
+| ConnectorsConnection | connectors | [#8687](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8687) | - | - | 1 | OPEN | - |
+| ContactCenterInsightsConversation | contactcenterinsights | [#9026](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9026) | - | - | 1 | OPEN | - |
+| ContentWarehouseDocument | contentwarehouse | [#9101](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9101) | - | - | 1 | OPEN | - |
+| ContentWarehouseRuleSet | contentwarehouse | [#9317](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9317) | - | - | 1 | OPEN | - |
+| ContentWarehouseSchema | contentwarehouse | [#8686](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8686) | - | - | 1 | MERGED | - |
+| ContentWarehouseSynonymSet | contentwarehouse | [#9295](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9295) | - | - | 1 | OPEN | - |
+| DatabaseMigrationConnectionProfile | datamigration | [#9330](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9330) | - | - | 1 | OPEN | - |
+| DatabaseMigrationConversionWorkspace | datamigration | [#9299](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9299) | - | - | 1 | MERGED | - |
+| DatabaseMigrationJob | datamigration | - | - | - | 1 | OPEN | - |
+| DatabaseMigrationMigrationJob | datamigration | [#9345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9345) | - | - | 1 | MERGED | - |
+| DatabaseMigrationPrivateConnection | datamigration | [#9324](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9324) | - | - | 1 | OPEN | - |
+| DataformFolder | dataform | [#9051](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9051) | - | - | 1 | OPEN | - |
+| DataformTeamFolder | dataform | [#9306](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9306) | - | - | 1 | OPEN | - |
+| DataLabelingAnnotationSpecSet | datalabeling | [#9318](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9318) | - | - | 1 | MERGED | - |
+| DataLabelingDataset | datalabeling | [#9320](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9320) | - | - | 1 | OPEN | - |
+| DataLabelingEvaluationJob | datalabeling | [#9328](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9328) | - | - | 1 | OPEN | - |
+| DataLabelingInstruction | datalabeling | [#9347](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9347) | - | - | 1 | MERGED | - |
+| DataLineageProcess | datalineage | [#9110](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9110) | - | - | 1 | OPEN | - |
+| DataplexAspectType | dataplex | [#9346](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9346) | - | - | 1 | OPEN | - |
+| DataplexDataAttributeBinding | dataplex | [#9333](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9333) | - | - | 1 | OPEN | - |
+| DataplexDataProduct | dataplex | [#9304](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9304) | - | - | 1 | OPEN | - |
+| DataplexDataScan | dataplex | [#8693](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8693) | - | - | 1 | OPEN | - |
+| DataplexDataTaxonomy | dataplex | [#9326](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9326) | - | - | 1 | OPEN | - |
+| DataplexGlossary | dataplex | [#9311](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9311) | - | - | 1 | OPEN | - |
+| DataplexMetadataFeed | dataplex | [#9344](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9344) | - | - | 1 | OPEN | - |
+| DataplexMetadataJob | dataplex | [#9339](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9339) | - | - | 1 | OPEN | - |
+| DataprocSession | dataproc | [#8695](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8695) | [#8890](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8890) | - | 2 | OPEN | - |
+| DataprocSessionTemplate | dataproc | [#9332](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9332) | - | - | 1 | MERGED | - |
+| DevConnectAccountConnector | developerconnect | [#9313](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9313) | - | - | 1 | MERGED | - |
+| DevConnectConnection | developerconnect | [#8685](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8685) | - | - | 1 | OPEN | - |
+| DevConnectInsightsConfig | developerconnect | [#9319](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9319) | - | - | 1 | MERGED | - |
+| DeviceStreamingSession | devicestreaming | [#8698](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8698) | [#8839](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8839) | - | 2 | OPEN | - |
+| DialogflowConversationDataset | dialogflow | [#8703](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8703) | - | - | 1 | OPEN | - |
+| DialogflowGenerator | dialogflow | [#9302](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9302) | - | - | 1 | MERGED | - |
+| DialogflowKnowledgeBase | dialogflow | [#9331](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9331) | - | - | 1 | MERGED | - |
+| DialogflowSecuritySettings | dialogflow | [#9329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9329) | - | - | 1 | OPEN | - |
+| DialogflowSipTrunk | dialogflow | [#9342](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9342) | - | - | 1 | OPEN | - |
+| DialogflowTool | dialogflow | [#9336](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9336) | - | - | 1 | OPEN | - |
+| DiscoveryEngineControl | discoveryengine | [#9243](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9243) | - | - | 1 | OPEN | - |
+| DiscoveryEngineConversation | discoveryengine | [#9244](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9244) | - | - | 1 | MERGED | - |
+| DiscoveryEngineIdentityMappingStore | discoveryengine | [#8775](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8775) | [#8889](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8889) | - | 2 | OPEN | - |
+| DiscoveryEngineSampleQuery | discoveryengine | [#9309](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9309) | - | - | 1 | OPEN | - |
+| DiscoveryEngineSampleQuerySet | discoveryengine | [#9055](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9055) | - | - | 1 | OPEN | - |
+| DiscoveryEngineSession | discoveryengine | [#9316](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9316) | - | - | 1 | OPEN | - |
+| DLPConnection | dlp | [#9305](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9305) | - | - | 1 | OPEN | - |
+| DLPDiscoveryConfig | dlp | [#9312](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9312) | - | - | 1 | OPEN | - |
+| EnterpriseKnowledgeGraphEntityReconciliationJob | enterpriseknowledgegraph | [#9340](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9340) | - | - | 1 | OPEN | - |
+| EventarcChannelConnection | eventarc | [#9325](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9325) | - | - | 1 | MERGED | - |
+| EventarcEnrollment | eventarc | [#8660](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8660) | - | [#9146](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9146) | 2 | OPEN | - |
+| InfraManagerDeploymentGroup | config | [#8688](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8688) | - | - | 1 | OPEN | - |
+| KMSEKMConnection | kms | [#8076](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8076) | - | - | 1 | CLOSED | - |
+| ModelArmorTemplate | modelarmor | [#8774](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8774) | - | - | 1 | MERGED | - |
+| NetworkConnectivityRegionalEndpoint | networkconnectivity | [#8656](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8656) | [#8794](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8794) | - | 2 | MERGED | - |
+| NetworkSecurityAddressGroup | networksecurity | [#8755](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8755) | - | - | 3 | OPEN | - |
+| NetworkSecurityAuthzPolicy | networksecurity | [#8760](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8760) | - | - | 1 | OPEN | - |
+| NetworkSecurityBackendAuthenticationConfig | networksecurity | [#8746](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8746) | - | [#8869](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8869) | 2 | OPEN | - |
+| NetworkSecurityDnsThreatDetector | networksecurity | [#8758](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8758) | - | - | 1 | OPEN | - |
+| NetworkSecurityFirewallEndpoint | networksecurity | [#8768](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8768) | - | - | 1 | OPEN | - |
+| NetworkSecurityFirewallEndpointAssociation | networksecurity | [#8756](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8756) | - | - | 1 | OPEN | - |
+| NetworkSecurityGatewaySecurityPolicy | networksecurity | [#7942](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7942) | [#7615](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7615) | - | 2 | OPEN | - |
+| NetworkSecurityInterceptDeployment | networksecurity | [#8748](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8748) | [#8867](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8867) | - | 2 | OPEN | - |
+| NetworkSecurityInterceptDeploymentGroup | networksecurity | [#8769](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8769) | - | - | 1 | OPEN | - |
+| NetworkSecurityInterceptEndpointGroup | networksecurity | [#8757](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8757) | [#8835](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8835) | - | 2 | OPEN | - |
+| NetworkSecurityInterceptEndpointGroupAssociation | networksecurity | [#8767](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8767) | - | - | 1 | OPEN | - |
+| NetworkSecurityMirroringDeployment | networksecurity | [#8743](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8743) | [#9049](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9049) | - | 2 | OPEN | - |
+| NetworkSecurityMirroringDeploymentGroup | networksecurity | [#8750](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8750) | - | - | 1 | OPEN | - |
+| NetworkSecurityMirroringEndpointGroup | networksecurity | [#8773](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8773) | [#9048](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9048) | - | 2 | MERGED | - |
+| NetworkSecurityMirroringEndpointGroupAssociation | networksecurity | [#9053](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9053) | - | - | 1 | OPEN | - |
+| NetworkSecurityPartnerSSEGateway | networksecurity | [#8770](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8770) | - | - | 1 | OPEN | - |
+| NetworkSecurityPartnerSSERealm | networksecurity | [#8741](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8741) | - | - | 1 | OPEN | - |
+| NetworkSecuritySACRealm | networksecurity | [#9054](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9054) | - | - | 2 | MERGED | - |
+| NetworkSecuritySecurityProfile | networksecurity | [#9047](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9047) | - | - | 1 | OPEN | - |
+| NetworkSecuritySecurityProfileGroup | networksecurity | [#8820](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8820) | - | - | 1 | OPEN | - |
+| NetworkSecurityTLSInspectionPolicy | networksecurity | [#7943](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7943) | - | - | 1 | OPEN | - |
+| NetworkSecurityUrlList | networksecurity | [#7941](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7941) | - | [#9050](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9050) | 1 | OPEN | - |
+| NotebookRuntime | notebooks | [#8075](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8075) | [#8075](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8075) | - | 2 | OPEN | - |
+| NotebooksExecution | notebooks | [#9315](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9315) | [#10760](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10760) | [#11090](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11090) | 3 | MERGED | - |
+| NotebooksSchedule | notebooks | [#9314](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9314) | - | - | 1 | OPEN | - |
+| SecretManagerRegionalSecret | secretmanager | [#8080](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8080) | - | - | 1 | OPEN | - |
+| SecurityCenterBigQueryExport | securitycenter | [#8762](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8762) | [#8833](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8833) | - | 2 | MERGED | - |
+| SecurityCenterManagementEventThreatDetectionCustomModule | securitycentermanagement | [#8777](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8777) | - | - | 1 | OPEN | - |
+| SecurityCenterManagementSecurityHealthAnalyticsCustomModule | securitycentermanagement | [#8765](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8765) | - | - | 1 | OPEN | - |
+| SecurityCenterMuteConfig | securitycenter | [#8899](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8899) | [#8831](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8831) | - | 2 | MERGED | - |
+| VertexAICachedContent | vertexai | [#8650](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8650) | - | - | 1 | OPEN | - |
+| VertexAICustomJob | vertexai | [#8118](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8118) | - | - | 1 | OPEN | - |
+| VertexAIDataset | vertexai | [#7991](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7991) | [#9787](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9787) | - | 3 | MERGED | - |
+| VertexAIDeploymentResourcePool | vertexai | [#8433](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8433) | [#8610](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8610) | - | 2 | OPEN | - |
+| VertexAIEndpoint | vertexai | [#7994](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7994) | - | - | 3 | MERGED | - |
+| VertexAIExampleStore | vertexai | [#8545](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8545) | [#8611](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8611) | - | 2 | MERGED | - |
+| VertexAIFeatureGroup | aiplatform | [#8414](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8414) | - | - | 1 | OPEN | - |
+| VertexAIFeatureOnlineStore | aiplatform | [#8408](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8408) | - | - | 1 | OPEN | - |
+| VertexAIHyperparameterTuningJob | aiplatform | [#8415](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8415) | - | - | 1 | OPEN | - |
+| VertexAIIndex | aiplatform | [#8421](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8421) | - | - | 3 | CLOSED | - |
+| VertexAIIndexEndpoint | aiplatform | [#8422](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8422) | - | - | 1 | OPEN | - |
+| VertexAIModelDeploymentMonitoringJob | aiplatform | [#8425](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8425) | - | - | 1 | OPEN | - |
+| VertexAIPersistentResource | aiplatform | [#9296](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9296) | - | - | 1 | OPEN | - |
+| VertexAIPipelineJob | aiplatform | [#9457](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9457) | - | - | 1 | OPEN | - |
+| VertexAIRagCorpus | aiplatform | [#9343](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9343) | - | - | 1 | OPEN | - |
+| VertexAISchedule | aiplatform | [#9303](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9303) | - | - | 1 | OPEN | - |
+| VertexAISpecialistPool | aiplatform | [#9341](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9341) | - | - | 1 | OPEN | - |
+| VertexAIStudy | aiplatform | [#9301](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9301) | - | - | 1 | OPEN | - |
+| VertexAITrainingPipeline | aiplatform | [#9337](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9337) | - | - | 1 | OPEN | - |
+| VertexAITuningJob | aiplatform | [#9310](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9310) | - | - | 1 | OPEN | - |
+| BackupdrBackup | backupdr | - | - | - | - | PLANNED | - |
+| BigLakeLock | biglake | [#10355](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10355) | - | - | 1 | OPEN | - |
+| EventarcGoogleApiSource | eventarc | [#10274](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10274) | - | - | 1 | OPEN | - |
+| FilestoreBackup | filestore | [#10323](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10323) | - | - | 1 | OPEN | X |
+| FinancialServicesInstance | financialservices | [#10343](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10343) | - | - | 1 | OPEN | - |
+| GDCHardwareManagementHardware | gdchardwaremanagement | [#10330](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10330) | - | - | 1 | OPEN | - |
+| GeminiDataAnalyticsConversation | geminidataanalytics | - | - | - | 1 | MERGED | - |
+| GKEBackupBackupChannel | gkebackup | [#10326](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10326) | - | - | 1 | OPEN | - |
+| GKEHubFleet | gkehub | [#10347](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10347) | - | - | 1 | OPEN | - |
+| GKEMulticloudAttachedCluster | gkemulticloud | [#10304](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10304) | - | - | 1 | OPEN | - |
+| GrafeasNote | grafeas | [#10289](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10289) | - | - | 1 | OPEN | - |
+| GSuiteAddonsDeployment | gsuiteaddons | [#10349](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10349) | - | - | 1 | OPEN | - |
+| HypercomputeClusterCluster | hypercomputecluster | - | - | [#10333](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10333) | 1 | OPEN | - |
+| IamAccessPolicy | iam | - | - | [#10321](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10321) | 1 | OPEN | - |
+| CloudTalentSolutionCompany | cloudtalentsolution | [#10319](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10319) | - | - | 1 | OPEN | - |
+| LicenseManagerConfiguration | licensemanager | [#10338](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10338) | - | - | 1 | OPEN | - |
+| LiveStreamAsset | livestream | [#10344](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10344) | - | - | 1 | OPEN | - |
+| ManagedKafkaConnectCluster | managedkafka | [#10299](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10299) | - | - | 1 | OPEN | - |
+| MapManagementMapConfig | mapmanagement | - | - | [#10337](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10337) | 1 | OPEN | - |
+| MapsPlatformDatasetsDataset | mapsplatformdatasets | [#10296](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10296) | - | - | 1 | OPEN | - |
+| MarketingPlatformAdminAnalyticsAccountLink | marketingplatformadmin | [#10336](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10336) | - | - | 1 | OPEN | - |
+| MigrationCenterGroup | migrationcenter | [#10345](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10345) | - | - | 1 | OPEN | - |
+| NetworkConnectivityMulticloudDataTransferConfig | networkconnectivity | [#10301](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10301) | - | - | 1 | OPEN | - |
+| NetworkManagementVpcFlowLogsConfig | networkmanagement | [#10332](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10332) | - | - | 1 | OPEN | - |
+| NetworkServicesAuthzExtension | networkservices | [#10339](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10339) | - | - | 1 | OPEN | - |
+| OracleDatabaseAutonomousDatabase | oracledatabase | [#10346](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10346) | - | - | 1 | OPEN | - |
+| ParallelstoreInstance | parallelstore | [#10334](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10334) | - | - | 1 | OPEN | - |
+| RapidMigrationAssessmentCollector | rapidmigrationassessment | [#10340](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10340) | - | - | 1 | OPEN | - |
+| SaasServiceMgmtRelease | saasservicemgmt | [#10341](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10341) | - | - | 1 | OPEN | - |
+| SQLAdminBackup | sql | [#10315](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10315) | - | - | 1 | OPEN | - |
+| StorageBatchOperationsJob | storage | [#10335](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10335) | - | - | 1 | OPEN | - |
+| StorageInsightsDatasetConfig | storageinsights | [#10316](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10316) | - | - | 1 | OPEN | - |
+| TelcoAutomationEdgeSlm | telcoautomation | [#10348](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10348) | - | - | 1 | OPEN | - |
+| TestingDeviceSession | testing | [#10342](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10342) | - | - | 1 | OPEN | - |
+| TPUQueuedResource | tpu | - | - | - | 1 | OPEN | - |
+| TranscoderJob | transcoder | [#10325](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10325) | - | - | 1 | OPEN | - |
+| TranslateAdaptiveMtDataset | translate | [#10328](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10328) | - | - | 1 | OPEN | - |
+| VectorSearchCollection | vectorsearch | - | - | - | 1 | MERGED | - |
+| VideoStitcherCDNKey | videostitcher | [#10329](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10329) | - | - | 1 | OPEN | - |
+| VisionProduct | vision | [#10350](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10350) | - | - | 1 | OPEN | - |
+| VisionAIApplication | visionai | [#10351](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10351) | - | - | 1 | OPEN | - |
+| VMMigrationGroup | vmmigration | [#10327](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10327) | - | - | 1 | OPEN | - |
+| VMwareEnginePrivateConnection | vmwareengine | [#10353](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10353) | - | - | 1 | OPEN | - |
+| WebSecurityScannerScanConfig | websecurityscanner | [#10352](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10352) | - | - | 1 | OPEN | - |
+| WorkloadManagerEvaluation | workloadmanager | [#10356](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/10356) | - | - | 1 | OPEN | - |

@@ -72,6 +72,10 @@ type ComputeNetworkSpec struct {
 	// +optional
 	NetworkFirewallPolicyEnforcementOrder *string `json:"networkFirewallPolicyEnforcementOrder,omitempty"`
 
+	/* Immutable. A full or partial URL of the network profile to apply to this network. This field can be set only at resource creation time. */
+	// +optional
+	NetworkProfile *string `json:"networkProfile,omitempty"`
+
 	/* The ComputeNetwork name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`

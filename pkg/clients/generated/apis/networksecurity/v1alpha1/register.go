@@ -59,16 +59,40 @@ var (
 		Kind:    reflect.TypeOf(NetworkSecurityAddressGroup{}).Name(),
 	}
 
+	NetworkSecurityAuthzPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityAuthzPolicy{}).Name(),
+	}
+
 	NetworkSecurityBackendAuthenticationConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(NetworkSecurityBackendAuthenticationConfig{}).Name(),
 	}
 
+	NetworkSecurityDNSThreatDetectorGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityDNSThreatDetector{}).Name(),
+	}
+
+	NetworkSecurityFirewallEndpointGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityFirewallEndpoint{}).Name(),
+	}
+
 	NetworkSecurityFirewallEndpointAssociationGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(NetworkSecurityFirewallEndpointAssociation{}).Name(),
+	}
+
+	NetworkSecurityGatewaySecurityPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityGatewaySecurityPolicy{}).Name(),
 	}
 
 	NetworkSecurityInterceptDeploymentGVK = schema.GroupVersionKind{
@@ -93,6 +117,12 @@ var (
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(NetworkSecurityMirroringEndpointGroup{}).Name(),
+	}
+
+	NetworkSecurityPartnerSSEGatewayGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkSecurityPartnerSSEGateway{}).Name(),
 	}
 
 	NetworkSecurityPartnerSSERealmGVK = schema.GroupVersionKind{

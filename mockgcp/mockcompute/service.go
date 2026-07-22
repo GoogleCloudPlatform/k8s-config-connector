@@ -71,6 +71,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkEdgeSecurityServicesServer(grpcServer, &networkEdgeSecurityServicesV1{MockService: s})
 
 	pb.RegisterSecurityPoliciesServer(grpcServer, &SecurityPoliciesV1{MockService: s})
+	pb.RegisterRegionSecurityPoliciesServer(grpcServer, &RegionSecurityPoliciesV1{MockService: s})
 
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
 	pb.RegisterFirewallsServer(grpcServer, &FirewallsV1{MockService: s})
@@ -190,6 +191,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterRegionSecurityPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -341,6 +346,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterZonesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterRoutersHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
@@ -359,6 +367,27 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// So far, it seems that all of beta is a direct mapping to v1 - though
 	// I'm sure eventually we'll find something that needs special handling.
 	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
+		var presentFieldsStr string
+		if r.Body != nil && (r.Method == "PATCH" || r.Method == "PUT" || r.Method == "POST") {
+			bodyBytes, err := io.ReadAll(r.Body)
+			if err == nil {
+				r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+
+				var rawMap map[string]any
+				if err := json.Unmarshal(bodyBytes, &rawMap); err == nil {
+					var keys []string
+					for k := range rawMap {
+						keys = append(keys, k)
+					}
+					presentFieldsStr = strings.Join(keys, ",")
+				}
+			}
+		}
+		if presentFieldsStr != "" {
+			ctx := context.WithValue(r.Context(), "present-fields", presentFieldsStr)
+			r = r.WithContext(ctx)
+		}
+
 		u := r.URL
 		u2 := *u
 		changed := false

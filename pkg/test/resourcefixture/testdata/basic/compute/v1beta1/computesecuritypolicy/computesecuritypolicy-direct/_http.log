@@ -156,6 +156,7 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "allow",
+      "description": "",
       "kind": "compute#securityPolicyRule",
       "match": {
         "config": {
@@ -172,6 +173,7 @@ X-Xss-Protection: 0
     },
     {
       "action": "deny(403)",
+      "description": "",
       "kind": "compute#securityPolicyRule",
       "match": {
         "config": {
@@ -181,6 +183,7 @@ X-Xss-Protection: 0
         },
         "versionedExpr": "SRC_IPS_V1"
       },
+      "preview": false,
       "priority": 2147483647
     }
   ],
@@ -259,7 +262,8 @@ Content-Type: application/json
       "priority": 0
     }
   ],
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",
+  "type": "CLOUD_ARMOR"
 }
 
 200 OK
@@ -277,7 +281,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.securityPolicies.patch",
+  "operationType": "patch",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -308,7 +312,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "compute.securityPolicies.patch",
+  "operationType": "patch",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
@@ -348,23 +352,40 @@ X-Xss-Protection: 0
   "name": "${securityPolicyID}",
   "rules": [
     {
-      "action": "allow",
+      "action": "deny(403)",
+      "description": "",
       "kind": "compute#securityPolicyRule",
       "match": {
         "config": {
           "srcIpRanges": [
-            "16.0.0.0/4",
-            "115.128.0.0/9",
-            "62.48.212.0/24"
+            "145.4.56.4/30",
+            "63.63.63.63/32",
+            "4.5.4.0/24"
           ]
         },
         "versionedExpr": "SRC_IPS_V1"
       },
-      "preview": true,
-      "priority": 1000000000
+      "preview": false,
+      "priority": 0
     },
     {
-      "action": "deny(403)",
+      "action": "deny(502)",
+      "description": "",
+      "kind": "compute#securityPolicyRule",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "60.0.0.0/6"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": false,
+      "priority": 111111111
+    },
+    {
+      "action": "allow",
+      "description": "",
       "kind": "compute#securityPolicyRule",
       "match": {
         "config": {
@@ -374,7 +395,24 @@ X-Xss-Protection: 0
         },
         "versionedExpr": "SRC_IPS_V1"
       },
+      "preview": false,
       "priority": 2147483647
+    },
+    {
+      "action": "allow",
+      "description": "",
+      "kind": "compute#securityPolicyRule",
+      "match": {
+        "config": {
+          "srcIpRanges": [
+            "63.0.0.0/8",
+            "61.128.0.0/10"
+          ]
+        },
+        "versionedExpr": "SRC_IPS_V1"
+      },
+      "preview": false,
+      "priority": 555
     }
   ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/securityPolicies/${securityPolicyID}",

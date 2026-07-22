@@ -10,7 +10,7 @@
   name: notebookinstance-dep
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/notebookinstance-dep
   group: iam.cnrm.cloud.google.com
   kind: IAMServiceAccount
   name: notebookinstance-dep

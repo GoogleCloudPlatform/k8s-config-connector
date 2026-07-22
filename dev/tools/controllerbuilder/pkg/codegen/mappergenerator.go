@@ -517,6 +517,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
+				case "map[string]string":
+					functionName = "map_string_string_FromProto"
 				}
 
 				// special handling for proto messages that mapped to KRM string
@@ -524,11 +526,17 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
+				if functionName == "direct.Struct_FromProto" && !strings.HasPrefix(krmField.Type, "*") {
+					fmt.Fprintf(out, "\tif v := %s(mapCtx, in.%s); v != nil {\n", functionName, protoAccessor)
+					fmt.Fprintf(out, "\t\tout.%s = *v\n", krmFieldName)
+					fmt.Fprintf(out, "\t}\n")
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				}
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
 				// Not needed if we use the accessor:
@@ -814,6 +822,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
+				case "map[string]string":
+					functionName = "map_string_string_ToProto"
 				}
 
 				// special handling for proto messages that mapped to KRM string
@@ -840,9 +850,14 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				valPrefix := ""
+				if functionName == "direct.Struct_ToProto" && !strings.HasPrefix(krmField.Type, "*") {
+					valPrefix = "&"
+				}
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, %sin.%s)\n",
 					protoFieldName,
 					functionName,
+					valPrefix,
 					krmFieldName,
 				)
 			case protoreflect.EnumKind:

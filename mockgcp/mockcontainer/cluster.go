@@ -28,11 +28,31 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ClusterManagerV1 struct {
 	*MockService
 	pb.UnimplementedClusterManagerServer
+}
+
+func (s *ClusterManagerV1) populateNodePools(ctx context.Context, clusterFqn string, obj *pb.Cluster) error {
+	var nodePools []*pb.NodePool
+	nodePoolKind := (&pb.NodePool{}).ProtoReflect().Descriptor()
+	err := s.storage.List(ctx, nodePoolKind, storage.ListOptions{
+		Prefix: clusterFqn + "/nodePools/",
+	}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	if len(nodePools) > 0 {
+		obj.NodePools = nodePools
+	}
+	return nil
 }
 
 func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterRequest) (*pb.Cluster, error) {
@@ -48,6 +68,10 @@ func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterReq
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Not found: %s.", AsZonalLink(fqn))
 		}
+		return nil, err
+	}
+
+	if err := s.populateNodePools(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -211,6 +235,9 @@ func locationToZone(location string) (string, error) {
 }
 
 func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*pb.Operation, error) {
+	if req.GetUpdate() == nil || proto.Equal(req.GetUpdate(), &pb.ClusterUpdate{}) {
+		return nil, status.Errorf(codes.InvalidArgument, "must specify a field to update")
+	}
 	reqName := req.GetName()
 
 	name, err := s.parseClusterName(reqName)
@@ -288,6 +315,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredNodePoolAutoConfigNetworkTags = nil
 	}
 
+	if update.DesiredNodePoolAutoConfigResourceManagerTags != nil {
+		if obj.NodePoolAutoConfig == nil {
+			obj.NodePoolAutoConfig = &pb.NodePoolAutoConfig{}
+		}
+		obj.NodePoolAutoConfig.ResourceManagerTags = update.DesiredNodePoolAutoConfigResourceManagerTags
+		update.DesiredNodePoolAutoConfigResourceManagerTags = nil
+	}
+
 	if update.DesiredMasterAuthorizedNetworksConfig != nil {
 		obj.MasterAuthorizedNetworksConfig = update.DesiredMasterAuthorizedNetworksConfig
 		update.DesiredMasterAuthorizedNetworksConfig = nil
@@ -333,6 +368,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		}
 		obj.NetworkConfig.EnableCiliumClusterwideNetworkPolicy = update.DesiredEnableCiliumClusterwideNetworkPolicy
 		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
+	}
+
+	if update.DesiredDisableL4LbFirewallReconciliation != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.DisableL4LbFirewallReconciliation = update.DesiredDisableL4LbFirewallReconciliation
+		update.DesiredDisableL4LbFirewallReconciliation = nil
 	}
 
 	if update.DesiredAdditionalIpRangesConfig != nil {

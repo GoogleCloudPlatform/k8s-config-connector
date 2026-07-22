@@ -23,6 +23,8 @@ package v1alpha1
 
 type GKEBackupBackupExpansion interface{}
 
+type GKEBackupBackupChannelExpansion interface{}
+
 type GKEBackupBackupPlanExpansion interface{}
 
 type GKEBackupRestoreExpansion interface{}

@@ -16,7 +16,8 @@ metadata:
 spec:
   autoCreateSubnetworks: false
   enableUlaInternalIpv6: true
-  routingMode: GLOBAL
+  networkProfile: projects/${projectId}/global/networkProfiles/us-central1-a-vpc-falcon
+  routingMode: REGIONAL
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

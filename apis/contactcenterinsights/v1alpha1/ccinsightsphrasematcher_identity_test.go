@@ -69,6 +69,19 @@ func TestCCInsightsPhraseMatcherIdentity_FromExternal(t *testing.T) {
 			if id.Project != tc.expected.Project || id.Location != tc.expected.Location || id.Phrase_matcher != tc.expected.Phrase_matcher {
 				t.Fatalf("expected %+v, got %+v", tc.expected, id)
 			}
+
 		})
+	}
+}
+
+func TestCCInsightsPhraseMatcherIdentity_ParentString(t *testing.T) {
+	id := &CCInsightsPhraseMatcherIdentity{
+		Project:        "my-project",
+		Location:       "us-central1",
+		Phrase_matcher: "my-phrasematcher",
+	}
+	expected := "projects/my-project/locations/us-central1"
+	if actual := id.ParentString(); actual != expected {
+		t.Fatalf("expected %q, got %q", expected, actual)
 	}
 }

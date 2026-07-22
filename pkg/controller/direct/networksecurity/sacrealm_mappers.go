@@ -20,31 +20,31 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func NetworkSecuritySACRealmObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SACRealm) *krm.NetworkSecuritySACRealmObservedState {
+func NetworkSecuritySACRealmObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SACRealm) *krm.NetworkSecuritySACRealmObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkSecuritySACRealmObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.PairingKey = SACRealm_PairingKeyObservedState_FromProto(mapCtx, in.GetPairingKey())
+	out.PairingKey = SACRealm_PairingKeyObservedState_v1alpha1_FromProto(mapCtx, in.GetPairingKey())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
 
-func NetworkSecuritySACRealmObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecuritySACRealmObservedState) *pb.SACRealm {
+func NetworkSecuritySACRealmObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecuritySACRealmObservedState) *pb.SACRealm {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SACRealm{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.PairingKey = SACRealm_PairingKeyObservedState_ToProto(mapCtx, in.PairingKey)
+	out.PairingKey = SACRealm_PairingKeyObservedState_v1alpha1_ToProto(mapCtx, in.PairingKey)
 	out.State = direct.Enum_ToProto[pb.SACRealm_State](mapCtx, in.State)
 	return out
 }
 
-func NetworkSecuritySACRealmSpec_FromProto(mapCtx *direct.MapContext, in *pb.SACRealm) *krm.NetworkSecuritySACRealmSpec {
+func NetworkSecuritySACRealmSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SACRealm) *krm.NetworkSecuritySACRealmSpec {
 	if in == nil {
 		return nil
 	}
@@ -54,7 +54,7 @@ func NetworkSecuritySACRealmSpec_FromProto(mapCtx *direct.MapContext, in *pb.SAC
 	return out
 }
 
-func NetworkSecuritySACRealmSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecuritySACRealmSpec) *pb.SACRealm {
+func NetworkSecuritySACRealmSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSecuritySACRealmSpec) *pb.SACRealm {
 	if in == nil {
 		return nil
 	}
@@ -64,7 +64,7 @@ func NetworkSecuritySACRealmSpec_ToProto(mapCtx *direct.MapContext, in *krm.Netw
 	return out
 }
 
-func SACRealm_PairingKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SACRealm_PairingKey) *krm.SACRealm_PairingKeyObservedState {
+func SACRealm_PairingKeyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SACRealm_PairingKey) *krm.SACRealm_PairingKeyObservedState {
 	if in == nil {
 		return nil
 	}
@@ -74,7 +74,7 @@ func SACRealm_PairingKeyObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	return out
 }
 
-func SACRealm_PairingKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SACRealm_PairingKeyObservedState) *pb.SACRealm_PairingKey {
+func SACRealm_PairingKeyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SACRealm_PairingKeyObservedState) *pb.SACRealm_PairingKey {
 	if in == nil {
 		return nil
 	}

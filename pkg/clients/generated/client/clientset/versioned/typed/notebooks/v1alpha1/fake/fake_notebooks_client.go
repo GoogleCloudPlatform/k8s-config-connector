@@ -39,6 +39,10 @@ func (c *FakeNotebooksV1alpha1) NotebooksExecutions(namespace string) v1alpha1.N
 	return newFakeNotebooksExecutions(c, namespace)
 }
 
+func (c *FakeNotebooksV1alpha1) NotebooksSchedules(namespace string) v1alpha1.NotebooksScheduleInterface {
+	return newFakeNotebooksSchedules(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNotebooksV1alpha1) RESTClient() rest.Interface {

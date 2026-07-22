@@ -1,0 +1,15 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubPlugin
+metadata:
+  name: apihubplugin-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: apihubplugin-max-${uniqueId}
+  displayName: "Maximal Plugin"
+  type:
+    enumValues:
+      values:
+        - id: system-plugin-type
+  description: "A description of the maximal plugin"

@@ -29,6 +29,7 @@ import (
 	computepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRequest) (*pb.NodePool, error) {
@@ -43,8 +44,34 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	return obj, nil
+}
+
+func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePoolsRequest) (*pb.ListNodePoolsResponse, error) {
+	reqParent := req.GetParent()
+	if reqParent == "" && req.GetProjectId() != "" {
+		reqParent = fmt.Sprintf("projects/%s/locations/%s/clusters/%s", req.GetProjectId(), req.GetZone(), req.GetClusterId())
+	}
+	name, err := s.parseClusterName(reqParent)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	nodePoolPrefix := fqn + "/nodePools/"
+
+	var nodePools []*pb.NodePool
+	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListNodePoolsResponse{
+		NodePools: nodePools,
+	}, nil
 }
 
 func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*pb.Operation, error) {
@@ -213,12 +240,15 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 
 	if obj.KubeletConfig == nil {
 		obj.KubeletConfig = &pb.NodeKubeletConfig{}
-	}
-	if obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
 		obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
-	}
-	if obj.KubeletConfig.MaxParallelImagePulls == 0 {
 		obj.KubeletConfig.MaxParallelImagePulls = 2
+	} else {
+		if obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+			obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+		if obj.KubeletConfig.MaxParallelImagePulls == 0 {
+			obj.KubeletConfig.MaxParallelImagePulls = 3
+		}
 	}
 
 	if obj.MachineType == "" {
@@ -352,10 +382,35 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	update := proto.CloneOf(req)
 	update.Name = ""
+	update.NodePoolId = ""
+	update.ProjectId = ""
+	update.Zone = ""
+	update.ClusterId = ""
 
 	if update.Taints != nil {
 		obj.Config.Taints = update.GetTaints().Taints
 		update.Taints = nil
+	}
+
+	if update.KubeletConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.KubeletConfig = update.GetKubeletConfig()
+		if obj.Config.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+			obj.Config.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+		if obj.Config.KubeletConfig.MaxParallelImagePulls == 0 {
+			obj.Config.KubeletConfig.MaxParallelImagePulls = 3
+		}
+		update.KubeletConfig = nil
+	}
+	if update.ResourceManagerTags != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.ResourceManagerTags = update.ResourceManagerTags
+		update.ResourceManagerTags = nil
 	}
 
 	// TODO: Support more updates!
@@ -371,6 +426,9 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	op := &pb.Operation{
 		Zone:       name.Location,
 		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	if req.GetKubeletConfig() != nil {
+		op.OperationType = pb.Operation_UPGRADE_NODES
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil

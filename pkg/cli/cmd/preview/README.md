@@ -88,3 +88,159 @@ The summary report contains the following columns:
 -   **ALTERNATIVE-CONTROLLER**: The alternative controller being tested.
 -   **ALTERNATIVE-RESULT**: `HEALTHY`, `UNHEALTHY`, or `Missing` (if the alternative controller failed to pick up the resource).
 -   **ALTERNATIVE-DIFFS**: Fields that had diffs during the alternative run.
+
+---
+
+## User Instructions & Execution Methods
+
+### Listing Available Versions
+
+To list recent container image versions:
+```bash
+gcloud container images list-tags gcr.io/gke-release/cnrm/config-connector-cli --sort-by=~TIMESTAMP --limit=10
+```
+
+To list recent Git release tags:
+```bash
+git tag -l "v*" --sort=-v:refname | head -n 20
+```
+
+---
+
+### Method 1: Build & Run from Local Source
+
+Recommended for developers testing against a specific local or release branch.
+
+1. **Authenticate with GCP and Kubernetes**:
+   ```bash
+   gcloud auth application-default login
+   gcloud container clusters get-credentials <CLUSTER_NAME> --region <REGION> --project <PROJECT_ID>
+   ```
+
+2. **Check Out Target Version & Build**:
+   ```bash
+   VERSION="1.153.0"
+   git clone https://github.com/GoogleCloudPlatform/k8s-config-connector.git
+   cd k8s-config-connector
+   git checkout tags/v${VERSION}   # Or your target release branch
+   go build -o config-connector ./cmd/config-connector
+   ```
+
+3. **Run Preview**:
+   ```bash
+   mkdir -p reports
+   ./config-connector preview --kubeconfig ~/.kube/config --report-prefix reports/preview-report --full-report
+   ```
+
+---
+
+### Method 2: Run via Docker Image Locally
+
+Recommended for administrators who want to run the pre-built release container without a local Go setup.
+
+1. **Authenticate on Host**:
+   ```bash
+   gcloud auth application-default login
+   gcloud container clusters get-credentials <CLUSTER_NAME> --region <REGION> --project <PROJECT_ID>
+   ```
+
+2. **Run Container Image**:
+   ```bash
+   VERSION="1.153.0"
+   mkdir -p reports
+   docker run --rm -it \
+     --net=host \
+     -u $(id -u):$(id -g) \
+     -v ~/.kube/config:/configconnector/.kube/config:ro \
+     -v ~/.config/gcloud:/configconnector/.config/gcloud:ro \
+     -v /usr/bin/gke-gcloud-auth-plugin:/usr/bin/gke-gcloud-auth-plugin:ro \
+     -v /usr/bin/gcloud:/usr/bin/gcloud:ro \
+     -v /usr/lib/google-cloud-sdk:/usr/lib/google-cloud-sdk:ro \
+     -v $(pwd)/reports:/configconnector/reports \
+     -e KUBECONFIG=/configconnector/.kube/config \
+     -e GOOGLE_APPLICATION_CREDENTIALS=/configconnector/.config/gcloud/application_default_credentials.json \
+     gcr.io/gke-release/cnrm/config-connector-cli:${VERSION} \
+     preview --kubeconfig=/configconnector/.kube/config --report-prefix=/configconnector/reports/preview-report
+   ```
+
+---
+
+### Method 3: Run In-Cluster as a Kubernetes Job
+
+Recommended for automated CI/CD pipelines or cluster-level health audits using GKE Workload Identity. When running in-cluster, specify the `--in-cluster` flag.
+
+#### Namespace and Service Account Configuration
+
+The Job is deployed in the `cnrm-system` namespace where Config Connector controllers run:
+- **Cluster Mode**: Launch a single Job using the controller manager Service Account (`cnrm-controller-manager-config-control` or cluster SA).
+- **Namespace Mode**: Launch a separate Job for each enabled namespace with:
+  1. `--namespace <TARGET_NAMESPACE>` in the container command arguments.
+  2. `serviceAccount` and `serviceAccountName` set to `cnrm-controller-manager-<TARGET_NAMESPACE>`.
+
+#### 1. Create the Job Manifest (`preview-job.yaml`)
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: preview-job-config-control
+  namespace: cnrm-system
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 900        # 15 minute timeout
+  ttlSecondsAfterFinished: 86400    # Retain completed Job for 24 hours
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+    spec:
+      serviceAccount: cnrm-controller-manager-config-control       # GSA for target namespace
+      serviceAccountName: cnrm-controller-manager-config-control   # KSA for target namespace
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: preview-volume
+          emptyDir: {}
+      containers:
+        - name: preview
+          image: gcr.io/gke-release/cnrm/config-connector-cli:1.153.0
+          imagePullPolicy: Always
+          workingDir: /workspace
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              config-connector preview --in-cluster --namespace config-control --timeout 15 --report-prefix /workspace/preview-report
+              echo ""
+              echo "==================== PREVIEW SUMMARY REPORT ===================="
+              cat /workspace/preview-report-*
+          volumeMounts:
+            - name: preview-volume
+              mountPath: /workspace
+          env:
+            - name: GOMEMLIMIT
+              value: "1840MiB"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2048Mi"
+            limits:
+              memory: "2048Mi"
+          securityContext:
+            privileged: false
+            runAsUser: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+```
+
+#### 2. Deploy the Job & View Output
+
+```bash
+# 1. Apply the preview Job
+kubectl apply -f preview-job.yaml
+
+# 2. Wait for completion
+kubectl wait --for=condition=complete job/preview-job-config-control -n cnrm-system --timeout=15m
+
+# 3. View the generated summary table directly in your terminal
+kubectl logs job/preview-job-config-control -n cnrm-system
+```

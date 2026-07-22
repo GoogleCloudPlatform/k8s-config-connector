@@ -154,6 +154,7 @@ conditions:
   status: string
   type: string
 email: string
+externalRef: string
 member: string
 name: string
 observedGeneration: integer
@@ -221,6 +222,13 @@ uniqueId: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The e-mail address of the service account. This value should be referenced from any google_iam_policy data sources that would grant the service account privileges.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A unique specifier for the IAMServiceAccount resource in GCP.</p>
         </td>
     </tr>
     <tr>

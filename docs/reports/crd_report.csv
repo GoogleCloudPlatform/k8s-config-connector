@@ -101,6 +101,7 @@ blockchainnodeengine.cnrm.cloud.google.com,BlockchainNodeEngineBlockchainNode,Tr
 contactcenterinsights.cnrm.cloud.google.com,CCInsightsConversation,True,False,False,Direct,True
 contactcenterinsights.cnrm.cloud.google.com,CCInsightsIssueModel,True,False,False,Direct,True
 contactcenterinsights.cnrm.cloud.google.com,CCInsightsPhraseMatcher,True,False,False,Direct,True
+contactcenterinsights.cnrm.cloud.google.com,CCInsightsQAScorecard,True,False,False,Direct,True
 contactcenterinsights.cnrm.cloud.google.com,CCInsightsView,True,False,False,Direct,True
 certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificateIssuanceConfig,True,False,False,Direct,True
 certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificateMapEntry,True,True,False,Terraform,True
@@ -111,6 +112,7 @@ ces.cnrm.cloud.google.com,CESApp,True,False,False,Direct,True
 cloudasset.cnrm.cloud.google.com,CloudAssetFolderFeed,True,False,False,Terraform,False
 cloudasset.cnrm.cloud.google.com,CloudAssetOrganizationFeed,True,False,False,Terraform,False
 cloudasset.cnrm.cloud.google.com,CloudAssetProjectFeed,True,False,False,Terraform,False
+cloudasset.cnrm.cloud.google.com,CloudAssetSavedQuery,True,False,False,Direct,True
 batch.cnrm.cloud.google.com,CloudBatchResourceAllowance,True,False,False,Direct,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildConnection,True,False,False,Direct,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildTrigger,False,True,False,Terraform,True
@@ -134,6 +136,7 @@ cloudscheduler.cnrm.cloud.google.com,CloudSchedulerJob,False,True,False,DCL,Fals
 cloudsecuritycompliance.cnrm.cloud.google.com,CloudSecurityComplianceCloudControl,True,False,False,Direct,True
 cloudsecuritycompliance.cnrm.cloud.google.com,CloudSecurityComplianceFramework,True,False,False,Direct,True
 cloudsecuritycompliance.cnrm.cloud.google.com,CloudSecurityFramework,True,False,False,Direct,True
+cloudtalentsolution.cnrm.cloud.google.com,CloudTalentSolutionCompany,True,False,False,Direct,True
 colab.cnrm.cloud.google.com,ColabRuntime,True,False,False,Direct,True
 colab.cnrm.cloud.google.com,ColabRuntimeTemplate,True,False,False,Direct,True
 composer.cnrm.cloud.google.com,ComposerEnvironment,True,True,False,Direct,True
@@ -141,7 +144,7 @@ compute.cnrm.cloud.google.com,ComputeAddress,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeAutoscaler,True,False,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeBackendBucket,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeBackendBucketSignedURLKey,True,False,False,Terraform,False
-compute.cnrm.cloud.google.com,ComputeBackendService,False,True,False,Terraform,False
+compute.cnrm.cloud.google.com,ComputeBackendService,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeBackendServiceSignedURLKey,True,False,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeDiskResourcePolicyAttachment,True,False,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeDisk,False,True,False,Terraform,True
@@ -189,7 +192,7 @@ compute.cnrm.cloud.google.com,ComputeRegionAutoscaler,True,False,False,Terraform
 compute.cnrm.cloud.google.com,ComputeRegionDiskResourcePolicyAttachment,True,False,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeRegionNetworkEndpointGroup,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeRegionPerInstanceConfig,True,False,False,Terraform,True
-compute.cnrm.cloud.google.com,ComputeRegionSSLPolicy,True,False,False,Terraform,False
+compute.cnrm.cloud.google.com,ComputeRegionSSLPolicy,True,False,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeReservation,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeResourcePolicy,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeRouterInterface,False,True,False,Terraform,True
@@ -198,7 +201,7 @@ compute.cnrm.cloud.google.com,ComputeRouterPeer,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeRouter,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeRoute,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeSecurityPolicy,False,True,False,Terraform,True
-compute.cnrm.cloud.google.com,ComputeServiceAttachment,False,True,False,DCL,False
+compute.cnrm.cloud.google.com,ComputeServiceAttachment,False,True,False,DCL,True
 compute.cnrm.cloud.google.com,ComputeSharedVPCHostProject,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeSharedVPCServiceProject,False,True,False,Terraform,True
 compute.cnrm.cloud.google.com,ComputeSnapshot,False,True,False,Terraform,True
@@ -219,6 +222,7 @@ compute.cnrm.cloud.google.com,ComputeVPNTunnel,False,True,False,Terraform,True
 configcontroller.cnrm.cloud.google.com,ConfigControllerInstance,False,True,False,DCL,False
 configdelivery.cnrm.cloud.google.com,ConfigDeliveryFleetPackage,True,False,False,Direct,True
 configdelivery.cnrm.cloud.google.com,ConfigDeliveryResourceBundle,True,False,False,Direct,True
+configdeployment.cnrm.cloud.google.com,ConfigDeploymentGroup,True,False,False,Direct,True
 connectors.cnrm.cloud.google.com,ConnectorsConnection,True,False,False,Direct,True
 containeranalysis.cnrm.cloud.google.com,ContainerAnalysisNote,False,True,False,DCL,False
 containeranalysis.cnrm.cloud.google.com,ContainerAnalysisOccurrence,True,False,False,Terraform,False
@@ -228,6 +232,7 @@ container.cnrm.cloud.google.com,ContainerNodePool,False,True,False,Terraform,Tru
 contentwarehouse.cnrm.cloud.google.com,ContentWarehouseDocument,True,False,False,Direct,True
 contentwarehouse.cnrm.cloud.google.com,ContentWarehouseRuleSet,True,False,False,Direct,True
 contentwarehouse.cnrm.cloud.google.com,ContentWarehouseSchema,True,False,False,Direct,True
+contentwarehouse.cnrm.cloud.google.com,ContentWarehouseSynonymSet,True,False,False,Direct,True
 datamigration.cnrm.cloud.google.com,DatabaseMigrationConversionWorkspace,True,False,False,Direct,True
 datamigration.cnrm.cloud.google.com,DatabaseMigrationMigrationJob,True,False,False,Direct,True
 datamigration.cnrm.cloud.google.com,DatabaseMigrationPrivateConnection,True,False,False,Direct,True
@@ -241,6 +246,7 @@ dataflow.cnrm.cloud.google.com,DataflowFlexTemplateJob,False,True,False,Terrafor
 dataflow.cnrm.cloud.google.com,DataflowJob,False,True,False,Terraform,True
 dataform.cnrm.cloud.google.com,DataformFolder,True,False,False,Direct,True
 dataform.cnrm.cloud.google.com,DataformRepository,True,True,False,Direct,True
+dataform.cnrm.cloud.google.com,DataformTeamFolder,True,False,False,Direct,True
 datafusion.cnrm.cloud.google.com,DataFusionInstance,False,True,False,DCL,False
 datalabeling.cnrm.cloud.google.com,DataLabelingAnnotationSpecSet,True,False,False,Direct,True
 datalabeling.cnrm.cloud.google.com,DataLabelingDataset,True,False,False,Direct,True
@@ -297,7 +303,9 @@ discoveryengine.cnrm.cloud.google.com,DiscoveryEngineDataStore,True,False,False,
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineDataStoreTargetSite,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineEngine,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineIdentityMappingStore,True,False,False,Direct,True
+discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSampleQuery,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSampleQuerySet,True,False,False,Direct,True
+discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSession,True,False,False,Direct,True
 dlp.cnrm.cloud.google.com,DLPConnection,True,False,False,Direct,True
 dlp.cnrm.cloud.google.com,DLPDeidentifyTemplate,False,True,False,DCL,False
 dlp.cnrm.cloud.google.com,DLPDiscoveryConfig,True,False,False,Direct,True
@@ -342,6 +350,7 @@ firestore.cnrm.cloud.google.com,FirestoreField,True,False,False,Direct,True
 firestore.cnrm.cloud.google.com,FirestoreIndex,False,True,False,Terraform,True
 resourcemanager.cnrm.cloud.google.com,Folder,False,True,False,Terraform,True
 geminidataanalytics.cnrm.cloud.google.com,GeminiDataAnalyticsConversation,True,False,False,Direct,True
+gkebackup.cnrm.cloud.google.com,GKEBackupBackupChannel,True,False,False,Direct,True
 gkebackup.cnrm.cloud.google.com,GKEBackupBackupPlan,True,False,False,Direct,True
 gkebackup.cnrm.cloud.google.com,GKEBackupBackup,True,False,False,Direct,True
 gkebackup.cnrm.cloud.google.com,GKEBackupRestorePlan,True,False,False,Direct,True
@@ -353,6 +362,7 @@ gkehub.cnrm.cloud.google.com,GKEHubMembership,False,True,False,DCL,False
 gkehub.cnrm.cloud.google.com,GKEHubNamespace,True,False,False,Direct,True
 gkehub.cnrm.cloud.google.com,GKEHubScopeRBACRoleBinding,True,False,False,Direct,True
 gkehub.cnrm.cloud.google.com,GKEHubScope,True,False,False,Direct,True
+gkemulticloud.cnrm.cloud.google.com,GKEMulticloudAttachedCluster,True,False,False,Direct,True
 healthcare.cnrm.cloud.google.com,HealthcareConsentStore,True,False,False,Terraform,False
 healthcare.cnrm.cloud.google.com,HealthcareDataset,True,False,False,Terraform,False
 healthcare.cnrm.cloud.google.com,HealthcareDICOMStore,True,False,False,Terraform,False
@@ -391,6 +401,7 @@ kms.cnrm.cloud.google.com,KMSKeyHandle,True,True,False,Direct,True
 kms.cnrm.cloud.google.com,KMSKeyRingImportJob,True,False,False,Terraform,True
 kms.cnrm.cloud.google.com,KMSKeyRing,False,True,False,Terraform,True
 kms.cnrm.cloud.google.com,KMSSecretCiphertext,True,False,False,Terraform,True
+livestream.cnrm.cloud.google.com,LiveStreamAsset,True,False,False,Direct,True
 logging.cnrm.cloud.google.com,LoggingLink,True,True,False,Direct,True
 logging.cnrm.cloud.google.com,LoggingLogBucket,False,True,False,DCL,True
 logging.cnrm.cloud.google.com,LoggingLogExclusion,False,True,False,DCL,True
@@ -401,6 +412,7 @@ managedkafka.cnrm.cloud.google.com,ManagedKafkaCluster,True,True,False,Direct,Tr
 managedkafka.cnrm.cloud.google.com,ManagedKafkaConnectCluster,True,False,False,Direct,True
 managedkafka.cnrm.cloud.google.com,ManagedKafkaConsumerGroup,True,False,False,Direct,True
 managedkafka.cnrm.cloud.google.com,ManagedKafkaTopic,True,True,False,Direct,True
+mapmanagement.cnrm.cloud.google.com,MapManagementMapConfig,True,False,False,Direct,True
 memcache.cnrm.cloud.google.com,MemcacheInstance,False,True,False,Terraform,False
 memorystore.cnrm.cloud.google.com,MemorystoreInstanceEndpoint,True,False,False,Direct,True
 memorystore.cnrm.cloud.google.com,MemorystoreInstance,True,True,False,Direct,True
@@ -427,27 +439,34 @@ networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityRegionalEndpoint,Tr
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityServiceConnectionPolicy,True,False,False,Direct,True
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivitySpoke,False,True,False,DCL,False
 networkmanagement.cnrm.cloud.google.com,NetworkManagementConnectivityTest,True,False,False,Direct,True
+networkmanagement.cnrm.cloud.google.com,NetworkManagementVPCFlowLogsConfig,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityAddressGroup,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityAuthorizationPolicy,False,True,False,DCL,True
+networksecurity.cnrm.cloud.google.com,NetworkSecurityAuthzPolicy,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityBackendAuthenticationConfig,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityClientTLSPolicy,False,True,False,DCL,True
+networksecurity.cnrm.cloud.google.com,NetworkSecurityDNSThreatDetector,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityFirewallEndpointAssociation,True,False,False,Direct,True
+networksecurity.cnrm.cloud.google.com,NetworkSecurityFirewallEndpoint,True,False,False,Direct,True
+networksecurity.cnrm.cloud.google.com,NetworkSecurityGatewaySecurityPolicy,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityInterceptDeployment,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityInterceptEndpointGroup,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityMirroringDeployment,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityMirroringEndpointGroup,True,False,False,Direct,True
+networksecurity.cnrm.cloud.google.com,NetworkSecurityPartnerSSEGateway,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityPartnerSSERealm,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecuritySACRealm,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecuritySecurityProfile,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityServerTLSPolicy,False,True,False,DCL,False
 networksecurity.cnrm.cloud.google.com,NetworkSecurityTLSInspectionPolicy,True,False,False,Direct,True
+networkservices.cnrm.cloud.google.com,NetworkServicesAuthzExtension,True,False,False,Direct,True
 networkservices.cnrm.cloud.google.com,NetworkServicesEdgeCacheKeyset,True,False,False,Terraform,False
 networkservices.cnrm.cloud.google.com,NetworkServicesEdgeCacheOrigin,True,False,False,Terraform,False
 networkservices.cnrm.cloud.google.com,NetworkServicesEdgeCacheService,True,False,False,Terraform,True
 networkservices.cnrm.cloud.google.com,NetworkServicesEndpointPolicy,False,True,False,DCL,False
 networkservices.cnrm.cloud.google.com,NetworkServicesGateway,False,True,False,DCL,True
 networkservices.cnrm.cloud.google.com,NetworkServicesGRPCRoute,False,True,False,DCL,False
-networkservices.cnrm.cloud.google.com,NetworkServicesHTTPRoute,False,True,False,DCL,False
+networkservices.cnrm.cloud.google.com,NetworkServicesHTTPRoute,False,True,False,DCL,True
 networkservices.cnrm.cloud.google.com,NetworkServicesLBRouteExtension,True,False,False,Direct,True
 networkservices.cnrm.cloud.google.com,NetworkServicesMesh,False,True,False,DCL,False
 networkservices.cnrm.cloud.google.com,NetworkServicesServiceBinding,True,False,False,Direct,True
@@ -457,6 +476,7 @@ networkservices.cnrm.cloud.google.com,NetworkServicesWasmPlugin,True,False,False
 notebooks.cnrm.cloud.google.com,NotebookInstance,True,True,False,Direct,True
 notebooks.cnrm.cloud.google.com,NotebooksEnvironment,True,False,False,Direct,True
 notebooks.cnrm.cloud.google.com,NotebooksExecution,True,False,False,Direct,True
+notebooks.cnrm.cloud.google.com,NotebooksSchedule,True,False,False,Direct,True
 orgpolicy.cnrm.cloud.google.com,OrgPolicyCustomConstraint,True,True,False,Direct,True
 orgpolicy.cnrm.cloud.google.com,OrgPolicyPolicy,True,True,False,Direct,True
 osconfig.cnrm.cloud.google.com,OSConfigGuestPolicy,False,True,False,DCL,True
@@ -467,7 +487,7 @@ parametermanager.cnrm.cloud.google.com,ParameterManagerParameter,True,False,Fals
 parametermanager.cnrm.cloud.google.com,ParameterManagerParameterVersion,True,False,False,Direct,True
 privateca.cnrm.cloud.google.com,PrivateCACAPool,False,True,False,DCL,True
 privateca.cnrm.cloud.google.com,PrivateCACertificateAuthority,False,True,False,DCL,True
-privateca.cnrm.cloud.google.com,PrivateCACertificate,False,True,False,DCL,False
+privateca.cnrm.cloud.google.com,PrivateCACertificate,False,True,False,DCL,True
 privateca.cnrm.cloud.google.com,PrivateCACertificateTemplate,False,True,False,DCL,True
 privilegedaccessmanager.cnrm.cloud.google.com,PrivilegedAccessManagerEntitlement,True,True,False,Direct,True
 resourcemanager.cnrm.cloud.google.com,Project,False,True,False,Terraform,True
@@ -480,6 +500,7 @@ pubsub.cnrm.cloud.google.com,PubSubSubscription,False,True,False,Terraform,True
 pubsub.cnrm.cloud.google.com,PubSubTopic,False,True,False,Terraform,True
 recaptchaenterprise.cnrm.cloud.google.com,ReCAPTCHAEnterpriseFirewallPolicy,True,False,False,Direct,True
 recaptchaenterprise.cnrm.cloud.google.com,RecaptchaEnterpriseKey,False,True,False,DCL,True
+redis.cnrm.cloud.google.com,RedisClusterEndpoint,True,False,False,Direct,True
 redis.cnrm.cloud.google.com,RedisCluster,True,True,False,Direct,True
 redis.cnrm.cloud.google.com,RedisInstance,False,True,False,Terraform,True
 resourcemanager.cnrm.cloud.google.com,ResourceManagerLien,False,True,False,Terraform,False
@@ -523,6 +544,7 @@ storage.cnrm.cloud.google.com,StorageBucket,False,True,False,Terraform,True
 storage.cnrm.cloud.google.com,StorageDefaultObjectAccessControl,False,True,False,Terraform,False
 storage.cnrm.cloud.google.com,StorageFolder,True,False,False,Direct,True
 storage.cnrm.cloud.google.com,StorageHMACKey,True,False,False,Terraform,False
+storageinsights.cnrm.cloud.google.com,StorageInsightsDatasetConfig,True,False,False,Direct,True
 storage.cnrm.cloud.google.com,StorageManagedFolder,True,False,False,Direct,True
 storage.cnrm.cloud.google.com,StorageNotification,False,True,False,Terraform,False
 storagetransfer.cnrm.cloud.google.com,StorageTransferAgentPool,True,False,False,Terraform,False
@@ -535,6 +557,7 @@ cloudtasks.cnrm.cloud.google.com,TasksQueue,True,False,False,Direct,True
 testing.cnrm.cloud.google.com,TestingDeviceSession,True,False,False,Direct,True
 tpu.cnrm.cloud.google.com,TPUNode,True,False,False,Terraform,False
 tpu.cnrm.cloud.google.com,TPUVirtualMachine,True,False,False,Direct,True
+translate.cnrm.cloud.google.com,TranslateAdaptiveMtDataset,True,False,False,Direct,True
 vectorsearch.cnrm.cloud.google.com,VectorSearchCollection,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIDataLabelingJob,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIDataset,True,True,False,Terraform,True
@@ -549,10 +572,15 @@ vertexai.cnrm.cloud.google.com,VertexAIFeaturestore,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIIndexEndpoint,True,False,False,Terraform,False
 vertexai.cnrm.cloud.google.com,VertexAIIndex,True,True,False,Terraform,False
 vertexai.cnrm.cloud.google.com,VertexAIMetadataStore,True,True,False,Direct,True
+aiplatform.cnrm.cloud.google.com,VertexAIPipelineJob,True,False,False,Direct,True
 aiplatform.cnrm.cloud.google.com,VertexAISpecialistPool,True,False,False,Direct,True
+aiplatform.cnrm.cloud.google.com,VertexAIStudy,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAITensorboard,True,False,False,Terraform,False
+aiplatform.cnrm.cloud.google.com,VertexAITrainingPipeline,True,False,False,Direct,True
 aiplatform.cnrm.cloud.google.com,VertexAITuningJob,True,False,False,Direct,True
 videostitcher.cnrm.cloud.google.com,VideoStitcherCDNKey,True,False,False,Direct,True
+visionai.cnrm.cloud.google.com,VisionAIApplication,True,False,False,Direct,True
+vision.cnrm.cloud.google.com,VisionProduct,True,False,False,Direct,True
 vmwareengine.cnrm.cloud.google.com,VMwareEngineExternalAccessRule,True,False,False,Direct,True
 vmwareengine.cnrm.cloud.google.com,VMwareEngineExternalAddress,True,True,False,Direct,True
 vmwareengine.cnrm.cloud.google.com,VMwareEngineNetworkPeering,True,False,False,Direct,True
@@ -563,6 +591,7 @@ vmwareengine.cnrm.cloud.google.com,VMwareEnginePrivateConnection,True,False,Fals
 vpcaccess.cnrm.cloud.google.com,VPCAccessConnector,False,True,False,Terraform,False
 workflowexecutions.cnrm.cloud.google.com,WorkflowsExecution,True,False,False,Direct,True
 workflows.cnrm.cloud.google.com,WorkflowsWorkflow,True,False,False,Direct,True
+workloadmanager.cnrm.cloud.google.com,WorkloadManagerEvaluation,True,False,False,Direct,True
 workstations.cnrm.cloud.google.com,WorkstationCluster,True,True,False,Direct,True
 workstations.cnrm.cloud.google.com,WorkstationConfig,True,True,False,Direct,True
 workstations.cnrm.cloud.google.com,Workstation,True,True,False,Direct,True

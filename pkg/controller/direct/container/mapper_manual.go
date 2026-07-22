@@ -322,6 +322,10 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	out.CPUCfsQuota = direct.BoolValue_FromProto(mapCtx, in.GetCpuCfsQuota())
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
 	out.PodPidsLimit = direct.LazyPtr(int(in.GetPodPidsLimit()))
+	out.ImageGcLowThresholdPercent = direct.LazyPtr(int(in.GetImageGcLowThresholdPercent()))
+	out.ImageGcHighThresholdPercent = direct.LazyPtr(int(in.GetImageGcHighThresholdPercent()))
+	out.ImageMinimumGcAge = direct.LazyPtr(in.GetImageMinimumGcAge())
+	out.ImageMaximumGcAge = direct.LazyPtr(in.GetImageMaximumGcAge())
 	return out
 }
 
@@ -334,6 +338,10 @@ func KubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.KubeletConfig) *pb
 	out.CpuCfsQuota = direct.BoolValue_ToProto(mapCtx, in.CPUCfsQuota)
 	out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
 	out.PodPidsLimit = int64(direct.ValueOf(in.PodPidsLimit))
+	out.ImageGcLowThresholdPercent = int32(direct.ValueOf(in.ImageGcLowThresholdPercent))
+	out.ImageGcHighThresholdPercent = int32(direct.ValueOf(in.ImageGcHighThresholdPercent))
+	out.ImageMinimumGcAge = direct.ValueOf(in.ImageMinimumGcAge)
+	out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
 	return out
 }
 
@@ -589,4 +597,20 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 	out.ResourceLabels = in.ResourceLabels
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
 	return out
+}
+
+func map_string_string_FromProto(mapCtx *direct.MapContext, in *pb.ResourceManagerTags) map[string]string {
+	if in == nil {
+		return nil
+	}
+	return in.Tags
+}
+
+func map_string_string_ToProto(mapCtx *direct.MapContext, in map[string]string) *pb.ResourceManagerTags {
+	if in == nil {
+		return nil
+	}
+	return &pb.ResourceManagerTags{
+		Tags: in,
+	}
 }

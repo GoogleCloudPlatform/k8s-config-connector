@@ -113,5 +113,13 @@ func PrivateCACertificateAuthorityFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].tbs_certificate_digest")
 	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].x509_description.name_constraints")
 
+	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.lifetime.nanos")
+	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.not_after_time")
+	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.not_after_time.seconds")
+	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.not_after_time.nanos")
+	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.not_before_time")
+	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.not_before_time.seconds")
+	f.Unimplemented_NotYetTriaged(".ca_certificate_descriptions[].subject_description.not_before_time.nanos")
+
 	return f
 }

@@ -44,6 +44,14 @@ spec:
       backendBucketRef:
         name: ${backendBucketID}
     name: allpaths
+  test:
+  - description: Test direct routing to service
+    expectedOutputURL: https://mysite.com/index.html
+    host: mysite.com
+    path: /index.html
+    service:
+      backendServiceRef:
+        name: ${backendServiceID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

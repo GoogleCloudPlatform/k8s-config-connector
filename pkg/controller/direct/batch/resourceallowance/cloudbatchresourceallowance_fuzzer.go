@@ -37,10 +37,11 @@ func batchResourceAllowanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".notifications")
 	f.SpecFields.Insert(".usage_resource_allowance")
 
-	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".usage_resource_allowance")
+
+	f.Unimplemented_NotYetTriaged(".name")
 
 	return f
 }

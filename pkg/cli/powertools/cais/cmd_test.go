@@ -249,6 +249,17 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				u.SetAnnotations(annotations)
 			}
 
+			// Inject status.name and status.externalRef for Folders to simulate a reconciled folder in static unit tests.
+			if u.GetKind() == "Folder" && u.GroupVersionKind().Group == "resourcemanager.cnrm.cloud.google.com" {
+				folderID := u.GetName()
+				if err := unstructured.SetNestedField(u.Object, "folders/"+folderID, "status", "name"); err != nil {
+					t.Fatalf("failed to inject status.name for Folder %s: %v", u.GetName(), err)
+				}
+				if err := unstructured.SetNestedField(u.Object, "folders/"+folderID, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for Folder %s: %v", u.GetName(), err)
+				}
+			}
+
 			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
@@ -257,10 +268,17 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 						tempReader := cais.NewInMemoryReader(scheme, []*unstructured.Unstructured{u})
 						if id, err := resource.GetIdentity(ctx, tempReader); err == nil && id != nil {
 							if sgId, ok := id.(identity.ServerGeneratedIdentity); ok {
-								if !sgId.HasIdentitySpecified() && gk.Kind == "KMSKeyHandle" {
-									placeholder := "${keyHandleID}"
-									if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
-										t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+								if !sgId.HasIdentitySpecified() {
+									if gk.Kind == "KMSKeyHandle" {
+										placeholder := "${keyHandleID}"
+										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
+											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+										}
+									} else if gk.Kind == "MonitoringAlertPolicy" {
+										placeholder := "alertpolicy-placeholder"
+										if err := unstructured.SetNestedField(u.Object, placeholder, "spec", "resourceID"); err != nil {
+											t.Fatalf("failed to set spec.resourceID for %s: %v", u.GetName(), err)
+										}
 									}
 								}
 							}

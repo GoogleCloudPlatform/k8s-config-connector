@@ -25,28 +25,24 @@
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-176c178,180
+176d177
 <   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
----
->   "autoCreateSubnetworks": true,
->   "enableUlaInternalIpv6": false,
->   "name": "${networkID}",
-209c213,214
+209c210,211
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 > Content-Type: application/json
-239c244
+239c241
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-254a260
+254a257
 >   "enableUlaInternalIpv6": false,
-312c318
+312c315
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
-342c348,349
+342c345,346
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}

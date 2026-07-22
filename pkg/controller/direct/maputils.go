@@ -318,6 +318,12 @@ func HasHTTPCode(err error, code int) bool {
 			}
 		}
 	} else {
+		if s, ok := grpcStatus.FromError(err); ok {
+			if s.Code() == grpcCode.NotFound && code == 404 {
+				return true
+			}
+			return false
+		}
 		klog.Warningf("unexpected error type %T", err)
 	}
 	return false

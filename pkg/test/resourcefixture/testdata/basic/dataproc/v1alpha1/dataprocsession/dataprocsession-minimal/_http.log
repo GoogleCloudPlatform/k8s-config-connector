@@ -17,7 +17,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "session \"projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}\" not found",
+    "message": "Not found: Session projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -38,7 +38,8 @@ X-Goog-User-Project: ${projectId}
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
-  }
+  },
+  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}"
 }
 
 200 OK
@@ -55,20 +56,28 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Create Session",
-    "doneTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Create session",
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": 1,
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
-    "sessionUuid": "00000000-0000-0000-0000-000000000001"
+    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -86,34 +95,73 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Create Session",
+    "description": "Create session",
     "doneTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": "CREATE",
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
-    "sessionUuid": "00000000-0000-0000-0000-000000000001"
+    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test-user@google.com",
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "environmentConfig": {
+      "executionConfig": {
+        "idleTtl": "3600s",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "ttl": "86400s"
+      },
+      "peripheralsConfig": {
+        "sparkHistoryServerConfig": {}
+      }
+    },
     "jupyterSession": {
       "displayName": "test-kernel",
       "kernel": "PYTHON"
     },
     "labels": {
       "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "runtimeConfig": {
+      "properties": {
+        "dataproc:dataproc.tier": "premium",
+        "spark:spark.dataproc.engine": "default",
+        "spark:spark.dataproc.lightningEngine.runtime": "default",
+        "spark:spark.dataproc.scaling.version": "2",
+        "spark:spark.driver.cores": "4",
+        "spark:spark.driver.memory": "9600m",
+        "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+        "spark:spark.executor.cores": "4",
+        "spark:spark.executor.instances": "2",
+        "spark:spark.executor.memory": "9600m"
+      },
+      "version": "2.2.82"
+    },
+    "runtimeInfo": {},
     "state": "ACTIVE",
     "stateHistory": [
       {
-        "state": "ACTIVE",
+        "state": "CREATING",
         "stateStartTime": "2024-04-01T12:34:56.123456Z"
       }
     ],
     "stateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "00000000-0000-0000-0000-000000000001"
+    "uuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
   }
 }
 
@@ -138,24 +186,54 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
+  "environmentConfig": {
+    "executionConfig": {
+      "idleTtl": "3600s",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "ttl": "86400s"
+    },
+    "peripheralsConfig": {
+      "sparkHistoryServerConfig": {}
+    }
+  },
   "jupyterSession": {
     "displayName": "test-kernel",
     "kernel": 1
   },
   "labels": {
     "cnrm-test": "true",
+    "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+    "goog-dataproc-location": "us-central1",
+    "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+    "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+  "runtimeConfig": {
+    "properties": {
+      "dataproc:dataproc.tier": "premium",
+      "spark:spark.dataproc.engine": "default",
+      "spark:spark.dataproc.lightningEngine.runtime": "default",
+      "spark:spark.dataproc.scaling.version": "2",
+      "spark:spark.driver.cores": "4",
+      "spark:spark.driver.memory": "9600m",
+      "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+      "spark:spark.executor.cores": "4",
+      "spark:spark.executor.instances": "2",
+      "spark:spark.executor.memory": "9600m"
+    },
+    "version": "2.2.82"
+  },
+  "runtimeInfo": {},
   "state": 2,
   "stateHistory": [
     {
-      "state": 2,
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
   "stateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "00000000-0000-0000-0000-000000000001"
+  "uuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
 }
 
 ---
@@ -180,19 +258,28 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Delete Session",
-    "doneTime": "2024-04-01T12:34:56.123456Z",
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}"
+    "description": "Delete session",
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": 3,
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -210,32 +297,85 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.SessionOperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Delete Session",
+    "description": "Delete session",
     "doneTime": "2024-04-01T12:34:56.123456Z",
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}"
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": "DELETE",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "sessionUuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test-user@google.com",
+    "creator": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "environmentConfig": {
+      "executionConfig": {
+        "idleTtl": "3600s",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "ttl": "86400s"
+      },
+      "peripheralsConfig": {
+        "sparkHistoryServerConfig": {}
+      }
+    },
     "jupyterSession": {
       "displayName": "test-kernel",
       "kernel": "PYTHON"
     },
     "labels": {
       "cnrm-test": "true",
+      "goog-dataproc-drz-resource-uuid": "session-6c279c19-6237-4922-a629-ac7f96d1a707",
+      "goog-dataproc-location": "us-central1",
+      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-uuid": "6c279c19-6237-4922-a629-ac7f96d1a707",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
-    "state": "ACTIVE",
+    "runtimeConfig": {
+      "properties": {
+        "dataproc:dataproc.tier": "premium",
+        "spark:spark.dataproc.engine": "default",
+        "spark:spark.dataproc.lightningEngine.runtime": "default",
+        "spark:spark.dataproc.scaling.version": "2",
+        "spark:spark.driver.cores": "4",
+        "spark:spark.driver.memory": "9600m",
+        "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+        "spark:spark.executor.cores": "4",
+        "spark:spark.executor.instances": "2",
+        "spark:spark.executor.memory": "9600m"
+      },
+      "version": "2.2.82"
+    },
+    "runtimeInfo": {
+      "approximateUsage": {
+        "milliDcuSeconds": "1552350",
+        "shuffleStorageGbSeconds": "157200"
+      }
+    },
+    "state": "TERMINATED",
     "stateHistory": [
       {
+        "state": "CREATING",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      },
+      {
         "state": "ACTIVE",
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
+      },
+      {
+        "state": "TERMINATING",
         "stateStartTime": "2024-04-01T12:34:56.123456Z"
       }
     ],
     "stateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "00000000-0000-0000-0000-000000000001"
+    "uuid": "6c279c19-6237-4922-a629-ac7f96d1a707"
   }
 }

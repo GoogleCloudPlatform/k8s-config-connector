@@ -55,8 +55,16 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineIdentityMappingStores(names
 	return newFakeDiscoveryEngineIdentityMappingStores(c, namespace)
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQueries(namespace string) v1alpha1.DiscoveryEngineSampleQueryInterface {
+	return newFakeDiscoveryEngineSampleQueries(c, namespace)
+}
+
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQuerySets(namespace string) v1alpha1.DiscoveryEngineSampleQuerySetInterface {
 	return newFakeDiscoveryEngineSampleQuerySets(c, namespace)
+}
+
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSessions(namespace string) v1alpha1.DiscoveryEngineSessionInterface {
+	return newFakeDiscoveryEngineSessions(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

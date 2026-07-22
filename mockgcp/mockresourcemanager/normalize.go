@@ -70,6 +70,13 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		}
 	})
 
+	if strings.HasPrefix(name, "folders/") {
+		tokens := strings.Split(name, "/")
+		if len(tokens) == 2 {
+			replacements.ReplaceStringValue(tokens[1], "${folderID}")
+		}
+	}
+
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 2 && tokens[0] == "tagKeys" {
 		if tokens[1] == "namespaced" {

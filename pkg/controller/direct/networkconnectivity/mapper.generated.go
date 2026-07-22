@@ -31,6 +31,31 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+/* found existing non-generated mapping function "AllocationOptions_FromProto", skipping
+func AllocationOptions_FromProto(mapCtx *direct.MapContext, in *pb.AllocationOptions) *krm.AllocationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationOptions{}
+	out.AllocationStrategy = direct.LazyPtr(in.GetAllocationStrategy())
+	out.FirstAvailableRangesLookupSize = direct.LazyPtr(in.GetFirstAvailableRangesLookupSize())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AllocationOptions_ToProto", skipping
+
+	func AllocationOptions_ToProto(mapCtx *direct.MapContext, in *krm.AllocationOptions) *pb.AllocationOptions {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AllocationOptions{}
+		out.AllocationStrategy = direct.ValueOf(in.AllocationStrategy)
+		out.FirstAvailableRangesLookupSize = direct.ValueOf(in.FirstAvailableRangesLookupSize)
+		return out
+	}
+*/
 func GoogleRpcErrorInfo_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcErrorInfo) *krm.GoogleRpcErrorInfo {
 	if in == nil {
 		return nil
@@ -102,7 +127,6 @@ func NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx *direct.MapC
 		return nil
 	}
 	out := &krm.NetworkConnectivityInternalRangeObservedState{}
-	// MISSING: AllocationOptions
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: ExcludeCIDRRanges
 	// MISSING: Immutable
@@ -119,7 +143,6 @@ func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &pb.InternalRange{}
-	// MISSING: AllocationOptions
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// MISSING: ExcludeCIDRRanges
 	// MISSING: Immutable
@@ -136,7 +159,7 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krm.NetworkConnectivityInternalRangeSpec{}
-	// MISSING: AllocationOptions
+	out.AllocationOptions = AllocationOptions_FromProto(mapCtx, in.GetAllocationOptions())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: ExcludeCIDRRanges
 	// MISSING: Immutable
@@ -164,7 +187,7 @@ found existing non-generated mapping function "NetworkConnectivityInternalRangeS
 			return nil
 		}
 		out := &pb.InternalRange{}
-		// MISSING: AllocationOptions
+		out.AllocationOptions = AllocationOptions_ToProto(mapCtx, in.AllocationOptions)
 		out.Description = direct.ValueOf(in.Description)
 		// MISSING: ExcludeCIDRRanges
 		// MISSING: Immutable

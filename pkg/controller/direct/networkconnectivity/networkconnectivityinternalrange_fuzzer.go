@@ -30,6 +30,9 @@ func fuzzNetworkConnectivityInteralRange() fuzztesting.KRMFuzzer {
 	)
 	f.UnimplementedFields.Insert(".name")
 
+	f.SpecFields.Insert(".allocation_options")
+	f.SpecFields.Insert(".allocation_options.allocation_strategy")
+	f.SpecFields.Insert(".allocation_options.first_available_ranges_lookup_size")
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".ip_cidr_range")
@@ -50,7 +53,6 @@ func fuzzNetworkConnectivityInteralRange() fuzztesting.KRMFuzzer {
 	// Unimplemented fields that we should likely add support for
 	f.UnimplementedFields.Insert(".exclude_cidr_ranges")
 	f.UnimplementedFields.Insert(".immutable")
-	f.UnimplementedFields.Insert(".allocation_options")
 
 	return f
 }

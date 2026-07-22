@@ -37,6 +37,7 @@ go run . generate-types \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
+  --resource ComputeRegionSSLPolicy:SslPolicy \
   --include-skipped-output
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go

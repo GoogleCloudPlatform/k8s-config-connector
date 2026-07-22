@@ -43,6 +43,10 @@ func (c *FakeCloudassetV1alpha1) CloudAssetProjectFeeds(namespace string) v1alph
 	return newFakeCloudAssetProjectFeeds(c, namespace)
 }
 
+func (c *FakeCloudassetV1alpha1) CloudAssetSavedQueries(namespace string) v1alpha1.CloudAssetSavedQueryInterface {
+	return newFakeCloudAssetSavedQueries(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeCloudassetV1alpha1) RESTClient() rest.Interface {

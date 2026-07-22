@@ -176,7 +176,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 		obj.Purpose = PtrTo("PRIVATE")
 	}
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
-	if obj.StackType == nil {
+	if obj.StackType == nil && obj.GetPurpose() != "PRIVATE_NAT" {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
 	obj.State = PtrTo("READY")
@@ -185,6 +185,15 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 	}
 	obj.Network = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
+
+	if obj.GetIpCidrRange() == "" && obj.GetReservedInternalRange() != "" {
+		obj.IpCidrRange = PtrTo("10.128.0.0/20")
+	}
+	for i, sec := range obj.SecondaryIpRanges {
+		if sec.GetIpCidrRange() == "" && sec.GetReservedInternalRange() != "" {
+			sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+		}
+	}
 
 	cidrIP, _, err := net.ParseCIDR(obj.GetIpCidrRange())
 	if err != nil {
@@ -308,6 +317,53 @@ func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPri
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("setPrivateIpGoogleAccess"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *SubnetsV1) Patch(ctx context.Context, req *pb.PatchSubnetworkRequest) (*pb.Operation, error) {
+	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), req.GetSubnetwork())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Subnetwork{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if patch := req.GetSubnetworkResource(); patch != nil {
+		if patch.Description != nil {
+			obj.Description = patch.Description
+		}
+		if patch.PrivateIpGoogleAccess != nil {
+			obj.PrivateIpGoogleAccess = patch.PrivateIpGoogleAccess
+		}
+		if patch.Role != nil {
+			obj.Role = patch.Role
+		}
+		if patch.SecondaryIpRanges != nil {
+			obj.SecondaryIpRanges = patch.SecondaryIpRanges
+			for i, sec := range obj.SecondaryIpRanges {
+				if sec.GetIpCidrRange() == "" && sec.GetReservedInternalRange() != "" {
+					sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+				}
+			}
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {

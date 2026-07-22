@@ -68,3 +68,15 @@ func TestComputeVPNGatewayIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestComputeVPNGatewayIdentity_ParentString(t *testing.T) {
+	id := &ComputeVPNGatewayIdentity{
+		Project:    "my-project",
+		Region:     "us-central1",
+		VpnGateway: "my-vpn-gateway",
+	}
+	expected := "projects/my-project/regions/us-central1"
+	if actual := id.ParentString(); actual != expected {
+		t.Fatalf("expected %q, got %q", expected, actual)
+	}
+}

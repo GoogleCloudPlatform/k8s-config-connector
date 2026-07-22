@@ -160,6 +160,10 @@ spec:
                 required:
                 - redirectSiteKeyRef
                 type: object
+              region:
+                description: Region represents the geographical location of the ComputeSecurityPolicy.
+                  Specify a region name or "global" for global resources.
+                type: string
               resourceID:
                 description: The ComputeSecurityPolicy name. If not given, the metadata.name
                   will be used.

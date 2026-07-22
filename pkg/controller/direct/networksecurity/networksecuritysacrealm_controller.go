@@ -86,7 +86,7 @@ func (m *sacRealmModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 	mapCtx := &direct.MapContext{}
-	desired := NetworkSecuritySACRealmSpec_ToProto(mapCtx, &obj.Spec)
+	desired := NetworkSecuritySACRealmSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if err := mapCtx.Err(); err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (a *sacRealmAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 func (a *sacRealmAdapter) updateStatus(ctx context.Context, op directbase.Operation, actual *pb.SACRealm) error {
 	mapCtx := &direct.MapContext{}
 	status := &krm.NetworkSecuritySACRealmStatus{}
-	status.ObservedState = NetworkSecuritySACRealmObservedState_FromProto(mapCtx, actual)
+	status.ObservedState = NetworkSecuritySACRealmObservedState_v1alpha1_FromProto(mapCtx, actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

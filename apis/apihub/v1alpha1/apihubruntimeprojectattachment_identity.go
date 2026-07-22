@@ -39,6 +39,10 @@ type APIHubRuntimeProjectAttachmentIdentity struct {
 	Runtime_project_attachment string
 }
 
+func (i *APIHubRuntimeProjectAttachmentIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *APIHubRuntimeProjectAttachmentIdentity) String() string {
 	return APIHubRuntimeProjectAttachmentIdentityFormat.ToString(*i)
 }

@@ -115,9 +115,11 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/compute
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternat-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatbasic
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatbasic-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatprivate
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterpeer
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy/computesecuritypolicy-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesecuritypolicy/computesecuritypolicy-regional
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeserviceattachment
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesharedvpchostproject
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesharedvpcserviceproject/computesharedvpcserviceproject
@@ -127,6 +129,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslcertificate/re
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslpolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslpolicy/computesslpolicy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork/computesubnetwork
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork/reservedinternalrange
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetgrpcproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/globaltargethttpproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/regionaltargethttpproxy
@@ -142,6 +145,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/globaltargethttpsproxycertificatemap-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxy-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpsproxy/regionaltargethttpsproxycertificatemanagercertificates
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetinstance
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetpool
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetsslproxy

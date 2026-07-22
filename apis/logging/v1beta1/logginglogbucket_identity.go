@@ -20,6 +20,7 @@ import (
 
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -139,12 +140,12 @@ func getIdentityFromLoggingLogBucketSpec(ctx context.Context, reader client.Read
 		}
 		identity.Project = projectID
 	} else if obj.Spec.FolderRef != nil {
-		folderRef := &refsv1beta1.FolderRef{
+		folderRef := &refs.FolderRef{
 			External:  obj.Spec.FolderRef.External,
 			Name:      obj.Spec.FolderRef.Name,
 			Namespace: obj.Spec.FolderRef.Namespace,
 		}
-		folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, folderRef)
+		folder, err := refs.ResolveFolder(ctx, reader, obj, folderRef)
 		if err != nil {
 			return nil, fmt.Errorf("resolving spec.folderRef: %w", err)
 		}

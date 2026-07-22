@@ -66,6 +66,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/filestore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/functions/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/migrationcenter/v1/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta/*.proto \
 		./apis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
@@ -120,7 +121,10 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
-		./third_party/googleapis/google/iam/v2/*.proto
+		./third_party/googleapis/google/cloud/video/stitcher/v1/*.proto \
+		./third_party/googleapis/google/cloud/dialogflow/v2beta1/*.proto \
+		./third_party/googleapis/google/iam/v2/*.proto \
+		./third_party/googleapis/google/cloud/apihub/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

@@ -1285,6 +1285,8 @@ spec:
             group: resourcemanager.cnrm.cloud.google.com
     - name: google_compute_network
       kind: ComputeNetwork
+      mutableButUnreadableFields:
+        - delete_default_routes_on_create
       metadataMapping:
         name: name
       resourceID:
@@ -1765,6 +1767,16 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: certificate_manager_certificates
+          description: |-
+            URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
+            Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
+            sslCertificates and certificateManagerCertificates fields cannot be defined together.
+          gvk:
+            kind: CertificateManagerCertificate
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          valueTemplate: projects/{{project}}/locations/{{location}}/certificates/{{value}}
         - tfField: ssl_certificates
           description: |-
             A list of ComputeSSLCertificate resources that are used to
@@ -2182,6 +2194,27 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: rules.action.source_nat_active_ranges
+          key: sourceNatActiveRangesRefs
+          description: |-
+            A list of URLs of the subnetworks used as source ranges for this NAT Rule.
+            These subnetworks must have purpose set to PRIVATE_NAT. This field is used for private NAT.
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: rules.action.source_nat_drain_ranges
+          key: sourceNatDrainRangesRefs
+          description: |-
+            A list of URLs of subnetworks representing source ranges to be drained.
+            This is only supported on patch/update, and these subnetworks must have previously been used as active ranges in this NAT Rule.
+            This field is used for private NAT.
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -2410,6 +2443,20 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: reservedInternalRangeRef
+          tfField: reserved_internal_range
+          gvk:
+            kind: NetworkConnectivityInternalRange
+            version: v1alpha1
+            group: networkconnectivity.cnrm.cloud.google.com
+          targetField: externalRef
+        - key: secondaryIpRange.reservedInternalRangeRef
+          tfField: secondary_ip_range.reserved_internal_range
+          gvk:
+            kind: NetworkConnectivityInternalRange
+            version: v1alpha1
+            group: networkconnectivity.cnrm.cloud.google.com
+          targetField: externalRef
       containers:
         - type: project
           tfField: project

@@ -1,7 +1,7 @@
 ---
 name: Issue for Identity and Reference
 description: Identify resources that do not implement the identity and reference pattern and create minimal issues for them.
-schedule: "@daily"
+schedule: "never"
 skipPR: true
 ---
 <!--

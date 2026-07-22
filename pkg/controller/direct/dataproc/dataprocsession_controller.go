@@ -112,6 +112,15 @@ func (m *sessionModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, mapCtx.Err()
 	}
 
+	desired.Name = sessionID.String()
+	if desired.Labels == nil {
+		desired.Labels = make(map[string]string)
+	}
+	for k, v := range obj.GetLabels() {
+		desired.Labels[k] = v
+	}
+	desired.Labels["managed-by-cnrm"] = "true"
+
 	return &sessionAdapter{
 		gcpClient: gcpClient,
 		id:        sessionID,
@@ -155,14 +164,6 @@ func (a *sessionAdapter) Find(ctx context.Context) (bool, error) {
 func (a *sessionAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataproc session", "name", a.id)
-
-	if a.desired.Labels == nil {
-		a.desired.Labels = make(map[string]string)
-	}
-	for k, v := range a.obj.GetLabels() {
-		a.desired.Labels[k] = v
-	}
-	a.desired.Labels["managed-by-cnrm"] = "true"
 
 	req := &pb.CreateSessionRequest{
 		Parent:    a.id.ParentString(),

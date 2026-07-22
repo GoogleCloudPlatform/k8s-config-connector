@@ -33,4 +33,8 @@ type DiscoveryEngineEngineExpansion interface{}
 
 type DiscoveryEngineIdentityMappingStoreExpansion interface{}
 
+type DiscoveryEngineSampleQueryExpansion interface{}
+
 type DiscoveryEngineSampleQuerySetExpansion interface{}
+
+type DiscoveryEngineSessionExpansion interface{}

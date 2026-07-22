@@ -556,6 +556,23 @@ spec:
                       cpuManagerPolicy:
                         description: Control the CPU management policy on the node.
                         type: string
+                      imageGcHighThresholdPercent:
+                        description: Percent of disk usage after which image garbage
+                          collection is always run.
+                        type: integer
+                      imageGcLowThresholdPercent:
+                        description: Percent of disk usage before which image garbage
+                          collection is never run. Lowest disk usage to garbage collect
+                          to.
+                        type: integer
+                      imageMaximumGcAge:
+                        description: Maximum age an image can be unused before it
+                          is garbage collected.
+                        type: string
+                      imageMinimumGcAge:
+                        description: Minimum age for an unused image before it is
+                          garbage collected.
+                        type: string
                       podPidsLimit:
                         description: Controls the maximum number of processes allowed
                           to run in a pod.
@@ -685,6 +702,13 @@ spec:
                       type: string
                     description: The GCE resource labels (a map of key/value pairs)
                       to be applied to the node pool.
+                    type: object
+                  resourceManagerTags:
+                    additionalProperties:
+                      type: string
+                    description: The resource manager tags (a map of key/value pairs)
+                      to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id},
+                      and values are in the format tagValues/{tag_value_id}.
                     type: object
                   sandboxConfig:
                     description: Immutable. Sandbox configuration for this node.

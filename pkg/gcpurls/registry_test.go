@@ -72,12 +72,22 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 		// AI Platform
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}": true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":       true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
 
 		// Apigee Registry
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/apis/{}":      true,
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
+		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/instances/{}": true,
+
+		// APIHub
+		"//apihub.googleapis.com/projects/{}/locations/{}/apis/{}":                      true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}":               true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/externalApis/{}":              true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/plugins/{}":                   true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/runtimeProjectAttachments/{}": true,
 
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
@@ -125,15 +135,25 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}/{}/{}/{}": true,
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}//{}/{}":   true,
 
+		// Config Delivery
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}": true,
+
 		// Connectors
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
+
+		// Contact Center Insights
+		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/conversations/{}": true,
+		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/qaScorecards/{}":  true,
 
 		// Content Warehouse
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}": true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":        true,
 
 		// Data Labeling
-		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}": true,
+		"//datalabeling.googleapis.com/projects/{}/annotationSpecSets/{}": true,
+		"//datalabeling.googleapis.com/projects/{}/datasets/{}":           true,
+		"//datalabeling.googleapis.com/projects/{}/evaluationJobs/{}":     true,
+		"//datalabeling.googleapis.com/projects/{}/instructions/{}":       true,
 
 		// Dataplex
 		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":           true,
@@ -147,14 +167,22 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":        true,
 
 		// Dialogflow
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":       true,
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}": true,
-		"//dialogflow.googleapis.com/projects/{}/locations/{}/sipTrunks/{}":        true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/conversationDatasets/{}": true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":           true,
+		"//dialogflow.googleapis.com/projects/{}/knowledgeBases/{}":                    true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/knowledgeBases/{}":       true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}":     true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/sipTrunks/{}":            true,
+
+		// Device Streaming
+		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
 
 		// Discovery Engine
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":      true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}": true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":       true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":           true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":      true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":           true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":            true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}/sampleQueries/{}": true,
 
 		// DLP
 		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
@@ -195,6 +223,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Network Security
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
+		"//networksecurity.googleapis.com/projects/{}/locations/{}/partnerSSEGateways/{}":           true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/sacRealms/{}":                    true,
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/securityProfiles/{}":             true,
 
@@ -204,6 +233,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Notebooks
 		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":   true,
+		"//notebooks.googleapis.com/projects/{}/locations/{}/schedules/{}":    true,
 
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
@@ -219,8 +249,17 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}": true,
 
+		// Storage Insights
+		"//storageinsights.googleapis.com/projects/{}/locations/{}/datasetConfigs/{}": true,
+
+		// Vision
+		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
+
 		// Workflow Executions
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
+
+		// Workload Manager
+		"//workloadmanager.googleapis.com/projects/{}/locations/{}/evaluations/{}": true,
 	}
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()

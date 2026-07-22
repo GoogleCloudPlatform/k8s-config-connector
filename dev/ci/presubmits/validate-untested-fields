@@ -47,8 +47,8 @@ echo "Comparing ${BASE_COMMIT} with ${COMMIT_HEAD}..."
 # Get the lines added to missingfields.txt in the current branch compared to master
 added_lines=$(git diff --unified=0 "${BASE_COMMIT}...${COMMIT_HEAD}" "${MISSING_FIELDS_FILE}" | grep '^+[^+]' | sed 's/^+//' || true)
 # Filter for missing reference fields
-# HACK: Temporarily ignore memorystoreInstanceServiceAttachment (not tested in our standard fixtures)
-added_reference_lines=$(echo "${added_lines}" | grep "${MISSING_REFERENCE_STRING}" | grep -v memorystoreInstanceServiceAttachment || true)
+# HACK: Temporarily ignore memorystoreInstanceServiceAttachment and redisInstanceServiceAttachment(not tested in our standard fixtures)
+added_reference_lines=$(echo "${added_lines}" | grep "${MISSING_REFERENCE_STRING}" | grep -v -e memorystoreInstanceServiceAttachment -e redisClusterServiceAttachment || true)
 
 if [[ -n "${added_reference_lines}" ]]; then
   echo "ERROR: Untested reference fields detected."

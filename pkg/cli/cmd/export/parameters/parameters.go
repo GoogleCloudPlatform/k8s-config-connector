@@ -44,14 +44,15 @@ type Parameters struct {
 	// DisableDirectExport can be set to true to bypass direct-reconciliation exporters.
 	DisableDirectExport bool
 
-	// GRPCUnaryClientInterceptor is the GRPC interceptor for use in tests.
+	// GRPCUnaryClientInterceptor allows for overriding the default GRPC Unary Interceptor
 	GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
 }
 
 func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {
 	c := &config.ControllerConfig{
-		HTTPClient: p.HTTPClient,
-		UserAgent:  gcp.KCCUserAgent(),
+		HTTPClient:                 p.HTTPClient,
+		UserAgent:                  gcp.KCCUserAgent(),
+		GRPCUnaryClientInterceptor: p.GRPCUnaryClientInterceptor,
 	}
 	if p.GCPAccessToken != "" {
 		c.GCPTokenSource = oauth2.StaticTokenSource(

@@ -189,7 +189,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	latest := a.actual
-	if diffs.HasDiff() {
+	if len(updateMask.Paths) > 0 {
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
@@ -285,9 +285,14 @@ func compareCertificateManagerDNSAuthorization(ctx context.Context, actual, desi
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+	maskedActual.Labels = actual.Labels
+	if desired.Type == certificatemanagerpb.DnsAuthorization_TYPE_UNSPECIFIED {
+		desired.Type = certificatemanagerpb.DnsAuthorization_FIXED_RECORD
+	}
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
+
 	return diffs, updateMask, nil
 }

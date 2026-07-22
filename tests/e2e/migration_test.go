@@ -215,42 +215,75 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	eventsPhase1 := h.Events.GetHTTPEvents()
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase1))
-		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase1.log"), got, normalizers...)
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase1_legacy_create.log"), got, normalizers...)
 	}
 
-	t.Log("Phase 2: Migrating to Direct controller...")
+	t.Logf("Phase 2: Re-reconciling resource using %v (no-op update)...", oldController)
 	// Get pre-patch resource version to wait for reconciliation
-	prePatchRV := getResourceVersion(h, primaryResource)
+	prePatchRVPhase2 := getResourceVersion(h, primaryResource)
 
-	// Update primary resource with direct reconciler annotation and touch it
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(primaryResource.GroupVersionKind())
-	u.SetName(primaryResource.GetName())
-	u.SetNamespace(primaryResource.GetNamespace())
+	// Update primary resource with a no-op annotation to trigger a re-reconciliation with the legacy controller
+	uPhase2 := &unstructured.Unstructured{}
+	uPhase2.SetGroupVersionKind(primaryResource.GroupVersionKind())
+	uPhase2.SetName(primaryResource.GetName())
+	uPhase2.SetNamespace(primaryResource.GetNamespace())
+
+	existingPhase2 := readObject(h, primaryResource.GroupVersionKind(), primaryResource.GetNamespace(), primaryResource.GetName())
+	annotationsPhase2 := existingPhase2.GetAnnotations()
+	if annotationsPhase2 == nil {
+		annotationsPhase2 = make(map[string]string)
+	}
+	annotationsPhase2["test.cnrm.cloud.google.com/reconcile-cookie"] = "re-reconcile-legacy-v1"
+	uPhase2.SetAnnotations(annotationsPhase2)
+
+	t.Logf("Applying no-op annotation to %s/%s to trigger %v re-reconciliation", uPhase2.GetNamespace(), uPhase2.GetName(), oldController)
+	if err := h.GetClient().Patch(ctx, uPhase2, client.Apply, client.FieldOwner("kcc-test-migration-touch"), client.ForceOwnership); err != nil {
+		t.Fatalf("error applying no-op annotation: %v", err)
+	}
+
+	// Wait for legacy controller to reconcile it
+	waitForReconciliationAfterPatch(h, primaryResource, prePatchRVPhase2)
+
+	// Record HTTP log for Phase 2
+	eventsPhase2 := h.Events.GetHTTPEvents()[len(eventsPhase1):]
+	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase2))
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase2_legacy_re-reconciliation.log"), got, normalizers...)
+	}
+
+	t.Log("Phase 3: Migrating to Direct controller...")
+	// Get pre-patch resource version to wait for reconciliation
+	prePatchRVPhase3 := getResourceVersion(h, primaryResource)
+
+	// Update primary resource with direct reconciler annotation
+	uPhase3 := &unstructured.Unstructured{}
+	uPhase3.SetGroupVersionKind(primaryResource.GroupVersionKind())
+	uPhase3.SetName(primaryResource.GetName())
+	uPhase3.SetNamespace(primaryResource.GetNamespace())
 
 	// Get existing annotations
-	existing := readObject(h, primaryResource.GroupVersionKind(), primaryResource.GetNamespace(), primaryResource.GetName())
-	annotations := existing.GetAnnotations()
-	if annotations == nil {
-		annotations = make(map[string]string)
+	existingPhase3 := readObject(h, primaryResource.GroupVersionKind(), primaryResource.GetNamespace(), primaryResource.GetName())
+	annotationsPhase3 := existingPhase3.GetAnnotations()
+	if annotationsPhase3 == nil {
+		annotationsPhase3 = make(map[string]string)
 	}
-	annotations["alpha.cnrm.cloud.google.com/reconciler"] = "direct"
-	annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "migration-v1"
-	u.SetAnnotations(annotations)
+	annotationsPhase3["alpha.cnrm.cloud.google.com/reconciler"] = "direct"
+	annotationsPhase3["test.cnrm.cloud.google.com/reconcile-cookie"] = "migration-v1"
+	uPhase3.SetAnnotations(annotationsPhase3)
 
-	t.Logf("Applying direct reconciler annotation to %s/%s", u.GetNamespace(), u.GetName())
-	if err := h.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-test-migration-touch")); err != nil {
+	t.Logf("Applying direct reconciler annotation to %s/%s", uPhase3.GetNamespace(), uPhase3.GetName())
+	if err := h.GetClient().Patch(ctx, uPhase3, client.Apply, client.FieldOwner("kcc-test-migration-touch"), client.ForceOwnership); err != nil {
 		t.Fatalf("error applying direct reconciler annotation: %v", err)
 	}
 
 	// Wait for direct controller to reconcile it
-	waitForReconciliationAfterPatch(h, primaryResource, prePatchRV)
+	waitForReconciliationAfterPatch(h, primaryResource, prePatchRVPhase3)
 
-	// Verify HTTP events during Phase 2 (Direct take over)
-	eventsPhase2 := h.Events.GetHTTPEvents()[len(eventsPhase1):]
+	// Verify HTTP events during Phase 3 (Direct take over)
+	eventsPhase3 := h.Events.GetHTTPEvents()[len(eventsPhase1)+len(eventsPhase2):]
 
 	// The direct controller should not perform any updates (no-op reconciliation)
-	for _, event := range eventsPhase2 {
+	for _, event := range eventsPhase3 {
 		isReadOnly := false
 		switch event.Request.Method {
 		case "GET":
@@ -265,20 +298,68 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		}
 	}
 
-	// Record HTTP log for Phase 2
+	// Record HTTP log for Phase 3
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase2))
-		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase2.log"), got, normalizers...)
+		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase3))
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase3_direct_takeover.log"), got, normalizers...)
 	}
 
-	// Record raw structured diffs (only written when recording golden output for inspection)
-	if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		rawDiffsStr := formatDiffsRaw(t, diffListener)
-		diffPath := filepath.Join(fixture.AbsoluteSourceDir, "_migration_diffs.json")
-		if err := os.WriteFile(diffPath, []byte(rawDiffsStr), 0644); err != nil {
-			t.Fatalf("FAIL: error writing _migration_diffs.json: %v", err)
+	t.Log("Phase 4: Re-reconciling resource using Direct controller (no-op update)...")
+	// Get pre-patch resource version to wait for reconciliation
+	prePatchRVPhase4 := getResourceVersion(h, primaryResource)
+
+	// Update primary resource with a no-op annotation to trigger a re-reconciliation with the Direct controller
+	uPhase4 := &unstructured.Unstructured{}
+	uPhase4.SetGroupVersionKind(primaryResource.GroupVersionKind())
+	uPhase4.SetName(primaryResource.GetName())
+	uPhase4.SetNamespace(primaryResource.GetNamespace())
+
+	existingPhase4 := readObject(h, primaryResource.GroupVersionKind(), primaryResource.GetNamespace(), primaryResource.GetName())
+	annotationsPhase4 := existingPhase4.GetAnnotations()
+	if annotationsPhase4 == nil {
+		annotationsPhase4 = make(map[string]string)
+	}
+	annotationsPhase4["test.cnrm.cloud.google.com/reconcile-cookie"] = "re-reconcile-direct-v1"
+	uPhase4.SetAnnotations(annotationsPhase4)
+
+	t.Logf("Applying no-op annotation to %s/%s to trigger Direct re-reconciliation", uPhase4.GetNamespace(), uPhase4.GetName())
+	if err := h.GetClient().Patch(ctx, uPhase4, client.Apply, client.FieldOwner("kcc-test-migration-touch"), client.ForceOwnership); err != nil {
+		t.Fatalf("error applying no-op annotation: %v", err)
+	}
+
+	// Wait for Direct controller to re-reconcile it
+	waitForReconciliationAfterPatch(h, primaryResource, prePatchRVPhase4)
+
+	// Verify HTTP events during Phase 4 (Direct re-reconciliation)
+	eventsPhase4 := h.Events.GetHTTPEvents()[len(eventsPhase1)+len(eventsPhase2)+len(eventsPhase3):]
+
+	// The direct controller should not perform any updates (no-op reconciliation)
+	for _, event := range eventsPhase4 {
+		isReadOnly := false
+		switch event.Request.Method {
+		case "GET":
+			isReadOnly = true
+		case "GRPC":
+			if strings.Contains(event.Request.URL, "/Get") || strings.Contains(event.Request.URL, "/List") {
+				isReadOnly = true
+			}
 		}
-		t.Logf("wrote raw structured diff to %s", diffPath)
+		if !isReadOnly {
+			t.Errorf("FAIL: unexpected write request during Direct re-reconciliation: %v %v", event.Request.Method, event.Request.URL)
+		}
+	}
+
+	// Record HTTP log for Phase 4
+	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase4))
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase4_direct_re-reconciliation.log"), got, normalizers...)
+	}
+
+	// Record raw structured diffs
+	if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+		rawDiffsStr := formatDiffsRaw(t, diffListener)
+		_, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(h.Events.GetHTTPEvents()))
+		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_migration_diffs.json"), rawDiffsStr, normalizers...)
 	}
 
 	// Cleanup
@@ -303,6 +384,7 @@ func (l *migrationDiffListener) OnDiff(ctx context.Context, diff *structuredrepo
 
 	// Clone the diff because the underlying object might be modified
 	clone := &structuredreporting.Diff{
+		Controller:  diff.Controller,
 		IsNewObject: diff.IsNewObject,
 	}
 	if diff.Object != nil {
@@ -332,6 +414,7 @@ type rawDiffField struct {
 }
 
 type rawDiff struct {
+	Controller  string         `json:"controller,omitempty"`
 	IsNewObject bool           `json:"isNewObject"`
 	Resource    string         `json:"resource"`
 	Fields      []rawDiffField `json:"fields,omitempty"`
@@ -341,8 +424,10 @@ func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
 	var rawDiffs []rawDiff
 	for _, diff := range listener.diffs {
 		rd := rawDiff{
+			Controller:  string(diff.Controller),
 			IsNewObject: diff.IsNewObject,
 		}
+
 		if diff.Object != nil {
 			rd.Resource = fmt.Sprintf("%s/%s", diff.Object.GetKind(), diff.Object.GetName())
 		}

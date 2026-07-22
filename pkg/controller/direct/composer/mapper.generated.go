@@ -26,7 +26,6 @@ package composer
 import (
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
-	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -444,26 +443,6 @@ func SoftwareConfig_ToProto(mapCtx *direct.MapContext, in *krm.SoftwareConfig) *
 	out.SchedulerCount = direct.ValueOf(in.SchedulerCount)
 	out.CloudDataLineageIntegration = CloudDataLineageIntegration_ToProto(mapCtx, in.CloudDataLineageIntegration)
 	out.WebServerPluginsMode = direct.Enum_ToProto[pb.SoftwareConfig_WebServerPluginsMode](mapCtx, in.WebServerPluginsMode)
-	return out
-}
-func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *krm.StorageConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StorageConfig{}
-	if in.GetBucket() != "" {
-		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
-	}
-	return out
-}
-func StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb.StorageConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.StorageConfig{}
-	if in.BucketRef != nil {
-		out.Bucket = in.BucketRef.External
-	}
 	return out
 }
 func TaskLogsRetentionConfig_FromProto(mapCtx *direct.MapContext, in *pb.TaskLogsRetentionConfig) *krm.TaskLogsRetentionConfig {

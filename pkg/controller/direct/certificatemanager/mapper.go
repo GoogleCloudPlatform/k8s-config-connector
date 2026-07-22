@@ -42,3 +42,23 @@ func CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthoritySe
 	}
 	return out
 }
+
+func TrustConfig_TrustStore_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrustConfig_TrustStore) *krm.TrustConfig_TrustStore {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TrustConfig_TrustStore{}
+	out.TrustAnchors = direct.Slice_FromProto(mapCtx, in.TrustAnchors, TrustConfig_TrustAnchor_v1alpha1_FromProto)
+	out.IntermediateCAs = direct.Slice_FromProto(mapCtx, in.IntermediateCas, TrustConfig_IntermediateCA_v1alpha1_FromProto)
+	return out
+}
+
+func TrustConfig_TrustStore_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.TrustConfig_TrustStore) *pb.TrustConfig_TrustStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrustConfig_TrustStore{}
+	out.TrustAnchors = direct.Slice_ToProto(mapCtx, in.TrustAnchors, TrustConfig_TrustAnchor_v1alpha1_ToProto)
+	out.IntermediateCas = direct.Slice_ToProto(mapCtx, in.IntermediateCAs, TrustConfig_IntermediateCA_v1alpha1_ToProto)
+	return out
+}

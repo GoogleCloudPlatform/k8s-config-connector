@@ -51,6 +51,10 @@ func (s *RoutersV1) Get(ctx context.Context, req *pb.GetRouterRequest) (*pb.Rout
 		return nil, err
 	}
 
+	if obj.EncryptedInterconnectRouter != nil && !*obj.EncryptedInterconnectRouter {
+		obj.EncryptedInterconnectRouter = nil
+	}
+
 	return obj, nil
 }
 
@@ -75,8 +79,8 @@ func (s *RoutersV1) Insert(ctx context.Context, req *pb.InsertRouterRequest) (*p
 		obj.Description = PtrTo("")
 	}
 
-	if obj.EncryptedInterconnectRouter == nil {
-		obj.EncryptedInterconnectRouter = PtrTo(false)
+	if obj.EncryptedInterconnectRouter != nil && !*obj.EncryptedInterconnectRouter {
+		obj.EncryptedInterconnectRouter = nil
 	}
 
 	if obj.Network != nil {
@@ -91,7 +95,6 @@ func (s *RoutersV1) Insert(ctx context.Context, req *pb.InsertRouterRequest) (*p
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 
 	s.populateRouter(obj)
-
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -171,6 +174,46 @@ func (s *RoutersV1) Patch(ctx context.Context, req *pb.PatchRouterRequest) (*pb.
 	})
 }
 
+func (s *RoutersV1) Update(ctx context.Context, req *pb.UpdateRouterRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/routers/" + req.GetRouter()
+	name, err := s.parseRouterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.Router{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	updated := proto.Clone(req.GetRouterResource()).(*pb.Router)
+	updated.SelfLink = existing.SelfLink
+	updated.CreationTimestamp = existing.CreationTimestamp
+	updated.Id = existing.Id
+	updated.Kind = existing.Kind
+	updated.Region = existing.Region
+
+	s.populateRouter(updated)
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      updated.Id,
+		TargetLink:    updated.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return updated, nil
+	})
+}
+
 func (s *RoutersV1) Delete(ctx context.Context, req *pb.DeleteRouterRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/routers/" + req.GetRouter()
 	name, err := s.parseRouterName(reqName)
@@ -226,7 +269,6 @@ func (s *MockService) parseRouterName(name string) (*routerName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
-
 func (s *RoutersV1) populateRouter(obj *pb.Router) {
 	for _, iface := range obj.Interfaces {
 		if iface.IpVersion == nil {

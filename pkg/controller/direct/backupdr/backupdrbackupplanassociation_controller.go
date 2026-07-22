@@ -29,6 +29,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -68,6 +69,11 @@ func (m *modelBackupPlanAssociation) AdapterForObject(ctx context.Context, op *d
 		return nil, err
 	}
 
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get backupdr GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -77,10 +83,17 @@ func (m *modelBackupPlanAssociation) AdapterForObject(ctx context.Context, op *d
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desired := BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &BackupPlanAssociationAdapter{
 		id:        id,
 		gcpClient: backupDRClient,
-		desired:   obj,
+		desired:   desired,
 		reader:    reader,
 	}, nil
 }
@@ -93,7 +106,7 @@ func (m *modelBackupPlanAssociation) AdapterForURL(ctx context.Context, url stri
 type BackupPlanAssociationAdapter struct {
 	id        *krm.BackupPlanAssociationIdentity
 	gcpClient *gcp.Client
-	desired   *krm.BackupDRBackupPlanAssociation
+	desired   *pb.BackupPlanAssociation
 	actual    *pb.BackupPlanAssociation
 	reader    client.Reader
 }
@@ -126,21 +139,10 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BackupPlanAssociation", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &pb.CreateBackupPlanAssociationRequest{
 		Parent:                  a.id.Parent().String(),
 		BackupPlanAssociationId: a.id.ID(),
-		BackupPlanAssociation:   resource,
+		BackupPlanAssociation:   a.desired,
 	}
 	op, err := a.gcpClient.CreateBackupPlanAssociation(ctx, req)
 	if err != nil {
@@ -152,6 +154,7 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 	}
 	log.V(2).Info("successfully created BackupPlanAssociation", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
 	status.ObservedState = BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -164,41 +167,31 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating BackupPlan", "name", a.id)
-
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	log.V(2).Info("updating BackupPlanAssociation", "name", a.id)
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	paths := []string{}
-	if desired.Spec.ResourceType != nil && !reflect.DeepEqual(resource.ResourceType, a.actual.ResourceType) {
-		report.AddField("resource_type", a.actual.ResourceType, resource.ResourceType)
+	if !reflect.DeepEqual(a.desired.ResourceType, a.actual.ResourceType) {
+		report.AddField("resource_type", a.actual.ResourceType, a.desired.ResourceType)
 		paths = append(paths, "resource_type")
 	}
-	if desired.Spec.Resource != nil && !reflect.DeepEqual(resource.Resource, a.actual.Resource) {
-		report.AddField("resource", a.actual.Resource, resource.Resource)
+	if !reflect.DeepEqual(a.desired.Resource, a.actual.Resource) {
+		report.AddField("resource", a.actual.Resource, a.desired.Resource)
 		paths = append(paths, "resource")
 	}
-	if desired.Spec.BackupPlanRef != nil && !reflect.DeepEqual(resource.BackupPlan, a.actual.BackupPlan) {
-		report.AddField("backup_plan", a.actual.BackupPlan, resource.BackupPlan)
+	if !reflect.DeepEqual(a.desired.BackupPlan, a.actual.BackupPlan) {
+		report.AddField("backup_plan", a.actual.BackupPlan, a.desired.BackupPlan)
 		paths = append(paths, "backup_plan")
 	}
 
 	if len(paths) != 0 {
 		structuredreporting.ReportDiff(ctx, report)
-		return fmt.Errorf("updating BackupPlan is not supported, fields: %v", paths)
+		return fmt.Errorf("BackupDRBackupPlanAssociation is immutable and cannot be updated, fields: %v", paths)
 	}
 
 	// still need to update status (in the event of acquiring an existing resource)
+	mapCtx := &direct.MapContext{}
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
 	status.ObservedState = BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
@@ -257,22 +250,4 @@ func (a *BackupPlanAssociationAdapter) Delete(ctx context.Context, deleteOp *dir
 		return false, fmt.Errorf("waiting delete BackupPlanAssociation %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func (a *BackupPlanAssociationAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.BackupPlanRef != nil {
-		if _, err := obj.Spec.BackupPlanRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
-			return err
-		}
-	}
-	if obj.Spec.Resource != nil {
-		if obj.Spec.Resource.ComputeInstanceRef != nil {
-			if _, err := obj.Spec.Resource.ComputeInstanceRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
-				return err
-			}
-		}
-	}
-
-	return nil
 }

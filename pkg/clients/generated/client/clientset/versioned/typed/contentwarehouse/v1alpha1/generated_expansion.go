@@ -26,3 +26,5 @@ type ContentWarehouseDocumentExpansion interface{}
 type ContentWarehouseRuleSetExpansion interface{}
 
 type ContentWarehouseSchemaExpansion interface{}
+
+type ContentWarehouseSynonymSetExpansion interface{}

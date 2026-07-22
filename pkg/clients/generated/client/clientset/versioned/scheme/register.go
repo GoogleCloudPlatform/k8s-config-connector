@@ -83,6 +83,7 @@ import (
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudscheduler/v1beta1"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudsecuritycompliance/v1alpha1"
+	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtalentsolution/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/colab/v1alpha1"
 	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/composer/v1beta1"
@@ -90,6 +91,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
 	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdelivery/v1alpha1"
+	configdeploymentv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configdeployment/v1alpha1"
 	connectorsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/connectors/v1alpha1"
 	contactcenterinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/contactcenterinsights/v1alpha1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
@@ -141,6 +143,7 @@ import (
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkebackup/v1alpha1"
 	gkehubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1alpha1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
+	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkemulticloud/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
@@ -150,9 +153,11 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
+	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/livestream/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/managedkafka/v1alpha1"
 	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/managedkafka/v1beta1"
+	mapmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/mapmanagement/v1alpha1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memcache/v1beta1"
 	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1alpha1"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memorystore/v1beta1"
@@ -184,6 +189,7 @@ import (
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1beta1"
 	recaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1alpha1"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1beta1"
+	redisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1alpha1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1alpha1"
@@ -205,20 +211,25 @@ import (
 	sqladminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sqladmin/v1alpha1"
 	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
+	storageinsightsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storageinsights/v1alpha1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1beta1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	testingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/testing/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
+	translatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/translate/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/videostitcher/v1alpha1"
+	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vision/v1alpha1"
+	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/visionai/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1alpha1"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vmwareengine/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vpcaccess/v1beta1"
 	workflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workflowexecutions/v1alpha1"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workflows/v1alpha1"
+	workloadmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workloadmanager/v1alpha1"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -292,6 +303,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	cloudquotav1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	cloudsecuritycompliancev1alpha1.AddToScheme,
+	cloudtalentsolutionv1alpha1.AddToScheme,
 	cloudtasksv1alpha1.AddToScheme,
 	colabv1alpha1.AddToScheme,
 	composerv1beta1.AddToScheme,
@@ -299,6 +311,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	computev1beta1.AddToScheme,
 	configcontrollerv1beta1.AddToScheme,
 	configdeliveryv1alpha1.AddToScheme,
+	configdeploymentv1alpha1.AddToScheme,
 	connectorsv1alpha1.AddToScheme,
 	contactcenterinsightsv1alpha1.AddToScheme,
 	containerv1beta1.AddToScheme,
@@ -350,6 +363,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	gkebackupv1alpha1.AddToScheme,
 	gkehubv1alpha1.AddToScheme,
 	gkehubv1beta1.AddToScheme,
+	gkemulticloudv1alpha1.AddToScheme,
 	healthcarev1alpha1.AddToScheme,
 	iamv1alpha1.AddToScheme,
 	iamv1beta1.AddToScheme,
@@ -359,9 +373,11 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	k8sv1alpha1.AddToScheme,
 	kmsv1alpha1.AddToScheme,
 	kmsv1beta1.AddToScheme,
+	livestreamv1alpha1.AddToScheme,
 	loggingv1beta1.AddToScheme,
 	managedkafkav1alpha1.AddToScheme,
 	managedkafkav1beta1.AddToScheme,
+	mapmanagementv1alpha1.AddToScheme,
 	memcachev1beta1.AddToScheme,
 	memorystorev1alpha1.AddToScheme,
 	memorystorev1beta1.AddToScheme,
@@ -393,6 +409,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	pubsublitev1beta1.AddToScheme,
 	recaptchaenterprisev1alpha1.AddToScheme,
 	recaptchaenterprisev1beta1.AddToScheme,
+	redisv1alpha1.AddToScheme,
 	redisv1beta1.AddToScheme,
 	resourcemanagerv1beta1.AddToScheme,
 	runv1alpha1.AddToScheme,
@@ -414,20 +431,25 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	sqladminv1alpha1.AddToScheme,
 	storagev1alpha1.AddToScheme,
 	storagev1beta1.AddToScheme,
+	storageinsightsv1alpha1.AddToScheme,
 	storagetransferv1alpha1.AddToScheme,
 	storagetransferv1beta1.AddToScheme,
 	tagsv1beta1.AddToScheme,
 	testingv1alpha1.AddToScheme,
 	tpuv1alpha1.AddToScheme,
+	translatev1alpha1.AddToScheme,
 	vectorsearchv1alpha1.AddToScheme,
 	vertexaiv1alpha1.AddToScheme,
 	vertexaiv1beta1.AddToScheme,
 	videostitcherv1alpha1.AddToScheme,
+	visionv1alpha1.AddToScheme,
+	visionaiv1alpha1.AddToScheme,
 	vmwareenginev1alpha1.AddToScheme,
 	vmwareenginev1beta1.AddToScheme,
 	vpcaccessv1beta1.AddToScheme,
 	workflowexecutionsv1alpha1.AddToScheme,
 	workflowsv1alpha1.AddToScheme,
+	workloadmanagerv1alpha1.AddToScheme,
 	workstationsv1beta1.AddToScheme,
 }
 

@@ -65,10 +65,28 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeatureOnlineStore{}).Name(),
 	}
 
+	VertexAIPipelineJobGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIPipelineJob{}).Name(),
+	}
+
 	VertexAISpecialistPoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(VertexAISpecialistPool{}).Name(),
+	}
+
+	VertexAIStudyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIStudy{}).Name(),
+	}
+
+	VertexAITrainingPipelineGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAITrainingPipeline{}).Name(),
 	}
 
 	VertexAITuningJobGVK = schema.GroupVersionKind{

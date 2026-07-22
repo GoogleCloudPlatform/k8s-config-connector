@@ -38,6 +38,14 @@ type exportOptions struct {
 }
 
 func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *exportOptions) string {
+	// Fetch the reconciled object from the API server to get the populated status fields (such as status.name)
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(obj.GroupVersionKind())
+	id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+	if err := h.GetClient().Get(h.Ctx, id, u); err == nil {
+		obj = u
+	}
+
 	exportURI := ""
 
 	projectID := resolveProjectID(h, obj)
@@ -69,6 +77,10 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 		exportURI = resolveCAISURI(h, obj)
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDisk"}:
 		exportURI = resolveCAISURI(h, obj)
+	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeForwardingRule"}:
+		exportURI = resolveCAISURI(h, obj)
+	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeImage"}:
+		exportURI = resolveCAISURI(h, obj)
 	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
 		exportURI = resolveCAISURI(h, obj)
 
@@ -78,6 +90,17 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupPlan"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRManagementServer"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogExclusion"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+		exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
@@ -138,6 +161,15 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
 
 	case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebookInstance"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "notebooks.cnrm.cloud.google.com", Kind: "NotebooksEnvironment"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringAlertPolicy"}:
+		exportURI = resolveCAISURI(h, obj)
+
+	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACertificateAuthority"}:
 		exportURI = resolveCAISURI(h, obj)
 
 	case schema.GroupKind{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"}:

@@ -71,6 +71,12 @@ func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.
 		return nil, status.Errorf(codes.InvalidArgument, "invalid projection: %s", projection)
 	}
 
+	if uniform := ret.GetIamConfiguration().GetUniformBucketLevelAccess().GetEnabled(); uniform {
+		ret.Acl = nil
+		ret.DefaultObjectAcl = nil
+		ret.Owner = nil
+	}
+
 	httpmux.SetExpiresHeader(ctx, time.Now())
 
 	return ret, nil
@@ -158,6 +164,14 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 
 	obj.Generation = PtrTo(time.Now().UnixNano())
 
+	if obj.Autoclass != nil && obj.Autoclass.GetEnabled() {
+		if obj.Autoclass.TerminalStorageClass == nil {
+			obj.Autoclass.TerminalStorageClass = PtrTo("NEARLINE")
+		}
+		obj.Autoclass.TerminalStorageClassUpdateTime = now
+		obj.Autoclass.ToggleTime = now
+	}
+
 	obj.Etag = PtrTo(computeEtag(obj))
 	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
 		obj.Lifecycle = nil
@@ -209,9 +223,13 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	}
 
 	retObj := proto.CloneOf(obj)
-	retObj.Acl = nil
-	retObj.DefaultObjectAcl = nil
-	retObj.Owner = nil
+	projection := req.GetProjection()
+	uniform := obj.GetIamConfiguration().GetUniformBucketLevelAccess().GetEnabled()
+	if uniform || projection == "" || projection == "noAcl" {
+		retObj.Acl = nil
+		retObj.DefaultObjectAcl = nil
+		retObj.Owner = nil
+	}
 
 	return retObj, nil
 }
@@ -281,10 +299,12 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		return nil, err
 	}
 
+	objBefore := proto.CloneOf(obj)
 	project, err := s.Projects.GetProjectByNumber(fmt.Sprintf("%d", obj.GetProjectNumber()))
 	if err != nil {
 		return nil, err
 	}
+	now := timestamppb.Now()
 
 	if patch := req.Bucket; patch != nil {
 		if patch.Labels != nil {
@@ -313,6 +333,23 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 				}
 			}
 		}
+		if patch.Autoclass != nil {
+			if obj.Autoclass == nil {
+				obj.Autoclass = &pb.BucketAutoclass{}
+			}
+			if patch.Autoclass.Enabled != nil {
+				if obj.Autoclass.GetEnabled() != patch.Autoclass.GetEnabled() {
+					obj.Autoclass.Enabled = patch.Autoclass.Enabled
+					obj.Autoclass.ToggleTime = now
+				}
+			}
+			if patch.Autoclass.TerminalStorageClass != nil {
+				if obj.Autoclass.GetTerminalStorageClass() != patch.Autoclass.GetTerminalStorageClass() {
+					obj.Autoclass.TerminalStorageClass = patch.Autoclass.TerminalStorageClass
+					obj.Autoclass.TerminalStorageClassUpdateTime = now
+				}
+			}
+		}
 	}
 
 	// Remove empty lifecycle (no rules)
@@ -320,7 +357,21 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		obj.Lifecycle = nil
 	}
 
-	obj.Metageneration = PtrTo(int64(obj.GetMetageneration() + 1))
+	if obj.Autoclass != nil && obj.Autoclass.GetEnabled() {
+		if obj.Autoclass.TerminalStorageClass == nil {
+			obj.Autoclass.TerminalStorageClass = PtrTo("NEARLINE")
+		}
+		if obj.Autoclass.TerminalStorageClassUpdateTime == nil {
+			obj.Autoclass.TerminalStorageClassUpdateTime = now
+		}
+		if obj.Autoclass.ToggleTime == nil {
+			obj.Autoclass.ToggleTime = now
+		}
+	}
+
+	if !proto.Equal(objBefore, obj) {
+		obj.Metageneration = PtrTo(int64(obj.GetMetageneration() + 1))
+	}
 
 	if err := s.populateDefaults(ctx, project, obj); err != nil {
 		return nil, err
@@ -332,7 +383,21 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		return nil, err
 	}
 
-	return obj, nil
+	retObj := proto.CloneOf(obj)
+	projection := req.GetProjection()
+	uniform := obj.GetIamConfiguration().GetUniformBucketLevelAccess().GetEnabled()
+	emptyPatch := req.GetBucket() == nil || proto.Equal(req.GetBucket(), &pb.Bucket{})
+	stripAcl := projection == "noAcl" ||
+		(uniform && emptyPatch) ||
+		(uniform && len(req.GetBucket().GetLabels()) > 0) ||
+		(uniform && req.GetBucket().GetAutoclass() != nil && !req.GetBucket().GetAutoclass().GetEnabled())
+	if stripAcl {
+		retObj.Acl = nil
+		retObj.DefaultObjectAcl = nil
+		retObj.Owner = nil
+	}
+
+	return retObj, nil
 }
 
 func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*empty.Empty, error) {

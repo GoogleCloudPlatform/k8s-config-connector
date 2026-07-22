@@ -35,6 +35,10 @@ func (c *FakeNetworkmanagementV1alpha1) NetworkManagementConnectivityTests(names
 	return newFakeNetworkManagementConnectivityTests(c, namespace)
 }
 
+func (c *FakeNetworkmanagementV1alpha1) NetworkManagementVPCFlowLogsConfigs(namespace string) v1alpha1.NetworkManagementVPCFlowLogsConfigInterface {
+	return newFakeNetworkManagementVPCFlowLogsConfigs(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeNetworkmanagementV1alpha1) RESTClient() rest.Interface {

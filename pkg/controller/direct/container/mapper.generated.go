@@ -1383,10 +1383,10 @@ func KubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig
 	out.CPUCfsQuotaPeriod = direct.LazyPtr(in.GetCpuCfsQuotaPeriod())
 	out.PodPidsLimit = direct.LazyPtr(in.GetPodPidsLimit())
 	// MISSING: InsecureKubeletReadonlyPortEnabled
-	// MISSING: ImageGcLowThresholdPercent
-	// MISSING: ImageGcHighThresholdPercent
-	// MISSING: ImageMinimumGcAge
-	// MISSING: ImageMaximumGcAge
+	out.ImageGcLowThresholdPercent = direct.LazyPtr(in.GetImageGcLowThresholdPercent())
+	out.ImageGcHighThresholdPercent = direct.LazyPtr(in.GetImageGcHighThresholdPercent())
+	out.ImageMinimumGcAge = direct.LazyPtr(in.GetImageMinimumGcAge())
+	out.ImageMaximumGcAge = direct.LazyPtr(in.GetImageMaximumGcAge())
 	// MISSING: ContainerLogMaxSize
 	// MISSING: ContainerLogMaxFiles
 	// MISSING: AllowedUnsafeSysctls
@@ -1415,10 +1415,10 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		out.CpuCfsQuotaPeriod = direct.ValueOf(in.CPUCfsQuotaPeriod)
 		out.PodPidsLimit = direct.ValueOf(in.PodPidsLimit)
 		// MISSING: InsecureKubeletReadonlyPortEnabled
-		// MISSING: ImageGcLowThresholdPercent
-		// MISSING: ImageGcHighThresholdPercent
-		// MISSING: ImageMinimumGcAge
-		// MISSING: ImageMaximumGcAge
+		out.ImageGcLowThresholdPercent = direct.ValueOf(in.ImageGcLowThresholdPercent)
+		out.ImageGcHighThresholdPercent = direct.ValueOf(in.ImageGcHighThresholdPercent)
+		out.ImageMinimumGcAge = direct.ValueOf(in.ImageMinimumGcAge)
+		out.ImageMaximumGcAge = direct.ValueOf(in.ImageMaximumGcAge)
 		// MISSING: ContainerLogMaxSize
 		// MISSING: ContainerLogMaxFiles
 		// MISSING: AllowedUnsafeSysctls
@@ -1789,7 +1789,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
 	// MISSING: SoleTenantConfig
 	// MISSING: ContainerdConfig
-	// MISSING: ResourceManagerTags
+	out.ResourceManagerTags = map_string_string_FromProto(mapCtx, in.GetResourceManagerTags())
 	// MISSING: EnableConfidentialStorage
 	// MISSING: SecondaryBootDisks
 	// MISSING: StoragePools
@@ -1851,7 +1851,7 @@ found existing non-generated mapping function "NodeConfig_ToProto", skipping
 		out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
 		// MISSING: SoleTenantConfig
 		// MISSING: ContainerdConfig
-		// MISSING: ResourceManagerTags
+		out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
 		// MISSING: EnableConfidentialStorage
 		// MISSING: SecondaryBootDisks
 		// MISSING: StoragePools
@@ -1974,7 +1974,7 @@ func NodePoolAutoConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolAuto
 	}
 	out := &krm.NodePoolAutoConfig{}
 	out.NetworkTags = NetworkTags_FromProto(mapCtx, in.GetNetworkTags())
-	// MISSING: ResourceManagerTags
+	out.ResourceManagerTags = map_string_string_FromProto(mapCtx, in.GetResourceManagerTags())
 	// MISSING: NodeKubeletConfig
 	// MISSING: LinuxNodeConfig
 	return out
@@ -1985,7 +1985,7 @@ func NodePoolAutoConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolAutoC
 	}
 	out := &pb.NodePoolAutoConfig{}
 	out.NetworkTags = NetworkTags_ToProto(mapCtx, in.NetworkTags)
-	// MISSING: ResourceManagerTags
+	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
 	// MISSING: NodeKubeletConfig
 	// MISSING: LinuxNodeConfig
 	return out
@@ -2099,7 +2099,7 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
 	// MISSING: SoleTenantConfig
 	// MISSING: ContainerdConfig
-	// MISSING: ResourceManagerTags
+	out.ResourceManagerTags = map_string_string_FromProto(mapCtx, in.GetResourceManagerTags())
 	// MISSING: EnableConfidentialStorage
 	// MISSING: SecondaryBootDisks
 	// MISSING: StoragePools
@@ -2156,7 +2156,7 @@ func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeC
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
 	// MISSING: SoleTenantConfig
 	// MISSING: ContainerdConfig
-	// MISSING: ResourceManagerTags
+	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
 	// MISSING: EnableConfidentialStorage
 	// MISSING: SecondaryBootDisks
 	// MISSING: StoragePools

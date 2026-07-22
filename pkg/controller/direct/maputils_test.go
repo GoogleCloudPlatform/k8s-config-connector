@@ -108,3 +108,64 @@ func TestIsAlreadyExists(t *testing.T) {
 		})
 	}
 }
+
+func TestIsNotFound(t *testing.T) {
+	tests := []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{
+			name: "nil error",
+			err:  nil,
+			want: false,
+		},
+		{
+			name: "unrelated error",
+			err:  fmt.Errorf("something went wrong"),
+			want: false,
+		},
+		{
+			name: "gRPC NotFound",
+			err:  status.Error(codes.NotFound, "not found"),
+			want: true,
+		},
+		{
+			name: "gRPC AlreadyExists",
+			err:  status.Error(codes.AlreadyExists, "already exists"),
+			want: false,
+		},
+		{
+			name: "gRPC NotFound wrapped with apierror",
+			err: func() error {
+				grpcErr := status.Error(codes.NotFound, "not found")
+				apiErr, _ := apierror.ParseError(grpcErr, true)
+				return apiErr
+			}(),
+			want: true,
+		},
+		{
+			name: "gRPC AlreadyExists wrapped with apierror",
+			err: func() error {
+				grpcErr := status.Error(codes.AlreadyExists, "already exists")
+				apiErr, _ := apierror.ParseError(grpcErr, true)
+				return apiErr
+			}(),
+			want: false,
+		},
+		{
+			name: "wrapped gRPC NotFound",
+			err:  fmt.Errorf("getting resource: %w", status.Error(codes.NotFound, "not found")),
+			want: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := IsNotFound(tc.err)
+			if got != tc.want {
+				t.Errorf("IsNotFound(%v) = %v, want %v", tc.err, got, tc.want)
+			}
+		})
+	}
+}

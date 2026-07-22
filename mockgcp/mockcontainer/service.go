@@ -95,6 +95,23 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2022"`), []byte(`"OS_2022"`))
 		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2019"`), []byte(`"OS_2019"`))
 
+		if rec.statusCode == http.StatusBadRequest && bytes.Contains(respBytes, []byte(`"must specify a field to update"`)) {
+			respBytes = []byte(`{
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Must specify a field to update.",
+        "reason": "badRequest"
+      }
+    ],
+    "message": "Must specify a field to update.",
+    "status": "INVALID_ARGUMENT"
+  }
+}`)
+		}
+
 		w.Header().Set("Content-Length", fmt.Sprintf("%d", len(respBytes)))
 		if rec.statusCode != 0 {
 			w.WriteHeader(rec.statusCode)

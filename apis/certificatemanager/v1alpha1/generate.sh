@@ -28,7 +28,14 @@ go run . generate-types \
     --service google.cloud.certificatemanager.v1 \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
-    --resource CertificateManagerCertificateIssuanceConfig:CertificateIssuanceConfig
+    --resource CertificateManagerCertificateIssuanceConfig:CertificateIssuanceConfig \
+    --resource CertificateManagerTrustConfig:TrustConfig
+
+# Fix acronym for IntermediateCas -> IntermediateCAs
+sed -i 's/IntermediateCas/IntermediateCAs/g' "${REPO_ROOT}/apis/certificatemanager/v1alpha1/types.generated.go"
+sed -i 's/intermediateCas/intermediateCAs/g' "${REPO_ROOT}/apis/certificatemanager/v1alpha1/types.generated.go"
+sed -i 's/out.IntermediateCas = direct.Slice_FromProto/out.IntermediateCAs = direct.Slice_FromProto/g' "${REPO_ROOT}/pkg/controller/direct/certificatemanager/mapper.generated.go"
+sed -i 's/Slice_ToProto(mapCtx, in.IntermediateCas,/Slice_ToProto(mapCtx, in.IntermediateCAs,/g' "${REPO_ROOT}/pkg/controller/direct/certificatemanager/mapper.generated.go"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

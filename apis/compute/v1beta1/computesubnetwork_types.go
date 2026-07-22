@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	networkconnectivityrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -35,7 +36,7 @@ type ComputeSubnetworkSpec struct {
 	// Provide this property when you create the subnetwork. For example,
 	// 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and
 	// non-overlapping within a network. Only IPv4 is supported.
-	// +required
+	// Field is optional when 'reservedInternalRangeRef' is defined, otherwise required.
 	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.ip_cidr_range
 	IPCIDRRange *string `json:"ipCidrRange,omitempty"`
 
@@ -80,6 +81,10 @@ type ComputeSubnetworkSpec struct {
 	// Immutable. The GCP region for this subnetwork.
 	// +required
 	Region *string `json:"region"`
+
+	// Immutable. The reference to the reserved internal range.
+	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.reserved_internal_range
+	ReservedInternalRangeRef *networkconnectivityrefs.NetworkConnectivityInternalRangeRef `json:"reservedInternalRangeRef,omitempty"`
 
 	// Immutable. Optional. The name of the resource. Used for
 	// creation and acquisition. When unset, the value of `metadata.name`
@@ -211,8 +216,7 @@ type SubnetworkLogConfig struct {
 
 // +kcc:proto=google.cloud.compute.v1.SubnetworkSecondaryRange
 type SubnetworkSecondaryRange struct {
-	// The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. The range can be any range listed in the Valid ranges list.
-	// +required
+	// The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. Field is optional when 'reservedInternalRangeRef' is defined, otherwise required. The range can be any range listed in the Valid ranges list.
 	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkSecondaryRange.ip_cidr_range
 	IPCIDRRange *string `json:"ipCidrRange,omitempty"`
 
@@ -220,4 +224,8 @@ type SubnetworkSecondaryRange struct {
 	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkSecondaryRange.range_name
 	RangeName *string `json:"rangeName,omitempty"`
+
+	// The reference to the reserved internal range.
+	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkSecondaryRange.reserved_internal_range
+	ReservedInternalRangeRef *networkconnectivityrefs.NetworkConnectivityInternalRangeRef `json:"reservedInternalRangeRef,omitempty"`
 }

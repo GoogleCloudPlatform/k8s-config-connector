@@ -43,6 +43,10 @@ func (i *EventarcChannelConnectionIdentity) String() string {
 	return EventarcChannelConnectionIdentityFormat.ToString(*i)
 }
 
+func (i *EventarcChannelConnectionIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *EventarcChannelConnectionIdentity) FromExternal(ref string) error {
 	parsed, match, err := EventarcChannelConnectionIdentityFormat.Parse(ref)
 	if err != nil {

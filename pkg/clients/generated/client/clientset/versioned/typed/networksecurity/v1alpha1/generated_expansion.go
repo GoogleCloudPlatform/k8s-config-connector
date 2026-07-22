@@ -23,9 +23,17 @@ package v1alpha1
 
 type NetworkSecurityAddressGroupExpansion interface{}
 
+type NetworkSecurityAuthzPolicyExpansion interface{}
+
 type NetworkSecurityBackendAuthenticationConfigExpansion interface{}
 
+type NetworkSecurityDNSThreatDetectorExpansion interface{}
+
+type NetworkSecurityFirewallEndpointExpansion interface{}
+
 type NetworkSecurityFirewallEndpointAssociationExpansion interface{}
+
+type NetworkSecurityGatewaySecurityPolicyExpansion interface{}
 
 type NetworkSecurityInterceptDeploymentExpansion interface{}
 
@@ -34,6 +42,8 @@ type NetworkSecurityInterceptEndpointGroupExpansion interface{}
 type NetworkSecurityMirroringDeploymentExpansion interface{}
 
 type NetworkSecurityMirroringEndpointGroupExpansion interface{}
+
+type NetworkSecurityPartnerSSEGatewayExpansion interface{}
 
 type NetworkSecurityPartnerSSERealmExpansion interface{}
 

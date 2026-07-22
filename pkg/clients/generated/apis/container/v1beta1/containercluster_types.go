@@ -510,6 +510,22 @@ type ClusterKubeletConfig struct {
 	/* Control the CPU management policy on the node. */
 	CpuManagerPolicy string `json:"cpuManagerPolicy"`
 
+	/* Percent of disk usage after which image garbage collection is always run. */
+	// +optional
+	ImageGcHighThresholdPercent *int64 `json:"imageGcHighThresholdPercent,omitempty"`
+
+	/* Percent of disk usage before which image garbage collection is never run. Lowest disk usage to garbage collect to. */
+	// +optional
+	ImageGcLowThresholdPercent *int64 `json:"imageGcLowThresholdPercent,omitempty"`
+
+	/* Maximum age an image can be unused before it is garbage collected. */
+	// +optional
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
+
+	/* Minimum age for an unused image before it is garbage collected. */
+	// +optional
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +optional
 	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`
@@ -778,6 +794,10 @@ type ClusterNodeConfig struct {
 	// +optional
 	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
+	/* The resource manager tags (a map of key/value pairs) to be applied to GKE nodes. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}. */
+	// +optional
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+
 	/* Immutable. Sandbox configuration for this node. */
 	// +optional
 	SandboxConfig *ClusterSandboxConfig `json:"sandboxConfig,omitempty"`
@@ -824,6 +844,10 @@ type ClusterNodePoolAutoConfig struct {
 	/* Collection of Compute Engine network tags that can be applied to a node's underlying VM instance. */
 	// +optional
 	NetworkTags *ClusterNetworkTags `json:"networkTags,omitempty"`
+
+	/* Collection of Resource Manager tags to be applied to GKE Autopilot node pools. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/{tag_value_id}. */
+	// +optional
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
 
 type ClusterNodePoolDefaults struct {
@@ -1153,6 +1177,10 @@ type ContainerClusterSpec struct {
 	/* Immutable.  Description of the cluster. */
 	// +optional
 	Description *string `json:"description,omitempty"`
+
+	/* Whether the cluster disables L4 LB firewall reconciliation. */
+	// +optional
+	DisableL4LbFirewallReconciliation *bool `json:"disableL4LbFirewallReconciliation,omitempty"`
 
 	/* Immutable. Configuration for Cloud DNS for Kubernetes Engine. */
 	// +optional

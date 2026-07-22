@@ -1,5 +1,4 @@
-- caisURL: unknown
-  error: not yet supported
+- caisURL: //logging.googleapis.com/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}
   group: logging.cnrm.cloud.google.com
   kind: LoggingLogBucket
   name: logginglogbucket-${uniqueId}
@@ -11,7 +10,7 @@
   name: logginglink${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //monitoring.googleapis.com/projects/${projectId}/alertPolicies/1783081263530270951
   group: monitoring.cnrm.cloud.google.com
   kind: MonitoringAlertPolicy
   name: monitoringalertpolicy-${uniqueId}
