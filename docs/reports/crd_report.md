@@ -411,6 +411,7 @@
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaConnectCluster                      | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaConsumerGroup                       | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaTopic                               | True         | True        | False  | Direct     | True        |
+| mapsplatformdatasets.cnrm.cloud.google.com    | MapsPlatformDatasetsDataset                     | True         | False       | False  | Direct     | True        |
 | memcache.cnrm.cloud.google.com                | MemcacheInstance                                | False        | True        | False  | Terraform  | False       |
 | memorystore.cnrm.cloud.google.com             | MemorystoreInstanceEndpoint                     | True         | False       | False  | Direct     | True        |
 | memorystore.cnrm.cloud.google.com             | MemorystoreInstance                             | True         | True        | False  | Direct     | True        |
