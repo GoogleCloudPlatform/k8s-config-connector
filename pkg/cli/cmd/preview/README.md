@@ -93,6 +93,20 @@ The summary report contains the following columns:
 
 ## User Instructions & Execution Methods
 
+### Listing Available Versions
+
+To list recent container image versions:
+```bash
+gcloud container images list-tags gcr.io/gke-release/cnrm/config-connector-cli --sort-by=~TIMESTAMP --limit=10
+```
+
+To list recent Git release tags:
+```bash
+git tag -l "v*" --sort=-v:refname | head -n 20
+```
+
+---
+
 ### Method 1: Build & Run from Local Source
 
 Recommended for developers testing against a specific local or release branch.
@@ -105,9 +119,10 @@ Recommended for developers testing against a specific local or release branch.
 
 2. **Check Out Target Version & Build**:
    ```bash
+   VERSION="1.153.0"
    git clone https://github.com/GoogleCloudPlatform/k8s-config-connector.git
    cd k8s-config-connector
-   git checkout tags/v1.153.0   # Or your target release branch
+   git checkout tags/v${VERSION}   # Or your target release branch
    go build -o config-connector ./cmd/config-connector
    ```
 
@@ -131,6 +146,7 @@ Recommended for administrators who want to run the pre-built release container w
 
 2. **Run Container Image**:
    ```bash
+   VERSION="1.153.0"
    mkdir -p reports
    docker run --rm -it \
      --net=host \
@@ -143,7 +159,7 @@ Recommended for administrators who want to run the pre-built release container w
      -v $(pwd)/reports:/configconnector/reports \
      -e KUBECONFIG=/configconnector/.kube/config \
      -e GOOGLE_APPLICATION_CREDENTIALS=/configconnector/.config/gcloud/application_default_credentials.json \
-     gcr.io/gke-release/cnrm/config-connector-cli:1.153.0 \
+     gcr.io/gke-release/cnrm/config-connector-cli:${VERSION} \
      preview --kubeconfig=/configconnector/.kube/config --report-prefix=/configconnector/reports/preview-report
    ```
 
@@ -218,7 +234,6 @@ spec:
 
 #### 2. Deploy the Job & View Output
 
-##### Option A: View the Summary Report directly in terminal
 ```bash
 # 1. Apply the preview Job
 kubectl apply -f preview-job.yaml
@@ -228,14 +243,4 @@ kubectl wait --for=condition=complete job/preview-job-config-control -n cnrm-sys
 
 # 3. View the generated summary table directly in your terminal
 kubectl logs job/preview-job-config-control -n cnrm-system
-```
-
-##### Option B: Copy Report Files Locally (`kubectl cp`)
-```bash
-# 1. Get the pod name created by the Job
-POD_NAME=$(kubectl get pods -n cnrm-system -l job-name=preview-job-config-control -o jsonpath='{.items[0].metadata.name}')
-
-# 2. Copy the report files from the container workspace to your local directory
-mkdir -p reports
-kubectl cp cnrm-system/${POD_NAME}:workspace/ reports/
 ```
