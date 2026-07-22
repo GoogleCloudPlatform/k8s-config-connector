@@ -1,0 +1,6 @@
+# FilestoreInstance Direct Controller Implementation Journal
+
+## Observations
+1. **LRO Pattern and Post-Reconcile GET**: In accordance with the Direct Controller design guidelines, we implemented the pattern of fetching the fully-populated resource (`GetInstance`) immediately after any creation or update Long-Running Operation (LRO) completes before calling `updateStatus`. This ensures status fields such as `state` and `createTime` are populated with the latest server state instead of being accidentally overwritten by empty or incomplete LRO responses.
+2. **KRM Metadata Label Propagation**: Handled explicit label propagation by synchronizing Kubernetes metadata labels to the GCP `Instance.Labels` field during both `Create` and `Update` reconciliation. This ensures that user-defined metadata labels are propagated to GCP.
+3. **Brownfield Coexistence Validation**: We added `k8s.ReconcilerTypeDirect` to `SupportedControllers` while preserving `k8s.ReconcilerTypeDCL` as the default controller. The test suite automatically verified that the new direct reconciler behaves identically to the DCL controller, updating the mock log, golden object schemas, and generating `_final_object.diff` and `_http_mock.diff` files to verify correctness.
