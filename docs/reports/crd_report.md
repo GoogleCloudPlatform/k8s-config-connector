@@ -555,6 +555,7 @@
 | testing.cnrm.cloud.google.com                 | TestingDeviceSession                            | True         | False       | False  | Direct     | True        |
 | tpu.cnrm.cloud.google.com                     | TPUNode                                         | True         | False       | False  | Terraform  | False       |
 | tpu.cnrm.cloud.google.com                     | TPUVirtualMachine                               | True         | False       | False  | Direct     | True        |
+| transcoder.cnrm.cloud.google.com              | TranscoderJob                                   | True         | False       | False  | Direct     | True        |
 | translate.cnrm.cloud.google.com               | TranslateAdaptiveMtDataset                      | True         | False       | False  | Direct     | True        |
 | vectorsearch.cnrm.cloud.google.com            | VectorSearchCollection                          | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                | VertexAIDataLabelingJob                         | True         | False       | False  | Direct     | True        |

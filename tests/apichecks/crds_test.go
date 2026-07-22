@@ -1089,6 +1089,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
 		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
 		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
+		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
 
 	}
 
