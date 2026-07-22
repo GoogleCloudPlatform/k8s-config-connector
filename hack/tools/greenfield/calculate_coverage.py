@@ -125,6 +125,7 @@ def match_resources(gcp_resources, kcc_resources):
         "cloudbilling": ["billing"],
         "cloudkms": ["kms"],
         "aiplatform": ["aiplatform", "vertexai"],
+        "cloudasset": ["asset"],
     }
 
     for gcp_type, info in gcp_resources.items():
@@ -308,6 +309,7 @@ def main():
         "cloudbilling": ["billing"],
         "cloudkms": ["kms"],
         "aiplatform": ["aiplatform", "vertexai"],
+        "cloudasset": ["asset"],
     }
 
     for key, info in gcp_resources.items():
