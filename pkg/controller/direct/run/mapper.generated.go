@@ -81,6 +81,24 @@ func BinaryAuthorization_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1
 	out.BreakglassJustification = direct.ValueOf(in.BreakglassJustification)
 	return out
 }
+func BuildInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krmrunv1beta1.BuildInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1beta1.BuildInfo{}
+	// MISSING: FunctionTarget
+	// MISSING: SourceLocation
+	return out
+}
+func BuildInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.BuildInfo) *pb.BuildInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildInfo{}
+	// MISSING: FunctionTarget
+	// MISSING: SourceLocation
+	return out
+}
 func BuildInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfoObservedState {
 	if in == nil {
 		return nil
@@ -91,6 +109,24 @@ func BuildInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	return out
 }
 func BuildInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BuildInfoObservedState) *pb.BuildInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildInfo{}
+	out.FunctionTarget = direct.ValueOf(in.FunctionTarget)
+	out.SourceLocation = direct.ValueOf(in.SourceLocation)
+	return out
+}
+func BuildInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krmrunv1beta1.BuildInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1beta1.BuildInfoObservedState{}
+	out.FunctionTarget = direct.LazyPtr(in.GetFunctionTarget())
+	out.SourceLocation = direct.LazyPtr(in.GetSourceLocation())
+	return out
+}
+func BuildInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.BuildInfoObservedState) *pb.BuildInfo {
 	if in == nil {
 		return nil
 	}
@@ -601,6 +637,24 @@ func GrpcAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.GrpcAction) 
 	out.Service = direct.ValueOf(in.Service)
 	return out
 }
+func GrpcAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GRPCAction) *krmrunv1beta1.GrpcAction {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1beta1.GrpcAction{}
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Service = direct.LazyPtr(in.GetService())
+	return out
+}
+func GrpcAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.GrpcAction) *pb.GRPCAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GRPCAction{}
+	out.Port = direct.ValueOf(in.Port)
+	out.Service = direct.ValueOf(in.Service)
+	return out
+}
 func HTTPGetAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.HTTPGetAction) *krm.HTTPGetAction {
 	if in == nil {
 		return nil
@@ -768,6 +822,22 @@ func NodeSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NodeSelec
 	return out
 }
 func NodeSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NodeSelector) *pb.NodeSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeSelector{}
+	out.Accelerator = direct.ValueOf(in.Accelerator)
+	return out
+}
+func NodeSelector_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeSelector) *krmrunv1beta1.NodeSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1beta1.NodeSelector{}
+	out.Accelerator = direct.LazyPtr(in.GetAccelerator())
+	return out
+}
+func NodeSelector_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.NodeSelector) *pb.NodeSelector {
 	if in == nil {
 		return nil
 	}

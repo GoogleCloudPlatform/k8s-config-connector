@@ -31,8 +31,25 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
+func ArrayValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.ArrayValue) *krmfirestorev1alpha1.ArrayValue {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.ArrayValue{}
+	out.Values = direct.Slice_FromProto(mapCtx, in.Values, Value_v1alpha1_FromProto)
+	return out
+}
+func ArrayValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.ArrayValue) *firestorepb.ArrayValue {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.ArrayValue{}
+	out.Values = direct.Slice_ToProto(mapCtx, in.Values, Value_v1alpha1_ToProto)
+	return out
+}
 func DailyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyRecurrence) *krmfirestorev1alpha1.DailyRecurrence {
 	if in == nil {
 		return nil
@@ -89,6 +106,22 @@ func Field_IndexConfig_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.UsesAncestorConfig = direct.ValueOf(in.UsesAncestorConfig)
 	out.AncestorField = direct.ValueOf(in.AncestorField)
 	out.Reverting = direct.ValueOf(in.Reverting)
+	return out
+}
+func Field_TTLConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_TtlConfig) *krmfirestorev1alpha1.Field_TTLConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Field_TTLConfig{}
+	// MISSING: State
+	return out
+}
+func Field_TTLConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_TTLConfig) *pb.Field_TtlConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Field_TtlConfig{}
+	// MISSING: State
 	return out
 }
 func Field_TTLConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_TtlConfig) *krmfirestorev1alpha1.Field_TTLConfigObservedState {
@@ -520,6 +553,116 @@ func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfire
 	// MISSING: Multikey
 	// MISSING: ShardCount
 	return out
+}
+func MapValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.MapValue) *krmfirestorev1alpha1.MapValue {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.MapValue{}
+	// MISSING: Fields
+	return out
+}
+func MapValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.MapValue) *firestorepb.MapValue {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.MapValue{}
+	// MISSING: Fields
+	return out
+}
+func Value_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Value) *krmfirestorev1alpha1.Value {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Value{}
+	out.NullValue = direct.Enum_FromProto(mapCtx, in.GetNullValue())
+	out.BooleanValue = direct.LazyPtr(in.GetBooleanValue())
+	out.IntegerValue = direct.LazyPtr(in.GetIntegerValue())
+	out.DoubleValue = direct.LazyPtr(in.GetDoubleValue())
+	out.TimestampValue = direct.StringTimestamp_FromProto(mapCtx, in.GetTimestampValue())
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.BytesValue = in.GetBytesValue()
+	out.ReferenceValue = direct.LazyPtr(in.GetReferenceValue())
+	out.GeoPointValue = LatLng_v1alpha1_FromProto(mapCtx, in.GetGeoPointValue())
+	out.ArrayValue = ArrayValue_v1alpha1_FromProto(mapCtx, in.GetArrayValue())
+	out.MapValue = MapValue_v1alpha1_FromProto(mapCtx, in.GetMapValue())
+	return out
+}
+func Value_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Value) *firestorepb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Value{}
+	if oneof := Value_NullValue_ToProto(mapCtx, in.NullValue); oneof != nil {
+		out.ValueType = oneof
+	}
+	if oneof := Value_BooleanValue_ToProto(mapCtx, in.BooleanValue); oneof != nil {
+		out.ValueType = oneof
+	}
+	if oneof := Value_IntegerValue_ToProto(mapCtx, in.IntegerValue); oneof != nil {
+		out.ValueType = oneof
+	}
+	if oneof := Value_DoubleValue_ToProto(mapCtx, in.DoubleValue); oneof != nil {
+		out.ValueType = oneof
+	}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.TimestampValue); oneof != nil {
+		out.ValueType = &firestorepb.Value_TimestampValue{TimestampValue: oneof}
+	}
+	if oneof := Value_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.ValueType = oneof
+	}
+	if oneof := Value_BytesValue_ToProto(mapCtx, in.BytesValue); oneof != nil {
+		out.ValueType = oneof
+	}
+	if oneof := Value_ReferenceValue_ToProto(mapCtx, in.ReferenceValue); oneof != nil {
+		out.ValueType = oneof
+	}
+	if oneof := LatLng_v1alpha1_ToProto(mapCtx, in.GeoPointValue); oneof != nil {
+		out.ValueType = &firestorepb.Value_GeoPointValue{GeoPointValue: oneof}
+	}
+	if oneof := ArrayValue_v1alpha1_ToProto(mapCtx, in.ArrayValue); oneof != nil {
+		out.ValueType = &firestorepb.Value_ArrayValue{ArrayValue: oneof}
+	}
+	if oneof := MapValue_v1alpha1_ToProto(mapCtx, in.MapValue); oneof != nil {
+		out.ValueType = &firestorepb.Value_MapValue{MapValue: oneof}
+	}
+	return out
+}
+func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_NullValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_NullValue{NullValue: direct.Enum_ToProto[structpb.NullValue](mapCtx, in)}
+}
+func Value_BooleanValue_ToProto(mapCtx *direct.MapContext, in *bool) *firestorepb.Value_BooleanValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_BooleanValue{BooleanValue: *in}
+}
+func Value_IntegerValue_ToProto(mapCtx *direct.MapContext, in *int64) *firestorepb.Value_IntegerValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_IntegerValue{IntegerValue: *in}
+}
+func Value_DoubleValue_ToProto(mapCtx *direct.MapContext, in *float64) *firestorepb.Value_DoubleValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_DoubleValue{DoubleValue: *in}
+}
+func Value_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_StringValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_StringValue{StringValue: *in}
+}
+func Value_ReferenceValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_ReferenceValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_ReferenceValue{ReferenceValue: *in}
 }
 func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrence {
 	if in == nil {

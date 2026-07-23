@@ -24,7 +24,6 @@
 
 package v1beta1
 
-/* unreachable type AttributeTypeAndValue
 // +kcc:proto=google.cloud.security.privateca.v1.AttributeTypeAndValue
 type AttributeTypeAndValue struct {
 	// The attribute type of the attribute and value pair.
@@ -39,7 +38,6 @@ type AttributeTypeAndValue struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.AttributeTypeAndValue.value
 	Value *string `json:"value,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.CaPool", skipping
 
@@ -295,7 +293,6 @@ type Certificate struct {
 }
 */
 
-/* unreachable type Certificate_RevocationDetails
 // +kcc:proto=google.cloud.security.privateca.v1.Certificate.RevocationDetails
 type Certificate_RevocationDetails struct {
 	// Indicates why a
@@ -310,7 +307,6 @@ type Certificate_RevocationDetails struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.RevocationDetails.revocation_time
 	RevocationTime *string `json:"revocationTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.CertificateAuthority", skipping
 
@@ -478,7 +474,6 @@ type CertificateConfig struct {
 }
 */
 
-/* unreachable type CertificateConfig_KeyID
 // +kcc:proto=google.cloud.security.privateca.v1.CertificateConfig.KeyId
 type CertificateConfig_KeyID struct {
 	// Required. The value of this KeyId encoded in lowercase hexadecimal. This
@@ -486,7 +481,6 @@ type CertificateConfig_KeyID struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateConfig.KeyId.key_id
 	KeyID *string `json:"keyID,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "CertificateConfig_SubjectConfig", skipping
 
@@ -855,14 +849,12 @@ type PublicKey struct {
 }
 */
 
-/* unreachable type RelativeDistinguishedName
 // +kcc:proto=google.cloud.security.privateca.v1.RelativeDistinguishedName
 type RelativeDistinguishedName struct {
 	// Attributes describes the attribute value assertions in the RDN.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.RelativeDistinguishedName.attributes
 	Attributes []AttributeTypeAndValue `json:"attributes,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "Subject", skipping
 
@@ -1044,7 +1036,6 @@ type X509Parameters_CAOptions struct {
 }
 */
 
-/* unreachable type X509Parameters_NameConstraints
 // +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.NameConstraints
 type X509Parameters_NameConstraints struct {
 	// Indicates whether or not the name constraints are marked critical.
@@ -1107,7 +1098,6 @@ type X509Parameters_NameConstraints struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.excluded_uris
 	ExcludedUris []string `json:"excludedUris,omitempty"`
 }
-*/
 
 // +kcc:proto=google.type.Expr
 type Expr struct {

@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
 /* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
 type ListValue struct {

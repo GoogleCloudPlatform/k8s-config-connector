@@ -30,6 +30,40 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AppleDeveloperID_FromProto(mapCtx *direct.MapContext, in *pb.AppleDeveloperId) *krmrecaptchaenterprisev1beta1.AppleDeveloperID {
+	if in == nil {
+		return nil
+	}
+	out := &krmrecaptchaenterprisev1beta1.AppleDeveloperID{}
+	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
+	out.KeyID = direct.LazyPtr(in.GetKeyId())
+	out.TeamID = direct.LazyPtr(in.GetTeamId())
+	return out
+}
+func AppleDeveloperID_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.AppleDeveloperID) *pb.AppleDeveloperId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppleDeveloperId{}
+	out.PrivateKey = direct.ValueOf(in.PrivateKey)
+	out.KeyId = direct.ValueOf(in.KeyID)
+	out.TeamId = direct.ValueOf(in.TeamID)
+	return out
+}
+func ExpressKeySettings_FromProto(mapCtx *direct.MapContext, in *pb.ExpressKeySettings) *krmrecaptchaenterprisev1beta1.ExpressKeySettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmrecaptchaenterprisev1beta1.ExpressKeySettings{}
+	return out
+}
+func ExpressKeySettings_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.ExpressKeySettings) *pb.ExpressKeySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExpressKeySettings{}
+	return out
+}
 func FirewallAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction) *krm.FirewallAction {
 	if in == nil {
 		return nil

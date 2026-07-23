@@ -67,7 +67,6 @@
 
 package v1beta1
 
-/* unreachable type Awsv4Signature
 // +kcc:proto=google.cloud.compute.v1.AWSV4Signature
 type Awsv4Signature struct {
 	// The access key used for s3 bucket authentication. Required for updating or creating a backend that uses AWS v4 signature authentication, but will not be returned as part of the configuration when queried with a REST API GET request. @InputOnly
@@ -86,7 +85,6 @@ type Awsv4Signature struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.origin_region
 	OriginRegion *string `json:"originRegion,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.AcceleratorConfig", skipping
 
@@ -102,7 +100,6 @@ type AcceleratorConfig struct {
 }
 */
 
-/* unreachable type AccessConfig
 // +kcc:proto=google.cloud.compute.v1.AccessConfig
 type AccessConfig struct {
 	// Applies to ipv6AccessConfigs only. The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork.
@@ -147,9 +144,7 @@ type AccessConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AccessConfig.type
 	Type *string `json:"type,omitempty"`
 }
-*/
 
-/* unreachable type AdvancedMachineFeatures
 // +kcc:proto=google.cloud.compute.v1.AdvancedMachineFeatures
 type AdvancedMachineFeatures struct {
 	// Whether to enable nested virtualization or not (default is false).
@@ -177,9 +172,7 @@ type AdvancedMachineFeatures struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.visible_core_count
 	VisibleCoreCount *int32 `json:"visibleCoreCount,omitempty"`
 }
-*/
 
-/* unreachable type AliasIPRange
 // +kcc:proto=google.cloud.compute.v1.AliasIpRange
 type AliasIPRange struct {
 	// The IP alias ranges to allocate for this interface. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. This range may be a single IP address (such as 10.2.3.4), a netmask (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).
@@ -190,9 +183,7 @@ type AliasIPRange struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AliasIpRange.subnetwork_range_name
 	SubnetworkRangeName *string `json:"subnetworkRangeName,omitempty"`
 }
-*/
 
-/* unreachable type AllocationAggregateReservation
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservation
 type AllocationAggregateReservation struct {
 	// [Output only] List of resources currently in use.
@@ -213,18 +204,14 @@ type AllocationAggregateReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservation.workload_type
 	WorkloadType *string `json:"workloadType,omitempty"`
 }
-*/
 
-/* unreachable type AllocationAggregateReservationReservedResourceInfo
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo
 type AllocationAggregateReservationReservedResourceInfo struct {
 	// Properties of accelerator resources in this reservation.
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfo.accelerator
 	Accelerator *AllocationAggregateReservationReservedResourceInfoAccelerator `json:"accelerator,omitempty"`
 }
-*/
 
-/* unreachable type AllocationAggregateReservationReservedResourceInfoAccelerator
 // +kcc:proto=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator
 type AllocationAggregateReservationReservedResourceInfoAccelerator struct {
 	// Number of accelerators of specified type.
@@ -235,9 +222,7 @@ type AllocationAggregateReservationReservedResourceInfoAccelerator struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationAggregateReservationReservedResourceInfoAccelerator.accelerator_type
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
-*/
 
-/* unreachable type AllocationReservationSharingPolicy
 // +kcc:proto=google.cloud.compute.v1.AllocationReservationSharingPolicy
 type AllocationReservationSharingPolicy struct {
 	// Sharing config for all Google Cloud services.
@@ -245,9 +230,7 @@ type AllocationReservationSharingPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationReservationSharingPolicy.service_share_type
 	ServiceShareType *string `json:"serviceShareType,omitempty"`
 }
-*/
 
-/* unreachable type AllocationResourceStatus
 // +kcc:proto=google.cloud.compute.v1.AllocationResourceStatus
 type AllocationResourceStatus struct {
 	// [Output only] Health information for the reservation.
@@ -266,9 +249,7 @@ type AllocationResourceStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatus.specific_sku_allocation
 	SpecificSkuAllocation *AllocationResourceStatusSpecificSkuAllocation `json:"specificSkuAllocation,omitempty"`
 }
-*/
 
-/* unreachable type AllocationResourceStatusHealthInfo
 // +kcc:proto=google.cloud.compute.v1.AllocationResourceStatusHealthInfo
 type AllocationResourceStatusHealthInfo struct {
 	// The number of reservation blocks that are degraded.
@@ -284,9 +265,7 @@ type AllocationResourceStatusHealthInfo struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusHealthInfo.healthy_block_count
 	HealthyBlockCount *int32 `json:"healthyBlockCount,omitempty"`
 }
-*/
 
-/* unreachable type AllocationResourceStatusSpecificSkuAllocation
 // +kcc:proto=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation
 type AllocationResourceStatusSpecificSkuAllocation struct {
 	// ID of the instance template used to populate reservation properties.
@@ -297,7 +276,6 @@ type AllocationResourceStatusSpecificSkuAllocation struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationResourceStatusSpecificSKUAllocation.utilizations
 	Utilizations map[string]int64 `json:"utilizations,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk", skipping
 
@@ -380,7 +358,6 @@ type Allowed struct {
 }
 */
 
-/* unreachable type AttachedDisk
 // +kcc:proto=google.cloud.compute.v1.AttachedDisk
 type AttachedDisk struct {
 	// [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
@@ -460,9 +437,7 @@ type AttachedDisk struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.type
 	Type *string `json:"type,omitempty"`
 }
-*/
 
-/* unreachable type AttachedDiskInitializeParams
 // +kcc:proto=google.cloud.compute.v1.AttachedDiskInitializeParams
 type AttachedDiskInitializeParams struct {
 	// The architecture of the attached disk. Valid values are arm64 or x86_64.
@@ -543,7 +518,6 @@ type AttachedDiskInitializeParams struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.storage_pool
 	StoragePool *string `json:"storagePool,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "Backend", skipping
 
@@ -770,25 +744,20 @@ type BackendBucketCDNPolicyNegativeCachingPolicy struct {
 }
 */
 
-/* unreachable type BackendBucketParams
 // +kcc:proto=google.cloud.compute.v1.BackendBucketParams
 type BackendBucketParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
-*/
 
-/* unreachable type BackendBucketUsedBy
 // +kcc:proto=google.cloud.compute.v1.BackendBucketUsedBy
 type BackendBucketUsedBy struct {
 	// [Output Only] Server-defined URL for UrlMaps referencing that BackendBucket.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendBucketUsedBy.reference
 	Reference *string `json:"reference,omitempty"`
 }
-*/
 
-/* unreachable type BackendCustomMetric
 // +kcc:proto=google.cloud.compute.v1.BackendCustomMetric
 type BackendCustomMetric struct {
 	// If true, the metric data is collected and reported to Cloud Monitoring, but is not used for load balancing.
@@ -803,7 +772,6 @@ type BackendCustomMetric struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendCustomMetric.name
 	Name *string `json:"name,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendService", skipping
 
@@ -1117,7 +1085,6 @@ type BackendServiceConnectionTrackingPolicy struct {
 	TrackingMode *string `json:"trackingMode,omitempty"`
 }
 
-/* unreachable type BackendServiceCustomMetric
 // +kcc:proto=google.cloud.compute.v1.BackendServiceCustomMetric
 type BackendServiceCustomMetric struct {
 	// If true, the metric data is not used for load balancing.
@@ -1128,7 +1095,6 @@ type BackendServiceCustomMetric struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceCustomMetric.name
 	Name *string `json:"name,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.compute.v1.BackendServiceFailoverPolicy
 type BackendServiceFailoverPolicy struct {
@@ -1145,7 +1111,6 @@ type BackendServiceFailoverPolicy struct {
 	FailoverRatio *float32 `json:"failoverRatio,omitempty"`
 }
 
-/* unreachable type BackendServiceHaPolicy
 // +kcc:proto=google.cloud.compute.v1.BackendServiceHAPolicy
 type BackendServiceHaPolicy struct {
 	// Specifies whether fast IP move is enabled, and if so, the mechanism to achieve it. Supported values are: - DISABLED: Fast IP Move is disabled. You can only use the haPolicy.leader API to update the leader. - >GARP_RA: Provides a method to very quickly define a new network endpoint as the leader. This method is faster than updating the leader using the haPolicy.leader API. Fast IP move works as follows: The VM hosting the network endpoint that should become the new leader sends either a Gratuitous ARP (GARP) packet (IPv4) or an ICMPv6 Router Advertisement(RA) packet (IPv6). Google Cloud immediately but temporarily associates the forwarding rule IP address with that VM, and both new and in-flight packets are quickly delivered to that VM. Note the important properties of the Fast IP Move functionality: - The GARP/RA-initiated re-routing stays active for approximately 20 minutes. After triggering fast failover, you must also appropriately set the haPolicy.leader. - The new leader instance should continue to send GARP/RA packets periodically every 10 seconds until at least 10 minutes after updating the haPolicy.leader (but stop immediately if it is no longer the leader). - After triggering a fast failover, we recommend that you wait at least 3 seconds before sending another GARP/RA packet from a different VM instance to avoid race conditions. - Don't send GARP/RA packets from different VM instances at the same time. If multiple instances continue to send GARP/RA packets, traffic might be routed to different destinations in an alternating order. This condition ceases when a single instance issues a GARP/RA packet. - The GARP/RA request always takes priority over the leader API. Using the haPolicy.leader API to change the leader to a different instance will have no effect until the GARP/RA request becomes inactive. - The GARP/RA packets should follow the GARP/RA Packet Specifications.. - When multiple forwarding rules refer to a regional backend service, you need only send a GARP or RA packet for a single forwarding rule virtual IP. The virtual IPs for all forwarding rules targeting the same backend service will also be moved to the sender of the GARP or RA packet. The following are the Fast IP Move limitations (that is, when fastIPMove is not DISABLED): - Multiple forwarding rules cannot use the same IP address if one of them refers to a regional backend service with fastIPMove. - The regional backend service must set the network field, and all NEGs must belong to that network. However, individual NEGs can belong to different subnetworks of that network. - The maximum number of network endpoints across all backends of a backend service with fastIPMove is 32. - The maximum number of backend services with fastIPMove that can have the same network endpoint attached to one of its backends is 64. - The maximum number of backend services with fastIPMove in a VPC in a region is 64. - The network endpoints that are attached to a backend of a backend service with fastIPMove cannot resolve to Gen3+ machines for IPv6. - Traffic directed to the leader by a static route next hop will not be redirected to a new leader by fast failover. Such traffic will only be redirected once an haPolicy.leader update has taken effect. Only traffic to the forwarding rule's virtual IP will be redirected to a new leader by fast failover. haPolicy.fastIPMove can be set only at backend service creation time. Once set, it cannot be updated. By default, fastIpMove is set to DISABLED.
@@ -1157,9 +1122,7 @@ type BackendServiceHaPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHAPolicy.leader
 	Leader *BackendServiceHaPolicyLeader `json:"leader,omitempty"`
 }
-*/
 
-/* unreachable type BackendServiceHaPolicyLeader
 // +kcc:proto=google.cloud.compute.v1.BackendServiceHAPolicyLeader
 type BackendServiceHaPolicyLeader struct {
 	// A fully-qualified URL (starting with https://www.googleapis.com/) of the zonal Network Endpoint Group (NEG) with `GCE_VM_IP` endpoints that the leader is attached to. The leader's backendGroup must already be specified as a backend of this backend service. Removing a backend that is designated as the leader's backendGroup is not permitted.
@@ -1170,16 +1133,13 @@ type BackendServiceHaPolicyLeader struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHAPolicyLeader.network_endpoint
 	NetworkEndpoint *BackendServiceHaPolicyLeaderNetworkEndpoint `json:"networkEndpoint,omitempty"`
 }
-*/
 
-/* unreachable type BackendServiceHaPolicyLeaderNetworkEndpoint
 // +kcc:proto=google.cloud.compute.v1.BackendServiceHAPolicyLeaderNetworkEndpoint
 type BackendServiceHaPolicyLeaderNetworkEndpoint struct {
 	// The name of the VM instance of the leader network endpoint. The instance must already be attached to the NEG specified in the haPolicy.leader.backendGroup. The name must be 1-63 characters long, and comply with RFC1035. Authorization requires the following IAM permission on the specified resource instance: compute.instances.use
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHAPolicyLeaderNetworkEndpoint.instance
 	Instance *string `json:"instance,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceHttpCookie", skipping
 
@@ -1199,7 +1159,6 @@ type BackendServiceHTTPCookie struct {
 }
 */
 
-/* unreachable type BackendServiceIAP
 // +kcc:proto=google.cloud.compute.v1.BackendServiceIAP
 type BackendServiceIAP struct {
 	// Whether the serving infrastructure will authenticate and authorize all incoming requests.
@@ -1218,7 +1177,6 @@ type BackendServiceIAP struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceIAP.oauth2_client_secret_sha256
 	OAUTH2ClientSecretSha256 *string `json:"oauth2ClientSecretSha256,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "BackendServiceLocalityLoadBalancingPolicyConfig", skipping
 
@@ -1280,16 +1238,13 @@ type BackendServiceLogConfig struct {
 }
 */
 
-/* unreachable type BackendServiceParams
 // +kcc:proto=google.cloud.compute.v1.BackendServiceParams
 type BackendServiceParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
-*/
 
-/* unreachable type BackendServiceTLSSettings
 // +kcc:proto=google.cloud.compute.v1.BackendServiceTlsSettings
 type BackendServiceTLSSettings struct {
 	// Reference to the BackendAuthenticationConfig resource from the networksecurity.googleapis.com namespace. Can be used in authenticating TLS connections to the backend, as specified by the authenticationMode field. Can only be specified if authenticationMode is not NONE.
@@ -1304,9 +1259,7 @@ type BackendServiceTLSSettings struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceTlsSettings.subject_alt_names
 	SubjectAltNames []BackendServiceTLSSettingsSubjectAltName `json:"subjectAltNames,omitempty"`
 }
-*/
 
-/* unreachable type BackendServiceTLSSettingsSubjectAltName
 // +kcc:proto=google.cloud.compute.v1.BackendServiceTlsSettingsSubjectAltName
 type BackendServiceTLSSettingsSubjectAltName struct {
 	// The SAN specified as a DNS Name.
@@ -1317,16 +1270,13 @@ type BackendServiceTLSSettingsSubjectAltName struct {
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceTlsSettingsSubjectAltName.uniform_resource_identifier
 	UniformResourceIdentifier *string `json:"uniformResourceIdentifier,omitempty"`
 }
-*/
 
-/* unreachable type BackendServiceUsedBy
 // +kcc:proto=google.cloud.compute.v1.BackendServiceUsedBy
 type BackendServiceUsedBy struct {
 	// [Output Only] Server-defined URL for resources referencing given BackendService like UrlMaps, TargetTcpProxies, TargetSslProxies and ForwardingRule.
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceUsedBy.reference
 	Reference *string `json:"reference,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "CacheKeyPolicy", skipping
 
@@ -1388,7 +1338,6 @@ type CircuitBreakers struct {
 }
 */
 
-/* unreachable type ConfidentialInstanceConfig
 // +kcc:proto=google.cloud.compute.v1.ConfidentialInstanceConfig
 type ConfidentialInstanceConfig struct {
 	// Defines the type of technology used by the confidential instance.
@@ -1400,16 +1349,13 @@ type ConfidentialInstanceConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ConfidentialInstanceConfig.enable_confidential_compute
 	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
 }
-*/
 
-/* unreachable type ConnectionDraining
 // +kcc:proto=google.cloud.compute.v1.ConnectionDraining
 type ConnectionDraining struct {
 	// Configures a duration timeout for existing requests on a removed backend instance. For supported load balancers and protocols, as described in Enabling connection draining.
 	// +kcc:proto:field=google.cloud.compute.v1.ConnectionDraining.draining_timeout_sec
 	DrainingTimeoutSec *int32 `json:"drainingTimeoutSec,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "ConsistentHashLoadBalancerSettings", skipping
 
@@ -1429,7 +1375,6 @@ type ConsistentHashLoadBalancerSettings struct {
 }
 */
 
-/* unreachable type ConsistentHashLoadBalancerSettingsHTTPCookie
 // +kcc:proto=google.cloud.compute.v1.ConsistentHashLoadBalancerSettingsHttpCookie
 type ConsistentHashLoadBalancerSettingsHTTPCookie struct {
 	// Name of the cookie.
@@ -1444,7 +1389,6 @@ type ConsistentHashLoadBalancerSettingsHTTPCookie struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ConsistentHashLoadBalancerSettingsHttpCookie.ttl
 	TTL *Duration `json:"ttl,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.CorsPolicy", skipping
 
@@ -1498,7 +1442,6 @@ type CustomErrorResponsePolicy struct {
 }
 */
 
-/* unreachable type CustomErrorResponsePolicyCustomErrorResponseRule
 // +kcc:proto=google.cloud.compute.v1.CustomErrorResponsePolicyCustomErrorResponseRule
 type CustomErrorResponsePolicyCustomErrorResponseRule struct {
 	// Valid values include: - A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value. - 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599. - 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499. Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy.
@@ -1513,7 +1456,6 @@ type CustomErrorResponsePolicyCustomErrorResponseRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.CustomErrorResponsePolicyCustomErrorResponseRule.path
 	Path *string `json:"path,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.CustomerEncryptionKey", skipping
 
@@ -1541,7 +1483,6 @@ type CustomerEncryptionKey struct {
 }
 */
 
-/* unreachable type Data
 // +kcc:proto=google.cloud.compute.v1.Data
 type Data struct {
 	// [Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).
@@ -1552,7 +1493,6 @@ type Data struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Data.value
 	Value *string `json:"value,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Denied", skipping
 
@@ -1568,7 +1508,6 @@ type Denied struct {
 }
 */
 
-/* unreachable type DeprecationStatus
 // +kcc:proto=google.cloud.compute.v1.DeprecationStatus
 type DeprecationStatus struct {
 	// An optional RFC3339 timestamp on or after which the state of this resource is intended to change to DELETED. This is only informational and the status will not change unless the client explicitly changes it.
@@ -1592,18 +1531,14 @@ type DeprecationStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.DeprecationStatus.state
 	State *string `json:"state,omitempty"`
 }
-*/
 
-/* unreachable type DisplayDevice
 // +kcc:proto=google.cloud.compute.v1.DisplayDevice
 type DisplayDevice struct {
 	// Defines whether the instance has Display enabled.
 	// +kcc:proto:field=google.cloud.compute.v1.DisplayDevice.enable_display
 	EnableDisplay *bool `json:"enableDisplay,omitempty"`
 }
-*/
 
-/* unreachable type DistributionPolicy
 // +kcc:proto=google.cloud.compute.v1.DistributionPolicy
 type DistributionPolicy struct {
 	// The distribution shape to which the group converges either proactively or on resize events (depending on the value set in updatePolicy.instanceRedistributionType).
@@ -1615,16 +1550,13 @@ type DistributionPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.DistributionPolicy.zones
 	Zones []DistributionPolicyZoneConfiguration `json:"zones,omitempty"`
 }
-*/
 
-/* unreachable type DistributionPolicyZoneConfiguration
 // +kcc:proto=google.cloud.compute.v1.DistributionPolicyZoneConfiguration
 type DistributionPolicyZoneConfiguration struct {
 	// The URL of the zone. The zone must exist in the region where the managed instance group is located.
 	// +kcc:proto:field=google.cloud.compute.v1.DistributionPolicyZoneConfiguration.zone
 	Zone *string `json:"zone,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Duration", skipping
 
@@ -1640,7 +1572,6 @@ type Duration struct {
 }
 */
 
-/* unreachable type Expr
 // +kcc:proto=google.cloud.compute.v1.Expr
 type Expr struct {
 	// Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
@@ -1659,7 +1590,6 @@ type Expr struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Expr.title
 	Title *string `json:"title,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.ExternalVpnGateway", skipping
 
@@ -1726,7 +1656,6 @@ type ExternalVPNGatewayInterface struct {
 }
 */
 
-/* unreachable type FileContentBuffer
 // +kcc:proto=google.cloud.compute.v1.FileContentBuffer
 type FileContentBuffer struct {
 	// The raw content in the secure keys file.
@@ -1738,7 +1667,6 @@ type FileContentBuffer struct {
 	// +kcc:proto:field=google.cloud.compute.v1.FileContentBuffer.file_type
 	FileType *string `json:"fileType,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Firewall", skipping
 
@@ -1842,14 +1770,12 @@ type FirewallLogConfig struct {
 }
 */
 
-/* unreachable type FirewallParams
 // +kcc:proto=google.cloud.compute.v1.FirewallParams
 type FirewallParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.FirewallPolicy", skipping
 
@@ -2096,7 +2022,6 @@ type FirewallPolicyRuleMatcherLayer4Config struct {
 }
 */
 
-/* unreachable type FirewallPolicyRuleSecureTag
 // +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleSecureTag
 type FirewallPolicyRuleSecureTag struct {
 	// Name of the secure tag, created with TagManager's TagValue API.
@@ -2108,9 +2033,7 @@ type FirewallPolicyRuleSecureTag struct {
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
 }
-*/
 
-/* unreachable type FixedOrPercent
 // +kcc:proto=google.cloud.compute.v1.FixedOrPercent
 type FixedOrPercent struct {
 	// [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is fixed, then the calculated value is equal to the fixed value. - If the value is a percent, then the calculated value is percent/100 * targetSize. For example, the calculated value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded.
@@ -2125,7 +2048,6 @@ type FixedOrPercent struct {
 	// +kcc:proto:field=google.cloud.compute.v1.FixedOrPercent.percent
 	Percent *int32 `json:"percent,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.ForwardingRule", skipping
 
@@ -2331,7 +2253,6 @@ type GrpcHealthCheck struct {
 }
 */
 
-/* unreachable type GroupMaintenanceInfo
 // +kcc:proto=google.cloud.compute.v1.GroupMaintenanceInfo
 type GroupMaintenanceInfo struct {
 	// Describes number of instances that have ongoing maintenance.
@@ -2367,9 +2288,7 @@ type GroupMaintenanceInfo struct {
 	// +kcc:proto:field=google.cloud.compute.v1.GroupMaintenanceInfo.upcoming_group_maintenance
 	UpcomingGroupMaintenance *UpcomingMaintenance `json:"upcomingGroupMaintenance,omitempty"`
 }
-*/
 
-/* unreachable type GuestOSFeature
 // +kcc:proto=google.cloud.compute.v1.GuestOsFeature
 type GuestOSFeature struct {
 	// The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_LIVE_MIGRATABLE_V2 - SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF - SNP_SVSM_CAPABLE For more information, see Enabling guest operating system features.
@@ -2377,7 +2296,6 @@ type GuestOSFeature struct {
 	// +kcc:proto:field=google.cloud.compute.v1.GuestOsFeature.type
 	Type *string `json:"type,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTP2HealthCheck", skipping
 
@@ -3046,7 +2964,6 @@ type Image struct {
 }
 */
 
-/* unreachable type InitialStateConfig
 // +kcc:proto=google.cloud.compute.v1.InitialStateConfig
 type InitialStateConfig struct {
 	// The Key Database (db).
@@ -3065,7 +2982,6 @@ type InitialStateConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InitialStateConfig.pk
 	Pk *FileContentBuffer `json:"pk,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Instance", skipping
 
@@ -3449,7 +3365,6 @@ type InstanceGroupManager struct {
 }
 */
 
-/* unreachable type InstanceGroupManagerActionsSummary
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerActionsSummary
 type InstanceGroupManagerActionsSummary struct {
 	// [Output Only] The total number of instances in the managed instance group that are scheduled to be abandoned. Abandoning an instance removes it from the managed instance group without deleting it.
@@ -3504,18 +3419,14 @@ type InstanceGroupManagerActionsSummary struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerActionsSummary.verifying
 	Verifying *int32 `json:"verifying,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerAllInstancesConfig
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerAllInstancesConfig
 type InstanceGroupManagerAllInstancesConfig struct {
 	// Properties to set on all instances in the group. You can add or modify properties using the instanceGroupManagers.patch or regionInstanceGroupManagers.patch. After setting allInstancesConfig on the group, you must update the group's instances to apply the configuration. To apply the configuration, set the group's updatePolicy.type field to use proactive updates or use the applyUpdatesToInstances method.
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerAllInstancesConfig.properties
 	Properties *InstancePropertiesPatch `json:"properties,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerAutoHealingPolicy
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerAutoHealingPolicy
 type InstanceGroupManagerAutoHealingPolicy struct {
 	// The URL for the health check that signals autohealing.
@@ -3526,18 +3437,14 @@ type InstanceGroupManagerAutoHealingPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerAutoHealingPolicy.initial_delay_sec
 	InitialDelaySec *int32 `json:"initialDelaySec,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerInstanceFlexibilityPolicy
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerInstanceFlexibilityPolicy
 type InstanceGroupManagerInstanceFlexibilityPolicy struct {
 
 	// TODO: unsupported map type with key string and value message
 
 }
-*/
 
-/* unreachable type InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection
 type InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection struct {
 	// Full machine-type names, e.g. "n1-standard-16".
@@ -3548,9 +3455,7 @@ type InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection.rank
 	Rank *int32 `json:"rank,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerInstanceLifecyclePolicy
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerInstanceLifecyclePolicy
 type InstanceGroupManagerInstanceLifecyclePolicy struct {
 	// The action that a MIG performs on a failed or an unhealthy VM. A VM is marked as unhealthy when the application running on that VM fails a health check. Valid values are - REPAIR (default): MIG automatically repairs a failed or an unhealthy VM by recreating it. For more information, see About repairing VMs in a MIG. - DO_NOTHING: MIG does not repair a failed or an unhealthy VM.
@@ -3563,18 +3468,14 @@ type InstanceGroupManagerInstanceLifecyclePolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerInstanceLifecyclePolicy.force_update_on_repair
 	ForceUpdateOnRepair *string `json:"forceUpdateOnRepair,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerResourcePolicies
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerResourcePolicies
 type InstanceGroupManagerResourcePolicies struct {
 	// The URL of the workload policy that is specified for this managed instance group. It can be a full or partial URL. For example, the following are all valid URLs to a workload policy: - https://www.googleapis.com/compute/v1/projects/project/regions/region /resourcePolicies/resourcePolicy - projects/project/regions/region/resourcePolicies/resourcePolicy - regions/region/resourcePolicies/resourcePolicy
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerResourcePolicies.workload_policy
 	WorkloadPolicy *string `json:"workloadPolicy,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerStandbyPolicy
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStandbyPolicy
 type InstanceGroupManagerStandbyPolicy struct {
 	// Specifies the number of seconds that the MIG should wait to suspend or stop a VM after that VM was created. The initial delay gives the initialization script the time to prepare your VM for a quick scale out. The value of initial delay must be between 0 and 3600 seconds. The default value is 0.
@@ -3586,9 +3487,7 @@ type InstanceGroupManagerStandbyPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStandbyPolicy.mode
 	Mode *string `json:"mode,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerStatus
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatus
 type InstanceGroupManagerStatus struct {
 	// [Output only] Status of all-instances configuration on the group.
@@ -3611,9 +3510,7 @@ type InstanceGroupManagerStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatus.version_target
 	VersionTarget *InstanceGroupManagerStatusVersionTarget `json:"versionTarget,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerStatusAllInstancesConfig
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusAllInstancesConfig
 type InstanceGroupManagerStatusAllInstancesConfig struct {
 	// [Output Only] Current all-instances configuration revision. This value is in RFC3339 text format.
@@ -3624,9 +3521,7 @@ type InstanceGroupManagerStatusAllInstancesConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusAllInstancesConfig.effective
 	Effective *bool `json:"effective,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerStatusStateful
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusStateful
 type InstanceGroupManagerStatusStateful struct {
 	// [Output Only] A bit indicating whether the managed instance group has stateful configuration, that is, if you have configured any items in a stateful policy or in per-instance configs. The group might report that it has no stateful configuration even when there is still some preserved state on a managed instance, for example, if you have deleted all PICs but not yet applied those deletions.
@@ -3637,27 +3532,21 @@ type InstanceGroupManagerStatusStateful struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusStateful.per_instance_configs
 	PerInstanceConfigs *InstanceGroupManagerStatusStatefulPerInstanceConfigs `json:"perInstanceConfigs,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerStatusStatefulPerInstanceConfigs
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusStatefulPerInstanceConfigs
 type InstanceGroupManagerStatusStatefulPerInstanceConfigs struct {
 	// A bit indicating if all of the group's per-instance configurations (listed in the output of a listPerInstanceConfigs API call) have status EFFECTIVE or there are no per-instance-configs.
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusStatefulPerInstanceConfigs.all_effective
 	AllEffective *bool `json:"allEffective,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerStatusVersionTarget
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerStatusVersionTarget
 type InstanceGroupManagerStatusVersionTarget struct {
 	// [Output Only] A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances' target version are specified by version field on Instance Group Manager.
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerStatusVersionTarget.is_reached
 	IsReached *bool `json:"isReached,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerUpdatePolicy
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy
 type InstanceGroupManagerUpdatePolicy struct {
 	// The instance redistribution policy for regional managed instance groups. Valid values are: - PROACTIVE (default): The group attempts to maintain an even distribution of VM instances across zones in the region. - NONE: For non-autoscaled groups, proactive redistribution is disabled.
@@ -3693,9 +3582,7 @@ type InstanceGroupManagerUpdatePolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerUpdatePolicy.type
 	Type *string `json:"type,omitempty"`
 }
-*/
 
-/* unreachable type InstanceGroupManagerVersion
 // +kcc:proto=google.cloud.compute.v1.InstanceGroupManagerVersion
 type InstanceGroupManagerVersion struct {
 	// The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE; in those cases, existing instances are updated until the `targetSize` for this version is reached.
@@ -3710,7 +3597,6 @@ type InstanceGroupManagerVersion struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstanceGroupManagerVersion.target_size
 	TargetSize *FixedOrPercent `json:"targetSize,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "InstanceParams", skipping
 
@@ -3722,7 +3608,6 @@ type InstanceParams struct {
 }
 */
 
-/* unreachable type InstancePropertiesPatch
 // +kcc:proto=google.cloud.compute.v1.InstancePropertiesPatch
 type InstancePropertiesPatch struct {
 	// The label key-value pairs that you want to patch onto the instance.
@@ -3733,7 +3618,6 @@ type InstancePropertiesPatch struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InstancePropertiesPatch.metadata
 	Metadata map[string]string `json:"metadata,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Int64RangeMatch", skipping
 
@@ -3926,7 +3810,6 @@ type InterconnectAttachment struct {
 }
 */
 
-/* unreachable type InterconnectAttachmentConfigurationConstraints
 // +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentConfigurationConstraints
 type InterconnectAttachmentConfigurationConstraints struct {
 	// [Output Only] Whether the attachment's BGP session requires/allows/disallows BGP MD5 authentication. This can take one of the following values: MD5_OPTIONAL, MD5_REQUIRED, MD5_UNSUPPORTED. For example, a Cross-Cloud Interconnect connection to a remote cloud provider that requires BGP MD5 authentication has the interconnectRemoteLocation attachment_configuration_constraints.bgp_md5 field set to MD5_REQUIRED, and that property is propagated to the attachment. Similarly, if BGP MD5 is MD5_UNSUPPORTED, an error is returned if MD5 is requested.
@@ -3938,9 +3821,7 @@ type InterconnectAttachmentConfigurationConstraints struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentConfigurationConstraints.bgp_peer_asn_ranges
 	BGPPeerAsnRanges []InterconnectAttachmentConfigurationConstraintsBGPPeerAsnRange `json:"bgpPeerAsnRanges,omitempty"`
 }
-*/
 
-/* unreachable type InterconnectAttachmentConfigurationConstraintsBGPPeerAsnRange
 // +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentConfigurationConstraintsBgpPeerASNRange
 type InterconnectAttachmentConfigurationConstraintsBGPPeerAsnRange struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentConfigurationConstraintsBgpPeerASNRange.max
@@ -3949,9 +3830,7 @@ type InterconnectAttachmentConfigurationConstraintsBGPPeerAsnRange struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentConfigurationConstraintsBgpPeerASNRange.min
 	Min *uint32 `json:"min,omitempty"`
 }
-*/
 
-/* unreachable type InterconnectAttachmentPartnerMetadata
 // +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentPartnerMetadata
 type InterconnectAttachmentPartnerMetadata struct {
 	// Plain text name of the Interconnect this attachment is connected to, as displayed in the Partner's portal. For instance "Chicago 1". This value may be validated to match approved Partner values.
@@ -3966,18 +3845,14 @@ type InterconnectAttachmentPartnerMetadata struct {
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentPartnerMetadata.portal_url
 	PortalURL *string `json:"portalURL,omitempty"`
 }
-*/
 
-/* unreachable type InterconnectAttachmentPrivateInfo
 // +kcc:proto=google.cloud.compute.v1.InterconnectAttachmentPrivateInfo
 type InterconnectAttachmentPrivateInfo struct {
 	// [Output Only] 802.1q encapsulation tag to be used for traffic between Google and the customer, going to and from this network and region.
 	// +kcc:proto:field=google.cloud.compute.v1.InterconnectAttachmentPrivateInfo.tag8021q
 	Tag8021q *uint32 `json:"tag8021q,omitempty"`
 }
-*/
 
-/* unreachable type Items
 // +kcc:proto=google.cloud.compute.v1.Items
 type Items struct {
 	// Key for the metadata entry. Keys must conform to the following regexp: [a-zA-Z0-9-_]+, and be less than 128 bytes in length. This is reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project.
@@ -3988,9 +3863,7 @@ type Items struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Items.value
 	Value *string `json:"value,omitempty"`
 }
-*/
 
-/* unreachable type LocalDisk
 // +kcc:proto=google.cloud.compute.v1.LocalDisk
 type LocalDisk struct {
 	// Specifies the number of such disks.
@@ -4005,7 +3878,6 @@ type LocalDisk struct {
 	// +kcc:proto:field=google.cloud.compute.v1.LocalDisk.disk_type
 	DiskType *string `json:"diskType,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Metadata", skipping
 
@@ -4238,7 +4110,6 @@ type NetworkEndpointGroup struct {
 }
 */
 
-/* unreachable type NetworkEndpointGroupAppEngine
 // +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupAppEngine
 type NetworkEndpointGroupAppEngine struct {
 	// Optional serving service. The service name is case-sensitive and must be 1-63 characters long. Example value: default, my-service.
@@ -4253,9 +4124,7 @@ type NetworkEndpointGroupAppEngine struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupAppEngine.version
 	Version *string `json:"version,omitempty"`
 }
-*/
 
-/* unreachable type NetworkEndpointGroupCloudFunction
 // +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupCloudFunction
 type NetworkEndpointGroupCloudFunction struct {
 	// A user-defined name of the Cloud Function. The function name is case-sensitive and must be 1-63 characters long. Example value: func1.
@@ -4266,9 +4135,7 @@ type NetworkEndpointGroupCloudFunction struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupCloudFunction.url_mask
 	URLMask *string `json:"urlMask,omitempty"`
 }
-*/
 
-/* unreachable type NetworkEndpointGroupCloudRun
 // +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupCloudRun
 type NetworkEndpointGroupCloudRun struct {
 	// Cloud Run service is the main resource of Cloud Run. The service must be 1-63 characters long, and comply with RFC1035. Example value: "run-service".
@@ -4283,9 +4150,7 @@ type NetworkEndpointGroupCloudRun struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupCloudRun.url_mask
 	URLMask *string `json:"urlMask,omitempty"`
 }
-*/
 
-/* unreachable type NetworkEndpointGroupPSCData
 // +kcc:proto=google.cloud.compute.v1.NetworkEndpointGroupPscData
 type NetworkEndpointGroupPSCData struct {
 	// [Output Only] Address allocated from given subnetwork for PSC. This IP address acts as a VIP for a PSC NEG, allowing it to act as an endpoint in L7 PSC-XLB.
@@ -4305,9 +4170,7 @@ type NetworkEndpointGroupPSCData struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroupPscData.psc_connection_status
 	PSCConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 }
-*/
 
-/* unreachable type NetworkInterface
 // +kcc:proto=google.cloud.compute.v1.NetworkInterface
 type NetworkInterface struct {
 	// An array of configurations for this interface. Currently, only one access config, ONE_TO_ONE_NAT, is supported. If there are no accessConfigs specified, then this instance will have no external internet access.
@@ -4377,16 +4240,13 @@ type NetworkInterface struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkInterface.subnetwork
 	Subnetwork *string `json:"subnetwork,omitempty"`
 }
-*/
 
-/* unreachable type NetworkParams
 // +kcc:proto=google.cloud.compute.v1.NetworkParams
 type NetworkParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.NetworkPeering", skipping
 
@@ -4453,7 +4313,6 @@ type NetworkPeering struct {
 }
 */
 
-/* unreachable type NetworkPeeringConnectionStatus
 // +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatus
 type NetworkPeeringConnectionStatus struct {
 	// The consensus state contains information about the status of update and delete for a consensus peering connection.
@@ -4469,9 +4328,7 @@ type NetworkPeeringConnectionStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.update_strategy
 	UpdateStrategy *string `json:"updateStrategy,omitempty"`
 }
-*/
 
-/* unreachable type NetworkPeeringConnectionStatusConsensusState
 // +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState
 type NetworkPeeringConnectionStatusConsensusState struct {
 	// The status of the delete request.
@@ -4484,9 +4341,7 @@ type NetworkPeeringConnectionStatusConsensusState struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState.update_status
 	UpdateStatus *string `json:"updateStatus,omitempty"`
 }
-*/
 
-/* unreachable type NetworkPeeringConnectionStatusTrafficConfiguration
 // +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration
 type NetworkPeeringConnectionStatusTrafficConfiguration struct {
 	// Whether custom routes are being exported to the peer network.
@@ -4510,18 +4365,14 @@ type NetworkPeeringConnectionStatusTrafficConfiguration struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.stack_type
 	StackType *string `json:"stackType,omitempty"`
 }
-*/
 
-/* unreachable type NetworkPerformanceConfig
 // +kcc:proto=google.cloud.compute.v1.NetworkPerformanceConfig
 type NetworkPerformanceConfig struct {
 	// Check the TotalEgressBandwidthTier enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkPerformanceConfig.total_egress_bandwidth_tier
 	TotalEgressBandwidthTier *string `json:"totalEgressBandwidthTier,omitempty"`
 }
-*/
 
-/* unreachable type NetworkRoutingConfig
 // +kcc:proto=google.cloud.compute.v1.NetworkRoutingConfig
 type NetworkRoutingConfig struct {
 	// Enable comparison of Multi-Exit Discriminators (MED) across routes with different neighbor ASNs when using the STANDARD BGP best path selection algorithm.
@@ -4552,7 +4403,6 @@ type NetworkRoutingConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.routing_mode
 	RoutingMode *string `json:"routingMode,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.NodeGroup", skipping
 
@@ -5016,7 +4866,6 @@ type PathRule struct {
 }
 */
 
-/* unreachable type RawDisk
 // +kcc:proto=google.cloud.compute.v1.RawDisk
 type RawDisk struct {
 	// The format used to encode and transmit the block device, which should be TAR. This is just a container and transmission format and not a runtime format. Provided by the client when the disk image is created.
@@ -5032,7 +4881,6 @@ type RawDisk struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RawDisk.source
 	Source *string `json:"source,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.RequestMirrorPolicy", skipping
 
@@ -5149,7 +4997,6 @@ type Reservation struct {
 }
 */
 
-/* unreachable type ReservationAdvancedDeploymentControl
 // +kcc:proto=google.cloud.compute.v1.ReservationAdvancedDeploymentControl
 type ReservationAdvancedDeploymentControl struct {
 	// Indicates chosen reservation operational mode for the reservation.
@@ -5157,9 +5004,7 @@ type ReservationAdvancedDeploymentControl struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ReservationAdvancedDeploymentControl.reservation_operational_mode
 	ReservationOperationalMode *string `json:"reservationOperationalMode,omitempty"`
 }
-*/
 
-/* unreachable type ReservationAffinity
 // +kcc:proto=google.cloud.compute.v1.ReservationAffinity
 type ReservationAffinity struct {
 	// Specifies the type of reservation from which this instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION, or NO_RESERVATION. See Consuming reserved instances for examples.
@@ -5175,7 +5020,6 @@ type ReservationAffinity struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ReservationAffinity.values
 	Values []string `json:"values,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.ResourcePolicy", skipping
 
@@ -5340,16 +5184,13 @@ type ResourcePolicyInstanceSchedulePolicySchedule struct {
 }
 */
 
-/* unreachable type ResourcePolicyResourceStatus
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatus
 type ResourcePolicyResourceStatus struct {
 	// [Output Only] Specifies a set of output values reffering to the instance_schedule_policy system status. This field should have the same name as corresponding policy field.
 	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatus.instance_schedule_policy
 	InstanceSchedulePolicy *ResourcePolicyResourceStatusInstanceSchedulePolicyStatus `json:"instanceSchedulePolicy,omitempty"`
 }
-*/
 
-/* unreachable type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
 type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus struct {
 	// [Output Only] The last time the schedule successfully ran. The timestamp is an RFC3339 string.
@@ -5360,7 +5201,6 @@ type ResourcePolicyResourceStatusInstanceSchedulePolicyStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus.next_run_start_time
 	NextRunStartTime *string `json:"nextRunStartTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "ResourcePolicySnapshotSchedulePolicy", skipping
 
@@ -5461,7 +5301,6 @@ type ResourcePolicyWeeklyCycleDayOfWeek struct {
 }
 */
 
-/* unreachable type ResourcePolicyWorkloadPolicy
 // +kcc:proto=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy
 type ResourcePolicyWorkloadPolicy struct {
 	// Specifies the topology required to create a partition for VMs that have interconnected GPUs.
@@ -5478,9 +5317,7 @@ type ResourcePolicyWorkloadPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ResourcePolicyWorkloadPolicy.type
 	Type *string `json:"type,omitempty"`
 }
-*/
 
-/* unreachable type ResourceStatus
 // +kcc:proto=google.cloud.compute.v1.ResourceStatus
 type ResourceStatus struct {
 	// [Output Only] The precise location of your instance within the zone's data center, including the block, sub-block, and host. The field is formatted as follows: blockId/subBlockId/hostId.
@@ -5497,9 +5334,7 @@ type ResourceStatus struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatus.upcoming_maintenance
 	UpcomingMaintenance *UpcomingMaintenance `json:"upcomingMaintenance,omitempty"`
 }
-*/
 
-/* unreachable type ResourceStatusPhysicalHostTopology
 // +kcc:proto=google.cloud.compute.v1.ResourceStatusPhysicalHostTopology
 type ResourceStatusPhysicalHostTopology struct {
 	// [Output Only] The ID of the block in which the running instance is located. Instances within the same block experience low network latency.
@@ -5518,16 +5353,13 @@ type ResourceStatusPhysicalHostTopology struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusPhysicalHostTopology.subblock
 	Subblock *string `json:"subblock,omitempty"`
 }
-*/
 
-/* unreachable type ResourceStatusScheduling
 // +kcc:proto=google.cloud.compute.v1.ResourceStatusScheduling
 type ResourceStatusScheduling struct {
 	// Specifies the availability domain to place the instance in. The value must be a number between 1 and the number of availability domains specified in the spread placement policy attached to the instance.
 	// +kcc:proto:field=google.cloud.compute.v1.ResourceStatusScheduling.availability_domain
 	AvailabilityDomain *int32 `json:"availabilityDomain,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Route", skipping
 
@@ -5642,7 +5474,6 @@ type Route struct {
 }
 */
 
-/* unreachable type RouteAsPath
 // +kcc:proto=google.cloud.compute.v1.RouteAsPath
 type RouteAsPath struct {
 	// [Output Only] The AS numbers of the AS Path.
@@ -5654,16 +5485,13 @@ type RouteAsPath struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouteAsPath.path_segment_type
 	PathSegmentType *string `json:"pathSegmentType,omitempty"`
 }
-*/
 
-/* unreachable type RouteParams
 // +kcc:proto=google.cloud.compute.v1.RouteParams
 type RouteParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.RouteParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Router", skipping
 
@@ -5773,7 +5601,6 @@ type RouterBGP struct {
 }
 */
 
-/* unreachable type RouterBGPPeer
 // +kcc:proto=google.cloud.compute.v1.RouterBgpPeer
 type RouterBGPPeer struct {
 	// User-specified flag to indicate which mode to use for advertisement.
@@ -5876,9 +5703,7 @@ type RouterBGPPeer struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeer.router_appliance_instance
 	RouterApplianceInstance *string `json:"routerApplianceInstance,omitempty"`
 }
-*/
 
-/* unreachable type RouterBGPPeerBfd
 // +kcc:proto=google.cloud.compute.v1.RouterBgpPeerBfd
 type RouterBGPPeerBfd struct {
 	// The minimum interval, in milliseconds, between BFD control packets received from the peer router. The actual value is negotiated between the two routers and is equal to the greater of this value and the transmit interval of the other router. If set, this value must be between 1000 and 30000. The default is 1000.
@@ -5898,16 +5723,13 @@ type RouterBGPPeerBfd struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeerBfd.session_initialization_mode
 	SessionInitializationMode *string `json:"sessionInitializationMode,omitempty"`
 }
-*/
 
-/* unreachable type RouterBGPPeerCustomLearnedIPRange
 // +kcc:proto=google.cloud.compute.v1.RouterBgpPeerCustomLearnedIpRange
 type RouterBGPPeerCustomLearnedIPRange struct {
 	// The custom learned route IP address range. Must be a valid CIDR-formatted prefix. If an IP address is provided without a subnet mask, it is interpreted as, for IPv4, a `/32` singular IP address range, and, for IPv6, `/128`.
 	// +kcc:proto:field=google.cloud.compute.v1.RouterBgpPeerCustomLearnedIpRange.range
 	Range *string `json:"range,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.RouterInterface", skipping
 
@@ -5953,7 +5775,6 @@ type RouterInterface struct {
 }
 */
 
-/* unreachable type RouterMd5AuthenticationKey
 // +kcc:proto=google.cloud.compute.v1.RouterMd5AuthenticationKey
 type RouterMd5AuthenticationKey struct {
 	// [Input only] Value of the key. For patch and update calls, it can be skipped to copy the value from the previous configuration. This is allowed if the key with the same name existed before the operation. Maximum length is 80 characters. Can only contain printable ASCII characters.
@@ -5964,7 +5785,6 @@ type RouterMd5AuthenticationKey struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouterMd5AuthenticationKey.name
 	Name *string `json:"name,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.RouterNat", skipping
 
@@ -6065,7 +5885,6 @@ type RouterNAT struct {
 }
 */
 
-/* unreachable type RouterNATLogConfig
 // +kcc:proto=google.cloud.compute.v1.RouterNatLogConfig
 type RouterNATLogConfig struct {
 	// Indicates whether or not to export logs. This is false by default.
@@ -6077,9 +5896,7 @@ type RouterNATLogConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatLogConfig.filter
 	Filter *string `json:"filter,omitempty"`
 }
-*/
 
-/* unreachable type RouterNATRule
 // +kcc:proto=google.cloud.compute.v1.RouterNatRule
 type RouterNATRule struct {
 	// The action to be enforced for traffic that matches this rule.
@@ -6098,9 +5915,7 @@ type RouterNATRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRule.rule_number
 	RuleNumber *uint32 `json:"ruleNumber,omitempty"`
 }
-*/
 
-/* unreachable type RouterNATRuleAction
 // +kcc:proto=google.cloud.compute.v1.RouterNatRuleAction
 type RouterNATRuleAction struct {
 	// A list of URLs of the IP resources used for this NAT rule. These IP addresses must be valid static external IP addresses assigned to the project. This field is used for public NAT.
@@ -6119,9 +5934,7 @@ type RouterNATRuleAction struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRuleAction.source_nat_drain_ranges
 	SourceNATDrainRanges []string `json:"sourceNATDrainRanges,omitempty"`
 }
-*/
 
-/* unreachable type RouterNATSubnetworkToNAT
 // +kcc:proto=google.cloud.compute.v1.RouterNatSubnetworkToNat
 type RouterNATSubnetworkToNAT struct {
 	// URL for the subnetwork resource that will use NAT.
@@ -6137,16 +5950,13 @@ type RouterNATSubnetworkToNAT struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatSubnetworkToNat.source_ip_ranges_to_nat
 	SourceIPRangesToNAT []string `json:"sourceIPRangesToNAT,omitempty"`
 }
-*/
 
-/* unreachable type RouterNATSubnetworkToNat64
 // +kcc:proto=google.cloud.compute.v1.RouterNatSubnetworkToNat64
 type RouterNATSubnetworkToNat64 struct {
 	// URL for the subnetwork resource that will use NAT64.
 	// +kcc:proto:field=google.cloud.compute.v1.RouterNatSubnetworkToNat64.name
 	Name *string `json:"name,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.SSLHealthCheck", skipping
 
@@ -6180,7 +5990,6 @@ type SSLHealthCheck struct {
 }
 */
 
-/* unreachable type Scheduling
 // +kcc:proto=google.cloud.compute.v1.Scheduling
 type Scheduling struct {
 	// Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). You can only set the automatic restart option for standard instances. Preemptible instances cannot be automatically restarted. By default, this is set to true so an instance is automatically restarted if it is terminated by Compute Engine.
@@ -6241,9 +6050,7 @@ type Scheduling struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Scheduling.termination_time
 	TerminationTime *string `json:"terminationTime,omitempty"`
 }
-*/
 
-/* unreachable type SchedulingNodeAffinity
 // +kcc:proto=google.cloud.compute.v1.SchedulingNodeAffinity
 type SchedulingNodeAffinity struct {
 	// Corresponds to the label key of Node resource.
@@ -6259,16 +6066,13 @@ type SchedulingNodeAffinity struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SchedulingNodeAffinity.values
 	Values []string `json:"values,omitempty"`
 }
-*/
 
-/* unreachable type SchedulingOnInstanceStopAction
 // +kcc:proto=google.cloud.compute.v1.SchedulingOnInstanceStopAction
 type SchedulingOnInstanceStopAction struct {
 	// If true, the contents of any attached Local SSD disks will be discarded else, the Local SSD data will be preserved when the instance is stopped at the end of the run duration/termination time.
 	// +kcc:proto:field=google.cloud.compute.v1.SchedulingOnInstanceStopAction.discard_local_ssd
 	DiscardLocalSsd *bool `json:"discardLocalSsd,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.SecurityPolicy", skipping
 
@@ -6370,7 +6174,6 @@ type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig struct {
 }
 */
 
-/* unreachable type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
 type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.auto_deploy_confidence_threshold
@@ -6402,9 +6205,7 @@ type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfi
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig.traffic_granularity_configs
 	TrafficGranularityConfigs []SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig `json:"trafficGranularityConfigs,omitempty"`
 }
-*/
 
-/* unreachable type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
 type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig struct {
 	// If enabled, traffic matching each unique value for the specified type constitutes a separate traffic unit. It can only be set to true if `value` is empty.
@@ -6420,7 +6221,6 @@ type SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfi
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig.value
 	Value *string `json:"value,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "SecurityPolicyAdvancedOptionsConfig", skipping
 
@@ -6454,14 +6254,12 @@ type SecurityPolicyAdvancedOptionsConfigJsonCustomConfig struct {
 }
 */
 
-/* unreachable type SecurityPolicyDdosProtectionConfig
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig
 type SecurityPolicyDdosProtectionConfig struct {
 	// Check the DdosProtection enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyDdosProtectionConfig.ddos_protection
 	DdosProtection *string `json:"ddosProtection,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "SecurityPolicyRecaptchaOptionsConfig", skipping
 
@@ -6574,16 +6372,13 @@ type SecurityPolicyRuleMatcherConfig struct {
 }
 */
 
-/* unreachable type SecurityPolicyRuleMatcherExprOptions
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions
 type SecurityPolicyRuleMatcherExprOptions struct {
 	// reCAPTCHA configuration options to be applied for the rule. If the rule does not evaluate reCAPTCHA tokens, this field has no effect.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptions.recaptcha_options
 	RecaptchaOptions *SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions `json:"recaptchaOptions,omitempty"`
 }
-*/
 
-/* unreachable type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
 type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions struct {
 	// A list of site keys to be used during the validation of reCAPTCHA action-tokens. The provided site keys need to be created from reCAPTCHA API under the same project where the security policy is created.
@@ -6594,9 +6389,7 @@ type SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions.session_token_site_keys
 	SessionTokenSiteKeys []string `json:"sessionTokenSiteKeys,omitempty"`
 }
-*/
 
-/* unreachable type SecurityPolicyRuleNetworkMatcher
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher
 type SecurityPolicyRuleNetworkMatcher struct {
 	// Destination IPv4/IPv6 addresses or CIDR prefixes, in standard text format.
@@ -6631,9 +6424,7 @@ type SecurityPolicyRuleNetworkMatcher struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcher.user_defined_fields
 	UserDefinedFields []SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch `json:"userDefinedFields,omitempty"`
 }
-*/
 
-/* unreachable type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
 type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch struct {
 	// Name of the user-defined field, as given in the definition.
@@ -6644,7 +6435,6 @@ type SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch.values
 	Values []string `json:"values,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "SecurityPolicyRulePreconfiguredWafConfig", skipping
 
@@ -6785,7 +6575,6 @@ type SecurityPolicyRuleRedirectOptions struct {
 }
 */
 
-/* unreachable type SecurityPolicyUserDefinedField
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyUserDefinedField
 type SecurityPolicyUserDefinedField struct {
 	// The base relative to which 'offset' is measured. Possible values are: - IPV4: Points to the beginning of the IPv4 header. - IPV6: Points to the beginning of the IPv6 header. - TCP: Points to the beginning of the TCP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. - UDP: Points to the beginning of the UDP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. required
@@ -6809,7 +6598,6 @@ type SecurityPolicyUserDefinedField struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyUserDefinedField.size
 	Size *int32 `json:"size,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "SecuritySettings", skipping
 
@@ -6839,7 +6627,6 @@ type ServerBinding struct {
 }
 */
 
-/* unreachable type ServiceAccount
 // +kcc:proto=google.cloud.compute.v1.ServiceAccount
 type ServiceAccount struct {
 	// Email address of the service account.
@@ -6850,7 +6637,6 @@ type ServiceAccount struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ServiceAccount.scopes
 	Scopes []string `json:"scopes,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.ServiceAttachment", skipping
 
@@ -7013,7 +6799,6 @@ type ShareSettingsProjectConfig struct {
 }
 */
 
-/* unreachable type ShieldedInstanceConfig
 // +kcc:proto=google.cloud.compute.v1.ShieldedInstanceConfig
 type ShieldedInstanceConfig struct {
 	// Defines whether the instance has integrity monitoring enabled. Enabled by default.
@@ -7028,16 +6813,13 @@ type ShieldedInstanceConfig struct {
 	// +kcc:proto:field=google.cloud.compute.v1.ShieldedInstanceConfig.enable_vtpm
 	EnableVTPM *bool `json:"enableVTPM,omitempty"`
 }
-*/
 
-/* unreachable type ShieldedInstanceIntegrityPolicy
 // +kcc:proto=google.cloud.compute.v1.ShieldedInstanceIntegrityPolicy
 type ShieldedInstanceIntegrityPolicy struct {
 	// Updates the integrity policy baseline using the measurements from the VM instance's most recent boot.
 	// +kcc:proto:field=google.cloud.compute.v1.ShieldedInstanceIntegrityPolicy.update_auto_learn_policy
 	UpdateAutoLearnPolicy *bool `json:"updateAutoLearnPolicy,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Snapshot", skipping
 
@@ -7260,7 +7042,6 @@ type SSLCertificate struct {
 }
 */
 
-/* unreachable type SSLCertificateManagedSSLCertificate
 // +kcc:proto=google.cloud.compute.v1.SslCertificateManagedSslCertificate
 type SSLCertificateManagedSSLCertificate struct {
 	// [Output only] Detailed statuses of the domains specified for managed certificate resource.
@@ -7276,9 +7057,7 @@ type SSLCertificateManagedSSLCertificate struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.status
 	Status *string `json:"status,omitempty"`
 }
-*/
 
-/* unreachable type SSLCertificateSelfManagedSSLCertificate
 // +kcc:proto=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate
 type SSLCertificateSelfManagedSSLCertificate struct {
 	// A local certificate file. The certificate must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
@@ -7289,7 +7068,6 @@ type SSLCertificateSelfManagedSSLCertificate struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate.private_key
 	PrivateKey *string `json:"privateKey,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslPolicy", skipping
 
@@ -7351,15 +7129,12 @@ type SSLPolicy struct {
 }
 */
 
-/* unreachable type StatefulPolicy
 // +kcc:proto=google.cloud.compute.v1.StatefulPolicy
 type StatefulPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.StatefulPolicy.preserved_state
 	PreservedState *StatefulPolicyPreservedState `json:"preservedState,omitempty"`
 }
-*/
 
-/* unreachable type StatefulPolicyPreservedState
 // +kcc:proto=google.cloud.compute.v1.StatefulPolicyPreservedState
 type StatefulPolicyPreservedState struct {
 
@@ -7370,9 +7145,7 @@ type StatefulPolicyPreservedState struct {
 	// TODO: unsupported map type with key string and value message
 
 }
-*/
 
-/* unreachable type StatefulPolicyPreservedStateDiskDevice
 // +kcc:proto=google.cloud.compute.v1.StatefulPolicyPreservedStateDiskDevice
 type StatefulPolicyPreservedStateDiskDevice struct {
 	// These stateful disks will never be deleted during autohealing, update or VM instance recreate operations. This flag is used to configure if the disk should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Note: disks attached in READ_ONLY mode cannot be auto-deleted.
@@ -7380,9 +7153,7 @@ type StatefulPolicyPreservedStateDiskDevice struct {
 	// +kcc:proto:field=google.cloud.compute.v1.StatefulPolicyPreservedStateDiskDevice.auto_delete
 	AutoDelete *string `json:"autoDelete,omitempty"`
 }
-*/
 
-/* unreachable type StatefulPolicyPreservedStateNetworkIP
 // +kcc:proto=google.cloud.compute.v1.StatefulPolicyPreservedStateNetworkIp
 type StatefulPolicyPreservedStateNetworkIP struct {
 	// These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted.
@@ -7390,7 +7161,6 @@ type StatefulPolicyPreservedStateNetworkIP struct {
 	// +kcc:proto:field=google.cloud.compute.v1.StatefulPolicyPreservedStateNetworkIp.auto_delete
 	AutoDelete *string `json:"autoDelete,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Subnetwork", skipping
 
@@ -7556,14 +7326,12 @@ type SubnetworkLogConfig struct {
 }
 */
 
-/* unreachable type SubnetworkParams
 // +kcc:proto=google.cloud.compute.v1.SubnetworkParams
 type SubnetworkParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "SubnetworkSecondaryRange", skipping
 
@@ -7625,7 +7393,6 @@ type TCPHealthCheck struct {
 }
 */
 
-/* unreachable type Tags
 // +kcc:proto=google.cloud.compute.v1.Tags
 type Tags struct {
 	// Specifies a fingerprint for this request, which is essentially a hash of the tags' contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update tags. You must always provide an up-to-date fingerprint hash in order to update or change tags. To see the latest fingerprint, make get() request to the instance.
@@ -7636,7 +7403,6 @@ type Tags struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Tags.items
 	Items []string `json:"items,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.TargetGrpcProxy", skipping
 
@@ -8093,7 +7859,6 @@ type Uint128 struct {
 }
 */
 
-/* unreachable type UpcomingMaintenance
 // +kcc:proto=google.cloud.compute.v1.UpcomingMaintenance
 type UpcomingMaintenance struct {
 	// Indicates if the maintenance can be customer triggered.
@@ -8130,7 +7895,6 @@ type UpcomingMaintenance struct {
 	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
 	WindowStartTime *string `json:"windowStartTime,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.UrlMap", skipping
 
@@ -8236,7 +8000,6 @@ type URLMapTest struct {
 }
 */
 
-/* unreachable type URLMapTestHeader
 // +kcc:proto=google.cloud.compute.v1.UrlMapTestHeader
 type URLMapTestHeader struct {
 	// Header name.
@@ -8247,7 +8010,6 @@ type URLMapTestHeader struct {
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTestHeader.value
 	Value *string `json:"value,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.UrlRewrite", skipping
 
@@ -8452,7 +8214,6 @@ type VPNTunnel struct {
 }
 */
 
-/* unreachable type Warnings
 // +kcc:proto=google.cloud.compute.v1.Warnings
 type Warnings struct {
 	// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
@@ -8468,7 +8229,6 @@ type Warnings struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Warnings.message
 	Message *string `json:"message,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.WeightedBackendService", skipping
 
