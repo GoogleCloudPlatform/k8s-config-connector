@@ -53,6 +53,7 @@ func ReplacePlaceholdersInCAIS(caisYAMLStr string, dir string, createBytes []byt
 	// Normalize placeholders back
 	caisYAMLStr = safeReplaceAll(caisYAMLStr, "puxvndidajatl5i", "${uniqueId}")
 	caisYAMLStr = safeReplaceAll(caisYAMLStr, testgcp.TestSharedReservationsProject.Get(), "${TEST_SHARED_RESERVATIONS_PROJECT}")
+	caisYAMLStr = safeReplaceAll(caisYAMLStr, "mock-default-tenant-id", "default")
 
 	// Context-aware/Directory-specific project ID replacements to preserve original template variable names
 	hasAlloyDBProject := strings.Contains(string(createBytes), "KCC_ALLOYDB_TEST_PROJECT") || strings.Contains(string(depBytes), "KCC_ALLOYDB_TEST_PROJECT")
