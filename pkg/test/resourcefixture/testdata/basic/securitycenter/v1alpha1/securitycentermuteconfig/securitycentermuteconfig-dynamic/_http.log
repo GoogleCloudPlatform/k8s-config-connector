@@ -1,0 +1,175 @@
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-dyn-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "muteConfig \"organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "muteConfig \"organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs?%24alt=json%3Benum-encoding%3Dint&muteConfigId=scmuteconfig-dyn-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=organizations%2F${organizationID}
+
+{
+  "description": "Dynamic SecurityCenterMuteConfig description",
+  "expiryTime": "2028-06-05T12:00:00Z",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"LOW\"",
+  "type": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Dynamic SecurityCenterMuteConfig description",
+  "expiryTime": "2028-06-05T12:00:00Z",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"LOW\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}",
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-dyn-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Dynamic SecurityCenterMuteConfig description",
+  "expiryTime": "2028-06-05T12:00:00Z",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"LOW\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}",
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CexpiryTime%2Cfilter
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: mute_config.name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-dyn-${uniqueId}
+
+{
+  "description": "Updated Dynamic SecurityCenterMuteConfig description",
+  "expiryTime": "2028-06-05T13:00:00Z",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"MEDIUM\"",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}",
+  "type": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Dynamic SecurityCenterMuteConfig description",
+  "expiryTime": "2028-06-05T13:00:00Z",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"MEDIUM\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}",
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-dyn-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Dynamic SecurityCenterMuteConfig description",
+  "expiryTime": "2028-06-05T13:00:00Z",
+  "filter": "category = \"VULNERABILITY\" AND severity = \"MEDIUM\"",
+  "mostRecentEditor": "mock-editor@gcp-mock.iam.gserviceaccount.com",
+  "name": "organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}",
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://securitycenter.googleapis.com/v1/organizations/${organizationID}/muteConfigs/scmuteconfig-dyn-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FmuteConfigs%2Fscmuteconfig-dyn-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
