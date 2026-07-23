@@ -134,23 +134,19 @@ type AttachedClusterError struct {
 }
 */
 
-/* unreachable type AttachedClusterGroup
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterGroup
 type AttachedClusterGroup struct {
 	// Required. The name of the group, e.g. `my-group@domain.com`.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterGroup.group
 	Group *string `json:"group,omitempty"`
 }
-*/
 
-/* unreachable type AttachedClusterUser
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedClusterUser
 type AttachedClusterUser struct {
 	// Required. The name of the user, e.g. `my-gcp-id@gmail.com`.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedClusterUser.username
 	Username *string `json:"username,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "AttachedClustersAuthorization", skipping
 
@@ -223,7 +219,6 @@ type BinaryAuthorization struct {
 }
 */
 
-/* unreachable type CloudMonitoringConfig
 // +kcc:proto=google.cloud.gkemulticloud.v1.CloudMonitoringConfig
 type CloudMonitoringConfig struct {
 	// Enable GKE-native logging and metrics.
@@ -231,7 +226,6 @@ type CloudMonitoringConfig struct {
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.CloudMonitoringConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "Fleet", skipping
 
@@ -306,14 +300,12 @@ type MonitoringConfig struct {
 }
 */
 
-/* unreachable type SecurityPostureConfig
 // +kcc:proto=google.cloud.gkemulticloud.v1.SecurityPostureConfig
 type SecurityPostureConfig struct {
 	// Sets which mode to use for vulnerability scanning.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SecurityPostureConfig.vulnerability_mode
 	VulnerabilityMode *string `json:"vulnerabilityMode,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "WorkloadIdentityConfig", skipping
 

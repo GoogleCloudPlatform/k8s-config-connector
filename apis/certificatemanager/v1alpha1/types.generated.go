@@ -147,7 +147,7 @@ type TrustConfig_TrustStore struct {
 	//  The field is currently not supported if TrustConfig is used for the
 	//  workload certificate feature.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.TrustConfig.TrustStore.intermediate_cas
-	IntermediateCAs []TrustConfig_IntermediateCA `json:"intermediateCAs,omitempty"`
+	IntermediateCas []TrustConfig_IntermediateCA `json:"intermediateCas,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.CertificateIssuanceConfig", skipping

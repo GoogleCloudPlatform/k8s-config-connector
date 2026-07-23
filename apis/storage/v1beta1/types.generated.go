@@ -193,7 +193,6 @@ type Bucket struct {
 }
 */
 
-/* unreachable type Bucket_Autoclass
 // +kcc:proto=google.storage.v1.Bucket.Autoclass
 type Bucket_Autoclass struct {
 	// Enables Autoclass.
@@ -204,18 +203,14 @@ type Bucket_Autoclass struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Autoclass.toggle_time
 	ToggleTime *string `json:"toggleTime,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Billing
 // +kcc:proto=google.storage.v1.Bucket.Billing
 type Bucket_Billing struct {
 	// When set to true, Requester Pays is enabled for this bucket.
 	// +kcc:proto:field=google.storage.v1.Bucket.Billing.requester_pays
 	RequesterPays *bool `json:"requesterPays,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Cors
 // +kcc:proto=google.storage.v1.Bucket.Cors
 type Bucket_Cors struct {
 	// The list of Origins eligible to receive CORS response headers. See
@@ -242,9 +237,7 @@ type Bucket_Cors struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Cors.max_age_seconds
 	MaxAgeSeconds *int32 `json:"maxAgeSeconds,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Encryption
 // +kcc:proto=google.storage.v1.Bucket.Encryption
 type Bucket_Encryption struct {
 	// A Cloud KMS key that will be used to encrypt objects inserted into this
@@ -252,9 +245,7 @@ type Bucket_Encryption struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Encryption.default_kms_key_name
 	DefaultKMSKeyName *string `json:"defaultKMSKeyName,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_IAMConfiguration
 // +kcc:proto=google.storage.v1.Bucket.IamConfiguration
 type Bucket_IAMConfiguration struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.IamConfiguration.uniform_bucket_level_access
@@ -264,9 +255,7 @@ type Bucket_IAMConfiguration struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.IamConfiguration.public_access_prevention
 	PublicAccessPrevention *string `json:"publicAccessPrevention,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_IAMConfiguration_UniformBucketLevelAccess
 // +kcc:proto=google.storage.v1.Bucket.IamConfiguration.UniformBucketLevelAccess
 type Bucket_IAMConfiguration_UniformBucketLevelAccess struct {
 	// If set, access checks only use bucket-level IAM policies or above.
@@ -280,9 +269,7 @@ type Bucket_IAMConfiguration_UniformBucketLevelAccess struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.IamConfiguration.UniformBucketLevelAccess.locked_time
 	LockedTime *string `json:"lockedTime,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Lifecycle
 // +kcc:proto=google.storage.v1.Bucket.Lifecycle
 type Bucket_Lifecycle struct {
 	// A lifecycle management rule, which is made of an action to take and the
@@ -290,9 +277,7 @@ type Bucket_Lifecycle struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Lifecycle.rule
 	Rule []Bucket_Lifecycle_Rule `json:"rule,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Lifecycle_Rule
 // +kcc:proto=google.storage.v1.Bucket.Lifecycle.Rule
 type Bucket_Lifecycle_Rule struct {
 	// The action to take.
@@ -303,9 +288,7 @@ type Bucket_Lifecycle_Rule struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Lifecycle.Rule.condition
 	Condition *Bucket_Lifecycle_Rule_Condition `json:"condition,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Lifecycle_Rule_Action
 // +kcc:proto=google.storage.v1.Bucket.Lifecycle.Rule.Action
 type Bucket_Lifecycle_Rule_Action struct {
 	// Type of the action. Currently, only `Delete`, `SetStorageClass`, and
@@ -318,9 +301,7 @@ type Bucket_Lifecycle_Rule_Action struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Lifecycle.Rule.Action.storage_class
 	StorageClass *string `json:"storageClass,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Lifecycle_Rule_Condition
 // +kcc:proto=google.storage.v1.Bucket.Lifecycle.Rule.Condition
 type Bucket_Lifecycle_Rule_Condition struct {
 	// Age of an object (in days). This condition is satisfied when an
@@ -397,9 +378,7 @@ type Bucket_Lifecycle_Rule_Condition struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Lifecycle.Rule.Condition.matches_suffix
 	MatchesSuffix []string `json:"matchesSuffix,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Logging
 // +kcc:proto=google.storage.v1.Bucket.Logging
 type Bucket_Logging struct {
 	// The destination bucket where the current bucket's logs should be placed.
@@ -410,9 +389,7 @@ type Bucket_Logging struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Logging.log_object_prefix
 	LogObjectPrefix *string `json:"logObjectPrefix,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_RetentionPolicy
 // +kcc:proto=google.storage.v1.Bucket.RetentionPolicy
 type Bucket_RetentionPolicy struct {
 	// Server-determined value that indicates the time from which policy was
@@ -432,18 +409,14 @@ type Bucket_RetentionPolicy struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.RetentionPolicy.retention_period
 	RetentionPeriod *int64 `json:"retentionPeriod,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Versioning
 // +kcc:proto=google.storage.v1.Bucket.Versioning
 type Bucket_Versioning struct {
 	// While set to true, versioning is fully enabled for this bucket.
 	// +kcc:proto:field=google.storage.v1.Bucket.Versioning.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
-*/
 
-/* unreachable type Bucket_Website
 // +kcc:proto=google.storage.v1.Bucket.Website
 type Bucket_Website struct {
 	// If the requested object path is missing, the service will ensure the path
@@ -461,9 +434,7 @@ type Bucket_Website struct {
 	// +kcc:proto:field=google.storage.v1.Bucket.Website.not_found_page
 	NotFoundPage *string `json:"notFoundPage,omitempty"`
 }
-*/
 
-/* unreachable type BucketAccessControl
 // +kcc:proto=google.storage.v1.BucketAccessControl
 type BucketAccessControl struct {
 	// The access permission for the entity.
@@ -517,9 +488,7 @@ type BucketAccessControl struct {
 	// +kcc:proto:field=google.storage.v1.BucketAccessControl.project_team
 	ProjectTeam *ProjectTeam `json:"projectTeam,omitempty"`
 }
-*/
 
-/* unreachable type ObjectAccessControl
 // +kcc:proto=google.storage.v1.ObjectAccessControl
 type ObjectAccessControl struct {
 	// The access permission for the entity.
@@ -581,9 +550,7 @@ type ObjectAccessControl struct {
 	// +kcc:proto:field=google.storage.v1.ObjectAccessControl.project_team
 	ProjectTeam *ProjectTeam `json:"projectTeam,omitempty"`
 }
-*/
 
-/* unreachable type Owner
 // +kcc:proto=google.storage.v1.Owner
 type Owner struct {
 	// The entity, in the form `user-`*userId*.
@@ -594,9 +561,7 @@ type Owner struct {
 	// +kcc:proto:field=google.storage.v1.Owner.entity_id
 	EntityID *string `json:"entityID,omitempty"`
 }
-*/
 
-/* unreachable type ProjectTeam
 // +kcc:proto=google.storage.v1.ProjectTeam
 type ProjectTeam struct {
 	// The project number.
@@ -607,4 +572,3 @@ type ProjectTeam struct {
 	// +kcc:proto:field=google.storage.v1.ProjectTeam.team
 	Team *string `json:"team,omitempty"`
 }
-*/

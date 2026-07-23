@@ -22,7 +22,6 @@
 
 package v1beta1
 
-/* unreachable type AuthProvider
 // +kcc:proto=google.api.AuthProvider
 type AuthProvider struct {
 	// The unique identifier of the auth provider. It will be referred to by
@@ -102,9 +101,7 @@ type AuthProvider struct {
 	// +kcc:proto:field=google.api.AuthProvider.jwt_locations
 	JwtLocations []JwtLocation `json:"jwtLocations,omitempty"`
 }
-*/
 
-/* unreachable type AuthRequirement
 // +kcc:proto=google.api.AuthRequirement
 type AuthRequirement struct {
 	// [id][google.api.AuthProvider.id] from authentication provider.
@@ -134,9 +131,7 @@ type AuthRequirement struct {
 	// +kcc:proto:field=google.api.AuthRequirement.audiences
 	Audiences *string `json:"audiences,omitempty"`
 }
-*/
 
-/* unreachable type Authentication
 // +kcc:proto=google.api.Authentication
 type Authentication struct {
 	// A list of authentication rules that apply to individual API methods.
@@ -149,9 +144,7 @@ type Authentication struct {
 	// +kcc:proto:field=google.api.Authentication.providers
 	Providers []AuthProvider `json:"providers,omitempty"`
 }
-*/
 
-/* unreachable type AuthenticationRule
 // +kcc:proto=google.api.AuthenticationRule
 type AuthenticationRule struct {
 	// Selects the methods to which this rule applies.
@@ -174,9 +167,7 @@ type AuthenticationRule struct {
 	// +kcc:proto:field=google.api.AuthenticationRule.requirements
 	Requirements []AuthRequirement `json:"requirements,omitempty"`
 }
-*/
 
-/* unreachable type Documentation
 // +kcc:proto=google.api.Documentation
 type Documentation struct {
 	// A short description of what the service does. The summary must be plain
@@ -223,9 +214,7 @@ type Documentation struct {
 	// +kcc:proto:field=google.api.Documentation.overview
 	Overview *string `json:"overview,omitempty"`
 }
-*/
 
-/* unreachable type DocumentationRule
 // +kcc:proto=google.api.DocumentationRule
 type DocumentationRule struct {
 	// The selector is a comma-separated list of patterns for any element such as
@@ -249,9 +238,7 @@ type DocumentationRule struct {
 	// +kcc:proto:field=google.api.DocumentationRule.deprecation_description
 	DeprecationDescription *string `json:"deprecationDescription,omitempty"`
 }
-*/
 
-/* unreachable type Endpoint
 // +kcc:proto=google.api.Endpoint
 type Endpoint struct {
 	// The canonical name of this endpoint.
@@ -281,9 +268,7 @@ type Endpoint struct {
 	// +kcc:proto:field=google.api.Endpoint.allow_cors
 	AllowCors *bool `json:"allowCors,omitempty"`
 }
-*/
 
-/* unreachable type JwtLocation
 // +kcc:proto=google.api.JwtLocation
 type JwtLocation struct {
 	// Specifies HTTP header name to extract JWT token.
@@ -309,9 +294,7 @@ type JwtLocation struct {
 	// +kcc:proto:field=google.api.JwtLocation.value_prefix
 	ValuePrefix *string `json:"valuePrefix,omitempty"`
 }
-*/
 
-/* unreachable type LabelDescriptor
 // +kcc:proto=google.api.LabelDescriptor
 type LabelDescriptor struct {
 	// The label key.
@@ -326,9 +309,7 @@ type LabelDescriptor struct {
 	// +kcc:proto:field=google.api.LabelDescriptor.description
 	Description *string `json:"description,omitempty"`
 }
-*/
 
-/* unreachable type MetricRule
 // +kcc:proto=google.api.MetricRule
 type MetricRule struct {
 	// Selects the methods to which this rule applies.
@@ -347,9 +328,7 @@ type MetricRule struct {
 	// +kcc:proto:field=google.api.MetricRule.metric_costs
 	MetricCosts map[string]int64 `json:"metricCosts,omitempty"`
 }
-*/
 
-/* unreachable type MonitoredResourceDescriptor
 // +kcc:proto=google.api.MonitoredResourceDescriptor
 type MonitoredResourceDescriptor struct {
 	// Optional. The resource name of the monitored resource descriptor:
@@ -392,9 +371,7 @@ type MonitoredResourceDescriptor struct {
 	// +kcc:proto:field=google.api.MonitoredResourceDescriptor.launch_stage
 	LaunchStage *string `json:"launchStage,omitempty"`
 }
-*/
 
-/* unreachable type Monitoring
 // +kcc:proto=google.api.Monitoring
 type Monitoring struct {
 	// Monitoring configurations for sending metrics to the producer project.
@@ -415,9 +392,7 @@ type Monitoring struct {
 	// +kcc:proto:field=google.api.Monitoring.consumer_destinations
 	ConsumerDestinations []Monitoring_MonitoringDestination `json:"consumerDestinations,omitempty"`
 }
-*/
 
-/* unreachable type Monitoring_MonitoringDestination
 // +kcc:proto=google.api.Monitoring.MonitoringDestination
 type Monitoring_MonitoringDestination struct {
 	// The monitored resource type. The type must be defined in
@@ -432,9 +407,7 @@ type Monitoring_MonitoringDestination struct {
 	// +kcc:proto:field=google.api.Monitoring.MonitoringDestination.metrics
 	Metrics []string `json:"metrics,omitempty"`
 }
-*/
 
-/* unreachable type OAuthRequirements
 // +kcc:proto=google.api.OAuthRequirements
 type OAuthRequirements struct {
 	// The list of publicly documented OAuth scopes that are allowed access. An
@@ -447,9 +420,7 @@ type OAuthRequirements struct {
 	// +kcc:proto:field=google.api.OAuthRequirements.canonical_scopes
 	CanonicalScopes *string `json:"canonicalScopes,omitempty"`
 }
-*/
 
-/* unreachable type Page
 // +kcc:proto=google.api.Page
 type Page struct {
 	// The name of the page. It will be used as an identity of the page to
@@ -480,9 +451,7 @@ type Page struct {
 	// +kcc:proto:field=google.api.Page.subpages
 	Subpages []Page `json:"subpages,omitempty"`
 }
-*/
 
-/* unreachable type Quota
 // +kcc:proto=google.api.Quota
 type Quota struct {
 	// List of QuotaLimit definitions for the service.
@@ -494,9 +463,7 @@ type Quota struct {
 	// +kcc:proto:field=google.api.Quota.metric_rules
 	MetricRules []MetricRule `json:"metricRules,omitempty"`
 }
-*/
 
-/* unreachable type QuotaLimit
 // +kcc:proto=google.api.QuotaLimit
 type QuotaLimit struct {
 	// Name of the quota limit.
@@ -587,9 +554,7 @@ type QuotaLimit struct {
 	// +kcc:proto:field=google.api.QuotaLimit.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 }
-*/
 
-/* unreachable type Usage
 // +kcc:proto=google.api.Usage
 type Usage struct {
 	// Requirements that must be satisfied before a consumer project can use the
@@ -621,9 +586,7 @@ type Usage struct {
 	// +kcc:proto:field=google.api.Usage.producer_notification_channel
 	ProducerNotificationChannel *string `json:"producerNotificationChannel,omitempty"`
 }
-*/
 
-/* unreachable type UsageRule
 // +kcc:proto=google.api.UsageRule
 type UsageRule struct {
 	// Selects the methods to which this rule applies. Use '*' to indicate all
@@ -646,7 +609,6 @@ type UsageRule struct {
 	// +kcc:proto:field=google.api.UsageRule.skip_service_control
 	SkipServiceControl *bool `json:"skipServiceControl,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "Service", skipping
 
@@ -679,7 +641,6 @@ type Service struct {
 }
 */
 
-/* unreachable type ServiceConfig
 // +kcc:proto=google.api.serviceusage.v1beta1.ServiceConfig
 type ServiceConfig struct {
 	// The DNS address at which this service is available.
@@ -731,7 +692,6 @@ type ServiceConfig struct {
 	// +kcc:proto:field=google.api.serviceusage.v1beta1.ServiceConfig.monitoring
 	Monitoring *Monitoring `json:"monitoring,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "ServiceIdentity", skipping
 
@@ -749,7 +709,6 @@ type ServiceIdentity struct {
 }
 */
 
-/* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
@@ -786,9 +745,7 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
-*/
 
-/* unreachable type API
 // +kcc:proto=google.protobuf.Api
 type API struct {
 	// The fully qualified name of this interface, including package name
@@ -839,9 +796,7 @@ type API struct {
 	// +kcc:proto:field=google.protobuf.Api.syntax
 	Syntax *string `json:"syntax,omitempty"`
 }
-*/
 
-/* unreachable type Method
 // +kcc:proto=google.protobuf.Method
 type Method struct {
 	// The simple name of this method.
@@ -872,9 +827,7 @@ type Method struct {
 	// +kcc:proto:field=google.protobuf.Method.syntax
 	Syntax *string `json:"syntax,omitempty"`
 }
-*/
 
-/* unreachable type Mixin
 // +kcc:proto=google.protobuf.Mixin
 type Mixin struct {
 	// The fully qualified name of the interface which is included.
@@ -886,9 +839,7 @@ type Mixin struct {
 	// +kcc:proto:field=google.protobuf.Mixin.root
 	Root *string `json:"root,omitempty"`
 }
-*/
 
-/* unreachable type Option
 // +kcc:proto=google.protobuf.Option
 type Option struct {
 	// The option's name. For protobuf built-in options (options defined in
@@ -905,9 +856,7 @@ type Option struct {
 	// +kcc:proto:field=google.protobuf.Option.value
 	Value *Any `json:"value,omitempty"`
 }
-*/
 
-/* unreachable type SourceContext
 // +kcc:proto=google.protobuf.SourceContext
 type SourceContext struct {
 	// The path-qualified name of the .proto file that contained the associated
@@ -915,4 +864,3 @@ type SourceContext struct {
 	// +kcc:proto:field=google.protobuf.SourceContext.file_name
 	FileName *string `json:"fileName,omitempty"`
 }
-*/

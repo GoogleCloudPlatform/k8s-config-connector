@@ -217,11 +217,9 @@ type DNSAuthorization struct {
 }
 */
 
-/* unreachable type DNSAuthorization_DNSResourceRecord
 // +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
 type DNSAuthorization_DNSResourceRecord struct {
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.certificatemanager.v1.Certificate", skipping
 
