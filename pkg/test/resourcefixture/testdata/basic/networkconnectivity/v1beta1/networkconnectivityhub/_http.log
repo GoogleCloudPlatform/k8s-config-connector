@@ -88,6 +88,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.Hub",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A sample hub",
+    "exportPsc": false,
     "name": "projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}",
     "policyMode": "PRESET",
     "presetTopology": "MESH",
@@ -119,6 +120,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A sample hub",
+  "exportPsc": false,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -203,11 +205,12 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.Hub",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "An updated sample hub",
+    "exportPsc": false,
     "name": "projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}",
     "policyMode": "PRESET",
     "presetTopology": "MESH",
     "routeTables": [
-      "projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}/routeTables/default"
+      "projects/${projectNumber}/locations/global/hubs/networkconnectivityhub-${uniqueId}/routeTables/default"
     ],
     "state": "ACTIVE",
     "uniqueId": "12345678",
@@ -234,6 +237,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated sample hub",
+  "exportPsc": false,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",

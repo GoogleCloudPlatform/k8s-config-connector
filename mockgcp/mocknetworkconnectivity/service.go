@@ -14,20 +14,22 @@
 
 // +tool:mockgcp-service
 // http.host: networkconnectivity.googleapis.com
-// proto.service: google.cloud.networkconnectivity.v1.HubService
+// proto.service: google.cloud.networkconnectivity.v1.InternalRangeService
 
 package mocknetworkconnectivity
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	pbgen "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -41,6 +43,12 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
+
+	v1                       *internalRanges
+	v1CrossNetworkAutomation *serviceConnectionPolicies
+	v1RegionalEndpoints      *regionalEndpoints
+	v1Hubs                   *hubsServer
+	v1Spokes                 *spokesServer
 }
 
 // New creates a MockService.
@@ -50,6 +58,11 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
+	s.v1 = &internalRanges{MockService: s}
+	s.v1CrossNetworkAutomation = &serviceConnectionPolicies{MockService: s}
+	s.v1RegionalEndpoints = &regionalEndpoints{MockService: s}
+	s.v1Hubs = &hubsServer{MockService: s}
+	s.v1Spokes = &spokesServer{MockService: s}
 	return s
 }
 
@@ -58,32 +71,25 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterProjectsLocationsServiceConnectionPoliciesServerServer(grpcServer, &serviceConnectionPolicies{MockService: s})
-	pb.RegisterProjectsLocationsInternalRangesServerServer(grpcServer, &internalRanges{MockService: s})
-	pb.RegisterProjectsLocationsRegionalEndpointsServerServer(grpcServer, &regionalEndpoints{MockService: s})
-	pb.RegisterProjectsLocationsGlobalHubsServerServer(grpcServer, &hubsServer{MockService: s})
-	pb.RegisterProjectsLocationsSpokesServerServer(grpcServer, &spokesServer{MockService: s})
+	pb.RegisterInternalRangeServiceServer(grpcServer, s.v1)
+	pb.RegisterCrossNetworkAutomationServiceServer(grpcServer, s.v1CrossNetworkAutomation)
+	pbgen.RegisterProjectsLocationsRegionalEndpointsServerServer(grpcServer, s.v1RegionalEndpoints)
+	pbgen.RegisterProjectsLocationsGlobalHubsServerServer(grpcServer, s.v1Hubs)
+	pbgen.RegisterProjectsLocationsSpokesServerServer(grpcServer, s.v1Spokes)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterProjectsLocationsServiceConnectionPoliciesServerHandler,
-		pb.RegisterProjectsLocationsInternalRangesServerHandler,
-		pb.RegisterProjectsLocationsRegionalEndpointsServerHandler,
-		pb.RegisterProjectsLocationsGlobalHubsServerHandler,
-		pb.RegisterProjectsLocationsSpokesServerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	grpcMux.AddService(pb.NewInternalRangeServiceClient(conn))
+	grpcMux.AddService(pb.NewCrossNetworkAutomationServiceClient(conn))
+	grpcMux.AddService(pbgen.NewProjectsLocationsRegionalEndpointsServerClient(conn))
+	grpcMux.AddService(pbgen.NewProjectsLocationsGlobalHubsServerClient(conn))
+	grpcMux.AddService(pbgen.NewProjectsLocationsSpokesServerClient(conn))
+	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
-	return mux, nil
+	return grpcMux, nil
 }
