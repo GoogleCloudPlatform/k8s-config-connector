@@ -100,11 +100,11 @@ func ResourceFilter_FromProto(mapCtx *direct.MapContext, in *pb.ResourceFilter) 
 	for _, scopeStr := range in.GetScopes() {
 		scope := krm.Scope{}
 		if strings.HasPrefix(scopeStr, "projects/") {
-			scope.ProjectRef = &refsv1beta1.ProjectRef{External: strings.TrimPrefix(scopeStr, "projects/")}
+			scope.ProjectRef = &refsv1beta1.ProjectRef{External: scopeStr}
 		} else if strings.HasPrefix(scopeStr, "folders/") {
-			scope.FolderRef = &refsv1beta1.FolderRef{External: strings.TrimPrefix(scopeStr, "folders/")}
+			scope.FolderRef = &refsv1beta1.FolderRef{External: scopeStr}
 		} else if strings.HasPrefix(scopeStr, "organizations/") {
-			scope.OrganizationRef = &refsv1beta1.OrganizationRef{External: strings.TrimPrefix(scopeStr, "organizations/")}
+			scope.OrganizationRef = &refsv1beta1.OrganizationRef{External: scopeStr}
 		}
 		out.ScopeRefs = append(out.ScopeRefs, scope)
 	}
@@ -123,11 +123,23 @@ func ResourceFilter_ToProto(mapCtx *direct.MapContext, in *krm.ResourceFilter) *
 
 	for _, scope := range in.ScopeRefs {
 		if scope.ProjectRef != nil {
-			out.Scopes = append(out.Scopes, "projects/"+scope.ProjectRef.External)
+			external := scope.ProjectRef.External
+			if !strings.HasPrefix(external, "projects/") {
+				external = "projects/" + external
+			}
+			out.Scopes = append(out.Scopes, external)
 		} else if scope.FolderRef != nil {
-			out.Scopes = append(out.Scopes, "folders/"+scope.FolderRef.External)
+			external := scope.FolderRef.External
+			if !strings.HasPrefix(external, "folders/") {
+				external = "folders/" + external
+			}
+			out.Scopes = append(out.Scopes, external)
 		} else if scope.OrganizationRef != nil {
-			out.Scopes = append(out.Scopes, "organizations/"+scope.OrganizationRef.External)
+			external := scope.OrganizationRef.External
+			if !strings.HasPrefix(external, "organizations/") {
+				external = "organizations/" + external
+			}
+			out.Scopes = append(out.Scopes, external)
 		}
 	}
 

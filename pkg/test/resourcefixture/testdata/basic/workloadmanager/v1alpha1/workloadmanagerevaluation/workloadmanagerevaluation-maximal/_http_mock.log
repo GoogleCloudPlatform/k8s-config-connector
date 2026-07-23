@@ -42,7 +42,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
       ".*sql.*"
     ],
     "scopes": [
-      "projects/projects/${projectId}"
+      "projects/${projectId}"
     ]
   },
   "schedule": "0 */1 * * *"
@@ -114,7 +114,7 @@ X-Xss-Protection: 0
         ".*sql.*"
       ],
       "scopes": [
-        "projects/projects/${projectId}"
+        "projects/${projectId}"
       ]
     },
     "resourceStatus": {
@@ -158,7 +158,7 @@ X-Xss-Protection: 0
       ".*sql.*"
     ],
     "scopes": [
-      "projects/projects/${projectId}"
+      "projects/${projectId}"
     ]
   },
   "resourceStatus": {
@@ -190,7 +190,7 @@ X-Goog-Request-Params: evaluation.name=projects%2F${projectId}%2Flocations%2Fus-
       ".*sql-server.*"
     ],
     "scopes": [
-      "projects/projects/${projectId}"
+      "projects/${projectId}"
     ]
   },
   "schedule": "0 */6 * * *"
@@ -262,7 +262,7 @@ X-Xss-Protection: 0
         ".*sql-server.*"
       ],
       "scopes": [
-        "projects/projects/${projectId}"
+        "projects/${projectId}"
       ]
     },
     "resourceStatus": {
@@ -306,7 +306,7 @@ X-Xss-Protection: 0
       ".*sql-server.*"
     ],
     "scopes": [
-      "projects/projects/${projectId}"
+      "projects/${projectId}"
     ]
   },
   "resourceStatus": {

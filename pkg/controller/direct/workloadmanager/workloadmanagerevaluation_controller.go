@@ -286,11 +286,11 @@ func (a *EvaluationAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 		}
 		return false, fmt.Errorf("deleting Evaluation %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Evaluation", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete Evaluation %s: %w", a.id, err)
 	}
+	log.V(2).Info("successfully deleted Evaluation", "name", a.id)
 	return true, nil
 }
