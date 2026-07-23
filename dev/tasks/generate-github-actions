@@ -88,7 +88,7 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
         with:
           fetch-depth: 0
       - name: Free up disk space
@@ -98,7 +98,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v9
+        uses: golangci/golangci-lint-action@ba0d7d2d30d271b5e41010972e01a2708ce6222d # v9.3.0
         with:
           version: v2.9.0
           args: --timeout=20m
@@ -110,7 +110,7 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
@@ -120,7 +120,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@604373da71285a27a30c7ad4f1e3d17d84f26c01 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -140,7 +140,7 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
         with:
           fetch-depth: 0
 EOF
@@ -148,7 +148,7 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
 EOF
     fi
 
@@ -166,7 +166,7 @@ EOF
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: 'google-github-actions/setup-gcloud@26f734c32e911548d772283a19e8b922605f3d86' # v3.0.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -195,7 +195,7 @@ EOF
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@604373da71285a27a30c7ad4f1e3d17d84f26c01 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -251,7 +251,7 @@ jobs:
     if: \${{ contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
@@ -261,7 +261,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@604373da71285a27a30c7ad4f1e3d17d84f26c01 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-crd-equivalence-check
@@ -311,7 +311,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
       - uses: ./dev/actions/cache-go
         with:
           go-version: '1.26'

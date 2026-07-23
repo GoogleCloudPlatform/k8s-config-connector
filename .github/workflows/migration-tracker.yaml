@@ -29,12 +29,12 @@ jobs:
       pull-requests: write  # Crucial to allow the bot to create PRs
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
         with:
           ref: master  # Ensure we run on master
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb0366148be51007bc69501177573d318e38 # v6.3.0
         with:
           python-version: '3.11'
 

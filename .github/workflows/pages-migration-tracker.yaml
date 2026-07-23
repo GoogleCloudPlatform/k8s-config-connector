@@ -38,17 +38,17 @@ jobs:
       id-token: write   # Required for OIDC authentication with Pages
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v6.1.0
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v4.0.0
 
       - name: Prepare site directory structure
         run: |
           # Structure files inside a /migration-tracker subdirectory so Pages hosts it at /migration-tracker
           mkdir -p _site/migration-tracker
           cp -r dev/migration-tracker/* _site/migration-tracker/
-          
+
           # Optional: Add a root redirect so visiting the base URL redirects to /migration-tracker
           cat << 'EOF' > _site/index.html
           <!DOCTYPE html>
@@ -60,10 +60,10 @@ jobs:
           EOF
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0c8f6ccd4660817a4 # v3.0.1
         with:
           path: './_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db9a207fcca951f69048f08b58a4eaf18f63e3 # v4.0.5
