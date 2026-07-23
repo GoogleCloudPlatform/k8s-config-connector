@@ -224,7 +224,6 @@ type IAPSettings struct {
 }
 */
 
-/* unreachable type OAuth2
 // +kcc:proto=google.cloud.iap.v1.OAuth2
 type OAuth2 struct {
 	// The OAuth 2.0 client ID registered in the workforce identity federation
@@ -237,7 +236,6 @@ type OAuth2 struct {
 	// +kcc:proto:field=google.cloud.iap.v1.OAuth2.client_secret
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.iap.v1.OAuthSettings
 type OAuthSettings struct {
@@ -272,7 +270,6 @@ type ReauthSettings struct {
 	PolicyType *string `json:"policyType,omitempty"`
 }
 
-/* unreachable type WorkforceIdentitySettings
 // +kcc:proto=google.cloud.iap.v1.WorkforceIdentitySettings
 type WorkforceIdentitySettings struct {
 	// The workforce pool resources. Only one workforce pool is accepted.
@@ -284,7 +281,6 @@ type WorkforceIdentitySettings struct {
 	// +kcc:proto:field=google.cloud.iap.v1.WorkforceIdentitySettings.oauth2
 	OAUTH2 *OAuth2 `json:"oauth2,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.iap.v1.AccessSettings", skipping
 
@@ -324,7 +320,6 @@ type IAPSettingsObservedState struct {
 }
 */
 
-/* unreachable type OAuth2ObservedState
 // +kcc:observedstate:proto=google.cloud.iap.v1.OAuth2
 type OAuth2ObservedState struct {
 	// Output only. SHA256 hash value for the client secret. This field is
@@ -332,9 +327,7 @@ type OAuth2ObservedState struct {
 	// +kcc:proto:field=google.cloud.iap.v1.OAuth2.client_secret_sha256
 	ClientSecretSha256 *string `json:"clientSecretSha256,omitempty"`
 }
-*/
 
-/* unreachable type WorkforceIdentitySettingsObservedState
 // +kcc:observedstate:proto=google.cloud.iap.v1.WorkforceIdentitySettings
 type WorkforceIdentitySettingsObservedState struct {
 	// OAuth 2.0 settings for IAP to perform OIDC flow with workforce identity
@@ -342,4 +335,3 @@ type WorkforceIdentitySettingsObservedState struct {
 	// +kcc:proto:field=google.cloud.iap.v1.WorkforceIdentitySettings.oauth2
 	OAUTH2 *OAuth2ObservedState `json:"oauth2,omitempty"`
 }
-*/

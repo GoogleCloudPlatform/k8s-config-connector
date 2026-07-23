@@ -22,7 +22,6 @@
 
 package v1alpha1
 
-/* unreachable type ColabImage
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ColabImage
 type ColabImage struct {
 	// Optional. The release name of the NotebookRuntime Colab image, e.g.
@@ -30,7 +29,6 @@ type ColabImage struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ColabImage.release_name
 	ReleaseName *string `json:"releaseName,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "EncryptionSpec", skipping
 
@@ -46,7 +44,6 @@ type EncryptionSpec struct {
 }
 */
 
-/* unreachable type EnvVar
 // +kcc:proto=google.cloud.aiplatform.v1beta1.EnvVar
 type EnvVar struct {
 	// Required. Name of the environment variable. Must be a valid C identifier.
@@ -63,7 +60,6 @@ type EnvVar struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EnvVar.value
 	Value *string `json:"value,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
 type MachineSpec struct {
@@ -326,7 +322,6 @@ type NotebookRuntimeTemplateRef struct {
 }
 */
 
-/* unreachable type NotebookSoftwareConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig
 type NotebookSoftwareConfig struct {
 	// Optional. Google-managed NotebookRuntime colab image.
@@ -341,7 +336,6 @@ type NotebookSoftwareConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.post_startup_script_config
 	PostStartupScriptConfig *PostStartupScriptConfig `json:"postStartupScriptConfig,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.PersistentDiskSpec
 type PersistentDiskSpec struct {
@@ -358,7 +352,6 @@ type PersistentDiskSpec struct {
 	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
 }
 
-/* unreachable type PostStartupScriptConfig
 // +kcc:proto=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig
 type PostStartupScriptConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig.post_startup_script
@@ -370,7 +363,6 @@ type PostStartupScriptConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.PostStartupScriptConfig.post_startup_script_behavior
 	PostStartupScriptBehavior *string `json:"postStartupScriptBehavior,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ReservationAffinity
 type ReservationAffinity struct {
@@ -404,7 +396,6 @@ type ShieldedVMConfig struct {
 	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
-/* unreachable type ColabImageObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ColabImage
 type ColabImageObservedState struct {
 	// Output only. A human-readable description of the specified colab image
@@ -413,7 +404,6 @@ type ColabImageObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ColabImage.description
 	Description *string `json:"description,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookEucConfig
 type NotebookEUCConfigObservedState struct {
@@ -568,11 +558,9 @@ type NotebookRuntimeTemplateObservedState struct {
 }
 */
 
-/* unreachable type NotebookSoftwareConfigObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig
 type NotebookSoftwareConfigObservedState struct {
 	// Optional. Google-managed NotebookRuntime colab image.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.colab_image
 	ColabImage *ColabImageObservedState `json:"colabImage,omitempty"`
 }
-*/

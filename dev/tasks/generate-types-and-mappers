@@ -119,6 +119,7 @@ run_one() {
     local worker_cache
     worker_cache=$(mktemp -d "${GOCACHE_BASE}/worker-XXXXXX")
     export GOCACHE="${worker_cache}"
+    export GOTMPDIR="${worker_cache}"
 
     # Ensure worker cache directory is cleaned up when this worker subshell finishes
     trap 'rm -rf "${worker_cache}"' EXIT

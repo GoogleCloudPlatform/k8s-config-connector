@@ -22,11 +22,9 @@
 
 package v1alpha1
 
-/* unreachable type ResourcePolicyMember
 // +kcc:proto=google.iam.v1.ResourcePolicyMember
 type ResourcePolicyMember struct {
 }
-*/
 
 // +kcc:observedstate:proto=google.iam.v1.ResourcePolicyMember
 type ResourcePolicyMemberObservedState struct {
