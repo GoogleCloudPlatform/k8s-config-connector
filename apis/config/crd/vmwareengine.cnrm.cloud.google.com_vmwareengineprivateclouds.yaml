@@ -1,0 +1,359 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vmwareengineprivateclouds.vmwareengine.cnrm.cloud.google.com
+spec:
+  group: vmwareengine.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VMwareEnginePrivateCloud
+    listKind: VMwareEnginePrivateCloudList
+    plural: vmwareengineprivateclouds
+    shortNames:
+    - gcpvmwareengineprivatecloud
+    - gcpvmwareengineprivateclouds
+    singular: vmwareengineprivatecloud
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VMwareEnginePrivateCloud is the Schema for the VMwareEnginePrivateCloud
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VMwareEnginePrivateCloudSpec defines the desired state of
+              VMwareEnginePrivateCloud
+            properties:
+              description:
+                description: User-provided description for this private cloud.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              managementCluster:
+                description: |-
+                  Required. Input only. The management cluster for this private cloud.
+                   This field is required during creation of the private cloud to provide
+                   details for the default cluster.
+
+                   The following fields can't be changed after private cloud creation:
+                   `ManagementCluster.clusterId`, `ManagementCluster.nodeTypeId`.
+                properties:
+                  clusterID:
+                    description: |-
+                      Required. The user-provided identifier of the new `Cluster`.
+                       The identifier must meet the following requirements:
+
+                       * Only contains 1-63 alphanumeric characters and hyphens
+                       * Begins with an alphabetical character
+                       * Ends with a non-hyphen character
+                       * Not formatted as a UUID
+                       * Complies with [RFC
+                       1034](https://datatracker.ietf.org/doc/html/rfc1034) (section 3.5)
+                    type: string
+                  nodeTypeConfigs:
+                    description: Required. A list of cluster node types in this cluster.
+                    items:
+                      properties:
+                        customCoreCount:
+                          description: Optional. Customized number of cores available
+                            to each node of the type. This number must always be one
+                            of `nodeType.availableCustomCoreCounts`. If zero is provided
+                            max value from `nodeType.availableCustomCoreCounts` will
+                            be used.
+                          format: int32
+                          type: integer
+                        nodeCount:
+                          description: Required. The number of nodes of this type
+                            in the cluster
+                          format: int32
+                          type: integer
+                        nodeTypeID:
+                          description: 'Required. The type of the node. The canonical
+                            identifier of the node type (corresponds to the NodeType).
+                            For example: standard-72.'
+                          type: string
+                      required:
+                      - nodeCount
+                      - nodeTypeID
+                      type: object
+                    type: array
+                required:
+                - clusterID
+                - nodeTypeConfigs
+                type: object
+              networkConfig:
+                description: Required. Network configuration of the private cloud.
+                properties:
+                  managementCIDR:
+                    description: Required. Management CIDR used by VMware management
+                      appliances.
+                    type: string
+                  vmwareEngineNetworkRef:
+                    description: Optional. The name of the VMware Engine network attached
+                      to the private cloud.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed VMwareEngineNetwork
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/vmwareEngineNetworks/{{vmwareenginenetworkID}}".
+                        type: string
+                      name:
+                        description: The name of a VMwareEngineNetwork resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a VMwareEngineNetwork resource.
+                        type: string
+                    type: object
+                required:
+                - managementCIDR
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The VMwareEnginePrivateCloud name. If not given, the
+                  metadata.name will be used.
+                type: string
+              type:
+                description: Optional. Type of the private cloud. Defaults to STANDARD.
+                type: string
+            required:
+            - location
+            - managementCluster
+            - networkConfig
+            - projectRef
+            type: object
+          status:
+            description: VMwareEnginePrivateCloudStatus defines the config connector
+              machine state of VMwareEnginePrivateCloud
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VMwareEnginePrivateCloud resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time of this resource.
+                    type: string
+                  deleteTime:
+                    description: Output only. Time when the resource was scheduled
+                      for deletion.
+                    type: string
+                  expireTime:
+                    description: Output only. Time when the resource will be irreversibly
+                      deleted.
+                    type: string
+                  hcx:
+                    description: Output only. HCX appliance.
+                    properties:
+                      fqdn:
+                        description: Fully qualified domain name of the appliance.
+                        type: string
+                      internalIP:
+                        description: Internal IP address of the appliance.
+                        type: string
+                      state:
+                        description: Output only. The state of the appliance.
+                        type: string
+                      version:
+                        description: Version of the appliance.
+                        type: string
+                    type: object
+                  networkConfig:
+                    description: Network configuration of the private cloud.
+                    properties:
+                      dnsServerIP:
+                        description: Output only. DNS Server IP of the Private Cloud.
+                          All DNS queries can be forwarded to this address for name
+                          resolution of Private Cloud's management entities like vCenter,
+                          NSX-T Manager and ESXi hosts.
+                        type: string
+                      managementIPAddressLayoutVersion:
+                        description: 'Output only. The IP address layout version of
+                          the management IP address range. Possible versions include:
+                          * `managementIpAddressLayoutVersion=1`: Indicates the legacy
+                          IP address layout used by some existing private cloudqs.
+                          This is no longer supported for new private clouds as it
+                          does not support all features. * `managementIpAddressLayoutVersion=2`:
+                          Indicates the latest IP address layout used by all newly
+                          created private clouds. This version supports all current
+                          features.'
+                        format: int32
+                        type: integer
+                      vmwareEngineNetworkCanonical:
+                        description: 'Output only. The canonical name of the VMware
+                          Engine network in the form: `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`'
+                        type: string
+                    type: object
+                  nsx:
+                    description: Output only. NSX appliance.
+                    properties:
+                      fqdn:
+                        description: Fully qualified domain name of the appliance.
+                        type: string
+                      internalIP:
+                        description: Internal IP address of the appliance.
+                        type: string
+                      state:
+                        description: Output only. The state of the appliance.
+                        type: string
+                      version:
+                        description: Version of the appliance.
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. State of the resource. New values may
+                      be added to this enum when appropriate.
+                    type: string
+                  uid:
+                    description: Output only. System-generated unique identifier for
+                      the resource.
+                    type: string
+                  updateTime:
+                    description: Output only. Last update time of this resource.
+                    type: string
+                  vcenter:
+                    description: Output only. Vcenter appliance.
+                    properties:
+                      fqdn:
+                        description: Fully qualified domain name of the appliance.
+                        type: string
+                      internalIP:
+                        description: Internal IP address of the appliance.
+                        type: string
+                      state:
+                        description: Output only. The state of the appliance.
+                        type: string
+                      version:
+                        description: Version of the appliance.
+                        type: string
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
