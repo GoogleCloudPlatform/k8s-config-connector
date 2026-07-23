@@ -283,8 +283,8 @@ jobs:
   tests-e2e-fixtures-matrix:
     name: "tests-e2e-fixtures-${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: [prepare-test-matrix, priority-e2e-fixtures]
+    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -312,8 +312,8 @@ jobs:
   tests-e2e-samples-matrix:
     name: "tests-e2e-samples-${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: [prepare-test-matrix, priority-e2e-fixtures]
+    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -379,8 +379,8 @@ jobs:
   tests-scenarios-matrix:
     name: "tests-scenarios-${{ matrix.suite }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: [prepare-test-matrix, priority-e2e-fixtures]
+    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -428,6 +428,12 @@ jobs:
         with:
           name: artifacts-unit-tests
           path: /tmp/artifacts/
+
+      - name: "Cancel workflow on unit-tests failure"
+        if: ${{ failure() }}
+        run: gh run cancel ${{ github.run_id }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
   unit-tests-operator:
