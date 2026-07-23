@@ -90,23 +90,27 @@ func getIdentityFromVertexAICustomJobSpec(ctx context.Context, reader client.Rea
 }
 
 func (obj *VertexAICustomJob) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &VertexAICustomJobIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		return statusIdentity, nil
+	}
+
 	specIdentity, err := getIdentityFromVertexAICustomJobSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		statusIdentity := &VertexAICustomJobIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAICustomJob identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
-	}
-
 	return specIdentity, nil
+}
+
+func NewVertexAICustomJobIdentity(ctx context.Context, reader client.Reader, obj *VertexAICustomJob) (*VertexAICustomJobIdentity, error) {
+	identity, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	return identity.(*VertexAICustomJobIdentity), nil
 }
