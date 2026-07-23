@@ -32,17 +32,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
-${CONTROLLERBUILDER} generate-types \
-  --service mockgcp.cloud.networkconnectivity.v1 \
+go run . generate-types \
+  --service google.cloud.networkconnectivity.v1 \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource NetworkConnectivityInternalRange:InternalRange \
   --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy \
-  --resource NetworkConnectivityRegionalEndpoint:RegionalEndpoint \
   --resource NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig
 
-${CONTROLLERBUILDER} generate-mapper \
-  --service mockgcp.cloud.networkconnectivity.v1 \
+go run . generate-mapper \
+  --service google.cloud.networkconnectivity.v1 \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
