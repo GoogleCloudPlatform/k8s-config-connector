@@ -20,6 +20,9 @@ set -o pipefail
 # Disable core dump file creation during parallel generator execution
 ulimit -c 0 2>/dev/null || true
 
+# Clean up any abandoned /tmp/kcc-gocache-* directories left behind by previous interrupted runs
+rm -rf /tmp/kcc-gocache-* 2>/dev/null || true
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
@@ -112,6 +115,12 @@ echo "Running ${#scripts[@]} generator scripts in parallel with ${NUM_WORKERS} w
 export GOCACHE_BASE="/tmp/kcc-gocache-$$"
 mkdir -p "${GOCACHE_BASE}"
 
+# Guarantee cleanup of GOCACHE_BASE on script completion or interruption (SIGINT, SIGTERM, EXIT)
+cleanup_gocache_base() {
+    rm -rf "${GOCACHE_BASE}" 2>/dev/null || true
+}
+trap cleanup_gocache_base EXIT INT TERM
+
 # Worker function to execute a single generate.sh script in parallel with its own isolated Go build cache
 run_one() {
     local f="$1"
@@ -139,8 +148,8 @@ export GOCACHE_BASE
 # Stream the list of generate.sh paths into xargs -P to process up to NUM_WORKERS scripts concurrently
 printf "%s\n" "${scripts[@]}" | xargs -P "${NUM_WORKERS}" -I {} bash -c 'run_one "$@"' _ {}
 
-# Cleanup parent Go cache directory
-rm -rf "${GOCACHE_BASE}"
+# Clean up parent Go cache directory
+cleanup_gocache_base
 
 # Now we generate CRDs once for all updated packages
 unset SKIP_GENERATE_CRDS
