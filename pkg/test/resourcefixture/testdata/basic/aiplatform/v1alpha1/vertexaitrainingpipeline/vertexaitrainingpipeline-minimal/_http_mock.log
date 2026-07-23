@@ -1,0 +1,250 @@
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = trainingPipeline "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/CreateTrainingPipeline
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "trainingPipeline": {
+    "displayName": "Minimal Training Pipeline",
+    "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}",
+    "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+    "trainingTaskInputs": {
+      "fields": {
+        "workerPoolSpecs": {
+          "listValue": {
+            "values": [
+              {
+                "structValue": {
+                  "fields": {
+                    "containerSpec": {
+                      "structValue": {
+                        "fields": {
+                          "imageUri": {
+                            "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                          }
+                        }
+                      }
+                    },
+                    "machineSpec": {
+                      "structValue": {
+                        "fields": {
+                          "machineType": {
+                            "stringValue": "n1-standard-4"
+                          }
+                        }
+                      }
+                    },
+                    "replicaCount": {
+                      "stringValue": "1"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Training Pipeline",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "PIPELINE_STATE_SUCCEEDED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "fields": {
+      "workerPoolSpecs": {
+        "listValue": {
+          "values": [
+            {
+              "structValue": {
+                "fields": {
+                  "containerSpec": {
+                    "structValue": {
+                      "fields": {
+                        "imageUri": {
+                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                        }
+                      }
+                    }
+                  },
+                  "machineSpec": {
+                    "structValue": {
+                      "fields": {
+                        "machineType": {
+                          "stringValue": "n1-standard-4"
+                        }
+                      }
+                    }
+                  },
+                  "replicaCount": {
+                    "stringValue": "1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Training Pipeline",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "PIPELINE_STATE_SUCCEEDED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "fields": {
+      "workerPoolSpecs": {
+        "listValue": {
+          "values": [
+            {
+              "structValue": {
+                "fields": {
+                  "containerSpec": {
+                    "structValue": {
+                      "fields": {
+                        "imageUri": {
+                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                        }
+                      }
+                    }
+                  },
+                  "machineSpec": {
+                    "structValue": {
+                      "fields": {
+                        "machineType": {
+                          "stringValue": "n1-standard-4"
+                        }
+                      }
+                    }
+                  },
+                  "replicaCount": {
+                    "stringValue": "1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Training Pipeline",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "PIPELINE_STATE_SUCCEEDED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "fields": {
+      "workerPoolSpecs": {
+        "listValue": {
+          "values": [
+            {
+              "structValue": {
+                "fields": {
+                  "containerSpec": {
+                    "structValue": {
+                      "fields": {
+                        "imageUri": {
+                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                        }
+                      }
+                    }
+                  },
+                  "machineSpec": {
+                    "structValue": {
+                      "fields": {
+                        "machineType": {
+                          "stringValue": "n1-standard-4"
+                        }
+                      }
+                    }
+                  },
+                  "replicaCount": {
+                    "stringValue": "1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/DeleteTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
