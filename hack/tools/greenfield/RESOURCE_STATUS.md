@@ -11,7 +11,6 @@ This file tracks the progress of new "Direct" resource implementations.
 
 | Resource | Service | Phase 1 PR | Phase 2 PR | Phase 3 PR | Current Phase | State | RELEASED |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| AIStreamsCluster | aistreams | [#8801](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8801) | [#8792](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8792) | - | 2 | MERGED | - |
 | ApigeeApiProduct | apigee | [#8078](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8078) | [#8078](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8078) | - | 2 | OPEN | - |
 | ApigeeRegistryApi | apigeeregistry | [#8413](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8413) | - | - | 1 | OPEN | X |
 | ApigeeRegistryArtifact | apigeeregistry | [#9298](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9298) | - | - | 1 | OPEN | - |

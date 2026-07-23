@@ -25,7 +25,6 @@ import (
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1beta1"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/aiplatform/v1alpha1"
-	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/aistreams/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/analytics/v1alpha1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigateway/v1alpha1"
@@ -245,7 +244,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	accesscontextmanagerv1beta1.AddToScheme,
 	accesscontextmanagerv1alpha1.AddToScheme,
 	aiplatformv1alpha1.AddToScheme,
-	aistreamsv1alpha1.AddToScheme,
 	alloydbv1beta1.AddToScheme,
 	analyticsv1alpha1.AddToScheme,
 	apigatewayv1alpha1.AddToScheme,

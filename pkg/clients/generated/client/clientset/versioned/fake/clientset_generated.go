@@ -29,8 +29,6 @@ import (
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
 	fakeaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1/fake"
-	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1"
-	fakeaistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1/fake"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	fakealloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1/fake"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
@@ -527,11 +525,6 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 // AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
 func (c *Clientset) AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface {
 	return &fakeaiplatformv1alpha1.FakeAiplatformV1alpha1{Fake: &c.Fake}
-}
-
-// AistreamsV1alpha1 retrieves the AistreamsV1alpha1Client
-func (c *Clientset) AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface {
-	return &fakeaistreamsv1alpha1.FakeAistreamsV1alpha1{Fake: &c.Fake}
 }
 
 // AlloydbV1beta1 retrieves the AlloydbV1beta1Client

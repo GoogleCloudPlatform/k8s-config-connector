@@ -15,6 +15,10 @@
     {
       "pattern": ".*cloudasset.*/Feed$",
       "reason": "Already implemented as hierarchical variants (ProjectFeed, FolderFeed, etc.)."
+    },
+    {
+      "pattern": "^aistreams\\.googleapis\\.com/.*",
+      "reason": "AIStreams is a partner API, not a public GCP cloud API."
     }
   ]
 }
