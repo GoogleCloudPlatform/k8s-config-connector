@@ -1,0 +1,102 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: review-reminder
+
+on:
+  schedule:
+    # Run twice daily at 9:00 AM and 2:00 PM UTC
+    - cron: '0 9,14 * * *'
+  workflow_dispatch:
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # Required for Workload Identity OIDC token exchange
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: master
+
+      - name: Authenticate to GCP via Workload Identity Federation
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER || 'projects/123456789/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider' }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT || 'kcc-review-reminder-sa@cnrm-eap.iam.gserviceaccount.com' }}
+          access_token_scopes: 'https://www.googleapis.com/auth/gmail.send'
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+
+      - name: Gather open PRs and send email via Gmail API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 -c '
+          import os, subprocess, json, urllib.request, email.message, base64
+
+          team_users = ["acpana", "anfernee", "anhdle-sso", "barney-s", "gemmahou", "maqiuyujoyce"]
+          email_sections = []
+          has_prs = False
+
+          for user in team_users:
+              cmd = [
+                  "gh", "pr", "list",
+                  "--repo", "GoogleCloudPlatform/k8s-config-connector",
+                  "--search", f"user-review-requested:{user} state:open",
+                  "--json", "url"
+              ]
+              res = subprocess.run(cmd, capture_output=True, text=True)
+              if res.returncode == 0:
+                  prs = json.loads(res.stdout)
+                  if prs:
+                      has_prs = True
+                      urls = "\n".join(["* " + pr["url"] for pr in prs])
+                      email_sections.append(f"{user}:\n{urls}")
+
+          if not has_prs:
+              print("No open PRs pending review for k8s-config-connector-team. Exiting.")
+              exit(0)
+
+          body = "Hi k8s-config-connector-team,\n\nThis is a friendly reminder of open PRs that need your review:\n\n" + "\n\n".join(email_sections) + "\n"
+
+          msg = email.message.EmailMessage()
+          msg["Subject"] = "[Reminder] Open PRs requiring review for k8s-config-connector-team"
+          msg["From"] = "kcc-bot@google.com"
+          msg["To"] = "kcc-eng@google.com"
+          msg.set_content(body)
+
+          raw_msg = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+
+          access_token = os.environ.get("CLOUDSDK_AUTH_ACCESS_TOKEN")
+          if not access_token:
+              print("CLOUDSDK_AUTH_ACCESS_TOKEN not found. Exiting.")
+              exit(1)
+
+          req = urllib.request.Request(
+              "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+              data=json.dumps({"raw": raw_msg}).encode(),
+              headers={
+                  "Authorization": f"Bearer {access_token}",
+                  "Content-Type": "application/json"
+              }
+          )
+          with urllib.request.urlopen(req) as resp:
+              print("Email sent successfully via Gmail API. Response code:", resp.status)
+          '
