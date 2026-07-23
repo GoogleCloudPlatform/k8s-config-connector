@@ -1,0 +1,214 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: datalabelinginstructions.datalabeling.cnrm.cloud.google.com
+spec:
+  group: datalabeling.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataLabelingInstruction
+    listKind: DataLabelingInstructionList
+    plural: datalabelinginstructions
+    shortNames:
+    - gcpdatalabelinginstruction
+    - gcpdatalabelinginstructions
+    singular: datalabelinginstruction
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DataLabelingInstruction is the Schema for the DataLabelingInstruction
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataLabelingInstructionSpec defines the desired state of
+              DataLabelingInstruction
+            properties:
+              csvInstruction:
+                description: |-
+                  Deprecated: this instruction format is not supported any more.
+                   Instruction from a CSV file, such as for classification task.
+                   The CSV file should have exact two columns, in the following format:
+
+                   * The first column is labeled data, such as an image reference, text.
+                   * The second column is comma separated labels associated with data.
+                properties:
+                  gcsFileURI:
+                    description: CSV file for the instruction. Only gcs path is allowed.
+                    type: string
+                required:
+                - gcsFileURI
+                type: object
+              dataType:
+                description: Required. The data type of this instruction.
+                enum:
+                - DATA_TYPE_UNSPECIFIED
+                - IMAGE
+                - VIDEO
+                - TEXT
+                - GENERAL_DATA
+                type: string
+              description:
+                description: Optional. User-provided description of the instruction.
+                  The description can be up to 10000 characters long.
+                type: string
+              displayName:
+                description: Required. The display name of the instruction. Maximum
+                  of 64 characters.
+                type: string
+              pdfInstruction:
+                description: Instruction from a PDF document. The PDF should be in
+                  a Cloud Storage bucket.
+                properties:
+                  gcsFileURI:
+                    description: PDF file for the instruction. Only gcs path is allowed.
+                    type: string
+                required:
+                - gcsFileURI
+                type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DataLabelingInstruction name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - dataType
+            - displayName
+            - projectRef
+            type: object
+          status:
+            description: DataLabelingInstructionStatus defines the config connector
+              machine state of DataLabelingInstruction
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataLabelingInstruction resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  blockingResources:
+                    description: Output only. The names of any related resources that
+                      are blocking changes to the instruction.
+                    items:
+                      type: string
+                    type: array
+                  createTime:
+                    description: Output only. Creation time of instruction.
+                    type: string
+                  updateTime:
+                    description: Output only. Last update time of instruction.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

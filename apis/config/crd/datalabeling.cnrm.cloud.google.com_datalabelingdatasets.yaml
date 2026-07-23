@@ -1,0 +1,251 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: datalabelingdatasets.datalabeling.cnrm.cloud.google.com
+spec:
+  group: datalabeling.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataLabelingDataset
+    listKind: DataLabelingDatasetList
+    plural: datalabelingdatasets
+    shortNames:
+    - gcpdatalabelingdataset
+    - gcpdatalabelingdatasets
+    singular: datalabelingdataset
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DataLabelingDataset is the Schema for the DataLabelingDataset
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataLabelingDatasetSpec defines the desired state of DataLabelingDataset
+            properties:
+              description:
+                description: Optional. User-provided description of the annotation
+                  specification set. The description can be up to 10000 characters
+                  long.
+                type: string
+              displayName:
+                description: Required. The display name of the dataset. Maximum of
+                  64 characters.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DataLabelingDataset name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - displayName
+            - projectRef
+            type: object
+          status:
+            description: DataLabelingDatasetStatus defines the config connector machine
+              state of DataLabelingDataset
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataLabelingDataset resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  blockingResources:
+                    description: Output only. The names of any related resources that
+                      are blocking changes to the dataset.
+                    items:
+                      type: string
+                    type: array
+                  createTime:
+                    description: Output only. Time the dataset is created.
+                    type: string
+                  dataItemCount:
+                    description: Output only. The number of data items in the dataset.
+                    format: int64
+                    type: integer
+                  inputConfigs:
+                    description: Output only. This is populated with the original
+                      input configs where ImportData is called. It is available only
+                      after the clients import data to this dataset.
+                    items:
+                      properties:
+                        annotationType:
+                          description: Optional. The type of annotation to be performed
+                            on this data. You must specify this field if you are using
+                            this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
+                          type: string
+                        bigquerySource:
+                          description: Source located in BigQuery. You must specify
+                            this field if you are using this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
+                          properties:
+                            inputURI:
+                              description: |-
+                                Required. BigQuery URI to a table, up to 2,000 characters long. If you
+                                 specify the URI of a table that does not exist, Data Labeling Service
+                                 creates a table at the URI with the correct schema when you create your
+                                 [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob]. If you specify the URI of a table that already exists,
+                                 it must have the
+                                 [correct
+                                 schema](/ml-engine/docs/continuous-evaluation/create-job#table-schema).
+
+                                 Provide the table URI in the following format:
+
+                                 "bq://<var>{your_project_id}</var>/<var>{your_dataset_name}</var>/<var>{your_table_name}</var>"
+
+                                 [Learn
+                                 more](/ml-engine/docs/continuous-evaluation/create-job#table-schema).
+                              type: string
+                          type: object
+                        classificationMetadata:
+                          description: Optional. Metadata about annotations for the
+                            input. You must specify this field if you are using this
+                            InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob]
+                            for a model version that performs classification.
+                          properties:
+                            isMultiLabel:
+                              description: Whether the classification task is multi-label
+                                or not.
+                              type: boolean
+                          type: object
+                        dataType:
+                          description: Required. Data type must be specifed when user
+                            tries to import data.
+                          type: string
+                        gcsSource:
+                          description: Source located in Cloud Storage.
+                          properties:
+                            inputURI:
+                              description: Required. The input URI of source file.
+                                This must be a Cloud Storage path (`gs://...`).
+                              type: string
+                            mimeType:
+                              description: Required. The format of the source file.
+                                Only "text/csv" is supported.
+                              type: string
+                          type: object
+                        textMetadata:
+                          description: Required for text import, as language code
+                            must be specified.
+                          properties:
+                            languageCode:
+                              description: The language of this text, as a [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt).
+                                Default value is en-US.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
