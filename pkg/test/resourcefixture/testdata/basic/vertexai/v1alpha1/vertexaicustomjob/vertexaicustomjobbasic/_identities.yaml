@@ -1,0 +1,6 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAICustomJob
+  name: vertexaicustomjob-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

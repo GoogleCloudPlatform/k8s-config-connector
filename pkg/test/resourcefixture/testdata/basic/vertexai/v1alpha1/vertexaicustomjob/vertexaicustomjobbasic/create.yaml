@@ -1,0 +1,17 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAICustomJob
+metadata:
+  name: vertexaicustomjob-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: custom-job-${uniqueId}
+  jobSpec:
+    workerPoolSpecs:
+    - machineSpec:
+        machineType: n1-standard-4
+      replicaCount: 1
+      containerSpec:
+        imageURI: gcr.io/cloud-aiplatform/training/tf-cpu.2-2:latest
+        args: ["--arg1", "val1"]
