@@ -42,6 +42,10 @@ func (i *MapManagementMapConfigIdentity) String() string {
 	return MapManagementMapConfigIdentityFormat.ToString(*i)
 }
 
+func (i *MapManagementMapConfigIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s", i.Project)
+}
+
 func (i *MapManagementMapConfigIdentity) FromExternal(ref string) error {
 	parsed, match, err := MapManagementMapConfigIdentityFormat.Parse(ref)
 	if err != nil {
