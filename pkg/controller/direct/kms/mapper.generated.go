@@ -30,6 +30,99 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CryptoKeyVersion_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKeyVersion) *krm.CryptoKeyVersion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CryptoKeyVersion{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: ProtectionLevel
+	// MISSING: Algorithm
+	// MISSING: Attestation
+	// MISSING: CreateTime
+	// MISSING: GenerateTime
+	// MISSING: DestroyTime
+	// MISSING: DestroyEventTime
+	// MISSING: ImportJob
+	// MISSING: ImportTime
+	// MISSING: ImportFailureReason
+	// MISSING: GenerationFailureReason
+	// MISSING: ExternalDestructionFailureReason
+	out.ExternalProtectionLevelOptions = ExternalProtectionLevelOptions_FromProto(mapCtx, in.GetExternalProtectionLevelOptions())
+	// MISSING: ReimportEligible
+	return out
+}
+func CryptoKeyVersion_ToProto(mapCtx *direct.MapContext, in *krm.CryptoKeyVersion) *pb.CryptoKeyVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CryptoKeyVersion{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.CryptoKeyVersion_CryptoKeyVersionState](mapCtx, in.State)
+	// MISSING: ProtectionLevel
+	// MISSING: Algorithm
+	// MISSING: Attestation
+	// MISSING: CreateTime
+	// MISSING: GenerateTime
+	// MISSING: DestroyTime
+	// MISSING: DestroyEventTime
+	// MISSING: ImportJob
+	// MISSING: ImportTime
+	// MISSING: ImportFailureReason
+	// MISSING: GenerationFailureReason
+	// MISSING: ExternalDestructionFailureReason
+	out.ExternalProtectionLevelOptions = ExternalProtectionLevelOptions_ToProto(mapCtx, in.ExternalProtectionLevelOptions)
+	// MISSING: ReimportEligible
+	return out
+}
+func CryptoKeyVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKeyVersion) *krm.CryptoKeyVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CryptoKeyVersionObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ProtectionLevel = direct.Enum_FromProto(mapCtx, in.GetProtectionLevel())
+	out.Algorithm = direct.Enum_FromProto(mapCtx, in.GetAlgorithm())
+	out.Attestation = KeyOperationAttestationObservedState_FromProto(mapCtx, in.GetAttestation())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.GenerateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetGenerateTime())
+	out.DestroyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDestroyTime())
+	out.DestroyEventTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDestroyEventTime())
+	out.ImportJob = direct.LazyPtr(in.GetImportJob())
+	out.ImportTime = direct.StringTimestamp_FromProto(mapCtx, in.GetImportTime())
+	out.ImportFailureReason = direct.LazyPtr(in.GetImportFailureReason())
+	out.GenerationFailureReason = direct.LazyPtr(in.GetGenerationFailureReason())
+	out.ExternalDestructionFailureReason = direct.LazyPtr(in.GetExternalDestructionFailureReason())
+	out.ExternalProtectionLevelOptions = ExternalProtectionLevelOptions_FromProto(mapCtx, in.GetExternalProtectionLevelOptions())
+	out.ReimportEligible = direct.LazyPtr(in.GetReimportEligible())
+	return out
+}
+func CryptoKeyVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CryptoKeyVersionObservedState) *pb.CryptoKeyVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CryptoKeyVersion{}
+	out.Name = direct.ValueOf(in.Name)
+	out.State = direct.Enum_ToProto[pb.CryptoKeyVersion_CryptoKeyVersionState](mapCtx, in.State)
+	out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
+	out.Algorithm = direct.Enum_ToProto[pb.CryptoKeyVersion_CryptoKeyVersionAlgorithm](mapCtx, in.Algorithm)
+	out.Attestation = KeyOperationAttestationObservedState_ToProto(mapCtx, in.Attestation)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.GenerateTime = direct.StringTimestamp_ToProto(mapCtx, in.GenerateTime)
+	out.DestroyTime = direct.StringTimestamp_ToProto(mapCtx, in.DestroyTime)
+	out.DestroyEventTime = direct.StringTimestamp_ToProto(mapCtx, in.DestroyEventTime)
+	out.ImportJob = direct.ValueOf(in.ImportJob)
+	out.ImportTime = direct.StringTimestamp_ToProto(mapCtx, in.ImportTime)
+	out.ImportFailureReason = direct.ValueOf(in.ImportFailureReason)
+	out.GenerationFailureReason = direct.ValueOf(in.GenerationFailureReason)
+	out.ExternalDestructionFailureReason = direct.ValueOf(in.ExternalDestructionFailureReason)
+	out.ExternalProtectionLevelOptions = ExternalProtectionLevelOptions_ToProto(mapCtx, in.ExternalProtectionLevelOptions)
+	out.ReimportEligible = direct.ValueOf(in.ReimportEligible)
+	return out
+}
+
 /* found existing non-generated mapping function "CryptoKeyVersionTemplate_FromProto", skipping
 func CryptoKeyVersionTemplate_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKeyVersionTemplate) *krm.CryptoKeyVersionTemplate {
 	if in == nil {
@@ -123,6 +216,24 @@ func CryptokeyversionExternalProtectionLevelOptionsStatus_FromProto(mapCtx *dire
 	return out
 }
 func CryptokeyversionExternalProtectionLevelOptionsStatus_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.CryptokeyversionExternalProtectionLevelOptionsStatus) *pb.ExternalProtectionLevelOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalProtectionLevelOptions{}
+	out.ExternalKeyUri = direct.ValueOf(in.ExternalKeyURI)
+	out.EkmConnectionKeyPath = direct.ValueOf(in.EkmConnectionKeyPath)
+	return out
+}
+func ExternalProtectionLevelOptions_FromProto(mapCtx *direct.MapContext, in *pb.ExternalProtectionLevelOptions) *krm.ExternalProtectionLevelOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExternalProtectionLevelOptions{}
+	out.ExternalKeyURI = direct.LazyPtr(in.GetExternalKeyUri())
+	out.EkmConnectionKeyPath = direct.LazyPtr(in.GetEkmConnectionKeyPath())
+	return out
+}
+func ExternalProtectionLevelOptions_ToProto(mapCtx *direct.MapContext, in *krm.ExternalProtectionLevelOptions) *pb.ExternalProtectionLevelOptions {
 	if in == nil {
 		return nil
 	}
@@ -613,6 +724,42 @@ found existing non-generated mapping function "KMSKeyRingStatus_ToProto", skippi
 		return out
 	}
 */
+func KeyAccessJustificationsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.KeyAccessJustificationsPolicy) *krm.KeyAccessJustificationsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KeyAccessJustificationsPolicy{}
+	out.AllowedAccessReasons = direct.EnumSlice_FromProto(mapCtx, in.AllowedAccessReasons)
+	return out
+}
+func KeyAccessJustificationsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.KeyAccessJustificationsPolicy) *pb.KeyAccessJustificationsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyAccessJustificationsPolicy{}
+	out.AllowedAccessReasons = direct.EnumSlice_ToProto[pb.AccessReason](mapCtx, in.AllowedAccessReasons)
+	return out
+}
+func KeyOperationAttestation_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krm.KeyOperationAttestation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.KeyOperationAttestation{}
+	// MISSING: Format
+	// MISSING: Content
+	// MISSING: CertChains
+	return out
+}
+func KeyOperationAttestation_ToProto(mapCtx *direct.MapContext, in *krm.KeyOperationAttestation) *pb.KeyOperationAttestation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KeyOperationAttestation{}
+	// MISSING: Format
+	// MISSING: Content
+	// MISSING: CertChains
+	return out
+}
 func KeyOperationAttestationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krm.KeyOperationAttestationObservedState {
 	if in == nil {
 		return nil

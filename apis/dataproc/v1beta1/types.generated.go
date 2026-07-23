@@ -104,6 +104,7 @@ type AutoscalingPolicy struct {
 }
 */
 
+/* unreachable type AuxiliaryNodeGroup
 // +kcc:proto=google.cloud.dataproc.v1.AuxiliaryNodeGroup
 type AuxiliaryNodeGroup struct {
 	// Required. Node group configuration.
@@ -118,6 +119,7 @@ type AuxiliaryNodeGroup struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.AuxiliaryNodeGroup.node_group_id
 	NodeGroupID *string `json:"nodeGroupID,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.AuxiliaryServicesConfig", skipping
 
@@ -884,6 +886,7 @@ type IdentityConfig struct {
 }
 */
 
+/* unreachable type InstanceFlexibilityPolicy
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicy struct {
 	// Optional. Defines how the Group selects the provisioning model to ensure
@@ -896,7 +899,9 @@ type InstanceFlexibilityPolicy struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_list
 	InstanceSelectionList []InstanceFlexibilityPolicy_InstanceSelection `json:"instanceSelectionList,omitempty"`
 }
+*/
 
+/* unreachable type InstanceFlexibilityPolicy_InstanceSelection
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection
 type InstanceFlexibilityPolicy_InstanceSelection struct {
 	// Optional. Full machine-type names, e.g. "n1-standard-16".
@@ -911,11 +916,15 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.rank
 	Rank *int32 `json:"rank,omitempty"`
 }
+*/
 
+/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
+*/
 
+/* unreachable type InstanceFlexibilityPolicy_ProvisioningModelMix
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
 type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 	// Optional. The base capacity that will always use Standard VMs to avoid
@@ -938,6 +947,7 @@ type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_percent_above_base
 	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "InstanceGroupAutoscalingPolicyConfig", skipping
 
@@ -1292,6 +1302,7 @@ type MetastoreConfig struct {
 }
 */
 
+/* unreachable type NodeGroup
 // +kcc:proto=google.cloud.dataproc.v1.NodeGroup
 type NodeGroup struct {
 	// The Node group [resource name](https://aip.dev/122).
@@ -1317,6 +1328,7 @@ type NodeGroup struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroupAffinity", skipping
 
@@ -1464,6 +1476,7 @@ type SparkHistoryServerConfig struct {
 }
 */
 
+/* unreachable type StartupConfig
 // +kcc:proto=google.cloud.dataproc.v1.StartupConfig
 type StartupConfig struct {
 	// Optional. The config setting to enable cluster creation/ updation to be
@@ -1475,6 +1488,7 @@ type StartupConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.StartupConfig.required_registration_fraction
 	RequiredRegistrationFraction *float64 `json:"requiredRegistrationFraction,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.VirtualClusterConfig", skipping
 
@@ -1524,12 +1538,14 @@ type AutoscalingPolicyObservedState struct {
 }
 */
 
+/* unreachable type AuxiliaryNodeGroupObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.AuxiliaryNodeGroup
 type AuxiliaryNodeGroupObservedState struct {
 	// Required. Node group configuration.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AuxiliaryNodeGroup.node_group
 	NodeGroup *NodeGroupObservedState `json:"nodeGroup,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Cluster", skipping
 
@@ -1633,13 +1649,16 @@ type EndpointConfigObservedState struct {
 }
 */
 
+/* unreachable type InstanceFlexibilityPolicyObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicyObservedState struct {
 	// Output only. A list of instance selection results in the group.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
 	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResultObservedState `json:"instanceSelectionResults,omitempty"`
 }
+*/
 
+/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// Output only. Full machine-type names, e.g. "n1-standard-16".
@@ -1650,6 +1669,7 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
 	VMCount *int32 `json:"vmCount,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.InstanceGroupConfig", skipping
 
@@ -1715,9 +1735,11 @@ type ManagedGroupConfigObservedState struct {
 }
 */
 
+/* unreachable type NodeGroupObservedState
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.NodeGroup
 type NodeGroupObservedState struct {
 	// Optional. The node group instance group configuration.
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.node_group_config
 	NodeGroupConfig *InstanceGroupConfigObservedState `json:"nodeGroupConfig,omitempty"`
 }
+*/

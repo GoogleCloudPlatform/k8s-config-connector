@@ -23,6 +23,7 @@
 
 package v1alpha1
 
+/* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
@@ -59,6 +60,7 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "AllocationOptions", skipping
 
@@ -74,6 +76,7 @@ type AllocationOptions struct {
 }
 */
 
+/* unreachable type AutoCreatedSubnetworkInfo
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo
 type AutoCreatedSubnetworkInfo struct {
 	// Output only. Indicates whether the subnetwork is delinked from the Service Connection Policy. Only set if the subnetwork mode is AUTO_CREATED during creation.
@@ -96,6 +99,7 @@ type AutoCreatedSubnetworkInfo struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo.subnetwork_ref
 	SubnetworkRef *string `json:"subnetworkRef,omitempty"`
 }
+*/
 
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo
 type GoogleRpcErrorInfo struct {

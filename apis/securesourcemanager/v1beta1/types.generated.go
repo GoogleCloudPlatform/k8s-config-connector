@@ -61,9 +61,11 @@ type Instance struct {
 }
 */
 
+/* unreachable type Instance_HostConfig
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfig struct {
 }
+*/
 
 /* found existing non-generated go type "Instance_PrivateConfig", skipping
 
@@ -86,12 +88,14 @@ type Instance_PrivateConfig struct {
 }
 */
 
+/* unreachable type Instance_WorkforceIdentityFederationConfig
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig
 type Instance_WorkforceIdentityFederationConfig struct {
 	// Optional. Immutable. Whether Workforce Identity Federation is enabled.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.WorkforceIdentityFederationConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.securesourcemanager.v1.Repository", skipping
 
@@ -272,9 +276,11 @@ type Repository_InitialConfig struct {
 	Readme *string `json:"readme,omitempty"`
 }
 
+/* unreachable type Repository_UrIs
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
 type Repository_UrIs struct {
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.securesourcemanager.v1.Instance", skipping
 
