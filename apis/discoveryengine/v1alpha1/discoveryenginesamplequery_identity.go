@@ -44,6 +44,10 @@ func (i *DiscoveryEngineSampleQueryIdentity) String() string {
 	return DiscoveryEngineSampleQueryIdentityFormat.ToString(*i)
 }
 
+func (i *DiscoveryEngineSampleQueryIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location + "/sampleQuerySets/" + i.SampleQuerySet
+}
+
 func (i *DiscoveryEngineSampleQueryIdentity) FromExternal(ref string) error {
 	parsed, match, err := DiscoveryEngineSampleQueryIdentityFormat.Parse(ref)
 	if err != nil {
