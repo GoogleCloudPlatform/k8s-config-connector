@@ -1,0 +1,13 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesAuthzExtension
+metadata:
+  name: authzext-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  authority: ext-service.example.com:443
+  backendServiceRef:
+    name: bs-callout-${uniqueId}
+  timeout: 0.100s

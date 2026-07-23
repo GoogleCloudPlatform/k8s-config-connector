@@ -676,6 +676,8 @@ func HttprouteUrlRewrite_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteUrl
 	out.HostRewrite = direct.ValueOf(in.HostRewrite)
 	return out
 }
+
+/* found existing non-generated mapping function "NetworkServicesAuthzExtensionObservedState_FromProto", skipping
 func NetworkServicesAuthzExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState {
 	if in == nil {
 		return nil
@@ -687,6 +689,9 @@ func NetworkServicesAuthzExtensionObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Service
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NetworkServicesAuthzExtensionObservedState_ToProto", skipping
 func NetworkServicesAuthzExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState) *pb.AuthzExtension {
 	if in == nil {
 		return nil
@@ -698,6 +703,9 @@ func NetworkServicesAuthzExtensionObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Service
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NetworkServicesAuthzExtensionSpec_FromProto", skipping
 func NetworkServicesAuthzExtensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec {
 	if in == nil {
 		return nil
@@ -716,6 +724,9 @@ func NetworkServicesAuthzExtensionSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.WireFormat = direct.Enum_FromProto(mapCtx, in.GetWireFormat())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NetworkServicesAuthzExtensionSpec_ToProto", skipping
 func NetworkServicesAuthzExtensionSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec) *pb.AuthzExtension {
 	if in == nil {
 		return nil
@@ -734,6 +745,7 @@ func NetworkServicesAuthzExtensionSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.WireFormat = direct.Enum_ToProto[pb.WireFormat](mapCtx, in.WireFormat)
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "NetworkServicesGatewaySpec_FromProto", skipping
 func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.NetworkServicesGatewaySpec {
