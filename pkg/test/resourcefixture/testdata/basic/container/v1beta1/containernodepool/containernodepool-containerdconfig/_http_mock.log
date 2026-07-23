@@ -969,8 +969,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
                   }
                 ],
                 "capabilities": [
-                  "PULL",
-                  "RESOLVE"
+                  "HOST_CAPABILITY_PULL",
+                  "HOST_CAPABILITY_RESOLVE"
                 ],
                 "client": [
                   {
@@ -1473,8 +1473,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
               }
             ],
             "capabilities": [
-              "PULL",
-              "RESOLVE"
+              "HOST_CAPABILITY_PULL",
+              "HOST_CAPABILITY_RESOLVE"
             ],
             "client": [
               {
@@ -2358,8 +2358,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
               }
             ],
             "capabilities": [
-              "PULL",
-              "RESOLVE"
+              "HOST_CAPABILITY_PULL",
+              "HOST_CAPABILITY_RESOLVE"
             ],
             "client": [
               {

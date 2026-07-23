@@ -38,6 +38,15 @@ spec:
         - server: "my-registry.example.com"
           hosts:
             - host: "https://my-registry.example.com"
+              capabilities:
+                - "HOST_CAPABILITY_PULL"
+                - "HOST_CAPABILITY_RESOLVE"
+              dialTimeout: "10s"
+              overridePath: true
+              header:
+                - key: "Authorization"
+                  value:
+                    - "Bearer token123"
               ca:
                 - secretRef:
                     external: "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"

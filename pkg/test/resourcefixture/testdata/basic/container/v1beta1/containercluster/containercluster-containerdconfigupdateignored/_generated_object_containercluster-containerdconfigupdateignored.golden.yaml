@@ -35,6 +35,9 @@ spec:
         - ca:
           - secretRef:
               external: projects/${projectId}/secrets/kcc-test-ca-cert/versions/2
+          capabilities:
+          - HOST_CAPABILITY_PULL
+          - HOST_CAPABILITY_RESOLVE
           client:
           - cert:
               secretRef:
@@ -42,7 +45,13 @@ spec:
             key:
               secretRef:
                 external: projects/${projectId}/secrets/kcc-test-client-key/versions/2
+          dialTimeout: 15s
+          header:
+          - key: Authorization
+            value:
+            - Bearer token456
           host: https://my-registry.example.com
+          overridePath: true
         server: my-registry.example.com
       writableCgroups:
         enabled: true

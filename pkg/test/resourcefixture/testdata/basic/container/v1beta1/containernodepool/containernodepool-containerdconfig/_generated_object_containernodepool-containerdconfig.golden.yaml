@@ -35,8 +35,8 @@ spec:
           - secretRef:
               external: projects/${projectId}/secrets/kcc-test-ca-cert/versions/2
           capabilities:
-          - PULL
-          - RESOLVE
+          - HOST_CAPABILITY_PULL
+          - HOST_CAPABILITY_RESOLVE
           client:
           - cert:
               secretRef:

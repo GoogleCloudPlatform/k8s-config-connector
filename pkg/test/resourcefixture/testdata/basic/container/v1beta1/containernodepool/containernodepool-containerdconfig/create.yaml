@@ -40,8 +40,8 @@ spec:
           hosts:
             - host: "https://my-registry.example.com"
               capabilities:
-                - "PULL"
-                - "RESOLVE"
+                - "HOST_CAPABILITY_PULL"
+                - "HOST_CAPABILITY_RESOLVE"
               dialTimeout: "10s"
               overridePath: true
               header:
