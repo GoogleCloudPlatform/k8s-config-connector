@@ -29,6 +29,7 @@ go run . generate-types \
   --include-skipped-output \
   --resource CloudSecurityComplianceCloudControl:CloudControl \
   --resource CloudSecurityComplianceFramework:Framework \
+  --resource CloudSecurityComplianceFrameworkDeployment:FrameworkDeployment \
   --resource CloudSecurityFramework:Framework
 
 go run . generate-mapper \
