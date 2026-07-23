@@ -119,14 +119,6 @@ func StorageManagedFolderObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func StorageManagedFolderSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagedFolder) *krm.StorageManagedFolderSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StorageManagedFolderSpec{}
-	// MISSING: Name
-	return out
-}
 func StorageManagedFolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageManagedFolderSpec) *pb.ManagedFolder {
 	if in == nil {
 		return nil

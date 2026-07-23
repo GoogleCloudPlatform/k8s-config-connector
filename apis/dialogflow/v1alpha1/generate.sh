@@ -70,7 +70,7 @@ go run . generate-mapper \
 
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/" || true
-sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go"
+sed -i.bak 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go" && rm -f "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go.bak"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

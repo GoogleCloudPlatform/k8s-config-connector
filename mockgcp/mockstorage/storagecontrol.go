@@ -25,6 +25,10 @@ import (
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -194,4 +198,58 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 	}
 
 	return obj, nil
+}
+
+func (s *StorageControlService) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
+	obj := &pb.ManagedFolder{}
+	if err := s.storage.Get(ctx, req.GetName(), obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The specified managed folder does not exist.")
+		}
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *StorageControlService) ListManagedFolders(ctx context.Context, req *pb.ListManagedFoldersRequest) (*pb.ListManagedFoldersResponse, error) {
+	findPrefix := req.GetPrefix()
+
+	response := &pb.ListManagedFoldersResponse{}
+
+	findKind := (&pb.ManagedFolder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		managedFolder := obj.(*pb.ManagedFolder)
+		response.ManagedFolders = append(response.ManagedFolders, managedFolder)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+func (s *StorageControlService) CreateManagedFolder(ctx context.Context, req *pb.CreateManagedFolderRequest) (*pb.ManagedFolder, error) {
+	fqn := fmt.Sprintf("%s/managedFolders/%s/", req.GetParent(), req.GetManagedFolderId())
+
+	now := time.Now()
+	generation := int64(1)
+
+	obj := proto.Clone(req.GetManagedFolder()).(*pb.ManagedFolder)
+	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.Metageneration = generation
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *StorageControlService) DeleteManagedFolder(ctx context.Context, req *pb.DeleteManagedFolderRequest) (*emptypb.Empty, error) {
+	deleted := &pb.ManagedFolder{}
+	if err := s.storage.Delete(ctx, req.GetName(), deleted); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
