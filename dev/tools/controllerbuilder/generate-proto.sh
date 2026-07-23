@@ -34,6 +34,7 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
 VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 
+# Check if versioned googleapis.pb file is already generated to avoid re-cloning or re-fetching git objects
 if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
@@ -60,6 +61,7 @@ if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
 fi
 
 cd googleapis
+# Remove stale index.lock file left behind if a previous run was interrupted (e.g. Ctrl+C or process cancellation)
 rm -f .git/index.lock
 
 # Fetch only if we don't have the SHA locally
