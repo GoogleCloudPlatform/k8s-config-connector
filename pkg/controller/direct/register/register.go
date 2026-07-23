@@ -93,6 +93,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/autokeyconfig"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/keyhandle"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/livestream"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/managedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/memorystore"
