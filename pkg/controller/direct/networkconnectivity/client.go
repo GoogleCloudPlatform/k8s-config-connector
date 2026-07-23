@@ -58,3 +58,15 @@ func (m *gcpClient) newInternalRangeClient(ctx context.Context) (*gcpapi.Interna
 	return client, err
 }
 
+func (m *gcpClient) newCrossNetworkAutomationClient(ctx context.Context) (*gcpapi.CrossNetworkAutomationClient, error) {
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := gcpapi.NewCrossNetworkAutomationClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building networkconnectivity crossnetworkautomation client: %w", err)
+	}
+	return client, err
+}
+

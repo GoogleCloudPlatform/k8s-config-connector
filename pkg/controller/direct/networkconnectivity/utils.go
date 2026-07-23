@@ -15,51 +15,12 @@
 package networkconnectivity
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 )
-
-func convertProtoToAPI(u protoreflect.ProtoMessage, v any) error {
-	if u == nil {
-		return nil
-	}
-
-	j, err := protojson.Marshal(u)
-	if err != nil {
-		return fmt.Errorf("converting proto to json: %w", err)
-	}
-
-	if err := json.Unmarshal(j, v); err != nil {
-		return fmt.Errorf("converting json to cloud API type: %w", err)
-	}
-	return nil
-}
-
-func convertAPIToProto[V protoreflect.ProtoMessage](u any, pV *V) error {
-	if u == nil {
-		// *pV = nil
-		return nil
-	}
-
-	j, err := json.Marshal(u)
-	if err != nil {
-		return fmt.Errorf("converting proto to json: %w", err)
-	}
-
-	var v V
-	if err := json.Unmarshal(j, &v); err != nil {
-		return fmt.Errorf("converting json to proto type: %w", err)
-	}
-	*pV = v
-	// *pV = &v
-	return nil
-}
 
 func lastComponent(s string) string {
 	i := strings.LastIndex(s, "/")
