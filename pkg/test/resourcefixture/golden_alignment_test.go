@@ -458,6 +458,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "createTime")
 		delete(v, "updateTime")
 		delete(v, "selfLink")
+		delete(v, "internalMetadata")
 		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")

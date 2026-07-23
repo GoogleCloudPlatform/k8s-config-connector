@@ -18,6 +18,7 @@ import (
 	"context"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -27,8 +28,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// TeamFolderV1 implements the mock service for TeamFolder.
 type TeamFolderV1 struct {
 	*MockService
 	gw_v1.UnimplementedDataformServer
@@ -55,10 +58,18 @@ func (r *TeamFolderV1) CreateTeamFolder(ctx context.Context, request *gw_v1.Crea
 		return nil, err
 	}
 
+	// Real GCP assigns a server-generated UUID for the team folder name/ID.
+	// To match this behavior and ensure stable E2E tests, we use a deterministic static UUID.
+	name.TeamFolderID = "2ba614be-5147-410a-ad89-bab4ff528497"
 	fqn := name.String()
 
 	obj := proto.Clone(request.TeamFolder).(*gw_v1.TeamFolder)
 	obj.Name = fqn
+	obj.CreatorIamPrincipal = "user:overseer-kcc-tester@" + name.Project.ID + ".iam.gserviceaccount.com"
+	obj.InternalMetadata = `{"db_metadata_insert_time":"2026-07-23T06:37:50.505637Z","db_metadata_update_time":"2026-07-23T06:37:50.505637Z","last_modified_time":"2026-07-23T06:37:50.482804Z","path_to_root":"teamFolder_00000000-0000-0000-0000-000000000001","state":"STATE_ACTIVE"}`
+	now := time.Now()
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

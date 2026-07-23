@@ -21,8 +21,10 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497
   observedGeneration: 1
   observedState:
-    creatorIAMPrincipal: ""
-    internalMetadata: ""
+    createTime: "1970-01-01T00:00:00Z"
+    creatorIAMPrincipal: user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com
+    internalMetadata: '{"db_metadata_insert_time":"2026-07-23T06:37:50.505637Z","db_metadata_update_time":"2026-07-23T06:37:50.505637Z","last_modified_time":"2026-07-23T06:37:50.482804Z","path_to_root":"teamFolder_00000000-0000-0000-0000-000000000001","state":"STATE_ACTIVE"}'
+    updateTime: "1970-01-01T00:00:00Z"

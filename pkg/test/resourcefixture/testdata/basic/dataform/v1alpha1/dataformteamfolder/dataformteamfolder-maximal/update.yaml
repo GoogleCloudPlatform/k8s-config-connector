@@ -20,5 +20,4 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  resourceID: dfteamfolder-max-${uniqueId}
   displayName: "Maximal Team Folder Updated"

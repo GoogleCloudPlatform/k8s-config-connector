@@ -29,40 +29,40 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "createTime": null,
-  "creatorIamPrincipal": "",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "displayName": "Minimal Team Folder",
-  "internalMetadata": "",
-  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-${uniqueId}",
-  "updateTime": null
+  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T06:37:50.505637Z\",\"db_metadata_update_time\":\"2026-07-23T06:37:50.505637Z\",\"last_modified_time\":\"2026-07-23T06:37:50.482804Z\",\"path_to_root\":\"teamFolder_00000000-0000-0000-0000-000000000001\",\"state\":\"STATE_ACTIVE\"}",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2F2ba614be-5147-410a-ad89-bab4ff528497
 
 200 OK
 Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "createTime": null,
-  "creatorIamPrincipal": "",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "displayName": "Minimal Team Folder",
-  "internalMetadata": "",
-  "name": "projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-${uniqueId}",
-  "updateTime": null
+  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T06:37:50.505637Z\",\"db_metadata_update_time\":\"2026-07-23T06:37:50.505637Z\",\"last_modified_time\":\"2026-07-23T06:37:50.482804Z\",\"path_to_root\":\"teamFolder_00000000-0000-0000-0000-000000000001\",\"state\":\"STATE_ACTIVE\"}",
+  "name": "projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2F2ba614be-5147-410a-ad89-bab4ff528497
 
 200 OK
 Content-Type: application/json
