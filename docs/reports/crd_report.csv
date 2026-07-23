@@ -108,11 +108,11 @@ certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificateMapEntry,T
 certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificateMap,True,True,False,Terraform,True
 certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificate,True,True,False,Terraform,True
 certificatemanager.cnrm.cloud.google.com,CertificateManagerDNSAuthorization,True,True,False,Direct,True
+certificatemanager.cnrm.cloud.google.com,CertificateManagerTrustConfig,True,False,False,Direct,True
 ces.cnrm.cloud.google.com,CESApp,True,False,False,Direct,True
 cloudasset.cnrm.cloud.google.com,CloudAssetFolderFeed,True,False,False,Terraform,False
 cloudasset.cnrm.cloud.google.com,CloudAssetOrganizationFeed,True,False,False,Terraform,False
 cloudasset.cnrm.cloud.google.com,CloudAssetProjectFeed,True,False,False,Terraform,False
-cloudasset.cnrm.cloud.google.com,CloudAssetSavedQuery,True,False,False,Direct,True
 batch.cnrm.cloud.google.com,CloudBatchResourceAllowance,True,False,False,Direct,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildConnection,True,False,False,Direct,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildTrigger,False,True,False,Terraform,True
@@ -514,6 +514,7 @@ secretmanager.cnrm.cloud.google.com,SecretManagerSecretVersion,False,True,False,
 securesourcemanager.cnrm.cloud.google.com,SecureSourceManagerInstance,True,True,False,Direct,True
 securesourcemanager.cnrm.cloud.google.com,SecureSourceManagerRepository,True,True,False,Direct,True
 securitycenter.cnrm.cloud.google.com,SecurityCenterBigQueryExport,True,False,False,Direct,True
+securitycentermanagement.cnrm.cloud.google.com,SecurityCenterManagementSecurityHealthAnalyticsCustomModule,True,False,False,Direct,True
 securitycenter.cnrm.cloud.google.com,SecurityCenterMuteConfig,True,False,False,Direct,True
 securitycenter.cnrm.cloud.google.com,SecurityCenterNotificationConfig,True,False,False,Terraform,False
 securitycenter.cnrm.cloud.google.com,SecurityCenterSource,True,False,False,Terraform,False

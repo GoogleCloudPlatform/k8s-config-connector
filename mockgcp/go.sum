@@ -48,6 +48,8 @@ cloud.google.com/go/clouddms v1.13.0 h1:/oIzRKf/FgUYqSBwSnwrrtJPkSQ2EMzY8UHQwhGX
 cloud.google.com/go/clouddms v1.13.0/go.mod h1:aMgrOZ+/EKF/PL+h1sDbS+7fAIYV5rTwD+G/apCeHQk=
 cloud.google.com/go/cloudquotas v1.11.0 h1:/V18B5MjitIfA1Ggb3p0nLFjdZutlaUeiEnx53JVxeQ=
 cloud.google.com/go/cloudquotas v1.11.0/go.mod h1:4i/yo7jay43HyTMpYxaZwHdpAePkTEK7mAcGwRMf2tI=
+cloud.google.com/go/cloudsecuritycompliance v1.0.0 h1:CB/BJL7Ye+8EG7T1pKUZQ5/vcbJFFdNWtn2kVDPMSr4=
+cloud.google.com/go/cloudsecuritycompliance v1.0.0/go.mod h1:gxkuafvJ+IL5CQLSXRFGUZCkyZOmtd7vo4UHrnT79NM=
 cloud.google.com/go/cloudtasks v1.18.0 h1:KzT7hfix/9/xAf20tNPIxwX59XGpRF0Lun2t8LHOj9E=
 cloud.google.com/go/cloudtasks v1.18.0/go.mod h1:3KeCxwtGEyaySL7CR3lMmEa2I4mq1ynXdgmfNiO4RYE=
 cloud.google.com/go/compute v1.63.0 h1:KsBourH0wajM4RhzwPwRMKbxHVdvzGsk7StvACoWXD8=
@@ -110,6 +112,8 @@ cloud.google.com/go/memorystore v0.9.0 h1:CPIW9v7XGjcpwJtLaJUjDohep47tI5c2zP0R3v
 cloud.google.com/go/memorystore v0.9.0/go.mod h1:fgbTd26uERz7dvH5KklyXU9/pcNdMtjNKfEZZ6slRLA=
 cloud.google.com/go/metastore v1.19.0 h1:oAFi3AkO9YZHoDYXo3cbLXlBS4PUUxe5/9kR+q4ta1g=
 cloud.google.com/go/metastore v1.19.0/go.mod h1:JGTjGdQ627m2ptDo86XsIKqzzZCk+GG41VEFD7ENsqs=
+cloud.google.com/go/migrationcenter v1.6.0 h1:7+BzWJbfj+E+VRfi2dYfNK8qHvonWMwaJpUloxl+V9s=
+cloud.google.com/go/migrationcenter v1.6.0/go.mod h1:SX0CSZzEO8zP/h7ceIYLTjcpLPTq0ZGPsSe4GeJSAM8=
 cloud.google.com/go/modelarmor v1.0.0 h1:vGRxxlBHRDKH9D66vfFeC2nTG4eRMNJ1DMPxa6NG3bE=
 cloud.google.com/go/modelarmor v1.0.0/go.mod h1:nrgM9UlxJvFE5NcE6NN/OJ8vI1LuJih27Hg8wq38mGQ=
 cloud.google.com/go/monitoring v1.29.0 h1:AHhDsFaSax1/4k+qlIDX/SDGe6hggnfXJ9dkgD9qBPY=
@@ -166,6 +170,8 @@ cloud.google.com/go/storage v1.62.0 h1:w2pQJhpUqVerMON45vatE2FpCYsNTf7OHjkn6ux5m
 cloud.google.com/go/storage v1.62.0/go.mod h1:T5hz3qzcpnxZ5LdKc7y8Tw7lh4v9zeeVyrD/cLJAzZU=
 cloud.google.com/go/trace v1.16.0 h1:GmQovzFc5F0CNfl0VLgL64aoTtu7xsM0YajW2GlG9+E=
 cloud.google.com/go/trace v1.16.0/go.mod h1:r+bdAn16dKLSV1G2D5v3e58IlQlizfxWrUfjx7kM7X0=
+cloud.google.com/go/video v1.32.0 h1:9Us/tkhNRg3WY9wIrVC3Jcs1P0nXKE4XnS1zYJ3xTTY=
+cloud.google.com/go/video v1.32.0/go.mod h1:KxDL728ZzH+FJwtEb9XkiLTETW5bI37hTWbJiRYeXkk=
 cloud.google.com/go/vmwareengine v1.8.0 h1:TmHKgTRH+mjq2VaaxrNcXqWyeleX7YaJPvrfWFCn0eE=
 cloud.google.com/go/vmwareengine v1.8.0/go.mod h1:e66l90IZhm1yQfYZv+YCWjSNSklQZCRmuEvKL8n3Ua0=
 cloud.google.com/go/vpcaccess v1.13.0 h1:aU7IKE/IAUgOzXCOgPsku4nV2DwmRpJHn6+QMf5Ub70=
