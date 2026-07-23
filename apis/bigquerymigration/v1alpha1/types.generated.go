@@ -21,12 +21,14 @@
 
 package v1alpha1
 
+/* unreachable type AssessmentOrchestrationResultDetails
 // +kcc:proto=google.cloud.bigquery.migration.v2alpha.AssessmentOrchestrationResultDetails
 type AssessmentOrchestrationResultDetails struct {
 	// Optional. The version used for the output table schemas.
 	// +kcc:proto:field=google.cloud.bigquery.migration.v2alpha.AssessmentOrchestrationResultDetails.output_tables_schema_version
 	OutputTablesSchemaVersion *string `json:"outputTablesSchemaVersion,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.bigquery.migration.v2alpha.AssessmentTaskDetails
 type AssessmentTaskDetails struct {
@@ -128,12 +130,14 @@ type MigrationTask struct {
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }
 
+/* unreachable type MigrationTaskOrchestrationResult
 // +kcc:proto=google.cloud.bigquery.migration.v2alpha.MigrationTaskOrchestrationResult
 type MigrationTaskOrchestrationResult struct {
 	// Details specific to assessment task types.
 	// +kcc:proto:field=google.cloud.bigquery.migration.v2alpha.MigrationTaskOrchestrationResult.assessment_details
 	AssessmentDetails *AssessmentOrchestrationResultDetails `json:"assessmentDetails,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.bigquery.migration.v2alpha.TeradataOptions
 type TeradataOptions struct {
@@ -236,6 +240,7 @@ type Any struct {
 	Value []byte `json:"value,omitempty"`
 }
 
+/* unreachable type ErrorInfo
 // +kcc:proto=google.rpc.ErrorInfo
 type ErrorInfo struct {
 	// The reason of the error. This is a constant value that identifies the
@@ -267,3 +272,4 @@ type ErrorInfo struct {
 	// +kcc:proto:field=google.rpc.ErrorInfo.metadata
 	Metadata map[string]string `json:"metadata,omitempty"`
 }
+*/
