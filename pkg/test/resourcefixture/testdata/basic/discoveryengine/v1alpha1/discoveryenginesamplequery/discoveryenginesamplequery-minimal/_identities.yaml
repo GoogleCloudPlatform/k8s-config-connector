@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineSampleQuerySet
+  name: samplequeryset-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineSampleQuery
+  name: samplequery-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
