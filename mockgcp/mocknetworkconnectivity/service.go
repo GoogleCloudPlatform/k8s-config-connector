@@ -43,7 +43,8 @@ type MockService struct {
 	storage    storage.Storage
 	operations *operations.Operations
 
-	v1 *internalRanges
+	v1                       *internalRanges
+	v1CrossNetworkAutomation *serviceConnectionPolicies
 }
 
 // New creates a MockService.
@@ -54,6 +55,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &internalRanges{MockService: s}
+	s.v1CrossNetworkAutomation = &serviceConnectionPolicies{MockService: s}
 	return s
 }
 
@@ -63,6 +65,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInternalRangeServiceServer(grpcServer, s.v1)
+	pb.RegisterCrossNetworkAutomationServiceServer(grpcServer, s.v1CrossNetworkAutomation)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -72,6 +75,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	grpcMux.AddService(pb.NewInternalRangeServiceClient(conn))
+	grpcMux.AddService(pb.NewCrossNetworkAutomationServiceClient(conn))
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil
