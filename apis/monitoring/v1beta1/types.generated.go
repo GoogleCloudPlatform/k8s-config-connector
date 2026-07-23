@@ -2103,6 +2103,7 @@ type AlertPolicy_Documentation struct {
 }
 */
 
+/* unreachable type AlertPolicy_Documentation_Link
 // +kcc:proto=google.monitoring.v3.AlertPolicy.Documentation.Link
 type AlertPolicy_Documentation_Link struct {
 	// A short display name for the link. The display name must not be empty
@@ -2118,6 +2119,7 @@ type AlertPolicy_Documentation_Link struct {
 	// +kcc:proto:field=google.monitoring.v3.AlertPolicy.Documentation.Link.url
 	URL *string `json:"url,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.monitoring.v3.Group", skipping
 
@@ -2157,6 +2159,7 @@ type Group struct {
 }
 */
 
+/* unreachable type InternalChecker
 // +kcc:proto=google.monitoring.v3.InternalChecker
 type InternalChecker struct {
 	// A unique resource name for this InternalChecker. The format is:
@@ -2193,6 +2196,7 @@ type InternalChecker struct {
 	// +kcc:proto:field=google.monitoring.v3.InternalChecker.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.monitoring.v3.MutationRecord", skipping
 
@@ -2378,6 +2382,7 @@ type Service struct {
 }
 */
 
+/* unreachable type Service_AppEngine
 // +kcc:proto=google.monitoring.v3.Service.AppEngine
 type Service_AppEngine struct {
 	// The ID of the App Engine module underlying this service. Corresponds to
@@ -2386,7 +2391,9 @@ type Service_AppEngine struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.AppEngine.module_id
 	ModuleID *string `json:"moduleID,omitempty"`
 }
+*/
 
+/* unreachable type Service_BasicService
 // +kcc:proto=google.monitoring.v3.Service.BasicService
 type Service_BasicService struct {
 	// The type of service that this basic service defines, e.g.
@@ -2403,7 +2410,9 @@ type Service_BasicService struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.BasicService.service_labels
 	ServiceLabels map[string]string `json:"serviceLabels,omitempty"`
 }
+*/
 
+/* unreachable type Service_CloudEndpoints
 // +kcc:proto=google.monitoring.v3.Service.CloudEndpoints
 type Service_CloudEndpoints struct {
 	// The name of the Cloud Endpoints service underlying this service.
@@ -2412,7 +2421,9 @@ type Service_CloudEndpoints struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.CloudEndpoints.service
 	Service *string `json:"service,omitempty"`
 }
+*/
 
+/* unreachable type Service_CloudRun
 // +kcc:proto=google.monitoring.v3.Service.CloudRun
 type Service_CloudRun struct {
 	// The name of the Cloud Run service. Corresponds to the `service_name`
@@ -2427,7 +2438,9 @@ type Service_CloudRun struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.CloudRun.location
 	Location *string `json:"location,omitempty"`
 }
+*/
 
+/* unreachable type Service_ClusterIstio
 // +kcc:proto=google.monitoring.v3.Service.ClusterIstio
 type Service_ClusterIstio struct {
 	// The location of the Kubernetes cluster in which this Istio service is
@@ -2452,11 +2465,15 @@ type Service_ClusterIstio struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.ClusterIstio.service_name
 	ServiceName *string `json:"serviceName,omitempty"`
 }
+*/
 
+/* unreachable type Service_Custom
 // +kcc:proto=google.monitoring.v3.Service.Custom
 type Service_Custom struct {
 }
+*/
 
+/* unreachable type Service_GKENamespace
 // +kcc:proto=google.monitoring.v3.Service.GkeNamespace
 type Service_GKENamespace struct {
 
@@ -2472,7 +2489,9 @@ type Service_GKENamespace struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.GkeNamespace.namespace_name
 	NamespaceName *string `json:"namespaceName,omitempty"`
 }
+*/
 
+/* unreachable type Service_GKEService
 // +kcc:proto=google.monitoring.v3.Service.GkeService
 type Service_GKEService struct {
 
@@ -2492,7 +2511,9 @@ type Service_GKEService struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.GkeService.service_name
 	ServiceName *string `json:"serviceName,omitempty"`
 }
+*/
 
+/* unreachable type Service_GKEWorkload
 // +kcc:proto=google.monitoring.v3.Service.GkeWorkload
 type Service_GKEWorkload struct {
 
@@ -2516,7 +2537,9 @@ type Service_GKEWorkload struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.top_level_controller_name
 	TopLevelControllerName *string `json:"topLevelControllerName,omitempty"`
 }
+*/
 
+/* unreachable type Service_IstioCanonicalService
 // +kcc:proto=google.monitoring.v3.Service.IstioCanonicalService
 type Service_IstioCanonicalService struct {
 	// Identifier for the Istio mesh in which this canonical service is defined.
@@ -2539,7 +2562,9 @@ type Service_IstioCanonicalService struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.IstioCanonicalService.canonical_service
 	CanonicalService *string `json:"canonicalService,omitempty"`
 }
+*/
 
+/* unreachable type Service_MeshIstio
 // +kcc:proto=google.monitoring.v3.Service.MeshIstio
 type Service_MeshIstio struct {
 	// Identifier for the mesh in which this Istio service is defined.
@@ -2557,7 +2582,9 @@ type Service_MeshIstio struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.MeshIstio.service_name
 	ServiceName *string `json:"serviceName,omitempty"`
 }
+*/
 
+/* unreachable type Service_Telemetry
 // +kcc:proto=google.monitoring.v3.Service.Telemetry
 type Service_Telemetry struct {
 	// The full name of the resource that defines this service. Formatted as
@@ -2565,14 +2592,18 @@ type Service_Telemetry struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.Telemetry.resource_name
 	ResourceName *string `json:"resourceName,omitempty"`
 }
+*/
 
+/* unreachable type SyntheticMonitorTarget
 // +kcc:proto=google.monitoring.v3.SyntheticMonitorTarget
 type SyntheticMonitorTarget struct {
 	// Target a Synthetic Monitor GCFv2 instance.
 	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.cloud_function_v2
 	CloudFunctionV2 *SyntheticMonitorTarget_CloudFunctionV2Target `json:"cloudFunctionV2,omitempty"`
 }
+*/
 
+/* unreachable type SyntheticMonitorTarget_CloudFunctionV2Target
 // +kcc:proto=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target
 type SyntheticMonitorTarget_CloudFunctionV2Target struct {
 	// Required. Fully qualified GCFv2 resource name
@@ -2581,6 +2612,7 @@ type SyntheticMonitorTarget_CloudFunctionV2Target struct {
 	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target.name
 	Name *string `json:"name,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.monitoring.v3.UptimeCheckConfig", skipping
 
@@ -2715,6 +2747,7 @@ type UptimeCheckConfig_ContentMatcher struct {
 }
 */
 
+/* unreachable type UptimeCheckConfig_ContentMatcher_JsonPathMatcher
 // +kcc:proto=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.JsonPathMatcher
 type UptimeCheckConfig_ContentMatcher_JsonPathMatcher struct {
 	// JSONPath within the response output pointing to the expected
@@ -2727,6 +2760,7 @@ type UptimeCheckConfig_ContentMatcher_JsonPathMatcher struct {
 	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.ContentMatcher.JsonPathMatcher.json_matcher
 	JsonMatcher *string `json:"jsonMatcher,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "UptimeCheckConfig_HTTPCheck", skipping
 
@@ -2853,6 +2887,7 @@ type UptimeCheckConfig_HTTPCheck_BasicAuthentication struct {
 }
 */
 
+/* unreachable type UptimeCheckConfig_HTTPCheck_ResponseStatusCode
 // +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ResponseStatusCode
 type UptimeCheckConfig_HTTPCheck_ResponseStatusCode struct {
 	// A status code to accept.
@@ -2863,20 +2898,25 @@ type UptimeCheckConfig_HTTPCheck_ResponseStatusCode struct {
 	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ResponseStatusCode.status_class
 	StatusClass *string `json:"statusClass,omitempty"`
 }
+*/
 
+/* unreachable type UptimeCheckConfig_HTTPCheck_ServiceAgentAuthentication
 // +kcc:proto=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication
 type UptimeCheckConfig_HTTPCheck_ServiceAgentAuthentication struct {
 	// Type of authentication.
 	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication.type
 	Type *string `json:"type,omitempty"`
 }
+*/
 
+/* unreachable type UptimeCheckConfig_PingConfig
 // +kcc:proto=google.monitoring.v3.UptimeCheckConfig.PingConfig
 type UptimeCheckConfig_PingConfig struct {
 	// Number of ICMP pings. A maximum of 3 ICMP pings is currently supported.
 	// +kcc:proto:field=google.monitoring.v3.UptimeCheckConfig.PingConfig.pings_count
 	PingsCount *int32 `json:"pingsCount,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "UptimeCheckConfig_ResourceGroup", skipping
 
@@ -2917,6 +2957,7 @@ type Empty struct {
 }
 */
 
+/* unreachable type Interval
 // +kcc:proto=google.type.Interval
 type Interval struct {
 	// Optional. Inclusive start of the interval.
@@ -2933,6 +2974,7 @@ type Interval struct {
 	// +kcc:proto:field=google.type.Interval.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.type.TimeOfDay", skipping
 
@@ -2986,6 +3028,7 @@ type ServiceObservedState struct {
 }
 */
 
+/* unreachable type Service_GKENamespaceObservedState
 // +kcc:observedstate:proto=google.monitoring.v3.Service.GkeNamespace
 type Service_GKENamespaceObservedState struct {
 	// Output only. The project this resource lives in. For legacy services
@@ -2994,7 +3037,9 @@ type Service_GKENamespaceObservedState struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.GkeNamespace.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
+*/
 
+/* unreachable type Service_GKEServiceObservedState
 // +kcc:observedstate:proto=google.monitoring.v3.Service.GkeService
 type Service_GKEServiceObservedState struct {
 	// Output only. The project this resource lives in. For legacy services
@@ -3003,7 +3048,9 @@ type Service_GKEServiceObservedState struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.GkeService.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
+*/
 
+/* unreachable type Service_GKEWorkloadObservedState
 // +kcc:observedstate:proto=google.monitoring.v3.Service.GkeWorkload
 type Service_GKEWorkloadObservedState struct {
 	// Output only. The project this resource lives in. For legacy services
@@ -3012,14 +3059,18 @@ type Service_GKEWorkloadObservedState struct {
 	// +kcc:proto:field=google.monitoring.v3.Service.GkeWorkload.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
+*/
 
+/* unreachable type SyntheticMonitorTargetObservedState
 // +kcc:observedstate:proto=google.monitoring.v3.SyntheticMonitorTarget
 type SyntheticMonitorTargetObservedState struct {
 	// Target a Synthetic Monitor GCFv2 instance.
 	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.cloud_function_v2
 	CloudFunctionV2 *SyntheticMonitorTarget_CloudFunctionV2TargetObservedState `json:"cloudFunctionV2,omitempty"`
 }
+*/
 
+/* unreachable type SyntheticMonitorTarget_CloudFunctionV2TargetObservedState
 // +kcc:observedstate:proto=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target
 type SyntheticMonitorTarget_CloudFunctionV2TargetObservedState struct {
 	// Output only. The `cloud_run_revision` Monitored Resource associated with
@@ -3029,6 +3080,7 @@ type SyntheticMonitorTarget_CloudFunctionV2TargetObservedState struct {
 	// +kcc:proto:field=google.monitoring.v3.SyntheticMonitorTarget.CloudFunctionV2Target.cloud_run_revision
 	CloudRunRevision *MonitoredResource `json:"cloudRunRevision,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.monitoring.v3.UptimeCheckConfig", skipping
 

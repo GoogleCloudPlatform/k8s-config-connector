@@ -17,6 +17,9 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Disable core dump file creation during parallel generator execution
+ulimit -c 0 2>/dev/null || true
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
