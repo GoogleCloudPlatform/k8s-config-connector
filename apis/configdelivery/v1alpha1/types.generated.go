@@ -76,6 +76,7 @@ type FleetPackageError struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
+/* unreachable type FleetPackageInfo
 // +kcc:proto=google.cloud.configdelivery.v1.FleetPackageInfo
 type FleetPackageInfo struct {
 	// Optional. The active rollout, if any. Format is
@@ -88,6 +89,7 @@ type FleetPackageInfo struct {
 	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.last_completed_rollout
 	LastCompletedRollout *string `json:"lastCompletedRollout,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.configdelivery.v1.RollingStrategy
 type RollingStrategy struct {

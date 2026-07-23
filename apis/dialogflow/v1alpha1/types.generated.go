@@ -16,167 +16,210 @@
 // +generated:types
 // krm.group: dialogflow.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.dialogflow.cx.v3
-// resource: DialogflowSecuritySettings:SecuritySettings
+// proto.service: google.cloud.dialogflow.v2
+// resource: DialogflowKnowledgeBase:KnowledgeBase
+// resource: DialogflowGenerator:Generator
+// resource: DialogflowConversationDataset:ConversationDataset
 
 package v1alpha1
 
-/* found existing non-generated go type with proto tag "google.cloud.dialogflow.cx.v3.SecuritySettings", skipping
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.SecuritySettings
-type SecuritySettings struct {
-	// Resource name of the settings.
-	//  Required for the
-	//  [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings]
-	//  method.
-	//  [SecuritySettingsService.CreateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.CreateSecuritySettings]
-	//  populates the name automatically. Format:
-	//  `projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The human-readable name of the security settings, unique within
-	//  the location.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Strategy that defines how we do redaction.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.redaction_strategy
-	RedactionStrategy *string `json:"redactionStrategy,omitempty"`
-
-	// Defines the data for which Dialogflow applies redaction. Dialogflow does
-	//  not redact data that it does not have access to – for example, Cloud
-	//  logging.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.redaction_scope
-	RedactionScope *string `json:"redactionScope,omitempty"`
-
-	// [DLP](https://cloud.google.com/dlp/docs) inspect template name. Use this
-	//  template to define inspect base settings.
-	//
-	//  The `DLP Inspect Templates Reader` role is needed on the Dialogflow
-	//  service identity service account (has the form
-	//  `service-PROJECT_NUMBER@gcp-sa-dialogflow.iam.gserviceaccount.com`)
-	//  for your agent's project.
-	//
-	//  If empty, we use the default DLP inspect config.
-	//
-	//  The template name will have one of the following formats:
-	//  `projects/<ProjectID>/locations/<LocationID>/inspectTemplates/<TemplateID>`
-	//  OR
-	//  `organizations/<OrganizationID>/locations/<LocationID>/inspectTemplates/<TemplateID>`
-	//
-	//  Note: `inspect_template` must be located in the same region as the
-	//  `SecuritySettings`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.inspect_template
-	InspectTemplate *string `json:"inspectTemplate,omitempty"`
-
-	// [DLP](https://cloud.google.com/dlp/docs) deidentify template name. Use this
-	//  template to define de-identification configuration for the content.
-	//
-	//  The `DLP De-identify Templates Reader` role is needed on the Dialogflow
-	//  service identity service account (has the form
-	//  `service-PROJECT_NUMBER@gcp-sa-dialogflow.iam.gserviceaccount.com`)
-	//  for your agent's project.
-	//
-	//  If empty, Dialogflow replaces sensitive info with `[redacted]` text.
-	//
-	//  The template name will have one of the following formats:
-	//  `projects/<ProjectID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>`
-	//  OR
-	//  `organizations/<OrganizationID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>`
-	//
-	//  Note: `deidentify_template` must be located in the same region as the
-	//  `SecuritySettings`.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.deidentify_template
-	DeidentifyTemplate *string `json:"deidentifyTemplate,omitempty"`
-
-	// Retains the data for the specified number of days.
-	//  User must set a value lower than Dialogflow's default 365d TTL (30 days
-	//  for Agent Assist traffic), higher value will be ignored and use default.
-	//  Setting a value higher than that has no effect. A missing value or
-	//  setting to 0 also means we use default TTL.
-	//  When data retention configuration is changed, it only applies to the data
-	//  created after the change; the TTL of existing data created before the
-	//  change stays intact.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.retention_window_days
-	RetentionWindowDays *int32 `json:"retentionWindowDays,omitempty"`
-
-	// Specifies the retention behavior defined by
-	//  [SecuritySettings.RetentionStrategy][google.cloud.dialogflow.cx.v3.SecuritySettings.RetentionStrategy].
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy
-	RetentionStrategy *string `json:"retentionStrategy,omitempty"`
-
-	// List of types of data to remove when retention settings triggers purge.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.purge_data_types
-	PurgeDataTypes []string `json:"purgeDataTypes,omitempty"`
-
-	// Controls audio export settings for post-conversation analytics when
-	//  ingesting audio to conversations via [Participants.AnalyzeContent][] or
-	//  [Participants.StreamingAnalyzeContent][].
-	//
-	//  If
-	//  [retention_strategy][google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy]
-	//  is set to REMOVE_AFTER_CONVERSATION or [audio_export_settings.gcs_bucket][]
-	//  is empty, audio export is disabled.
-	//
-	//  If audio export is enabled, audio is recorded and saved to
-	//  [audio_export_settings.gcs_bucket][], subject to retention policy of
-	//  [audio_export_settings.gcs_bucket][].
-	//
-	//  This setting won't effect audio input for implicit sessions via
-	//  [Sessions.DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
-	//  or
-	//  [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent].
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.audio_export_settings
-	AudioExportSettings *SecuritySettings_AudioExportSettings `json:"audioExportSettings,omitempty"`
-
-	// Controls conversation exporting settings to Insights after conversation is
-	//  completed.
-	//
-	//  If
-	//  [retention_strategy][google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy]
-	//  is set to REMOVE_AFTER_CONVERSATION, Insights export is disabled no matter
-	//  what you configure here.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.insights_export_settings
-	InsightsExportSettings *SecuritySettings_InsightsExportSettings `json:"insightsExportSettings,omitempty"`
-}
-*/
-
-// +kcc:proto=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings
-type SecuritySettings_AudioExportSettings struct {
-	// Cloud Storage bucket to export audio record to.
-	//  Setting this field would grant the Storage Object Creator role to
-	//  the Dialogflow Service Agent.
-	//  API caller that tries to modify this field should have the permission of
-	//  storage.buckets.setIamPolicy.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings.gcs_bucket
-	GCSBucket *string `json:"gcsBucket,omitempty"`
-
-	// Filename pattern for exported audio.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings.audio_export_pattern
-	AudioExportPattern *string `json:"audioExportPattern,omitempty"`
-
-	// Enable audio redaction if it is true.
-	//  Note that this only redacts end-user audio data;
-	//  Synthesised audio from the virtual agent is not redacted.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings.enable_audio_redaction
-	EnableAudioRedaction *bool `json:"enableAudioRedaction,omitempty"`
-
-	// File format for exported audio file. Currently only in telephony
-	//  recordings.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings.audio_format
-	AudioFormat *string `json:"audioFormat,omitempty"`
-
-	// Whether to store TTS audio. By default, TTS audio from the virtual agent
-	//  is not exported.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings.store_tts_audio
-	StoreTtsAudio *bool `json:"storeTtsAudio,omitempty"`
+// +kcc:proto=google.cloud.dialogflow.v2.ConversationContext
+type ConversationContext struct {
+	// Optional. List of message transcripts in the conversation.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationContext.message_entries
+	MessageEntries []MessageEntry `json:"messageEntries,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dialogflow.cx.v3.SecuritySettings.InsightsExportSettings
-type SecuritySettings_InsightsExportSettings struct {
-	// If enabled, we will automatically exports
-	//  conversations to Insights and Insights runs its analyzers.
-	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.InsightsExportSettings.enable_insights_export
-	EnableInsightsExport *bool `json:"enableInsightsExport,omitempty"`
+// +kcc:proto=google.cloud.dialogflow.v2.ConversationInfo
+type ConversationInfo struct {
+	// Optional. The language code of the conversation data within this dataset.
+	//  See https://cloud.google.com/apis/design/standard_fields for more
+	//  information. Supports all UTF-8 languages.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationInfo.language_code
+	LanguageCode *string `json:"languageCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.FewShotExample
+type FewShotExample struct {
+	// Optional. Conversation transcripts.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.conversation_context
+	ConversationContext *ConversationContext `json:"conversationContext,omitempty"`
+
+	// Optional. Key is the placeholder field name in input, value is the value of
+	//  the placeholder. E.g. instruction contains "@price", and ingested data has
+	//  <"price", "10">
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.extra_info
+	ExtraInfo map[string]string `json:"extraInfo,omitempty"`
+
+	// Summarization sections.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.summarization_section_list
+	SummarizationSectionList *SummarizationSectionList `json:"summarizationSectionList,omitempty"`
+
+	// Required. Example output of the model.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FewShotExample.output
+	Output *GeneratorSuggestion `json:"output,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.FreeFormContext
+type FreeFormContext struct {
+	// Optional. Free form text input to LLM.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FreeFormContext.text
+	Text *string `json:"text,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.FreeFormSuggestion
+type FreeFormSuggestion struct {
+	// Required. Free form suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.FreeFormSuggestion.response
+	Response *string `json:"response,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.GcsSources
+type GCSSources struct {
+	// Required. Google Cloud Storage URIs for the inputs. A URI is of the form:
+	//  `gs://bucket/object-prefix-or-name`
+	//  Whether a prefix or name is used depends on the use case.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GcsSources.uris
+	Uris []string `json:"uris,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.GeneratorSuggestion
+type GeneratorSuggestion struct {
+	// Optional. Free form suggestion.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.free_form_suggestion
+	FreeFormSuggestion *FreeFormSuggestion `json:"freeFormSuggestion,omitempty"`
+
+	// Optional. Suggested summary.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.GeneratorSuggestion.summary_suggestion
+	SummarySuggestion *SummarySuggestion `json:"summarySuggestion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.InferenceParameter
+type InferenceParameter struct {
+	// Optional. Maximum number of the output tokens for the generator.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.max_output_tokens
+	MaxOutputTokens *int32 `json:"maxOutputTokens,omitempty"`
+
+	// Optional. Controls the randomness of LLM predictions.
+	//  Low temperature = less random. High temperature = more random.
+	//  If unset (or 0), uses a default value of 0.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.temperature
+	Temperature *float64 `json:"temperature,omitempty"`
+
+	// Optional. Top-k changes how the model selects tokens for output. A top-k of
+	//  1 means the selected token is the most probable among all tokens in the
+	//  model's vocabulary (also called greedy decoding), while a top-k of 3 means
+	//  that the next token is selected from among the 3 most probable tokens
+	//  (using temperature). For each token selection step, the top K tokens with
+	//  the highest probabilities are sampled. Then tokens are further filtered
+	//  based on topP with the final token selected using temperature sampling.
+	//  Specify a lower value for less random responses and a higher value for more
+	//  random responses. Acceptable value is [1, 40], default to 40.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.top_k
+	TopK *int32 `json:"topK,omitempty"`
+
+	// Optional. Top-p changes how the model selects tokens for output. Tokens are
+	//  selected from most K (see topK parameter) probable to least until the sum
+	//  of their probabilities equals the top-p value. For example, if tokens A, B,
+	//  and C have a probability of 0.3, 0.2, and 0.1 and the top-p value is 0.5,
+	//  then the model will select either A or B as the next token (using
+	//  temperature) and doesn't consider C. The default top-p value is 0.95.
+	//  Specify a lower value for less random responses and a higher value for more
+	//  random responses. Acceptable value is [0.0, 1.0], default to 0.95.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InferenceParameter.top_p
+	TopP *float64 `json:"topP,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.InputConfig
+type InputConfig struct {
+	// The Cloud Storage URI has the form gs://<Google Cloud Storage bucket
+	//  name>//agent*.json. Wildcards are allowed and will be expanded into all
+	//  matched JSON files, which will be read as one conversation per file.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.InputConfig.gcs_source
+	GCSSource *GCSSources `json:"gcsSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.MessageEntry
+type MessageEntry struct {
+	// Optional. Participant role of the message.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.role
+	Role *string `json:"role,omitempty"`
+
+	// Optional. Transcript content of the message.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.text
+	Text *string `json:"text,omitempty"`
+
+	// Optional. The language of the text. See [Language
+	//  Support](https://cloud.google.com/dialogflow/docs/reference/language) for a
+	//  list of the currently supported language codes.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.language_code
+	LanguageCode *string `json:"languageCode,omitempty"`
+
+	// Optional. Create time of the message entry.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.MessageEntry.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationContext
+type SummarizationContext struct {
+	// Optional. List of sections. Note it contains both predefined section sand
+	//  customer defined sections.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.summarization_sections
+	SummarizationSections []SummarizationSection `json:"summarizationSections,omitempty"`
+
+	// Optional. List of few shot examples.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.few_shot_examples
+	FewShotExamples []FewShotExample `json:"fewShotExamples,omitempty"`
+
+	// Optional. Version of the feature. If not set, default to latest version.
+	//  Current candidates are ["1.0"].
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.version
+	Version *string `json:"version,omitempty"`
+
+	// Optional. The target language of the generated summary. The language code
+	//  for conversation will be used if this field is empty. Supported 2.0 and
+	//  later versions.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationContext.output_language_code
+	OutputLanguageCode *string `json:"outputLanguageCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationSection
+type SummarizationSection struct {
+	// Optional. Name of the section, for example, "situation".
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSection.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. Definition of the section, for example, "what the customer needs
+	//  help with or has question about."
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSection.definition
+	Definition *string `json:"definition,omitempty"`
+
+	// Optional. Type of the summarization section.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSection.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.SummarizationSectionList
+type SummarizationSectionList struct {
+	// Optional. Summarization sections.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarizationSectionList.summarization_sections
+	SummarizationSections []SummarizationSection `json:"summarizationSections,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.SummarySuggestion
+type SummarySuggestion struct {
+	// Required. All the parts of generated summary.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.summary_sections
+	SummarySections []SummarySuggestion_SummarySection `json:"summarySections,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection
+type SummarySuggestion_SummarySection struct {
+	// Required. Name of the section.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.section
+	Section *string `json:"section,omitempty"`
+
+	// Required. Summary text for the section.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.summary
+	Summary *string `json:"summary,omitempty"`
 }

@@ -23,6 +23,7 @@
 
 package v1alpha1
 
+/* unreachable type PartnerSseRealm_PartnerSseRealmPanOptions
 // +kcc:proto=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions
 type PartnerSseRealm_PartnerSseRealmPanOptions struct {
 	// Optional. serial_number is provided by PAN to identify GCP customer on
@@ -35,7 +36,9 @@ type PartnerSseRealm_PartnerSseRealmPanOptions struct {
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.tenant_id
 	TenantID *string `json:"tenantID,omitempty"`
 }
+*/
 
+/* unreachable type TLSInspectionPolicy
 // +kcc:proto=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy
 type TLSInspectionPolicy struct {
 	// Required. Name of the resource. Name is of the form
@@ -103,7 +106,9 @@ type TLSInspectionPolicy struct {
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.custom_tls_features
 	CustomTLSFeatures []string `json:"customTLSFeatures,omitempty"`
 }
+*/
 
+/* unreachable type TLSInspectionPolicyObservedState
 // +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy
 type TLSInspectionPolicyObservedState struct {
 	// Output only. The timestamp when the resource was created.
@@ -114,3 +119,4 @@ type TLSInspectionPolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
+*/

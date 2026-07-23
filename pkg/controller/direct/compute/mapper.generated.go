@@ -4117,29 +4117,65 @@ func ComputePacketMirroringStatus_v1beta1_FromProto(mapCtx *direct.MapContext, i
 }
 */
 
-/* found existing non-generated mapping function "ComputePacketMirroringStatus_v1beta1_ToProto", skipping
-func ComputePacketMirroringStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePacketMirroringStatus) *pb.PacketMirroring {
+/*
+found existing non-generated mapping function "ComputePacketMirroringStatus_v1beta1_ToProto", skipping
+
+	func ComputePacketMirroringStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePacketMirroringStatus) *pb.PacketMirroring {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PacketMirroring{}
+		out.CollectorIlb = PacketmirroringCollectorIlbStatus_v1beta1_ToProto(mapCtx, in.CollectorIlb)
+		// MISSING: CreationTimestamp
+		// MISSING: Description
+		// MISSING: Enable
+		// MISSING: Filter
+		// MISSING: ID
+		// (near miss): "ID" vs "Id"
+		// MISSING: Kind
+		// MISSING: MirroredResources
+		// MISSING: Name
+		out.Network = PacketmirroringNetworkStatus_v1beta1_ToProto(mapCtx, in.Network)
+		// MISSING: Priority
+		out.Region = in.Region
+		out.SelfLink = in.SelfLink
+		return out
+	}
+*/
+func ComputeRegionAutoscalerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.PacketMirroring{}
-	out.CollectorIlb = PacketmirroringCollectorIlbStatus_v1beta1_ToProto(mapCtx, in.CollectorIlb)
+	out := &krmcomputev1alpha1.ComputeRegionAutoscalerObservedState{}
 	// MISSING: CreationTimestamp
-	// MISSING: Description
-	// MISSING: Enable
-	// MISSING: Filter
 	// MISSING: ID
-	// (near miss): "ID" vs "Id"
 	// MISSING: Kind
-	// MISSING: MirroredResources
 	// MISSING: Name
-	out.Network = PacketmirroringNetworkStatus_v1beta1_ToProto(mapCtx, in.Network)
-	// MISSING: Priority
-	out.Region = in.Region
-	out.SelfLink = in.SelfLink
+	// MISSING: RecommendedSize
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	// MISSING: Zone
 	return out
 }
-*/
+func ComputeRegionAutoscalerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRegionAutoscalerObservedState) *pb.Autoscaler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Autoscaler{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	// MISSING: Zone
+	return out
+}
 
 /* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_FromProto", skipping
 func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerSpec {
@@ -4165,6 +4201,54 @@ func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 }
 */
 
+/* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_ToProto", skipping
+func ComputeRegionAutoscalerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeRegionAutoscalerSpec) *pb.Autoscaler {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Autoscaler{}
+	out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	out.Region = in.Region
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	out.Target = in.Target
+	// MISSING: Zone
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_FromProto", skipping
+func ComputeRegionAutoscalerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Autoscaler) *krmcomputev1alpha1.ComputeRegionAutoscalerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeRegionAutoscalerSpec{}
+	// MISSING: AutoscalingPolicy
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: RecommendedSize
+	// MISSING: Region
+	// MISSING: ScalingScheduleStatus
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: StatusDetails
+	// MISSING: Target
+	// MISSING: Zone
+	return out
+}
+*/
+
 /*
 found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alpha1_ToProto", skipping
 
@@ -4173,19 +4257,19 @@ found existing non-generated mapping function "ComputeRegionAutoscalerSpec_v1alp
 			return nil
 		}
 		out := &pb.Autoscaler{}
-		out.AutoscalingPolicy = RegionautoscalerAutoscalingPolicy_v1alpha1_ToProto(mapCtx, in.AutoscalingPolicy)
+		// MISSING: AutoscalingPolicy
 		// MISSING: CreationTimestamp
-		out.Description = in.Description
+		// MISSING: Description
 		// MISSING: ID
 		// MISSING: Kind
 		// MISSING: Name
 		// MISSING: RecommendedSize
-		out.Region = in.Region
+		// MISSING: Region
 		// MISSING: ScalingScheduleStatus
 		// MISSING: SelfLink
 		// MISSING: Status
 		// MISSING: StatusDetails
-		out.Target = in.Target
+		// MISSING: Target
 		// MISSING: Zone
 		return out
 	}

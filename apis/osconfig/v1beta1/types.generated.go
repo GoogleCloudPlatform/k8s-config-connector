@@ -16,256 +16,416 @@
 // +generated:types
 // krm.group: osconfig.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.cloud.osconfig.v1
-// resource: OSConfigOSPolicyAssignment:OSPolicyAssignment
+// proto.service: google.cloud.osconfig.v1beta
+// resource: OSConfigGuestPolicy:GuestPolicy
 
 package v1beta1
 
-/* found existing non-generated go type "FixedOrPercent", skipping
+/* found existing non-generated go type "AptRepository", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.FixedOrPercent
-type FixedOrPercent struct {
-	// Specifies a fixed value.
-	// +kcc:proto:field=google.cloud.osconfig.v1.FixedOrPercent.fixed
-	Fixed *int32 `json:"fixed,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.AptRepository
+type AptRepository struct {
+	// Type of archive files in this repository. The default behavior is DEB.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptRepository.archive_type
+	ArchiveType *string `json:"archiveType,omitempty"`
 
-	// Specifies the relative value defined as a percentage, which will be
-	//  multiplied by a reference value.
-	// +kcc:proto:field=google.cloud.osconfig.v1.FixedOrPercent.percent
-	Percent *int32 `json:"percent,omitempty"`
+	// Required. URI for this repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptRepository.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Required. Distribution of this repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptRepository.distribution
+	Distribution *string `json:"distribution,omitempty"`
+
+	// Required. List of components for this repository. Must contain at least one item.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptRepository.components
+	Components []string `json:"components,omitempty"`
+
+	// URI of the key file for this repository. The agent maintains
+	//  a keyring at `/etc/apt/trusted.gpg.d/osconfig_agent_managed.gpg` containing
+	//  all the keys in any applied guest policy.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.AptRepository.gpg_key
+	GpgKey *string `json:"gpgKey,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy", skipping
+/* found existing non-generated go type "Assignment", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy
-type OSPolicy struct {
-	// Required. The id of the OS policy with the following restrictions:
+// +kcc:proto=google.cloud.osconfig.v1beta.Assignment
+type Assignment struct {
+	// Targets instances matching at least one of these label sets. This allows
+	//  an assignment to target disparate groups, for example "env=prod or
+	//  env=staging".
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.group_labels
+	GroupLabels []Assignment_GroupLabel `json:"groupLabels,omitempty"`
+
+	// Targets instances in any of these zones. Leave empty to target instances
+	//  in any zone.
 	//
-	//  * Must contain only lowercase letters, numbers, and hyphens.
-	//  * Must start with a letter.
-	//  * Must be between 1-63 characters.
-	//  * Must end with a number or a letter.
-	//  * Must be unique within the assignment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.id
-	ID *string `json:"id,omitempty"`
+	//  Zonal targeting is uncommon and is supported to facilitate the management
+	//  of changes by zone.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.zones
+	Zones []string `json:"zones,omitempty"`
 
-	// Policy description.
-	//  Length of the description is limited to 1024 characters.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Policy mode
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.mode
-	Mode *string `json:"mode,omitempty"`
-
-	// Required. List of resource groups for the policy.
-	//  For a particular VM, resource groups are evaluated in the order specified
-	//  and the first resource group that is applicable is selected and the rest
-	//  are ignored.
+	// Targets any of the instances specified. Instances are specified by their
+	//  URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME]`.
 	//
-	//  If none of the resource groups are applicable for a VM, the VM is
-	//  considered to be non-compliant w.r.t this policy. This behavior can be
-	//  toggled by the flag `allow_no_resource_group_match`
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.resource_groups
-	ResourceGroups []OSPolicy_ResourceGroup `json:"resourceGroups,omitempty"`
+	//  Instance targeting is uncommon and is supported to facilitate the
+	//  management of changes by the instance or to target specific VM instances
+	//  for development and testing.
+	//
+	//  Only supported for project-level policies and must reference instances
+	//  within this project.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.instances
+	Instances []string `json:"instances,omitempty"`
 
-	// This flag determines the OS policy compliance status when none of the
-	//  resource groups within the policy are applicable for a VM. Set this value
-	//  to `true` if the policy needs to be reported as compliant even if the
-	//  policy has nothing to validate or enforce.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.allow_no_resource_group_match
-	AllowNoResourceGroupMatch *bool `json:"allowNoResourceGroupMatch,omitempty"`
+	// Targets VM instances whose name starts with one of these prefixes.
+	//
+	//  Like labels, this is another way to group VM instances when targeting
+	//  configs, for example prefix="prod-".
+	//
+	//  Only supported for project-level policies.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.instance_name_prefixes
+	InstanceNamePrefixes []string `json:"instanceNamePrefixes,omitempty"`
+
+	// Targets VM instances matching at least one of the following OS types.
+	//
+	//  VM instances must match all supplied criteria for a given OsType to be
+	//  included.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.os_types
+	OSTypes []Assignment_OSType `json:"osTypes,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_InventoryFilter", skipping
+/* found existing non-generated go type "Assignment_GroupLabel", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.InventoryFilter
-type OSPolicy_InventoryFilter struct {
-	// Required. The OS short name
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.InventoryFilter.os_short_name
+// +kcc:proto=google.cloud.osconfig.v1beta.Assignment.GroupLabel
+type Assignment_GroupLabel struct {
+	// Google Compute Engine instance labels that must be present for an
+	//  instance to be included in this assignment group.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.GroupLabel.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Assignment_OSType", skipping
+
+// +kcc:proto=google.cloud.osconfig.v1beta.Assignment.OsType
+type Assignment_OSType struct {
+	// Targets VM instances with OS Inventory enabled and having the following
+	//  OS short name, for example "debian" or "windows".
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.OsType.os_short_name
 	OSShortName *string `json:"osShortName,omitempty"`
 
-	// The OS version
-	//
-	//  Prefix matches are supported if asterisk(*) is provided as the
-	//  last character. For example, to match all versions with a major
-	//  version of `7`, specify the following value for this field `7.*`
-	//
-	//  An empty string matches all OS versions.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.InventoryFilter.os_version
+	// Targets VM instances with OS Inventory enabled and having the following
+	//  following OS version.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.OsType.os_version
 	OSVersion *string `json:"osVersion,omitempty"`
+
+	// Targets VM instances with OS Inventory enabled and having the following
+	//  OS architecture.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Assignment.OsType.os_architecture
+	OSArchitecture *string `json:"osArchitecture,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource", skipping
+/* found existing non-generated go type "GooRepository", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource
-type OSPolicy_Resource struct {
-	// Required. The id of the resource with the following restrictions:
+// +kcc:proto=google.cloud.osconfig.v1beta.GooRepository
+type GooRepository struct {
+	// Required. The name of the repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GooRepository.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The url of the repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GooRepository.url
+	URL *string `json:"url,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.osconfig.v1beta.GuestPolicy", skipping
+
+// +kcc:proto=google.cloud.osconfig.v1beta.GuestPolicy
+type GuestPolicy struct {
+	// Required. Unique name of the resource in this project using one of the following
+	//  forms:
+	//  `projects/{project_number}/guestPolicies/{guest_policy_id}`.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Description of the guest policy. Length of the description is limited
+	//  to 1024 characters.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Specifies the VM instances that are assigned to this policy. This allows
+	//  you to target sets or groups of VM instances by different parameters such
+	//  as labels, names, OS, or zones.
 	//
-	//  * Must contain only lowercase letters, numbers, and hyphens.
-	//  * Must start with a letter.
-	//  * Must be between 1-63 characters.
-	//  * Must end with a number or a letter.
-	//  * Must be unique within the OS policy.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.id
+	//  If left empty, all VM instances underneath this policy are targeted.
+	//
+	//  At the same level in the resource hierarchy (that is within a project), the
+	//  service prevents the creation of multiple policies that conflict with
+	//  each other. For more information, see how the service [handles assignment
+	//  conflicts](/compute/docs/os-config-management/create-guest-policy#handle-conflicts).
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.assignment
+	Assignment *Assignment `json:"assignment,omitempty"`
+
+	// The software packages to be managed by this policy.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.packages
+	Packages []Package `json:"packages,omitempty"`
+
+	// A list of package repositories to configure on the VM instance. This is
+	//  done before any other configs are applied so they can use these repos.
+	//  Package repositories are only configured if the corresponding package
+	//  manager(s) are available.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.package_repositories
+	PackageRepositories []PackageRepository `json:"packageRepositories,omitempty"`
+
+	// A list of Recipes to install on the VM instance.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.recipes
+	Recipes []SoftwareRecipe `json:"recipes,omitempty"`
+
+	// The etag for this guest policy.
+	//  If this is provided on update, it must match the server's etag.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Package", skipping
+
+// +kcc:proto=google.cloud.osconfig.v1beta.Package
+type Package struct {
+	// Required. The name of the package. A package is uniquely identified for conflict
+	//  validation by checking the package name and the manager(s) that the
+	//  package targets.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Package.name
+	Name *string `json:"name,omitempty"`
+
+	// The desired_state the agent should maintain for this package. The
+	//  default is to ensure the package is installed.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Package.desired_state
+	DesiredState *string `json:"desiredState,omitempty"`
+
+	// Type of package manager that can be used to install this package.
+	//  If a system does not have the package manager, the package is not
+	//  installed or removed no error message is returned. By default,
+	//  or if you specify `ANY`,
+	//  the agent attempts to install and remove this package using the default
+	//  package manager. This is useful when creating a policy that applies to
+	//  different types of systems.
+	//
+	//  The default behavior is ANY.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.Package.manager
+	Manager *string `json:"manager,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PackageRepository", skipping
+
+// +kcc:proto=google.cloud.osconfig.v1beta.PackageRepository
+type PackageRepository struct {
+	// An Apt Repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PackageRepository.apt
+	Apt *AptRepository `json:"apt,omitempty"`
+
+	// A Yum Repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PackageRepository.yum
+	Yum *YumRepository `json:"yum,omitempty"`
+
+	// A Zypper Repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PackageRepository.zypper
+	Zypper *ZypperRepository `json:"zypper,omitempty"`
+
+	// A Goo Repository.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.PackageRepository.goo
+	Goo *GooRepository `json:"goo,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SoftwareRecipe", skipping
+
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe
+type SoftwareRecipe struct {
+	// Required. Unique identifier for the recipe. Only one recipe with a given name is
+	//  installed on an instance.
+	//
+	//  Names are also used to identify resources which helps to determine whether
+	//  guest policies have conflicts. This means that requests to create multiple
+	//  recipes with the same name and version are rejected since they
+	//  could potentially have conflicting assignments.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.name
+	Name *string `json:"name,omitempty"`
+
+	// The version of this software recipe. Version can be up to 4 period
+	//  separated numbers (e.g. 12.34.56.78).
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.version
+	Version *string `json:"version,omitempty"`
+
+	// Resources available to be used in the steps in the recipe.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.artifacts
+	Artifacts []SoftwareRecipe_Artifact `json:"artifacts,omitempty"`
+
+	// Actions to be taken for installing this recipe. On failure it stops
+	//  executing steps and does not attempt another installation. Any steps taken
+	//  (including partially completed steps) are not rolled back.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.install_steps
+	InstallSteps []SoftwareRecipe_Step `json:"installSteps,omitempty"`
+
+	// Actions to be taken for updating this recipe. On failure it stops
+	//  executing steps and  does not attempt another update for this recipe. Any
+	//  steps taken (including partially completed steps) are not rolled back.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.update_steps
+	UpdateSteps []SoftwareRecipe_Step `json:"updateSteps,omitempty"`
+
+	// Default is INSTALLED. The desired state the agent should maintain for this
+	//  recipe.
+	//
+	//  INSTALLED: The software recipe is installed on the instance but
+	//             won't be updated to new versions.
+	//  UPDATED: The software recipe is installed on the instance. The recipe is
+	//           updated to a higher version, if a higher version of the recipe is
+	//           assigned to this instance.
+	//  REMOVE: Remove is unsupported for software recipes and attempts to
+	//          create or update a recipe to the REMOVE state is rejected.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.desired_state
+	DesiredState *string `json:"desiredState,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SoftwareRecipe_Artifact", skipping
+
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact
+type SoftwareRecipe_Artifact struct {
+	// Required. Id of the artifact, which the installation and update steps of this
+	//  recipe can reference. Artifacts in a recipe cannot have the same id.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.id
 	ID *string `json:"id,omitempty"`
 
-	// Package resource
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.pkg
-	Pkg *OSPolicy_Resource_PackageResource `json:"pkg,omitempty"`
+	// A generic remote artifact.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.remote
+	Remote *SoftwareRecipe_Artifact_Remote `json:"remote,omitempty"`
 
-	// Package repository resource
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.repository
-	Repository *OSPolicy_Resource_RepositoryResource `json:"repository,omitempty"`
+	// A Google Cloud Storage artifact.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.gcs
+	GCS *SoftwareRecipe_Artifact_GCS `json:"gcs,omitempty"`
 
-	// Exec resource
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.exec
-	Exec *OSPolicy_Resource_ExecResource `json:"exec,omitempty"`
-
-	// File resource
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.file
-	File *OSPolicy_Resource_FileResource `json:"file,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_ExecResource", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource
-type OSPolicy_Resource_ExecResource struct {
-	// Required. What to run to validate this resource is in the desired
-	//  state. An exit code of 100 indicates "in desired state", and exit code
-	//  of 101 indicates "not in desired state". Any other exit code indicates
-	//  a failure running validate.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.validate
-	Validate *OSPolicy_Resource_ExecResource_Exec `json:"validate,omitempty"`
-
-	// What to run to bring this resource into the desired state.
-	//  An exit code of 100 indicates "success", any other exit code indicates
-	//  a failure running enforce.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.enforce
-	Enforce *OSPolicy_Resource_ExecResource_Exec `json:"enforce,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_ExecResource_Exec", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec
-type OSPolicy_Resource_ExecResource_Exec struct {
-	// A remote or local file.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec.file
-	File *OSPolicy_Resource_File `json:"file,omitempty"`
-
-	// An inline script.
-	//  The size of the script is limited to 1024 characters.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec.script
-	Script *string `json:"script,omitempty"`
-
-	// Optional arguments to pass to the source during execution.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec.args
-	Args []string `json:"args,omitempty"`
-
-	// Required. The script interpreter to use.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec.interpreter
-	Interpreter *string `json:"interpreter,omitempty"`
-
-	// Only recorded for enforce Exec.
-	//  Path to an output file (that is created by this Exec) whose
-	//  content will be recorded in OSPolicyResourceCompliance after a
-	//  successful run. Absence or failure to read this file will result in
-	//  this ExecResource being non-compliant. Output file size is limited to
-	//  100K bytes.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.ExecResource.Exec.output_file_path
-	OutputFilePath *string `json:"outputFilePath,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_File", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.File
-type OSPolicy_Resource_File struct {
-	// A generic remote file.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.remote
-	Remote *OSPolicy_Resource_File_Remote `json:"remote,omitempty"`
-
-	// A Cloud Storage object.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.gcs
-	GCS *OSPolicy_Resource_File_GCS `json:"gcs,omitempty"`
-
-	// A local path within the VM to use.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.local_path
-	LocalPath *string `json:"localPath,omitempty"`
-
-	// Defaults to false. When false, files are subject to validations
-	//  based on the file type:
+	// Defaults to false. When false, recipes are subject to validations
+	//  based on the artifact type:
 	//
-	//  Remote: A checksum must be specified.
-	//  Cloud Storage: An object generation number must be specified.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.allow_insecure
+	//  Remote: A checksum must be specified, and only protocols with
+	//  transport-layer security are permitted.
+	//  GCS:    An object generation number must be specified.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.allow_insecure
 	AllowInsecure *bool `json:"allowInsecure,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_File_GCS", skipping
+/* found existing non-generated go type "SoftwareRecipe_Artifact_GCS", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.File.Gcs
-type OSPolicy_Resource_File_GCS struct {
-	// Required. Bucket of the Cloud Storage object.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Gcs.bucket
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.Gcs
+type SoftwareRecipe_Artifact_GCS struct {
+	// Bucket of the Google Cloud Storage object.
+	//  Given an example URL:
+	//  `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+	//  this value would be `my-bucket`.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.Gcs.bucket
 	Bucket *string `json:"bucket,omitempty"`
 
-	// Required. Name of the Cloud Storage object.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Gcs.object
+	// Name of the Google Cloud Storage object.
+	//  As specified [here]
+	//  (https://cloud.google.com/storage/docs/naming#objectnames)
+	//  Given an example URL:
+	//  `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+	//  this value would be `foo/bar`.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.Gcs.object
 	Object *string `json:"object,omitempty"`
 
-	// Generation number of the Cloud Storage object.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Gcs.generation
+	// Must be provided if allow_insecure is false.
+	//  Generation number of the Google Cloud Storage object.
+	//  `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+	//  this value would be `1234567`.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.Gcs.generation
 	Generation *int64 `json:"generation,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_File_Remote", skipping
+/* found existing non-generated go type "SoftwareRecipe_Artifact_Remote", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.File.Remote
-type OSPolicy_Resource_File_Remote struct {
-	// Required. URI from which to fetch the object. It should contain both
-	//  the protocol and path following the format `{protocol}://{location}`.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Remote.uri
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.Remote
+type SoftwareRecipe_Artifact_Remote struct {
+	// URI from which to fetch the object. It should contain both the protocol
+	//  and path following the format {protocol}://{location}.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.Remote.uri
 	URI *string `json:"uri,omitempty"`
 
-	// SHA256 checksum of the remote file.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.File.Remote.sha256_checksum
-	Sha256Checksum *string `json:"sha256Checksum,omitempty"`
+	// Must be provided if `allow_insecure` is `false`.
+	//  SHA256 checksum in hex format, to compare to the checksum of the
+	//  artifact. If the checksum is not empty and it doesn't match the
+	//  artifact then the recipe installation fails before running any of the
+	//  steps.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Artifact.Remote.checksum
+	Checksum *string `json:"checksum,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_FileResource", skipping
+/* found existing non-generated go type "SoftwareRecipe_Step", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource
-type OSPolicy_Resource_FileResource struct {
-	// A remote or local source.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource.file
-	File *OSPolicy_Resource_File `json:"file,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step
+type SoftwareRecipe_Step struct {
+	// Copies a file onto the instance.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.file_copy
+	FileCopy *SoftwareRecipe_Step_CopyFile `json:"fileCopy,omitempty"`
 
-	// A a file with this content.
-	//  The size of the content is limited to 1024 characters.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource.content
-	Content *string `json:"content,omitempty"`
+	// Extracts an archive into the specified directory.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.archive_extraction
+	ArchiveExtraction *SoftwareRecipe_Step_ExtractArchive `json:"archiveExtraction,omitempty"`
 
-	// Required. The absolute path of the file within the VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource.path
-	Path *string `json:"path,omitempty"`
+	// Installs an MSI file.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.msi_installation
+	MsiInstallation *SoftwareRecipe_Step_InstallMsi `json:"msiInstallation,omitempty"`
 
-	// Required. Desired state of the file.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource.state
-	State *string `json:"state,omitempty"`
+	// Installs a deb file via dpkg.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.dpkg_installation
+	DpkgInstallation *SoftwareRecipe_Step_InstallDpkg `json:"dpkgInstallation,omitempty"`
+
+	// Installs an rpm file via the rpm utility.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.rpm_installation
+	RpmInstallation *SoftwareRecipe_Step_InstallRpm `json:"rpmInstallation,omitempty"`
+
+	// Executes an artifact or local file.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.file_exec
+	FileExec *SoftwareRecipe_Step_ExecFile `json:"fileExec,omitempty"`
+
+	// Runs commands in a shell.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.script_run
+	ScriptRun *SoftwareRecipe_Step_RunScript `json:"scriptRun,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "SoftwareRecipe_Step_CopyFile", skipping
+
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.CopyFile
+type SoftwareRecipe_Step_CopyFile struct {
+	// Required. The id of the relevant artifact in the recipe.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.CopyFile.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
+
+	// Required. The absolute path on the instance to put the file.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.CopyFile.destination
+	Destination *string `json:"destination,omitempty"`
+
+	// Whether to allow this step to overwrite existing files. If this is
+	//  false and the file already exists the file is not overwritten
+	//  and the step is considered a success. Defaults to false.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.CopyFile.overwrite
+	Overwrite *bool `json:"overwrite,omitempty"`
 
 	// Consists of three octal digits which represent, in
 	//  order, the permissions of the owner, group, and other users for the
-	//  file (similarly to the numeric mode used in the linux chmod
-	//  utility). Each digit represents a three bit number with the 4 bit
+	//  file (similarly to the numeric mode used in the linux chmod utility).
+	//  Each digit represents a three bit number with the 4 bit
 	//  corresponding to the read permissions, the 2 bit corresponds to the
 	//  write bit, and the one bit corresponds to the execute permission.
 	//  Default behavior is 755.
@@ -275,448 +435,175 @@ type OSPolicy_Resource_FileResource struct {
 	//  read and execute: 5
 	//  read and write: 6
 	//  read only: 4
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.FileResource.permissions
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.CopyFile.permissions
 	Permissions *string `json:"permissions,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource", skipping
+/* found existing non-generated go type "SoftwareRecipe_Step_ExecFile", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource
-type OSPolicy_Resource_PackageResource struct {
-	// Required. The desired state the agent should maintain for this package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.desired_state
-	DesiredState *string `json:"desiredState,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExecFile
+type SoftwareRecipe_Step_ExecFile struct {
+	// The id of the relevant artifact in the recipe.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExecFile.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
 
-	// A package managed by Apt.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.apt
-	Apt *OSPolicy_Resource_PackageResource_Apt `json:"apt,omitempty"`
+	// The absolute path of the file on the local filesystem.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExecFile.local_path
+	LocalPath *string `json:"localPath,omitempty"`
 
-	// A deb package file.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.deb
-	Deb *OSPolicy_Resource_PackageResource_Deb `json:"deb,omitempty"`
+	// Arguments to be passed to the provided executable.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExecFile.args
+	Args []string `json:"args,omitempty"`
 
-	// A package managed by YUM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.yum
-	Yum *OSPolicy_Resource_PackageResource_Yum `json:"yum,omitempty"`
-
-	// A package managed by Zypper.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.zypper
-	Zypper *OSPolicy_Resource_PackageResource_Zypper `json:"zypper,omitempty"`
-
-	// An rpm package file.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.rpm
-	Rpm *OSPolicy_Resource_PackageResource_Rpm `json:"rpm,omitempty"`
-
-	// A package managed by GooGet.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.googet
-	Googet *OSPolicy_Resource_PackageResource_GooGet `json:"googet,omitempty"`
-
-	// An MSI package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.msi
-	Msi *OSPolicy_Resource_PackageResource_Msi `json:"msi,omitempty"`
+	// Defaults to [0]. A list of possible return values that the program
+	//  can return to indicate a success.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExecFile.allowed_exit_codes
+	AllowedExitCodes []int32 `json:"allowedExitCodes,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource_Apt", skipping
+/* found existing non-generated go type "SoftwareRecipe_Step_ExtractArchive", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.APT
-type OSPolicy_Resource_PackageResource_Apt struct {
-	// Required. Package name.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.APT.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExtractArchive
+type SoftwareRecipe_Step_ExtractArchive struct {
+	// Required. The id of the relevant artifact in the recipe.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExtractArchive.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
+
+	// Directory to extract archive to.
+	//  Defaults to `/` on Linux or `C:\` on Windows.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExtractArchive.destination
+	Destination *string `json:"destination,omitempty"`
+
+	// Required. The type of the archive to extract.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.ExtractArchive.type
+	Type *string `json:"type,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource_Deb", skipping
+/* found existing non-generated go type "SoftwareRecipe_Step_InstallDpkg", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Deb
-type OSPolicy_Resource_PackageResource_Deb struct {
-	// Required. A deb package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Deb.source
-	Source *OSPolicy_Resource_File `json:"source,omitempty"`
-
-	// Whether dependencies should also be installed.
-	//  - install when false: `dpkg -i package`
-	//  - install when true: `apt-get update && apt-get -y install
-	//  package.deb`
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Deb.pull_deps
-	PullDeps *bool `json:"pullDeps,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallDpkg
+type SoftwareRecipe_Step_InstallDpkg struct {
+	// Required. The id of the relevant artifact in the recipe.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallDpkg.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource_GooGet", skipping
+/* found existing non-generated go type "SoftwareRecipe_Step_InstallMsi", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.GooGet
-type OSPolicy_Resource_PackageResource_GooGet struct {
-	// Required. Package name.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.GooGet.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallMsi
+type SoftwareRecipe_Step_InstallMsi struct {
+	// Required. The id of the relevant artifact in the recipe.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallMsi.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
+
+	// The flags to use when installing the MSI
+	//  defaults to ["/i"] (i.e. the install flag).
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallMsi.flags
+	Flags []string `json:"flags,omitempty"`
+
+	// Return codes that indicate that the software installed or updated
+	//  successfully. Behaviour defaults to [0]
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallMsi.allowed_exit_codes
+	AllowedExitCodes []int32 `json:"allowedExitCodes,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource_Msi", skipping
+/* found existing non-generated go type "SoftwareRecipe_Step_InstallRpm", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.MSI
-type OSPolicy_Resource_PackageResource_Msi struct {
-	// Required. The MSI package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.MSI.source
-	Source *OSPolicy_Resource_File `json:"source,omitempty"`
-
-	// Additional properties to use during installation.
-	//  This should be in the format of Property=Setting.
-	//  Appended to the defaults of `ACTION=INSTALL
-	//  REBOOT=ReallySuppress`.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.MSI.properties
-	Properties []string `json:"properties,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallRpm
+type SoftwareRecipe_Step_InstallRpm struct {
+	// Required. The id of the relevant artifact in the recipe.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.InstallRpm.artifact_id
+	ArtifactID *string `json:"artifactID,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource_Rpm", skipping
+/* found existing non-generated go type "SoftwareRecipe_Step_RunScript", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.RPM
-type OSPolicy_Resource_PackageResource_Rpm struct {
-	// Required. An rpm package.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.RPM.source
-	Source *OSPolicy_Resource_File `json:"source,omitempty"`
+// +kcc:proto=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.RunScript
+type SoftwareRecipe_Step_RunScript struct {
+	// Required. The shell script to be executed.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.RunScript.script
+	Script *string `json:"script,omitempty"`
 
-	// Whether dependencies should also be installed.
-	//  - install when false: `rpm --upgrade --replacepkgs package.rpm`
-	//  - install when true: `yum -y install package.rpm` or
-	//  `zypper -y install package.rpm`
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.RPM.pull_deps
-	PullDeps *bool `json:"pullDeps,omitempty"`
+	// Return codes that indicate that the software installed or updated
+	//  successfully. Behaviour defaults to [0]
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.RunScript.allowed_exit_codes
+	AllowedExitCodes []int32 `json:"allowedExitCodes,omitempty"`
+
+	// The script interpreter to use to run the script. If no interpreter is
+	//  specified the script is executed directly, which likely
+	//  only succeed for scripts with
+	//  [shebang lines](https://en.wikipedia.org/wiki/Shebang_\(Unix\)).
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.SoftwareRecipe.Step.RunScript.interpreter
+	Interpreter *string `json:"interpreter,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource_Yum", skipping
+/* found existing non-generated go type "YumRepository", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.YUM
-type OSPolicy_Resource_PackageResource_Yum struct {
-	// Required. Package name.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.YUM.name
-	Name *string `json:"name,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_PackageResource_Zypper", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Zypper
-type OSPolicy_Resource_PackageResource_Zypper struct {
-	// Required. Package name.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.PackageResource.Zypper.name
-	Name *string `json:"name,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_RepositoryResource", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource
-type OSPolicy_Resource_RepositoryResource struct {
-	// An Apt Repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.apt
-	Apt *OSPolicy_Resource_RepositoryResource_AptRepository `json:"apt,omitempty"`
-
-	// A Yum Repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.yum
-	Yum *OSPolicy_Resource_RepositoryResource_YumRepository `json:"yum,omitempty"`
-
-	// A Zypper Repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.zypper
-	Zypper *OSPolicy_Resource_RepositoryResource_ZypperRepository `json:"zypper,omitempty"`
-
-	// A Goo Repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.goo
-	Goo *OSPolicy_Resource_RepositoryResource_GooRepository `json:"goo,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_RepositoryResource_AptRepository", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository
-type OSPolicy_Resource_RepositoryResource_AptRepository struct {
-	// Required. Type of archive files in this repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.archive_type
-	ArchiveType *string `json:"archiveType,omitempty"`
-
-	// Required. URI for this repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.uri
-	URI *string `json:"uri,omitempty"`
-
-	// Required. Distribution of this repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.distribution
-	Distribution *string `json:"distribution,omitempty"`
-
-	// Required. List of components for this repository. Must contain at
-	//  least one item.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.components
-	Components []string `json:"components,omitempty"`
-
-	// URI of the key file for this repository. The agent maintains a
-	//  keyring at `/etc/apt/trusted.gpg.d/osconfig_agent_managed.gpg`.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.AptRepository.gpg_key
-	GpgKey *string `json:"gpgKey,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_RepositoryResource_GooRepository", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.GooRepository
-type OSPolicy_Resource_RepositoryResource_GooRepository struct {
-	// Required. The name of the repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.GooRepository.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The url of the repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.GooRepository.url
-	URL *string `json:"url,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicy_Resource_RepositoryResource_YumRepository", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository
-type OSPolicy_Resource_RepositoryResource_YumRepository struct {
-	// Required. A one word, unique name for this repository. This is  the
-	//  `repo id` in the yum config file and also the `display_name` if
-	//  `display_name` is omitted. This id is also used as the unique
-	//  identifier when checking for resource conflicts.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.id
+// +kcc:proto=google.cloud.osconfig.v1beta.YumRepository
+type YumRepository struct {
+	// Required. A one word, unique name for this repository. This is
+	//  the `repo id` in the Yum config file and also the `display_name` if
+	//  `display_name` is omitted. This id is also used as the unique identifier
+	//  when checking for guest policy conflicts.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumRepository.id
 	ID *string `json:"id,omitempty"`
 
 	// The display name of the repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.display_name
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumRepository.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. The location of the repository directory.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.base_url
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumRepository.base_url
 	BaseURL *string `json:"baseURL,omitempty"`
 
 	// URIs of GPG keys.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.YumRepository.gpg_keys
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.YumRepository.gpg_keys
 	GpgKeys []string `json:"gpgKeys,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_Resource_RepositoryResource_ZypperRepository", skipping
+/* found existing non-generated go type "ZypperRepository", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository
-type OSPolicy_Resource_RepositoryResource_ZypperRepository struct {
-	// Required. A one word, unique name for this repository. This is the
-	//  `repo id` in the zypper config file and also the `display_name` if
-	//  `display_name` is omitted. This id is also used as the unique
-	//  identifier when checking for GuestPolicy conflicts.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.id
+// +kcc:proto=google.cloud.osconfig.v1beta.ZypperRepository
+type ZypperRepository struct {
+	// Required. A one word, unique name for this repository. This is
+	//  the `repo id` in the zypper config file and also the `display_name` if
+	//  `display_name` is omitted. This id is also used as the unique identifier
+	//  when checking for guest policy conflicts.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperRepository.id
 	ID *string `json:"id,omitempty"`
 
 	// The display name of the repository.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.display_name
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperRepository.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. The location of the repository directory.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.base_url
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperRepository.base_url
 	BaseURL *string `json:"baseURL,omitempty"`
 
 	// URIs of GPG keys.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.Resource.RepositoryResource.ZypperRepository.gpg_keys
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.ZypperRepository.gpg_keys
 	GpgKeys []string `json:"gpgKeys,omitempty"`
 }
 */
 
-/* found existing non-generated go type "OSPolicy_ResourceGroup", skipping
+/* found existing non-generated go type with proto tag "google.cloud.osconfig.v1beta.GuestPolicy", skipping
 
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicy.ResourceGroup
-type OSPolicy_ResourceGroup struct {
-	// List of inventory filters for the resource group.
-	//
-	//  The resources in this resource group are applied to the target VM if it
-	//  satisfies at least one of the following inventory filters.
-	//
-	//  For example, to apply this resource group to VMs running either `RHEL` or
-	//  `CentOS` operating systems, specify 2 items for the list with following
-	//  values:
-	//  inventory_filters[0].os_short_name='rhel' and
-	//  inventory_filters[1].os_short_name='centos'
-	//
-	//  If the list is empty, this resource group will be applied to the target
-	//  VM unconditionally.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.ResourceGroup.inventory_filters
-	InventoryFilters []OSPolicy_InventoryFilter `json:"inventoryFilters,omitempty"`
+// +kcc:observedstate:proto=google.cloud.osconfig.v1beta.GuestPolicy
+type GuestPolicyObservedState struct {
+	// Output only. Time this guest policy was created.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 
-	// Required. List of resources configured for this resource group.
-	//  The resources are executed in the exact order specified here.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicy.ResourceGroup.resources
-	Resources []OSPolicy_Resource `json:"resources,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.osconfig.v1.OSPolicyAssignment", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicyAssignment
-type OSPolicyAssignment struct {
-	// Resource name.
-	//
-	//  Format:
-	//  `projects/{project_number}/locations/{location}/osPolicyAssignments/{os_policy_assignment_id}`
-	//
-	//  This field is ignored when you create an OS policy assignment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.name
-	Name *string `json:"name,omitempty"`
-
-	// OS policy assignment description.
-	//  Length of the description is limited to 1024 characters.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. List of OS policies to be applied to the VMs.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.os_policies
-	OSPolicies []OSPolicy `json:"osPolicies,omitempty"`
-
-	// Required. Filter to select VMs.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.instance_filter
-	InstanceFilter *OSPolicyAssignment_InstanceFilter `json:"instanceFilter,omitempty"`
-
-	// Required. Rollout to deploy the OS policy assignment.
-	//  A rollout is triggered in the following situations:
-	//  1) OSPolicyAssignment is created.
-	//  2) OSPolicyAssignment is updated and the update contains changes to one of
-	//  the following fields:
-	//     - instance_filter
-	//     - os_policies
-	//  3) OSPolicyAssignment is deleted.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.rollout
-	Rollout *OSPolicyAssignment_Rollout `json:"rollout,omitempty"`
-
-	// The etag for this OS policy assignment.
-	//  If this is provided on update, it must match the server's etag.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.etag
-	Etag *string `json:"etag,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicyAssignment_InstanceFilter", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter
-type OSPolicyAssignment_InstanceFilter struct {
-	// Target all VMs in the project. If true, no other criteria is
-	//  permitted.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.all
-	All *bool `json:"all,omitempty"`
-
-	// List of label sets used for VM inclusion.
-	//
-	//  If the list has more than one `LabelSet`, the VM is included if any
-	//  of the label sets are applicable for the VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.inclusion_labels
-	InclusionLabels []OSPolicyAssignment_LabelSet `json:"inclusionLabels,omitempty"`
-
-	// List of label sets used for VM exclusion.
-	//
-	//  If the list has more than one label set, the VM is excluded if any
-	//  of the label sets are applicable for the VM.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.exclusion_labels
-	ExclusionLabels []OSPolicyAssignment_LabelSet `json:"exclusionLabels,omitempty"`
-
-	// List of inventories to select VMs.
-	//
-	//  A VM is selected if its inventory data matches at least one of the
-	//  following inventories.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.inventories
-	Inventories []OSPolicyAssignment_InstanceFilter_Inventory `json:"inventories,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicyAssignment_InstanceFilter_Inventory", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.Inventory
-type OSPolicyAssignment_InstanceFilter_Inventory struct {
-	// Required. The OS short name
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.Inventory.os_short_name
-	OSShortName *string `json:"osShortName,omitempty"`
-
-	// The OS version
-	//
-	//  Prefix matches are supported if asterisk(*) is provided as the
-	//  last character. For example, to match all versions with a major
-	//  version of `7`, specify the following value for this field `7.*`
-	//
-	//  An empty string matches all OS versions.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.InstanceFilter.Inventory.os_version
-	OSVersion *string `json:"osVersion,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicyAssignment_LabelSet", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicyAssignment.LabelSet
-type OSPolicyAssignment_LabelSet struct {
-	// Labels are identified by key/value pairs in this map.
-	//  A VM should contain all the key/value pairs specified in this
-	//  map to be selected.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.LabelSet.labels
-	Labels map[string]string `json:"labels,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "OSPolicyAssignment_Rollout", skipping
-
-// +kcc:proto=google.cloud.osconfig.v1.OSPolicyAssignment.Rollout
-type OSPolicyAssignment_Rollout struct {
-	// Required. The maximum number (or percentage) of VMs per zone to disrupt
-	//  at any given moment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.Rollout.disruption_budget
-	DisruptionBudget *FixedOrPercent `json:"disruptionBudget,omitempty"`
-
-	// Required. This determines the minimum duration of time to wait after the
-	//  configuration changes are applied through the current rollout. A
-	//  VM continues to count towards the `disruption_budget` at least
-	//  until this duration of time has passed after configuration changes are
-	//  applied.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.Rollout.min_wait_duration
-	MinWaitDuration *string `json:"minWaitDuration,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.osconfig.v1.OSPolicyAssignment", skipping
-
-// +kcc:observedstate:proto=google.cloud.osconfig.v1.OSPolicyAssignment
-type OSPolicyAssignmentObservedState struct {
-	// Output only. The assignment revision ID
-	//  A new revision is committed whenever a rollout is triggered for a OS policy
-	//  assignment
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.revision_id
-	RevisionID *string `json:"revisionID,omitempty"`
-
-	// Output only. The timestamp that the revision was created.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.revision_create_time
-	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
-
-	// Output only. OS policy assignment rollout state
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.rollout_state
-	RolloutState *string `json:"rolloutState,omitempty"`
-
-	// Output only. Indicates that this revision has been successfully rolled out
-	//  in this zone and new VMs will be assigned OS policies from this revision.
-	//
-	//  For a given OS policy assignment, there is only one revision with a value
-	//  of `true` for this field.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.baseline
-	Baseline *bool `json:"baseline,omitempty"`
-
-	// Output only. Indicates that this revision deletes the OS policy assignment.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.deleted
-	Deleted *bool `json:"deleted,omitempty"`
-
-	// Output only. Indicates that reconciliation is in progress for the revision.
-	//  This value is `true` when the `rollout_state` is one of:
-	//  * IN_PROGRESS
-	//  * CANCELLING
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.reconciling
-	Reconciling *bool `json:"reconciling,omitempty"`
-
-	// Output only. Server generated unique id for the OS policy assignment
-	//  resource.
-	// +kcc:proto:field=google.cloud.osconfig.v1.OSPolicyAssignment.uid
-	Uid *string `json:"uid,omitempty"`
+	// Output only. Last time this guest policy was updated.
+	// +kcc:proto:field=google.cloud.osconfig.v1beta.GuestPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
