@@ -73,6 +73,7 @@ func (g *TypeGenerator) WithIncludeSkippedOutput(includeSkippedOutput bool) *Typ
 }
 
 func (g *TypeGenerator) VisitProto(resourceProtoFullName string) error {
+	ActiveGoPackage = g.goPackage
 
 	descriptor, err := g.api.Files().FindDescriptorByName(protoreflect.FullName(resourceProtoFullName))
 	if err != nil {
@@ -132,7 +133,7 @@ func (g *TypeGenerator) needsObservedState(msg protoreflect.MessageDescriptor, s
 			return true
 		}
 		if f.Kind() == protoreflect.MessageKind && !f.IsMap() {
-			if _, ok := protoMessagesNotMappedToGoStruct[string(f.Message().FullName())]; ok {
+			if isProtoMessageNotMappedToGoStruct(string(f.Message().FullName()), f.Message()) {
 				continue
 			}
 			if g.needsObservedState(f.Message(), seen) {
@@ -235,7 +236,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 				}
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
+				}
+				if name == "google.protobuf.Struct" || name == "google.protobuf.Value" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 				}
 			}
 		}
@@ -296,7 +299,9 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 				}
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
+				}
+				if name == "google.protobuf.Struct" || name == "google.protobuf.Value" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 				}
 			}
 		}
@@ -360,8 +365,10 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
-		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
-			// Only write non-output fields.
+		// Special case: TerraformError is only used in ObservedState, but references the non-ObservedState struct type.
+		// Therefore we must include its output-only fields (like error) in the main struct.
+		isTerraformError := string(msg.FullName()) == "google.cloud.config.v1.TerraformError"
+		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || isTerraformError {
 			WriteField(out, field, msg, i, false)
 		}
 	}
@@ -397,6 +404,17 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 			return "map[string]string", nil
 		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 			return "map[string]int64", nil
+		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.MessageKind {
+			if strings.Contains(ActiveGoPackage, "config") {
+				var valueType string
+				if isTransitiveOutput {
+					valueType = goNameForOutputProtoMessage(entryMsg.Fields().ByName("value").Message())
+				} else {
+					valueType = GoNameForProtoMessage(entryMsg.Fields().ByName("value").Message())
+				}
+				return "map[string]" + valueType, nil
+			}
+			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyKind, valueKind)
 		} else {
 			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyKind, valueKind)
 		}
@@ -516,12 +534,31 @@ func AsSnakeCase(s string) string {
 	return strings.ToLower(regexp.MustCompile("([a-z0-9])([A-Z])").ReplaceAllString(res, "${1}_${2}"))
 }
 
+var ActiveGoPackage string
+
+func isProtoMessageNotMappedToGoStruct(fullName string, msg protoreflect.MessageDescriptor) bool {
+	if _, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
+		return true
+	}
+	if fullName == "google.protobuf.Value" || fullName == "google.protobuf.ListValue" {
+		if strings.Contains(ActiveGoPackage, "apis/config") {
+			return true
+		}
+	}
+	return false
+}
+
 func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
 
 	// Some special-case values that are not obvious how to map in KRM
 	if goType, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
 		return goType
+	}
+	if fullName == "google.protobuf.Value" || fullName == "google.protobuf.ListValue" {
+		if strings.Contains(ActiveGoPackage, "config") {
+			return "apiextensionsv1.JSON"
+		}
 	}
 
 	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
@@ -546,7 +583,7 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 
 func goNameForOutputProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
-	if _, ok := protoMessagesNotMappedToGoStruct[fullName]; ok {
+	if isProtoMessageNotMappedToGoStruct(fullName, msg) {
 		return GoNameForProtoMessage(msg)
 	}
 	return GoNameForProtoMessage(msg) + "ObservedState"
@@ -650,7 +687,7 @@ func FindDependenciesForField(field protoreflect.FieldDescriptor, deps map[strin
 	}
 
 	if field.Message() != nil { // no need to find dependencies for proto messages that are not mapped to KRM Go struct
-		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
+		if isProtoMessageNotMappedToGoStruct(string(field.Message().FullName()), field.Message()) {
 			return
 		}
 	}
@@ -685,6 +722,13 @@ func RemoveNotMappedToGoStruct(msgs map[string]protoreflect.MessageDescriptor) {
 	for msg := range protoMessagesNotMappedToGoStruct {
 		delete(msgs, msg)
 	}
+	for fqn := range msgs {
+		if fqn == "google.protobuf.Value" || fqn == "google.protobuf.ListValue" {
+			if strings.Contains(ActiveGoPackage, "config") {
+				delete(msgs, fqn)
+			}
+		}
+	}
 }
 
 func isPrimitive(field protoreflect.FieldDescriptor) bool {
@@ -692,7 +736,7 @@ func isPrimitive(field protoreflect.FieldDescriptor) bool {
 		return true
 	}
 	if field.Message() != nil {
-		if _, ok := protoMessagesNotMappedToGoStruct[string(field.Message().FullName())]; ok {
+		if isProtoMessageNotMappedToGoStruct(string(field.Message().FullName()), field.Message()) {
 			return true
 		}
 	}

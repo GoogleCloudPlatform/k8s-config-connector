@@ -92,6 +92,8 @@ func propsToDescription(props apiextensions.JSONSchemaProps, parent FieldDescrip
 		return sliceToDescriptions(props, parent, name, required)
 	case "boolean", "integer", "string", "number":
 		return newFieldDescription(props, parent, name, required)
+	case "":
+		return schemalessToDescription(props, parent, name, required)
 	default:
 		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
 			return schemalessToDescription(props, parent, name, required)
