@@ -213,6 +213,7 @@ type AdvancedDatapathObservabilityConfig struct {
 }
 */
 
+/* unreachable type AdvancedMachineFeatures
 // +kcc:proto=google.container.v1.AdvancedMachineFeatures
 type AdvancedMachineFeatures struct {
 	// The number of threads per physical core. To disable simultaneous
@@ -230,13 +231,16 @@ type AdvancedMachineFeatures struct {
 	// +kcc:proto:field=google.container.v1.AdvancedMachineFeatures.performance_monitoring_unit
 	PerformanceMonitoringUnit *string `json:"performanceMonitoringUnit,omitempty"`
 }
+*/
 
+/* unreachable type AnonymousAuthenticationConfig
 // +kcc:proto=google.container.v1.AnonymousAuthenticationConfig
 type AnonymousAuthenticationConfig struct {
 	// Defines the mode of limiting anonymous access in the cluster.
 	// +kcc:proto:field=google.container.v1.AnonymousAuthenticationConfig.mode
 	Mode *string `json:"mode,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "AuthenticatorGroupsConfig", skipping
 
@@ -254,16 +258,20 @@ type AuthenticatorGroupsConfig struct {
 }
 */
 
+/* unreachable type AutoIpamConfig
 // +kcc:proto=google.container.v1.AutoIpamConfig
 type AutoIpamConfig struct {
 }
+*/
 
+/* unreachable type AutoMonitoringConfig
 // +kcc:proto=google.container.v1.AutoMonitoringConfig
 type AutoMonitoringConfig struct {
 	// Scope for GKE Workload Auto-Monitoring.
 	// +kcc:proto:field=google.container.v1.AutoMonitoringConfig.scope
 	Scope *string `json:"scope,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.container.v1.AutoUpgradeOptions", skipping
 
@@ -272,6 +280,7 @@ type AutoUpgradeOptions struct {
 }
 */
 
+/* unreachable type Autopilot
 // +kcc:proto=google.container.v1.Autopilot
 type Autopilot struct {
 	// Enable Autopilot
@@ -282,6 +291,7 @@ type Autopilot struct {
 	// +kcc:proto:field=google.container.v1.Autopilot.workload_policy_config
 	WorkloadPolicyConfig *WorkloadPolicyConfig `json:"workloadPolicyConfig,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.container.v1.AutoprovisioningNodePoolDefaults", skipping
 
@@ -356,6 +366,7 @@ type AutoprovisioningNodePoolDefaults struct {
 }
 */
 
+/* unreachable type BestEffortProvisioning
 // +kcc:proto=google.container.v1.BestEffortProvisioning
 type BestEffortProvisioning struct {
 	// When this is enabled, cluster/node pool creations will ignore non-fatal
@@ -370,6 +381,7 @@ type BestEffortProvisioning struct {
 	// +kcc:proto:field=google.container.v1.BestEffortProvisioning.min_provision_nodes
 	MinProvisionNodes *int32 `json:"minProvisionNodes,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "BinaryAuthorization", skipping
 
@@ -388,6 +400,7 @@ type BinaryAuthorization struct {
 }
 */
 
+/* unreachable type BlueGreenSettings
 // +kcc:proto=google.container.v1.BlueGreenSettings
 type BlueGreenSettings struct {
 	// Standard policy for the blue-green upgrade.
@@ -399,7 +412,9 @@ type BlueGreenSettings struct {
 	// +kcc:proto:field=google.container.v1.BlueGreenSettings.node_pool_soak_duration
 	NodePoolSoakDuration *string `json:"nodePoolSoakDuration,omitempty"`
 }
+*/
 
+/* unreachable type BlueGreenSettings_StandardRolloutPolicy
 // +kcc:proto=google.container.v1.BlueGreenSettings.StandardRolloutPolicy
 type BlueGreenSettings_StandardRolloutPolicy struct {
 	// Percentage of the blue pool nodes to drain in a batch.
@@ -415,7 +430,9 @@ type BlueGreenSettings_StandardRolloutPolicy struct {
 	// +kcc:proto:field=google.container.v1.BlueGreenSettings.StandardRolloutPolicy.batch_soak_duration
 	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
 }
+*/
 
+/* unreachable type BootDisk
 // +kcc:proto=google.container.v1.BootDisk
 type BootDisk struct {
 	// Disk type of the boot disk.
@@ -435,13 +452,16 @@ type BootDisk struct {
 	// +kcc:proto:field=google.container.v1.BootDisk.provisioned_throughput
 	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
 }
+*/
 
+/* unreachable type ClientCertificateConfig
 // +kcc:proto=google.container.v1.ClientCertificateConfig
 type ClientCertificateConfig struct {
 	// Issue a client certificate.
 	// +kcc:proto:field=google.container.v1.ClientCertificateConfig.issue_client_certificate
 	IssueClientCertificate *bool `json:"issueClientCertificate,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "CloudRunConfig", skipping
 
@@ -850,6 +870,7 @@ type ClusterAutoscaling struct {
 }
 */
 
+/* unreachable type CompliancePostureConfig
 // +kcc:proto=google.container.v1.CompliancePostureConfig
 type CompliancePostureConfig struct {
 	// Defines the enablement mode for Compliance Posture.
@@ -860,13 +881,16 @@ type CompliancePostureConfig struct {
 	// +kcc:proto:field=google.container.v1.CompliancePostureConfig.compliance_standards
 	ComplianceStandards []CompliancePostureConfig_ComplianceStandard `json:"complianceStandards,omitempty"`
 }
+*/
 
+/* unreachable type CompliancePostureConfig_ComplianceStandard
 // +kcc:proto=google.container.v1.CompliancePostureConfig.ComplianceStandard
 type CompliancePostureConfig_ComplianceStandard struct {
 	// Name of the compliance standard.
 	// +kcc:proto:field=google.container.v1.CompliancePostureConfig.ComplianceStandard.standard
 	Standard *string `json:"standard,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "ConfidentialNodes", skipping
 
@@ -892,6 +916,7 @@ type ConfigConnectorConfig struct {
 }
 */
 
+/* unreachable type ContainerdConfig
 // +kcc:proto=google.container.v1.ContainerdConfig
 type ContainerdConfig struct {
 	// PrivateRegistryAccessConfig is used to configure access configuration
@@ -899,7 +924,9 @@ type ContainerdConfig struct {
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.private_registry_access_config
 	PrivateRegistryAccessConfig *ContainerdConfig_PrivateRegistryAccessConfig `json:"privateRegistryAccessConfig,omitempty"`
 }
+*/
 
+/* unreachable type ContainerdConfig_PrivateRegistryAccessConfig
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig
 type ContainerdConfig_PrivateRegistryAccessConfig struct {
 	// Private registry access is enabled.
@@ -910,7 +937,9 @@ type ContainerdConfig_PrivateRegistryAccessConfig struct {
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.certificate_authority_domain_config
 	CertificateAuthorityDomainConfig []ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig `json:"certificateAuthorityDomainConfig,omitempty"`
 }
+*/
 
+/* unreachable type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig
 type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig struct {
 	// List of fully qualified domain names (FQDN).
@@ -926,7 +955,9 @@ type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConf
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.gcp_secret_manager_certificate_config
 	GcpSecretManagerCertificateConfig *ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig `json:"gcpSecretManagerCertificateConfig,omitempty"`
 }
+*/
 
+/* unreachable type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig
 type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig struct {
 	// Secret URI, in the form
@@ -935,6 +966,7 @@ type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConf
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig.secret_uri
 	SecretURI *string `json:"secretURI,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "ControlPlaneEndpointsConfig", skipping
 
@@ -1062,6 +1094,7 @@ type DatabaseEncryption struct {
 }
 */
 
+/* unreachable type DatabaseEncryption_OperationError
 // +kcc:proto=google.container.v1.DatabaseEncryption.OperationError
 type DatabaseEncryption_OperationError struct {
 	// CloudKMS key resource that had the error.
@@ -1076,13 +1109,16 @@ type DatabaseEncryption_OperationError struct {
 	// +kcc:proto:field=google.container.v1.DatabaseEncryption.OperationError.timestamp
 	Timestamp *string `json:"timestamp,omitempty"`
 }
+*/
 
+/* unreachable type DefaultComputeClassConfig
 // +kcc:proto=google.container.v1.DefaultComputeClassConfig
 type DefaultComputeClassConfig struct {
 	// Enables default compute class.
 	// +kcc:proto:field=google.container.v1.DefaultComputeClassConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "DefaultSnatStatus", skipping
 
@@ -1104,6 +1140,7 @@ type DNSCacheConfig struct {
 }
 */
 
+/* unreachable type EnterpriseConfig
 // +kcc:proto=google.container.v1.EnterpriseConfig
 type EnterpriseConfig struct {
 
@@ -1111,6 +1148,7 @@ type EnterpriseConfig struct {
 	// +kcc:proto:field=google.container.v1.EnterpriseConfig.desired_tier
 	DesiredTier *string `json:"desiredTier,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "EphemeralStorageLocalSsdConfig", skipping
 
@@ -1143,6 +1181,7 @@ type EphemeralStorageLocalSsdConfig struct {
 }
 */
 
+/* unreachable type EvictionGracePeriod
 // +kcc:proto=google.container.v1.EvictionGracePeriod
 type EvictionGracePeriod struct {
 	// Optional. Grace period for eviction due to memory available signal. Sample
@@ -1181,7 +1220,9 @@ type EvictionGracePeriod struct {
 	// +kcc:proto:field=google.container.v1.EvictionGracePeriod.pid_available
 	PidAvailable *string `json:"pidAvailable,omitempty"`
 }
+*/
 
+/* unreachable type EvictionMinimumReclaim
 // +kcc:proto=google.container.v1.EvictionMinimumReclaim
 type EvictionMinimumReclaim struct {
 	// Optional. Minimum reclaim for eviction due to memory available signal. Only
@@ -1223,7 +1264,9 @@ type EvictionMinimumReclaim struct {
 	// +kcc:proto:field=google.container.v1.EvictionMinimumReclaim.pid_available
 	PidAvailable *string `json:"pidAvailable,omitempty"`
 }
+*/
 
+/* unreachable type EvictionSignals
 // +kcc:proto=google.container.v1.EvictionSignals
 type EvictionSignals struct {
 	// Optional. Memory available (i.e. capacity - workingSet), in bytes. Defines
@@ -1281,6 +1324,7 @@ type EvictionSignals struct {
 	// +kcc:proto:field=google.container.v1.EvictionSignals.pid_available
 	PidAvailable *string `json:"pidAvailable,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "FastSocket", skipping
 
@@ -1292,6 +1336,7 @@ type FastSocket struct {
 }
 */
 
+/* unreachable type Fleet
 // +kcc:proto=google.container.v1.Fleet
 type Fleet struct {
 	// The Fleet host project(project ID or project number) where this cluster
@@ -1300,6 +1345,7 @@ type Fleet struct {
 	// +kcc:proto:field=google.container.v1.Fleet.project
 	Project *string `json:"project,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.container.v1.GPUDriverInstallationConfig", skipping
 
@@ -1335,12 +1381,14 @@ type GatewayAPIConfig struct {
 }
 */
 
+/* unreachable type GCEPersistentDiskCsiDriverConfig
 // +kcc:proto=google.container.v1.GcePersistentDiskCsiDriverConfig
 type GCEPersistentDiskCsiDriverConfig struct {
 	// Whether the Compute Engine PD CSI driver is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.GcePersistentDiskCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "GcfsConfig", skipping
 
@@ -1352,20 +1400,25 @@ type GcfsConfig struct {
 }
 */
 
+/* unreachable type GcpFilestoreCsiDriverConfig
 // +kcc:proto=google.container.v1.GcpFilestoreCsiDriverConfig
 type GcpFilestoreCsiDriverConfig struct {
 	// Whether the GCP Filestore CSI driver is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.GcpFilestoreCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
+/* unreachable type GCSFuseCsiDriverConfig
 // +kcc:proto=google.container.v1.GcsFuseCsiDriverConfig
 type GCSFuseCsiDriverConfig struct {
 	// Whether the Cloud Storage Fuse CSI driver is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.GcsFuseCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
+/* unreachable type GKEAutoUpgradeConfig
 // +kcc:proto=google.container.v1.GkeAutoUpgradeConfig
 type GKEAutoUpgradeConfig struct {
 	// PatchMode specifies how auto upgrade patch builds should be
@@ -1373,6 +1426,7 @@ type GKEAutoUpgradeConfig struct {
 	// +kcc:proto:field=google.container.v1.GkeAutoUpgradeConfig.patch_mode
 	PatchMode *string `json:"patchMode,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "GKEBackupAgentConfig", skipping
 
@@ -1384,6 +1438,7 @@ type GKEBackupAgentConfig struct {
 }
 */
 
+/* unreachable type HighScaleCheckpointingConfig
 // +kcc:proto=google.container.v1.HighScaleCheckpointingConfig
 type HighScaleCheckpointingConfig struct {
 	// Whether the High Scale Checkpointing is enabled for this
@@ -1391,6 +1446,7 @@ type HighScaleCheckpointingConfig struct {
 	// +kcc:proto:field=google.container.v1.HighScaleCheckpointingConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "HorizontalPodAutoscaling", skipping
 
@@ -1601,13 +1657,16 @@ type K8sBetaAPIConfig struct {
 }
 */
 
+/* unreachable type KubernetesDashboard
 // +kcc:proto=google.container.v1.KubernetesDashboard
 type KubernetesDashboard struct {
 	// Whether the Kubernetes Dashboard is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.KubernetesDashboard.disabled
 	Disabled *bool `json:"disabled,omitempty"`
 }
+*/
 
+/* unreachable type LegacyAbac
 // +kcc:proto=google.container.v1.LegacyAbac
 type LegacyAbac struct {
 	// Whether the ABAC authorizer is enabled for this cluster. When enabled,
@@ -1617,6 +1676,7 @@ type LegacyAbac struct {
 	// +kcc:proto:field=google.container.v1.LegacyAbac.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "LinuxNodeConfig", skipping
 
@@ -1698,6 +1758,7 @@ type LinuxNodeConfig struct {
 }
 */
 
+/* unreachable type LinuxNodeConfig_HugepagesConfig
 // +kcc:proto=google.container.v1.LinuxNodeConfig.HugepagesConfig
 type LinuxNodeConfig_HugepagesConfig struct {
 	// Optional. Amount of 2M hugepages
@@ -1708,7 +1769,9 @@ type LinuxNodeConfig_HugepagesConfig struct {
 	// +kcc:proto:field=google.container.v1.LinuxNodeConfig.HugepagesConfig.hugepage_size1g
 	HugepageSize1g *int32 `json:"hugepageSize1g,omitempty"`
 }
+*/
 
+/* unreachable type LocalNvmeSsdBlockConfig
 // +kcc:proto=google.container.v1.LocalNvmeSsdBlockConfig
 type LocalNvmeSsdBlockConfig struct {
 	// Number of local NVMe SSDs to use.  The limit for this value is dependent
@@ -1730,13 +1793,16 @@ type LocalNvmeSsdBlockConfig struct {
 	// +kcc:proto:field=google.container.v1.LocalNvmeSsdBlockConfig.local_ssd_count
 	LocalSsdCount *int32 `json:"localSsdCount,omitempty"`
 }
+*/
 
+/* unreachable type LoggingComponentConfig
 // +kcc:proto=google.container.v1.LoggingComponentConfig
 type LoggingComponentConfig struct {
 	// Select components to collect logs. An empty set would disable all logging.
 	// +kcc:proto:field=google.container.v1.LoggingComponentConfig.enable_components
 	EnableComponents []string `json:"enableComponents,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "LoggingConfig", skipping
 
@@ -1748,13 +1814,16 @@ type LoggingConfig struct {
 }
 */
 
+/* unreachable type LoggingVariantConfig
 // +kcc:proto=google.container.v1.LoggingVariantConfig
 type LoggingVariantConfig struct {
 	// Logging variant deployed on nodes.
 	// +kcc:proto:field=google.container.v1.LoggingVariantConfig.variant
 	Variant *string `json:"variant,omitempty"`
 }
+*/
 
+/* unreachable type LustreCsiDriverConfig
 // +kcc:proto=google.container.v1.LustreCsiDriverConfig
 type LustreCsiDriverConfig struct {
 	// Whether the Lustre CSI driver is enabled for this cluster.
@@ -1766,6 +1835,7 @@ type LustreCsiDriverConfig struct {
 	// +kcc:proto:field=google.container.v1.LustreCsiDriverConfig.enable_legacy_lustre_port
 	EnableLegacyLustrePort *bool `json:"enableLegacyLustrePort,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "MaintenanceExclusionOptions", skipping
 
@@ -1901,13 +1971,16 @@ type MasterAuthorizedNetworksConfig_CIDRBlock struct {
 }
 */
 
+/* unreachable type MaxPodsConstraint
 // +kcc:proto=google.container.v1.MaxPodsConstraint
 type MaxPodsConstraint struct {
 	// Constraint enforced on the max num of pods per node.
 	// +kcc:proto:field=google.container.v1.MaxPodsConstraint.max_pods_per_node
 	MaxPodsPerNode *int64 `json:"maxPodsPerNode,omitempty"`
 }
+*/
 
+/* unreachable type MemoryManager
 // +kcc:proto=google.container.v1.MemoryManager
 type MemoryManager struct {
 	// Controls the memory management policy on the Node.
@@ -1921,6 +1994,7 @@ type MemoryManager struct {
 	// +kcc:proto:field=google.container.v1.MemoryManager.policy
 	Policy *string `json:"policy,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "MeshCertificates", skipping
 
@@ -1940,6 +2014,7 @@ type MeshCertificates struct {
 }
 */
 
+/* unreachable type MonitoringComponentConfig
 // +kcc:proto=google.container.v1.MonitoringComponentConfig
 type MonitoringComponentConfig struct {
 	// Select components to collect metrics. An empty set would disable all
@@ -1947,6 +2022,7 @@ type MonitoringComponentConfig struct {
 	// +kcc:proto:field=google.container.v1.MonitoringComponentConfig.enable_components
 	EnableComponents []string `json:"enableComponents,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "MonitoringConfig", skipping
 
@@ -1967,6 +2043,7 @@ type MonitoringConfig struct {
 }
 */
 
+/* unreachable type NetworkConfig
 // +kcc:proto=google.container.v1.NetworkConfig
 type NetworkConfig struct {
 
@@ -2044,13 +2121,16 @@ type NetworkConfig struct {
 	// +kcc:proto:field=google.container.v1.NetworkConfig.disable_l4_lb_firewall_reconciliation
 	DisableL4LbFirewallReconciliation *bool `json:"disableL4LbFirewallReconciliation,omitempty"`
 }
+*/
 
+/* unreachable type NetworkConfig_ClusterNetworkPerformanceConfig
 // +kcc:proto=google.container.v1.NetworkConfig.ClusterNetworkPerformanceConfig
 type NetworkConfig_ClusterNetworkPerformanceConfig struct {
 	// Specifies the total network bandwidth tier for NodePools in the cluster.
 	// +kcc:proto:field=google.container.v1.NetworkConfig.ClusterNetworkPerformanceConfig.total_egress_bandwidth_tier
 	TotalEgressBandwidthTier *string `json:"totalEgressBandwidthTier,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "NetworkPolicy", skipping
 
@@ -2705,12 +2785,14 @@ type NodeNetworkConfig struct {
 }
 */
 
+/* unreachable type NodeNetworkConfig_NetworkPerformanceConfig
 // +kcc:proto=google.container.v1.NodeNetworkConfig.NetworkPerformanceConfig
 type NodeNetworkConfig_NetworkPerformanceConfig struct {
 	// Specifies the total network bandwidth tier for the NodePool.
 	// +kcc:proto:field=google.container.v1.NodeNetworkConfig.NetworkPerformanceConfig.total_egress_bandwidth_tier
 	TotalEgressBandwidthTier *string `json:"totalEgressBandwidthTier,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.container.v1.NodePool", skipping
 
@@ -2831,13 +2913,16 @@ type NodePool_QueuedProvisioning struct {
 }
 */
 
+/* unreachable type NodePool_UpdateInfo
 // +kcc:proto=google.container.v1.NodePool.UpdateInfo
 type NodePool_UpdateInfo struct {
 	// Information of a blue-green upgrade.
 	// +kcc:proto:field=google.container.v1.NodePool.UpdateInfo.blue_green_info
 	BlueGreenInfo *NodePool_UpdateInfo_BlueGreenInfo `json:"blueGreenInfo,omitempty"`
 }
+*/
 
+/* unreachable type NodePool_UpdateInfo_BlueGreenInfo
 // +kcc:proto=google.container.v1.NodePool.UpdateInfo.BlueGreenInfo
 type NodePool_UpdateInfo_BlueGreenInfo struct {
 	// Current blue-green upgrade phase.
@@ -2865,6 +2950,7 @@ type NodePool_UpdateInfo_BlueGreenInfo struct {
 	// +kcc:proto:field=google.container.v1.NodePool.UpdateInfo.BlueGreenInfo.green_pool_version
 	GreenPoolVersion *string `json:"greenPoolVersion,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "NodePool_UpgradeSettings", skipping
 
@@ -2967,12 +3053,14 @@ type NodePoolDefaults struct {
 }
 */
 
+/* unreachable type NodePoolLoggingConfig
 // +kcc:proto=google.container.v1.NodePoolLoggingConfig
 type NodePoolLoggingConfig struct {
 	// Logging variant configuration.
 	// +kcc:proto:field=google.container.v1.NodePoolLoggingConfig.variant_config
 	VariantConfig *LoggingVariantConfig `json:"variantConfig,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "NodeTaint", skipping
 
@@ -3044,12 +3132,14 @@ type ParallelstoreCsiDriverConfig struct {
 }
 */
 
+/* unreachable type PodAutoscaling
 // +kcc:proto=google.container.v1.PodAutoscaling
 type PodAutoscaling struct {
 	// Selected Horizontal Pod Autoscaling profile.
 	// +kcc:proto:field=google.container.v1.PodAutoscaling.hpa_profile
 	HpaProfile *string `json:"hpaProfile,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "PodCIDROverprovisionConfig", skipping
 
@@ -3121,6 +3211,7 @@ type PrivateClusterMasterGlobalAccessConfig struct {
 }
 */
 
+/* unreachable type RbacBindingConfig
 // +kcc:proto=google.container.v1.RBACBindingConfig
 type RbacBindingConfig struct {
 	// Setting this to true will allow any ClusterRoleBinding and RoleBinding
@@ -3133,6 +3224,7 @@ type RbacBindingConfig struct {
 	// +kcc:proto:field=google.container.v1.RBACBindingConfig.enable_insecure_binding_system_authenticated
 	EnableInsecureBindingSystemAuthenticated *bool `json:"enableInsecureBindingSystemAuthenticated,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "RangeInfo", skipping
 
@@ -3141,20 +3233,25 @@ type RangeInfo struct {
 }
 */
 
+/* unreachable type RayClusterLoggingConfig
 // +kcc:proto=google.container.v1.RayClusterLoggingConfig
 type RayClusterLoggingConfig struct {
 	// Enable log collection for Ray clusters.
 	// +kcc:proto:field=google.container.v1.RayClusterLoggingConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
+/* unreachable type RayClusterMonitoringConfig
 // +kcc:proto=google.container.v1.RayClusterMonitoringConfig
 type RayClusterMonitoringConfig struct {
 	// Enable metrics collection for Ray clusters.
 	// +kcc:proto:field=google.container.v1.RayClusterMonitoringConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
+/* unreachable type RayOperatorConfig
 // +kcc:proto=google.container.v1.RayOperatorConfig
 type RayOperatorConfig struct {
 	// Whether the Ray Operator addon is enabled for this cluster.
@@ -3169,7 +3266,9 @@ type RayOperatorConfig struct {
 	// +kcc:proto:field=google.container.v1.RayOperatorConfig.ray_cluster_monitoring_config
 	RayClusterMonitoringConfig *RayClusterMonitoringConfig `json:"rayClusterMonitoringConfig,omitempty"`
 }
+*/
 
+/* unreachable type RecurringTimeWindow
 // +kcc:proto=google.container.v1.RecurringTimeWindow
 type RecurringTimeWindow struct {
 	// The window of the first recurrence.
@@ -3211,6 +3310,7 @@ type RecurringTimeWindow struct {
 	// +kcc:proto:field=google.container.v1.RecurringTimeWindow.recurrence
 	Recurrence *string `json:"recurrence,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "ReleaseChannel", skipping
 
@@ -3261,6 +3361,7 @@ type ResourceLimit struct {
 }
 */
 
+/* unreachable type ResourceManagerTags
 // +kcc:proto=google.container.v1.ResourceManagerTags
 type ResourceManagerTags struct {
 	// TagKeyValue must be in one of the following formats ([KEY]=[VALUE])
@@ -3270,6 +3371,7 @@ type ResourceManagerTags struct {
 	// +kcc:proto:field=google.container.v1.ResourceManagerTags.tags
 	Tags map[string]string `json:"tags,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "ResourceUsageExportConfig", skipping
 
@@ -3300,6 +3402,7 @@ type ResourceUsageExportConfig_BigQueryDestination struct {
 }
 */
 
+/* unreachable type ResourceUsageExportConfig_ConsumptionMeteringConfig
 // +kcc:proto=google.container.v1.ResourceUsageExportConfig.ConsumptionMeteringConfig
 type ResourceUsageExportConfig_ConsumptionMeteringConfig struct {
 	// Whether to enable consumption metering for this cluster. If enabled, a
@@ -3308,6 +3411,7 @@ type ResourceUsageExportConfig_ConsumptionMeteringConfig struct {
 	// +kcc:proto:field=google.container.v1.ResourceUsageExportConfig.ConsumptionMeteringConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "SandboxConfig", skipping
 
@@ -3319,6 +3423,7 @@ type SandboxConfig struct {
 }
 */
 
+/* unreachable type SecondaryBootDisk
 // +kcc:proto=google.container.v1.SecondaryBootDisk
 type SecondaryBootDisk struct {
 	// Disk mode (container image cache, etc.)
@@ -3329,17 +3434,22 @@ type SecondaryBootDisk struct {
 	// +kcc:proto:field=google.container.v1.SecondaryBootDisk.disk_image
 	DiskImage *string `json:"diskImage,omitempty"`
 }
+*/
 
+/* unreachable type SecondaryBootDiskUpdateStrategy
 // +kcc:proto=google.container.v1.SecondaryBootDiskUpdateStrategy
 type SecondaryBootDiskUpdateStrategy struct {
 }
+*/
 
+/* unreachable type SecretManagerConfig
 // +kcc:proto=google.container.v1.SecretManagerConfig
 type SecretManagerConfig struct {
 	// Enable/Disable Secret Manager Config.
 	// +kcc:proto:field=google.container.v1.SecretManagerConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "SecurityPostureConfig", skipping
 
@@ -3388,13 +3498,16 @@ type ShieldedInstanceConfig struct {
 }
 */
 
+/* unreachable type ShieldedNodes
 // +kcc:proto=google.container.v1.ShieldedNodes
 type ShieldedNodes struct {
 	// Whether Shielded Nodes features are enabled on all nodes in this cluster.
 	// +kcc:proto:field=google.container.v1.ShieldedNodes.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
+/* unreachable type SoleTenantConfig
 // +kcc:proto=google.container.v1.SoleTenantConfig
 type SoleTenantConfig struct {
 	// NodeAffinities used to match to a shared sole tenant node group.
@@ -3407,7 +3520,9 @@ type SoleTenantConfig struct {
 	// +kcc:proto:field=google.container.v1.SoleTenantConfig.min_node_cpus
 	MinNodeCpus *int32 `json:"minNodeCpus,omitempty"`
 }
+*/
 
+/* unreachable type SoleTenantConfig_NodeAffinity
 // +kcc:proto=google.container.v1.SoleTenantConfig.NodeAffinity
 type SoleTenantConfig_NodeAffinity struct {
 	// Key for NodeAffinity.
@@ -3422,14 +3537,18 @@ type SoleTenantConfig_NodeAffinity struct {
 	// +kcc:proto:field=google.container.v1.SoleTenantConfig.NodeAffinity.values
 	Values []string `json:"values,omitempty"`
 }
+*/
 
+/* unreachable type StatefulHaConfig
 // +kcc:proto=google.container.v1.StatefulHAConfig
 type StatefulHaConfig struct {
 	// Whether the Stateful HA add-on is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.StatefulHAConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
+*/
 
+/* unreachable type StatusCondition
 // +kcc:proto=google.container.v1.StatusCondition
 type StatusCondition struct {
 	// Machine-friendly representation of the condition
@@ -3445,7 +3564,9 @@ type StatusCondition struct {
 	// +kcc:proto:field=google.container.v1.StatusCondition.canonical_code
 	CanonicalCode *string `json:"canonicalCode,omitempty"`
 }
+*/
 
+/* unreachable type TimeWindow
 // +kcc:proto=google.container.v1.TimeWindow
 type TimeWindow struct {
 	// MaintenanceExclusionOptions provides maintenance exclusion related
@@ -3462,7 +3583,9 @@ type TimeWindow struct {
 	// +kcc:proto:field=google.container.v1.TimeWindow.end_time
 	EndTime *string `json:"endTime,omitempty"`
 }
+*/
 
+/* unreachable type TopologyManager
 // +kcc:proto=google.container.v1.TopologyManager
 type TopologyManager struct {
 	// Configures the strategy for resource alignment.
@@ -3499,7 +3622,9 @@ type TopologyManager struct {
 	// +kcc:proto:field=google.container.v1.TopologyManager.scope
 	Scope *string `json:"scope,omitempty"`
 }
+*/
 
+/* unreachable type UserManagedKeysConfig
 // +kcc:proto=google.container.v1.UserManagedKeysConfig
 type UserManagedKeysConfig struct {
 	// The Certificate Authority Service caPool to use for the cluster CA in this
@@ -3548,6 +3673,7 @@ type UserManagedKeysConfig struct {
 	// +kcc:proto:field=google.container.v1.UserManagedKeysConfig.gkeops_etcd_backup_encryption_key
 	GkeopsEtcdBackupEncryptionKey *string `json:"gkeopsEtcdBackupEncryptionKey,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "VerticalPodAutoscaling", skipping
 
@@ -3589,6 +3715,7 @@ type WorkloadIdentityConfig struct {
 }
 */
 
+/* unreachable type WorkloadMetadataConfig
 // +kcc:proto=google.container.v1.WorkloadMetadataConfig
 type WorkloadMetadataConfig struct {
 	// Mode is the configuration for how to expose metadata to workloads running
@@ -3596,7 +3723,9 @@ type WorkloadMetadataConfig struct {
 	// +kcc:proto:field=google.container.v1.WorkloadMetadataConfig.mode
 	Mode *string `json:"mode,omitempty"`
 }
+*/
 
+/* unreachable type WorkloadPolicyConfig
 // +kcc:proto=google.container.v1.WorkloadPolicyConfig
 type WorkloadPolicyConfig struct {
 	// If true, workloads can use NET_ADMIN capability.
@@ -3608,6 +3737,7 @@ type WorkloadPolicyConfig struct {
 	// +kcc:proto:field=google.container.v1.WorkloadPolicyConfig.autopilot_compatibility_auditing_enabled
 	AutopilotCompatibilityAuditingEnabled *bool `json:"autopilotCompatibilityAuditingEnabled,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "AdditionalPodRangesConfigObservedState", skipping
 
@@ -3919,18 +4049,21 @@ type DatabaseEncryptionObservedState struct {
 }
 */
 
+/* unreachable type EnterpriseConfigObservedState
 // +kcc:observedstate:proto=google.container.v1.EnterpriseConfig
 type EnterpriseConfigObservedState struct {
 	// Output only. cluster_tier indicates the effective tier of the cluster.
 	// +kcc:proto:field=google.container.v1.EnterpriseConfig.cluster_tier
 	ClusterTier *string `json:"clusterTier,omitempty"`
 }
+*/
 
+/* unreachable type FleetObservedState
 // +kcc:observedstate:proto=google.container.v1.Fleet
 type FleetObservedState struct {
 	// Output only. The full resource name of the registered fleet membership of
 	//  the cluster, in the format
-	//  `//gkehub.googleapis.com/projects/*/locations/*/memberships/*`.
+	//  `//gkehub.googleapis.com/projects/-*-/locations/-*-/memberships/-*`.
 	// +kcc:proto:field=google.container.v1.Fleet.membership
 	Membership *string `json:"membership,omitempty"`
 
@@ -3939,6 +4072,7 @@ type FleetObservedState struct {
 	// +kcc:proto:field=google.container.v1.Fleet.pre_registered
 	PreRegistered *bool `json:"preRegistered,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.container.v1.IPAllocationPolicy", skipping
 
@@ -4017,6 +4151,7 @@ type MasterAuthObservedState struct {
 }
 */
 
+/* unreachable type NetworkConfigObservedState
 // +kcc:observedstate:proto=google.container.v1.NetworkConfig
 type NetworkConfigObservedState struct {
 	// Output only. The relative name of the Google Compute Engine
@@ -4033,6 +4168,7 @@ type NetworkConfigObservedState struct {
 	// +kcc:proto:field=google.container.v1.NetworkConfig.subnetwork
 	Subnetwork *string `json:"subnetwork,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.container.v1.NodeConfig", skipping
 
