@@ -2452,16 +2452,11 @@
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.isPinned" is not set in unstructured objects
-[missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].answer" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].query.text" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].queryConfig" is not set in unstructured objects
-[missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.userPseudoID" is not set in unstructured objects
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].exportData.profileTable.datasetID" is not set in unstructured objects
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].exportData.profileTable.projectID" is not set in unstructured objects
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].exportData.profileTable.tableID" is not set in unstructured objects
