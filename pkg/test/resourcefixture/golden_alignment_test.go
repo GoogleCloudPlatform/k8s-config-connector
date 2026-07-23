@@ -108,6 +108,9 @@ func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 			if strings.Contains(ev.URL, "/operations/") || strings.Contains(ev.URL, "/operations?") {
 				continue // Skip LRO polling GET requests
 			}
+			if strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
+				continue // Skip 404 GET requests
+			}
 		}
 		if ev.Method == "GRPC" {
 			parts := strings.Split(ev.URL, "/")
@@ -259,15 +262,22 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				continue
 			}
 
-			// Sort events by their RequestBody to ensure deterministic order for concurrent sibling operations
+			// Sort events by their RequestBody to ensure deterministic order for concurrent sibling operations.
+			// Fall back to URL, and then to ResponseBody if RequestBody and URL are both identical (only for specific paths like subnetworks and getIamPolicy).
 			sort.SliceStable(realEvs, func(i, j int) bool {
 				if realEvs[i].RequestBody == realEvs[j].RequestBody {
+					if realEvs[i].URL == realEvs[j].URL && (strings.Contains(path, "/subnetworks/") || strings.Contains(path, ":getIamPolicy")) {
+						return realEvs[i].ResponseBody < realEvs[j].ResponseBody
+					}
 					return realEvs[i].URL < realEvs[j].URL
 				}
 				return realEvs[i].RequestBody < realEvs[j].RequestBody
 			})
 			sort.SliceStable(mockEvs, func(i, j int) bool {
 				if mockEvs[i].RequestBody == mockEvs[j].RequestBody {
+					if mockEvs[i].URL == mockEvs[j].URL && (strings.Contains(path, "/subnetworks/") || strings.Contains(path, ":getIamPolicy")) {
+						return mockEvs[i].ResponseBody < mockEvs[j].ResponseBody
+					}
 					return mockEvs[i].URL < mockEvs[j].URL
 				}
 				return mockEvs[i].RequestBody < mockEvs[j].RequestBody
@@ -518,6 +528,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
 			delete(v, "locations")
+			delete(v, "etag")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")

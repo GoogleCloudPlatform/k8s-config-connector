@@ -193,7 +193,11 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.NetworkConfig.PodIpv4RangeUtilization = 0.001
 	}
 	if obj.NetworkConfig.PodRange == "" {
-		obj.NetworkConfig.PodRange = obj.Name + "-pods-12345678"
+		clusterName := cluster.Name
+		if clusterName == "" {
+			clusterName = "cluster-sample"
+		}
+		obj.NetworkConfig.PodRange = "gke-" + clusterName + "-" + obj.Name + "-pods-12345678"
 	}
 	if obj.NetworkConfig.Subnetwork == "" {
 		obj.NetworkConfig.Subnetwork = cluster.NetworkConfig.Subnetwork

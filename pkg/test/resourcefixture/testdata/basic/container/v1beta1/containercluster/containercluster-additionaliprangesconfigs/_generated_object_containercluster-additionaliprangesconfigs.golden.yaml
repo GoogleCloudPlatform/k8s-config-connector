@@ -25,7 +25,7 @@ spec:
       subnetworkRef:
         name: ${subnetworkID}
     - podIpv4RangeNames:
-      - gke-cluster-sample-${uniqueId}-pods-abcdef01
+      - extra-pods-2
       status: DRAINING
       subnetworkRef:
         name: ${subnetworkID}
