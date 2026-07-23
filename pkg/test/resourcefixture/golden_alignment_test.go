@@ -591,6 +591,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if stripQuery, ok := v["stripQuery"].(bool); ok && !stripQuery {
 			delete(v, "stripQuery")
 		}
+		if name, ok := v["name"].(string); ok && strings.Contains(name, "/qaScorecards/") {
+			delete(v, "source")
+		}
 		if _, isOp := v["operationType"]; isOp {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")

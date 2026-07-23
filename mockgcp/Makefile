@@ -127,6 +127,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/securitycenter/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
 		./third_party/googleapis/google/cloud/apihub/v1/*.proto \
+		./third_party/googleapis/google/cloud/contactcenterinsights/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataform/v1/*.proto \
 		./third_party/googleapis/google/cloud/licensemanager/v1/*.proto \
 		./third_party/googleapis/google/cloud/vision/v1/*.proto \

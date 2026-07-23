@@ -140,7 +140,7 @@ func compareResource(ctx context.Context, actual, desired *pb.Resource) (*struct
         clonedDesired.SomeOptionalField = maskedActual.SomeOptionalField
     }
 
-    diffs, _, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+    diffs, _, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
     return diffs, err
 }
 ```
