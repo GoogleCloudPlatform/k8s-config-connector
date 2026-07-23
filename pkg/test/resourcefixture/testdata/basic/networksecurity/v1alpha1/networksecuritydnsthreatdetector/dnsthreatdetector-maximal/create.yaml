@@ -1,0 +1,14 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityDNSThreatDetector
+metadata:
+  name: dnsthreatdetector-max-${uniqueId}
+spec:
+  labels:
+    foo: bar
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  provider: INFOBLOX
+  description: "A DNS threat detector with some custom configuration"
+  excludedNetworkRefs:
+    - name: network-${uniqueId}
