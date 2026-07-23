@@ -1,0 +1,286 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: appoptimizereports.appoptimize.cnrm.cloud.google.com
+spec:
+  group: appoptimize.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: AppOptimizeReport
+    listKind: AppOptimizeReportList
+    plural: appoptimizereports
+    shortNames:
+    - gcpappoptimizereport
+    - gcpappoptimizereports
+    singular: appoptimizereport
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AppOptimizeReport is the Schema for the AppOptimizeReport API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AppOptimizeReportSpec defines the desired state of AppOptimizeReport
+            properties:
+              dimensions:
+                description: |-
+                  Required. A list of dimensions to include in the report. Supported values:
+                    * `project`
+                    * `application`
+                    * `service_or_workload`
+                    * `resource`
+                    * `resource_type`
+                    * `location`
+                    * `product_display_name`
+                    * `sku`
+                    * `month`
+                    * `day`
+                    * `hour`
+                items:
+                  type: string
+                type: array
+              filter:
+                description: |-
+                  Optional. A Common Expression Language (CEL) expression used to filter the
+                  data for the report.
+                type: string
+              location:
+                description: Immutable. The location of this resource.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              metrics:
+                description: |-
+                  Required. A list of metrics to include in the report. Supported values:
+                    * `cost`
+                    * `cpu_mean_utilization`
+                    * `cpu_usage_core_seconds`
+                    * `cpu_allocation_core_seconds`
+                    * `cpu_p95_utilization`
+                    * `memory_mean_utilization`
+                    * `memory_usage_byte_seconds`
+                    * `memory_allocation_byte_seconds`
+                    * `memory_p95_utilization`
+                items:
+                  type: string
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The AppOptimizeReport name. If not given, the metadata.name
+                  will be used.
+                type: string
+              scopes:
+                description: |-
+                  Optional. The resource containers for which to fetch data. Default is the
+                  project specified in the report's parent.
+                items:
+                  properties:
+                    applicationRef:
+                      description: Optional. An App Hub Application to fetch data
+                        from.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: |-
+                            A reference to an externally managed AppHubApplication resource.
+                            Should be in the format "projects/{{projectID}}/locations/{{location}}/applications/{{applicationID}}".
+                          type: string
+                        name:
+                          description: The name of an AppHubApplication resource.
+                          type: string
+                        namespace:
+                          description: The namespace of an AppHubApplication resource.
+                          type: string
+                      type: object
+                    projectRef:
+                      description: Optional. A Google Cloud Platform project to fetch
+                        data from.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The `projectID` field of a project, when not
+                            managed by Config Connector.
+                          type: string
+                        kind:
+                          description: The kind of the Project resource; optional
+                            but must be `Project` if provided.
+                          type: string
+                        name:
+                          description: The `name` field of a `Project` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` field of a `Project` resource.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+            required:
+            - dimensions
+            - location
+            - metrics
+            - projectRef
+            type: object
+          status:
+            description: AppOptimizeReportStatus defines the config connector machine
+              state of AppOptimizeReport
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the AppOptimizeReport resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  expireTime:
+                    description: |-
+                      Output only. Timestamp in UTC of when this report expires. Once the
+                      report expires, it will no longer be accessible and the report's
+                      underlying data will be deleted.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

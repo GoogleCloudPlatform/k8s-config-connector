@@ -1,0 +1,314 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: cloudbatchresourceallowances.batch.cnrm.cloud.google.com
+spec:
+  group: batch.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CloudBatchResourceAllowance
+    listKind: CloudBatchResourceAllowanceList
+    plural: cloudbatchresourceallowances
+    shortNames:
+    - gcpcloudbatchresourceallowance
+    - gcpcloudbatchresourceallowances
+    singular: cloudbatchresourceallowance
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CloudBatchResourceAllowance is the Schema for the CloudBatchResourceAllowance
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CloudBatchResourceAllowanceSpec defines the desired state
+              of CloudBatchResourceAllowance
+            properties:
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. Labels are attributes that can be set and used by both the
+                  user and by Batch.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              notifications:
+                description: Optional. Notification configurations.
+                items:
+                  properties:
+                    pubsubTopicRef:
+                      description: |-
+                        Required. The Pub/Sub topic where notifications like the resource allowance
+                        state changes will be published.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed PubSubTopic
+                            resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                          type: string
+                        name:
+                          description: The name of a PubSubTopic resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a PubSubTopic resource.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The CloudBatchResourceAllowance name. If not given, the
+                  metadata.name will be used.
+                type: string
+              usageResourceAllowance:
+                description: The detail of usage resource allowance.
+                properties:
+                  spec:
+                    description: Required. Spec of a usage ResourceAllowance.
+                    properties:
+                      limit:
+                        description: Required. Threshold of a UsageResourceAllowance
+                          limiting how many resources can be consumed for each type.
+                        properties:
+                          calendarPeriod:
+                            description: Optional. A CalendarPeriod represents the
+                              abstract concept of a time period that has a canonical
+                              start.
+                            type: string
+                          limit:
+                            description: Required. Limit value of a UsageResourceAllowance
+                              within its one duration.
+                            type: number
+                        type: object
+                      type:
+                        description: |-
+                          Required. Spec type is unique for each usage ResourceAllowance.
+                          Batch now only supports type as "cpu-core-hours" for CPU usage consumption tracking.
+                        type: string
+                    type: object
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: CloudBatchResourceAllowanceStatus defines the config connector
+              machine state of CloudBatchResourceAllowance
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the CloudBatchResourceAllowance
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time when the ResourceAllowance was
+                      created.
+                    type: string
+                  uid:
+                    description: |-
+                      Output only. A system generated unique ID (in UUID4 format) for the
+                      ResourceAllowance.
+                    type: string
+                  usageResourceAllowance:
+                    description: The detail of usage resource allowance.
+                    properties:
+                      status:
+                        description: Output only. Status of a usage ResourceAllowance.
+                        properties:
+                          limitStatus:
+                            description: Output only. ResourceAllowance consumption
+                              status for usage resources.
+                            properties:
+                              consumed:
+                                description: Output only. Accumulated consumption
+                                  during `consumption_interval`.
+                                type: number
+                              consumptionInterval:
+                                description: Output only. The consumption interval.
+                                properties:
+                                  endTime:
+                                    description: Optional. Exclusive end of the interval.
+                                    type: string
+                                  startTime:
+                                    description: Optional. Inclusive start of the
+                                      interval.
+                                    type: string
+                                type: object
+                              limit:
+                                description: |-
+                                  Output only. Limit value of a UsageResourceAllowance within its one
+                                   duration.
+                                type: number
+                            type: object
+                          report:
+                            description: Output only. The report of ResourceAllowance
+                              consumptions in a time period.
+                            properties:
+                              latestPeriodConsumptions:
+                                additionalProperties:
+                                  properties:
+                                    consumed:
+                                      description: Output only. Accumulated consumption
+                                        during `consumption_interval`.
+                                      type: number
+                                    consumptionInterval:
+                                      description: Output only. The consumption interval.
+                                      properties:
+                                        endTime:
+                                          description: Optional. Exclusive end of
+                                            the interval.
+                                          type: string
+                                        startTime:
+                                          description: Optional. Inclusive start of
+                                            the interval.
+                                          type: string
+                                      type: object
+                                  type: object
+                                description: |-
+                                  Output only. ResourceAllowance consumptions in the latest calendar
+                                  period. Key is the calendar period in string format. Batch currently
+                                  supports HOUR, DAY, MONTH and YEAR.
+                                type: object
+                            type: object
+                          state:
+                            description: Output only. ResourceAllowance state.
+                            type: string
+                        type: object
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

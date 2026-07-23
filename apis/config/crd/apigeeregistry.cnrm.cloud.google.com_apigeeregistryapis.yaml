@@ -1,0 +1,221 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: apigeeregistryapis.apigeeregistry.cnrm.cloud.google.com
+spec:
+  group: apigeeregistry.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ApigeeRegistryAPI
+    listKind: ApigeeRegistryAPIList
+    plural: apigeeregistryapis
+    shortNames:
+    - gcpapigeeregistryapi
+    - gcpapigeeregistryapis
+    singular: apigeeregistryapi
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ApigeeRegistryAPI is the Schema for the ApigeeRegistryAPI API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ApigeeRegistryAPISpec defines the desired state of ApigeeRegistryAPI
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Annotations attach non-identifying metadata to resources.
+
+                   Annotation keys and values are less restricted than those of labels, but
+                   should be generally used for small values of broad interest. Larger, topic-
+                   specific metadata should be stored in Artifacts.
+                type: object
+              availability:
+                description: |-
+                  A user-definable description of the availability of this service.
+                   Format: free-form, but we expect single words that describe availability,
+                   e.g., "NONE", "TESTING", "PREVIEW", "GENERAL", "DEPRECATED", "SHUTDOWN".
+                type: string
+              description:
+                description: A detailed description.
+                type: string
+              displayName:
+                description: Human-meaningful name.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Labels attach identifying metadata to resources. Identifying metadata can
+                   be used to filter list operations.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores, and dashes. International characters are allowed.
+                   No more than 64 user labels can be associated with one resource (System
+                   labels are excluded).
+
+                   See https://goo.gl/xmQnxf for more information and examples of labels.
+                   System reserved label keys are prefixed with
+                   `apigeeregistry.googleapis.com/` and cannot be changed.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              recommendedDeployment:
+                description: |-
+                  The recommended deployment of the API.
+                   Format: `apis/{api}/deployments/{deployment}`
+                type: string
+              recommendedVersion:
+                description: |-
+                  The recommended version of the API.
+                   Format: `apis/{api}/versions/{version}`
+                type: string
+              resourceID:
+                description: The ApigeeRegistryAPI name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ApigeeRegistryAPIStatus defines the config connector machine
+              state of ApigeeRegistryAPI
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ApigeeRegistryAPI resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation timestamp.
+                    type: string
+                  updateTime:
+                    description: Output only. Last update timestamp.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

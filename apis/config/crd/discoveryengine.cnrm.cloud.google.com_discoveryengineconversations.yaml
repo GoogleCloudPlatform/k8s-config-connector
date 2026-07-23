@@ -1,0 +1,357 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: discoveryengineconversations.discoveryengine.cnrm.cloud.google.com
+spec:
+  group: discoveryengine.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DiscoveryEngineConversation
+    listKind: DiscoveryEngineConversationList
+    plural: discoveryengineconversations
+    shortNames:
+    - gcpdiscoveryengineconversation
+    - gcpdiscoveryengineconversations
+    singular: discoveryengineconversation
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DiscoveryEngineConversation is the Schema for the DiscoveryEngineConversation
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DiscoveryEngineConversationSpec defines the desired state
+              of DiscoveryEngineConversation
+            properties:
+              dataStoreRef:
+                description: The DataStore this conversation belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed DiscoveryEngineDataStore resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                    type: string
+                  name:
+                    description: The name of a DiscoveryEngineDataStore resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DiscoveryEngineDataStore resource.
+                    type: string
+                type: object
+              location:
+                description: Immutable. The location of this resource.
+                type: string
+              messages:
+                description: Conversation messages.
+                items:
+                  properties:
+                    reply:
+                      description: Search reply.
+                      properties:
+                        summary:
+                          description: Summary based on search results.
+                          properties:
+                            safetyAttributes:
+                              description: |-
+                                A collection of Safety Attribute categories and their associated
+                                 confidence scores.
+                              properties:
+                                categories:
+                                  description: |-
+                                    The display names of Safety Attribute categories associated with the
+                                     generated content. Order matches the Scores.
+                                  items:
+                                    type: string
+                                  type: array
+                                scores:
+                                  description: |-
+                                    The confidence scores of the each category, higher
+                                     value means higher confidence. Order matches the Categories.
+                                  items:
+                                    type: number
+                                  type: array
+                              type: object
+                            summarySkippedReasons:
+                              description: |-
+                                Additional summary-skipped reasons. This provides the reason for ignored
+                                 cases. If nothing is skipped, this field is not set.
+                              items:
+                                type: string
+                              type: array
+                            summaryText:
+                              description: The summary content.
+                              type: string
+                            summaryWithMetadata:
+                              description: Summary with metadata information.
+                              properties:
+                                citationMetadata:
+                                  description: Citation metadata for given summary.
+                                  properties:
+                                    citations:
+                                      description: Citations for segments.
+                                      items:
+                                        properties:
+                                          endIndex:
+                                            description: End of the attributed segment,
+                                              exclusive.
+                                            format: int64
+                                            type: integer
+                                          sources:
+                                            description: Citation sources for the
+                                              attributed segment.
+                                            items:
+                                              properties:
+                                                referenceIndex:
+                                                  description: |-
+                                                    Document reference index from SummaryWithMetadata.references.
+                                                     It is 0-indexed and the value will be zero if the reference_index is
+                                                     not set explicitly.
+                                                  format: int64
+                                                  type: integer
+                                              type: object
+                                            type: array
+                                          startIndex:
+                                            description: Index indicates the start
+                                              of the segment, measured in bytes/unicode.
+                                            format: int64
+                                            type: integer
+                                        type: object
+                                      type: array
+                                  type: object
+                                references:
+                                  description: Document References.
+                                  items:
+                                    properties:
+                                      chunkContents:
+                                        description: List of cited chunk contents
+                                          derived from document content.
+                                        items:
+                                          properties:
+                                            content:
+                                              description: Chunk textual content.
+                                              type: string
+                                            pageIdentifier:
+                                              description: Page identifier.
+                                              type: string
+                                          type: object
+                                        type: array
+                                      document:
+                                        description: |-
+                                          Required.
+                                           [Document.name][google.cloud.discoveryengine.v1.Document.name] of the
+                                           document. Full resource name of the referenced document, in the format
+                                           `projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*`.
+                                        type: string
+                                      title:
+                                        description: Title of the document.
+                                        type: string
+                                      uri:
+                                        description: Cloud Storage or HTTP uri for
+                                          the document.
+                                        type: string
+                                    type: object
+                                  type: array
+                                summary:
+                                  description: Summary text with no citation information.
+                                  type: string
+                              type: object
+                          type: object
+                      type: object
+                    userInput:
+                      description: User text input.
+                      properties:
+                        context:
+                          description: Conversation context of the input.
+                          properties:
+                            activeDocument:
+                              description: |-
+                                The current active document the user opened.
+                                 It contains the document resource reference.
+                              type: string
+                            contextDocuments:
+                              description: |-
+                                The current list of documents the user is seeing.
+                                 It contains the document resource references.
+                              items:
+                                type: string
+                              type: array
+                          type: object
+                        input:
+                          description: Text input.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DiscoveryEngineConversation name. If not given, the
+                  metadata.name will be used.
+                type: string
+              state:
+                description: The state of the Conversation.
+                enum:
+                - STATE_UNSPECIFIED
+                - IN_PROGRESS
+                - COMPLETED
+                type: string
+              userPseudoID:
+                description: A unique identifier for tracking users.
+                type: string
+            required:
+            - dataStoreRef
+            - location
+            - projectRef
+            type: object
+          status:
+            description: DiscoveryEngineConversationStatus defines the config connector
+              machine state of DiscoveryEngineConversation
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DiscoveryEngineConversation
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  endTime:
+                    description: Output only. The time the conversation finished.
+                    type: string
+                  startTime:
+                    description: Output only. The time the conversation started.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

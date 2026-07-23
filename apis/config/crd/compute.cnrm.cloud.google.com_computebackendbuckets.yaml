@@ -1,0 +1,274 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: computebackendbuckets.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeBackendBucket
+    listKind: ComputeBackendBucketList
+    plural: computebackendbuckets
+    shortNames:
+    - gcpcomputebackendbucket
+    - gcpcomputebackendbuckets
+    singular: computebackendbucket
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeBackendBucket is the Schema for the ComputeBackendBucket
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeBackendBucketSpec defines the desired state of ComputeBackendBucket
+            properties:
+              bucketRef:
+                description: Reference to the bucket.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed StorageBucket resource.
+                      Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
+                    type: string
+                  name:
+                    description: The name of a StorageBucket resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a StorageBucket resource.
+                    type: string
+                type: object
+              cdnPolicy:
+                description: Cloud CDN configuration for this Backend Bucket.
+                properties:
+                  bypassCacheOnRequestHeaders:
+                    description: Bypass the cache when the specified request headers
+                      are matched - e.g. Pragma or Authorization headers. Up to 5
+                      headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode
+                      settings.
+                    items:
+                      properties:
+                        headerName:
+                          description: The header field name to match on when bypassing
+                            cache. Values are case-insensitive.
+                          type: string
+                      type: object
+                    type: array
+                  cacheKeyPolicy:
+                    description: The CacheKeyPolicy for this CdnPolicy.
+                    properties:
+                      includeHttpHeaders:
+                        description: Allows HTTP request headers (by name) to be used
+                          in the cache key.
+                        items:
+                          type: string
+                        type: array
+                      queryStringWhitelist:
+                        description: Names of query string parameters to include in
+                          cache keys.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  cacheMode:
+                    description: 'Specifies the cache setting for all responses from
+                      this backend. The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL
+                      and CACHE_ALL_STATIC.'
+                    type: string
+                  clientTtl:
+                    description: Specifies the maximum allowed TTL for cached content
+                      served by this origin.
+                    format: int32
+                    type: integer
+                  defaultTtl:
+                    description: Specifies the default TTL for cached content served
+                      by this origin for responses that do not have an existing valid
+                      TTL (max-age or s-maxage).
+                    format: int32
+                    type: integer
+                  maxTtl:
+                    description: Specifies the maximum allowed TTL for cached content
+                      served by this origin.
+                    format: int32
+                    type: integer
+                  negativeCaching:
+                    description: Negative caching allows per-status code TTLs to be
+                      set, in order to apply fine-grained caching for common errors
+                      or redirects.
+                    type: boolean
+                  negativeCachingPolicy:
+                    description: Sets a cache TTL for the specified HTTP status code.
+                      negativeCaching must be enabled to configure negativeCachingPolicy.
+                    items:
+                      properties:
+                        code:
+                          description: The HTTP status code to define a TTL against.
+                            Only HTTP status codes 300, 301, 308, 404, 405, 410, 421,
+                            451 and 501 can be specified as values, and you cannot
+                            specify a status code more than once.
+                          format: int32
+                          type: integer
+                        ttl:
+                          description: The TTL (in seconds) for which to cache responses
+                            with the corresponding status code.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                  requestCoalescing:
+                    description: If true then Cloud CDN will combine multiple concurrent
+                      cache fill requests into a small number of requests to the origin.
+                    type: boolean
+                  serveWhileStale:
+                    description: Serve existing content from the cache (if available)
+                      when revalidating content with the origin, or when an error
+                      is encountered when refreshing the cache.
+                    format: int32
+                    type: integer
+                  signedUrlCacheMaxAgeSec:
+                    description: Maximum number of seconds the response to a signed
+                      URL request will be considered fresh.
+                    format: int64
+                    type: integer
+                type: object
+              compressionMode:
+                description: 'Compress text responses using Brotli or gzip compression,
+                  based on the client''s Accept-Encoding header. Possible values:
+                  ["AUTOMATIC", "DISABLED"].'
+                type: string
+              customResponseHeaders:
+                description: Headers that the HTTP/S load balancer should add to proxied
+                  responses.
+                items:
+                  type: string
+                type: array
+              description:
+                description: An optional textual description of the resource; provided
+                  by the client when the resource is created.
+                type: string
+              edgeSecurityPolicy:
+                description: The security policy associated with this backend bucket.
+                type: string
+              enableCdn:
+                description: If true, enable Cloud CDN for this BackendBucket.
+                type: boolean
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+            required:
+            - bucketRef
+            type: object
+          status:
+            description: ComputeBackendBucketStatus defines the config connector machine
+              state of ComputeBackendBucket
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              creationTimestamp:
+                description: Creation timestamp in RFC3339 text format.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              selfLink:
+                description: Server-defined URL for the resource.
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

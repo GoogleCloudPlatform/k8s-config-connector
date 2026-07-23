@@ -1,0 +1,1128 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: computebackendservices.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeBackendService
+    listKind: ComputeBackendServiceList
+    plural: computebackendservices
+    shortNames:
+    - gcpcomputebackendservice
+    - gcpcomputebackendservices
+    singular: computebackendservice
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeBackendService is the Schema for the ComputeBackendService
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The desired state of the ComputeBackendService.
+            properties:
+              affinityCookieTtlSec:
+                description: Lifetime of cookies in seconds if session_affinity is
+                  GENERATED_COOKIE.
+                format: int32
+                type: integer
+              backend:
+                description: The set of backends that serve this BackendService.
+                items:
+                  properties:
+                    balancingMode:
+                      description: Specifies the balancing mode for this backend.
+                      type: string
+                    capacityScaler:
+                      description: A multiplier applied to the group's maximum servicing
+                        capacity.
+                      type: number
+                    description:
+                      description: An optional description of this resource.
+                      type: string
+                    failover:
+                      description: This field designates whether this is a failover
+                        backend.
+                      type: boolean
+                    group:
+                      description: |-
+                        Reference to a ComputeInstanceGroup or ComputeNetworkEndpointGroup
+                         resource. In case of instance group this defines the list of
+                         instances that serve traffic. Member virtual machine instances from
+                         each instance group must live in the same zone as the instance
+                         group itself. No two backends in a backend service are allowed to
+                         use same Instance Group resource.
+
+                         For Network Endpoint Groups this defines list of endpoints. All
+                         endpoints of Network Endpoint Group must be hosted on instances
+                         located in the same zone as the Network Endpoint Group.
+
+                         Backend services cannot mix Instance Group and Network Endpoint
+                         Group backends.
+
+                         When the 'load_balancing_scheme' is INTERNAL, only instance groups
+                         are supported.
+                      oneOf:
+                      - required:
+                        - instanceGroupRef
+                      - required:
+                        - networkEndpointGroupRef
+                      properties:
+                        instanceGroupRef:
+                          description: Reference to a ComputeInstanceGroup resource.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: |-
+                                A reference to an externally managed ComputeInstanceGroup resource.
+                                Should be in the format "projects/{{projectID}}/zones/{{zone}}/instanceGroups/{{instanceGroupID}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeInstanceGroup resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeInstanceGroup
+                                resource.
+                              type: string
+                          type: object
+                        networkEndpointGroupRef:
+                          description: Reference to a ComputeNetworkEndpointGroup
+                            resource.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: |-
+                                A reference to an externally managed ComputeNetworkEndpointGroup resource.
+                                Should be in the format "projects/{project}/zones/{zone}/networkEndpointGroups/{networkEndpointGroup}".
+                              type: string
+                            name:
+                              description: The name of a ComputeNetworkEndpointGroup
+                                resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeNetworkEndpointGroup
+                                resource.
+                              type: string
+                          type: object
+                      type: object
+                    maxConnections:
+                      description: The max number of simultaneous connections for
+                        the group.
+                      format: int32
+                      type: integer
+                    maxConnectionsPerEndpoint:
+                      description: The max number of simultaneous connections that
+                        a single backend network endpoint can handle.
+                      format: int32
+                      type: integer
+                    maxConnectionsPerInstance:
+                      description: The max number of simultaneous connections that
+                        a single backend instance can handle.
+                      format: int32
+                      type: integer
+                    maxRate:
+                      description: The max requests per second (RPS) of the group.
+                      format: int32
+                      type: integer
+                    maxRatePerEndpoint:
+                      description: The max requests per second (RPS) that a single
+                        backend network endpoint can handle.
+                      type: number
+                    maxRatePerInstance:
+                      description: The max requests per second (RPS) that a single
+                        backend instance can handle.
+                      type: number
+                    maxUtilization:
+                      description: Used when balancingMode is UTILIZATION. This ratio
+                        defines the CPU utilization target for the group.
+                      type: number
+                  required:
+                  - group
+                  type: object
+                type: array
+              cdnPolicy:
+                description: Cloud CDN configuration for this BackendService.
+                properties:
+                  bypassCacheOnRequestHeaders:
+                    description: Bypass the cache when the specified request headers
+                      are matched - e.g. Pragma or Authorization headers. Up to 5
+                      headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode
+                      settings.
+                    items:
+                      properties:
+                        headerName:
+                          description: The header field name to match on when bypassing
+                            cache. Values are case-insensitive.
+                          type: string
+                      required:
+                      - headerName
+                      type: object
+                    type: array
+                  cacheKeyPolicy:
+                    description: The CacheKeyPolicy for this CdnPolicy.
+                    properties:
+                      includeHost:
+                        description: If true, requests to different hosts will be
+                          cached separately.
+                        type: boolean
+                      includeHttpHeaders:
+                        description: Allows HTTP request headers (by name) to be used
+                          in the cache key.
+                        items:
+                          type: string
+                        type: array
+                      includeNamedCookies:
+                        description: Allows HTTP cookies (by name) to be used in the
+                          cache key. The name=value pair will be used in the cache
+                          key Cloud CDN generates.
+                        items:
+                          type: string
+                        type: array
+                      includeProtocol:
+                        description: If true, http and https requests will be cached
+                          separately.
+                        type: boolean
+                      includeQueryString:
+                        description: If true, include query string parameters in the
+                          cache key according to query_string_whitelist and query_string_blacklist.
+                          If neither is set, the entire query string will be included.
+                          If false, the query string will be excluded from the cache
+                          key entirely.
+                        type: boolean
+                      queryStringBlacklist:
+                        description: Names of query string parameters to exclude in
+                          cache keys. All other parameters will be included. Either
+                          specify query_string_whitelist or query_string_blacklist,
+                          not both. '&' and '=' will be percent encoded and not treated
+                          as delimiters.
+                        items:
+                          type: string
+                        type: array
+                      queryStringWhitelist:
+                        description: Names of query string parameters to include in
+                          cache keys. All other parameters will be excluded. Either
+                          specify query_string_whitelist or query_string_blacklist,
+                          not both. '&' and '=' will be percent encoded and not treated
+                          as delimiters.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  cacheMode:
+                    description: |-
+                      Specifies the cache setting for all responses from this backend. The possible values are: USE_ORIGIN_HEADERS Requires the origin to set valid caching headers to cache content. Responses without these headers will not be cached at Google's edge, and will require a full trip to the origin on every request, potentially impacting performance and increasing load on the origin server. FORCE_CACHE_ALL Cache all content, ignoring any "private", "no-store" or "no-cache" directives in Cache-Control response headers. Warning: this may result in Cloud CDN caching private, per-user (user identifiable) content. CACHE_ALL_STATIC Automatically cache static content, including common image formats, media (video and audio), and web assets (JavaScript and CSS). Requests and responses that are marked as uncacheable, as well as dynamic content (including HTML), will not be cached. If no value is provided for cdnPolicy.cacheMode, it defaults to CACHE_ALL_STATIC.
+                       Check the CacheMode enum for the list of possible values.
+                    type: string
+                  clientTtl:
+                    description: Specifies a separate client (e.g. browser client)
+                      maximum TTL. This is used to clamp the max-age (or Expires)
+                      value sent to the client. With FORCE_CACHE_ALL, the lesser of
+                      client_ttl and default_ttl is used for the response max-age
+                      directive, along with a "public" directive. For cacheable content
+                      in CACHE_ALL_STATIC mode, client_ttl clamps the max-age from
+                      the origin (if specified), or else sets the response max-age
+                      directive to the lesser of the client_ttl and default_ttl, and
+                      also ensures a "public" cache-control directive is present.
+                      If a client TTL is not specified, a default value (1 hour) will
+                      be used. The maximum allowed value is 31,622,400s (1 year).
+                    format: int32
+                    type: integer
+                  defaultTtl:
+                    description: Specifies the default TTL for cached content served
+                      by this origin for responses that do not have an existing valid
+                      TTL (max-age or s-maxage). Setting a TTL of "0" means "always
+                      revalidate". The value of defaultTTL cannot be set to a value
+                      greater than that of maxTTL, but can be equal. When the cacheMode
+                      is set to FORCE_CACHE_ALL, the defaultTTL will overwrite the
+                      TTL set in all responses. The maximum allowed value is 31,622,400s
+                      (1 year), noting that infrequently accessed objects may be evicted
+                      from the cache before the defined TTL.
+                    format: int32
+                    type: integer
+                  maxTtl:
+                    description: Specifies the maximum allowed TTL for cached content
+                      served by this origin. Cache directives that attempt to set
+                      a max-age or s-maxage higher than this, or an Expires header
+                      more than maxTTL seconds in the future will be capped at the
+                      value of maxTTL, as if it were the value of an s-maxage Cache-Control
+                      directive. Headers sent to the client will not be modified.
+                      Setting a TTL of "0" means "always revalidate". The maximum
+                      allowed value is 31,622,400s (1 year), noting that infrequently
+                      accessed objects may be evicted from the cache before the defined
+                      TTL.
+                    format: int32
+                    type: integer
+                  negativeCaching:
+                    description: 'Negative caching allows per-status code TTLs to
+                      be set, in order to apply fine-grained caching for common errors
+                      or redirects. This can reduce the load on your origin and improve
+                      end-user experience by reducing response latency. When the cache
+                      mode is set to CACHE_ALL_STATIC or USE_ORIGIN_HEADERS, negative
+                      caching applies to responses with the specified response code
+                      that lack any Cache-Control, Expires, or Pragma: no-cache directives.
+                      When the cache mode is set to FORCE_CACHE_ALL, negative caching
+                      applies to all responses with the specified response code, and
+                      override any caching headers. By default, Cloud CDN will apply
+                      the following default TTLs to these status codes: HTTP 300 (Multiple
+                      Choice), 301, 308 (Permanent Redirects): 10m HTTP 404 (Not Found),
+                      410 (Gone), 451 (Unavailable For Legal Reasons): 120s HTTP 405
+                      (Method Not Found), 421 (Misdirected Request), 501 (Not Implemented):
+                      60s. These defaults can be overridden in negative_caching_policy.'
+                    type: boolean
+                  negativeCachingPolicy:
+                    description: Sets a cache TTL for the specified HTTP status code.
+                      negative_caching must be enabled to configure negative_caching_policy.
+                      Omitting the policy and leaving negative_caching enabled will
+                      use Cloud CDN's default cache TTLs. Note that when specifying
+                      an explicit negative_caching_policy, you should take care to
+                      specify a cache TTL for all response codes that you wish to
+                      cache. Cloud CDN will not apply any default negative caching
+                      when a policy exists.
+                    items:
+                      properties:
+                        code:
+                          description: The HTTP status code to define a TTL against.
+                            Only HTTP status codes 300, 301, 302, 307, 308, 404, 405,
+                            410, 421, 451 and 501 are can be specified as values,
+                            and you cannot specify a status code more than once.
+                          format: int32
+                          type: integer
+                        ttl:
+                          description: The TTL (in seconds) for which to cache responses
+                            with the corresponding status code. The maximum allowed
+                            value is 1800s (30 minutes), noting that infrequently
+                            accessed objects may be evicted from the cache before
+                            the defined TTL.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                  serveWhileStale:
+                    description: Serve existing content from the cache (if available)
+                      when revalidating content with the origin, or when an error
+                      is encountered when refreshing the cache. This setting defines
+                      the default "max-stale" duration for any cached responses that
+                      do not specify a max-stale directive. Stale responses that exceed
+                      the TTL configured here will not be served. The default limit
+                      (max-stale) is 86400s (1 day), which will allow stale content
+                      to be served up to this limit beyond the max-age (or s-maxage)
+                      of a cached response. The maximum allowed value is 604800 (1
+                      week). Set this to zero (0) to disable serve-while-stale.
+                    format: int32
+                    type: integer
+                  signedUrlCacheMaxAgeSec:
+                    description: 'Maximum number of seconds the response to a signed
+                      URL request will be considered fresh. After this time period,
+                      the response will be revalidated before being served. Defaults
+                      to 1hr (3600s). When serving responses to signed URL requests,
+                      Cloud CDN will internally behave as though all responses from
+                      this backend had a "Cache-Control: public, max-age=[TTL]" header,
+                      regardless of any existing Cache-Control header. The actual
+                      headers served in responses will not be altered.'
+                    format: int64
+                    type: integer
+                type: object
+              circuitBreakers:
+                description: Settings controlling the circuit breaking behavior for
+                  this BackendService.
+                properties:
+                  connectTimeout:
+                    description: Not supported by proxy. Connect timeout for the backend
+                      service. The timeout is the maximum amount of time KCC will
+                      wait for the proxy to connect to the backend.
+                    properties:
+                      nanos:
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
+                        type: integer
+                      seconds:
+                        description: Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive.
+                        format: int64
+                        type: integer
+                    required:
+                    - seconds
+                    type: object
+                  maxConnections:
+                    description: The maximum number of connections to the backend
+                      service. If not specified, there is no limit. Not supported
+                      when the backend service is referenced by a URL map that is
+                      bound to target gRPC proxy that has validateForProxyless field
+                      set to true.
+                    format: int32
+                    type: integer
+                  maxPendingRequests:
+                    description: The maximum number of pending requests allowed to
+                      the backend service. If not specified, there is no limit. Not
+                      supported when the backend service is referenced by a URL map
+                      that is bound to target gRPC proxy that has validateForProxyless
+                      field set to true.
+                    format: int32
+                    type: integer
+                  maxRequests:
+                    description: The maximum number of parallel requests that allowed
+                      to the backend service. If not specified, there is no limit.
+                    format: int32
+                    type: integer
+                  maxRequestsPerConnection:
+                    description: Maximum requests for a single connection to the backend
+                      service. This parameter is respected by both the HTTP/1.1 and
+                      HTTP/2 implementations. If not specified, there is no limit.
+                      Setting this parameter to 1 will effectively disable keep alive.
+                      Not supported when the backend service is referenced by a URL
+                      map that is bound to target gRPC proxy that has validateForProxyless
+                      field set to true.
+                    format: int32
+                    type: integer
+                  maxRetries:
+                    description: The maximum number of parallel retries allowed to
+                      the backend cluster. If not specified, the default is 1. Not
+                      supported when the backend service is referenced by a URL map
+                      that is bound to target gRPC proxy that has validateForProxyless
+                      field set to true.
+                    format: int32
+                    type: integer
+                type: object
+              compressionMode:
+                description: Compress text responses using Brotli or gzip compression,
+                  based on the client's Accept-Encoding header.
+                type: string
+              connectionDrainingTimeoutSec:
+                description: Time for which instance will be drained (not accept new
+                  connections, but still work to finish started).
+                format: int32
+                type: integer
+              connectionTrackingPolicy:
+                description: Connection Tracking configuration for this BackendService.
+                  Connection tracking policy settings are only available for external
+                  passthrough Network Load Balancers and internal passthrough Network
+                  Load Balancers. connectionTrackingPolicy cannot be specified with
+                  haPolicy.
+                properties:
+                  connectionPersistenceOnUnhealthyBackends:
+                    description: |-
+                      Specifies connection persistence when backends are unhealthy. The default value is DEFAULT_FOR_PROTOCOL. If set to DEFAULT_FOR_PROTOCOL, the existing connections persist on unhealthy backends only for connection-oriented protocols (TCP and SCTP) and only if the Tracking Mode is PER_CONNECTION (default tracking mode) or the Session Affinity is configured for 5-tuple. They do not persist for UDP. If set to NEVER_PERSIST, after a backend becomes unhealthy, the existing connections on the unhealthy backend are never persisted on the unhealthy backend. They are always diverted to newly selected healthy backends (unless all backends are unhealthy). If set to ALWAYS_PERSIST, existing connections always persist on unhealthy backends regardless of protocol and session affinity. It is generally not recommended to use this mode overriding the default. For more details, see [Connection Persistence for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence) and [Connection Persistence for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#connection-persistence).
+                       Check the ConnectionPersistenceOnUnhealthyBackends enum for the list of possible values.
+                    type: string
+                  enableStrongAffinity:
+                    description: Enable Strong Session Affinity for external passthrough
+                      Network Load Balancers. This option is not available publicly.
+                    type: boolean
+                  idleTimeoutSec:
+                    description: 'Specifies how long to keep a Connection Tracking
+                      entry while there is no matching traffic (in seconds). For internal
+                      passthrough Network Load Balancers: - The minimum (default)
+                      is 10 minutes and the maximum is 16 hours. - It can be set only
+                      if Connection Tracking is less than 5-tuple (i.e. Session Affinity
+                      is CLIENT_IP_NO_DESTINATION, CLIENT_IP or CLIENT_IP_PROTO, and
+                      Tracking Mode is PER_SESSION). For external passthrough Network
+                      Load Balancers the default is 60 seconds. This option is not
+                      available publicly.'
+                    format: int32
+                    type: integer
+                  trackingMode:
+                    description: |-
+                      Specifies the key used for connection tracking. There are two options: - PER_CONNECTION: This is the default mode. The Connection Tracking is performed as per the Connection Key (default Hash Method) for the specific protocol. - PER_SESSION: The Connection Tracking is performed as per the configured Session Affinity. It matches the configured Session Affinity. For more details, see [Tracking Mode for Network Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode) and [Tracking Mode for Internal TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal#tracking-mode).
+                       Check the TrackingMode enum for the list of possible values.
+                    type: string
+                type: object
+              consistentHash:
+                description: 'Consistent Hash-based load balancing can be used to
+                  provide soft session affinity based on HTTP headers, cookies or
+                  other properties. This load balancing policy is applicable only
+                  for HTTP connections. The affinity to a particular destination host
+                  will be lost when one or more hosts are added/removed from the destination
+                  service. This field specifies parameters that control consistent
+                  hashing. This field is only applicable when localityLbPolicy is
+                  set to MAGLEV or RING_HASH. This field is applicable to either:
+                  - A regional backend service with the service_protocol set to HTTP,
+                  HTTPS, HTTP2 or H2C, and load_balancing_scheme set to INTERNAL_MANAGED.
+                  - A global backend service with the load_balancing_scheme set to
+                  INTERNAL_SELF_MANAGED.'
+                properties:
+                  httpCookie:
+                    description: Hash session affinity settings when using STRONG_COOKIE_AFFINITY
+                      or STRONG_HEADER_AFFINITY.
+                    properties:
+                      name:
+                        description: Name of the cookie.
+                        type: string
+                      path:
+                        description: Path to set for the cookie.
+                        type: string
+                      ttl:
+                        description: Lifetime of the cookie.
+                        properties:
+                          nanos:
+                            description: Span of time that's a fraction of a second
+                              at nanosecond resolution. Must be from 0 to 999,999,999
+                              inclusive.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Span of time at a resolution of a second.
+                              Must be from 0 to 315,576,000,000 inclusive.
+                            format: int64
+                            type: integer
+                        required:
+                        - seconds
+                        type: object
+                    type: object
+                  httpHeaderName:
+                    description: The name of the HTTP header field to map onto. Required
+                      if the load balancing policy is MAGLEV or RING_HASH and session
+                      affinity is STRONG_HEADER_AFFINITY.
+                    type: string
+                  minimumRingSize:
+                    description: The minimum ring size. Valid values are between 1
+                      and 4096. Required if the load balancing policy is RING_HASH.
+                    format: int64
+                    type: integer
+                type: object
+              customRequestHeaders:
+                description: Headers that the load balancer adds to proxied requests.
+                  See [Creating custom headers](https://cloud.google.com/load-balancing/docs/custom-headers).
+                items:
+                  type: string
+                type: array
+              customResponseHeaders:
+                description: Headers that the load balancer adds to proxied responses.
+                  See [Creating custom headers](https://cloud.google.com/load-balancing/docs/custom-headers).
+                items:
+                  type: string
+                type: array
+              description:
+                description: An optional description of this resource.
+                type: string
+              edgeSecurityPolicyRef:
+                description: ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ComputeSecurityPolicy resource.
+                      Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeSecurityPolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeSecurityPolicy resource.
+                    type: string
+                type: object
+              enableCdn:
+                description: If true, enables Cloud CDN for the backend service.
+                type: boolean
+              failoverPolicy:
+                description: 'Requires at least one backend instance group to be defined
+                  as a backup (failover) backend. For load balancers that have configurable
+                  failover: [Internal passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/internal/failover-overview)
+                  and [external passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview).
+                  failoverPolicy cannot be specified with haPolicy.'
+                properties:
+                  disableConnectionDrainOnFailover:
+                    description: This can be set to true only if the protocol is TCP.
+                      The default is false.
+                    type: boolean
+                  dropTrafficIfUnhealthy:
+                    description: 'If set to true, connections to the load balancer
+                      are dropped when all primary and all backup backend VMs are
+                      unhealthy.If set to false, connections are distributed among
+                      all primary VMs when all primary and all backup backend VMs
+                      are unhealthy. For load balancers that have configurable failover:
+                      [Internal passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/internal/failover-overview)
+                      and [external passthrough Network Load Balancers](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview).
+                      The default is false.'
+                    type: boolean
+                  failoverRatio:
+                    description: 'The value of the field must be in the range [0,
+                      1]. If the value is 0, the load balancer performs a failover
+                      when the number of healthy primary VMs equals zero. For all
+                      other values, the load balancer performs a failover when the
+                      total number of healthy primary VMs is less than this ratio.
+                      For load balancers that have configurable failover: [Internal
+                      TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/internal/failover-overview)
+                      and [external TCP/UDP Load Balancing](https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview).'
+                    type: number
+                type: object
+              healthChecks:
+                items:
+                  description: The health check resources for health checking this
+                    ComputeBackendService. Currently at most one health check can
+                    be specified, and a health check is required.
+                  oneOf:
+                  - required:
+                    - healthCheckRef
+                  - required:
+                    - httpHealthCheckRef
+                  properties:
+                    healthCheckRef:
+                      description: Reference to a ComputeHealthCheck resource.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: |-
+                            The URL for the health check that signals autohealing.
+
+                            Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                    httpHealthCheckRef:
+                      description: Reference to a ComputeHTTPHealthCheck resource.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed ComputeHTTPHealthCheck
+                            resource. Should be in the format "projects/{{projectID}}/global/httpHealthChecks/{{httpHealthCheckID}}".
+                          type: string
+                        name:
+                          description: The name of a ComputeHTTPHealthCheck resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a ComputeHTTPHealthCheck resource.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              iap:
+                description: The configurations for Identity-Aware Proxy on this resource.
+                properties:
+                  oauth2ClientId:
+                    description: OAuth2 client ID to use for the authentication flow.
+                    type: string
+                  oauth2ClientIdRef:
+                    description: Reference to a ComputeBackendServiceOauth2ClientId.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: External is the Google OAuth2 Client ID, e.g.
+                          `CLIENT_ID.apps.googleusercontent.com` matching the Cloud
+                          Asset Inventory Format.
+                        type: string
+                      name:
+                        description: Name of the referent.
+                        type: string
+                      namespace:
+                        description: Namespace of the referent.
+                        type: string
+                    type: object
+                  oauth2ClientSecret:
+                    description: OAuth2 client secret to use for the authentication
+                      flow.
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
+                        type: object
+                    type: object
+                  oauth2ClientSecretSha256:
+                    description: '[Output Only] SHA256 hash value for the field oauth2_client_secret
+                      above.'
+                    type: string
+                type: object
+              loadBalancingScheme:
+                description: Specifies the load balancer type.
+                type: string
+              localityLbPolicies:
+                description: 'A list of locality load-balancing policies to be used
+                  in order of preference. When you use localityLbPolicies, you must
+                  set at least one value for either the localityLbPolicies[].policy
+                  or the localityLbPolicies[].customPolicy field. localityLbPolicies
+                  overrides any value set in the localityLbPolicy field. For an example
+                  of how to use this field, see Define a list of preferred policies.
+                  Caution: This field and its children are intended for use in a service
+                  mesh that includes gRPC clients only. Envoy proxies can''t use backend
+                  services that have this configuration.'
+                items:
+                  properties:
+                    customPolicy:
+                      description: The configuration for a custom policy.
+                      properties:
+                        data:
+                          description: An optional, arbitrary JSON object with configuration
+                            data.
+                          type: string
+                        name:
+                          description: The name of a custom policy.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    policy:
+                      description: The configuration for a predefined policy.
+                      properties:
+                        name:
+                          description: The name of a locality load balancing policy.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                  type: object
+                type: array
+              localityLbPolicy:
+                description: The load balancing algorithm used within the scope of
+                  the locality.
+                type: string
+              location:
+                description: Location of the resource.
+                type: string
+              logConfig:
+                description: This field denotes the logging options for the load balancer
+                  traffic.
+                properties:
+                  enable:
+                    description: This field denotes whether to enable logging for
+                      the load balancer traffic.
+                    type: boolean
+                  sampleRate:
+                    description: This field defines the log sampling rate.
+                    type: number
+                type: object
+              networkRef:
+                description: ComputeNetworkRef is a reference to a GCP ComputeNetwork.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ComputeNetwork resource.
+                      Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeNetwork resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeNetwork resource.
+                    type: string
+                type: object
+              outlierDetection:
+                description: Settings controlling the ejection of unhealthy backend
+                  endpoints.
+                properties:
+                  baseEjectionTime:
+                    description: The base time that a host is ejected for. The real
+                      time is equal to the base ejection time multiplied by the number
+                      of times the host has been ejected.
+                    properties:
+                      nanos:
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
+                        type: integer
+                      seconds:
+                        description: Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive.
+                        format: int64
+                        type: integer
+                    required:
+                    - seconds
+                    type: object
+                  consecutiveErrors:
+                    description: Number of consecutive errors before ejection.
+                    format: int32
+                    type: integer
+                  consecutiveGatewayFailure:
+                    description: Number of consecutive gateway failures before ejection.
+                    format: int32
+                    type: integer
+                  enforcingConsecutiveErrors:
+                    description: Percentage of consecutive errors to enforce.
+                    format: int32
+                    type: integer
+                  enforcingConsecutiveGatewayFailure:
+                    description: Percentage of consecutive gateway failures to enforce.
+                    format: int32
+                    type: integer
+                  enforcingSuccessRate:
+                    description: Percentage of success rate to enforce.
+                    format: int32
+                    type: integer
+                  interval:
+                    description: Time interval between ejection sweep analysis.
+                    properties:
+                      nanos:
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
+                        type: integer
+                      seconds:
+                        description: Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive.
+                        format: int64
+                        type: integer
+                    required:
+                    - seconds
+                    type: object
+                  maxEjectionPercent:
+                    description: Maximum percentage of hosts that can be ejected.
+                    format: int32
+                    type: integer
+                  successRateMinimumHosts:
+                    description: Minimum number of hosts for success rate analysis.
+                    format: int32
+                    type: integer
+                  successRateRequestVolume:
+                    description: Minimum request volume for success rate analysis.
+                    format: int32
+                    type: integer
+                  successRateStdevFactor:
+                    description: Standard deviation factor for success rate analysis.
+                    format: int32
+                    type: integer
+                type: object
+              portName:
+                description: A named port on a backend instance group representing
+                  the port for communication to the backend VMs in that group. The
+                  named port must be [defined on each backend instance group](https://cloud.google.com/load-balancing/docs/backend-service#named_ports).
+                  This parameter has no meaning if the backends are NEGs. For internal
+                  passthrough Network Load Balancers and external passthrough Network
+                  Load Balancers, omit port_name.
+                type: string
+              protocol:
+                description: The protocol this BackendService uses to communicate
+                  with backends. Possible values are HTTP, HTTPS, HTTP2, H2C, TCP,
+                  SSL, UDP or GRPC. depending on the chosen load balancer or Traffic
+                  Director configuration. Refer to the documentation for the load
+                  balancers or for Traffic Director for more information. Must be
+                  set to GRPC when the backend service is referenced by a URL map
+                  that is bound to target gRPC proxy.
+                type: string
+              resourceID:
+                description: The ComputeBackendService name. If not given, the metadata.name
+                  will be used.
+                type: string
+              securityPolicy:
+                description: The URL of the security policy associated with this backend
+                  service.
+                type: string
+              securityPolicyRef:
+                description: ComputeSecurityPolicyRef is a reference to a ComputeSecurityPolicy.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ComputeSecurityPolicy resource.
+                      Should be in the format "projects/{{projectID}}/global/securityPolicies/{{name}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeSecurityPolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeSecurityPolicy resource.
+                    type: string
+                type: object
+              securitySettings:
+                description: This field specifies the security settings that apply
+                  to this backend service. This field is applicable to a global backend
+                  service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED.
+                properties:
+                  clientTLSPolicyRef:
+                    description: Reference to a ComputeSecuritySettingsClientTLSPolicy.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: External is the selfLink of the referent.
+                        type: string
+                      name:
+                        description: Name of the referent.
+                        type: string
+                      namespace:
+                        description: Namespace of the referent.
+                        type: string
+                    type: object
+                  subjectAltNames:
+                    description: Subject Alternative Names.
+                    items:
+                      type: string
+                    type: array
+                required:
+                - clientTLSPolicyRef
+                - subjectAltNames
+                type: object
+              sessionAffinity:
+                description: 'Type of session affinity to use. The default is NONE.
+                  Only NONE and HEADER_FIELD are supported when the backend service
+                  is referenced by a URL map that is bound to target gRPC proxy that
+                  has validateForProxyless field set to true. For more details, see:
+                  [Session Affinity](https://cloud.google.com/load-balancing/docs/backend-service#session_affinity).
+                  sessionAffinity cannot be specified with haPolicy.'
+                type: string
+              subsetting:
+                description: subsetting cannot be specified with haPolicy.
+                properties:
+                  policy:
+                    description: The subsetting policy. The only supported policy
+                      is CONSISTENT_HASH_SUBSETTING.
+                    type: string
+                required:
+                - policy
+                type: object
+              timeoutSec:
+                description: The backend service timeout.
+                format: int32
+                type: integer
+            required:
+            - location
+            type: object
+          status:
+            description: The observed state of the ComputeBackendService.
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              fingerprint:
+                description: Fingerprint of this resource. A hash of the contents
+                  stored in this object.
+                type: string
+              generatedId:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,184 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: securitycentermuteconfigs.securitycenter.cnrm.cloud.google.com
+spec:
+  group: securitycenter.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: SecurityCenterMuteConfig
+    listKind: SecurityCenterMuteConfigList
+    plural: securitycentermuteconfigs
+    shortNames:
+    - gcpsecuritycentermuteconfig
+    - gcpsecuritycentermuteconfigs
+    singular: securitycentermuteconfig
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SecurityCenterMuteConfig is the Schema for the SecurityCenterMuteConfig
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SecurityCenterMuteConfigSpec defines the desired state of
+              SecurityCenterMuteConfig
+            properties:
+              description:
+                description: A description of the mute config.
+                type: string
+              expiryTime:
+                description: |-
+                  Optional. The expiry of the mute config. Only applicable for dynamic configs.
+                  If the expiry is set, when the config expires, it is removed from all findings.
+                type: string
+              filter:
+                description: |-
+                  Required. An expression that defines the filter to apply across create/update events of findings.
+                  While creating a filter string, be mindful of the scope in which the mute configuration is being created.
+                  E.g., If a filter contains project = X but is created under the project = Y scope, it might not match any findings.
+                type: string
+              organizationRef:
+                description: The organization that this resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              resourceID:
+                description: The SecurityCenterMuteConfig name. If not given, the
+                  metadata.name will be used.
+                type: string
+              type:
+                description: |-
+                  Optional. The type of the mute config, which determines what type of mute state the config affects.
+                  The static mute state takes precedence over the dynamic mute state.
+                  Immutable after creation. STATIC by default if not set during creation.
+                enum:
+                - MUTE_CONFIG_TYPE_UNSPECIFIED
+                - STATIC
+                - DYNAMIC
+                type: string
+            required:
+            - filter
+            - organizationRef
+            type: object
+          status:
+            description: SecurityCenterMuteConfigStatus defines the config connector
+              machine state of SecurityCenterMuteConfig
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the SecurityCenterMuteConfig resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: |-
+                      Output only. The time at which the mute config was created.
+                      This field is set by the server and will be ignored if provided on config creation.
+                    type: string
+                  mostRecentEditor:
+                    description: |-
+                      Output only. Email address of the user who last edited the mute config.
+                      This field is set by the server and will be ignored if provided on config creation or update.
+                    type: string
+                  updateTime:
+                    description: |-
+                      Output only. The most recent time at which the mute config was updated.
+                      This field is set by the server and will be ignored if provided on config creation or update.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
