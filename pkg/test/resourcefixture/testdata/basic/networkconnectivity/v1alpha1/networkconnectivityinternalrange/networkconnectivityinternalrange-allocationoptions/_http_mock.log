@@ -1,6 +1,6 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +30,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "autoCreateSubnetworks": false,
@@ -66,7 +66,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -123,52 +123,35 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/GetInternalRange
 
 {
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}"
 }
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}' was not found
+
+{}
 
 ---
 
-POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges?alt=json&internalRangeId=networkconnectivityinternalrange-allocationoptions-${uniqueId}&prettyPrint=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/CreateInternalRange
 
 {
-  "allocationOptions": {
-    "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
-    "firstAvailableRangesLookupSize": 3
+  "internalRange": {
+    "allocationOptions": {
+      "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
+      "firstAvailableRangesLookupSize": 3
+    },
+    "description": "Initial description with allocation options",
+    "network": "projects/${projectId}/global/networks/${networkID}",
+    "prefixLength": 24
   },
-  "description": "Initial description with allocation options",
-  "network": "projects/${projectId}/global/networks/${networkID}",
-  "prefixLength": 24
+  "internalRangeId": "networkconnectivityinternalrange-allocationoptions-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "metadata": {
@@ -183,18 +166,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
@@ -224,18 +202,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/GetInternalRange
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}"
+}
+
+OK
 
 {
   "allocationOptions": {
@@ -252,30 +225,23 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}?alt=json&prettyPrint=false&updateMask=description%2CallocationOptions%2CprefixLength
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/UpdateInternalRange
 
 {
-  "allocationOptions": {
-    "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
-    "firstAvailableRangesLookupSize": 5
+  "internalRange": {
+    "allocationOptions": {
+      "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
+      "firstAvailableRangesLookupSize": 5
+    },
+    "description": "Updated description with allocation options",
+    "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
+    "prefixLength": 24
   },
-  "description": "Updated description with allocation options",
-  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
-  "prefixLength": 24
+  "updateMask": "description"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "metadata": {
@@ -290,18 +256,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
@@ -318,7 +279,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
     "allocationOptions": {
       "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
-      "firstAvailableRangesLookupSize": 5
+      "firstAvailableRangesLookupSize": 3
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description with allocation options",
@@ -331,23 +292,18 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/GetInternalRange
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}"
+}
+
+OK
 
 {
   "allocationOptions": {
     "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
-    "firstAvailableRangesLookupSize": 5
+    "firstAvailableRangesLookupSize": 3
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description with allocation options",
@@ -359,18 +315,36 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/GetInternalRange
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}"
+}
+
+OK
+
+{
+  "allocationOptions": {
+    "allocationStrategy": "RANDOM_FIRST_N_AVAILABLE",
+    "firstAvailableRangesLookupSize": 3
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description with allocation options",
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "prefixLength": 24,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/DeleteInternalRange
+
+{
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}"
+}
+
+OK
 
 {
   "metadata": {
@@ -385,18 +359,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.longrunning.Operations/GetOperation
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
 
 {
   "done": true,
@@ -418,7 +387,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -445,7 +414,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -475,7 +444,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
