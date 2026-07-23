@@ -20,8 +20,6 @@ set -o pipefail
 # Disable core dump file creation during parallel generator execution
 ulimit -c 0 2>/dev/null || true
 
-# Clean up any abandoned /tmp/kcc-gocache-* directories left behind by previous interrupted runs
-rm -rf /tmp/kcc-gocache-* 2>/dev/null || true
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
