@@ -28,7 +28,6 @@ import (
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
-	aistreamsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aistreams/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
@@ -244,7 +243,6 @@ type Interface interface {
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
 	AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface
 	AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface
-	AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface
 	AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface
 	AnalyticsV1alpha1() analyticsv1alpha1.AnalyticsV1alpha1Interface
 	ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface
@@ -458,7 +456,6 @@ type Clientset struct {
 	accesscontextmanagerV1beta1     *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
 	accesscontextmanagerV1alpha1    *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
 	aiplatformV1alpha1              *aiplatformv1alpha1.AiplatformV1alpha1Client
-	aistreamsV1alpha1               *aistreamsv1alpha1.AistreamsV1alpha1Client
 	alloydbV1beta1                  *alloydbv1beta1.AlloydbV1beta1Client
 	analyticsV1alpha1               *analyticsv1alpha1.AnalyticsV1alpha1Client
 	apigatewayV1alpha1              *apigatewayv1alpha1.ApigatewayV1alpha1Client
@@ -679,11 +676,6 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 // AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
 func (c *Clientset) AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface {
 	return c.aiplatformV1alpha1
-}
-
-// AistreamsV1alpha1 retrieves the AistreamsV1alpha1Client
-func (c *Clientset) AistreamsV1alpha1() aistreamsv1alpha1.AistreamsV1alpha1Interface {
-	return c.aistreamsV1alpha1
 }
 
 // AlloydbV1beta1 retrieves the AlloydbV1beta1Client
@@ -1767,10 +1759,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.aistreamsV1alpha1, err = aistreamsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.alloydbV1beta1, err = alloydbv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2615,7 +2603,6 @@ func New(c rest.Interface) *Clientset {
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
 	cs.accesscontextmanagerV1alpha1 = accesscontextmanagerv1alpha1.New(c)
 	cs.aiplatformV1alpha1 = aiplatformv1alpha1.New(c)
-	cs.aistreamsV1alpha1 = aistreamsv1alpha1.New(c)
 	cs.alloydbV1beta1 = alloydbv1beta1.New(c)
 	cs.analyticsV1alpha1 = analyticsv1alpha1.New(c)
 	cs.apigatewayV1alpha1 = apigatewayv1alpha1.New(c)

@@ -92,9 +92,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
 
-		// AI Streams
-		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
-
 		// AutoML
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}": true,
 
