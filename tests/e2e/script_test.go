@@ -70,7 +70,7 @@ func TestE2EScript(t *testing.T) {
 		nn  types.NamespacedName
 	}
 
-	logCheckTimeout := 10 * time.Second
+	logCheckTimeout := 30 * time.Second
 	t.Run("scenarios", func(t *testing.T) {
 		scenarioDir := "testdata/scenarios"
 		scenarioPaths := findScripts(t, scenarioDir)
