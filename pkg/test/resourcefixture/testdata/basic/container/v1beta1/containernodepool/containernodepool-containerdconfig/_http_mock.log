@@ -968,6 +968,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
                     "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"
                   }
                 ],
+                "capabilities": [
+                  "PULL",
+                  "RESOLVE"
+                ],
                 "client": [
                   {
                     "cert": {
@@ -978,7 +982,17 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
                     }
                   }
                 ],
-                "host": "https://my-registry.example.com"
+                "dialTimeout": "10s",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": [
+                      "Bearer token123"
+                    ]
+                  }
+                ],
+                "host": "https://my-registry.example.com",
+                "overridePath": true
               }
             ],
             "server": "my-registry.example.com"
@@ -1458,6 +1472,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
                 "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"
               }
             ],
+            "capabilities": [
+              "PULL",
+              "RESOLVE"
+            ],
             "client": [
               {
                 "cert": {
@@ -1468,7 +1486,17 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
                 }
               }
             ],
-            "host": "https://my-registry.example.com"
+            "dialTimeout": "10s",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": [
+                  "Bearer token123"
+                ]
+              }
+            ],
+            "host": "https://my-registry.example.com",
+            "overridePath": true
           }
         ],
         "server": "my-registry.example.com"
@@ -2329,6 +2357,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
                 "gcpSecretManagerSecretUri": "projects/${projectId}/secrets/kcc-test-ca-cert/versions/2"
               }
             ],
+            "capabilities": [
+              "PULL",
+              "RESOLVE"
+            ],
             "client": [
               {
                 "cert": {
@@ -2339,7 +2371,17 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
                 }
               }
             ],
-            "host": "https://my-registry.example.com"
+            "dialTimeout": "15s",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": [
+                  "Bearer token456"
+                ]
+              }
+            ],
+            "host": "https://my-registry.example.com",
+            "overridePath": true
           }
         ],
         "server": "my-registry.example.com"

@@ -40,6 +40,15 @@ spec:
         - server: "my-registry.example.com"
           hosts:
             - host: "https://my-registry.example.com"
+              capabilities:
+                - "PULL"
+                - "RESOLVE"
+              dialTimeout: "15s"
+              overridePath: true
+              header:
+                - key: "Authorization"
+                  value:
+                    - "Bearer token456"
               ca:
                 - secretRef:
                     external: "projects/${projectId}/secrets/kcc-test-ca-cert/versions/2"
