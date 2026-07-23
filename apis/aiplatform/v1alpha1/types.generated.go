@@ -29,7 +29,6 @@ package v1alpha1
 
 import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-/* unreachable type Artifact
 // +kcc:proto=google.cloud.aiplatform.v1.Artifact
 type Artifact struct {
 
@@ -91,7 +90,6 @@ type Artifact struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.description
 	Description *string `json:"description,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.BigQueryDestination
 type BigQueryDestination struct {
@@ -131,7 +129,6 @@ type BlurBaselineConfig struct {
 	MaxBlurSigma *float32 `json:"maxBlurSigma,omitempty"`
 }
 
-/* unreachable type Checkpoint
 // +kcc:proto=google.cloud.aiplatform.v1.Checkpoint
 type Checkpoint struct {
 	// The ID of the checkpoint.
@@ -146,7 +143,6 @@ type Checkpoint struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Checkpoint.step
 	Step *int64 `json:"step,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.CodeExecutionResult
 type CodeExecutionResult struct {
@@ -1191,7 +1187,6 @@ type Part struct {
 	VideoMetadata *VideoMetadata `json:"videoMetadata,omitempty"`
 }
 
-/* unreachable type PipelineJob_RuntimeConfig_InputArtifact
 // +kcc:proto=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.InputArtifact
 type PipelineJob_RuntimeConfig_InputArtifact struct {
 	// Artifact resource id from MLMD. Which is the last portion of an
@@ -1202,13 +1197,10 @@ type PipelineJob_RuntimeConfig_InputArtifact struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.InputArtifact.artifact_id
 	ArtifactID *string `json:"artifactID,omitempty"`
 }
-*/
 
-/* unreachable type PipelineTaskDetail_ArtifactList
 // +kcc:proto=google.cloud.aiplatform.v1.PipelineTaskDetail.ArtifactList
 type PipelineTaskDetail_ArtifactList struct {
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.Port
 type Port struct {
@@ -1878,23 +1870,17 @@ type SupervisedHyperParameters struct {
 	AdapterSize *string `json:"adapterSize,omitempty"`
 }
 
-/* unreachable type SupervisedTuningDataStats
 // +kcc:proto=google.cloud.aiplatform.v1.SupervisedTuningDataStats
 type SupervisedTuningDataStats struct {
 }
-*/
 
-/* unreachable type SupervisedTuningDatasetDistribution
 // +kcc:proto=google.cloud.aiplatform.v1.SupervisedTuningDatasetDistribution
 type SupervisedTuningDatasetDistribution struct {
 }
-*/
 
-/* unreachable type SupervisedTuningDatasetDistribution_DatasetBucket
 // +kcc:proto=google.cloud.aiplatform.v1.SupervisedTuningDatasetDistribution.DatasetBucket
 type SupervisedTuningDatasetDistribution_DatasetBucket struct {
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.SupervisedTuningSpec
 type SupervisedTuningSpec struct {
@@ -1942,11 +1928,9 @@ type TimestampSplit struct {
 	Key *string `json:"key,omitempty"`
 }
 
-/* unreachable type TunedModel
 // +kcc:proto=google.cloud.aiplatform.v1.TunedModel
 type TunedModel struct {
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.TunedModelCheckpoint
 type TunedModelCheckpoint struct {
@@ -1968,14 +1952,12 @@ type TunedModelCheckpoint struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
-/* unreachable type TuningDataStats
 // +kcc:proto=google.cloud.aiplatform.v1.TuningDataStats
 type TuningDataStats struct {
 	// The SFT Tuning data stats.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TuningDataStats.supervised_tuning_data_stats
 	SupervisedTuningDataStats *SupervisedTuningDataStats `json:"supervisedTuningDataStats,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.VideoMetadata
 type VideoMetadata struct {
@@ -2024,7 +2006,6 @@ type Int32Value struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
-/* unreachable type Model_ExportFormatObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Model.ExportFormat
 type Model_ExportFormatObservedState struct {
 	// Output only. The ID of the export format.
@@ -2055,9 +2036,7 @@ type Model_ExportFormatObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.ExportFormat.exportable_contents
 	ExportableContents []string `json:"exportableContents,omitempty"`
 }
-*/
 
-/* unreachable type Model_OriginalModelInfoObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.Model.OriginalModelInfo
 type Model_OriginalModelInfoObservedState struct {
 	// Output only. The resource name of the Model this Model is a copy of,
@@ -2066,7 +2045,6 @@ type Model_OriginalModelInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.OriginalModelInfo.model
 	Model *string `json:"model,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.SupervisedTuningDataStats
 type SupervisedTuningDataStatsObservedState struct {
