@@ -8,7 +8,6 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: beta
     cnrm.cloud.google.com/system: "true"
-    internal.cloud.google.com/additional-versions: v1alpha1
   name: redisclusters.redis.cnrm.cloud.google.com
 spec:
   group: redis.cnrm.cloud.google.com
@@ -711,5 +710,693 @@ spec:
         type: object
     served: true
     storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: RedisCluster is the Schema for the RedisCluster API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RedisClusterSpec defines the desired state of RedisCluster
+            properties:
+              authorizationMode:
+                description: Optional. The authorization mode of the Redis cluster.
+                  If not provided, auth feature is disabled for the cluster.
+                type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the cluster.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
+              crossClusterReplicationConfig:
+                description: Optional. Cross cluster replication config.
+                properties:
+                  clusterRole:
+                    description: The role of the cluster in cross cluster replication.
+                    type: string
+                  primaryCluster:
+                    description: |-
+                      Details of the primary cluster that is used as the replication source for
+                       this secondary cluster.
+
+                       This field is only set for a secondary cluster.
+                    properties:
+                      clusterRef:
+                        description: 'The full resource path of the remote cluster
+                          in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed RedisCluster
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                            type: string
+                          name:
+                            description: The name of a RedisCluster resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a RedisCluster resource.
+                            type: string
+                        type: object
+                    type: object
+                  secondaryClusters:
+                    description: |-
+                      List of secondary clusters that are replicating from this primary cluster.
+
+                       This field is only set for a primary cluster.
+                    items:
+                      properties:
+                        clusterRef:
+                          description: 'The full resource path of the remote cluster
+                            in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed RedisCluster
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                              type: string
+                            name:
+                              description: The name of a RedisCluster resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a RedisCluster resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              deletionProtectionEnabled:
+                description: Optional. The delete operation will fail when the value
+                  is set to true.
+                type: boolean
+              kmsKeyRef:
+                description: Optional. The KMS key name to encrypt data at rest.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
+              location:
+                description: Immutable. Location of the resource.
+                type: string
+              maintenancePolicy:
+                description: Optional. ClusterMaintenancePolicy determines when to
+                  allow or deny updates.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_maintenance_window is expected
+                      to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Allows to define schedule that runs specified
+                            day of the week.
+                          type: string
+                        startTime:
+                          description: Start time of the window in UTC.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              nodeType:
+                description: Optional. The type of a redis node in the cluster. NodeType
+                  determines the underlying machine-type of a redis node.
+                type: string
+              persistenceConfig:
+                description: Optional. Persistence config (RDB, AOF) for the cluster.
+                properties:
+                  aofConfig:
+                    description: Optional. AOF configuration. This field will be ignored
+                      if mode is not AOF.
+                    properties:
+                      appendFsync:
+                        description: Optional. fsync configuration.
+                        type: string
+                    type: object
+                  mode:
+                    description: Optional. The mode of persistence.
+                    type: string
+                  rdbConfig:
+                    description: Optional. RDB configuration. This field will be ignored
+                      if mode is not RDB.
+                    properties:
+                      rdbSnapshotPeriod:
+                        description: Optional. Period between RDB snapshots.
+                        type: string
+                      rdbSnapshotStartTime:
+                        description: Optional. The time that the first snapshot was/will
+                          be attempted, and to which future snapshots will be aligned.
+                          If not provided, the current time will be used.
+                        type: string
+                    type: object
+                type: object
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pscConfigs:
+                description: Required. Each PscConfig configures the consumer network
+                  where IPs will be designated to the cluster for client access through
+                  Private Service Connect Automation. Currently, only one PscConfig
+                  is supported.
+                items:
+                  properties:
+                    networkRef:
+                      description: Required. The network where the IP address of the
+                        discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed ComputeNetwork
+                            resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                          type: string
+                        name:
+                          description: The name of a ComputeNetwork resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a ComputeNetwork resource.
+                          type: string
+                      type: object
+                  required:
+                  - networkRef
+                  type: object
+                type: array
+              redisConfigs:
+                additionalProperties:
+                  type: string
+                description: Optional. Key/Value pairs of customer overrides for mutable
+                  Redis Configs
+                type: object
+              replicaCount:
+                description: Optional. The number of replica nodes per shard.
+                format: int32
+                type: integer
+              resourceID:
+                description: The RedisCluster name. If not given, the metadata.name
+                  will be used.
+                type: string
+              shardCount:
+                description: Required. Number of shards for the Redis cluster.
+                format: int32
+                type: integer
+              transitEncryptionMode:
+                description: Optional. The in-transit encryption for the Redis cluster.
+                  If not provided, encryption  is disabled for the cluster.
+                type: string
+              zoneDistributionConfig:
+                description: Optional. This config will be used to determine how the
+                  customer wants us to distribute cluster resources within the region.
+                properties:
+                  mode:
+                    description: Optional. The mode of zone distribution. Defaults
+                      to MULTI_ZONE, when not specified.
+                    type: string
+                  zone:
+                    description: Optional. When SINGLE ZONE distribution is selected,
+                      zone field would be used to allocate all resources in that zone.
+                      This is not applicable to MULTI_ZONE, and would be ignored for
+                      MULTI_ZONE clusters.
+                    type: string
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: RedisClusterStatus defines the config connector machine state
+              of RedisCluster
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the RedisCluster resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The timestamp associated with the cluster
+                      creation request.
+                    type: string
+                  crossClusterReplicationConfig:
+                    description: Output only. Cross cluster replication config.
+                    properties:
+                      membership:
+                        description: |-
+                          Output only. An output only view of all the member clusters participating
+                           in the cross cluster replication. This view will be provided by every
+                           member cluster irrespective of its cluster role(primary or secondary).
+
+                           A primary cluster can provide information about all the secondary clusters
+                           replicating from it. However, a secondary cluster only knows about the
+                           primary cluster from which it is replicating. However, for scenarios, where
+                           the primary cluster is unavailable(e.g. regional outage), a GetCluster
+                           request can be sent to any other member cluster and this field will list
+                           all the member clusters participating in cross cluster replication.
+                        properties:
+                          primaryCluster:
+                            description: Output only. The primary cluster that acts
+                              as the source of replication for the secondary clusters.
+                            properties:
+                              cluster:
+                                description: 'The full resource path of the remote
+                                  cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote cluster.
+                                type: string
+                            type: object
+                          secondaryClusters:
+                            description: Output only. The list of secondary clusters
+                              replicating from the primary cluster.
+                            items:
+                              properties:
+                                cluster:
+                                  description: 'The full resource path of the remote
+                                    cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote cluster.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryCluster:
+                        description: |-
+                          Details of the primary cluster that is used as the replication source for
+                           this secondary cluster.
+
+                           This field is only set for a secondary cluster.
+                        properties:
+                          cluster:
+                            description: 'The full resource path of the remote cluster
+                              in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote cluster.
+                            type: string
+                        type: object
+                      secondaryClusters:
+                        description: |-
+                          List of secondary clusters that are replicating from this primary cluster.
+
+                           This field is only set for a primary cluster.
+                        items:
+                          properties:
+                            cluster:
+                              description: 'The full resource path of the remote cluster
+                                in the format: projects/<project>/locations/<region>/clusters/<cluster-id>'
+                              type: string
+                            uid:
+                              description: Output only. The unique identifier of the
+                                remote cluster.
+                              type: string
+                          type: object
+                        type: array
+                      updateTime:
+                        description: Output only. The last time cross cluster replication
+                          config was updated.
+                        type: string
+                    type: object
+                  discoveryEndpoints:
+                    description: Output only. Endpoints created on each given network,
+                      for Redis clients to connect to the cluster. Currently only
+                      one discovery endpoint is supported.
+                    items:
+                      properties:
+                        address:
+                          description: Output only. Address of the exposed Redis endpoint
+                            used by clients to connect to the service. The address
+                            could be either IP or hostname.
+                          type: string
+                        port:
+                          description: Output only. The port number of the exposed
+                            Redis endpoint.
+                          format: int32
+                          type: integer
+                        pscConfig:
+                          description: Output only. Customer configuration for where
+                            the endpoint is created and accessed from.
+                          properties:
+                            network:
+                              description: Required. The network where the IP address
+                                of the discovery endpoint will be reserved, in the
+                                form of projects/{network_project}/global/networks/{network_id}.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                  encryptionInfo:
+                    description: Output only. Encryption information for the client
+                      to retrieve.
+                    properties:
+                      encryptionType:
+                        description: Output only. Type of encryption.
+                        type: string
+                      kmsKeyPrimaryState:
+                        description: Output only. The state of the primary version
+                          of the KMS key perceived by the system. This field is not
+                          populated in backups.
+                        type: string
+                      kmsKeyVersions:
+                        description: Output only. KMS key versions that are being
+                          used to protect the data at-rest.
+                        items:
+                          type: string
+                        type: array
+                      lastUpdateTime:
+                        description: Output only. The most recent time when the encryption
+                          info was updated.
+                        type: string
+                    type: object
+                  maintenancePolicy:
+                    description: Optional. ClusterMaintenancePolicy determines when
+                      to allow or deny updates.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created
+                          i.e. Maintenance Window or Deny Period was assigned.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated
+                          i.e. Maintenance Window or Deny Period was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. ClusterMaintenanceSchedule Output only
+                      Published maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
+                  preciseSizeGb:
+                    description: Output only. Precise value of redis memory size in
+                      GB for the entire cluster.
+                    type: number
+                  pscConnections:
+                    description: Output only. PSC connections for discovery of the
+                      cluster topology and accessing the cluster.
+                    items:
+                      properties:
+                        address:
+                          description: Required. The IP allocated on the consumer
+                            network for the PSC forwarding rule.
+                          type: string
+                        forwardingRule:
+                          description: 'Required. The URI of the consumer side forwarding
+                            rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.'
+                          type: string
+                        network:
+                          description: Required. The consumer network where the IP
+                            address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                          type: string
+                        projectID:
+                          description: Optional. Project ID of the consumer project
+                            where the forwarding rule is created in.
+                          type: string
+                        pscConnectionID:
+                          description: Required. The PSC connection id of the forwarding
+                            rule connected to the service attachment.
+                          type: string
+                        serviceAttachment:
+                          description: Required. The service attachment which is the
+                            target of the PSC connection, in the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                          type: string
+                      type: object
+                    type: array
+                  pscServiceAttachments:
+                    description: Output only. Service attachment details to configure
+                      Psc connections.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of a PSC connection targeting
+                            this service attachment.
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target
+                          type: string
+                      type: object
+                    type: array
+                  sizeGb:
+                    description: Output only. Redis memory size in GB for the entire
+                      cluster rounded up to the next integer.
+                    format: int32
+                    type: integer
+                  state:
+                    description: Output only. The current state of this cluster. Can
+                      be CREATING, READY, UPDATING, DELETING and SUSPENDED
+                    type: string
+                  stateInfo:
+                    description: Output only. Additional information about the current
+                      state of the cluster.
+                    properties:
+                      updateInfo:
+                        description: Describes ongoing update on the cluster when
+                          cluster state is UPDATING.
+                        properties:
+                          targetReplicaCount:
+                            description: Target number of replica nodes per shard.
+                            format: int32
+                            type: integer
+                          targetShardCount:
+                            description: Target number of shards for redis cluster
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  uid:
+                    description: Output only. System assigned, unique identifier for
+                      the cluster.
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: false
     subresources:
       status: {}
