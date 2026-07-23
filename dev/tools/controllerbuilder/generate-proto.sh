@@ -32,7 +32,18 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
+VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 
+if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
+    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    exit 0
+fi
+
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
+  exit 0
+fi
 
 THIRD_PARTY=${REPO_ROOT}/.build/third_party
 mkdir -p ${THIRD_PARTY}/
@@ -48,9 +59,8 @@ if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
     GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
 fi
 
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
-
 cd googleapis
+rm -f .git/index.lock
 
 # Fetch only if we don't have the SHA locally
 if ! git cat-file -e ${GOOGLEAPI_VERSION}^{commit} 2> /dev/null; then
@@ -80,18 +90,6 @@ else
     fi
 fi
 
-
-if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
-    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
-    exit 0
-fi
-
-if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
-  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
-  exit 0
-fi
-
 shopt -s nullglob
 PROTO_FILES=(
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto
@@ -101,6 +99,7 @@ PROTO_FILES=(
     ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto
     ${THIRD_PARTY}/googleapis/google/*/*.proto
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto
+    ${THIRD_PARTY}/googleapis/google/partner/aistreams/*/*.proto
     ${THIRD_PARTY}/googleapis/google/privacy/dlp/v2/*.proto
     ${THIRD_PARTY}/googleapis/google/api/*.proto
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto

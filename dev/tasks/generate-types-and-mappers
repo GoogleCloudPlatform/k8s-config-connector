@@ -28,6 +28,8 @@ popd
 export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
 
+# Collect all generate.sh scripts to run
+scripts=()
 for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
     # TODO: Fix these!
@@ -93,9 +95,37 @@ for f in $(find apis -name "generate.sh" | sort); do
         continue
     fi
 
-    echo "running ${f}"
-    ./${f}
+    scripts+=("${f}")
 done
+
+NUM_WORKERS="${PARALLELISM:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 8)}"
+echo "Running ${#scripts[@]} generator scripts in parallel with ${NUM_WORKERS} workers..."
+
+export GOCACHE_BASE="/tmp/kcc-gocache-$$"
+mkdir -p "${GOCACHE_BASE}"
+
+run_one() {
+    local f="$1"
+    local script_hash
+    script_hash=$(echo "${f}" | md5sum | awk '{print $1}')
+    local worker_cache="${GOCACHE_BASE}/${script_hash}"
+    mkdir -p "${worker_cache}"
+    export GOCACHE="${worker_cache}"
+
+    echo "running ${f}"
+    if ! ./${f}; then
+        echo "ERROR running ${f}" >&2
+        rm -rf "${worker_cache}"
+        exit 1
+    fi
+    rm -rf "${worker_cache}"
+}
+export -f run_one
+export GOCACHE_BASE
+
+printf "%s\n" "${scripts[@]}" | xargs -P "${NUM_WORKERS}" -I {} bash -c 'run_one "$@"' _ {}
+
+rm -rf "${GOCACHE_BASE}"
 
 # Now we generate CRDs
 unset SKIP_GENERATE_CRDS
