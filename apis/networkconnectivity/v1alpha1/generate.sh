@@ -29,7 +29,8 @@ go run . generate-types \
   --include-skipped-output \
   --resource NetworkConnectivityInternalRange:InternalRange \
   --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy \
-  --resource NetworkConnectivityRegionalEndpoint:RegionalEndpoint
+  --resource NetworkConnectivityRegionalEndpoint:RegionalEndpoint \
+  --resource NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig
 
 go run . generate-mapper \
   --service mockgcp.cloud.networkconnectivity.v1 \

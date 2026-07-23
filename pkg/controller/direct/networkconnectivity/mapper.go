@@ -334,3 +334,50 @@ func Timestamp_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Times
 	}
 	return timestamppb.New(t)
 }
+
+func StateMetadata_FromProto(mapCtx *direct.MapContext, in *pb.StateMetadata) *krm.StateMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StateMetadata{}
+	out.EffectiveTime = Timestamp_FromProto(mapCtx, in.EffectiveTime)
+	if in.State != "" {
+		out.State = direct.LazyPtr(in.State)
+	}
+	return out
+}
+
+func StateMetadata_ToProto(mapCtx *direct.MapContext, in *krm.StateMetadata) *pb.StateMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StateMetadata{}
+	out.EffectiveTime = Timestamp_ToProto(mapCtx, in.EffectiveTime)
+	out.State = direct.ValueOf(in.State)
+	return out
+}
+
+func Services_FromProto(mapCtx *direct.MapContext, in map[string]*pb.StateTimeline) map[string]krm.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]krm.StateTimeline)
+	for k, v := range in {
+		val := StateTimeline_FromProto(mapCtx, v)
+		if val != nil {
+			out[k] = *val
+		}
+	}
+	return out
+}
+
+func Services_ToProto(mapCtx *direct.MapContext, in map[string]krm.StateTimeline) map[string]*pb.StateTimeline {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*pb.StateTimeline)
+	for k, v := range in {
+		out[k] = StateTimeline_ToProto(mapCtx, &v)
+	}
+	return out
+}
