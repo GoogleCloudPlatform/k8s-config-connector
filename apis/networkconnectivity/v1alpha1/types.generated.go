@@ -16,397 +16,431 @@
 // +generated:types
 // krm.group: networkconnectivity.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: mockgcp.cloud.networkconnectivity.v1
+// proto.service: google.cloud.networkconnectivity.v1
 // resource: NetworkConnectivityInternalRange:InternalRange
 // resource: NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
-// resource: NetworkConnectivityRegionalEndpoint:RegionalEndpoint
 
 package v1alpha1
 
-/* unreachable type Any
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.InternalRange", skipping
 
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
+// +kcc:proto=google.cloud.networkconnectivity.v1.InternalRange
+type InternalRange struct {
+	// Identifier. The name of an internal range.
+	//  Format:
+	//  projects/{project}/locations/{location}/internalRanges/{internal_range}
+	//  See: https://google.aip.dev/122#fields-representing-resource-names
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.name
+	Name *string `json:"name,omitempty"`
+
+	// Time when the internal range was created.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Time when the internal range was updated.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// User-defined labels.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. A description of this resource.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The IP range that this internal range defines.
+	//  NOTE: IPv6 ranges are limited to usage=EXTERNAL_TO_VPC and
+	//  peering=FOR_SELF.
+	//  NOTE: For IPv6 Ranges this field is compulsory, i.e. the address range must
+	//  be specified explicitly.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// Immutable. The URL or resource ID of the network in which to reserve the
+	//  internal range. The network cannot be deleted if there are any reserved
+	//  internal ranges referring to it. Legacy networks are not supported. For
+	//  example:
+	//    https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network}
+	//    projects/{project}/locations/global/networks/{network}
+	//    {network}
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.network
+	Network *string `json:"network,omitempty"`
+
+	// Optional. The type of usage set for this InternalRange.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.usage
+	Usage *string `json:"usage,omitempty"`
+
+	// Optional. The type of peering set for this internal range.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.peering
+	Peering *string `json:"peering,omitempty"`
+
+	// Optional. An alternate to ip_cidr_range. Can be set when trying to create
+	//  an IPv4 reservation that automatically finds a free range of the given
+	//  size. If both ip_cidr_range and prefix_length are set, there is an error if
+	//  the range sizes do not match. Can also be used during updates to change the
+	//  range size.
+	//  NOTE: For IPv6 this field only works if ip_cidr_range is set as well, and
+	//  both fields must match. In other words, with IPv6 this field only works as
+	//  a redundant parameter.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.prefix_length
+	PrefixLength *int32 `json:"prefixLength,omitempty"`
+
+	// Optional. Can be set to narrow down or pick a different address space while
+	//  searching for a free range. If not set, defaults to the "10.0.0.0/8"
+	//  address space. This can be used to search in other rfc-1918 address
+	//  spaces like "172.16.0.0/12" and "192.168.0.0/16" or non-rfc-1918
+	//  address spaces used in the VPC.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.target_cidr_range
+	TargetCIDRRange []string `json:"targetCIDRRange,omitempty"`
+
+	// Optional. Types of resources that are allowed to overlap with the current
+	//  internal range.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.overlaps
+	Overlaps []string `json:"overlaps,omitempty"`
+
+	// Optional. Must be present if usage is set to FOR_MIGRATION.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.migration
+	Migration *InternalRange_Migration `json:"migration,omitempty"`
+
+	// Optional. Immutable ranges cannot have their fields modified, except for
+	//  labels and description.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.immutable
+	Immutable *bool `json:"immutable,omitempty"`
+
+	// Optional. Range auto-allocation options, may be set only when
+	//  auto-allocation is selected by not setting ip_cidr_range (and setting
+	//  prefix_length).
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.allocation_options
+	AllocationOptions *InternalRange_AllocationOptions `json:"allocationOptions,omitempty"`
+
+	// Optional. ExcludeCidrRanges flag. Specifies a set of CIDR blocks that
+	//  allows exclusion of particular CIDR ranges from the auto-allocation
+	//  process, without having to reserve these blocks
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.exclude_cidr_ranges
+	ExcludeCIDRRanges []string `json:"excludeCIDRRanges,omitempty"`
 }
 */
 
-/* found existing non-generated go type "AllocationOptions", skipping
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.InternalRange.AllocationOptions", skipping
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AllocationOptions
-type AllocationOptions struct {
-	// Optional. Allocation strategy Not setting this field when the allocation is requested means an implementation defined strategy is used.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.allocation_strategy
+// +kcc:proto=google.cloud.networkconnectivity.v1.InternalRange.AllocationOptions
+type InternalRange_AllocationOptions struct {
+	// Optional. Allocation strategy Not setting this field when the allocation
+	//  is requested means an implementation defined strategy is used.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.AllocationOptions.allocation_strategy
 	AllocationStrategy *string `json:"allocationStrategy,omitempty"`
 
-	// Optional. This field must be set only when allocation_strategy is set to RANDOM_FIRST_N_AVAILABLE. The value should be the maximum expected parallelism of range creation requests issued to the same space of peered netwroks.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.first_available_ranges_lookup_size
+	// Optional. This field must be set only when allocation_strategy is set to
+	//  RANDOM_FIRST_N_AVAILABLE.
+	//  The value should be the maximum expected parallelism of range creation
+	//  requests issued to the same space of peered netwroks.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.AllocationOptions.first_available_ranges_lookup_size
 	FirstAvailableRangesLookupSize *int32 `json:"firstAvailableRangesLookupSize,omitempty"`
 }
 */
 
-/* unreachable type AutoCreatedSubnetworkInfo
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo
-type AutoCreatedSubnetworkInfo struct {
-	// Output only. Indicates whether the subnetwork is delinked from the Service Connection Policy. Only set if the subnetwork mode is AUTO_CREATED during creation.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo.delinked
-	Delinked *bool `json:"delinked,omitempty"`
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.InternalRange.Migration", skipping
 
-	// Output only. URI of the automatically created Internal Range. Only set if the subnetwork mode is AUTO_CREATED during creation.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo.internal_range
-	InternalRange *string `json:"internalRange,omitempty"`
+// +kcc:proto=google.cloud.networkconnectivity.v1.InternalRange.Migration
+type InternalRange_Migration struct {
+	// Immutable. Resource path as an URI of the source resource, for example a
+	//  subnet. The project for the source resource should match the project for
+	//  the InternalRange. An example:
+	//    /projects/{project}/regions/{region}/subnetworks/{subnet}
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.Migration.source
+	Source *string `json:"source,omitempty"`
 
-	// Output only. URI of the automatically created Internal Range reference. Only set if the subnetwork mode is AUTO_CREATED during creation.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo.internal_range_ref
-	InternalRangeRef *string `json:"internalRangeRef,omitempty"`
-
-	// Output only. URI of the automatically created subnetwork. Only set if the subnetwork mode is AUTO_CREATED during creation.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo.subnetwork
-	Subnetwork *string `json:"subnetwork,omitempty"`
-
-	// Output only. URI of the automatically created subnetwork reference. Only set if the subnetwork mode is AUTO_CREATED during creation.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AutoCreatedSubnetworkInfo.subnetwork_ref
-	SubnetworkRef *string `json:"subnetworkRef,omitempty"`
+	// Immutable. Resource path of the target resource. The target project can
+	//  be different, as in the cases when migrating to peer networks. For
+	//  example:
+	//    /projects/{project}/regions/{region}/subnetworks/{subnet}
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.Migration.target
+	Target *string `json:"target,omitempty"`
 }
 */
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo
-type GoogleRpcErrorInfo struct {
-	// The logical grouping to which the "reason" belongs. The error domain is typically the registered service name of the tool or product that generates the error. Example: "pubsub.googleapis.com". If the error is generated by some common infrastructure, the error domain must be a globally unique value that identifies the infrastructure. For Google API infrastructure, the error domain is "googleapis.com".
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo.domain
-	Domain *string `json:"domain,omitempty"`
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.ServiceConnectionPolicy", skipping
 
-	// Additional structured details about this error. Keys must match a regular expression of `a-z+` but should ideally be lowerCamelCase. Also, they must be limited to 64 characters in length. When identifying the current value of an exceeded limit, the units should be contained in the key, not the value. For example, rather than `{"instanceLimit": "100/request"}`, should be returned as, `{"instanceLimitPerRequest": "100"}`, if the client exceeds the number of instances that can be created in a single (batch) request.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo.metadata
-	Metadata map[string]string `json:"metadata,omitempty"`
-
-	// The reason of the error. This is a constant value that identifies the proximate cause of the error. Error reasons are unique within a particular domain of errors. This should be at most 63 characters and match a regular expression of `A-Z+[A-Z0-9]`, which represents UPPER_SNAKE_CASE.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.GoogleRpcErrorInfo.reason
-	Reason *string `json:"reason,omitempty"`
-}
-
-/* found existing non-generated go type "GoogleRpcStatus", skipping
-
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcStatus
-type GoogleRpcStatus struct {
-	// The status code, which should be an enum value of google.rpc.Code.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.GoogleRpcStatus.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A list of messages that carry the error details. There is a common set of message types for APIs to use.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.GoogleRpcStatus.details
-	Details []Any `json:"details,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.GoogleRpcStatus.message
-	Message *string `json:"message,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.InternalRange", skipping
-
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
-type InternalRange struct {
-	// Optional. Range auto-allocation options, may be set only when auto-allocation is selected by not setting ip_cidr_range (and setting prefix_length).
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.allocation_options
-	AllocationOptions *AllocationOptions `json:"allocationOptions,omitempty"`
-
-	// Output only. Time when the internal range was created.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Optional. A description of this resource.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. ExcludeCidrRanges flag. Specifies a set of CIDR blocks that allows exclusion of particular CIDR ranges from the auto-allocation process, without having to reserve these blocks
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.exclude_cidr_ranges
-	ExcludeCIDRRanges []string `json:"excludeCIDRRanges,omitempty"`
-
-	// Optional. Immutable ranges cannot have their fields modified, except for labels and description.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.immutable
-	Immutable *bool `json:"immutable,omitempty"`
-
-	// Optional. The IP range that this internal range defines. NOTE: IPv6 ranges are limited to usage=EXTERNAL_TO_VPC and peering=FOR_SELF. NOTE: For IPv6 Ranges this field is compulsory, i.e. the address range must be specified explicitly.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.ip_cidr_range
-	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
-
-	// User-defined labels.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. Must be present if usage is set to FOR_MIGRATION.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.migration
-	Migration *Migration `json:"migration,omitempty"`
-
-	// Identifier. The name of an internal range. Format: projects/{project}/locations/{location}/internalRanges/{internal_range} See: https://google.aip.dev/122#fields-representing-resource-names
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.name
+// +kcc:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+type ServiceConnectionPolicy struct {
+	// Immutable. The name of a ServiceConnectionPolicy.
+	//  Format:
+	//  projects/{project}/locations/{location}/serviceConnectionPolicies/{service_connection_policy}
+	//  See: https://google.aip.dev/122#fields-representing-resource-names
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.name
 	Name *string `json:"name,omitempty"`
 
-	// Immutable. The URL or resource ID of the network in which to reserve the internal range. The network cannot be deleted if there are any reserved internal ranges referring to it. Legacy networks are not supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network} projects/{project}/locations/global/networks/{network} {network}
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.network
+	// User-defined labels.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// A description of this resource.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// The resource path of the consumer network.
+	//  Example:
+	//  - projects/{projectNumOrId}/global/networks/{resourceId}.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.network
 	Network *string `json:"network,omitempty"`
 
-	// Optional. Types of resources that are allowed to overlap with the current internal range.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.overlaps
-	Overlaps []string `json:"overlaps,omitempty"`
+	// The service class identifier for which this ServiceConnectionPolicy is for.
+	//  The service class identifier is a unique, symbolic representation of a
+	//  ServiceClass. It is provided by the Service Producer. Google services have
+	//  a prefix of gcp or google-cloud. For example, gcp-memorystore-redis or
+	//  google-cloud-sql. 3rd party services do not. For example,
+	//  test-service-a3dfcx.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.service_class
+	ServiceClass *string `json:"serviceClass,omitempty"`
 
-	// Optional. The type of peering set for this internal range.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.peering
-	Peering *string `json:"peering,omitempty"`
+	// Configuration used for Private Service Connect connections. Used when
+	//  Infrastructure is PSC.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.psc_config
+	PSCConfig *ServiceConnectionPolicy_PSCConfig `json:"pscConfig,omitempty"`
 
-	// Optional. An alternate to ip_cidr_range. Can be set when trying to create an IPv4 reservation that automatically finds a free range of the given size. If both ip_cidr_range and prefix_length are set, there is an error if the range sizes do not match. Can also be used during updates to change the range size. NOTE: For IPv6 this field only works if ip_cidr_range is set as well, and both fields must match. In other words, with IPv6 this field only works as a redundant parameter.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.prefix_length
-	PrefixLength *int32 `json:"prefixLength,omitempty"`
+	// Optional. The etag is computed by the server, and may be sent on update and
+	//  delete requests to ensure the client has an up-to-date value before
+	//  proceeding.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
 
-	// Optional. Can be set to narrow down or pick a different address space while searching for a free range. If not set, defaults to the ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"] address space (for auto-mode networks, the "10.0.0.0/9" range is used instead of "10.0.0.0/8"). This can be used to target the search in other rfc-1918 address spaces like "172.16.0.0/12" and "192.168.0.0/16" or non-rfc-1918 address spaces used in the VPC.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.target_cidr_range
-	TargetCIDRRange []string `json:"targetCIDRRange,omitempty"`
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig", skipping
 
-	// Output only. Time when the internal range was updated.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
+// +kcc:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig
+type ServiceConnectionPolicy_PSCConfig struct {
+	// The resource paths of subnetworks to use for IP address management.
+	//  Example:
+	//  projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig.subnetworks
+	Subnetworks []string `json:"subnetworks,omitempty"`
 
-	// Optional. The type of usage set for this InternalRange.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.usage
-	Usage *string `json:"usage,omitempty"`
+	// Optional. Max number of PSC connections for this policy.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig.limit
+	Limit *int64 `json:"limit,omitempty"`
 
-	// Output only. The list of resources that refer to this internal range. Resources that use the internal range for their range allocation are referred to as users of the range. Other resources mark themselves as users while doing so by creating a reference to this internal range. Having a user, based on this reference, prevents deletion of the internal range referred to. Can be empty.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.users
+	// Required. ProducerInstanceLocation is used to specify which authorization
+	//  mechanism to use to determine which projects the Producer instance can be
+	//  within.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig.producer_instance_location
+	ProducerInstanceLocation *string `json:"producerInstanceLocation,omitempty"`
+
+	// Optional. List of Projects, Folders, or Organizations from where the
+	//  Producer instance can be within. For example, a network administrator can
+	//  provide both 'organizations/foo' and 'projects/bar' as
+	//  allowed_google_producers_resource_hierarchy_levels. This allowlists this
+	//  network to connect with any Producer instance within the 'foo'
+	//  organization or the 'bar' project. By default,
+	//  allowed_google_producers_resource_hierarchy_level is empty. The format
+	//  for each allowed_google_producers_resource_hierarchy_level is <resource
+	//  type>/<id> where <resource type> is one of 'projects', 'folders', or
+	//  'organizations' and <id> is either the ID or the number of the resource
+	//  type. Format for each allowed_google_producers_resource_hierarchy_level
+	//  value: 'projects/<project_id_or_number>' or 'folders/<folder_id>' or
+	//  'organizations/<organization_id>'
+	//  Eg. [projects/my-project-id, projects/567, folders/891,
+	//  organizations/123]
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig.allowed_google_producers_resource_hierarchy_level
+	AllowedGoogleProducersResourceHierarchyLevel []string `json:"allowedGoogleProducersResourceHierarchyLevel,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection", skipping
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection
+type ServiceConnectionPolicy_PSCConnection struct {
+	// State of the PSC Connection
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.state
+	State *string `json:"state,omitempty"`
+
+	// The resource reference of the PSC Forwarding Rule within the consumer
+	//  VPC.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_forwarding_rule
+	ConsumerForwardingRule *string `json:"consumerForwardingRule,omitempty"`
+
+	// The resource reference of the consumer address.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_address
+	ConsumerAddress *string `json:"consumerAddress,omitempty"`
+
+	// The error type indicates whether the error is consumer facing, producer
+	//  facing or system internal.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error_type
+	ErrorType *string `json:"errorType,omitempty"`
+
+	// The most recent error during operating this connection.
+	//  Deprecated, please use error_info instead.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error
+	Error *common.Status `json:"error,omitempty"`
+
+	// The last Compute Engine operation to setup PSC connection.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.gce_operation
+	GCEOperation *string `json:"gceOperation,omitempty"`
+
+	// The project where the PSC connection is created.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_target_project
+	ConsumerTargetProject *string `json:"consumerTargetProject,omitempty"`
+
+	// The PSC connection id of the PSC forwarding rule.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Immutable. Deprecated. Use producer_instance_metadata instead.
+	//  An immutable identifier for the producer instance.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.producer_instance_id
+	ProducerInstanceID *string `json:"producerInstanceID,omitempty"`
+
+	// Immutable. An immutable map for the producer instance metadata.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.producer_instance_metadata
+	ProducerInstanceMetadata map[string]string `json:"producerInstanceMetadata,omitempty"`
+
+	// The requested IP version for the PSC connection.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.rpc.ErrorInfo", skipping
+
+// +kcc:proto=google.rpc.ErrorInfo
+type ErrorInfo struct {
+	// The reason of the error. This is a constant value that identifies the
+	//  proximate cause of the error. Error reasons are unique within a particular
+	//  domain of errors. This should be at most 63 characters and match a
+	//  regular expression of `[A-Z][A-Z0-9_]+[A-Z0-9]`, which represents
+	//  UPPER_SNAKE_CASE.
+	// +kcc:proto:field=google.rpc.ErrorInfo.reason
+	Reason *string `json:"reason,omitempty"`
+
+	// The logical grouping to which the "reason" belongs. The error domain
+	//  is typically the registered service name of the tool or product that
+	//  generates the error. Example: "pubsub.googleapis.com". If the error is
+	//  generated by some common infrastructure, the error domain must be a
+	//  globally unique value that identifies the infrastructure. For Google API
+	//  infrastructure, the error domain is "googleapis.com".
+	// +kcc:proto:field=google.rpc.ErrorInfo.domain
+	Domain *string `json:"domain,omitempty"`
+
+	// Additional structured details about this error.
+	//
+	//  Keys must match a regular expression of `[a-z][a-zA-Z0-9-_]+` but should
+	//  ideally be lowerCamelCase. Also, they must be limited to 64 characters in
+	//  length. When identifying the current value of an exceeded limit, the units
+	//  should be contained in the key, not the value.  For example, rather than
+	//  `{"instanceLimit": "100/request"}`, should be returned as,
+	//  `{"instanceLimitPerRequest": "100"}`, if the client exceeds the number of
+	//  instances that can be created in a single (batch) request.
+	// +kcc:proto:field=google.rpc.ErrorInfo.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.InternalRange", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.InternalRange
+type InternalRangeObservedState struct {
+	// Output only. The list of resources that refer to this internal range.
+	//  Resources that use the internal range for their range allocation
+	//  are referred to as users of the range. Other resources mark themselves
+	//  as users while doing so by creating a reference to this internal range.
+	//  Having a user, based on this reference, prevents deletion of the
+	//  internal range referred to. Can be empty.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.InternalRange.users
 	Users []string `json:"users,omitempty"`
 }
 */
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.Migration
-type Migration struct {
-	// Immutable. Resource path as an URI of the source resource, for example a subnet. The project for the source resource should match the project for the InternalRange. An example: /projects/{project}/regions/{region}/subnetworks/{subnet}
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Migration.source
-	Source *string `json:"source,omitempty"`
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.ServiceConnectionPolicy", skipping
 
-	// Immutable. Resource path of the target resource. The target project can be different, as in the cases when migrating to peer networks. For example: /projects/{project}/regions/{region}/subnetworks/{subnet}
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Migration.target
-	Target *string `json:"target,omitempty"`
-}
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+type ServiceConnectionPolicyObservedState struct {
+	// Output only. Time when the ServiceConnectionPolicy was created.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 
-/* found existing non-generated go type "PSCConfig", skipping
+	// Output only. Time when the ServiceConnectionPolicy was updated.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConfig
-type PSCConfig struct {
-	// Optional. List of Projects, Folders, or Organizations from where the Producer instance can be within. For example, a network administrator can provide both 'organizations/foo' and 'projects/bar' as allowed_google_producers_resource_hierarchy_levels. This allowlists this network to connect with any Producer instance within the 'foo' organization or the 'bar' project. By default, allowed_google_producers_resource_hierarchy_level is empty. The format for each allowed_google_producers_resource_hierarchy_level is / where is one of 'projects', 'folders', or 'organizations' and is either the ID or the number of the resource type. Format for each allowed_google_producers_resource_hierarchy_level value: 'projects/' or 'folders/' or 'organizations/' Eg. [projects/my-project-id, projects/567, folders/891, organizations/123]
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConfig.allowed_google_producers_resource_hierarchy_level
-	AllowedGoogleProducersResourceHierarchyLevel []string `json:"allowedGoogleProducersResourceHierarchyLevel,omitempty"`
+	// Output only. The type of underlying resources used to create the
+	//  connection.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.infrastructure
+	Infrastructure *string `json:"infrastructure,omitempty"`
 
-	// Optional. Max number of PSC connections for this policy.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConfig.limit
-	Limit *int64 `json:"limit,omitempty"`
-
-	// Optional. ProducerInstanceLocation is used to specify which authorization mechanism to use to determine which projects the Producer instance can be within.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConfig.producer_instance_location
-	ProducerInstanceLocation *string `json:"producerInstanceLocation,omitempty"`
-
-	// The resource paths of subnetworks to use for IP address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConfig.subnetworks
-	Subnetworks []string `json:"subnetworks,omitempty"`
+	// Output only. [Output only] Information about each Private Service Connect
+	//  connection.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.psc_connections
+	PSCConnections []ServiceConnectionPolicy_PSCConnectionObservedState `json:"pscConnections,omitempty"`
 }
 */
 
-/* found existing non-generated go type "PSCConnection", skipping
+/* found existing non-generated go type with proto tag "google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection", skipping
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.PscConnection
-type PSCConnection struct {
-	// The resource reference of the consumer address.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.consumer_address
-	ConsumerAddress *string `json:"consumerAddress,omitempty"`
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection
+type ServiceConnectionPolicy_PSCConnectionObservedState struct {
+	// State of the PSC Connection
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.state
+	State *string `json:"state,omitempty"`
 
-	// The resource reference of the PSC Forwarding Rule within the consumer VPC.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.consumer_forwarding_rule
+	// The resource reference of the PSC Forwarding Rule within the consumer
+	//  VPC.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_forwarding_rule
 	ConsumerForwardingRule *string `json:"consumerForwardingRule,omitempty"`
 
-	// The project where the PSC connection is created.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.consumer_target_project
-	ConsumerTargetProject *string `json:"consumerTargetProject,omitempty"`
+	// The resource reference of the consumer address.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_address
+	ConsumerAddress *string `json:"consumerAddress,omitempty"`
 
-	// The most recent error during operating this connection. Deprecated, please use error_info instead.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.error
-	Error *GoogleRpcStatus `json:"error,omitempty"`
-
-	// Output only. The error info for the latest error during operating this connection.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.error_info
-	ErrorInfo *GoogleRpcErrorInfo `json:"errorInfo,omitempty"`
-
-	// The error type indicates whether the error is consumer facing, producer facing or system internal.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.error_type
+	// The error type indicates whether the error is consumer facing, producer
+	//  facing or system internal.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error_type
 	ErrorType *string `json:"errorType,omitempty"`
 
+	// The most recent error during operating this connection.
+	//  Deprecated, please use error_info instead.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error
+	Error *common.Status `json:"error,omitempty"`
+
 	// The last Compute Engine operation to setup PSC connection.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.gce_operation
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.gce_operation
 	GCEOperation *string `json:"gceOperation,omitempty"`
 
-	// The requested IP version for the PSC connection.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.ip_version
-	IPVersion *string `json:"ipVersion,omitempty"`
+	// The project where the PSC connection is created.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_target_project
+	ConsumerTargetProject *string `json:"consumerTargetProject,omitempty"`
 
-	// Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.producer_instance_id
+	// The PSC connection id of the PSC forwarding rule.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.psc_connection_id
+	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
+
+	// Output only. The error info for the latest error during operating this
+	//  connection.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error_info
+	ErrorInfo *ErrorInfo `json:"errorInfo,omitempty"`
+
+	// Output only. The URI of the subnetwork selected to allocate IP address
+	//  for this connection.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.selected_subnetwork
+	SelectedSubnetwork *string `json:"selectedSubnetwork,omitempty"`
+
+	// Immutable. Deprecated. Use producer_instance_metadata instead.
+	//  An immutable identifier for the producer instance.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.producer_instance_id
 	ProducerInstanceID *string `json:"producerInstanceID,omitempty"`
 
 	// Immutable. An immutable map for the producer instance metadata.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.producer_instance_metadata
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.producer_instance_metadata
 	ProducerInstanceMetadata map[string]string `json:"producerInstanceMetadata,omitempty"`
 
-	// The PSC connection id of the PSC forwarding rule.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.psc_connection_id
-	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
-
-	// Output only. The URI of the subnetwork selected to allocate IP address for this connection.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.selected_subnetwork
-	SelectedSubnetwork *string `json:"selectedSubnetwork,omitempty"`
-
-	// Output only. [Output only] The service class associated with this PSC Connection. The value is derived from the SCPolicy and matches the service class name provided by the customer.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.service_class
+	// Output only. [Output only] The service class associated with this PSC
+	//  Connection. The value is derived from the SCPolicy and matches the
+	//  service class name provided by the customer.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.service_class
 	ServiceClass *string `json:"serviceClass,omitempty"`
 
-	// State of the PSC Connection
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.PscConnection.state
-	State *string `json:"state,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint", skipping
-
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint
-type RegionalEndpoint struct {
-	// Required. The access type of this regional endpoint. This field is reflected in the PSC Forwarding Rule configuration to enable global access.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.access_type
-	AccessType *string `json:"accessType,omitempty"`
-
-	// Optional. The IP Address of the Regional Endpoint. When no address is provided, an IP from the subnetwork is allocated. Use one of the following formats: * IPv4 address as in `10.0.0.1` * Address resource URI as in `projects/{project}/regions/{region}/addresses/{address_name}` for an IPv4 or IPv6 address.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.address
-	Address *string `json:"address,omitempty"`
-
-	// Output only. Time when the RegionalEndpoint was created.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Optional. A description of this resource.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.description
-	Description *string `json:"description,omitempty"`
-
-	// Output only. The literal IP address of the PSC Forwarding Rule created on behalf of the customer. This field is deprecated. Use address instead.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.ip_address
-	IPAddress *string `json:"ipAddress,omitempty"`
-
-	// User-defined labels.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Output only. The name of a RegionalEndpoint. Pattern: `projects/{project}/locations/{location}/regionalEndpoints/^[-a-z0-9](?:[-a-z0-9]{0,44})[a-z0-9]$`.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. The name of the VPC network for this private regional endpoint. Format: `projects/{project}/global/networks/{network}`
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.network
-	Network *string `json:"network,omitempty"`
-
-	// Output only. The resource reference of the PSC Forwarding Rule created on behalf of the customer. Format: `//compute.googleapis.com/projects/{project}/regions/{region}/forwardingRules/{forwarding_rule_name}`
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.psc_forwarding_rule
-	PSCForwardingRule *string `json:"pscForwardingRule,omitempty"`
-
-	// Optional. The name of the subnetwork from which the IP address will be allocated. Format: `projects/{project}/regions/{region}/subnetworks/{subnetwork}`
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.subnetwork
-	Subnetwork *string `json:"subnetwork,omitempty"`
-
-	// Required. The service endpoint this private regional endpoint connects to. Format: `{apiname}.{region}.p.rep.googleapis.com` Example: "cloudkms.us-central1.p.rep.googleapis.com".
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.target_google_api
-	TargetGoogleAPI *string `json:"targetGoogleAPI,omitempty"`
-
-	// Output only. Time when the RegionalEndpoint was updated.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy", skipping
-
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
-type ServiceConnectionPolicy struct {
-	// Output only. Information for the automatically created subnetwork and its associated IR.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.auto_created_subnet_info
-	AutoCreatedSubnetInfo *AutoCreatedSubnetworkInfo `json:"autoCreatedSubnetInfo,omitempty"`
-
-	// Output only. Time when the ServiceConnectionPolicy was created.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// A description of this resource.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. The etag is computed by the server, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Output only. The type of underlying resources used to create the connection.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.infrastructure
-	Infrastructure *string `json:"infrastructure,omitempty"`
-
-	// User-defined labels.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Immutable. The name of a ServiceConnectionPolicy. Format: projects/{project}/locations/{location}/serviceConnectionPolicies/{service_connection_policy} See: https://google.aip.dev/122#fields-representing-resource-names
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.name
-	Name *string `json:"name,omitempty"`
-
-	// The resource path of the consumer network. Example: - projects/{projectNumOrId}/global/networks/{resourceId}.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.network
-	Network *string `json:"network,omitempty"`
-
-	// Configuration used for Private Service Connect connections. Used when Infrastructure is PSC.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.psc_config
-	PSCConfig *PSCConfig `json:"pscConfig,omitempty"`
-
-	// Output only. [Output only] Information about each Private Service Connect connection.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.psc_connections
-	PSCConnections []PSCConnection `json:"pscConnections,omitempty"`
-
-	// The service class identifier for which this ServiceConnectionPolicy is for. The service class identifier is a unique, symbolic representation of a ServiceClass. It is provided by the Service Producer. Google services have a prefix of gcp or google-cloud. For example, gcp-memorystore-redis or google-cloud-sql. 3rd party services do not. For example, test-service-a3dfcx.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.service_class
-	ServiceClass *string `json:"serviceClass,omitempty"`
-
-	// Output only. Time when the ServiceConnectionPolicy was updated.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
+	// The requested IP version for the PSC connection.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
 }
 */

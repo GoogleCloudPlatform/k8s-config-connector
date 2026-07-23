@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -775,7 +776,7 @@ func (in *PSCConnection) DeepCopyInto(out *PSCConnection) {
 	}
 	if in.Error != nil {
 		in, out := &in.Error, &out.Error
-		*out = new(GoogleRpcStatus)
+		*out = new(common.Status)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.ErrorInfo != nil {

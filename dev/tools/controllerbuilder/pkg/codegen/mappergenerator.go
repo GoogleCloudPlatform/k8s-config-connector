@@ -1256,8 +1256,6 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 	// Some exceptions in our proto mapping
 	// TODO: Move to flag?  How many of these are there?
 	switch protoGoPackage {
-	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
-		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
 		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
 	case "cloud.google.com/go/sql/apiv1beta4/sqlpb":
