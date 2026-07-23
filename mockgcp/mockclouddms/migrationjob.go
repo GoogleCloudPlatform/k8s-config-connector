@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
+// GetMigrationJob retrieves a Database Migration Service migration job by its resource name.
 func (s *DataMigrationServiceV1) GetMigrationJob(ctx context.Context, req *pb.GetMigrationJobRequest) (*pb.MigrationJob, error) {
 	name, err := s.parseMigrationJobName(req.Name)
 	if err != nil {
