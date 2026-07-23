@@ -18,7 +18,7 @@
 
 // +generated:mapper
 // krm.group: firestore.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.firestore.admin.v1
 // proto.service: google.firestore.v1
 
@@ -27,38 +27,38 @@ package firestore
 import (
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	firestorepb "cloud.google.com/go/firestore/apiv1/firestorepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
-	krmfirestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
+	krmfirestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
-func DailyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyRecurrence) *krm.DailyRecurrence {
+func DailyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyRecurrence) *krmfirestorev1alpha1.DailyRecurrence {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DailyRecurrence{}
+	out := &krmfirestorev1alpha1.DailyRecurrence{}
 	return out
 }
-func DailyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DailyRecurrence) *pb.DailyRecurrence {
+func DailyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.DailyRecurrence) *pb.DailyRecurrence {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DailyRecurrence{}
 	return out
 }
-func Field_IndexConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_IndexConfig) *krm.Field_IndexConfig {
+func Field_IndexConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_IndexConfig) *krmfirestorev1alpha1.Field_IndexConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Field_IndexConfig{}
+	out := &krmfirestorev1alpha1.Field_IndexConfig{}
 	out.Indexes = direct.Slice_FromProto(mapCtx, in.Indexes, Index_v1alpha1_FromProto)
 	// MISSING: UsesAncestorConfig
 	// MISSING: AncestorField
 	// MISSING: Reverting
 	return out
 }
-func Field_IndexConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Field_IndexConfig) *pb.Field_IndexConfig {
+func Field_IndexConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_IndexConfig) *pb.Field_IndexConfig {
 	if in == nil {
 		return nil
 	}
@@ -69,18 +69,18 @@ func Field_IndexConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Field
 	// MISSING: Reverting
 	return out
 }
-func Field_IndexConfig_ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_IndexConfig) *krm.Field_IndexConfig_ObservedState {
+func Field_IndexConfig_ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_IndexConfig) *krmfirestorev1alpha1.Field_IndexConfig_ObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Field_IndexConfig_ObservedState{}
+	out := &krmfirestorev1alpha1.Field_IndexConfig_ObservedState{}
 	out.Indexes = direct.Slice_FromProto(mapCtx, in.Indexes, Index_ObservedState_v1alpha1_FromProto)
 	out.UsesAncestorConfig = direct.LazyPtr(in.GetUsesAncestorConfig())
 	out.AncestorField = direct.LazyPtr(in.GetAncestorField())
 	out.Reverting = direct.LazyPtr(in.GetReverting())
 	return out
 }
-func Field_IndexConfig_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Field_IndexConfig_ObservedState) *pb.Field_IndexConfig {
+func Field_IndexConfig_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_IndexConfig_ObservedState) *pb.Field_IndexConfig {
 	if in == nil {
 		return nil
 	}
@@ -91,15 +91,15 @@ func Field_IndexConfig_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.Reverting = direct.ValueOf(in.Reverting)
 	return out
 }
-func Field_TTLConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_TtlConfig) *krm.Field_TTLConfigObservedState {
+func Field_TTLConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_TtlConfig) *krmfirestorev1alpha1.Field_TTLConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Field_TTLConfigObservedState{}
+	out := &krmfirestorev1alpha1.Field_TTLConfigObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Field_TTLConfigObservedState) *pb.Field_TtlConfig {
+func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Field_TTLConfigObservedState) *pb.Field_TtlConfig {
 	if in == nil {
 		return nil
 	}
@@ -107,17 +107,17 @@ func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.State = direct.Enum_ToProto[pb.Field_TtlConfig_State](mapCtx, in.State)
 	return out
 }
-func FirestoreBackupScheduleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krm.FirestoreBackupScheduleObservedState {
+func FirestoreBackupScheduleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krmfirestorev1alpha1.FirestoreBackupScheduleObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirestoreBackupScheduleObservedState{}
+	out := &krmfirestorev1alpha1.FirestoreBackupScheduleObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func FirestoreBackupScheduleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreBackupScheduleObservedState) *pb.BackupSchedule {
+func FirestoreBackupScheduleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreBackupScheduleObservedState) *pb.BackupSchedule {
 	if in == nil {
 		return nil
 	}
@@ -127,17 +127,17 @@ func FirestoreBackupScheduleObservedState_v1alpha1_ToProto(mapCtx *direct.MapCon
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func FirestoreBackupScheduleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krm.FirestoreBackupScheduleSpec {
+func FirestoreBackupScheduleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krmfirestorev1alpha1.FirestoreBackupScheduleSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirestoreBackupScheduleSpec{}
+	out := &krmfirestorev1alpha1.FirestoreBackupScheduleSpec{}
 	out.Retention = direct.StringDuration_FromProto(mapCtx, in.GetRetention())
 	out.DailyRecurrence = DailyRecurrence_v1alpha1_FromProto(mapCtx, in.GetDailyRecurrence())
 	out.WeeklyRecurrence = WeeklyRecurrence_v1alpha1_FromProto(mapCtx, in.GetWeeklyRecurrence())
 	return out
 }
-func FirestoreBackupScheduleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreBackupScheduleSpec) *pb.BackupSchedule {
+func FirestoreBackupScheduleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreBackupScheduleSpec) *pb.BackupSchedule {
 	if in == nil {
 		return nil
 	}
@@ -151,11 +151,11 @@ func FirestoreBackupScheduleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return out
 }
-func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krmfirestorev1beta1.FirestoreDatabaseObservedState {
+func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmfirestorev1beta1.FirestoreDatabaseObservedState{}
+	out := &krm.FirestoreDatabaseObservedState{}
 	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -175,7 +175,7 @@ func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: DatabaseEdition
 	return out
 }
-func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1beta1.FirestoreDatabaseObservedState) *pb.Database {
+func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseObservedState) *pb.Database {
 	if in == nil {
 		return nil
 	}
@@ -199,11 +199,11 @@ func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: DatabaseEdition
 	return out
 }
-func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krmfirestorev1beta1.FirestoreDatabaseSpec {
+func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmfirestorev1beta1.FirestoreDatabaseSpec{}
+	out := &krm.FirestoreDatabaseSpec{}
 	// MISSING: Name
 	// MISSING: DeleteTime
 	out.LocationID = direct.LazyPtr(in.GetLocationId())
@@ -220,7 +220,7 @@ func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: DatabaseEdition
 	return out
 }
-func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1beta1.FirestoreDatabaseSpec) *pb.Database {
+func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseSpec) *pb.Database {
 	if in == nil {
 		return nil
 	}
@@ -241,17 +241,17 @@ func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfir
 	// MISSING: DatabaseEdition
 	return out
 }
-func FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Document) *krm.FirestoreDocumentObservedState {
+func FirestoreDocumentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Document) *krmfirestorev1alpha1.FirestoreDocumentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirestoreDocumentObservedState{}
+	out := &krmfirestorev1alpha1.FirestoreDocumentObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func FirestoreDocumentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDocumentObservedState) *firestorepb.Document {
+func FirestoreDocumentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreDocumentObservedState) *firestorepb.Document {
 	if in == nil {
 		return nil
 	}
@@ -261,17 +261,17 @@ func FirestoreDocumentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func FirestoreFieldObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field) *krm.FirestoreFieldObservedState {
+func FirestoreFieldObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field) *krmfirestorev1alpha1.FirestoreFieldObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirestoreFieldObservedState{}
+	out := &krmfirestorev1alpha1.FirestoreFieldObservedState{}
 	// MISSING: Name
 	out.IndexConfig = Field_IndexConfig_ObservedState_v1alpha1_FromProto(mapCtx, in.GetIndexConfig())
 	out.TTLConfig = Field_TTLConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetTtlConfig())
 	return out
 }
-func FirestoreFieldObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreFieldObservedState) *pb.Field {
+func FirestoreFieldObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreFieldObservedState) *pb.Field {
 	if in == nil {
 		return nil
 	}
@@ -281,17 +281,17 @@ func FirestoreFieldObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.TtlConfig = Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx, in.TTLConfig)
 	return out
 }
-func FirestoreFieldSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field) *krm.FirestoreFieldSpec {
+func FirestoreFieldSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field) *krmfirestorev1alpha1.FirestoreFieldSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirestoreFieldSpec{}
+	out := &krmfirestorev1alpha1.FirestoreFieldSpec{}
 	// MISSING: Name
 	out.IndexConfig = Field_IndexConfig_v1alpha1_FromProto(mapCtx, in.GetIndexConfig())
 	out.TTLConfig = Field_TTLConfig_Spec_v1alpha1_FromProto(mapCtx, in.GetTtlConfig())
 	return out
 }
-func FirestoreFieldSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreFieldSpec) *pb.Field {
+func FirestoreFieldSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreFieldSpec) *pb.Field {
 	if in == nil {
 		return nil
 	}
@@ -301,11 +301,11 @@ func FirestoreFieldSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Fire
 	out.TtlConfig = Field_TTLConfig_Spec_v1alpha1_ToProto(mapCtx, in.TTLConfig)
 	return out
 }
-func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1beta1.FirestoreIndexSpec {
+func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.FirestoreIndexSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmfirestorev1beta1.FirestoreIndexSpec{}
+	out := &krm.FirestoreIndexSpec{}
 	// MISSING: Name
 	out.QueryScope = direct.Enum_FromProto(mapCtx, in.GetQueryScope())
 	// MISSING: APIScope
@@ -316,7 +316,7 @@ func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Inde
 	// MISSING: ShardCount
 	return out
 }
-func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1beta1.FirestoreIndexSpec) *pb.Index {
+func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexSpec) *pb.Index {
 	if in == nil {
 		return nil
 	}
@@ -331,11 +331,11 @@ func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirest
 	// MISSING: ShardCount
 	return out
 }
-func FirestoreIndexStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1beta1.FirestoreIndexStatus {
+func FirestoreIndexStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.FirestoreIndexStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krmfirestorev1beta1.FirestoreIndexStatus{}
+	out := &krm.FirestoreIndexStatus{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: QueryScope
 	// MISSING: APIScope
@@ -346,7 +346,7 @@ func FirestoreIndexStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: ShardCount
 	return out
 }
-func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1beta1.FirestoreIndexStatus) *pb.Index {
+func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexStatus) *pb.Index {
 	if in == nil {
 		return nil
 	}
@@ -361,11 +361,11 @@ func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfire
 	// MISSING: ShardCount
 	return out
 }
-func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.Index {
+func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1alpha1.Index {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Index{}
+	out := &krmfirestorev1alpha1.Index{}
 	// MISSING: Name
 	out.QueryScope = direct.Enum_FromProto(mapCtx, in.GetQueryScope())
 	out.APIScope = direct.Enum_FromProto(mapCtx, in.GetApiScope())
@@ -376,7 +376,7 @@ func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.Inde
 	out.ShardCount = direct.LazyPtr(in.GetShardCount())
 	return out
 }
-func Index_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index) *pb.Index {
+func Index_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index) *pb.Index {
 	if in == nil {
 		return nil
 	}
@@ -391,18 +391,18 @@ func Index_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index) *pb.Index 
 	out.ShardCount = direct.ValueOf(in.ShardCount)
 	return out
 }
-func IndexFields_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krmfirestorev1beta1.IndexFields {
+func IndexFields_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krm.IndexFields {
 	if in == nil {
 		return nil
 	}
-	out := &krmfirestorev1beta1.IndexFields{}
+	out := &krm.IndexFields{}
 	out.FieldPath = direct.LazyPtr(in.GetFieldPath())
 	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
 	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
 	// MISSING: VectorConfig
 	return out
 }
-func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1beta1.IndexFields) *pb.Index_IndexField {
+func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IndexFields) *pb.Index_IndexField {
 	if in == nil {
 		return nil
 	}
@@ -417,18 +417,18 @@ func IndexFields_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1be
 	// MISSING: VectorConfig
 	return out
 }
-func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krm.Index_IndexField {
+func Index_IndexField_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krmfirestorev1alpha1.Index_IndexField {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Index_IndexField{}
+	out := &krmfirestorev1alpha1.Index_IndexField{}
 	out.FieldPath = direct.LazyPtr(in.GetFieldPath())
 	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
 	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
 	out.VectorConfig = Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx, in.GetVectorConfig())
 	return out
 }
-func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField) *pb.Index_IndexField {
+func Index_IndexField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField) *pb.Index_IndexField {
 	if in == nil {
 		return nil
 	}
@@ -457,16 +457,16 @@ func Index_IndexField_ArrayConfig_ToProto(mapCtx *direct.MapContext, in *string)
 	}
 	return &pb.Index_IndexField_ArrayConfig_{ArrayConfig: direct.Enum_ToProto[pb.Index_IndexField_ArrayConfig](mapCtx, in)}
 }
-func Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krm.Index_IndexField_VectorConfig {
+func Index_IndexField_VectorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krmfirestorev1alpha1.Index_IndexField_VectorConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Index_IndexField_VectorConfig{}
+	out := &krmfirestorev1alpha1.Index_IndexField_VectorConfig{}
 	out.Dimension = direct.LazyPtr(in.GetDimension())
 	out.Flat = Index_IndexField_VectorConfig_FlatIndex_v1alpha1_FromProto(mapCtx, in.GetFlat())
 	return out
 }
-func Index_IndexField_VectorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_VectorConfig) *pb.Index_IndexField_VectorConfig {
+func Index_IndexField_VectorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_VectorConfig) *pb.Index_IndexField_VectorConfig {
 	if in == nil {
 		return nil
 	}
@@ -477,25 +477,25 @@ func Index_IndexField_VectorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	}
 	return out
 }
-func Index_IndexField_VectorConfig_FlatIndex_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig_FlatIndex) *krm.Index_IndexField_VectorConfig_FlatIndex {
+func Index_IndexField_VectorConfig_FlatIndex_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig_FlatIndex) *krmfirestorev1alpha1.Index_IndexField_VectorConfig_FlatIndex {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Index_IndexField_VectorConfig_FlatIndex{}
+	out := &krmfirestorev1alpha1.Index_IndexField_VectorConfig_FlatIndex{}
 	return out
 }
-func Index_IndexField_VectorConfig_FlatIndex_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_VectorConfig_FlatIndex) *pb.Index_IndexField_VectorConfig_FlatIndex {
+func Index_IndexField_VectorConfig_FlatIndex_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_IndexField_VectorConfig_FlatIndex) *pb.Index_IndexField_VectorConfig_FlatIndex {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Index_IndexField_VectorConfig_FlatIndex{}
 	return out
 }
-func Index_ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.Index_ObservedState {
+func Index_ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1alpha1.Index_ObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Index_ObservedState{}
+	out := &krmfirestorev1alpha1.Index_ObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: QueryScope
 	// MISSING: APIScope
@@ -506,7 +506,7 @@ func Index_ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: ShardCount
 	return out
 }
-func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Index_ObservedState) *pb.Index {
+func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Index_ObservedState) *pb.Index {
 	if in == nil {
 		return nil
 	}
@@ -521,15 +521,15 @@ func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Ind
 	// MISSING: ShardCount
 	return out
 }
-func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krm.WeeklyRecurrence {
+func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrence {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WeeklyRecurrence{}
+	out := &krmfirestorev1alpha1.WeeklyRecurrence{}
 	out.Day = direct.Enum_FromProto(mapCtx, in.GetDay())
 	return out
 }
-func WeeklyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyRecurrence) *pb.WeeklyRecurrence {
+func WeeklyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.WeeklyRecurrence) *pb.WeeklyRecurrence {
 	if in == nil {
 		return nil
 	}

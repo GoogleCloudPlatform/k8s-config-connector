@@ -38,7 +38,8 @@ go run . generate-types \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
-  --include-skipped-output
+  --include-skipped-output \
+  --skip-scaffold-files
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
