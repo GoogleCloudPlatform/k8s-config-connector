@@ -357,26 +357,6 @@ func ServiceReferenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
-func WorkloadProperties_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &krmapphubv1alpha1.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
-	return out
-}
-func WorkloadProperties_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadProperties) *pb.WorkloadProperties {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadProperties{}
-	// MISSING: GcpProject
-	// MISSING: Location
-	// MISSING: Zone
-	return out
-}
 func WorkloadPropertiesObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krmapphubv1alpha1.WorkloadPropertiesObservedState {
 	if in == nil {
 		return nil
@@ -395,22 +375,6 @@ func WorkloadPropertiesObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.GcpProject = direct.ValueOf(in.GcpProject)
 	out.Location = direct.ValueOf(in.Location)
 	out.Zone = direct.ValueOf(in.Zone)
-	return out
-}
-func WorkloadReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReference {
-	if in == nil {
-		return nil
-	}
-	out := &krmapphubv1alpha1.WorkloadReference{}
-	// MISSING: URI
-	return out
-}
-func WorkloadReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmapphubv1alpha1.WorkloadReference) *pb.WorkloadReference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkloadReference{}
-	// MISSING: URI
 	return out
 }
 func WorkloadReferenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadReference) *krmapphubv1alpha1.WorkloadReferenceObservedState {

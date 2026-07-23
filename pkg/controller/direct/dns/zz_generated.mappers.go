@@ -21,8 +21,8 @@
 package dns
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/dns/v1"
 )
 
@@ -644,4 +644,3 @@ func RecordsetWrr_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetWrr) *api.RR
 	return out
 }
 */
-

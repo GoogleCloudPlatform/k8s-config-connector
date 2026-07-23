@@ -155,8 +155,7 @@ printf "%s\n" "${scripts[@]}" | xargs -P "${NUM_WORKERS}" -I {} bash -c 'run_one
 cleanup_gocache_base
 
 # Now we generate CRDs once for all updated packages
-unset SKIP_GENERATE_CRDS
-unset SKIP_GENERATE_PROTOS
+unset -v SKIP_GENERATE_CRDS SKIP_GENERATE_PROTOS
 echo "Cleaning Go build cache to prevent stale AST type-checking issues"
 go clean -cache
 echo "Generating CRDs"

@@ -37,6 +37,7 @@ type AwsAccessRole struct {
 }
 */
 
+/* unreachable type AwsCrossAccountRole
 // +kcc:proto=google.cloud.bigquery.connection.v1.AwsCrossAccountRole
 type AwsCrossAccountRole struct {
 	// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
@@ -44,6 +45,7 @@ type AwsCrossAccountRole struct {
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.AwsCrossAccountRole.iam_role_id
 	IAMRoleID *string `json:"iamRoleID,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.AwsProperties", skipping
 
@@ -90,6 +92,7 @@ type CloudResourceProperties struct {
 }
 */
 
+/* unreachable type CloudSpannerProperties
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudSpannerProperties
 type CloudSpannerProperties struct {
 	// Cloud Spanner database in the form `project/instance/database'
@@ -139,6 +142,7 @@ type CloudSpannerProperties struct {
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSpannerProperties.database_role
 	DatabaseRole *string `json:"databaseRole,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.CloudSqlCredential", skipping
 
@@ -225,6 +229,7 @@ type Connection struct {
 }
 */
 
+/* unreachable type MetastoreServiceConfig
 // +kcc:proto=google.cloud.bigquery.connection.v1.MetastoreServiceConfig
 type MetastoreServiceConfig struct {
 	// Optional. Resource name of an existing Dataproc Metastore service.
@@ -235,7 +240,9 @@ type MetastoreServiceConfig struct {
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.MetastoreServiceConfig.metastore_service
 	MetastoreService *string `json:"metastoreService,omitempty"`
 }
+*/
 
+/* unreachable type SalesforceDataCloudProperties
 // +kcc:proto=google.cloud.bigquery.connection.v1.SalesforceDataCloudProperties
 type SalesforceDataCloudProperties struct {
 	// The URL to the user's Salesforce DataCloud instance.
@@ -246,7 +253,9 @@ type SalesforceDataCloudProperties struct {
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.SalesforceDataCloudProperties.tenant_id
 	TenantID *string `json:"tenantID,omitempty"`
 }
+*/
 
+/* unreachable type SparkHistoryServerConfig
 // +kcc:proto=google.cloud.bigquery.connection.v1.SparkHistoryServerConfig
 type SparkHistoryServerConfig struct {
 	// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
@@ -258,6 +267,7 @@ type SparkHistoryServerConfig struct {
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.SparkHistoryServerConfig.dataproc_cluster
 	DataprocCluster *string `json:"dataprocCluster,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.SparkProperties", skipping
 
@@ -274,6 +284,7 @@ type SparkProperties struct {
 }
 */
 
+/* unreachable type AwsCrossAccountRoleObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.connection.v1.AwsCrossAccountRole
 type AwsCrossAccountRoleObservedState struct {
 	// Output only. Google-owned AWS IAM User for a Connection.
@@ -287,6 +298,7 @@ type AwsCrossAccountRoleObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.AwsCrossAccountRole.external_id
 	ExternalID *string `json:"externalID,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.AwsProperties", skipping
 
@@ -403,6 +415,7 @@ type ConnectionObservedState struct {
 }
 */
 
+/* unreachable type SalesforceDataCloudPropertiesObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.connection.v1.SalesforceDataCloudProperties
 type SalesforceDataCloudPropertiesObservedState struct {
 	// Output only. A unique Google-owned and Google-generated service account
@@ -410,6 +423,7 @@ type SalesforceDataCloudPropertiesObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.SalesforceDataCloudProperties.identity
 	Identity *string `json:"identity,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.SparkProperties", skipping
 
