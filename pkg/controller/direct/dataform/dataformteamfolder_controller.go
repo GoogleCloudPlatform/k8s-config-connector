@@ -260,6 +260,6 @@ func (a *teamFolderAdapter) updateStatus(ctx context.Context, op directbase.Oper
 	status := &krm.DataformTeamFolderStatus{
 		ObservedState: observedState,
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.ExternalRef = direct.LazyPtr(latest.GetName())
 	return op.UpdateStatus(ctx, status, nil)
 }

@@ -1,22 +1,31 @@
 GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2Fdfteamfolder-max-${uniqueId}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "teamFolder \"projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/teamFolders/dfteamfolder-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
 
 POST https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -25,14 +34,20 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "displayName": "Maximal Team Folder",
-  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T06:37:50.505637Z\",\"db_metadata_update_time\":\"2026-07-23T06:37:50.505637Z\",\"last_modified_time\":\"2026-07-23T06:37:50.482804Z\",\"path_to_root\":\"teamFolder_00000000-0000-0000-0000-000000000001\",\"state\":\"STATE_ACTIVE\"}",
+  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T07:07:46.495698Z\",\"db_metadata_update_time\":\"2026-07-23T07:07:46.495698Z\",\"last_modified_time\":\"2026-07-23T07:07:46.483593Z\",\"path_to_root\":\"teamFolder_2ba614be-5147-410a-ad89-bab4ff528497\",\"state\":\"STATE_ACTIVE\",\"unique_ccfe_id\":\"bd40b12f-4f78-4349-a0f4-7121a7e0e144\"}",
   "name": "projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -41,18 +56,24 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2F2ba614be-5147-410a-ad89-bab4ff528497
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "displayName": "Maximal Team Folder",
-  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T06:37:50.505637Z\",\"db_metadata_update_time\":\"2026-07-23T06:37:50.505637Z\",\"last_modified_time\":\"2026-07-23T06:37:50.482804Z\",\"path_to_root\":\"teamFolder_00000000-0000-0000-0000-000000000001\",\"state\":\"STATE_ACTIVE\"}",
+  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T07:07:46.495698Z\",\"db_metadata_update_time\":\"2026-07-23T07:07:46.495698Z\",\"last_modified_time\":\"2026-07-23T07:07:46.483593Z\",\"path_to_root\":\"teamFolder_2ba614be-5147-410a-ad89-bab4ff528497\",\"state\":\"STATE_ACTIVE\",\"unique_ccfe_id\":\"bd40b12f-4f78-4349-a0f4-7121a7e0e144\"}",
   "name": "projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -61,7 +82,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 PATCH https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: team_folder.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2F2ba614be-5147-410a-ad89-bab4ff528497
 
 {
@@ -70,14 +91,20 @@ X-Goog-Request-Params: team_folder.name=projects%2F${projectId}%2Flocations%2Fus
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "displayName": "Maximal Team Folder Updated",
-  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T06:37:50.505637Z\",\"db_metadata_update_time\":\"2026-07-23T06:37:50.505637Z\",\"last_modified_time\":\"2026-07-23T06:37:50.482804Z\",\"path_to_root\":\"teamFolder_00000000-0000-0000-0000-000000000001\",\"state\":\"STATE_ACTIVE\"}",
+  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T07:07:46.495698Z\",\"db_metadata_update_time\":\"2026-07-23T07:07:47.125518Z\",\"last_modified_time\":\"2026-07-23T07:07:47.117524Z\",\"path_to_root\":\"teamFolder_2ba614be-5147-410a-ad89-bab4ff528497\",\"resource_update_time\":\"2026-07-23T07:07:47.089111564Z\",\"state\":\"STATE_ACTIVE\",\"unique_ccfe_id\":\"bd40b12f-4f78-4349-a0f4-7121a7e0e144\"}",
   "name": "projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -86,18 +113,24 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2F2ba614be-5147-410a-ad89-bab4ff528497
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
   "displayName": "Maximal Team Folder Updated",
-  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T06:37:50.505637Z\",\"db_metadata_update_time\":\"2026-07-23T06:37:50.505637Z\",\"last_modified_time\":\"2026-07-23T06:37:50.482804Z\",\"path_to_root\":\"teamFolder_00000000-0000-0000-0000-000000000001\",\"state\":\"STATE_ACTIVE\"}",
+  "internalMetadata": "{\"db_metadata_insert_time\":\"2026-07-23T07:07:46.495698Z\",\"db_metadata_update_time\":\"2026-07-23T07:07:47.125518Z\",\"last_modified_time\":\"2026-07-23T07:07:47.117524Z\",\"path_to_root\":\"teamFolder_2ba614be-5147-410a-ad89-bab4ff528497\",\"resource_update_time\":\"2026-07-23T07:07:47.089111564Z\",\"state\":\"STATE_ACTIVE\",\"unique_ccfe_id\":\"bd40b12f-4f78-4349-a0f4-7121a7e0e144\"}",
   "name": "projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -106,12 +139,17 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://dataform.googleapis.com/v1/projects/${projectId}/locations/us-central1/teamFolders/2ba614be-5147-410a-ad89-bab4ff528497?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FteamFolders%2F2ba614be-5147-410a-ad89-bab4ff528497
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-Grpc-Metadata-X-Http-Code: 204
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
