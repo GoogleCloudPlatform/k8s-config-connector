@@ -20,6 +20,10 @@ import (
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	money "google.golang.org/genproto/googleapis/type/money"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/types/known/structpb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func Featurestore_OnlineServingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krmv1alpha1.Featurestore_OnlineServingConfig {
@@ -186,4 +190,51 @@ func VertexAIDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Da
 
 func VertexAIDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.VertexAIDatasetObservedState) *pb.Dataset {
 	return VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx, in)
+}
+
+func Money_v1alpha1_FromProto(mapCtx *direct.MapContext, in *money.Money) *krmv1alpha1.Money {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Money{}
+	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
+	out.Units = direct.LazyPtr(in.GetUnits())
+	out.Nanos = direct.LazyPtr(in.GetNanos())
+	return out
+}
+
+func Money_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Money) *money.Money {
+	if in == nil {
+		return nil
+	}
+	out := &money.Money{}
+	out.CurrencyCode = direct.ValueOf(in.CurrencyCode)
+	out.Units = direct.ValueOf(in.Units)
+	out.Nanos = direct.ValueOf(in.Nanos)
+	return out
+}
+
+func JSON_v1alpha1_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("error marshalling structpb.Value to JSON: %v", err)
+		return nil
+	}
+	out := apiextensionsv1.JSON{Raw: b}
+	return &out
+}
+
+func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *structpb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.Value{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("error unmarshalling JSON to structpb.Value: %v", err)
+		return nil
+	}
+	return out
 }

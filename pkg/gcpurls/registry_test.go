@@ -71,8 +71,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
 		// AI Platform
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}": true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":       true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":              true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}": true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                    true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
