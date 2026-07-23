@@ -22,6 +22,7 @@ import (
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -40,11 +41,12 @@ func (s *MirroringServer) CreateMirroringEndpointGroup(ctx context.Context, req 
 
 	fqn := name
 
-	obj := proto.CloneOf(req.MirroringEndpointGroup)
+	obj := proto.Clone(req.MirroringEndpointGroup).(*pbv1.MirroringEndpointGroup)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
-	obj.State = pbv1.MirroringEndpointGroup_ACTIVE
+
+	s.populateMirroringEndpointGroup(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -60,7 +62,7 @@ func (s *MirroringServer) CreateMirroringEndpointGroup(ctx context.Context, req 
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.CloneOf(obj)
+		result := proto.Clone(obj).(*pbv1.MirroringEndpointGroup)
 		return result, nil
 	})
 }
@@ -80,7 +82,30 @@ func (s *MirroringServer) GetMirroringEndpointGroup(ctx context.Context, req *pb
 		}
 		return nil, err
 	}
+	s.populateMirroringEndpointGroup(obj)
 	return obj, nil
+}
+
+func (s *MirroringServer) ListMirroringEndpointGroups(ctx context.Context, req *pbv1.ListMirroringEndpointGroupsRequest) (*pbv1.ListMirroringEndpointGroupsResponse, error) {
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+
+	parentPrefix := req.Parent + "/mirroringEndpointGroups/"
+	var resources []*pbv1.MirroringEndpointGroup
+	kind := (&pbv1.MirroringEndpointGroup{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: parentPrefix}, func(obj proto.Message) error {
+		res := obj.(*pbv1.MirroringEndpointGroup)
+		resources = append(resources, res)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pbv1.ListMirroringEndpointGroupsResponse{
+		MirroringEndpointGroups: resources,
+	}, nil
 }
 
 func (s *MirroringServer) UpdateMirroringEndpointGroup(ctx context.Context, req *pbv1.UpdateMirroringEndpointGroupRequest) (*longrunningpb.Operation, error) {
@@ -93,7 +118,7 @@ func (s *MirroringServer) UpdateMirroringEndpointGroup(ctx context.Context, req 
 		return nil, err
 	}
 
-	updated := proto.CloneOf(obj)
+	updated := proto.Clone(obj).(*pbv1.MirroringEndpointGroup)
 	updated.UpdateTime = timestamppb.New(time.Now())
 
 	// Apply field mask updates
@@ -113,6 +138,8 @@ func (s *MirroringServer) UpdateMirroringEndpointGroup(ctx context.Context, req 
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not updateable", path)
 		}
 	}
+
+	s.populateMirroringEndpointGroup(updated)
 
 	if err := s.storage.Update(ctx, name.String(), updated); err != nil {
 		return nil, err
@@ -160,6 +187,12 @@ func (s *MirroringServer) DeleteMirroringEndpointGroup(ctx context.Context, req 
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
+}
+
+func (s *MirroringServer) populateMirroringEndpointGroup(obj *pbv1.MirroringEndpointGroup) {
+	if obj.State == pbv1.MirroringEndpointGroup_STATE_UNSPECIFIED {
+		obj.State = pbv1.MirroringEndpointGroup_ACTIVE
+	}
 }
 
 type mirroringEndpointGroupName struct {

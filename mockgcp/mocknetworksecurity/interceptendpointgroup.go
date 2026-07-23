@@ -22,6 +22,7 @@ import (
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -40,11 +41,12 @@ func (s *InterceptServer) CreateInterceptEndpointGroup(ctx context.Context, req 
 
 	fqn := name
 
-	obj := proto.CloneOf(req.InterceptEndpointGroup)
+	obj := proto.Clone(req.InterceptEndpointGroup).(*pbv1.InterceptEndpointGroup)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
-	obj.State = pbv1.InterceptEndpointGroup_ACTIVE
+
+	s.populateInterceptEndpointGroup(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -60,7 +62,7 @@ func (s *InterceptServer) CreateInterceptEndpointGroup(ctx context.Context, req 
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.CloneOf(obj)
+		result := proto.Clone(obj).(*pbv1.InterceptEndpointGroup)
 		return result, nil
 	})
 }
@@ -80,7 +82,30 @@ func (s *InterceptServer) GetInterceptEndpointGroup(ctx context.Context, req *pb
 		}
 		return nil, err
 	}
+	s.populateInterceptEndpointGroup(obj)
 	return obj, nil
+}
+
+func (s *InterceptServer) ListInterceptEndpointGroups(ctx context.Context, req *pbv1.ListInterceptEndpointGroupsRequest) (*pbv1.ListInterceptEndpointGroupsResponse, error) {
+	tokens := strings.Split(req.Parent, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
+	}
+
+	parentPrefix := req.Parent + "/interceptEndpointGroups/"
+	var resources []*pbv1.InterceptEndpointGroup
+	kind := (&pbv1.InterceptEndpointGroup{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: parentPrefix}, func(obj proto.Message) error {
+		res := obj.(*pbv1.InterceptEndpointGroup)
+		resources = append(resources, res)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pbv1.ListInterceptEndpointGroupsResponse{
+		InterceptEndpointGroups: resources,
+	}, nil
 }
 
 func (s *InterceptServer) UpdateInterceptEndpointGroup(ctx context.Context, req *pbv1.UpdateInterceptEndpointGroupRequest) (*longrunningpb.Operation, error) {
@@ -93,7 +118,7 @@ func (s *InterceptServer) UpdateInterceptEndpointGroup(ctx context.Context, req 
 		return nil, err
 	}
 
-	updated := proto.CloneOf(obj)
+	updated := proto.Clone(obj).(*pbv1.InterceptEndpointGroup)
 	updated.UpdateTime = timestamppb.New(time.Now())
 
 	// Apply field mask updates
@@ -113,6 +138,8 @@ func (s *InterceptServer) UpdateInterceptEndpointGroup(ctx context.Context, req 
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not updateable", path)
 		}
 	}
+
+	s.populateInterceptEndpointGroup(updated)
 
 	if err := s.storage.Update(ctx, name.String(), updated); err != nil {
 		return nil, err
@@ -160,6 +187,12 @@ func (s *InterceptServer) DeleteInterceptEndpointGroup(ctx context.Context, req 
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
+}
+
+func (s *InterceptServer) populateInterceptEndpointGroup(obj *pbv1.InterceptEndpointGroup) {
+	if obj.State == pbv1.InterceptEndpointGroup_STATE_UNSPECIFIED {
+		obj.State = pbv1.InterceptEndpointGroup_ACTIVE
+	}
 }
 
 type interceptEndpointGroupName struct {
