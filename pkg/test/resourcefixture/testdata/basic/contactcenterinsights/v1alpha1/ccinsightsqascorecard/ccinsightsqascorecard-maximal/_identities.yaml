@@ -1,0 +1,6 @@
+- caisURL: //contactcenterinsights.googleapis.com/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}
+  group: contactcenterinsights.cnrm.cloud.google.com
+  kind: CCInsightsQAScorecard
+  name: qascorecard-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

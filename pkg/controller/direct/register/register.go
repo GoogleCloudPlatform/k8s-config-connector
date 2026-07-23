@@ -62,6 +62,8 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/configdelivery"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/configdelivery/configdeliveryfleetpackage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/contactcenterinsights/ccinsightsphrasematcher"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/contactcenterinsights/ccinsightsqascorecard"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/contactcenterinsights/ccinsightsview"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/container"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datacatalog"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
