@@ -37,7 +37,7 @@ VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 # Check if versioned googleapis.pb file is already generated to avoid re-cloning or re-fetching git objects
 if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
-    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}.tmp.$$" && mv -f "${OUTPUT_PATH}.tmp.$$" "${OUTPUT_PATH}"
     exit 0
 fi
 
@@ -141,4 +141,4 @@ protoc --include_imports --include_source_info \
     "${PROTO_FILES[@]}" \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
-cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}.tmp.$$" && mv -f "${OUTPUT_PATH}.tmp.$$" "${OUTPUT_PATH}"

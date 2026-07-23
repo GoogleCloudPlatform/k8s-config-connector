@@ -159,7 +159,7 @@ cleanup_gocache_base
 # Now we generate CRDs once for all updated packages
 unset SKIP_GENERATE_CRDS
 unset SKIP_GENERATE_PROTOS
-echo "Cleaning Go build cache to prevent stale metadata compilation issues"
+echo "Cleaning Go build cache to prevent stale AST type-checking issues"
 go clean -cache
 echo "Generating CRDs"
 dev/tasks/generate-crds
