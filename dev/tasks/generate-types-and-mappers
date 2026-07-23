@@ -52,7 +52,7 @@ export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
 
 # Collect all service generate.sh scripts to execute
-scripts=()
+declare -A service_map
 for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
     # TODO: Fix these!
