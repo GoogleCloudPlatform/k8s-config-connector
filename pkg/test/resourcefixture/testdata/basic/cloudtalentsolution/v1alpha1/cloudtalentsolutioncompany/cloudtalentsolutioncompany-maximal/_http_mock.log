@@ -1,0 +1,191 @@
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+
+{
+  "tenants": [
+    {
+      "externalId": "default-tenant",
+      "name": "projects/${projectId}/tenants/mock-default-tenant-id"
+    }
+  ]
+}
+
+---
+
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "error": {
+    "code": 404,
+    "message": "Company projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id
+
+{
+  "careerSiteUri": "https://example.com/careers",
+  "displayName": "Maximal Test Company",
+  "eeoText": "Equal Opportunity Employer",
+  "externalId": "max-ext-id-${uniqueId}",
+  "headquartersAddress": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+  "hiringAgency": true,
+  "imageUri": "https://example.com/logo.png",
+  "keywordSearchableJobCustomAttributes": [
+    "attribute1",
+    "attribute2"
+  ],
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}",
+  "size": 2,
+  "websiteUri": "https://example.com"
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "careerSiteUri": "https://example.com/careers",
+  "derivedInfo": {},
+  "displayName": "Maximal Test Company",
+  "eeoText": "Equal Opportunity Employer",
+  "externalId": "max-ext-id-${uniqueId}",
+  "headquartersAddress": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+  "hiringAgency": true,
+  "imageUri": "https://example.com/logo.png",
+  "keywordSearchableJobCustomAttributes": [
+    "attribute1",
+    "attribute2"
+  ],
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}",
+  "size": 2,
+  "websiteUri": "https://example.com"
+}
+
+---
+
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-max-${uniqueId}
+
+200 OK
+Content-Type: application/json
+
+{
+  "careerSiteUri": "https://example.com/careers",
+  "derivedInfo": {},
+  "displayName": "Maximal Test Company",
+  "eeoText": "Equal Opportunity Employer",
+  "externalId": "max-ext-id-${uniqueId}",
+  "headquartersAddress": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+  "hiringAgency": true,
+  "imageUri": "https://example.com/logo.png",
+  "keywordSearchableJobCustomAttributes": [
+    "attribute1",
+    "attribute2"
+  ],
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}",
+  "size": 2,
+  "websiteUri": "https://example.com"
+}
+
+---
+
+PATCH https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=careerSiteUri%2CdisplayName%2CeeoText%2CheadquartersAddress%2ChiringAgency%2CimageUri%2CkeywordSearchableJobCustomAttributes%2Csize%2CwebsiteUri
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: company.name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-max-${uniqueId}
+
+{
+  "careerSiteUri": "https://example-updated.com/careers",
+  "displayName": "Maximal Test Company Updated",
+  "eeoText": "Updated Equal Opportunity Employer",
+  "externalId": "max-ext-id-${uniqueId}",
+  "headquartersAddress": "111 8th Avenue, New York, NY 10011",
+  "imageUri": "https://example-updated.com/logo.png",
+  "keywordSearchableJobCustomAttributes": [
+    "attribute1",
+    "attribute2",
+    "attribute3"
+  ],
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}",
+  "size": 4,
+  "websiteUri": "https://example-updated.com"
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "careerSiteUri": "https://example-updated.com/careers",
+  "derivedInfo": {},
+  "displayName": "Maximal Test Company Updated",
+  "eeoText": "Updated Equal Opportunity Employer",
+  "externalId": "max-ext-id-${uniqueId}",
+  "headquartersAddress": "111 8th Avenue, New York, NY 10011",
+  "imageUri": "https://example-updated.com/logo.png",
+  "keywordSearchableJobCustomAttributes": [
+    "attribute1",
+    "attribute2",
+    "attribute3"
+  ],
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}",
+  "size": 4,
+  "websiteUri": "https://example-updated.com"
+}
+
+---
+
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-max-${uniqueId}
+
+200 OK
+Content-Type: application/json
+
+{
+  "careerSiteUri": "https://example-updated.com/careers",
+  "derivedInfo": {},
+  "displayName": "Maximal Test Company Updated",
+  "eeoText": "Updated Equal Opportunity Employer",
+  "externalId": "max-ext-id-${uniqueId}",
+  "headquartersAddress": "111 8th Avenue, New York, NY 10011",
+  "imageUri": "https://example-updated.com/logo.png",
+  "keywordSearchableJobCustomAttributes": [
+    "attribute1",
+    "attribute2",
+    "attribute3"
+  ],
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}",
+  "size": 4,
+  "websiteUri": "https://example-updated.com"
+}
+
+---
+
+DELETE https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-max-${uniqueId}
+
+200 OK
+Content-Type: application/json
+
+{}

@@ -1,0 +1,21 @@
+apiVersion: cloudtalentsolution.cnrm.cloud.google.com/v1alpha1
+kind: CloudTalentSolutionCompany
+metadata:
+  name: ctsco-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  tenant: default
+  displayName: "Maximal Test Company Updated"
+  externalID: "max-ext-id-${uniqueId}"
+  size: MEDIUM
+  headquartersAddress: "111 8th Avenue, New York, NY 10011"
+  hiringAgency: false
+  eeoText: "Updated Equal Opportunity Employer"
+  websiteURI: "https://example-updated.com"
+  careerSiteURI: "https://example-updated.com/careers"
+  imageURI: "https://example-updated.com/logo.png"
+  keywordSearchableJobCustomAttributes:
+    - "attribute1"
+    - "attribute2"
+    - "attribute3"

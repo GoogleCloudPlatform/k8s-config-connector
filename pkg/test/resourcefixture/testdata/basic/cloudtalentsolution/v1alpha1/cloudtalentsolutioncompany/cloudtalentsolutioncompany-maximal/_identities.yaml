@@ -1,0 +1,6 @@
+- caisURL: //jobs.googleapis.com/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}
+  group: cloudtalentsolution.cnrm.cloud.google.com
+  kind: CloudTalentSolutionCompany
+  name: ctsco-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
