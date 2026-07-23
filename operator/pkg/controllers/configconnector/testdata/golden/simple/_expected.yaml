@@ -3372,6 +3372,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - licensemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - livestream.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5095,6 +5107,14 @@ rules:
   - watch
 - apiGroups:
   - kms.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - licensemanager.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
