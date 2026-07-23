@@ -3508,6 +3508,25 @@
 [missing_field] crd=sqladminbackups.sqladmin.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=sqladminbackups.sqladmin.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=sqladminbackups.sqladmin.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.bucketList.buckets[].bucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.bucketList.buckets[].manifest.manifestLocation" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.bucketList.buckets[].prefixList.includedObjectPrefixes[]" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.deleteObject.permanentObjectDeletionEnabled" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingConfig.logActionStates[]" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.loggingConfig.logActions[]" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putMetadata.cacheControl" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putMetadata.contentDisposition" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putMetadata.contentEncoding" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putMetadata.contentLanguage" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putMetadata.contentType" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putMetadata.customMetadata" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putMetadata.customTime" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putObjectHold.eventBasedHold" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.putObjectHold.temporaryHold" is not set in unstructured objects
+[missing_field] crd=storagebatchoperationsjobs.storagebatchoperations.cnrm.cloud.google.com version=v1alpha1: field ".spec.rewriteObject.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountEmail" is not set in unstructured objects
 [missing_field] crd=storagehmackeys.storage.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects

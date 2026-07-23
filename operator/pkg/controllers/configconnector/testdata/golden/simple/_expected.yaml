@@ -3876,6 +3876,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - storagebatchoperations.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - storageinsights.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5419,6 +5431,14 @@ rules:
   - watch
 - apiGroups:
   - storage.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storagebatchoperations.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
