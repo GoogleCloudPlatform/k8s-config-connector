@@ -139,3 +139,120 @@ func (s *MockService) parsePipelineJobName(name string) (*PipelineJobName, error
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+func (s *pipelineService) GetTrainingPipeline(ctx context.Context, req *pb.GetTrainingPipelineRequest) (*pb.TrainingPipeline, error) {
+	name, err := s.parseTrainingPipelineName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.TrainingPipeline{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *pipelineService) CreateTrainingPipeline(ctx context.Context, req *pb.CreateTrainingPipelineRequest) (*pb.TrainingPipeline, error) {
+	id := fmt.Sprintf("tp-%d", time.Now().UnixNano())
+	if req.GetTrainingPipeline().GetName() != "" {
+		if name, err := s.parseTrainingPipelineName(req.GetTrainingPipeline().GetName()); err == nil {
+			id = name.TrainingPipelineID
+		}
+	}
+
+	reqName := req.Parent + "/trainingPipelines/" + id
+	name, err := s.parseTrainingPipelineName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	now := time.Now()
+
+	obj := proto.Clone(req.TrainingPipeline).(*pb.TrainingPipeline)
+	obj.Name = fqn
+
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.StartTime = timestamppb.New(now)
+	obj.EndTime = timestamppb.New(now.Add(5 * time.Second))
+
+	obj.State = pb.PipelineState_PIPELINE_STATE_SUCCEEDED
+
+	// If there's a ModelToUpload, let's make sure its metadata and names are populated
+	if obj.ModelToUpload != nil {
+		obj.ModelToUpload.Name = fqn + "/model"
+		staticTime := timestamppb.New(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC))
+		obj.ModelToUpload.CreateTime = staticTime
+		obj.ModelToUpload.UpdateTime = staticTime
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *pipelineService) DeleteTrainingPipeline(ctx context.Context, req *pb.DeleteTrainingPipelineRequest) (*longrunning.Operation, error) {
+	name, err := s.parseTrainingPipelineName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	deleted := &pb.TrainingPipeline{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	op := &pb.DeleteOperationMetadata{}
+	op.GenericMetadata = &pb.GenericOperationMetadata{
+		CreateTime: timestamppb.New(now),
+		UpdateTime: timestamppb.New(now),
+	}
+	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
+}
+
+type TrainingPipelineName struct {
+	Project            *projects.ProjectData
+	Location           string
+	TrainingPipelineID string
+}
+
+func (n *TrainingPipelineName) String() string {
+	return fmt.Sprintf("projects/%d/locations/%s/trainingPipelines/%s", n.Project.Number, n.Location, n.TrainingPipelineID)
+}
+
+func (s *MockService) parseTrainingPipelineName(name string) (*TrainingPipelineName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "trainingPipelines" {
+		projectName, err := projects.ParseProjectName(tokens[0] + "/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		project, err := s.Projects.GetProject(projectName)
+		if err != nil {
+			return nil, err
+		}
+
+		name := &TrainingPipelineName{
+			Project:            project,
+			Location:           tokens[3],
+			TrainingPipelineID: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

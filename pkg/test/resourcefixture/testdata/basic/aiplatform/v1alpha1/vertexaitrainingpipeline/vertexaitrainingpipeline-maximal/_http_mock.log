@@ -1,0 +1,299 @@
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = trainingPipeline "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/CreateTrainingPipeline
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "trainingPipeline": {
+    "displayName": "Maximal Training Pipeline",
+    "labels": {
+      "key-one": "value-one"
+    },
+    "modelId": "model_${uniqueId}",
+    "modelToUpload": {
+      "containerSpec": {
+        "imageUri": "gcr.io/google-samples/hello-app:1.0"
+      },
+      "displayName": "Uploaded Model"
+    },
+    "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
+    "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+    "trainingTaskInputs": {
+      "fields": {
+        "workerPoolSpecs": {
+          "listValue": {
+            "values": [
+              {
+                "structValue": {
+                  "fields": {
+                    "containerSpec": {
+                      "structValue": {
+                        "fields": {
+                          "imageUri": {
+                            "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                          }
+                        }
+                      }
+                    },
+                    "machineSpec": {
+                      "structValue": {
+                        "fields": {
+                          "machineType": {
+                            "stringValue": "n1-standard-4"
+                          }
+                        }
+                      }
+                    },
+                    "replicaCount": {
+                      "stringValue": "1"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Training Pipeline",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "key-one": "value-one"
+  },
+  "modelId": "model_${uniqueId}",
+  "modelToUpload": {
+    "containerSpec": {
+      "imageUri": "gcr.io/google-samples/hello-app:1.0"
+    },
+    "createTime": "2024-04-01T12:34:56.000123456Z",
+    "displayName": "Uploaded Model",
+    "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}/model",
+    "updateTime": "2024-04-01T12:34:56.000123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "PIPELINE_STATE_SUCCEEDED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "fields": {
+      "workerPoolSpecs": {
+        "listValue": {
+          "values": [
+            {
+              "structValue": {
+                "fields": {
+                  "containerSpec": {
+                    "structValue": {
+                      "fields": {
+                        "imageUri": {
+                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                        }
+                      }
+                    }
+                  },
+                  "machineSpec": {
+                    "structValue": {
+                      "fields": {
+                        "machineType": {
+                          "stringValue": "n1-standard-4"
+                        }
+                      }
+                    }
+                  },
+                  "replicaCount": {
+                    "stringValue": "1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Training Pipeline",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "key-one": "value-one"
+  },
+  "modelId": "model_${uniqueId}",
+  "modelToUpload": {
+    "containerSpec": {
+      "imageUri": "gcr.io/google-samples/hello-app:1.0"
+    },
+    "createTime": "2024-04-01T12:34:56.000123456Z",
+    "displayName": "Uploaded Model",
+    "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}/model",
+    "updateTime": "2024-04-01T12:34:56.000123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "PIPELINE_STATE_SUCCEEDED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "fields": {
+      "workerPoolSpecs": {
+        "listValue": {
+          "values": [
+            {
+              "structValue": {
+                "fields": {
+                  "containerSpec": {
+                    "structValue": {
+                      "fields": {
+                        "imageUri": {
+                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                        }
+                      }
+                    }
+                  },
+                  "machineSpec": {
+                    "structValue": {
+                      "fields": {
+                        "machineType": {
+                          "stringValue": "n1-standard-4"
+                        }
+                      }
+                    }
+                  },
+                  "replicaCount": {
+                    "stringValue": "1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Training Pipeline",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "key-one": "value-one"
+  },
+  "modelId": "model_${uniqueId}",
+  "modelToUpload": {
+    "containerSpec": {
+      "imageUri": "gcr.io/google-samples/hello-app:1.0"
+    },
+    "createTime": "2024-04-01T12:34:56.000123456Z",
+    "displayName": "Uploaded Model",
+    "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}/model",
+    "updateTime": "2024-04-01T12:34:56.000123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "PIPELINE_STATE_SUCCEEDED",
+  "trainingTaskDefinition": "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml",
+  "trainingTaskInputs": {
+    "fields": {
+      "workerPoolSpecs": {
+        "listValue": {
+          "values": [
+            {
+              "structValue": {
+                "fields": {
+                  "containerSpec": {
+                    "structValue": {
+                      "fields": {
+                        "imageUri": {
+                          "stringValue": "gcr.io/google-samples/hello-app:1.0"
+                        }
+                      }
+                    }
+                  },
+                  "machineSpec": {
+                    "structValue": {
+                      "fields": {
+                        "machineType": {
+                          "stringValue": "n1-standard-4"
+                        }
+                      }
+                    }
+                  },
+                  "replicaCount": {
+                    "stringValue": "1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/DeleteTrainingPipeline
+
+{
+  "name": "projects/${projectId}/locations/us-central1/trainingPipelines/vertexaitrainingpipeline-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

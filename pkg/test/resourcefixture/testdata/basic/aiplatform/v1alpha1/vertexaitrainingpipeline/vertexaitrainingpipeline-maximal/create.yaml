@@ -1,0 +1,54 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: VertexAITrainingPipeline
+metadata:
+  name: vertexaitrainingpipeline-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Maximal Training Pipeline"
+  trainingTaskDefinition: "gs://google-cloud-aiplatform/schema/trainingjob/definition/custom_task_1.0.0.yaml"
+  trainingTaskInputs:
+    structValue:
+      fields:
+        workerPoolSpecs:
+          listValue:
+            values:
+              - structValue:
+                  fields:
+                    machineSpec:
+                      structValue:
+                        fields:
+                          machineType:
+                            stringValue: "n1-standard-4"
+                    replicaCount:
+                      stringValue: "1"
+                    containerSpec:
+                      structValue:
+                        fields:
+                          imageUri:
+                            stringValue: "gcr.io/google-samples/hello-app:1.0"
+  modelID: "model_${uniqueId}"
+  modelToUpload:
+    projectRef:
+      external: ${projectId}
+    location: us-central1
+    displayName: "Uploaded Model"
+    containerSpec:
+      imageURI: "gcr.io/google-samples/hello-app:1.0"
+  labels:
+    key-one: value-one
