@@ -158,9 +158,11 @@ type CloudStorageConfig_AvroConfig struct {
 }
 */
 
+/* unreachable type CloudStorageConfig_TextConfig
 // +kcc:proto=google.pubsub.v1.CloudStorageConfig.TextConfig
 type CloudStorageConfig_TextConfig struct {
 }
+*/
 
 /* found existing non-generated go type "DeadLetterPolicy", skipping
 
@@ -211,6 +213,7 @@ type ExpirationPolicy struct {
 }
 */
 
+/* unreachable type IngestionDataSourceSettings
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings
 type IngestionDataSourceSettings struct {
 	// Optional. Amazon Kinesis Data Streams.
@@ -238,7 +241,9 @@ type IngestionDataSourceSettings struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.platform_logs_settings
 	PlatformLogsSettings *PlatformLogsSettings `json:"platformLogsSettings,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_AwsKinesis
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.AwsKinesis
 type IngestionDataSourceSettings_AwsKinesis struct {
 
@@ -264,7 +269,9 @@ type IngestionDataSourceSettings_AwsKinesis struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AwsKinesis.gcp_service_account
 	GcpServiceAccount *string `json:"gcpServiceAccount,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_AwsMsk
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.AwsMsk
 type IngestionDataSourceSettings_AwsMsk struct {
 
@@ -291,7 +298,9 @@ type IngestionDataSourceSettings_AwsMsk struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AwsMsk.gcp_service_account
 	GcpServiceAccount *string `json:"gcpServiceAccount,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_AzureEventHubs
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.AzureEventHubs
 type IngestionDataSourceSettings_AzureEventHubs struct {
 
@@ -326,7 +335,9 @@ type IngestionDataSourceSettings_AzureEventHubs struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AzureEventHubs.gcp_service_account
 	GcpServiceAccount *string `json:"gcpServiceAccount,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_CloudStorage
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage
 type IngestionDataSourceSettings_CloudStorage struct {
 
@@ -361,22 +372,30 @@ type IngestionDataSourceSettings_CloudStorage struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.match_glob
 	MatchGlob *string `json:"matchGlob,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_CloudStorage_AvroFormat
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.AvroFormat
 type IngestionDataSourceSettings_CloudStorage_AvroFormat struct {
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_CloudStorage_PubSubAvroFormat
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.PubSubAvroFormat
 type IngestionDataSourceSettings_CloudStorage_PubSubAvroFormat struct {
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_CloudStorage_TextFormat
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.TextFormat
 type IngestionDataSourceSettings_CloudStorage_TextFormat struct {
 	// Optional. When unset, '\n' is used.
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.TextFormat.delimiter
 	Delimiter *string `json:"delimiter,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_ConfluentCloud
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.ConfluentCloud
 type IngestionDataSourceSettings_ConfluentCloud struct {
 
@@ -404,7 +423,9 @@ type IngestionDataSourceSettings_ConfluentCloud struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.ConfluentCloud.gcp_service_account
 	GcpServiceAccount *string `json:"gcpServiceAccount,omitempty"`
 }
+*/
 
+/* unreachable type JavaScriptUdf
 // +kcc:proto=google.pubsub.v1.JavaScriptUDF
 type JavaScriptUdf struct {
 	// Required. Name of the JavasScript function that should applied to Pub/Sub
@@ -416,7 +437,7 @@ type JavaScriptUdf struct {
 	//  below signature:
 	//
 	//  ```
-	//    /**
+	//    /-**
 	//    * Transforms a Pub/Sub message.
 	//
 	//    * @return {(Object<string, (string | Object<string, string>)>|null)} - To
@@ -437,7 +458,7 @@ type JavaScriptUdf struct {
 	//    *   - (optional) 'message_id'  : {string}
 	//    *   - (optional) 'publish_time': {string} YYYY-MM-DDTHH:MM:SSZ format
 	//    *   - (optional) 'ordering_key': {string}
-	//    */
+	//    *-/
 	//
 	//    function <function_name>(message, metadata) {
 	//    }
@@ -445,6 +466,7 @@ type JavaScriptUdf struct {
 	// +kcc:proto:field=google.pubsub.v1.JavaScriptUDF.code
 	Code *string `json:"code,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "MessageStoragePolicy", skipping
 
@@ -469,6 +491,7 @@ type MessageStoragePolicy struct {
 }
 */
 
+/* unreachable type MessageTransform
 // +kcc:proto=google.pubsub.v1.MessageTransform
 type MessageTransform struct {
 	// Optional. JavaScript User Defined Function. If multiple JavaScriptUDF's
@@ -486,13 +509,16 @@ type MessageTransform struct {
 	// +kcc:proto:field=google.pubsub.v1.MessageTransform.disabled
 	Disabled *bool `json:"disabled,omitempty"`
 }
+*/
 
+/* unreachable type PlatformLogsSettings
 // +kcc:proto=google.pubsub.v1.PlatformLogsSettings
 type PlatformLogsSettings struct {
 	// Optional. The minimum severity level of Platform Logs that will be written.
 	// +kcc:proto:field=google.pubsub.v1.PlatformLogsSettings.severity
 	Severity *string `json:"severity,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "PushConfig", skipping
 
@@ -581,9 +607,11 @@ type PushConfig_OIDCToken struct {
 }
 */
 
+/* unreachable type PushConfig_PubsubWrapper
 // +kcc:proto=google.pubsub.v1.PushConfig.PubsubWrapper
 type PushConfig_PubsubWrapper struct {
 }
+*/
 
 /* found existing non-generated go type "RetryPolicy", skipping
 
@@ -840,6 +868,7 @@ type Subscription struct {
 }
 */
 
+/* unreachable type Subscription_AnalyticsHubSubscriptionInfo
 // +kcc:proto=google.pubsub.v1.Subscription.AnalyticsHubSubscriptionInfo
 type Subscription_AnalyticsHubSubscriptionInfo struct {
 	// Optional. The name of the associated Analytics Hub listing resource.
@@ -854,6 +883,7 @@ type Subscription_AnalyticsHubSubscriptionInfo struct {
 	// +kcc:proto:field=google.pubsub.v1.Subscription.AnalyticsHubSubscriptionInfo.subscription
 	Subscription *string `json:"subscription,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.pubsub.v1.Topic", skipping
 
@@ -940,6 +970,7 @@ type CloudStorageConfigObservedState struct {
 }
 */
 
+/* unreachable type IngestionDataSourceSettingsObservedState
 // +kcc:observedstate:proto=google.pubsub.v1.IngestionDataSourceSettings
 type IngestionDataSourceSettingsObservedState struct {
 	// Optional. Amazon Kinesis Data Streams.
@@ -962,7 +993,9 @@ type IngestionDataSourceSettingsObservedState struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.confluent_cloud
 	ConfluentCloud *IngestionDataSourceSettings_ConfluentCloudObservedState `json:"confluentCloud,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_AwsKinesisObservedState
 // +kcc:observedstate:proto=google.pubsub.v1.IngestionDataSourceSettings.AwsKinesis
 type IngestionDataSourceSettings_AwsKinesisObservedState struct {
 	// Output only. An output-only field that indicates the state of the Kinesis
@@ -970,7 +1003,9 @@ type IngestionDataSourceSettings_AwsKinesisObservedState struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AwsKinesis.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_AwsMskObservedState
 // +kcc:observedstate:proto=google.pubsub.v1.IngestionDataSourceSettings.AwsMsk
 type IngestionDataSourceSettings_AwsMskObservedState struct {
 	// Output only. An output-only field that indicates the state of the Amazon
@@ -978,7 +1013,9 @@ type IngestionDataSourceSettings_AwsMskObservedState struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AwsMsk.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_AzureEventHubsObservedState
 // +kcc:observedstate:proto=google.pubsub.v1.IngestionDataSourceSettings.AzureEventHubs
 type IngestionDataSourceSettings_AzureEventHubsObservedState struct {
 	// Output only. An output-only field that indicates the state of the Event
@@ -986,7 +1023,9 @@ type IngestionDataSourceSettings_AzureEventHubsObservedState struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.AzureEventHubs.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_CloudStorageObservedState
 // +kcc:observedstate:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage
 type IngestionDataSourceSettings_CloudStorageObservedState struct {
 	// Output only. An output-only field that indicates the state of the Cloud
@@ -994,7 +1033,9 @@ type IngestionDataSourceSettings_CloudStorageObservedState struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
+/* unreachable type IngestionDataSourceSettings_ConfluentCloudObservedState
 // +kcc:observedstate:proto=google.pubsub.v1.IngestionDataSourceSettings.ConfluentCloud
 type IngestionDataSourceSettings_ConfluentCloudObservedState struct {
 	// Output only. An output-only field that indicates the state of the
@@ -1002,6 +1043,7 @@ type IngestionDataSourceSettings_ConfluentCloudObservedState struct {
 	// +kcc:proto:field=google.pubsub.v1.IngestionDataSourceSettings.ConfluentCloud.state
 	State *string `json:"state,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.pubsub.v1.Schema", skipping
 
