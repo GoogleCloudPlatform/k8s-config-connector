@@ -123,8 +123,8 @@ for f in $(find apis -name "generate.sh" | sort); do
     scripts+=("${f}")
 done
 
-# Determine available CPU cores for parallel execution (defaults to 8 if undetectable)
-NUM_WORKERS="${PARALLELISM:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 8)}"
+# Cap default parallel worker processes to 8 to prevent machine memory and disk lock contention
+NUM_WORKERS="${PARALLELISM:-8}"
 echo "Running ${#scripts[@]} generator scripts in parallel with ${NUM_WORKERS} workers..."
 
 # Worker function to execute a single generate.sh script in parallel with its own isolated Go build cache

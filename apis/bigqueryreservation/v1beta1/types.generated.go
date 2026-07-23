@@ -22,6 +22,10 @@
 
 package v1beta1
 
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
+
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.reservation.v1.Assignment", skipping
 
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
@@ -185,11 +189,9 @@ type Reservation_Autoscale struct {
 }
 */
 
-/* unreachable type Reservation_ReplicationStatus
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
 type Reservation_ReplicationStatus struct {
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.reservation.v1.Assignment", skipping
 
@@ -263,7 +265,6 @@ type Reservation_AutoscaleObservedState struct {
 }
 */
 
-/* unreachable type Reservation_ReplicationStatusObservedState
 // +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
 type Reservation_ReplicationStatusObservedState struct {
 	// Output only. The last error encountered while trying to replicate changes
@@ -283,4 +284,3 @@ type Reservation_ReplicationStatusObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_replication_time
 	LastReplicationTime *string `json:"lastReplicationTime,omitempty"`
 }
-*/
