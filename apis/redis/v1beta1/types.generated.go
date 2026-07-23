@@ -138,7 +138,6 @@ type Cluster struct {
 }
 */
 
-/* unreachable type Cluster_GCSBackupSource
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.GcsBackupSource
 type Cluster_GCSBackupSource struct {
 	// Optional. URIs of the GCS objects to import.
@@ -146,9 +145,7 @@ type Cluster_GCSBackupSource struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.GcsBackupSource.uris
 	Uris []string `json:"uris,omitempty"`
 }
-*/
 
-/* unreachable type Cluster_ManagedBackupSource
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource
 type Cluster_ManagedBackupSource struct {
 	// Optional. Example:
@@ -160,7 +157,6 @@ type Cluster_ManagedBackupSource struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource.backup
 	Backup *string `json:"backup,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo
 type Cluster_StateInfo struct {
@@ -180,7 +176,6 @@ type Cluster_StateInfo_UpdateInfo struct {
 	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
 }
 
-/* unreachable type ClusterEndpoint
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterEndpoint
 type ClusterEndpoint struct {
 	// A group of PSC connections. They are created in the same VPC network, one
@@ -188,7 +183,6 @@ type ClusterEndpoint struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterEndpoint.connections
 	Connections []ConnectionDetail `json:"connections,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicy struct {
@@ -200,11 +194,9 @@ type ClusterMaintenancePolicy struct {
 	WeeklyMaintenanceWindow []ClusterWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
 
-/* unreachable type ClusterMaintenanceSchedule
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule
 type ClusterMaintenanceSchedule struct {
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig
 type ClusterPersistenceConfig struct {
@@ -252,7 +244,6 @@ type ClusterWeeklyMaintenanceWindow struct {
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 
-/* unreachable type ConnectionDetail
 // +kcc:proto=google.cloud.redis.cluster.v1.ConnectionDetail
 type ConnectionDetail struct {
 	// Detailed information of a PSC connection that is created through
@@ -265,7 +256,6 @@ type ConnectionDetail struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ConnectionDetail.psc_connection
 	PSCConnection *PSCConnection `json:"pscConnection,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
 type CrossClusterReplicationConfig struct {
@@ -287,11 +277,9 @@ type CrossClusterReplicationConfig struct {
 	SecondaryClusters []CrossClusterReplicationConfig_RemoteCluster `json:"secondaryClusters,omitempty"`
 }
 
-/* unreachable type CrossClusterReplicationConfig_Membership
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.Membership
 type CrossClusterReplicationConfig_Membership struct {
 }
-*/
 
 /* found existing non-generated go type "CrossClusterReplicationConfig_RemoteCluster", skipping
 
@@ -304,19 +292,14 @@ type CrossClusterReplicationConfig_RemoteCluster struct {
 }
 */
 
-/* unreachable type DiscoveryEndpoint
 // +kcc:proto=google.cloud.redis.cluster.v1.DiscoveryEndpoint
 type DiscoveryEndpoint struct {
 }
-*/
 
-/* unreachable type EncryptionInfo
 // +kcc:proto=google.cloud.redis.cluster.v1.EncryptionInfo
 type EncryptionInfo struct {
 }
-*/
 
-/* unreachable type PSCAutoConnection
 // +kcc:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnection struct {
 
@@ -330,7 +313,6 @@ type PSCAutoConnection struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.network
 	Network *string `json:"network,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
 type PSCConfig struct {
@@ -379,11 +361,9 @@ type PSCConnection struct {
 }
 */
 
-/* unreachable type PSCServiceAttachment
 // +kcc:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
 type PSCServiceAttachment struct {
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.ZoneDistributionConfig
 type ZoneDistributionConfig struct {
@@ -597,11 +577,9 @@ type MaintenanceSchedule struct {
 }
 */
 
-/* unreachable type NodeInfo
 // +kcc:proto=google.cloud.redis.v1.NodeInfo
 type NodeInfo struct {
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.PersistenceConfig", skipping
 
@@ -629,7 +607,6 @@ type PersistenceConfig struct {
 }
 */
 
-/* unreachable type TLSCertificate
 // +kcc:proto=google.cloud.redis.v1.TlsCertificate
 type TLSCertificate struct {
 	// Serial number, as extracted from the certificate.
@@ -644,7 +621,6 @@ type TLSCertificate struct {
 	// +kcc:proto:field=google.cloud.redis.v1.TlsCertificate.sha1_fingerprint
 	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.WeeklyMaintenanceWindow", skipping
 
@@ -755,7 +731,6 @@ type ClusterObservedState struct {
 }
 */
 
-/* unreachable type ClusterEndpointObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterEndpoint
 type ClusterEndpointObservedState struct {
 	// A group of PSC connections. They are created in the same VPC network, one
@@ -763,7 +738,6 @@ type ClusterEndpointObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterEndpoint.connections
 	Connections []ConnectionDetailObservedState `json:"connections,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicyObservedState struct {
@@ -791,7 +765,6 @@ type ClusterMaintenanceScheduleObservedState struct {
 	EndTime *string `json:"endTime,omitempty"`
 }
 
-/* unreachable type ConnectionDetailObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ConnectionDetail
 type ConnectionDetailObservedState struct {
 	// Detailed information of a PSC connection that is created through
@@ -804,7 +777,6 @@ type ConnectionDetailObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ConnectionDetail.psc_connection
 	PSCConnection *PSCConnectionObservedState `json:"pscConnection,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
 type CrossClusterReplicationConfigObservedState struct {
@@ -905,7 +877,6 @@ type EncryptionInfoObservedState struct {
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }
 
-/* unreachable type PSCAutoConnectionObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnectionObservedState struct {
 	// Output only. The PSC connection id of the forwarding rule connected to the
@@ -940,7 +911,6 @@ type PSCAutoConnectionObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "PSCConnectionObservedState", skipping
 
@@ -1092,7 +1062,6 @@ type MaintenanceScheduleObservedState struct {
 }
 */
 
-/* unreachable type NodeInfoObservedState
 // +kcc:observedstate:proto=google.cloud.redis.v1.NodeInfo
 type NodeInfoObservedState struct {
 	// Output only. Node identifying string. e.g. 'node-0', 'node-1'
@@ -1103,7 +1072,6 @@ type NodeInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.v1.NodeInfo.zone
 	Zone *string `json:"zone,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.PersistenceConfig", skipping
 
@@ -1115,7 +1083,6 @@ type PersistenceConfigObservedState struct {
 }
 */
 
-/* unreachable type TLSCertificateObservedState
 // +kcc:observedstate:proto=google.cloud.redis.v1.TlsCertificate
 type TLSCertificateObservedState struct {
 	// Serial number, as extracted from the certificate.
@@ -1142,7 +1109,6 @@ type TLSCertificateObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.v1.TlsCertificate.sha1_fingerprint
 	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.redis.v1.WeeklyMaintenanceWindow", skipping
 

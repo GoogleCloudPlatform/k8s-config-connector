@@ -123,25 +123,20 @@ type Instance struct {
 }
 */
 
-/* unreachable type Instance_FixedIops
 // +kcc:proto=google.cloud.filestore.v1.Instance.FixedIOPS
 type Instance_FixedIops struct {
 	// Required. Maximum IOPS.
 	// +kcc:proto:field=google.cloud.filestore.v1.Instance.FixedIOPS.max_iops
 	MaxIops *int64 `json:"maxIops,omitempty"`
 }
-*/
 
-/* unreachable type Instance_IopsPerTb
 // +kcc:proto=google.cloud.filestore.v1.Instance.IOPSPerTB
 type Instance_IopsPerTb struct {
 	// Required. Maximum IOPS per TiB.
 	// +kcc:proto:field=google.cloud.filestore.v1.Instance.IOPSPerTB.max_iops_per_tb
 	MaxIopsPerTb *int64 `json:"maxIopsPerTb,omitempty"`
 }
-*/
 
-/* unreachable type Instance_PerformanceConfig
 // +kcc:proto=google.cloud.filestore.v1.Instance.PerformanceConfig
 type Instance_PerformanceConfig struct {
 	// Provision IOPS dynamically based on the capacity of the instance.
@@ -170,13 +165,10 @@ type Instance_PerformanceConfig struct {
 	// +kcc:proto:field=google.cloud.filestore.v1.Instance.PerformanceConfig.fixed_iops
 	FixedIops *Instance_FixedIops `json:"fixedIops,omitempty"`
 }
-*/
 
-/* unreachable type Instance_PerformanceLimits
 // +kcc:proto=google.cloud.filestore.v1.Instance.PerformanceLimits
 type Instance_PerformanceLimits struct {
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.filestore.v1.NetworkConfig", skipping
 
@@ -265,7 +257,6 @@ type NfsExportOptions struct {
 }
 */
 
-/* unreachable type ReplicaConfig
 // +kcc:proto=google.cloud.filestore.v1.ReplicaConfig
 type ReplicaConfig struct {
 
@@ -273,9 +264,7 @@ type ReplicaConfig struct {
 	// +kcc:proto:field=google.cloud.filestore.v1.ReplicaConfig.peer_instance
 	PeerInstance *string `json:"peerInstance,omitempty"`
 }
-*/
 
-/* unreachable type Replication
 // +kcc:proto=google.cloud.filestore.v1.Replication
 type Replication struct {
 	// Optional. The replication role.
@@ -287,7 +276,6 @@ type Replication struct {
 	// +kcc:proto:field=google.cloud.filestore.v1.Replication.replicas
 	Replicas []ReplicaConfig `json:"replicas,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.filestore.v1.Instance", skipping
 
@@ -344,7 +332,6 @@ type InstanceObservedState struct {
 }
 */
 
-/* unreachable type Instance_PerformanceLimitsObservedState
 // +kcc:observedstate:proto=google.cloud.filestore.v1.Instance.PerformanceLimits
 type Instance_PerformanceLimitsObservedState struct {
 	// Output only. The max IOPS.
@@ -367,7 +354,6 @@ type Instance_PerformanceLimitsObservedState struct {
 	// +kcc:proto:field=google.cloud.filestore.v1.Instance.PerformanceLimits.max_write_throughput_bps
 	MaxWriteThroughputBps *int64 `json:"maxWriteThroughputBps,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.filestore.v1.NetworkConfig", skipping
 
@@ -381,7 +367,6 @@ type NetworkConfigObservedState struct {
 }
 */
 
-/* unreachable type ReplicaConfigObservedState
 // +kcc:observedstate:proto=google.cloud.filestore.v1.ReplicaConfig
 type ReplicaConfigObservedState struct {
 	// Output only. The replica state.
@@ -398,9 +383,7 @@ type ReplicaConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.filestore.v1.ReplicaConfig.last_active_sync_time
 	LastActiveSyncTime *string `json:"lastActiveSyncTime,omitempty"`
 }
-*/
 
-/* unreachable type ReplicationObservedState
 // +kcc:observedstate:proto=google.cloud.filestore.v1.Replication
 type ReplicationObservedState struct {
 	// Optional. Replication configuration for the replica instance associated
@@ -408,4 +391,3 @@ type ReplicationObservedState struct {
 	// +kcc:proto:field=google.cloud.filestore.v1.Replication.replicas
 	Replicas []ReplicaConfigObservedState `json:"replicas,omitempty"`
 }
-*/

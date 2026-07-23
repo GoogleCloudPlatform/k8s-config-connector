@@ -649,7 +649,6 @@ type EvaluationPersona struct {
 }
 */
 
-/* unreachable type EvaluationPersona_SpeechConfig
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationPersona.SpeechConfig
 type EvaluationPersona_SpeechConfig struct {
 	// Optional. The speaking rate. 1.0 is normal.
@@ -667,7 +666,6 @@ type EvaluationPersona_SpeechConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationPersona.SpeechConfig.voice_id
 	VoiceID *string `json:"voiceID,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationSettings
 type EvaluationSettings struct {
@@ -940,7 +938,6 @@ type Schema struct {
 }
 */
 
-/* unreachable type SynthesizeSpeechConfig
 // +kcc:proto=google.cloud.ces.v1beta.SynthesizeSpeechConfig
 type SynthesizeSpeechConfig struct {
 	// Optional. The name of the voice. If not set, the service will choose a
@@ -959,7 +956,6 @@ type SynthesizeSpeechConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.SynthesizeSpeechConfig.speaking_rate
 	SpeakingRate *float64 `json:"speakingRate,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.ces.v1beta.TimeZoneSettings
 type TimeZoneSettings struct {
@@ -970,7 +966,6 @@ type TimeZoneSettings struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
-/* unreachable type VPCScSettings
 // +kcc:proto=google.cloud.ces.v1beta.VpcScSettings
 type VPCScSettings struct {
 	// Optional. The allowed HTTP(s) origins that OpenAPI tools in the App are
@@ -981,18 +976,14 @@ type VPCScSettings struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.VpcScSettings.allowed_origins
 	AllowedOrigins []string `json:"allowedOrigins,omitempty"`
 }
-*/
 
-/* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
 type ListValue struct {
 	// Repeated field of dynamically typed values.
 	// +kcc:proto:field=google.protobuf.ListValue.values
 	Values []Value `json:"values,omitempty"`
 }
-*/
 
-/* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
 	// Represents a null value.
@@ -1019,7 +1010,6 @@ type Value struct {
 	// +kcc:proto:field=google.protobuf.Value.list_value
 	ListValue *ListValue `json:"listValue,omitempty"`
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.App", skipping
 

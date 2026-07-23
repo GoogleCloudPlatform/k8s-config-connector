@@ -21,11 +21,9 @@
 
 package v1beta1
 
-/* unreachable type BuildInfo
 // +kcc:proto=google.cloud.run.v2.BuildInfo
 type BuildInfo struct {
 }
-*/
 
 // +kcc:proto=google.cloud.run.v2.ContainerPort
 type ContainerPort struct {
@@ -103,7 +101,6 @@ type ExecutionReference struct {
 	CompletionStatus *string `json:"completionStatus,omitempty"`
 }
 
-/* unreachable type GrpcAction
 // +kcc:proto=google.cloud.run.v2.GRPCAction
 type GrpcAction struct {
 	// Optional. Port number of the gRPC service. Number must be in the range 1 to
@@ -119,7 +116,6 @@ type GrpcAction struct {
 	// +kcc:proto:field=google.cloud.run.v2.GRPCAction.service
 	Service *string `json:"service,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.run.v2.HTTPHeader
 type HTTPHeader struct {
@@ -147,14 +143,12 @@ type NfsVolumeSource struct {
 	ReadOnly *bool `json:"readOnly,omitempty"`
 }
 
-/* unreachable type NodeSelector
 // +kcc:proto=google.cloud.run.v2.NodeSelector
 type NodeSelector struct {
 	// Required. GPU accelerator type to attach to an instance.
 	// +kcc:proto:field=google.cloud.run.v2.NodeSelector.accelerator
 	Accelerator *string `json:"accelerator,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.run.v2.TCPSocketAction
 type TCPSocketAction struct {
@@ -180,7 +174,6 @@ type VolumeMount struct {
 	MountPath *string `json:"mountPath,omitempty"`
 }
 
-/* unreachable type BuildInfoObservedState
 // +kcc:observedstate:proto=google.cloud.run.v2.BuildInfo
 type BuildInfoObservedState struct {
 	// Output only. Entry point of the function when the image is a Cloud Run
@@ -192,4 +185,3 @@ type BuildInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.run.v2.BuildInfo.source_location
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 }
-*/

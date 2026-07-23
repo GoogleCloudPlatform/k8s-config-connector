@@ -40,11 +40,9 @@ type BigQueryConnectionSpec struct {
 	HasCredential *bool `json:"hasCredential,omitempty"`
 }
 
-/* unreachable type BigQueryDateShardedSpec
 // +kcc:proto=google.cloud.datacatalog.v1.BigQueryDateShardedSpec
 type BigQueryDateShardedSpec struct {
 }
-*/
 
 // +kcc:proto=google.cloud.datacatalog.v1.BigQueryRoutineSpec
 type BigQueryRoutineSpec struct {
@@ -53,7 +51,6 @@ type BigQueryRoutineSpec struct {
 	ImportedLibraries []string `json:"importedLibraries,omitempty"`
 }
 
-/* unreachable type BigQueryTableSpec
 // +kcc:proto=google.cloud.datacatalog.v1.BigQueryTableSpec
 type BigQueryTableSpec struct {
 
@@ -67,7 +64,6 @@ type BigQueryTableSpec struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.BigQueryTableSpec.table_spec
 	TableSpec *TableSpec `json:"tableSpec,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.datacatalog.v1.BusinessContext
 type BusinessContext struct {
@@ -213,14 +209,12 @@ type ColumnSchema_LookerColumnSpec struct {
 	Type *string `json:"type,omitempty"`
 }
 
-/* unreachable type CommonUsageStats
 // +kcc:proto=google.cloud.datacatalog.v1.CommonUsageStats
 type CommonUsageStats struct {
 	// View count in source system.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.CommonUsageStats.view_count
 	ViewCount *int64 `json:"viewCount,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.datacatalog.v1.Contacts
 type Contacts struct {
@@ -637,14 +631,12 @@ type FilesetSpec struct {
 	DataplexFileset *DataplexFilesetSpec `json:"dataplexFileset,omitempty"`
 }
 
-/* unreachable type GCSFileSpec
 // +kcc:proto=google.cloud.datacatalog.v1.GcsFileSpec
 type GCSFileSpec struct {
 	// Required. Full file path. Example: `gs://bucket_name/a/b.txt`.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.GcsFileSpec.file_path
 	FilePath *string `json:"filePath,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.datacatalog.v1.GcsFilesetSpec
 type GCSFilesetSpec struct {
@@ -931,11 +923,9 @@ type SystemTimestamps struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-/* unreachable type TableSpec
 // +kcc:proto=google.cloud.datacatalog.v1.TableSpec
 type TableSpec struct {
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.datacatalog.v1.Tag", skipping
 
@@ -1109,7 +1099,6 @@ type UsageSignal struct {
 	FavoriteCount *int64 `json:"favoriteCount,omitempty"`
 }
 
-/* unreachable type UsageStats
 // +kcc:proto=google.cloud.datacatalog.v1.UsageStats
 type UsageStats struct {
 	// The number of successful uses of the underlying entry.
@@ -1128,7 +1117,6 @@ type UsageStats struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.UsageStats.total_execution_time_for_completions_millis
 	TotalExecutionTimeForCompletionsMillis *float32 `json:"totalExecutionTimeForCompletionsMillis,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.datacatalog.v1.VertexDatasetSpec
 type VertexDatasetSpec struct {
@@ -1180,11 +1168,9 @@ type VertexModelSpec struct {
 	ContainerImageURI *string `json:"containerImageURI,omitempty"`
 }
 
-/* unreachable type ViewSpec
 // +kcc:proto=google.cloud.datacatalog.v1.ViewSpec
 type ViewSpec struct {
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.BigQueryDateShardedSpec
 type BigQueryDateShardedSpecObservedState struct {

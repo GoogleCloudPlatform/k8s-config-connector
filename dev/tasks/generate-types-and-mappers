@@ -36,13 +36,16 @@ cleanup_gocache_base() {
 }
 trap cleanup_gocache_base EXIT INT TERM
 
-# Pre-compile controllerbuilder and shared googleapis proto descriptors once upfront
+# Pre-compile controllerbuilder and goimports dependencies once upfront
 # We compile into GOCACHE_BASE/shared so all worker threads can seed their isolated caches instantly
 pushd dev/tools/controllerbuilder
 ./generate-proto.sh
-echo "Pre-compiling controllerbuilder dependencies into shared build cache..."
+echo "Pre-compiling controllerbuilder and goimports dependencies into shared build cache..."
 GOCACHE="${GOCACHE_BASE}/shared" go build -o /dev/null .
 popd
+
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+GOCACHE="${GOCACHE_BASE}/shared" go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} --help >/dev/null 2>&1 || true
 
 # For efficiency during parallel package generation:
 # 1. SKIP_GENERATE_CRDS=1: Defer expensive CRD YAML generation to a single step at the end.
@@ -134,7 +137,6 @@ run_one() {
     worker_cache=$(mktemp -d "${GOCACHE_BASE}/worker-XXXXXX")
     cp -al "${GOCACHE_BASE}/shared/." "${worker_cache}/" 2>/dev/null || cp -r "${GOCACHE_BASE}/shared/." "${worker_cache}/"
     export GOCACHE="${worker_cache}"
-    export GOTMPDIR="${worker_cache}"
 
     # Ensure worker cache directory is cleaned up when this worker subshell finishes
     trap 'rm -rf "${worker_cache}"' EXIT
