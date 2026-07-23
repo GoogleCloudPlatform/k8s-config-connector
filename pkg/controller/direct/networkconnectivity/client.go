@@ -69,4 +69,3 @@ func (m *gcpClient) newCrossNetworkAutomationClient(ctx context.Context) (*gcpap
 	}
 	return client, err
 }
-

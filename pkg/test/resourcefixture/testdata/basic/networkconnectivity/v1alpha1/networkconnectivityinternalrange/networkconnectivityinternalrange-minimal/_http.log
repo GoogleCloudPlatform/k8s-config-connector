@@ -185,7 +185,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Initial description",
-    "ipCidrRange": "10.174.190.0/24",
+    "ipCidrRange": "10.0.1.0/24",
     "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
     "peering": "FOR_SELF",
@@ -208,7 +208,7 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
-  "ipCidrRange": "10.174.190.0/24",
+  "ipCidrRange": "10.0.1.0/24",
   "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "peering": "FOR_SELF",
@@ -226,9 +226,9 @@ GRPC /google.cloud.networkconnectivity.v1.InternalRangeService/UpdateInternalRan
     "description": "Updated description",
     "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
     "network": "projects/${projectId}/global/networks/${networkID}",
-    "prefixLength": 28
+    "prefixLength": 20
   },
-  "updateMask": "description"
+  "updateMask": "description,prefixLength"
 }
 
 OK
@@ -269,11 +269,11 @@ OK
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description",
-    "ipCidrRange": "10.174.190.0/24",
+    "ipCidrRange": "10.0.1.0/20",
     "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
     "peering": "FOR_SELF",
-    "prefixLength": 24,
+    "prefixLength": 20,
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "usage": "FOR_VPC"
   }
@@ -292,11 +292,11 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
-  "ipCidrRange": "10.174.190.0/24",
+  "ipCidrRange": "10.0.1.0/20",
   "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "peering": "FOR_SELF",
-  "prefixLength": 24,
+  "prefixLength": 20,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "usage": "FOR_VPC"
 }
@@ -314,11 +314,11 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
-  "ipCidrRange": "10.174.190.0/24",
+  "ipCidrRange": "10.0.1.0/20",
   "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "peering": "FOR_SELF",
-  "prefixLength": 24,
+  "prefixLength": 20,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "usage": "FOR_VPC"
 }

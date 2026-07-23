@@ -14,7 +14,7 @@ spec:
   location: global
   networkRef:
     name: ${networkID}
-  prefixLength: 28
+  prefixLength: 20
   projectRef:
     external: ${projectId}
 status:
