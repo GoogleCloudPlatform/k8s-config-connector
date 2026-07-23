@@ -286,7 +286,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"

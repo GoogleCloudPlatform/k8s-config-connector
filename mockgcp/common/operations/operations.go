@@ -280,6 +280,15 @@ func rewriteTypes(any *anypb.Any) {
 	if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.") {
 		any.TypeUrl = "type.googleapis.com/google." + strings.TrimPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.")
 	}
+	// Direct controllers for VertexAI (aiplatform) use v1 clients under the hood,
+	// but mockaiplatform is implemented with apiv1beta1 types.
+	// We translate the type URL to v1 for direct controller resources so that v1 clients can cleanly unmarshal LRO results.
+	if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/google.cloud.aiplatform.v1beta1.") {
+		typeUrl := any.TypeUrl
+		if strings.Contains(typeUrl, "PipelineJob") || strings.Contains(typeUrl, "TrainingPipeline") || strings.Contains(typeUrl, "FeatureOnlineStore") {
+			any.TypeUrl = "type.googleapis.com/google.cloud.aiplatform.v1." + strings.TrimPrefix(typeUrl, "type.googleapis.com/google.cloud.aiplatform.v1beta1.")
+		}
+	}
 }
 
 // Gets the latest state of a long-running operation.  Clients can use this

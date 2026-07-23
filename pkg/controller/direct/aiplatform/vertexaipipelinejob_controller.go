@@ -51,12 +51,14 @@ type pipelineJobModel struct {
 	config *config.ControllerConfig
 }
 
-func (m *pipelineJobModel) client(ctx context.Context) (*gcp.PipelineClient, error) {
+func (m *pipelineJobModel) client(ctx context.Context, location string) (*gcp.PipelineClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
+	endpoint := fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)
+	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewPipelineClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building PipelineClient client: %w", err)
@@ -80,15 +82,15 @@ func (m *pipelineJobModel) AdapterForObject(ctx context.Context, reader *directb
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	// Get PipelineClient client
-	gcpClient, err := m.client(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	typedID, ok := id.(*krm.VertexAIPipelineJobIdentity)
 	if !ok {
 		return nil, fmt.Errorf("expected VertexAIPipelineJobIdentity, got %T", id)
+	}
+
+	// Get PipelineClient client
+	gcpClient, err := m.client(ctx, typedID.Location)
+	if err != nil {
+		return nil, err
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -232,6 +234,40 @@ func (a *PipelineJobAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting VertexAIPipelineJob", "name", a.id.String())
 
+	// 1. Get the current state of the PipelineJob first
+	getReq := &pb.GetPipelineJobRequest{
+		Name: a.id.String(),
+	}
+	actual, err := a.gcpClient.GetPipelineJob(ctx, getReq)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
+		return false, fmt.Errorf("getting PipelineJob before deletion %q: %w", a.id.String(), err)
+	}
+
+	// 2. If the state is not terminal, initiate/wait for cancellation
+	isTerminal := func(state pb.PipelineState) bool {
+		return state == pb.PipelineState_PIPELINE_STATE_SUCCEEDED ||
+			state == pb.PipelineState_PIPELINE_STATE_FAILED ||
+			state == pb.PipelineState_PIPELINE_STATE_CANCELLED
+	}
+
+	if !isTerminal(actual.State) {
+		if actual.State != pb.PipelineState_PIPELINE_STATE_CANCELLING {
+			log.V(2).Info("cancelling VertexAIPipelineJob before deletion", "name", a.id.String(), "currentState", actual.State)
+			cancelReq := &pb.CancelPipelineJobRequest{
+				Name: a.id.String(),
+			}
+			if err := a.gcpClient.CancelPipelineJob(ctx, cancelReq); err != nil {
+				log.Error(err, "error cancelling VertexAIPipelineJob", "name", a.id.String())
+				return false, fmt.Errorf("cancelling VertexAIPipelineJob %q: %w", a.id.String(), err)
+			}
+		}
+		return false, fmt.Errorf("VertexAIPipelineJob %q is in state %s; waiting for terminal state before deletion", a.id.String(), actual.State)
+	}
+
+	// 3. Delete the PipelineJob
 	req := &pb.DeletePipelineJobRequest{
 		Name: a.id.String(),
 	}
@@ -266,6 +302,23 @@ func comparePipelineJob(ctx context.Context, actual, desired *pb.PipelineJob) (*
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	// Since PipelineJob is immutable, we only compare user-specified spec fields.
+	// We align or copy server-populated / restructured fields to avoid false positive diffs.
+	if clonedDesired.ServiceAccount == "" {
+		clonedDesired.ServiceAccount = maskedActual.ServiceAccount
+	}
+	if len(clonedDesired.Labels) == 0 {
+		clonedDesired.Labels = maskedActual.Labels
+	} else {
+		for k, v := range maskedActual.Labels {
+			if _, ok := clonedDesired.Labels[k]; !ok {
+				clonedDesired.Labels[k] = v
+			}
+		}
+	}
+	// Copy PipelineSpec to avoid structural/restructuring diffs in the complex proto.Struct
+	clonedDesired.PipelineSpec = maskedActual.PipelineSpec
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
