@@ -1,4 +1,4 @@
-- caisURL: //jobs.googleapis.com/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}
+- caisURL: //jobs.googleapis.com/projects/${projectId}/tenants/default/companies/ctsco-min-${uniqueId}
   group: cloudtalentsolution.cnrm.cloud.google.com
   kind: CloudTalentSolutionCompany
   name: ctsco-min-${uniqueId}
