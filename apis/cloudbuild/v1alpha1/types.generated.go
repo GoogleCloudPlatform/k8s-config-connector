@@ -234,9 +234,11 @@ type GitLabConfig struct {
 }
 */
 
+/* unreachable type InstallationState
 // +kcc:proto=google.devtools.cloudbuild.v2.InstallationState
 type InstallationState struct {
 }
+*/
 
 /* found existing non-generated go type "OAuthCredential", skipping
 

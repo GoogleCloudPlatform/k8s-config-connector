@@ -113,9 +113,11 @@ type AssetStatus struct {
 	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
 }
 
+/* unreachable type DataDiscoveryResult
 // +kcc:proto=google.cloud.dataplex.v1.DataDiscoveryResult
 type DataDiscoveryResult struct {
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.DataDiscoveryResult.ScanStatistics
 type DataDiscoveryResult_ScanStatistics struct {
@@ -236,6 +238,7 @@ type DataDiscoverySpec_StorageConfig_JsonOptions struct {
 	TypeInferenceDisabled *bool `json:"typeInferenceDisabled,omitempty"`
 }
 
+/* unreachable type DataProfileResult
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult
 type DataProfileResult struct {
 	// The count of rows scanned.
@@ -250,10 +253,13 @@ type DataProfileResult struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.scanned_data
 	ScannedData *ScannedData `json:"scannedData,omitempty"`
 }
+*/
 
+/* unreachable type DataProfileResult_PostScanActionsResult_BigQueryExportResult
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.PostScanActionsResult.BigQueryExportResult
 type DataProfileResult_PostScanActionsResult_BigQueryExportResult struct {
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.Profile
 type DataProfileResult_Profile struct {
@@ -489,6 +495,7 @@ type DataProfileSpec_SelectedFields struct {
 	FieldNames []string `json:"fieldNames,omitempty"`
 }
 
+/* unreachable type DataQualityDimension
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityDimension
 type DataQualityDimension struct {
 	// Optional. The dimension name a rule belongs to. Custom dimension name is
@@ -496,14 +503,19 @@ type DataQualityDimension struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityDimension.name
 	Name *string `json:"name,omitempty"`
 }
+*/
 
+/* unreachable type DataQualityResult
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityResult
 type DataQualityResult struct {
 }
+*/
 
+/* unreachable type DataQualityResult_PostScanActionsResult_BigQueryExportResult
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityResult.PostScanActionsResult.BigQueryExportResult
 type DataQualityResult_PostScanActionsResult_BigQueryExportResult struct {
 }
+*/
 
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule
 type DataQualityRule struct {
@@ -1116,6 +1128,7 @@ type DataProfileResultObservedState struct {
 	PostScanActionsResult *DataProfileResult_PostScanActionsResultObservedState `json:"postScanActionsResult,omitempty"`
 }
 
+/* unreachable type DataProfileResult_PostScanActionsResult_BigQueryExportResultObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProfileResult.PostScanActionsResult.BigQueryExportResult
 type DataProfileResult_PostScanActionsResult_BigQueryExportResultObservedState struct {
 	// Output only. Execution state for the BigQuery exporting.
@@ -1126,6 +1139,7 @@ type DataProfileResult_PostScanActionsResult_BigQueryExportResultObservedState s
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataProfileResult.PostScanActionsResult.BigQueryExportResult.message
 	Message *string `json:"message,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityResult
 type DataQualityResultObservedState struct {
@@ -1170,6 +1184,7 @@ type DataQualityResultObservedState struct {
 	PostScanActionsResult *DataQualityResult_PostScanActionsResultObservedState `json:"postScanActionsResult,omitempty"`
 }
 
+/* unreachable type DataQualityResult_PostScanActionsResult_BigQueryExportResultObservedState
 // +kcc:observedstate:proto=google.cloud.dataplex.v1.DataQualityResult.PostScanActionsResult.BigQueryExportResult
 type DataQualityResult_PostScanActionsResult_BigQueryExportResultObservedState struct {
 	// Output only. Execution state for the BigQuery exporting.
@@ -1180,3 +1195,4 @@ type DataQualityResult_PostScanActionsResult_BigQueryExportResultObservedState s
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityResult.PostScanActionsResult.BigQueryExportResult.message
 	Message *string `json:"message,omitempty"`
 }
+*/

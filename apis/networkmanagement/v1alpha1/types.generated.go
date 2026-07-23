@@ -22,6 +22,7 @@
 
 package v1alpha1
 
+/* unreachable type DirectVPCEgressConnectionInfo
 // +kcc:proto=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo
 type DirectVPCEgressConnectionInfo struct {
 	// URI of direct access network.
@@ -44,6 +45,7 @@ type DirectVPCEgressConnectionInfo struct {
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.region
 	Region *string `json:"region,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.networkmanagement.v1.Endpoint.AppEngineVersionEndpoint
 type Endpoint_AppEngineVersionEndpoint struct {
@@ -61,9 +63,11 @@ type Endpoint_CloudFunctionEndpoint struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+/* unreachable type ServerlessExternalConnectionInfo
 // +kcc:proto=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo
 type ServerlessExternalConnectionInfo struct {
 	// Selected starting IP address, from the Google dynamic address pool.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo.selected_ip_address
 	SelectedIPAddress *string `json:"selectedIPAddress,omitempty"`
 }
+*/

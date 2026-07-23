@@ -22,6 +22,7 @@
 
 package v1beta1
 
+/* unreachable type AutoscalingSettings
 // +kcc:proto=google.dataflow.v1beta3.AutoscalingSettings
 type AutoscalingSettings struct {
 	// The algorithm to use for autoscaling.
@@ -32,7 +33,9 @@ type AutoscalingSettings struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.AutoscalingSettings.max_num_workers
 	MaxNumWorkers *int32 `json:"maxNumWorkers,omitempty"`
 }
+*/
 
+/* unreachable type BigQueryIoDetails
 // +kcc:proto=google.dataflow.v1beta3.BigQueryIODetails
 type BigQueryIoDetails struct {
 	// Table accessed in the connection.
@@ -51,7 +54,9 @@ type BigQueryIoDetails struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.BigQueryIODetails.query
 	Query *string `json:"query,omitempty"`
 }
+*/
 
+/* unreachable type BigTableIoDetails
 // +kcc:proto=google.dataflow.v1beta3.BigTableIODetails
 type BigTableIoDetails struct {
 	// ProjectId accessed in the connection.
@@ -66,7 +71,9 @@ type BigTableIoDetails struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.BigTableIODetails.table_id
 	TableID *string `json:"tableID,omitempty"`
 }
+*/
 
+/* unreachable type DataSamplingConfig
 // +kcc:proto=google.dataflow.v1beta3.DataSamplingConfig
 type DataSamplingConfig struct {
 	// List of given sampling behaviors to enable. For example, specifying
@@ -82,7 +89,9 @@ type DataSamplingConfig struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.DataSamplingConfig.behaviors
 	Behaviors []string `json:"behaviors,omitempty"`
 }
+*/
 
+/* unreachable type DatastoreIoDetails
 // +kcc:proto=google.dataflow.v1beta3.DatastoreIODetails
 type DatastoreIoDetails struct {
 	// Namespace used in the connection.
@@ -93,7 +102,9 @@ type DatastoreIoDetails struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.DatastoreIODetails.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
+*/
 
+/* unreachable type DebugOptions
 // +kcc:proto=google.dataflow.v1beta3.DebugOptions
 type DebugOptions struct {
 	// Optional. When true, enables the logging of the literal hot key to the
@@ -105,7 +116,9 @@ type DebugOptions struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.DebugOptions.data_sampling
 	DataSampling *DataSamplingConfig `json:"dataSampling,omitempty"`
 }
+*/
 
+/* unreachable type Disk
 // +kcc:proto=google.dataflow.v1beta3.Disk
 type Disk struct {
 	// Size of disk in GB.  If zero or unspecified, the service will
@@ -138,7 +151,9 @@ type Disk struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.Disk.mount_point
 	MountPoint *string `json:"mountPoint,omitempty"`
 }
+*/
 
+/* unreachable type DisplayData
 // +kcc:proto=google.dataflow.v1beta3.DisplayData
 type DisplayData struct {
 	// The key identifying the display data.
@@ -199,7 +214,9 @@ type DisplayData struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.DisplayData.label
 	Label *string `json:"label,omitempty"`
 }
+*/
 
+/* unreachable type Environment
 // +kcc:proto=google.dataflow.v1beta3.Environment
 type Environment struct {
 	// The prefix of the resources the system should use for temporary
@@ -320,7 +337,9 @@ type Environment struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.streaming_mode
 	StreamingMode *string `json:"streamingMode,omitempty"`
 }
+*/
 
+/* unreachable type ExecutionStageState
 // +kcc:proto=google.dataflow.v1beta3.ExecutionStageState
 type ExecutionStageState struct {
 	// The name of the execution stage.
@@ -335,7 +354,9 @@ type ExecutionStageState struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageState.current_state_time
 	CurrentStateTime *string `json:"currentStateTime,omitempty"`
 }
+*/
 
+/* unreachable type ExecutionStageSummary
 // +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary
 type ExecutionStageSummary struct {
 	// Dataflow service generated name for this stage.
@@ -370,7 +391,9 @@ type ExecutionStageSummary struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.component_source
 	ComponentSource []ExecutionStageSummary_ComponentSource `json:"componentSource,omitempty"`
 }
+*/
 
+/* unreachable type ExecutionStageSummary_ComponentSource
 // +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary.ComponentSource
 type ExecutionStageSummary_ComponentSource struct {
 	// Human-readable name for this transform; may be user or system generated.
@@ -386,7 +409,9 @@ type ExecutionStageSummary_ComponentSource struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentSource.original_transform_or_collection
 	OriginalTransformOrCollection *string `json:"originalTransformOrCollection,omitempty"`
 }
+*/
 
+/* unreachable type ExecutionStageSummary_ComponentTransform
 // +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary.ComponentTransform
 type ExecutionStageSummary_ComponentTransform struct {
 	// Human-readable name for this transform; may be user or system generated.
@@ -402,7 +427,9 @@ type ExecutionStageSummary_ComponentTransform struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.ComponentTransform.original_transform
 	OriginalTransform *string `json:"originalTransform,omitempty"`
 }
+*/
 
+/* unreachable type ExecutionStageSummary_StageSource
 // +kcc:proto=google.dataflow.v1beta3.ExecutionStageSummary.StageSource
 type ExecutionStageSummary_StageSource struct {
 	// Human-readable name for this source; may be user or system generated.
@@ -422,13 +449,16 @@ type ExecutionStageSummary_StageSource struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.ExecutionStageSummary.StageSource.size_bytes
 	SizeBytes *int64 `json:"sizeBytes,omitempty"`
 }
+*/
 
+/* unreachable type FileIoDetails
 // +kcc:proto=google.dataflow.v1beta3.FileIODetails
 type FileIoDetails struct {
 	// File Pattern used to access files by the connector.
 	// +kcc:proto:field=google.dataflow.v1beta3.FileIODetails.file_pattern
 	FilePattern *string `json:"filePattern,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment", skipping
 
@@ -777,13 +807,16 @@ type Job struct {
 }
 */
 
+/* unreachable type JobExecutionInfo
 // +kcc:proto=google.dataflow.v1beta3.JobExecutionInfo
 type JobExecutionInfo struct {
 
 	// TODO: unsupported map type with key string and value message
 
 }
+*/
 
+/* unreachable type JobExecutionStageInfo
 // +kcc:proto=google.dataflow.v1beta3.JobExecutionStageInfo
 type JobExecutionStageInfo struct {
 	// The steps associated with the execution stage.
@@ -792,7 +825,9 @@ type JobExecutionStageInfo struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.JobExecutionStageInfo.step_name
 	StepName []string `json:"stepName,omitempty"`
 }
+*/
 
+/* unreachable type JobMetadata
 // +kcc:proto=google.dataflow.v1beta3.JobMetadata
 type JobMetadata struct {
 	// The SDK version used to run the job.
@@ -827,7 +862,9 @@ type JobMetadata struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.user_display_properties
 	UserDisplayProperties map[string]string `json:"userDisplayProperties,omitempty"`
 }
+*/
 
+/* unreachable type Package
 // +kcc:proto=google.dataflow.v1beta3.Package
 type Package struct {
 	// The name of the package.
@@ -843,7 +880,9 @@ type Package struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.Package.location
 	Location *string `json:"location,omitempty"`
 }
+*/
 
+/* unreachable type PipelineDescription
 // +kcc:proto=google.dataflow.v1beta3.PipelineDescription
 type PipelineDescription struct {
 	// Description of each transform in the pipeline and collections between them.
@@ -862,7 +901,9 @@ type PipelineDescription struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.PipelineDescription.step_names_hash
 	StepNamesHash *string `json:"stepNamesHash,omitempty"`
 }
+*/
 
+/* unreachable type PubSubIoDetails
 // +kcc:proto=google.dataflow.v1beta3.PubSubIODetails
 type PubSubIoDetails struct {
 	// Topic accessed in the connection.
@@ -873,7 +914,9 @@ type PubSubIoDetails struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.PubSubIODetails.subscription
 	Subscription *string `json:"subscription,omitempty"`
 }
+*/
 
+/* unreachable type RuntimeUpdatableParams
 // +kcc:proto=google.dataflow.v1beta3.RuntimeUpdatableParams
 type RuntimeUpdatableParams struct {
 	// The maximum number of workers to cap autoscaling at. This field is
@@ -895,11 +938,15 @@ type RuntimeUpdatableParams struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.RuntimeUpdatableParams.worker_utilization_hint
 	WorkerUtilizationHint *float64 `json:"workerUtilizationHint,omitempty"`
 }
+*/
 
+/* unreachable type SdkBug
 // +kcc:proto=google.dataflow.v1beta3.SdkBug
 type SdkBug struct {
 }
+*/
 
+/* unreachable type SdkHarnessContainerImage
 // +kcc:proto=google.dataflow.v1beta3.SdkHarnessContainerImage
 type SdkHarnessContainerImage struct {
 	// A docker container image that resides in Google Container Registry.
@@ -924,7 +971,9 @@ type SdkHarnessContainerImage struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.SdkHarnessContainerImage.capabilities
 	Capabilities []string `json:"capabilities,omitempty"`
 }
+*/
 
+/* unreachable type SdkVersion
 // +kcc:proto=google.dataflow.v1beta3.SdkVersion
 type SdkVersion struct {
 	// The version of the SDK used to run the job.
@@ -939,11 +988,15 @@ type SdkVersion struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.SdkVersion.sdk_support_status
 	SdkSupportStatus *string `json:"sdkSupportStatus,omitempty"`
 }
+*/
 
+/* unreachable type ServiceResources
 // +kcc:proto=google.dataflow.v1beta3.ServiceResources
 type ServiceResources struct {
 }
+*/
 
+/* unreachable type SpannerIoDetails
 // +kcc:proto=google.dataflow.v1beta3.SpannerIODetails
 type SpannerIoDetails struct {
 	// ProjectId accessed in the connection.
@@ -958,7 +1011,9 @@ type SpannerIoDetails struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.SpannerIODetails.database_id
 	DatabaseID *string `json:"databaseID,omitempty"`
 }
+*/
 
+/* unreachable type Step
 // +kcc:proto=google.dataflow.v1beta3.Step
 type Step struct {
 	// The kind of step in the Cloud Dataflow job.
@@ -976,7 +1031,9 @@ type Step struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.Step.properties
 	Properties apiextensionsv1.JSON `json:"properties,omitempty"`
 }
+*/
 
+/* unreachable type TaskRunnerSettings
 // +kcc:proto=google.dataflow.v1beta3.TaskRunnerSettings
 type TaskRunnerSettings struct {
 	// The UNIX user ID on the worker VM to use for tasks launched by
@@ -1081,7 +1138,9 @@ type TaskRunnerSettings struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.TaskRunnerSettings.streaming_worker_main_class
 	StreamingWorkerMainClass *string `json:"streamingWorkerMainClass,omitempty"`
 }
+*/
 
+/* unreachable type TransformSummary
 // +kcc:proto=google.dataflow.v1beta3.TransformSummary
 type TransformSummary struct {
 	// Type of transform.
@@ -1108,7 +1167,9 @@ type TransformSummary struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.TransformSummary.input_collection_name
 	InputCollectionName []string `json:"inputCollectionName,omitempty"`
 }
+*/
 
+/* unreachable type WorkerPool
 // +kcc:proto=google.dataflow.v1beta3.WorkerPool
 type WorkerPool struct {
 	// The kind of the worker pool; currently only `harness` and `shuffle`
@@ -1236,7 +1297,9 @@ type WorkerPool struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.sdk_harness_container_images
 	SdkHarnessContainerImages []SdkHarnessContainerImage `json:"sdkHarnessContainerImages,omitempty"`
 }
+*/
 
+/* unreachable type WorkerSettings
 // +kcc:proto=google.dataflow.v1beta3.WorkerSettings
 type WorkerSettings struct {
 	// The base URL for accessing Google Cloud APIs.
@@ -1281,7 +1344,9 @@ type WorkerSettings struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.WorkerSettings.temp_storage_prefix
 	TempStoragePrefix *string `json:"tempStoragePrefix,omitempty"`
 }
+*/
 
+/* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
@@ -1318,7 +1383,9 @@ type Any struct {
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
+*/
 
+/* unreachable type EnvironmentObservedState
 // +kcc:observedstate:proto=google.dataflow.v1beta3.Environment
 type EnvironmentObservedState struct {
 	// Output only. The shuffle mode used for the job.
@@ -1330,6 +1397,7 @@ type EnvironmentObservedState struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.use_streaming_engine_resource_based_billing
 	UseStreamingEngineResourceBasedBilling *bool `json:"useStreamingEngineResourceBasedBilling,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.dataflow.v1beta3.Job", skipping
 
@@ -1356,13 +1424,16 @@ type JobObservedState struct {
 }
 */
 
+/* unreachable type JobMetadataObservedState
 // +kcc:observedstate:proto=google.dataflow.v1beta3.JobMetadata
 type JobMetadataObservedState struct {
 	// The SDK version used to run the job.
 	// +kcc:proto:field=google.dataflow.v1beta3.JobMetadata.sdk_version
 	SdkVersion *SdkVersionObservedState `json:"sdkVersion,omitempty"`
 }
+*/
 
+/* unreachable type SdkBugObservedState
 // +kcc:observedstate:proto=google.dataflow.v1beta3.SdkBug
 type SdkBugObservedState struct {
 	// Output only. Describes the impact of this SDK bug.
@@ -1377,14 +1448,18 @@ type SdkBugObservedState struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.SdkBug.uri
 	URI *string `json:"uri,omitempty"`
 }
+*/
 
+/* unreachable type SdkVersionObservedState
 // +kcc:observedstate:proto=google.dataflow.v1beta3.SdkVersion
 type SdkVersionObservedState struct {
 	// Output only. Known bugs found in this SDK version.
 	// +kcc:proto:field=google.dataflow.v1beta3.SdkVersion.bugs
 	Bugs []SdkBugObservedState `json:"bugs,omitempty"`
 }
+*/
 
+/* unreachable type ServiceResourcesObservedState
 // +kcc:observedstate:proto=google.dataflow.v1beta3.ServiceResources
 type ServiceResourcesObservedState struct {
 	// Output only. List of Cloud Zones being used by the Dataflow Service for
@@ -1392,3 +1467,4 @@ type ServiceResourcesObservedState struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.ServiceResources.zones
 	Zones []string `json:"zones,omitempty"`
 }
+*/
