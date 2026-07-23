@@ -76,6 +76,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/devicestreaming/session"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/siptrunk"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine/identitymappingstore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dlp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dns"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/documentai"

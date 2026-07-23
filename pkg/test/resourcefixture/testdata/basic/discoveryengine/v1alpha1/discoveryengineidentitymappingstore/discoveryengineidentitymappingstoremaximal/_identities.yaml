@@ -1,0 +1,6 @@
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/identityMappingStores/identitymappingstore-${uniqueId}
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineIdentityMappingStore
+  name: identitymappingstore-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
