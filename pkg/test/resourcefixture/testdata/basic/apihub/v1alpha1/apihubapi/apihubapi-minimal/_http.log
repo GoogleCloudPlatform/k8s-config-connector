@@ -1,6 +1,6 @@
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 404 Not Found
@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/apis/api-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -32,20 +25,12 @@ X-Xss-Protection: 0
 
 POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis?%24alt=json%3Benum-encoding%3Dint&apiId=api-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "description": "A comprehensive APIHubAPI for E2E testing",
-  "displayName": "Maximal APIHubAPI",
-  "documentation": {
-    "externalUri": "https://example.com/docs"
-  },
-  "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}",
-  "owner": {
-    "displayName": "API Owner",
-    "email": "owner@example.com"
-  }
+  "displayName": "Minimal APIHubAPI",
+  "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}"
 }
 
 200 OK
@@ -60,16 +45,8 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A comprehensive APIHubAPI for E2E testing",
-  "displayName": "Maximal APIHubAPI",
-  "documentation": {
-    "externalUri": "https://example.com/docs"
-  },
+  "displayName": "Minimal APIHubAPI",
   "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}",
-  "owner": {
-    "displayName": "API Owner",
-    "email": "owner@example.com"
-  },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -77,7 +54,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
@@ -92,37 +69,21 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A comprehensive APIHubAPI for E2E testing",
-  "displayName": "Maximal APIHubAPI",
-  "documentation": {
-    "externalUri": "https://example.com/docs"
-  },
+  "displayName": "Minimal APIHubAPI",
   "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}",
-  "owner": {
-    "displayName": "API Owner",
-    "email": "owner@example.com"
-  },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cdocumentation%2Cowner
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: api.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 {
-  "description": "A comprehensive APIHubAPI for E2E testing - Updated",
-  "displayName": "Maximal APIHubAPI Updated",
-  "documentation": {
-    "externalUri": "https://example.com/docs/v2"
-  },
-  "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}",
-  "owner": {
-    "displayName": "API New Owner",
-    "email": "new-owner@example.com"
-  }
+  "displayName": "Minimal APIHubAPI Updated",
+  "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}"
 }
 
 200 OK
@@ -137,16 +98,8 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A comprehensive APIHubAPI for E2E testing - Updated",
-  "displayName": "Maximal APIHubAPI Updated",
-  "documentation": {
-    "externalUri": "https://example.com/docs/v2"
-  },
+  "displayName": "Minimal APIHubAPI Updated",
   "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}",
-  "owner": {
-    "displayName": "API New Owner",
-    "email": "new-owner@example.com"
-  },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -154,7 +107,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
@@ -169,16 +122,8 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A comprehensive APIHubAPI for E2E testing - Updated",
-  "displayName": "Maximal APIHubAPI Updated",
-  "documentation": {
-    "externalUri": "https://example.com/docs/v2"
-  },
+  "displayName": "Minimal APIHubAPI Updated",
   "name": "projects/${projectId}/locations/us-central1/apis/api-${uniqueId}",
-  "owner": {
-    "displayName": "API New Owner",
-    "email": "new-owner@example.com"
-  },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -186,7 +131,7 @@ X-Xss-Protection: 0
 
 DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
