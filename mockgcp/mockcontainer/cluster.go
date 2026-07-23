@@ -688,6 +688,12 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.ClusterTelemetry.Type = pb.ClusterTelemetry_ENABLED
 	}
 
+	if obj.InitialClusterVersion == "" {
+		obj.InitialClusterVersion = "1.34.8-gke.1278000"
+	} else if !strings.Contains(obj.InitialClusterVersion, "-gke.") {
+		obj.InitialClusterVersion = obj.InitialClusterVersion + ".8-gke.1278000"
+	}
+
 	if obj.CurrentMasterVersion == "" {
 		obj.CurrentMasterVersion = obj.InitialClusterVersion
 	}
