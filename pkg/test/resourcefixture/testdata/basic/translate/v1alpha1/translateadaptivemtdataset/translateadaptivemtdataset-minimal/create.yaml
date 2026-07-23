@@ -1,0 +1,10 @@
+apiVersion: translate.cnrm.cloud.google.com/v1alpha1
+kind: TranslateAdaptiveMtDataset
+metadata:
+  name: dataset-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  sourceLanguageCode: en
+  targetLanguageCode: fr
