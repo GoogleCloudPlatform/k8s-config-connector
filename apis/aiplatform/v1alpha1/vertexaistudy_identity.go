@@ -43,6 +43,10 @@ func (i *VertexAIStudyIdentity) String() string {
 	return VertexAIStudyIdentityFormat.ToString(*i)
 }
 
+func (i *VertexAIStudyIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *VertexAIStudyIdentity) FromExternal(ref string) error {
 	parsed, match, err := VertexAIStudyIdentityFormat.Parse(ref)
 	if err != nil {
@@ -98,9 +102,7 @@ func (obj *VertexAIStudy) GetIdentity(ctx context.Context, reader client.Reader)
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAIStudy identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
