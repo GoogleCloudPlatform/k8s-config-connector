@@ -25,7 +25,7 @@ import (
 var NetworkConnectivityRegionalEndpointGVK = GroupVersion.WithKind("NetworkConnectivityRegionalEndpoint")
 
 // NetworkConnectivityRegionalEndpointSpec defines the desired state of NetworkConnectivityRegionalEndpoint
-// +kcc:spec:proto=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint
+// +kcc:spec:proto=google.cloud.networkconnectivity.v1.RegionalEndpoint
 type NetworkConnectivityRegionalEndpointSpec struct {
 	// The project that this resource belongs to.
 	// +kubebuilder:validation:Required
@@ -80,7 +80,7 @@ type NetworkConnectivityRegionalEndpointStatus struct {
 }
 
 // NetworkConnectivityRegionalEndpointObservedState is the state of the NetworkConnectivityRegionalEndpoint resource as most recently observed in GCP.
-// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.RegionalEndpoint
 type NetworkConnectivityRegionalEndpointObservedState struct {
 	// Output only. Time when the RegionalEndpoint was created.
 	CreateTime *string `json:"createTime,omitempty"`
