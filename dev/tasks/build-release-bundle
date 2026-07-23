@@ -221,7 +221,6 @@ BLOCKED_KINDS=(
     "EnterpriseKnowledgeGraphEntityReconciliationJob"
     "EventarcChannelConnection"
     "AppOptimizeReport"
-    "BigQueryDataTransferTransferConfig"
     "BigQueryMigrationMigrationWorkflow"
     "BigQueryReservationReservationGroup"
     "BlockchainNodeEngineBlockchainNode"
