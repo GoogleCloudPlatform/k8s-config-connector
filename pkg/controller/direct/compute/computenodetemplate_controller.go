@@ -260,6 +260,12 @@ func compareComputeNodeTemplate(ctx context.Context, actual, desired *computepb.
 				Type: direct.PtrTo("RESTART_NODE_ON_ANY_SERVER"),
 			}
 		}
+		if obj.CpuOvercommitType == nil {
+			obj.CpuOvercommitType = direct.PtrTo("NONE")
+		}
+		if obj.Region != nil {
+			*obj.Region = lastComponent(*obj.Region)
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
