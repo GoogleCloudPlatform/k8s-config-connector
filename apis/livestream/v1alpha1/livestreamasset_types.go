@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -132,6 +133,7 @@ type LiveStreamAssetList struct {
 
 func init() {
 	SchemeBuilder.Register(&LiveStreamAsset{}, &LiveStreamAssetList{})
+	kccscheme.RegisterType(LiveStreamAssetGVK, &LiveStreamAsset{})
 }
 
 // +kcc:proto=google.cloud.video.livestream.v1.Asset.ImageAsset
