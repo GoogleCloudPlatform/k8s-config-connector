@@ -17,6 +17,118 @@
 // krm.group: configdelivery.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.configdelivery.v1
-// resource: ConfigDeliveryResourceBundle:ResourceBundle
+// resource: ConfigDeliveryFleetPackage:FleetPackage
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.configdelivery.v1.AllAtOnceStrategy
+type AllAtOnceStrategy struct {
+}
+
+// +kcc:proto=google.cloud.configdelivery.v1.Fleet.LabelSelector
+type Fleet_LabelSelector struct {
+	// Optional. match_labels is a map of {key,value} pairs. Each {key,value}
+	//  pair must match an existing label key and value exactly in order to
+	//  satisfy the match.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.Fleet.LabelSelector.match_labels
+	MatchLabels map[string]string `json:"matchLabels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.configdelivery.v1.FleetPackage.ResourceBundleSelector
+type FleetPackage_ResourceBundleSelector struct {
+	// Information specifying `ResourceBundle`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackage.ResourceBundleSelector.resource_bundle
+	ResourceBundle *FleetPackage_ResourceBundleTag `json:"resourceBundle,omitempty"`
+
+	// Information specifying `CloudBuildRepository`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackage.ResourceBundleSelector.cloud_build_repository
+	CloudBuildRepository *FleetPackage_CloudBuildRepository `json:"cloudBuildRepository,omitempty"`
+}
+
+// +kcc:proto=google.cloud.configdelivery.v1.FleetPackage.Target
+type FleetPackage_Target struct {
+	// The GKE fleet information.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackage.Target.fleet
+	Fleet *Fleet `json:"fleet,omitempty"`
+}
+
+// +kcc:proto=google.cloud.configdelivery.v1.FleetPackage.VariantSelector
+type FleetPackage_VariantSelector struct {
+	// Required. variant_name_template is a template that can refer to
+	//  variables containing cluster membership metadata such as location,
+	//  name, and labels to generate the name of the variant for a target
+	//  cluster. The variable syntax is similar to the unix shell variables.
+	//
+	//  Available variables are `${membership.name}`, `${membership.location}`,
+	//  `${membership.project}` and `${membership.labels['label_name']}`.
+	//
+	//  If you want to deploy a specific variant, say "default" to all the
+	//  clusters, you can use "default" (string without any variables) as
+	//  the variant_name_template.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackage.VariantSelector.variant_name_template
+	VariantNameTemplate *string `json:"variantNameTemplate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.configdelivery.v1.FleetPackageError
+type FleetPackageError struct {
+	// Optional. A description of the error.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageError.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+/* unreachable type FleetPackageInfo
+// +kcc:proto=google.cloud.configdelivery.v1.FleetPackageInfo
+type FleetPackageInfo struct {
+	// Optional. The active rollout, if any. Format is
+	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.active_rollout
+	ActiveRollout *string `json:"activeRollout,omitempty"`
+
+	// Optional. The last completed rollout, if any. Format is
+	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.last_completed_rollout
+	LastCompletedRollout *string `json:"lastCompletedRollout,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.configdelivery.v1.RollingStrategy
+type RollingStrategy struct {
+	// Optional. Maximum number of clusters to update the resource bundle on
+	//  concurrently.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.RollingStrategy.max_concurrent
+	MaxConcurrent *int32 `json:"maxConcurrent,omitempty"`
+}
+
+// +kcc:proto=google.cloud.configdelivery.v1.RolloutStrategy
+type RolloutStrategy struct {
+	// AllAtOnceStrategy causes all clusters to be updated concurrently.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.RolloutStrategy.all_at_once
+	AllAtOnce *AllAtOnceStrategy `json:"allAtOnce,omitempty"`
+
+	// RollingStrategy causes a specified number of clusters to be updated
+	//  concurrently until all clusters are updated.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.RolloutStrategy.rolling
+	Rolling *RollingStrategy `json:"rolling,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.configdelivery.v1.FleetPackageInfo
+type FleetPackageInfoObservedState struct {
+	// Optional. The active rollout, if any. Format is
+	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.active_rollout
+	ActiveRollout *string `json:"activeRollout,omitempty"`
+
+	// Optional. The last completed rollout, if any. Format is
+	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.last_completed_rollout
+	LastCompletedRollout *string `json:"lastCompletedRollout,omitempty"`
+
+	// Optional. Output only. The current state of the `FleetPackage`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.state
+	State *string `json:"state,omitempty"`
+
+	// Optional. Output only. Errors encountered during configuration deployment
+	//  (if any).
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.errors
+	Errors []FleetPackageError `json:"errors,omitempty"`
+}

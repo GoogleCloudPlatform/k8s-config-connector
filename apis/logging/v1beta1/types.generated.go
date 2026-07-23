@@ -310,10 +310,13 @@ type MetricDescriptor_MetricDescriptorMetadata struct {
 }
 */
 
+/* unreachable type BigQueryDataset
 // +kcc:proto=google.logging.v2.BigQueryDataset
 type BigQueryDataset struct {
 }
+*/
 
+/* unreachable type BigQueryOptions
 // +kcc:proto=google.logging.v2.BigQueryOptions
 type BigQueryOptions struct {
 	// Optional. Whether to use [BigQuery's partition
@@ -327,7 +330,9 @@ type BigQueryOptions struct {
 	// +kcc:proto:field=google.logging.v2.BigQueryOptions.use_partitioned_tables
 	UsePartitionedTables *bool `json:"usePartitionedTables,omitempty"`
 }
+*/
 
+/* unreachable type CmekSettings
 // +kcc:proto=google.logging.v2.CmekSettings
 type CmekSettings struct {
 
@@ -382,7 +387,9 @@ type CmekSettings struct {
 	// +kcc:proto:field=google.logging.v2.CmekSettings.kms_key_version_name
 	KMSKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
 }
+*/
 
+/* unreachable type IndexConfig
 // +kcc:proto=google.logging.v2.IndexConfig
 type IndexConfig struct {
 	// Required. The LogEntry field path to index.
@@ -400,6 +407,7 @@ type IndexConfig struct {
 	// +kcc:proto:field=google.logging.v2.IndexConfig.type
 	Type *string `json:"type,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.logging.v2.Link", skipping
 
@@ -789,6 +797,7 @@ type BigQueryDatasetObservedState struct {
 	DatasetID *string `json:"datasetID,omitempty"`
 }
 
+/* unreachable type BigQueryOptionsObservedState
 // +kcc:observedstate:proto=google.logging.v2.BigQueryOptions
 type BigQueryOptionsObservedState struct {
 	// Output only. True if new timestamp column based partitioning is in use,
@@ -801,7 +810,9 @@ type BigQueryOptionsObservedState struct {
 	// +kcc:proto:field=google.logging.v2.BigQueryOptions.uses_timestamp_column_partitioning
 	UsesTimestampColumnPartitioning *bool `json:"usesTimestampColumnPartitioning,omitempty"`
 }
+*/
 
+/* unreachable type CmekSettingsObservedState
 // +kcc:observedstate:proto=google.logging.v2.CmekSettings
 type CmekSettingsObservedState struct {
 	// Output only. The resource name of the CMEK settings.
@@ -823,7 +834,9 @@ type CmekSettingsObservedState struct {
 	// +kcc:proto:field=google.logging.v2.CmekSettings.service_account_id
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
+*/
 
+/* unreachable type IndexConfigObservedState
 // +kcc:observedstate:proto=google.logging.v2.IndexConfig
 type IndexConfigObservedState struct {
 	// Output only. The timestamp when the index was last modified.
@@ -833,6 +846,7 @@ type IndexConfigObservedState struct {
 	// +kcc:proto:field=google.logging.v2.IndexConfig.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.logging.v2.Link", skipping
 
