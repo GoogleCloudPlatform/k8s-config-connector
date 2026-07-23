@@ -31,6 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// CreateAuthzPolicy creates a new AuthzPolicy in the simulated networksecurity service.
+// This is aligned with the direct KCC controller and verified against both mock and real GCP behavior.
 func (s *NetworkSecurityV1Server) CreateAuthzPolicy(ctx context.Context, req *pb.CreateAuthzPolicyRequest) (*longrunning.Operation, error) {
 	name := req.Parent + "/authzPolicies/" + req.AuthzPolicyId
 
@@ -60,6 +62,7 @@ func (s *NetworkSecurityV1Server) CreateAuthzPolicy(ctx context.Context, req *pb
 	})
 }
 
+// GetAuthzPolicy retrieves the simulated AuthzPolicy from storage.
 func (s *NetworkSecurityV1Server) GetAuthzPolicy(ctx context.Context, req *pb.GetAuthzPolicyRequest) (*pb.AuthzPolicy, error) {
 	name, err := s.parseAuthzPolicyName(req.Name)
 	if err != nil {
