@@ -6,7 +6,6 @@ accesscontextmanager.cnrm.cloud.google.com,AccessContextManagerGCPUserAccessBind
 accesscontextmanager.cnrm.cloud.google.com,AccessContextManagerServicePerimeterResource,True,True,False,Terraform,False
 accesscontextmanager.cnrm.cloud.google.com,AccessContextManagerServicePerimeter,False,True,False,Terraform,True
 aiplatform.cnrm.cloud.google.com,AIPlatformModel,True,False,False,Direct,True
-aistreams.cnrm.cloud.google.com,AIStreamsCluster,True,False,False,Direct,True
 alloydb.cnrm.cloud.google.com,AlloyDBBackup,True,True,False,Terraform,True
 alloydb.cnrm.cloud.google.com,AlloyDBCluster,True,True,False,Terraform,True
 alloydb.cnrm.cloud.google.com,AlloyDBInstance,True,True,False,Direct,True
@@ -456,6 +455,7 @@ networksecurity.cnrm.cloud.google.com,NetworkSecurityMirroringEndpointGroup,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityPartnerSSEGateway,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityPartnerSSERealm,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecuritySACRealm,True,False,False,Direct,True
+networksecurity.cnrm.cloud.google.com,NetworkSecuritySecurityProfileGroup,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecuritySecurityProfile,True,False,False,Direct,True
 networksecurity.cnrm.cloud.google.com,NetworkSecurityServerTLSPolicy,False,True,False,DCL,False
 networksecurity.cnrm.cloud.google.com,NetworkSecurityTLSInspectionPolicy,True,False,False,Direct,True
@@ -560,6 +560,7 @@ tpu.cnrm.cloud.google.com,TPUNode,True,False,False,Terraform,False
 tpu.cnrm.cloud.google.com,TPUVirtualMachine,True,False,False,Direct,True
 translate.cnrm.cloud.google.com,TranslateAdaptiveMtDataset,True,False,False,Direct,True
 vectorsearch.cnrm.cloud.google.com,VectorSearchCollection,True,False,False,Direct,True
+vertexai.cnrm.cloud.google.com,VertexAICustomJob,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIDataLabelingJob,True,False,False,Direct,True
 vertexai.cnrm.cloud.google.com,VertexAIDataset,True,True,False,Terraform,True
 vertexai.cnrm.cloud.google.com,VertexAIDeploymentResourcePool,True,False,False,Direct,True
