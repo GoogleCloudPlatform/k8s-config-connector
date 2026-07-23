@@ -618,6 +618,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			}
 		}
 		if containerdConfig, ok := v["containerdConfig"].(map[string]interface{}); ok {
+			delete(containerdConfig, "registryHosts")
+			delete(containerdConfig, "writableCgroups")
 			delete(containerdConfig, "privateRegistryAccessConfig")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
