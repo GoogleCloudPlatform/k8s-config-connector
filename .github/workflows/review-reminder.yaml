@@ -20,6 +20,9 @@ on:
     - cron: '0 9,14 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   send-reminder:
     runs-on: ubuntu-latest
