@@ -48,6 +48,22 @@ func AcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatapr
 	out.AcceleratorCount = direct.ValueOf(in.AcceleratorCount)
 	return out
 }
+func AuthenticationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthenticationConfig) *krmdataprocv1alpha1.AuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.AuthenticationConfig{}
+	out.UserWorkloadAuthenticationType = direct.Enum_FromProto(mapCtx, in.GetUserWorkloadAuthenticationType())
+	return out
+}
+func AuthenticationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.AuthenticationConfig) *pb.AuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AuthenticationConfig{}
+	out.UserWorkloadAuthenticationType = direct.Enum_ToProto[pb.AuthenticationConfig_AuthenticationType](mapCtx, in.UserWorkloadAuthenticationType)
+	return out
+}
 
 /* found existing non-generated mapping function "AutotuningConfig_v1alpha1_FromProto", skipping
 func AutotuningConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutotuningConfig) *krmdataprocv1alpha1.AutotuningConfig {
@@ -2320,6 +2336,24 @@ func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto(mapCtx *direct
 	out.Rank = direct.ValueOf(in.Rank)
 	return out
 }
+func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult{}
+	// MISSING: MachineType
+	// MISSING: VMCount
+	return out
+}
+func InstanceFlexibilityPolicy_InstanceSelectionResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResult) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceFlexibilityPolicy_InstanceSelectionResult{}
+	// MISSING: MachineType
+	// MISSING: VMCount
+	return out
+}
 func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState {
 	if in == nil {
 		return nil
@@ -2690,6 +2724,26 @@ found existing non-generated mapping function "LoggingConfig_v1alpha1_ToProto", 
 		return out
 	}
 */
+func ManagedGroupConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1alpha1.ManagedGroupConfig{}
+	// MISSING: InstanceTemplateName
+	// MISSING: InstanceGroupManagerName
+	// MISSING: InstanceGroupManagerURI
+	return out
+}
+func ManagedGroupConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.ManagedGroupConfig) *pb.ManagedGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagedGroupConfig{}
+	// MISSING: InstanceTemplateName
+	// MISSING: InstanceGroupManagerName
+	// MISSING: InstanceGroupManagerURI
+	return out
+}
 func ManagedGroupConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagedGroupConfig) *krmdataprocv1alpha1.ManagedGroupConfigObservedState {
 	if in == nil {
 		return nil
