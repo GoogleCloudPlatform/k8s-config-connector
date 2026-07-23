@@ -13,3 +13,10 @@
   1. Defined `CloudSecurityComplianceFrameworkSpec` and `CloudSecurityComplianceFrameworkObservedState` in `framework_types.go` pointing to the proto definitions, then ran the type generator again to uncomment and generate deepcopy methods.
   2. Renamed the helper function `resolveOrganizationID` in `cloudsecuritycomplianceframework_identity.go` to the uniquely-named `resolveFrameworkOrganizationID`.
 - **Impact**: Code compiles and formats flawlessly, and all tests pass.
+
+### [2026-07-23] Initial Scaffold of CloudSecurityComplianceFrameworkDeployment
+- **Context**: Implementing direct types, CRD, and IdentityV2 for `CloudSecurityComplianceFrameworkDeployment`.
+- **Problem**: When `generate-mapper` was executed, the nested struct `CloudControlMetadata` inside `FrameworkDeploymentSpec` did not automatically generate `CloudControlMetadata_FromProto` and `CloudControlMetadata_ToProto` mapper functions. This resulted in compilation failures in the generated `mapper.generated.go`.
+- **Solution**: Hand-wrote custom `CloudControlMetadata_FromProto` and `CloudControlMetadata_ToProto` mapper functions inside `manual_mappers.go` to cleanly map `CloudControlMetadata` fields using `pb.EnforcementMode`.
+- **Enhancement**: Added standard `ExternalIdentifier() *string` method on `CloudSecurityComplianceFrameworkDeployment` to fully comply with the direct identity interface standards.
+- **Impact**: Code compiles and formats flawlessly, and all tests pass.
