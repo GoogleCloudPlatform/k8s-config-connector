@@ -28,12 +28,12 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1alpha1 contains API Schema definitions for the certificatemanager v1alpha1 API group.
+// Package v1alpha1 contains API Schema definitions for the rapidmigrationassessment v1alpha1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
-// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/certificatemanager
+// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/rapidmigrationassessment
 // +k8s:defaulter-gen=TypeMeta
-// +groupName=certificatemanager.cnrm.cloud.google.com
+// +groupName=rapidmigrationassessment.cnrm.cloud.google.com
 package v1alpha1
 
 import (
@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "certificatemanager.cnrm.cloud.google.com", Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "rapidmigrationassessment.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
@@ -53,17 +53,11 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	CertificateManagerCertificateIssuanceConfigGVK = schema.GroupVersionKind{
+	RapidMigrationAssessmentCollectorGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CertificateManagerCertificateIssuanceConfig{}).Name(),
+		Kind:    reflect.TypeOf(RapidMigrationAssessmentCollector{}).Name(),
 	}
 
-	CertificateManagerTrustConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CertificateManagerTrustConfig{}).Name(),
-	}
-
-	certificatemanagerAPIVersion = SchemeGroupVersion.String()
+	rapidmigrationassessmentAPIVersion = SchemeGroupVersion.String()
 )

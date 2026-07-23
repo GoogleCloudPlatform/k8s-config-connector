@@ -108,11 +108,11 @@ certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificateMapEntry,T
 certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificateMap,True,True,False,Terraform,True
 certificatemanager.cnrm.cloud.google.com,CertificateManagerCertificate,True,True,False,Terraform,True
 certificatemanager.cnrm.cloud.google.com,CertificateManagerDNSAuthorization,True,True,False,Direct,True
+certificatemanager.cnrm.cloud.google.com,CertificateManagerTrustConfig,True,False,False,Direct,True
 ces.cnrm.cloud.google.com,CESApp,True,False,False,Direct,True
 cloudasset.cnrm.cloud.google.com,CloudAssetFolderFeed,True,False,False,Terraform,False
 cloudasset.cnrm.cloud.google.com,CloudAssetOrganizationFeed,True,False,False,Terraform,False
 cloudasset.cnrm.cloud.google.com,CloudAssetProjectFeed,True,False,False,Terraform,False
-cloudasset.cnrm.cloud.google.com,CloudAssetSavedQuery,True,False,False,Direct,True
 batch.cnrm.cloud.google.com,CloudBatchResourceAllowance,True,False,False,Direct,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildConnection,True,False,False,Direct,True
 cloudbuild.cnrm.cloud.google.com,CloudBuildTrigger,False,True,False,Terraform,True
@@ -498,6 +498,7 @@ pubsub.cnrm.cloud.google.com,PubSubSchema,False,True,False,Terraform,True
 pubsub.cnrm.cloud.google.com,PubSubSnapshot,True,True,False,Direct,True
 pubsub.cnrm.cloud.google.com,PubSubSubscription,False,True,False,Terraform,True
 pubsub.cnrm.cloud.google.com,PubSubTopic,False,True,False,Terraform,True
+rapidmigrationassessment.cnrm.cloud.google.com,RapidMigrationAssessmentCollector,True,False,False,Direct,True
 recaptchaenterprise.cnrm.cloud.google.com,ReCAPTCHAEnterpriseFirewallPolicy,True,False,False,Direct,True
 recaptchaenterprise.cnrm.cloud.google.com,RecaptchaEnterpriseKey,False,True,False,DCL,True
 redis.cnrm.cloud.google.com,RedisClusterEndpoint,True,False,False,Direct,True
