@@ -26,9 +26,22 @@ rm -rf /tmp/kcc-gocache-* 2>/dev/null || true
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+# Create a temporary parent directory for worker Go build caches
+export GOCACHE_BASE="/tmp/kcc-gocache-$$"
+mkdir -p "${GOCACHE_BASE}/shared"
+
+# Guarantee cleanup of GOCACHE_BASE on script completion or interruption (SIGINT, SIGTERM, EXIT)
+cleanup_gocache_base() {
+    rm -rf "${GOCACHE_BASE}" 2>/dev/null || true
+}
+trap cleanup_gocache_base EXIT INT TERM
+
 # Pre-compile controllerbuilder and shared googleapis proto descriptors once upfront
+# We compile into GOCACHE_BASE/shared so all worker threads can seed their isolated caches instantly
 pushd dev/tools/controllerbuilder
 ./generate-proto.sh
+echo "Pre-compiling controllerbuilder dependencies into shared build cache..."
+GOCACHE="${GOCACHE_BASE}/shared" go build -o /dev/null .
 popd
 
 # For efficiency during parallel package generation:
@@ -111,25 +124,15 @@ done
 NUM_WORKERS="${PARALLELISM:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 8)}"
 echo "Running ${#scripts[@]} generator scripts in parallel with ${NUM_WORKERS} workers..."
 
-# Create a temporary parent directory for worker Go build caches
-export GOCACHE_BASE="/tmp/kcc-gocache-$$"
-mkdir -p "${GOCACHE_BASE}"
-
-# Guarantee cleanup of GOCACHE_BASE on script completion or interruption (SIGINT, SIGTERM, EXIT)
-cleanup_gocache_base() {
-    rm -rf "${GOCACHE_BASE}" 2>/dev/null || true
-}
-trap cleanup_gocache_base EXIT INT TERM
-
 # Worker function to execute a single generate.sh script in parallel with its own isolated Go build cache
 run_one() {
     local f="$1"
     
-    # Create an isolated temporary GOCACHE directory per worker process.
-    # This prevents race conditions and lock collisions in standard ~/.cache/go-build
-    # when multiple Go compiler processes run simultaneously.
+    # Create an isolated temporary GOCACHE directory per worker process, pre-seeded from shared cache.
+    # This prevents race conditions and lock collisions while allowing instant cached compilation.
     local worker_cache
     worker_cache=$(mktemp -d "${GOCACHE_BASE}/worker-XXXXXX")
+    cp -al "${GOCACHE_BASE}/shared/." "${worker_cache}/" 2>/dev/null || cp -r "${GOCACHE_BASE}/shared/." "${worker_cache}/"
     export GOCACHE="${worker_cache}"
     export GOTMPDIR="${worker_cache}"
 
