@@ -51,14 +51,12 @@ type AcceleratorConfig struct {
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 }
 
-/* unreachable type AuthenticationConfig
 // +kcc:proto=google.cloud.dataproc.v1.AuthenticationConfig
 type AuthenticationConfig struct {
 	// Optional. Authentication type for the user workload running in containers.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AuthenticationConfig.user_workload_authentication_type
 	UserWorkloadAuthenticationType *string `json:"userWorkloadAuthenticationType,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "AutotuningConfig", skipping
 
@@ -434,11 +432,9 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	Rank *int32 `json:"rank,omitempty"`
 }
 
-/* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
-*/
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
 type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
@@ -759,11 +755,9 @@ type LoggingConfig struct {
 }
 */
 
-/* unreachable type ManagedGroupConfig
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfig struct {
 }
-*/
 
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.NodeGroup", skipping
 

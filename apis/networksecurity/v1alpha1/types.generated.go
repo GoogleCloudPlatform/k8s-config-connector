@@ -16,107 +16,106 @@
 // +generated:types
 // krm.group: networksecurity.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.networksecurity.v1alpha1
-// resource: NetworkSecurityPartnerSSERealm:PartnerSSERealm
-// resource: NetworkSecurityPartnerSSEGateway:PartnerSSEGateway
+// proto.service: google.cloud.networksecurity.v1
+// resource: NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig
+// resource: NetworkSecurityInterceptDeployment:InterceptDeployment
+// resource: NetworkSecurityAddressGroup:AddressGroup
+// resource: NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup
+// resource: NetworkSecurityMirroringDeployment:MirroringDeployment
+// resource: NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup
+// resource: NetworkSecuritySACRealm:SACRealm
+// resource: NetworkSecuritySecurityProfile:SecurityProfile
+// resource: NetworkSecurityFirewallEndpointAssociation:FirewallEndpointAssociation
+// resource: NetworkSecurityGatewaySecurityPolicy:GatewaySecurityPolicy
 // resource: NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy
+// resource: NetworkSecurityAuthzPolicy:AuthzPolicy
+// resource: NetworkSecurityFirewallEndpoint:FirewallEndpoint
+// resource: NetworkSecurityDNSThreatDetector:DnsThreatDetector
 
 package v1alpha1
 
-/* unreachable type PartnerSseRealm_PartnerSseRealmPanOptions
-// +kcc:proto=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions
-type PartnerSseRealm_PartnerSseRealmPanOptions struct {
-	// Optional. serial_number is provided by PAN to identify GCP customer on
-	//  PAN side.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.serial_number
-	SerialNumber *string `json:"serialNumber,omitempty"`
-
-	// Optional. tenant_id is provided by PAN to identify GCP customer on PAN
-	//  side.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.tenant_id
-	TenantID *string `json:"tenantID,omitempty"`
+// +kcc:proto=google.cloud.networksecurity.v1.FirewallEndpoint.AssociationReference
+type FirewallEndpoint_AssociationReference struct {
 }
-*/
 
-/* unreachable type TLSInspectionPolicy
-// +kcc:proto=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy
-type TLSInspectionPolicy struct {
-	// Required. Name of the resource. Name is of the form
-	//  projects/{project}/locations/{location}/tlsInspectionPolicies/{tls_inspection_policy}
-	//  tls_inspection_policy should match the
-	//  pattern:(^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$).
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.name
+// +kcc:proto=google.cloud.networksecurity.v1.FirewallEndpoint.EndpointSettings
+type FirewallEndpoint_EndpointSettings struct {
+	// Optional. Immutable. Indicates whether Jumbo Frames are enabled.
+	//  Default value is false.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.FirewallEndpoint.EndpointSettings.jumbo_frames_enabled
+	JumboFramesEnabled *bool `json:"jumboFramesEnabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networksecurity.v1.SecurityProfile
+type SecurityProfile struct {
+	// The threat prevention configuration for the SecurityProfile.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.threat_prevention_profile
+	ThreatPreventionProfile *ThreatPreventionProfile `json:"threatPreventionProfile,omitempty"`
+
+	// The custom Packet Mirroring v2 configuration for the SecurityProfile.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.custom_mirroring_profile
+	CustomMirroringProfile *CustomMirroringProfile `json:"customMirroringProfile,omitempty"`
+
+	// The custom TPPI configuration for the SecurityProfile.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.custom_intercept_profile
+	CustomInterceptProfile *CustomInterceptProfile `json:"customInterceptProfile,omitempty"`
+
+	// The URL filtering configuration for the SecurityProfile.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.url_filtering_profile
+	URLFilteringProfile *URLFilteringProfile `json:"urlFilteringProfile,omitempty"`
+
+	// Immutable. Identifier. Name of the SecurityProfile resource. It matches
+	//  pattern
+	//  `projects|organizations/*/locations/{location}/securityProfiles/{security_profile}`.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.name
 	Name *string `json:"name,omitempty"`
 
-	// Optional. Free-text description of the resource.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.description
+	// Optional. An optional description of the profile. Max length 512
+	//  characters.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.description
 	Description *string `json:"description,omitempty"`
 
-	// Required. A CA pool resource used to issue interception certificates.
-	//  The CA pool string has a relative resource path following the form
-	//  "projects/{project}/locations/{location}/caPools/{ca_pool}".
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.ca_pool
-	CAPool *string `json:"caPool,omitempty"`
+	// Optional. Labels as key value pairs.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.labels
+	Labels map[string]string `json:"labels,omitempty"`
 
-	// Optional. A TrustConfig resource used when making a connection to the TLS
-	//  server. This is a relative resource path following the form
-	//  "projects/{project}/locations/{location}/trustConfigs/{trust_config}". This
-	//  is necessary to intercept TLS connections to servers with certificates
-	//  signed by a private CA or self-signed certificates.
-	//  Note that Secure Web Proxy does not yet honor this field.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.trust_config
-	TrustConfig *string `json:"trustConfig,omitempty"`
-
-	// Optional. If  FALSE (the default), use our default set of public CAs in
-	//  addition to any CAs specified in trust_config. These public CAs are
-	//  currently based on the Mozilla Root Program and are subject to change over
-	//  time. If TRUE, do not accept our default set of public CAs. Only CAs
-	//  specified in trust_config will be accepted. This defaults to FALSE (use
-	//  public CAs in addition to trust_config) for backwards compatibility, but
-	//  trusting public root CAs is *not recommended* unless the traffic in
-	//  question is outbound to public web servers. When possible, prefer setting
-	//  this to "false" and explicitly specifying trusted CAs and certificates in a
-	//  TrustConfig. Note that Secure Web Proxy does not yet honor this field.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.exclude_public_ca_set
-	ExcludePublicCASet *bool `json:"excludePublicCASet,omitempty"`
-
-	// Optional. Minimum TLS version that the firewall should use when negotiating
-	//  connections with both clients and servers. If this is not set, then the
-	//  default value is to allow the broadest set of clients and servers (TLS 1.0
-	//  or higher). Setting this to more restrictive values may improve security,
-	//  but may also prevent the firewall from connecting to some clients or
-	//  servers.
-	//  Note that Secure Web Proxy does not yet honor this field.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.min_tls_version
-	MinTLSVersion *string `json:"minTLSVersion,omitempty"`
-
-	// Optional. The selected Profile. If this is not set, then the default value
-	//  is to allow the broadest set of clients and servers ("PROFILE_COMPATIBLE").
-	//  Setting this to more restrictive values may improve security, but may also
-	//  prevent the TLS inspection proxy from connecting to some clients or
-	//  servers. Note that Secure Web Proxy does not yet honor this field.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.tls_feature_profile
-	TLSFeatureProfile *string `json:"tlsFeatureProfile,omitempty"`
-
-	// Optional. List of custom TLS cipher suites selected.
-	//  This field is valid only if the selected tls_feature_profile is CUSTOM.
-	//  The [compute.SslPoliciesService.ListAvailableFeatures][] method returns the
-	//  set of features that can be specified in this list.
-	//  Note that Secure Web Proxy does not yet honor this field.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.custom_tls_features
-	CustomTLSFeatures []string `json:"customTLSFeatures,omitempty"`
+	// Immutable. The single ProfileType that the SecurityProfile resource
+	//  configures.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.type
+	Type *string `json:"type,omitempty"`
 }
-*/
 
-/* unreachable type TLSInspectionPolicyObservedState
-// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy
-type TLSInspectionPolicyObservedState struct {
-	// Output only. The timestamp when the resource was created.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.create_time
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.FirewallEndpoint.AssociationReference
+type FirewallEndpoint_AssociationReferenceObservedState struct {
+	// Output only. The resource name of the FirewallEndpointAssociation.
+	//  Format:
+	//  projects/{project}/locations/{location}/firewallEndpointAssociations/{id}
+	// +kcc:proto:field=google.cloud.networksecurity.v1.FirewallEndpoint.AssociationReference.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The VPC network associated. Format:
+	//  projects/{project}/global/networks/{name}.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.FirewallEndpoint.AssociationReference.network
+	Network *string `json:"network,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.SecurityProfile
+type SecurityProfileObservedState struct {
+	// The threat prevention configuration for the SecurityProfile.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.threat_prevention_profile
+	ThreatPreventionProfile *ThreatPreventionProfileObservedState `json:"threatPreventionProfile,omitempty"`
+
+	// Output only. Resource creation timestamp.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The timestamp when the resource was updated.
-	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.update_time
+	// Output only. Last resource update timestamp.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. This checksum is computed by the server based on the value of
+	//  other fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.etag
+	Etag *string `json:"etag,omitempty"`
 }
-*/

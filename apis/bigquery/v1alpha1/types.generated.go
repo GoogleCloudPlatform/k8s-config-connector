@@ -105,7 +105,6 @@ type Access struct {
 }
 */
 
-/* unreachable type DatasetAccessEntry
 // +kcc:proto=google.cloud.bigquery.v2.DatasetAccessEntry
 type DatasetAccessEntry struct {
 	// The dataset this entry applies to
@@ -118,9 +117,7 @@ type DatasetAccessEntry struct {
 	// +kcc:proto:field=google.cloud.bigquery.v2.DatasetAccessEntry.target_types
 	TargetTypes []string `json:"targetTypes,omitempty"`
 }
-*/
 
-/* unreachable type DatasetReference
 // +kcc:proto=google.cloud.bigquery.v2.DatasetReference
 type DatasetReference struct {
 	// Required. A unique ID for this dataset, without the project name. The ID
@@ -133,9 +130,7 @@ type DatasetReference struct {
 	// +kcc:proto:field=google.cloud.bigquery.v2.DatasetReference.project_id
 	ProjectID *string `json:"projectID,omitempty"`
 }
-*/
 
-/* unreachable type RoutineReference
 // +kcc:proto=google.cloud.bigquery.v2.RoutineReference
 type RoutineReference struct {
 	// Required. The ID of the project containing this routine.
@@ -152,9 +147,7 @@ type RoutineReference struct {
 	// +kcc:proto:field=google.cloud.bigquery.v2.RoutineReference.routine_id
 	RoutineID *string `json:"routineID,omitempty"`
 }
-*/
 
-/* unreachable type TableReference
 // +kcc:proto=google.cloud.bigquery.v2.TableReference
 type TableReference struct {
 	// Required. The ID of the project containing this table.
@@ -175,9 +168,7 @@ type TableReference struct {
 	// +kcc:proto:field=google.cloud.bigquery.v2.TableReference.table_id
 	TableID *string `json:"tableID,omitempty"`
 }
-*/
 
-/* unreachable type Expr
 // +kcc:proto=google.type.Expr
 type Expr struct {
 	// Textual representation of an expression in Common Expression Language
@@ -201,4 +192,3 @@ type Expr struct {
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
 }
-*/
