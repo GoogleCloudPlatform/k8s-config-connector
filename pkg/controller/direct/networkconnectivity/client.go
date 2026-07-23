@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	gcpapi "cloud.google.com/go/networkconnectivity/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	api "google.golang.org/api/networkconnectivity/v1"
 )
@@ -44,3 +45,16 @@ func (m *gcpClient) newNetworkConnectivityClient(ctx context.Context) (*api.Serv
 	}
 	return client, err
 }
+
+func (m *gcpClient) newInternalRangeClient(ctx context.Context) (*gcpapi.InternalRangeClient, error) {
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := gcpapi.NewInternalRangeClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building networkconnectivity internalrange client: %w", err)
+	}
+	return client, err
+}
+
