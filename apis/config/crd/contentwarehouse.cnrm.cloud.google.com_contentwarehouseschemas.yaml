@@ -1,0 +1,300 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: contentwarehouseschemas.contentwarehouse.cnrm.cloud.google.com
+spec:
+  group: contentwarehouse.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ContentWarehouseSchema
+    listKind: ContentWarehouseSchemaList
+    plural: contentwarehouseschemas
+    shortNames:
+    - gcpcontentwarehouseschema
+    - gcpcontentwarehouseschemas
+    singular: contentwarehouseschema
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ContentWarehouseSchema is the Schema for the ContentWarehouseSchema
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ContentWarehouseSchemaSpec defines the desired state of ContentWarehouseSchema
+            properties:
+              description:
+                description: Schema description.
+                type: string
+              displayName:
+                description: Required. Name of the schema given by the user. Must
+                  be unique per project.
+                type: string
+              documentIsFolder:
+                description: |-
+                  Document Type, true refers the document is a folder, otherwise it is
+                   a typical document.
+                type: boolean
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              propertyDefinitions:
+                description: Document details.
+                items:
+                  properties:
+                    dateTimeTypeOptions:
+                      description: |-
+                        Date time property.
+                         It is not supported by CMEK compliant deployment.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    displayName:
+                      description: The display-name for the property, used for front-end.
+                      type: string
+                    enumTypeOptions:
+                      description: Enum/categorical property.
+                      properties:
+                        possibleValues:
+                          description: Required. List of possible enum values.
+                          items:
+                            type: string
+                          type: array
+                        validationCheckDisabled:
+                          description: |-
+                            Make sure the Enum property value provided in the document is in the
+                             possile value list during document creation. The validation check runs by
+                             default.
+                          type: boolean
+                      required:
+                      - possibleValues
+                      type: object
+                    floatTypeOptions:
+                      description: Float property.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    integerTypeOptions:
+                      description: Integer property.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    isFilterable:
+                      description: |-
+                        Whether the property can be filtered. If this is a sub-property, all the
+                         parent properties must be marked filterable.
+                      type: boolean
+                    isMetadata:
+                      description: |-
+                        Whether the property is user supplied metadata.
+                         This out-of-the box placeholder setting can be used to tag derived
+                         properties. Its value and interpretation logic should be implemented by API
+                         user.
+                      type: boolean
+                    isRepeatable:
+                      description: Whether the property can have multiple values.
+                      type: boolean
+                    isRequired:
+                      description: |-
+                        Whether the property is mandatory.
+                         Default is 'false', i.e. populating property value can be skipped.
+                         If 'true' then user must populate the value for this property.
+                      type: boolean
+                    isSearchable:
+                      description: Indicates that the property should be included
+                        in a global search.
+                      type: boolean
+                    mapTypeOptions:
+                      description: Map property.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: |-
+                        Required. The name of the metadata property.
+                         Must be unique within a document schema and is case insensitive.
+                         Names must be non-blank, start with a letter, and can contain alphanumeric
+                         characters and: /, :, -, _, and .
+                      type: string
+                    propertyTypeOptions:
+                      description: Nested structured data property.
+                      properties:
+                        propertyDefinitions:
+                          description: Required. List of property definitions.
+                          x-kubernetes-preserve-unknown-fields: true
+                      required:
+                      - propertyDefinitions
+                      type: object
+                    retrievalImportance:
+                      description: The retrieval importance of the property during
+                        search.
+                      type: string
+                    schemaSources:
+                      description: The mapping information between this property to
+                        another schema source.
+                      items:
+                        properties:
+                          name:
+                            description: The schema name in the source.
+                            type: string
+                          processorType:
+                            description: The Doc AI processor type name.
+                            type: string
+                        type: object
+                      type: array
+                    textTypeOptions:
+                      description: Text/string property.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    timestampTypeOptions:
+                      description: |-
+                        Timestamp property.
+                         It is not supported by CMEK compliant deployment.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                  required:
+                  - name
+                  type: object
+                type: array
+              resourceID:
+                description: The ContentWarehouseSchema name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - displayName
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ContentWarehouseSchemaStatus defines the config connector
+              machine state of ContentWarehouseSchema
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ContentWarehouseSchema resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

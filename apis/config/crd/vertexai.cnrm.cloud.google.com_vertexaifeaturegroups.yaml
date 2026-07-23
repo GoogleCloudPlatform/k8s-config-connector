@@ -1,0 +1,255 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vertexaifeaturegroups.vertexai.cnrm.cloud.google.com
+spec:
+  group: vertexai.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VertexAIFeatureGroup
+    listKind: VertexAIFeatureGroupList
+    plural: vertexaifeaturegroups
+    shortNames:
+    - gcpvertexaifeaturegroup
+    - gcpvertexaifeaturegroups
+    singular: vertexaifeaturegroup
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VertexAIFeatureGroup is the Schema for the VertexAIFeatureGroup
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VertexAIFeatureGroupSpec defines the desired state of VertexAIFeatureGroup
+            properties:
+              bigQuery:
+                description: Indicates that that the source of this FeatureGroup is
+                  BigQuery.
+                properties:
+                  bigQuerySource:
+                    description: |-
+                      Required. Immutable. The BigQuery source URI that points to either a
+                       BigQuery Table or View.
+                    properties:
+                      inputURI:
+                        description: |-
+                          Required. BigQuery URI to a table, up to 2000 characters long.
+                           Accepted forms:
+
+                           *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
+                        type: string
+                    type: object
+                  dense:
+                    description: |-
+                      Optional. If set, all feature values will be fetched
+                       from a single row per unique entityId including nulls.
+                       If not set, will collapse all rows for each unique entityId into a singe
+                       row with any non-null values if present, if no non-null values are
+                       present will sync null.
+                       ex: If source has schema
+                       `(entity_id, feature_timestamp, f0, f1)` and the following rows:
+                       `(e1, 2020-01-01T10:00:00.123Z, 10, 15)`
+                       `(e1, 2020-02-01T10:00:00.123Z, 20, null)`
+                       If dense is set, `(e1, 20, null)` is synced to online stores. If dense is
+                       not set, `(e1, 20, 15)` is synced to online stores.
+                    type: boolean
+                  entityIDColumns:
+                    description: |-
+                      Optional. Columns to construct entity_id / row keys.
+                       If not provided defaults to `entity_id`.
+                    items:
+                      type: string
+                    type: array
+                  staticDataSource:
+                    description: Optional. Set if the data source is not a time-series.
+                    type: boolean
+                  timeSeries:
+                    description: |-
+                      Optional. If the source is a time-series source, this can be set to
+                       control how downstream sources (ex:
+                       [FeatureView][google.cloud.aiplatform.v1beta1.FeatureView] ) will treat
+                       time-series sources. If not set, will treat the source as a time-series
+                       source with `feature_timestamp` as timestamp column and no scan boundary.
+                    properties:
+                      timestampColumn:
+                        description: |-
+                          Optional. Column hosting timestamp values for a time-series source.
+                           Will be used to determine the latest `feature_values` for each entity.
+                           Optional. If not provided, column named `feature_timestamp` of
+                           type `TIMESTAMP` will be used.
+                        type: string
+                    type: object
+                type: object
+              description:
+                description: Optional. Description of the FeatureGroup.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. The labels with user-defined metadata to organize
+                  your FeatureGroup.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The VertexAIFeatureGroup name. If not given, the metadata.name
+                  will be used.
+                type: string
+              serviceAgentType:
+                description: Optional. A service account type for BigQuery data reading.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: VertexAIFeatureGroupStatus defines the config connector machine
+              state of VertexAIFeatureGroup
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VertexAIFeatureGroup resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when this FeatureGroup was
+                      created.
+                    type: string
+                  serviceAccountEmail:
+                    description: Output only. The email of the service account used
+                      to read the BigQuery data.
+                    type: string
+                  updateTime:
+                    description: Output only. Timestamp when this FeatureGroup was
+                      last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

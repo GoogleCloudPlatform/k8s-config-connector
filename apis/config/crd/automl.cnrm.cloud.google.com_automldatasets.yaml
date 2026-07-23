@@ -1,0 +1,259 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: automldatasets.automl.cnrm.cloud.google.com
+spec:
+  group: automl.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: AutoMLDataset
+    listKind: AutoMLDatasetList
+    plural: automldatasets
+    shortNames:
+    - gcpautomldataset
+    - gcpautomldatasets
+    singular: automldataset
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AutoMLDataset is the Schema for the AutoMLDataset API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AutoMLDatasetSpec defines the desired state of AutoMLDataset
+            properties:
+              description:
+                description: |-
+                  User-provided description of the dataset. The description can be up to
+                   25000 characters long.
+                type: string
+              displayName:
+                description: |-
+                  Required. The name of the dataset to show in the interface. The name can be
+                   up to 32 characters long and can consist only of ASCII Latin letters A-Z
+                   and a-z, underscores
+                   (_), and ASCII digits 0-9.
+                type: string
+              imageClassificationDatasetMetadata:
+                description: Metadata for a dataset used for image classification.
+                properties:
+                  classificationType:
+                    description: Required. Type of the classification problem.
+                    type: string
+                required:
+                - classificationType
+                type: object
+              imageObjectDetectionDatasetMetadata:
+                description: Metadata for a dataset used for image object detection.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. The labels with user-defined metadata to organize your dataset.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+                   Label values are optional. Label keys must start with a letter.
+
+                   See https://goo.gl/xmQnxf for more information on and examples of labels.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The AutoMLDataset name. If not given, the metadata.name
+                  will be used.
+                type: string
+              textClassificationDatasetMetadata:
+                description: Metadata for a dataset used for text classification.
+                properties:
+                  classificationType:
+                    description: Required. Type of the classification problem.
+                    type: string
+                required:
+                - classificationType
+                type: object
+              textExtractionDatasetMetadata:
+                description: Metadata for a dataset used for text extraction.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              textSentimentDatasetMetadata:
+                description: Metadata for a dataset used for text sentiment.
+                properties:
+                  sentimentMax:
+                    description: |-
+                      Required. A sentiment is expressed as an integer ordinal, where higher value
+                       means a more positive sentiment. The range of sentiments that will be used
+                       is between 0 and sentiment_max (inclusive on both ends), and all the values
+                       in the range must be represented in the dataset before a model can be
+                       created.
+                       sentiment_max value must be between 1 and 10 (inclusive).
+                    format: int32
+                    type: integer
+                required:
+                - sentimentMax
+                type: object
+              translationDatasetMetadata:
+                description: Metadata for a dataset used for translation.
+                properties:
+                  sourceLanguageCode:
+                    description: Required. The BCP-47 language code of the source
+                      language.
+                    type: string
+                  targetLanguageCode:
+                    description: Required. The BCP-47 language code of the target
+                      language.
+                    type: string
+                required:
+                - sourceLanguageCode
+                - targetLanguageCode
+                type: object
+            required:
+            - displayName
+            - location
+            - projectRef
+            type: object
+          status:
+            description: AutoMLDatasetStatus defines the config connector machine
+              state of AutoMLDataset
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the AutoMLDataset resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when this dataset was created.
+                    type: string
+                  etag:
+                    description: Used to perform consistent read-modify-write updates.
+                    type: string
+                  exampleCount:
+                    description: Output only. The number of examples in the dataset.
+                    format: int32
+                    type: integer
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

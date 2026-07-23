@@ -1,0 +1,459 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com
+spec:
+  group: vertexai.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VertexAIDeploymentResourcePool
+    listKind: VertexAIDeploymentResourcePoolList
+    plural: vertexaideploymentresourcepools
+    shortNames:
+    - gcpvertexaideploymentresourcepool
+    - gcpvertexaideploymentresourcepools
+    singular: vertexaideploymentresourcepool
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VertexAIDeploymentResourcePool is the Schema for the VertexAIDeploymentResourcePool
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VertexAIDeploymentResourcePoolSpec defines the desired state
+              of VertexAIDeploymentResourcePool
+            properties:
+              dedicatedResources:
+                description: |-
+                  Required. The underlying DedicatedResources that the DeploymentResourcePool
+                   uses.
+                properties:
+                  autoscalingMetricSpecs:
+                    description: |-
+                      Immutable. The metric specifications that overrides a resource
+                       utilization metric (CPU utilization, accelerator's duty cycle, and so on)
+                       target value (default to 60 if not set). At most one entry is allowed per
+                       metric.
+
+                       If
+                       [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
+                       is above 0, the autoscaling will be based on both CPU utilization and
+                       accelerator's duty cycle metrics and scale up when either metrics exceeds
+                       its target value while scale down if both metrics are under their target
+                       value. The default target value is 60 for both metrics.
+
+                       If
+                       [machine_spec.accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count]
+                       is 0, the autoscaling will be based on CPU utilization metric only with
+                       default target value 60 if not explicitly set.
+
+                       For example, in the case of Online Prediction, if you want to override
+                       target CPU utilization to 80, you should set
+                       [autoscaling_metric_specs.metric_name][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.metric_name]
+                       to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
+                       [autoscaling_metric_specs.target][google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.target]
+                       to `80`.
+                    items:
+                      properties:
+                        metricName:
+                          description: |-
+                            Required. The resource metric name.
+                             Supported metrics:
+
+                             * For Online Prediction:
+                             * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
+                             * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
+                             * `aiplatform.googleapis.com/prediction/online/request_count`
+                          type: string
+                        monitoredResourceLabels:
+                          additionalProperties:
+                            type: string
+                          description: |-
+                            Optional. The Cloud Monitoring monitored resource labels as key value pairs
+                             used for metrics filtering. See Cloud Monitoring Labels
+                             https://cloud.google.com/monitoring/api/v3/metric-model#generic-label-info
+                          type: object
+                        target:
+                          description: |-
+                            The target resource utilization in percentage (1% - 100%) for the given
+                             metric; once the real usage deviates from the target by a certain
+                             percentage, the machine replicas change. The default value is 60
+                             (representing 60%) if not provided.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                  flexStart:
+                    description: |-
+                      Optional. Immutable. If set, use DWS resource to schedule the deployment
+                       workload. reference:
+                       (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
+                    properties:
+                      maxRuntimeDuration:
+                        description: |-
+                          The max duration of the deployment is max_runtime_duration. The
+                           deployment will be terminated after the duration. The
+                           max_runtime_duration can be set up to 7 days.
+                        type: string
+                    type: object
+                  machineSpec:
+                    description: Required. Immutable. The specification of a single
+                      machine being used.
+                    properties:
+                      acceleratorCount:
+                        description: The number of accelerators to attach to the machine.
+                        format: int32
+                        type: integer
+                      acceleratorType:
+                        description: |-
+                          Immutable. The type of accelerator(s) that may be attached to the machine
+                           as per
+                           [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
+                        type: string
+                      gpuPartitionSize:
+                        description: |-
+                          Optional. Immutable. The Nvidia GPU partition size.
+
+                           When specified, the requested accelerators will be partitioned into
+                           smaller GPU partitions. For example, if the request is for 8 units of
+                           NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+                           create 8 * 7 = 56 partitioned MIG instances.
+
+                           The partition size must be a value supported by the requested accelerator.
+                           Refer to
+                           [Nvidia GPU
+                           Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+                           for the available partition sizes.
+
+                           If set, the accelerator_count should be set to 1.
+                        type: string
+                      machineType:
+                        description: |-
+                          Immutable. The type of the machine.
+
+                           See the [list of machine types supported for
+                           prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
+
+                           See the [list of machine types supported for custom
+                           training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
+
+                           For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this
+                           field is optional, and the default value is `n1-standard-2`. For
+                           [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
+                           as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
+                           this field is required.
+                        type: string
+                      multihostGpuNodeCount:
+                        description: |-
+                          Optional. Immutable. The number of nodes per replica for multihost GPU
+                           deployments.
+                        format: int32
+                        type: integer
+                      reservationAffinity:
+                        description: |-
+                          Optional. Immutable. Configuration controlling how this resource pool
+                           consumes reservation.
+                        properties:
+                          key:
+                            description: |-
+                              Optional. Corresponds to the label key of a reservation resource. To target
+                               a SPECIFIC_RESERVATION by name, use
+                               `compute.googleapis.com/reservation-name` as the key and specify the name
+                               of your reservation as its value.
+                            type: string
+                          reservationAffinityType:
+                            description: Required. Specifies the reservation affinity
+                              type.
+                            type: string
+                          values:
+                            description: |-
+                              Optional. Corresponds to the label values of a reservation resource. This
+                               must be the full resource name of the reservation.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      tpuTopology:
+                        description: |-
+                          Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+                           available from GKE. (Example: tpu_topology: "2x2x1").
+                        type: string
+                    type: object
+                  maxReplicaCount:
+                    description: |-
+                      Immutable. The maximum number of replicas that may be deployed on when the
+                       traffic against it increases. If the requested value is too large, the
+                       deployment will error, but if deployment succeeds then the ability to scale
+                       to that many replicas is guaranteed (barring service outages). If traffic
+                       increases beyond what its replicas at maximum may handle, a portion of the
+                       traffic will be dropped. If this value is not provided, will use
+                       [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
+                       as the default value.
+
+                       The value of this field impacts the charge against Vertex CPU and GPU
+                       quotas. Specifically, you will be charged for (max_replica_count *
+                       number of cores in the selected machine type) and (max_replica_count *
+                       number of GPUs per replica in the selected machine type).
+                    format: int32
+                    type: integer
+                  minReplicaCount:
+                    description: |-
+                      Required. Immutable. The minimum number of machine replicas that will be
+                       always deployed on. This value must be greater than or equal to 1.
+
+                       If traffic increases, it may dynamically be deployed onto more replicas,
+                       and as traffic decreases, some of these extra replicas may be freed.
+                    format: int32
+                    type: integer
+                  requiredReplicaCount:
+                    description: |-
+                      Optional. Number of required available replicas for the deployment to
+                       succeed. This field is only needed when partial deployment/mutation is
+                       desired. If set, the deploy/mutate operation will succeed once
+                       available_replica_count reaches required_replica_count, and the rest of
+                       the replicas will be retried. If not set, the default
+                       required_replica_count will be min_replica_count.
+                    format: int32
+                    type: integer
+                  spot:
+                    description: |-
+                      Optional. If true, schedule the deployment workload on [spot
+                       VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
+                    type: boolean
+                type: object
+              disableContainerLogging:
+                description: |-
+                  If the DeploymentResourcePool is deployed with custom-trained Models or
+                   AutoML Tabular Models, the container(s) of the DeploymentResourcePool will
+                   send `stderr` and `stdout` streams to Cloud Logging by default.
+                type: boolean
+              encryptionSpec:
+                description: |-
+                  Customer-managed encryption key spec for a DeploymentResourcePool. If set,
+                   this DeploymentResourcePool will be secured by this key. Endpoints and the
+                   DeploymentResourcePool they deploy in need to have the same EncryptionSpec.
+                properties:
+                  kmsKeyRef:
+                    description: |-
+                      Required. The Cloud KMS resource identifier of the customer managed
+                       encryption key used to protect a resource.
+                       The key needs to be in the same region as where the compute resource is
+                       created.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                required:
+                - kmsKeyRef
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The VertexAIDeploymentResourcePool name. If not given,
+                  the metadata.name will be used.
+                type: string
+              serviceAccountRef:
+                description: The service account that the DeploymentResourcePool's
+                  container(s) run as.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: VertexAIDeploymentResourcePoolStatus defines the config connector
+              machine state of VertexAIDeploymentResourcePool
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VertexAIDeploymentResourcePool
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when this DeploymentResourcePool
+                      was created.
+                    type: string
+                  satisfiesPzi:
+                    description: Output only. Reserved for future use.
+                    type: boolean
+                  satisfiesPzs:
+                    description: Output only. Reserved for future use.
+                    type: boolean
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

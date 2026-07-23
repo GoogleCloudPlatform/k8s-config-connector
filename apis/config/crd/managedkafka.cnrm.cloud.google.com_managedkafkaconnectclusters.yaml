@@ -1,0 +1,397 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com
+spec:
+  group: managedkafka.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ManagedKafkaConnectCluster
+    listKind: ManagedKafkaConnectClusterList
+    plural: managedkafkaconnectclusters
+    shortNames:
+    - gcpmanagedkafkaconnectcluster
+    - gcpmanagedkafkaconnectclusters
+    singular: managedkafkaconnectcluster
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ManagedKafkaConnectCluster is the Schema for the ManagedKafkaConnectCluster
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ManagedKafkaConnectClusterSpec defines the desired state
+              of ManagedKafkaConnectCluster
+            properties:
+              capacityConfig:
+                description: Required. Capacity configuration for the Kafka Connect
+                  cluster.
+                properties:
+                  memoryBytes:
+                    description: |-
+                      Required. The memory to provision for the cluster in bytes.
+                       The CPU:memory ratio (vCPU:GiB) must be between 1:1 and 1:8.
+                       Minimum: 3221225472 (3 GiB).
+                    format: int64
+                    type: integer
+                  vcpuCount:
+                    description: 'Required. The number of vCPUs to provision for the
+                      cluster. Minimum: 3.'
+                    format: int64
+                    type: integer
+                required:
+                - memoryBytes
+                - vcpuCount
+                type: object
+              clusterRef:
+                description: Required. Reference to the Kafka cluster this Kafka Connect
+                  cluster is attached to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ManagedKafkaCluster resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                    type: string
+                  name:
+                    description: The name of a ManagedKafkaCluster resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ManagedKafkaCluster resource.
+                    type: string
+                type: object
+              config:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. Configurations for the worker that are overridden from the
+                   defaults. The key of the map is a Kafka Connect worker property name, for
+                   example: `exactly.once.source.support`.
+                type: object
+              gcpConfig:
+                description: |-
+                  Required. Configuration properties for a Kafka Connect cluster deployed
+                   to Google Cloud Platform.
+                properties:
+                  accessConfig:
+                    description: Required. Access configuration for the Kafka Connect
+                      cluster.
+                    properties:
+                      networkConfigs:
+                        description: |-
+                          Required.
+                           Virtual Private Cloud (VPC) networks that must be granted direct access to
+                           the Kafka Connect cluster. Minimum of 1 network is required. Maximum 10
+                           networks can be specified.
+                        items:
+                          properties:
+                            additionalSubnetRefs:
+                              description: |-
+                                Optional. Additional subnets may be specified. They may be in another
+                                 region, but must be in the same VPC network. The Connect workers can
+                                 communicate with network endpoints in either the primary or additional
+                                 subnets.
+                              items:
+                                description: ComputeSubnetworkRef is a reference to
+                                  a GCP ComputeSubnetwork.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: |-
+                                      A reference to an externally managed ComputeSubnetwork resource.
+                                      Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeSubnetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeSubnetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              type: array
+                            dnsDomainNames:
+                              description: |-
+                                Optional. Additional DNS domain names from the subnet's network to be made
+                                 visible to the Connect Cluster. When using MirrorMaker2, it's necessary to
+                                 add the bootstrap address's dns domain name of the target cluster to make
+                                 it visible to the connector. For example:
+                                 my-kafka-cluster.us-central1.managedkafka.my-project.cloud.goog
+                              items:
+                                type: string
+                              type: array
+                            primarySubnetRef:
+                              description: |-
+                                Required. VPC subnet to make available to the Kafka Connect cluster.
+                                 It is used to create a Private Service Connect (PSC) interface for the
+                                 Kafka Connect workers. It must be located in the same region as the
+                                 Kafka Connect cluster.
+
+                                 The CIDR range of the subnet must be within the IPv4 address ranges for
+                                 private networks, as specified in RFC 1918. The primary subnet CIDR range
+                                 must have a minimum size of /22 (1024 addresses).
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: |-
+                                    A reference to an externally managed ComputeSubnetwork resource.
+                                    Should be in the format "projects/{{projectID}}/regions/{{region}}/subnetworks/{{subnetworkID}}".
+                                  type: string
+                                name:
+                                  description: The name of a ComputeSubnetwork resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a ComputeSubnetwork
+                                    resource.
+                                  type: string
+                              type: object
+                          required:
+                          - primarySubnetRef
+                          type: object
+                        type: array
+                    required:
+                    - networkConfigs
+                    type: object
+                  secretPaths:
+                    description: |-
+                      Optional. Secrets to load into workers. Exact SecretVersions from Secret
+                       Manager must be provided -- aliases are not supported. Up to 32 secrets may
+                       be loaded into one cluster.
+                    items:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                          type: string
+                        name:
+                          description: The `name` field of a `SecretManagerSecretVersion`
+                            resource.
+                          type: string
+                        namespace:
+                          description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                            resource.
+                          type: string
+                      type: object
+                    type: array
+                required:
+                - accessConfig
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels as key value pairs.
+                type: object
+              location:
+                description: Required. The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ManagedKafkaConnectCluster name. If not given, the
+                  metadata.name will be used.
+                type: string
+            required:
+            - capacityConfig
+            - clusterRef
+            - gcpConfig
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ManagedKafkaConnectClusterStatus defines the config connector
+              machine state of ManagedKafkaConnectCluster
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ManagedKafkaConnectCluster
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time when the cluster was created.
+                    type: string
+                  state:
+                    description: Output only. The current state of the cluster.
+                    type: string
+                  updateTime:
+                    description: Output only. The time when the cluster was last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

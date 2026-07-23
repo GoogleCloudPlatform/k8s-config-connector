@@ -1,0 +1,694 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com
+spec:
+  group: aiplatform.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VertexAIPipelineJob
+    listKind: VertexAIPipelineJobList
+    plural: vertexaipipelinejobs
+    shortNames:
+    - gcpvertexaipipelinejob
+    - gcpvertexaipipelinejobs
+    singular: vertexaipipelinejob
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VertexAIPipelineJob is the Schema for the VertexAIPipelineJob
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VertexAIPipelineJobSpec defines the desired state of VertexAIPipelineJob
+            properties:
+              displayName:
+                description: |-
+                  The display name of the Pipeline.
+                   The name can be up to 128 characters long and can consist of any UTF-8
+                   characters.
+                type: string
+              encryptionSpec:
+                description: |-
+                  Customer-managed encryption key spec for a pipelineJob. If set, this
+                   PipelineJob and all of its sub-resources will be secured by this key.
+                properties:
+                  kmsKeyName:
+                    description: |-
+                      Required. The Cloud KMS resource identifier of the customer managed
+                       encryption key used to protect a resource. Has the form:
+                       `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+                       The key needs to be in the same region as where the compute resource is
+                       created.
+                    type: string
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: The labels with user-defined metadata to organize PipelineJob.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              networkRef:
+                description: Reference to a ComputeNetwork.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ComputeNetwork resource.
+                      Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeNetwork resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeNetwork resource.
+                    type: string
+                type: object
+              pipelineSpec:
+                description: The spec of the pipeline.
+                x-kubernetes-preserve-unknown-fields: true
+              preflightValidations:
+                description: Optional. Whether to do component level validations before
+                  job creation.
+                type: boolean
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pscInterfaceConfig:
+                description: Optional. Configuration for PSC-I for PipelineJob.
+                properties:
+                  dnsPeeringConfigs:
+                    description: Optional. DNS peering configurations.
+                    items:
+                      properties:
+                        domain:
+                          description: Required. The DNS name suffix of the zone being
+                            peered to, e.g., "my-internal-domain.corp.". Must end
+                            with a dot.
+                          type: string
+                        targetNetworkRef:
+                          description: Required. The VPC network name in the target_project
+                            where the DNS zone specified by 'domain' is visible.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: |-
+                                A reference to an externally managed ComputeNetwork resource.
+                                Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                              type: string
+                            name:
+                              description: The name of a ComputeNetwork resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeNetwork resource.
+                              type: string
+                          type: object
+                        targetProject:
+                          description: Required. The project ID hosting the Cloud
+                            DNS managed zone that contains the 'domain'.
+                          type: string
+                      type: object
+                    type: array
+                  networkAttachmentRef:
+                    description: Optional. The name of the Compute Engine network
+                      attachment to attach to the resource within the region and user
+                      project.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed ComputeNetworkAttachment resource.
+                          Should be in the format "projects/{{projectID}}/regions/{{region}}/networkAttachments/{{networkattachmentID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeNetworkAttachment resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeNetworkAttachment resource.
+                        type: string
+                    type: object
+                type: object
+              reservedIPRanges:
+                description: |-
+                  A list of names for the reserved ip ranges under the VPC network
+                   that can be used for this Pipeline Job's workload.
+                items:
+                  type: string
+                type: array
+              resourceID:
+                description: The VertexAIPipelineJob name. If not given, the metadata.name
+                  will be used.
+                type: string
+              runtimeConfig:
+                description: Runtime config of the pipeline.
+                properties:
+                  failurePolicy:
+                    description: Represents the failure policy of a pipeline.
+                    type: string
+                  gcsOutputDirectory:
+                    description: |-
+                      Required. A path in a Cloud Storage bucket, which will be treated as the
+                       root output directory of the pipeline.
+                    type: string
+                type: object
+              serviceAccountRef:
+                description: The service account that the pipeline workload runs as.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              templateURI:
+                description: A template uri from where the PipelineJob.pipeline_spec,
+                  if empty, will be downloaded.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: VertexAIPipelineJobStatus defines the config connector machine
+              state of VertexAIPipelineJob
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VertexAIPipelineJob resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Pipeline creation time.
+                    type: string
+                  endTime:
+                    description: Output only. Pipeline end time.
+                    type: string
+                  error:
+                    description: |-
+                      Output only. The error that occurred during pipeline execution.
+                       Only populated when the pipeline's state is FAILED or CANCELLED.
+                    properties:
+                      code:
+                        description: |-
+                          The status code, which should be an enum value of
+                           [google.rpc.Code][google.rpc.Code].
+                        format: int32
+                        type: integer
+                      message:
+                        description: |-
+                          A developer-facing error message, which should be in English. Any
+                           user-facing error message should be localized and sent in the
+                           [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+                           by the client.
+                        type: string
+                    type: object
+                  jobDetail:
+                    description: Output only. The details of pipeline run. Not available
+                      in the list view.
+                    properties:
+                      pipelineContext:
+                        description: Output only. The context of the pipeline.
+                        properties:
+                          createTime:
+                            description: Output only. Timestamp when this Context
+                              was created.
+                            type: string
+                          description:
+                            description: Description of the Context
+                            type: string
+                          displayName:
+                            description: |-
+                              User provided display name of the Context.
+                               May be up to 128 Unicode characters.
+                            type: string
+                          etag:
+                            description: |-
+                              An eTag used to perform consistent read-modify-write updates. If not set, a
+                               blind "overwrite" update happens.
+                            type: string
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: The labels with user-defined metadata to
+                              organize your Contexts.
+                            type: object
+                          metadata:
+                            description: Properties of the Context.
+                            x-kubernetes-preserve-unknown-fields: true
+                          name:
+                            description: Immutable. The resource name of the Context.
+                            type: string
+                          parentContexts:
+                            description: Output only. A list of resource names of
+                              Contexts that are parents of this Context.
+                            items:
+                              type: string
+                            type: array
+                          schemaTitle:
+                            description: The title of the schema describing the metadata.
+                            type: string
+                          schemaVersion:
+                            description: The version of the schema in schema_name
+                              to use.
+                            type: string
+                          updateTime:
+                            description: Output only. Timestamp when this Context
+                              was last updated.
+                            type: string
+                        type: object
+                      pipelineRunContext:
+                        description: Output only. The context of the current pipeline
+                          run.
+                        properties:
+                          createTime:
+                            description: Output only. Timestamp when this Context
+                              was created.
+                            type: string
+                          description:
+                            description: Description of the Context
+                            type: string
+                          displayName:
+                            description: |-
+                              User provided display name of the Context.
+                               May be up to 128 Unicode characters.
+                            type: string
+                          etag:
+                            description: |-
+                              An eTag used to perform consistent read-modify-write updates. If not set, a
+                               blind "overwrite" update happens.
+                            type: string
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: The labels with user-defined metadata to
+                              organize your Contexts.
+                            type: object
+                          metadata:
+                            description: Properties of the Context.
+                            x-kubernetes-preserve-unknown-fields: true
+                          name:
+                            description: Immutable. The resource name of the Context.
+                            type: string
+                          parentContexts:
+                            description: Output only. A list of resource names of
+                              Contexts that are parents of this Context.
+                            items:
+                              type: string
+                            type: array
+                          schemaTitle:
+                            description: The title of the schema describing the metadata.
+                            type: string
+                          schemaVersion:
+                            description: The version of the schema in schema_name
+                              to use.
+                            type: string
+                          updateTime:
+                            description: Output only. Timestamp when this Context
+                              was last updated.
+                            type: string
+                        type: object
+                      taskDetails:
+                        description: Output only. The runtime details of the tasks
+                          under the pipeline.
+                        items:
+                          properties:
+                            createTime:
+                              description: Output only. Task create time.
+                              type: string
+                            endTime:
+                              description: Output only. Task end time.
+                              type: string
+                            error:
+                              description: Output only. The error that occurred during
+                                task execution.
+                              properties:
+                                code:
+                                  description: |-
+                                    The status code, which should be an enum value of
+                                     [google.rpc.Code][google.rpc.Code].
+                                  format: int32
+                                  type: integer
+                                message:
+                                  description: |-
+                                    A developer-facing error message, which should be in English. Any
+                                     user-facing error message should be localized and sent in the
+                                     [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+                                     by the client.
+                                  type: string
+                              type: object
+                            execution:
+                              description: Output only. The execution metadata of
+                                the task.
+                              properties:
+                                createTime:
+                                  description: Output only. Timestamp when this Execution
+                                    was created.
+                                  type: string
+                                description:
+                                  description: Description of the Execution
+                                  type: string
+                                displayName:
+                                  description: User provided display name of the Execution.
+                                  type: string
+                                etag:
+                                  description: An eTag used to perform consistent
+                                    read-modify-write updates.
+                                  type: string
+                                labels:
+                                  additionalProperties:
+                                    type: string
+                                  description: The labels with user-defined metadata
+                                    to organize your Executions.
+                                  type: object
+                                metadata:
+                                  description: Properties of the Execution.
+                                  x-kubernetes-preserve-unknown-fields: true
+                                name:
+                                  description: Output only. The resource name of the
+                                    Execution.
+                                  type: string
+                                schemaTitle:
+                                  description: The title of the schema describing
+                                    the metadata.
+                                  type: string
+                                schemaVersion:
+                                  description: The version of the schema in `schema_title`
+                                    to use.
+                                  type: string
+                                state:
+                                  description: The state of this Execution.
+                                  type: string
+                                updateTime:
+                                  description: Output only. Timestamp when this Execution
+                                    was last updated.
+                                  type: string
+                              type: object
+                            executorDetail:
+                              description: Output only. The detailed execution info.
+                              properties:
+                                containerDetail:
+                                  description: Output only. The detailed info for
+                                    a container executor.
+                                  properties:
+                                    failedMainJobs:
+                                      description: Output only. The names of the previously
+                                        failed CustomJob for the main container executions.
+                                      items:
+                                        type: string
+                                      type: array
+                                    failedPreCachingCheckJobs:
+                                      description: Output only. The names of the previously
+                                        failed CustomJob for the pre-caching-check
+                                        container executions.
+                                      items:
+                                        type: string
+                                      type: array
+                                    mainJob:
+                                      description: Output only. The name of the CustomJob
+                                        for the main container execution.
+                                      type: string
+                                    preCachingCheckJob:
+                                      description: Output only. The name of the CustomJob
+                                        for the pre-caching-check container execution.
+                                      type: string
+                                  type: object
+                                customJobDetail:
+                                  description: Output only. The detailed info for
+                                    a custom job executor.
+                                  properties:
+                                    failedJobs:
+                                      description: Output only. The names of the previously
+                                        failed CustomJob.
+                                      items:
+                                        type: string
+                                      type: array
+                                    job:
+                                      description: Output only. The name of the CustomJob.
+                                      type: string
+                                  type: object
+                              type: object
+                            parentTaskID:
+                              description: Output only. The id of the parent task
+                                if the task is within a component scope.
+                              format: int64
+                              type: integer
+                            pipelineTaskStatus:
+                              description: Output only. A list of task status.
+                              items:
+                                properties:
+                                  error:
+                                    description: Output only. The error that occurred
+                                      during the state.
+                                    properties:
+                                      code:
+                                        description: |-
+                                          The status code, which should be an enum value of
+                                           [google.rpc.Code][google.rpc.Code].
+                                        format: int32
+                                        type: integer
+                                      message:
+                                        description: |-
+                                          A developer-facing error message, which should be in English. Any
+                                           user-facing error message should be localized and sent in the
+                                           [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+                                           by the client.
+                                        type: string
+                                    type: object
+                                  state:
+                                    description: Output only. The state of the task.
+                                    type: string
+                                  updateTime:
+                                    description: Output only. Update time of this
+                                      status.
+                                    type: string
+                                type: object
+                              type: array
+                            startTime:
+                              description: Output only. Task start time.
+                              type: string
+                            state:
+                              description: Output only. State of the task.
+                              type: string
+                            taskID:
+                              description: Output only. The system generated ID of
+                                the task.
+                              format: int64
+                              type: integer
+                            taskName:
+                              description: Output only. The user specified name of
+                                the task.
+                              type: string
+                            taskUniqueName:
+                              description: Output only. The unique name of a task.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  name:
+                    description: Output only. The resource name of the PipelineJob.
+                    type: string
+                  scheduleName:
+                    description: |-
+                      Output only. The schedule resource name.
+                       Only returned if the Pipeline is created by Schedule API.
+                    type: string
+                  startTime:
+                    description: Output only. Pipeline start time.
+                    type: string
+                  state:
+                    description: Output only. The detailed state of the job.
+                    type: string
+                  templateMetadata:
+                    description: |-
+                      Output only. Pipeline template metadata. Will fill up fields if
+                       [PipelineJob.template_uri][google.cloud.aiplatform.v1.PipelineJob.template_uri]
+                       is from supported template registry.
+                    properties:
+                      version:
+                        description: The version_name in artifact registry.
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. Timestamp when this PipelineJob was
+                      most recently updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

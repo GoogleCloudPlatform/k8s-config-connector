@@ -1,0 +1,375 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: networksecuritysecurityprofiles.networksecurity.cnrm.cloud.google.com
+spec:
+  group: networksecurity.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: NetworkSecuritySecurityProfile
+    listKind: NetworkSecuritySecurityProfileList
+    plural: networksecuritysecurityprofiles
+    shortNames:
+    - gcpnetworksecuritysecurityprofile
+    - gcpnetworksecuritysecurityprofiles
+    singular: networksecuritysecurityprofile
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NetworkSecuritySecurityProfile is the Schema for the NetworkSecuritySecurityProfile
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NetworkSecuritySecurityProfileSpec defines the desired state
+              of NetworkSecuritySecurityProfile
+            properties:
+              customInterceptProfile:
+                description: The custom TPPI configuration for the SecurityProfile.
+                properties:
+                  interceptEndpointGroupRef:
+                    description: |-
+                      Required. The target InterceptEndpointGroup.
+                       When a firewall rule with this security profile attached matches a packet,
+                       the packet will be intercepted to the location-local target in this group.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed NetworkSecurityInterceptEndpointGroup resource.
+                          Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptEndpointGroups/{{intercept_endpoint_group}}".
+                        type: string
+                      name:
+                        description: The name of a NetworkSecurityInterceptEndpointGroup
+                          resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a NetworkSecurityInterceptEndpointGroup
+                          resource.
+                        type: string
+                    type: object
+                type: object
+              customMirroringProfile:
+                description: The custom Packet Mirroring v2 configuration for the
+                  SecurityProfile.
+                properties:
+                  mirroringEndpointGroupRef:
+                    description: |-
+                      Required. Immutable. The target MirroringEndpointGroup.
+                       When a mirroring rule with this security profile attached matches a packet,
+                       a replica will be mirrored to the location-local target in this group.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed NetworkSecurityMirroringEndpointGroup resource.
+                          Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringEndpointGroups/{{mirroring_endpoint_group}}".
+                        type: string
+                      name:
+                        description: The name of a NetworkSecurityMirroringEndpointGroup
+                          resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a NetworkSecurityMirroringEndpointGroup
+                          resource.
+                        type: string
+                    type: object
+                type: object
+              description:
+                description: |-
+                  Optional. An optional description of the profile. Max length 512
+                   characters.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels as key value pairs.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The NetworkSecuritySecurityProfile name. If not given,
+                  the metadata.name will be used.
+                type: string
+              threatPreventionProfile:
+                description: The threat prevention configuration for the SecurityProfile.
+                properties:
+                  antivirusOverrides:
+                    description: Optional. Configuration for overriding antivirus
+                      actions per protocol.
+                    items:
+                      properties:
+                        action:
+                          description: |-
+                            Required. Threat action override. For some threat types, only a subset of
+                             actions applies.
+                          type: string
+                        protocol:
+                          description: Required. Protocol to match.
+                          type: string
+                      type: object
+                    type: array
+                  severityOverrides:
+                    description: Optional. Configuration for overriding threats actions
+                      by severity match.
+                    items:
+                      properties:
+                        action:
+                          description: Required. Threat action override.
+                          type: string
+                        severity:
+                          description: Required. Severity level to match.
+                          type: string
+                      type: object
+                    type: array
+                  threatOverrides:
+                    description: |-
+                      Optional. Configuration for overriding threats actions by threat_id match.
+                       If a threat is matched both by configuration provided in severity_overrides
+                       and threat_overrides, the threat_overrides action is applied.
+                    items:
+                      properties:
+                        action:
+                          description: |-
+                            Required. Threat action override. For some threat types, only a subset of
+                             actions applies.
+                          type: string
+                        threatID:
+                          description: Required. Vendor-specific ID of a threat to
+                            override.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              type:
+                description: |-
+                  Immutable. The single ProfileType that the SecurityProfile resource
+                   configures.
+                type: string
+              urlFilteringProfile:
+                description: The URL filtering configuration for the SecurityProfile.
+                properties:
+                  urlFilters:
+                    description: |-
+                      Optional. The list of filtering configs in which each config defines an
+                       action to take for some URL match.
+                    items:
+                      properties:
+                        filteringAction:
+                          description: Required. The action taken when this filter
+                            is applied.
+                          type: string
+                        priority:
+                          description: |-
+                            Required. The priority of this filter within the URL Filtering Profile.
+                             Lower integers indicate higher priorities. The priority of a filter must be
+                             unique within a URL Filtering Profile.
+                          format: int32
+                          type: integer
+                        urls:
+                          description: |-
+                            Required. The list of strings that a URL must match with for this filter to
+                             be applied.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: NetworkSecuritySecurityProfileStatus defines the config connector
+              machine state of NetworkSecuritySecurityProfile
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the NetworkSecuritySecurityProfile
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Resource creation timestamp.
+                    type: string
+                  etag:
+                    description: |-
+                      Output only. This checksum is computed by the server based on the value of
+                       other fields, and may be sent on update and delete requests to ensure the
+                       client has an up-to-date value before proceeding.
+                    type: string
+                  threatPreventionProfile:
+                    description: The threat prevention configuration for the SecurityProfile.
+                    properties:
+                      threatOverrides:
+                        description: |-
+                          Optional. Configuration for overriding threats actions by threat_id match.
+                           If a threat is matched both by configuration provided in severity_overrides
+                           and threat_overrides, the threat_overrides action is applied.
+                        items:
+                          properties:
+                            type:
+                              description: Output only. Type of the threat (read only).
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  updateTime:
+                    description: Output only. Last resource update timestamp.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

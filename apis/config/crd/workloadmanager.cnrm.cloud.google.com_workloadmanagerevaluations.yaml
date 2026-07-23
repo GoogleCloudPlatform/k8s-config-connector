@@ -1,0 +1,377 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: workloadmanagerevaluations.workloadmanager.cnrm.cloud.google.com
+spec:
+  group: workloadmanager.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: WorkloadManagerEvaluation
+    listKind: WorkloadManagerEvaluationList
+    plural: workloadmanagerevaluations
+    shortNames:
+    - gcpworkloadmanagerevaluation
+    - gcpworkloadmanagerevaluations
+    singular: workloadmanagerevaluation
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: WorkloadManagerEvaluation is the Schema for the WorkloadManagerEvaluation
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: WorkloadManagerEvaluationSpec defines the desired state of
+              WorkloadManagerEvaluation
+            properties:
+              bigQueryDestination:
+                description: |-
+                  Optional. The BigQuery destination for detailed evaluation results.
+                  If this field is specified, the results of each evaluation execution are
+                  exported to BigQuery.
+                properties:
+                  createNewResultsTable:
+                    description: Optional. Determines if a new results table will
+                      be created when an Execution is created.
+                    type: boolean
+                  destinationDataset:
+                    description: Optional. Destination dataset to save evaluation
+                      results.
+                    type: string
+                type: object
+              customRulesBucket:
+                description: The Cloud Storage bucket name for custom rules.
+                type: string
+              description:
+                description: Description of the Evaluation.
+                type: string
+              evaluationType:
+                description: Evaluation type.
+                type: string
+              kmsKeyRef:
+                description: Optional. Immutable. Customer-managed encryption key
+                  name.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels as key value pairs.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceFilter:
+                description: |-
+                  Resource filter for an evaluation defining the scope of resources to be
+                  evaluated.
+                properties:
+                  gceInstanceFilter:
+                    description: Filter compute engine resources.
+                    properties:
+                      serviceAccounts:
+                        description: |-
+                          If non-empty, only Compute Engine instances associated with at least one of
+                          the provided service accounts will be included in the evaluation.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  inclusionLabels:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      Labels to filter resources by. Each key-value pair in the map must exist
+                      on the resource for it to be included.
+                    type: object
+                  resourceIDPatterns:
+                    description: Pattern to filter resources by their id.
+                    items:
+                      type: string
+                    type: array
+                  scopeRefs:
+                    description: The scopes of evaluation resource.
+                    items:
+                      properties:
+                        folderRef:
+                          description: A folder to scope the evaluation to.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: |-
+                                The 'name' field of a folder, when not managed by Config Connector.
+                                This field must be set when 'name' field is not set.
+                              type: string
+                            name:
+                              description: |-
+                                The 'name' field of a 'Folder' resource.
+                                This field must be set when 'external' field is not set.
+                              type: string
+                            namespace:
+                              description: |-
+                                The 'namespace' field of a 'Folder' resource.
+                                If unset, the namespace is defaulted to the namespace of the referencer
+                                resource.
+                              type: string
+                          type: object
+                        organizationRef:
+                          description: An organization to scope the evaluation to.
+                          properties:
+                            external:
+                              description: The 'name' field of an organization, when
+                                not managed by Config Connector.
+                              type: string
+                          required:
+                          - external
+                          type: object
+                        projectRef:
+                          description: A project to scope the evaluation to.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `projectID` field of a project, when
+                                not managed by Config Connector.
+                              type: string
+                            kind:
+                              description: The kind of the Project resource; optional
+                                but must be `Project` if provided.
+                              type: string
+                            name:
+                              description: The `name` field of a `Project` resource.
+                              type: string
+                            namespace:
+                              description: The `namespace` field of a `Project` resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              resourceID:
+                description: The WorkloadManagerEvaluation name. If not given, the
+                  metadata.name will be used.
+                type: string
+              ruleNames:
+                description: The names of the rules used for this evaluation.
+                items:
+                  type: string
+                type: array
+              schedule:
+                description: |-
+                  Crontab format schedule for scheduled evaluation, currently only supports
+                  the following fixed schedules:
+                  * `0 */1 * * *` # Hourly
+                  * `0 */6 * * *` # Every 6 hours
+                  * `0 */12 * * *` # Every 12 hours
+                  * `0 0 */1 * *` # Daily
+                  * `0 0 */7 * *` # Weekly
+                  * `0 0 */14 * *` # Every 14 days
+                  * `0 0 1 */1 *` # Monthly
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: WorkloadManagerEvaluationStatus defines the config connector
+              machine state of WorkloadManagerEvaluation
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the WorkloadManagerEvaluation
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. [Output only] Create time stamp.
+                    type: string
+                  resourceStatus:
+                    description: |-
+                      Output only. [Output only] The current lifecycle state of the evaluation
+                      resource.
+                    properties:
+                      state:
+                        description: State of the Evaluation resource.
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. [Output only] Update time stamp.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

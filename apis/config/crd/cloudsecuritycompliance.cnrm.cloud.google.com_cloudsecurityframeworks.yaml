@@ -1,0 +1,295 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: cloudsecurityframeworks.cloudsecuritycompliance.cnrm.cloud.google.com
+spec:
+  group: cloudsecuritycompliance.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CloudSecurityFramework
+    listKind: CloudSecurityFrameworkList
+    plural: cloudsecurityframeworks
+    shortNames:
+    - gcpcloudsecurityframework
+    - gcpcloudsecurityframeworks
+    singular: cloudsecurityframework
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CloudSecurityFramework is the Schema for the CloudSecurityFramework
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CloudSecurityFrameworkSpec defines the desired state of CloudSecurityFramework
+            properties:
+              category:
+                description: Optional. The category of the framework.
+                items:
+                  type: string
+                type: array
+              cloudControlDetails:
+                description: Optional. The cloud control details that are directly
+                  added without any grouping in the framework.
+                items:
+                  properties:
+                    cloudControlRef:
+                      description: |-
+                        Required. The name of the CloudControl in the format:
+                         “organizations/{organization}/locations/{location}/
+                         cloudControls/{cloud-control}”
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: |-
+                            A reference to an externally managed CloudSecurityComplianceCloudControl resource.
+                            Should be in the format "organizations/{{organizationID}}/locations/{{location}}/cloudControls/{{cloudControlID}}".
+                          type: string
+                        name:
+                          description: The name of a CloudSecurityComplianceCloudControl
+                            resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a CloudSecurityComplianceCloudControl
+                            resource.
+                          type: string
+                      type: object
+                    majorRevisionID:
+                      description: Required. Major revision of cloudcontrol
+                      format: int64
+                      type: integer
+                    parameters:
+                      description: |-
+                        Optional. Parameters is a key-value pair that is required by the
+                         CloudControl. The specification of these parameters will be present in
+                         cloudcontrol.Eg: { "name": "location","value": "us-west-1"}.
+                      items:
+                        properties:
+                          name:
+                            description: Required. The name or key of the parameter.
+                            type: string
+                          parameterValue:
+                            description: Required. The value of the parameter.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                        type: object
+                      type: array
+                  type: object
+                type: array
+              description:
+                description: Optional. The description of the framework. The maximum
+                  length is 2000 characters.
+                type: string
+              displayName:
+                description: Optional. The friendly name of the framework. The maximum
+                  length is 200 characters.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. The labels with user-defined metadata to organize
+                  your frameworks.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              organizationRef:
+                description: The organization that this resource belongs to. Only
+                  one of organizationRef or projectRef may be specified.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              projectRef:
+                description: The project that this resource belongs to. Only one of
+                  organizationRef or projectRef may be specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: Optional. The CloudSecurityFramework name. If not given,
+                  the metadata.name will be used.
+                type: string
+            required:
+            - location
+            type: object
+            x-kubernetes-validations:
+            - message: Exactly one parent field must be set
+              rule: '(has(self.organizationRef) ? 1 : 0) + (has(self.projectRef) ?
+                1 : 0) == 1'
+          status:
+            description: CloudSecurityFrameworkStatus defines the config connector
+              machine state of CloudSecurityFramework
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the CloudSecurityFramework resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  majorRevisionID:
+                    description: Output only. The major version of the framework,
+                      which is incremented in ascending order.
+                    format: int64
+                    type: integer
+                  supportedCloudProviders:
+                    description: Output only. The cloud providers that are supported
+                      by the framework.
+                    items:
+                      type: string
+                    type: array
+                  supportedEnforcementModes:
+                    description: Output only. The supported enforcement modes of the
+                      framework.
+                    items:
+                      type: string
+                    type: array
+                  supportedTargetResourceTypes:
+                    description: Output only. The target resource types that are supported
+                      by the framework.
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: Output only. The type of framework.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

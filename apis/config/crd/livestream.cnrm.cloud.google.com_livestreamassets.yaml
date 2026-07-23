@@ -1,0 +1,234 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: livestreamassets.livestream.cnrm.cloud.google.com
+spec:
+  group: livestream.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: LiveStreamAsset
+    listKind: LiveStreamAssetList
+    plural: livestreamassets
+    shortNames:
+    - gcplivestreamasset
+    - gcplivestreamassets
+    singular: livestreamasset
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: LiveStreamAsset is the Schema for the LiveStreamAsset API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: LiveStreamAssetSpec defines the desired state of LiveStreamAsset
+            properties:
+              crc32c:
+                description: |-
+                  Based64-encoded CRC32c checksum of the asset file. For more information,
+                   see the crc32c checksum of the [Cloud Storage Objects
+                   resource](https://cloud.google.com/storage/docs/json_api/v1/objects).
+                   If crc32c is omitted or left empty when the asset is created, this field is
+                   filled by the crc32c checksum of the Cloud Storage object indicated by
+                   [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri] or
+                   [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri]. If
+                   crc32c is set, the asset can't be created if the crc32c value does not
+                   match with the crc32c checksum of the Cloud Storage object indicated by
+                   [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri] or
+                   [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri].
+                type: string
+              image:
+                description: ImageAsset represents an image.
+                properties:
+                  uri:
+                    description: Cloud Storage URI of the image. The format is `gs://my-bucket/my-object`.
+                    type: string
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: User-defined key/value metadata.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The LiveStreamAsset name. If not given, the metadata.name
+                  will be used.
+                type: string
+              video:
+                description: VideoAsset represents a video.
+                properties:
+                  uri:
+                    description: Cloud Storage URI of the video. The format is `gs://my-bucket/my-object`.
+                    type: string
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: LiveStreamAssetStatus defines the config connector machine
+              state of LiveStreamAsset
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the LiveStreamAsset resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The creation time.
+                    type: string
+                  error:
+                    description: |-
+                      Output only. Only present when `state` is `ERROR`. The reason for the error
+                       state of the asset.
+                    properties:
+                      code:
+                        description: |-
+                          The status code, which should be an enum value of
+                           [google.rpc.Code][google.rpc.Code].
+                        format: int32
+                        type: integer
+                      message:
+                        description: |-
+                          A developer-facing error message, which should be in English. Any
+                           user-facing error message should be localized and sent in the
+                           [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+                           by the client.
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. The state of the asset resource.
+                    type: string
+                  updateTime:
+                    description: Output only. The update time.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
