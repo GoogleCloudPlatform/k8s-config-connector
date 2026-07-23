@@ -35,3 +35,16 @@
   3. Created `pkg/controller/direct/aiplatform/vertexaipipelinejob_fuzzer.go` and configured fuzzer fields utilizing the fluent builder pattern.
   4. Scaffolded E2E golden tests under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/vertexaipipelinejob/` (`vertexaipipelinejob-minimal` and `vertexaipipelinejob-maximal`), including `dependencies.yaml` to provision a `StorageBucket` used as the `gcsOutputDirectory` parameter.
 - **Impact**: Ensures standard, fully compliant Greenfield controller implementation and E2E testing framework support for VertexAIPipelineJob.
+
+### 2026-07-23 Implementing the Greenfield Direct Controller, Fuzzer, and E2E Fixtures for VertexAIStudy
+- **Context**: Implementing the Greenfield direct controller, E2E test fixtures, and KRM fuzzer for `VertexAIStudy` (Issue #11822).
+- **Problem**: 
+  1. The Vertex AI Study ID is always generated randomly/non-deterministically on the server during the `CreateStudy` call. Since the user cannot specify a custom ID, standard identity checks (like `statusIdentity.String() != specIdentity.String()`) would throw validation errors because the user's initial `specIdentity` (based on KRM `metadata.name`) didn't match the server-generated study ID.
+  2. Because the study ID was server-generated using `time.Now().UnixNano()`, successive mock E2E test runs would yield different study IDs, causing golden object statuses and HTTP logs (`_http_mock.log` and `_generated_object_*.golden.yaml`) to have non-deterministic diffs and fail the tests.
+  3. The `studies` resource was missing from `tests/e2e/replacements.go` list of placeholders, so the dynamic study IDs in HTTP logs were never normalized.
+- **Solution**:
+  1. Updated `GetIdentity` in `apis/aiplatform/v1alpha1/vertexaistudy_identity.go` to return `statusIdentity` directly when `externalRef` is populated on the object, cleanly matching its true server-assigned identity.
+  2. Modified the MockGCP implementation in `mockgcp/mockaiplatform/study.go` to generate the study ID deterministically using a SHA-256 hash of the study's `DisplayName`, ensuring identical IDs across runs.
+  3. Added `case "studies": return "${studyID}"` to `placeholderForGCPResource` in `tests/e2e/replacements.go`.
+  4. Created minimal and maximal `create.yaml` fixtures with static `displayName` values so the hash is fully stable, and registered the resource in `config/tests/samples/create/harness.go` and `pkg/controller/resourceconfig/static_config.go`.
+- **Impact**: Enables 100% stable, deterministic, and fully compliant Greenfield direct reconciliation and E2E testing for `VertexAIStudy`.
