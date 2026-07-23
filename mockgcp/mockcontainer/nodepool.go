@@ -121,6 +121,16 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.Version = cluster.CurrentNodeVersion
 	}
 
+	if obj.Autoscaling != nil {
+		if obj.Autoscaling.LocationPolicy == pb.NodePoolAutoscaling_LOCATION_POLICY_UNSPECIFIED {
+			obj.Autoscaling.LocationPolicy = pb.NodePoolAutoscaling_BALANCED
+		}
+	}
+
+	if len(obj.Locations) == 0 {
+		obj.Locations = []string{cluster.Location}
+	}
+
 	if obj.Config == nil {
 		obj.Config = &pb.NodeConfig{}
 	}
@@ -424,11 +434,9 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	}
 
 	op := &pb.Operation{
-		Zone:       name.Location,
-		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
-	}
-	if req.GetKubeletConfig() != nil {
-		op.OperationType = pb.Operation_UPGRADE_NODES
+		Zone:          name.Location,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+		OperationType: pb.Operation_UPGRADE_NODES,
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil

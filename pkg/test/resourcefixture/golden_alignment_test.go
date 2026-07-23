@@ -208,6 +208,16 @@ func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
 		}
 	}
 
+	if strings.Contains(normalizedPath, "/instanceGroupManagers/gke-") {
+		for mockPath, methods := range normalizedMockPaths {
+			if strings.Contains(mockPath, "/clusters/") {
+				if deleteEvs, found := methods["DELETE"]; found && len(deleteEvs) > 0 {
+					return true
+				}
+			}
+		}
+	}
+
 	return false
 }
 
@@ -451,6 +461,9 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
+		if _, hasMaxNodeCount := v["maxNodeCount"]; hasMaxNodeCount {
+			delete(v, "locationPolicy")
+		}
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
@@ -459,6 +472,17 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "updateTime")
 		delete(v, "selfLink")
 		delete(v, "internalMetadata")
+		if _, isOperation := v["targetLink"]; isOperation {
+			v["status"] = "RUNNING"
+			if tl, ok := v["targetLink"].(string); ok {
+				tl = strings.ReplaceAll(tl, "/zones/", "/locations/")
+				if idx := strings.Index(tl, "/nodePools/"); idx != -1 {
+					tl = tl[:idx]
+				}
+				v["targetLink"] = tl
+			}
+			delete(v, "operationType")
+		}
 		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
@@ -493,6 +517,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "masterAuth")
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
+			delete(v, "locations")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
@@ -515,12 +540,16 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "nodeConfig")
 			delete(v, "networkConfig")
 		}
-		if _, isNodePool := v["initialNodeCount"]; isNodePool {
+		_, hasInitialNodeCount := v["initialNodeCount"]
+		_, hasUpgradeSettings := v["upgradeSettings"]
+		if hasInitialNodeCount || hasUpgradeSettings {
 			delete(v, "instanceGroupUrls")
 			delete(v, "version")
 			delete(v, "networkConfig")
 			delete(v, "etag")
 			delete(v, "locations")
+			delete(v, "kubeletCertInfo")
+			delete(v, "initialNodeCount")
 			if sl, ok := v["selfLink"].(string); ok {
 				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
 			}

@@ -518,9 +518,9 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1049000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1049000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -532,13 +532,8 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
-  "initialNodeCount": 1,
-  "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef"
-  ],
+  "initialClusterVersion": "1.35.6-gke.1049000",
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
@@ -690,10 +685,6 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
-      "initialNodeCount": 1,
-      "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
       "locations": [
         "northamerica-northeast1-a"
       ],
@@ -707,9 +698,9 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "enablePrivateNodes": true,
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "10.0.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-abcdef01",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -718,7 +709,7 @@ X-Xss-Protection: 0
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1049000"
     }
   ],
   "notificationConfig": {
@@ -888,9 +879,9 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1049000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1049000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -902,13 +893,8 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
-  "initialNodeCount": 1,
-  "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef"
-  ],
+  "initialClusterVersion": "1.35.6-gke.1049000",
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
@@ -1060,10 +1046,6 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
-      "initialNodeCount": 1,
-      "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
       "locations": [
         "northamerica-northeast1-a"
       ],
@@ -1077,9 +1059,9 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "enablePrivateNodes": true,
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "10.0.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-abcdef01",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -1088,7 +1070,7 @@ X-Xss-Protection: 0
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1049000"
     }
   ],
   "notificationConfig": {
@@ -1258,9 +1240,9 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1049000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1049000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -1272,13 +1254,8 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
-  "initialNodeCount": 1,
-  "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef"
-  ],
+  "initialClusterVersion": "1.35.6-gke.1049000",
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
@@ -1430,10 +1407,6 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
-      "initialNodeCount": 1,
-      "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
       "locations": [
         "northamerica-northeast1-a"
       ],
@@ -1447,9 +1420,9 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "enablePrivateNodes": true,
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "10.0.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-abcdef01",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -1458,7 +1431,7 @@ X-Xss-Protection: 0
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1049000"
     }
   ],
   "notificationConfig": {
@@ -1628,9 +1601,9 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1049000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1049000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -1642,13 +1615,8 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
-  "initialNodeCount": 1,
-  "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef"
-  ],
+  "initialClusterVersion": "1.35.6-gke.1049000",
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
@@ -1800,10 +1768,6 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
-      "initialNodeCount": 1,
-      "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
       "locations": [
         "northamerica-northeast1-a"
       ],
@@ -1817,9 +1781,9 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "enablePrivateNodes": true,
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "10.0.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-abcdef01",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -1828,7 +1792,7 @@ X-Xss-Protection: 0
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1049000"
     }
   ],
   "notificationConfig": {
@@ -2021,9 +1985,9 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1049000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1049000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -2035,13 +1999,8 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
-  "initialNodeCount": 1,
-  "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef"
-  ],
+  "initialClusterVersion": "1.35.6-gke.1049000",
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
@@ -2194,10 +2153,6 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
-      "initialNodeCount": 1,
-      "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
       "locations": [
         "northamerica-northeast1-a"
       ],
@@ -2211,9 +2166,9 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "enablePrivateNodes": true,
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "10.0.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-abcdef01",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -2222,7 +2177,7 @@ X-Xss-Protection: 0
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1049000"
     }
   ],
   "notificationConfig": {
@@ -2394,9 +2349,9 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1049000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1049000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -2408,13 +2363,8 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
-  "initialNodeCount": 1,
-  "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef"
-  ],
+  "initialClusterVersion": "1.35.6-gke.1049000",
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
@@ -2567,10 +2517,6 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
-      "initialNodeCount": 1,
-      "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
       "locations": [
         "northamerica-northeast1-a"
       ],
@@ -2584,9 +2530,9 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "enablePrivateNodes": true,
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "10.0.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-abcdef01",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -2595,7 +2541,7 @@ X-Xss-Protection: 0
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1049000"
     }
   ],
   "notificationConfig": {
@@ -2767,9 +2713,9 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1049000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1049000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -2781,13 +2727,8 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
-  "initialNodeCount": 1,
-  "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef"
-  ],
+  "initialClusterVersion": "1.35.6-gke.1049000",
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
@@ -2940,10 +2881,6 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
-      "initialNodeCount": 1,
-      "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-northeast1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
       "locations": [
         "northamerica-northeast1-a"
       ],
@@ -2957,9 +2894,9 @@ X-Xss-Protection: 0
       "name": "default-pool",
       "networkConfig": {
         "enablePrivateNodes": true,
-        "podIpv4CidrBlock": "10.92.0.0/14",
+        "podIpv4CidrBlock": "10.0.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-abcdef01",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -2968,7 +2905,7 @@ X-Xss-Protection: 0
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1049000"
     }
   ],
   "notificationConfig": {
