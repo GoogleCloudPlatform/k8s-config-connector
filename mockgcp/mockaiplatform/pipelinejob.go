@@ -25,6 +25,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
@@ -49,7 +50,52 @@ func (s *pipelineService) GetPipelineJob(ctx context.Context, req *pb.GetPipelin
 		return nil, err
 	}
 
+	// Progress state from PENDING to SUCCEEDED after some time
+	if obj.State == pb.PipelineState_PIPELINE_STATE_PENDING {
+		createTime := obj.CreateTime.AsTime()
+		if time.Since(createTime) >= 4*time.Second {
+			obj.State = pb.PipelineState_PIPELINE_STATE_SUCCEEDED
+			obj.StartTime = timestamppb.New(createTime.Add(1 * time.Second))
+			obj.EndTime = timestamppb.New(createTime.Add(3 * time.Second))
+			if obj.JobDetail == nil {
+				obj.JobDetail = &pb.PipelineJobDetail{}
+			}
+			// Save the updated state
+			if err := s.storage.Update(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+		}
+	}
+
 	return obj, nil
+}
+
+func alignPipelineSpec(spec *structpb.Struct) {
+	if spec == nil || spec.Fields == nil {
+		return
+	}
+	configVal, ok := spec.Fields["deploymentConfig"]
+	if !ok {
+		return
+	}
+	configStruct := configVal.GetStructValue()
+	if configStruct == nil || configStruct.Fields == nil {
+		return
+	}
+	executors, ok := configStruct.Fields["executors"]
+	if !ok {
+		return
+	}
+
+	// Move executors to deploymentSpec
+	spec.Fields["deploymentSpec"] = structpb.NewStructValue(&structpb.Struct{
+		Fields: map[string]*structpb.Value{
+			"executors": executors,
+		},
+	})
+
+	// Delete from deploymentConfig
+	delete(configStruct.Fields, "executors")
 }
 
 func (s *pipelineService) CreatePipelineJob(ctx context.Context, req *pb.CreatePipelineJobRequest) (*pb.PipelineJob, error) {
@@ -68,10 +114,16 @@ func (s *pipelineService) CreatePipelineJob(ctx context.Context, req *pb.CreateP
 
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.StartTime = timestamppb.New(now)
-	obj.EndTime = timestamppb.New(now.Add(5 * time.Second))
 
-	obj.State = pb.PipelineState_PIPELINE_STATE_SUCCEEDED
+	alignPipelineSpec(obj.PipelineSpec)
+
+	obj.State = pb.PipelineState_PIPELINE_STATE_PENDING
+	obj.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+
+	if obj.Labels == nil {
+		obj.Labels = make(map[string]string)
+	}
+	obj.Labels["vertex-ai-pipelines-run-billing-id"] = "619702208161644544"
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -101,6 +153,29 @@ func (s *pipelineService) DeletePipelineJob(ctx context.Context, req *pb.DeleteP
 	}
 	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
+}
+
+func (s *pipelineService) CancelPipelineJob(ctx context.Context, req *pb.CancelPipelineJobRequest) (*emptypb.Empty, error) {
+	name, err := s.parsePipelineJobName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.PipelineJob{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.State = pb.PipelineState_PIPELINE_STATE_CANCELLED
+	obj.UpdateTime = timestamppb.New(time.Now())
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 type PipelineJobName struct {

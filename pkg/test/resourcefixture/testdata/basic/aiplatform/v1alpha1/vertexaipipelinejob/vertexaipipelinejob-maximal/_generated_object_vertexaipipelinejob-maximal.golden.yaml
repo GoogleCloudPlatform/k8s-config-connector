@@ -41,7 +41,7 @@ spec:
             taskInfo:
               name: hello-world-task
     schemaVersion: 2.1.0
-  preflightValidations: true
+  preflightValidations: false
   projectRef:
     external: ${projectId}
   runtimeConfig:
@@ -58,8 +58,6 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    endTime: "1970-01-01T00:00:00Z"
     name: projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}
-    startTime: "2024-04-01T12:34:56.123456Z"
-    state: PIPELINE_STATE_SUCCEEDED
+    state: PIPELINE_STATE_PENDING
     updateTime: "1970-01-01T00:00:00Z"

@@ -323,6 +323,60 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("state.diskUtilizationBytes", "1")
+
+	alignPipelineSpecJSON := func(spec map[string]any) {
+		configVal, ok := spec["deploymentConfig"].(map[string]any)
+		if !ok {
+			return
+		}
+		executors, ok := configVal["executors"].(map[string]any)
+		if !ok {
+			return
+		}
+		// Move executors to deploymentSpec
+		spec["deploymentSpec"] = map[string]any{
+			"executors": executors,
+		}
+		// Delete from deploymentConfig
+		delete(configVal, "executors")
+	}
+
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if !strings.Contains(requestURL, "PipelineService") {
+			return
+		}
+		// In requests, the job is under "pipelineJob"
+		if job, ok := obj["pipelineJob"].(map[string]any); ok {
+			if spec, ok := job["pipelineSpec"].(map[string]any); ok {
+				alignPipelineSpecJSON(spec)
+			}
+			// Replace billing id in request labels
+			if labels, ok := job["labels"].(map[string]any); ok {
+				if _, ok := labels["vertex-ai-pipelines-run-billing-id"]; ok {
+					labels["vertex-ai-pipelines-run-billing-id"] = "619702208161644544"
+				}
+			}
+		}
+		// In responses or direct gets, the spec is under "pipelineSpec"
+		if spec, ok := obj["pipelineSpec"].(map[string]any); ok {
+			alignPipelineSpecJSON(spec)
+		}
+		// Replace billing id in response labels
+		if labels, ok := obj["labels"].(map[string]any); ok {
+			if _, ok := labels["vertex-ai-pipelines-run-billing-id"]; ok {
+				labels["vertex-ai-pipelines-run-billing-id"] = "619702208161644544"
+			}
+		}
+		// Normalize metadata @type
+		if metadata, ok := obj["metadata"].(map[string]any); ok {
+			if val, ok := metadata["@type"].(string); ok {
+				if strings.Contains(val, "aiplatform.v1beta1") {
+					metadata["@type"] = strings.ReplaceAll(val, "aiplatform.v1beta1", "aiplatform.v1")
+				}
+			}
+		}
+	})
+
 	for _, event := range events {
 		responseBody := event.Response.ParseBody()
 		if responseBody == nil {

@@ -21,7 +21,7 @@ spec:
     external: ${projectId}
   location: us-central1
   displayName: "Maximal Pipeline Job"
-  preflightValidations: true
+  preflightValidations: false
   labels:
     foo: bar
     baz: qux
