@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/workloadmanager/apiv1/workloadmanagerpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
@@ -138,26 +139,8 @@ func (s *WorkloadManagerV1) UpdateEvaluation(ctx context.Context, req *pb.Update
 	}
 
 	updated := proto.Clone(existing).(*pb.Evaluation)
-	if req.Evaluation.Description != "" {
-		updated.Description = req.Evaluation.Description
-	}
-	if req.Evaluation.ResourceFilter != nil {
-		updated.ResourceFilter = req.Evaluation.ResourceFilter
-	}
-	if req.Evaluation.RuleNames != nil {
-		updated.RuleNames = req.Evaluation.RuleNames
-	}
-	if req.Evaluation.Labels != nil {
-		updated.Labels = req.Evaluation.Labels
-	}
-	if req.Evaluation.Schedule != nil {
-		updated.Schedule = req.Evaluation.Schedule
-	}
-	if req.Evaluation.CustomRulesBucket != "" {
-		updated.CustomRulesBucket = req.Evaluation.CustomRulesBucket
-	}
-	if req.Evaluation.BigQueryDestination != nil {
-		updated.BigQueryDestination = req.Evaluation.BigQueryDestination
+	if err := fields.UpdateByFieldMask(updated, req.Evaluation, req.GetUpdateMask().GetPaths()); err != nil {
+		return nil, err
 	}
 
 	now := timestamppb.Now()
