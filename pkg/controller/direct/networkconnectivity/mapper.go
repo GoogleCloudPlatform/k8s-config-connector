@@ -21,9 +21,11 @@ import (
 
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -335,49 +337,44 @@ func Timestamp_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Times
 	return timestamppb.New(t)
 }
 
-func StateMetadata_FromProto(mapCtx *direct.MapContext, in *pb.StateMetadata) *krm.StateMetadata {
+func GoogleRpcErrorInfo_FromProto(mapCtx *direct.MapContext, in *errdetails.ErrorInfo) *krm.GoogleRpcErrorInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.StateMetadata{}
-	out.EffectiveTime = Timestamp_FromProto(mapCtx, in.EffectiveTime)
-	if in.State != "" {
-		out.State = direct.LazyPtr(in.State)
-	}
+	out := &krm.GoogleRpcErrorInfo{}
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	out.Metadata = in.GetMetadata()
+	out.Reason = direct.LazyPtr(in.GetReason())
 	return out
 }
 
-func StateMetadata_ToProto(mapCtx *direct.MapContext, in *krm.StateMetadata) *pb.StateMetadata {
+func GoogleRpcErrorInfo_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcErrorInfo) *errdetails.ErrorInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.StateMetadata{}
-	out.EffectiveTime = Timestamp_ToProto(mapCtx, in.EffectiveTime)
-	out.State = direct.ValueOf(in.State)
+	out := &errdetails.ErrorInfo{}
+	out.Domain = direct.ValueOf(in.Domain)
+	out.Metadata = in.Metadata
+	out.Reason = direct.ValueOf(in.Reason)
 	return out
 }
 
-func Services_FromProto(mapCtx *direct.MapContext, in map[string]*pb.StateTimeline) map[string]krm.StateTimeline {
+func GoogleRpcStatus_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.GoogleRpcStatus {
 	if in == nil {
 		return nil
 	}
-	out := make(map[string]krm.StateTimeline)
-	for k, v := range in {
-		val := StateTimeline_FromProto(mapCtx, v)
-		if val != nil {
-			out[k] = *val
-		}
-	}
+	out := &krm.GoogleRpcStatus{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
 
-func Services_ToProto(mapCtx *direct.MapContext, in map[string]krm.StateTimeline) map[string]*pb.StateTimeline {
+func GoogleRpcStatus_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus) *status.Status {
 	if in == nil {
 		return nil
 	}
-	out := make(map[string]*pb.StateTimeline)
-	for k, v := range in {
-		out[k] = StateTimeline_ToProto(mapCtx, &v)
-	}
+	out := &status.Status{}
+	out.Code = direct.ValueOf(in.Code)
+	out.Message = direct.ValueOf(in.Message)
 	return out
 }

@@ -12,27 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:controller
+// proto.service: google.cloud.networkconnectivity.v1.CrossNetworkAutomation
+// proto.message: google.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+// crd.type: NetworkConnectivityServiceConnectionPolicy
+// crd.version: v1alpha1
+
 package networkconnectivity
 
 import (
 	"context"
 	"fmt"
-	"time"
+	"reflect"
 
+	gcpapi "cloud.google.com/go/networkconnectivity/apiv1"
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	api "google.golang.org/api/networkconnectivity/v1"
 )
 
 func init() {
@@ -58,7 +65,7 @@ type serviceConnectionPolicyAdapter struct {
 	desired *pb.ServiceConnectionPolicy
 	actual  *pb.ServiceConnectionPolicy
 
-	gcpClient *api.Service
+	gcpClient *gcpapi.CrossNetworkAutomationClient
 }
 
 // adapter implements the Adapter interface.
@@ -73,44 +80,34 @@ func (m *serviceConnectionPolicyModel) AdapterForObject(ctx context.Context, op 
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
-	gcpClient, err := clientBuilder.newNetworkConnectivityClient(ctx)
+	gcpClient, err := clientBuilder.newCrossNetworkAutomationClient(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("building crossnetworkautomation client: %w", err)
 	}
 
-	obj := &krm.NetworkConnectivityServiceConnectionPolicy{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	desired := &krm.NetworkConnectivityServiceConnectionPolicy{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, desired); err != nil {
+		return nil, fmt.Errorf("error converting from unstructured: %w", err)
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	location := direct.ValueOf(obj.Spec.Location)
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-
-	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, kube, u.GetNamespace(), &desired.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
 	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+
+	location := direct.ValueOf(desired.Spec.Location)
+	resourceID := direct.ValueOf(desired.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = u.GetName()
 	}
 
-	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
+	if err := common.VisitFields(desired, &refNormalizer{ctx: ctx, src: desired, project: *projectRef, kube: kube}); err != nil {
 		return nil, err
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx, &obj.Spec)
+	desiredProto := NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -125,32 +122,15 @@ func (m *serviceConnectionPolicyModel) AdapterForObject(ctx context.Context, op 
 }
 
 func (m *serviceConnectionPolicyModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: What is format?
-	// // Format: //monitoring.googleapis.com/projects/PROJECT_NUMBER/dashboards/DASHBOARD_ID
-	// if !strings.HasPrefix(url, "//monitoring.googleapis.com/") {
-	// 	return nil, nil
-	// }
-
-	// tokens := strings.Split(strings.TrimPrefix(url, "//apigee.googleapis.com/"), "/")
-	// if len(tokens) == 2 && tokens[0] == "organizations" {
-	// 	gcpClient, err := newGCPClient(ctx, m.config)
-	// 	if err != nil {
-	// 		return nil, fmt.Errorf("building gcp client: %w", err)
-	// 	}
-
-	// 	apigeeClient, err := gcpClient.newApigeeClient(ctx)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-
-	// 	return &serviceConnectionPolicyAdapter{
-	// 		resourceID:   tokens[1],
-	// 		apigeeClient: apigeeClient,
-	// 	}, nil
-	// }
-
 	return nil, nil
+}
 
+func (a *serviceConnectionPolicyAdapter) fullyQualifiedName() string {
+	return fmt.Sprintf("projects/%s/locations/%s/serviceConnectionPolicies/%s", a.projectID, a.location, a.resourceID)
+}
+
+func (a *serviceConnectionPolicyAdapter) parent() string {
+	return fmt.Sprintf("projects/%s/locations/%s", a.projectID, a.location)
 }
 
 // Find implements the Adapter interface.
@@ -160,7 +140,10 @@ func (a *serviceConnectionPolicyAdapter) Find(ctx context.Context) (bool, error)
 	}
 
 	fqn := a.fullyQualifiedName()
-	actual, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Get(fqn).Context(ctx).Do()
+	req := &pb.GetServiceConnectionPolicyRequest{
+		Name: fqn,
+	}
+	actual, err := a.gcpClient.GetServiceConnectionPolicy(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -168,36 +151,12 @@ func (a *serviceConnectionPolicyAdapter) Find(ctx context.Context) (bool, error)
 		return false, err
 	}
 
-	if err := convertAPIToProto(actual, &a.actual); err != nil {
-		return false, err
-	}
-
+	a.actual = actual
 	return true, nil
-}
-
-func (a *serviceConnectionPolicyAdapter) waitForOperation(ctx context.Context, op *api.GoogleLongrunningOperation) error {
-	for {
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-
-		latest, err := a.gcpClient.Projects.Locations.Operations.Get(op.Name).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting operation %q: %w", op.Name, err)
-		}
-
-		if latest.Done {
-			return nil
-		}
-
-		time.Sleep(2 * time.Second)
-	}
 }
 
 // Delete implements the Adapter interface.
 func (a *serviceConnectionPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	// Check if exists / already deleted
-	// Technically we can just delete, but this is a little cleaner in logs etc.
 	exists, err := a.Find(ctx)
 	if err != nil {
 		return false, err
@@ -206,11 +165,11 @@ func (a *serviceConnectionPolicyAdapter) Delete(ctx context.Context, deleteOp *d
 		return false, nil
 	}
 
-	// TODO: Delete via status selfLink?
-
 	fqn := a.fullyQualifiedName()
-
-	op, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Delete(fqn).Context(ctx).Do()
+	req := &pb.DeleteServiceConnectionPolicyRequest{
+		Name: fqn,
+	}
+	op, err := a.gcpClient.DeleteServiceConnectionPolicy(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -218,7 +177,7 @@ func (a *serviceConnectionPolicyAdapter) Delete(ctx context.Context, deleteOp *d
 		return false, fmt.Errorf("deleting serviceConnectionPolicy %q: %w", fqn, err)
 	}
 
-	if err := a.waitForOperation(ctx, op); err != nil {
+	if err := op.Wait(ctx); err != nil {
 		return false, fmt.Errorf("waiting for delete of serviceConnectionPolicy %q: %w", fqn, err)
 	}
 
@@ -234,38 +193,30 @@ func (a *serviceConnectionPolicyAdapter) Create(ctx context.Context, createOp *d
 
 	fqn := a.fullyQualifiedName()
 
-	req := &api.ServiceConnectionPolicy{}
-	if err := convertProtoToAPI(a.desired, req); err != nil {
-		return err
+	req := &pb.CreateServiceConnectionPolicyRequest{
+		Parent:                    a.parent(),
+		ServiceConnectionPolicyId: a.resourceID,
+		ServiceConnectionPolicy:   a.desired,
 	}
 
 	log.V(0).Info("creating serviceConnectionPolicy", "req", req)
-	op, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Create(a.parent(), req).ServiceConnectionPolicyId(a.resourceID).Context(ctx).Do()
+	op, err := a.gcpClient.CreateServiceConnectionPolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating serviceConnectionPolicy: %w", err)
 	}
-	if err := a.waitForOperation(ctx, op); err != nil {
+	created, err := op.Wait(ctx)
+	if err != nil {
 		return fmt.Errorf("waiting for create of serviceConnectionPolicy %q: %w", fqn, err)
 	}
-
-	created, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Get(fqn).Context(ctx).Do()
-	if err != nil {
-		return fmt.Errorf("getting created serviceConnectionPolicy %q: %w", fqn, err)
-	}
-	log.V(2).Info("created organization", "serviceConnectionPolicy", created)
+	log.V(2).Info("created serviceConnectionPolicy", "serviceConnectionPolicy", created)
 
 	resourceID := lastComponent(created.Name)
 	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
 
-	var createdPB *pb.ServiceConnectionPolicy
-	if err := convertAPIToProto(created, &createdPB); err != nil {
-		return err
-	}
-
 	mapCtx := &direct.MapContext{}
-	observedState := NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx, createdPB)
+	observedState := NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -279,36 +230,35 @@ func (a *serviceConnectionPolicyAdapter) Update(ctx context.Context, updateOp *d
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating object", "u", u)
 
-	// TODO: Where/how do we want to enforce immutability?
-
 	fqn := a.fullyQualifiedName()
 
-	if monitoring.ShouldReconcileBasedOnEtag(ctx, u, a.actual.Etag) {
-		req := &api.ServiceConnectionPolicy{}
-		if err := convertProtoToAPI(a.desired, req); err != nil {
-			return err
+	if monitoring.ShouldReconcileBasedOnEtag(ctx, u, a.actual.GetEtag()) {
+		paths := []string{}
+		if !reflect.DeepEqual(a.desired.PscConfig, a.actual.PscConfig) {
+			paths = append(paths, "psc_config")
+		}
+		if a.desired.Description != a.actual.Description {
+			paths = append(paths, "description")
 		}
 
+		req := &pb.UpdateServiceConnectionPolicyRequest{
+			ServiceConnectionPolicy: a.desired,
+			UpdateMask:              &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		a.desired.Name = fqn
+
 		log.V(2).Info("updating serviceConnectionPolicy", "request", req)
-		op, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Patch(fqn, req).Context(ctx).Do()
+		op, err := a.gcpClient.UpdateServiceConnectionPolicy(ctx, req)
 		if err != nil {
 			return err
 		}
-		if err := a.waitForOperation(ctx, op); err != nil {
+		updated, err := op.Wait(ctx)
+		if err != nil {
 			return fmt.Errorf("waiting for update of serviceConnectionPolicy %q: %w", fqn, err)
 		}
 
-		// TODO: Other calls
-
-		updated, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Get(fqn).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting updated serviceConnectionPolicy %q: %w", fqn, err)
-		}
-
 		log.V(2).Info("updated serviceConnectionPolicy", "serviceConnectionPolicy", updated)
-		if err := convertAPIToProto(updated, &a.actual); err != nil {
-			return err
-		}
+		a.actual = updated
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -338,21 +288,9 @@ func (a *serviceConnectionPolicyAdapter) Export(ctx context.Context) (*unstructu
 	}
 
 	u := &unstructured.Unstructured{
-		Object: make(map[string]interface{}),
+		Object: specObj,
 	}
-	u.SetName(a.resourceID)
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.NetworkConnectivityServiceConnectionPolicyGVK)
-	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
-		return nil, fmt.Errorf("setting spec: %w", err)
-	}
-
 	return u, nil
-}
-
-func (a *serviceConnectionPolicyAdapter) fullyQualifiedName() string {
-	return fmt.Sprintf("projects/%s/locations/%s/serviceConnectionPolicies/%s", a.projectID, a.location, a.resourceID)
-}
-
-func (a *serviceConnectionPolicyAdapter) parent() string {
-	return fmt.Sprintf("projects/%s/locations/%s", a.projectID, a.location)
 }
