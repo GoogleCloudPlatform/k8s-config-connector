@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:controller
-// proto.service: google.cloud.networkconnectivity.v1.HubService
+// proto.service: google.cloud.networkconnectivity.v1.InternalRange
 // proto.message: google.cloud.networkconnectivity.v1.InternalRange
 // crd.type: NetworkConnectivityInternalRange
 // crd.version: v1alpha1
@@ -24,23 +24,22 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"strings"
-	"time"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
-	api "google.golang.org/api/networkconnectivity/v1"
+	gcpapi "cloud.google.com/go/networkconnectivity/apiv1"
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	networkconnectivityrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/networkconnectivityrefs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -71,26 +70,38 @@ func (m *internalRangeModel) AdapterForObject(ctx context.Context, op *directbas
 	}
 	id := idIdentity.(*networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity)
 
-	// normalize reference fields
-	if obj.Spec.NetworkRef != nil {
-		if err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve projectID")
 	}
 
-	// Get networkconnectivity GCP client
+	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: reader}); err != nil {
+		return nil, err
+	}
+
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
 		return nil, err
 	}
-	client, err := gcpClient.newNetworkConnectivityClient(ctx)
+	client, err := gcpClient.newInternalRangeClient(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desiredProto := NetworkConnectivityInternalRangeSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &internalRangeAdapter{
 		gcpClient: client,
 		id:        id,
-		desired:   obj,
+		desired:   desiredProto,
 	}, nil
 }
 
@@ -100,9 +111,9 @@ func (m *internalRangeModel) AdapterForURL(ctx context.Context, url string) (dir
 }
 
 type internalRangeAdapter struct {
-	gcpClient *api.Service
+	gcpClient *gcpapi.InternalRangeClient
 	id        *networkconnectivityrefs.NetworkConnectivityInternalRangeIdentity
-	desired   *krm.NetworkConnectivityInternalRange
+	desired   *pb.InternalRange
 	actual    *pb.InternalRange
 }
 
@@ -116,7 +127,10 @@ func (a *internalRangeAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting networkconnectivity internalrange", "name", a.id)
 	fqn := a.id.String()
-	actual, err := a.gcpClient.Projects.Locations.InternalRanges.Get(fqn).Context(ctx).Do()
+	req := &pb.GetInternalRangeRequest{
+		Name: fqn,
+	}
+	actual, err := a.gcpClient.GetInternalRange(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -124,10 +138,7 @@ func (a *internalRangeAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting networkconnectivity internalrange %q from gcp: %w", a.id.String(), err)
 	}
 
-	if err := convertAPIToProto(actual, &a.actual); err != nil {
-		return false, err
-	}
-
+	a.actual = actual
 	return true, nil
 }
 
@@ -136,46 +147,35 @@ func (a *internalRangeAdapter) Create(ctx context.Context, createOp *directbase.
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating networkconnectivity internalrange", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := NetworkConnectivityInternalRangeSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	req := &api.InternalRange{}
-	err := convertProtoToAPI(desired, req)
 
 	fqn := a.id.String()
-
 	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
-	op, err := a.gcpClient.Projects.Locations.InternalRanges.Create(parent, req).InternalRangeId(a.id.InternalRange).Context(ctx).Do()
+
+	req := &pb.CreateInternalRangeRequest{
+		Parent:          parent,
+		InternalRangeId: a.id.InternalRange,
+		InternalRange:   a.desired,
+	}
+
+	op, err := a.gcpClient.CreateInternalRange(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating networkconnectivity internalrange %s: %w", fqn, err)
 	}
-	if err := a.waitForOperation(ctx, op); err != nil {
-		return fmt.Errorf("waiting for create of internalrange %q: %w", fqn, err)
+	created, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("waiting for create of networkconnectivity internalrange %q: %w", fqn, err)
 	}
 
 	log.V(2).Info("successfully created networkconnectivity internalrange in gcp", "name", a.id)
 
-	created, err := a.gcpClient.Projects.Locations.InternalRanges.Get(fqn).Context(ctx).Do()
-	if err != nil {
-		return fmt.Errorf("getting created internalrange %q: %w", fqn, err)
-	}
-
-	resourceID := lastComponent(created.Name)
+	resourceID := lastComponent(created.GetName())
 	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
-	var createdPB *pb.InternalRange
-	if err := convertAPIToProto(created, &createdPB); err != nil {
-		return err
-	}
-	externalRef := fqn
-	status := &krm.NetworkConnectivityInternalRangeStatus{
-		ExternalRef: &externalRef,
-	}
-	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, createdPB)
+
+	mapCtx := &direct.MapContext{}
+	status := &krm.NetworkConnectivityInternalRangeStatus{}
+	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -185,80 +185,56 @@ func (a *internalRangeAdapter) Create(ctx context.Context, createOp *directbase.
 func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating networkconnectivity internalrange", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := NetworkConnectivityInternalRangeSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	fqn := a.id.String()
 
 	paths := []string{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, resource.Description)
+
+	if !reflect.DeepEqual(a.desired.GetDescription(), a.actual.GetDescription()) {
 		paths = append(paths, "description")
 	}
-	if desired.Spec.IPCIDRRange != nil && !reflect.DeepEqual(resource.IpCidrRange, a.actual.IpCidrRange) {
-		report.AddField("ip_cidr_range", a.actual.IpCidrRange, resource.IpCidrRange)
-		paths = append(paths, "ipCidrRange")
-	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, resource.Labels)
+	if !reflect.DeepEqual(a.desired.GetLabels(), a.actual.GetLabels()) {
 		paths = append(paths, "labels")
 	}
-	if desired.Spec.Peering != nil && !reflect.DeepEqual(resource.Peering, a.actual.Peering) {
-		report.AddField("peering", a.actual.Peering, resource.Peering)
-		paths = append(paths, "peering")
+	if !reflect.DeepEqual(a.desired.GetOverlaps(), a.actual.GetOverlaps()) {
+		paths = append(paths, "overlaps")
 	}
-	if desired.Spec.AllocationOptions != nil && !reflect.DeepEqual(resource.AllocationOptions, a.actual.AllocationOptions) {
-		report.AddField("allocation_options", a.actual.AllocationOptions, resource.AllocationOptions)
-		paths = append(paths, "allocationOptions")
+	if !reflect.DeepEqual(a.desired.GetTargetCidrRange(), a.actual.GetTargetCidrRange()) {
+		paths = append(paths, "target_cidr_range")
 	}
-	if desired.Spec.PrefixLength != nil && !reflect.DeepEqual(resource.PrefixLength, a.actual.PrefixLength) {
-		report.AddField("prefix_length", a.actual.PrefixLength, resource.PrefixLength)
-		paths = append(paths, "prefixLength")
-	}
-	if desired.Spec.TargetCIDRRange != nil && !reflect.DeepEqual(resource.TargetCidrRange, a.actual.TargetCidrRange) {
-		report.AddField("target_cidr_range", a.actual.TargetCidrRange, resource.TargetCidrRange)
-		paths = append(paths, "targetCidrRange")
-	}
-	if desired.Spec.Usage != nil && !reflect.DeepEqual(resource.Usage, a.actual.Usage) {
-		report.AddField("usage", a.actual.Usage, resource.Usage)
-		paths = append(paths, "usage")
+	if a.desired.GetPrefixLength() != a.actual.GetPrefixLength() {
+		paths = append(paths, "prefix_length")
 	}
 
-	if len(paths) > 0 {
-		structuredreporting.ReportDiff(ctx, report)
-		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-		req := &api.InternalRange{}
-		if err := convertProtoToAPI(resource, req); err != nil {
-			return err
+	if len(paths) == 0 {
+		mapCtx := &direct.MapContext{}
+		status := &krm.NetworkConnectivityInternalRangeStatus{}
+		status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
 		}
-		fqn := a.id.String()
-		op, err := a.gcpClient.Projects.Locations.InternalRanges.Patch(fqn, req).UpdateMask(strings.Join(paths, ",")).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("updating networkconnectivity internalrange %s: %w", fqn, err)
-		}
-		if err := a.waitForOperation(ctx, op); err != nil {
-			return fmt.Errorf("waiting for update of internalrange %q: %w", fqn, err)
-		}
-		log.V(2).Info("successfully updated networkconnectivity internalrange", "name", fqn)
-		updatedAPI, err := a.gcpClient.Projects.Locations.InternalRanges.Get(fqn).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting updated internalrange %q: %w", fqn, err)
-		}
-		if err := convertAPIToProto(updatedAPI, &a.actual); err != nil {
-			return err
-		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	externalRef := a.id.String()
-	status := &krm.NetworkConnectivityInternalRangeStatus{
-		ExternalRef: &externalRef,
+	a.desired.Name = fqn
+	req := &pb.UpdateInternalRangeRequest{
+		InternalRange: a.desired,
+		UpdateMask:    &fieldmaskpb.FieldMask{Paths: paths},
 	}
-	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, a.actual)
+
+	op, err := a.gcpClient.UpdateInternalRange(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating networkconnectivity internalrange %s: %w", fqn, err)
+	}
+	updated, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("waiting for update of networkconnectivity internalrange %q: %w", fqn, err)
+	}
+
+	a.actual = updated
+
+	mapCtx := &direct.MapContext{}
+	status := &krm.NetworkConnectivityInternalRangeStatus{}
+	status.ObservedState = NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -269,22 +245,21 @@ func (a *internalRangeAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
 
-	obj := &krm.NetworkConnectivityInternalRange{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(NetworkConnectivityInternalRangeSpec_FromProto(mapCtx, a.actual))
+	spec := NetworkConnectivityInternalRangeSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
-	obj.Spec.Location = a.id.Location
-	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	spec.Location = a.id.Location
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
+	u := &unstructured.Unstructured{}
+	u.SetName(a.actual.GetName())
 	u.SetGroupVersionKind(krm.NetworkConnectivityInternalRangeGVK)
 	u.Object = uObj
 	return u, nil
@@ -295,37 +270,21 @@ func (a *internalRangeAdapter) Delete(ctx context.Context, deleteOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting networkconnectivity internalrange", "name", a.id)
 	fqn := a.id.String()
-	op, err := a.gcpClient.Projects.Locations.InternalRanges.Delete(fqn).Context(ctx).Do()
+	req := &pb.DeleteInternalRangeRequest{
+		Name: fqn,
+	}
+	op, err := a.gcpClient.DeleteInternalRange(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			log.V(2).Info("skipping delete for non-existent networkconnectivity internalrange, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting networkconnectivity internalrange %s: %w", a.id.String(), err)
+		return false, fmt.Errorf("deleting networkconnectivity internalrange %s: %w", fqn, err)
 	}
 	log.V(2).Info("successfully deleted networkconnectivity internalrange", "name", a.id)
 
-	if err := a.waitForOperation(ctx, op); err != nil {
-		return false, fmt.Errorf("waiting delete networkconnectivity internalrange %s: %w", a.id, err)
+	if err := op.Wait(ctx); err != nil {
+		return false, fmt.Errorf("waiting delete networkconnectivity internalrange %s: %w", fqn, err)
 	}
 	return true, nil
-}
-
-func (a *internalRangeAdapter) waitForOperation(ctx context.Context, op *api.GoogleLongrunningOperation) error {
-	for {
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-
-		latest, err := a.gcpClient.Projects.Locations.Operations.Get(op.Name).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting operation %q: %w", op.Name, err)
-		}
-
-		if latest.Done {
-			return nil
-		}
-
-		time.Sleep(2 * time.Second)
-	}
 }
