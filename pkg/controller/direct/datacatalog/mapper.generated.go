@@ -52,6 +52,28 @@ func BigQueryConnectionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmd
 	out.HasCredential = direct.ValueOf(in.HasCredential)
 	return out
 }
+func BigQueryDateShardedSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDateShardedSpec) *krmdatacatalogv1alpha1.BigQueryDateShardedSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.BigQueryDateShardedSpec{}
+	// MISSING: Dataset
+	// MISSING: TablePrefix
+	// MISSING: ShardCount
+	// MISSING: LatestShardResource
+	return out
+}
+func BigQueryDateShardedSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.BigQueryDateShardedSpec) *pb.BigQueryDateShardedSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryDateShardedSpec{}
+	// MISSING: Dataset
+	// MISSING: TablePrefix
+	// MISSING: ShardCount
+	// MISSING: LatestShardResource
+	return out
+}
 func BigQueryDateShardedSpecObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDateShardedSpec) *krmdatacatalogv1alpha1.BigQueryDateShardedSpecObservedState {
 	if in == nil {
 		return nil
@@ -88,6 +110,30 @@ func BigQueryRoutineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdata
 	}
 	out := &pb.BigQueryRoutineSpec{}
 	out.ImportedLibraries = in.ImportedLibraries
+	return out
+}
+func BigQueryTableSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryTableSpec) *krmdatacatalogv1alpha1.BigQueryTableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.BigQueryTableSpec{}
+	// MISSING: TableSourceType
+	out.ViewSpec = ViewSpec_v1alpha1_FromProto(mapCtx, in.GetViewSpec())
+	out.TableSpec = TableSpec_v1alpha1_FromProto(mapCtx, in.GetTableSpec())
+	return out
+}
+func BigQueryTableSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.BigQueryTableSpec) *pb.BigQueryTableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryTableSpec{}
+	// MISSING: TableSourceType
+	if oneof := ViewSpec_v1alpha1_ToProto(mapCtx, in.ViewSpec); oneof != nil {
+		out.TypeSpec = &pb.BigQueryTableSpec_ViewSpec{ViewSpec: oneof}
+	}
+	if oneof := TableSpec_v1alpha1_ToProto(mapCtx, in.TableSpec); oneof != nil {
+		out.TypeSpec = &pb.BigQueryTableSpec_TableSpec{TableSpec: oneof}
+	}
 	return out
 }
 func BigQueryTableSpecObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryTableSpec) *krmdatacatalogv1alpha1.BigQueryTableSpecObservedState {
@@ -274,6 +320,22 @@ func ColumnSchema_LookerColumnSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.ColumnSchema_LookerColumnSpec{}
 	out.Type = direct.Enum_ToProto[pb.ColumnSchema_LookerColumnSpec_LookerColumnType](mapCtx, in.Type)
+	return out
+}
+func CommonUsageStats_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CommonUsageStats) *krmdatacatalogv1alpha1.CommonUsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.CommonUsageStats{}
+	out.ViewCount = in.ViewCount
+	return out
+}
+func CommonUsageStats_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.CommonUsageStats) *pb.CommonUsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CommonUsageStats{}
+	out.ViewCount = in.ViewCount
 	return out
 }
 func Contacts_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Contacts) *krmdatacatalogv1alpha1.Contacts {
@@ -1027,6 +1089,26 @@ func FilesetSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv
 	out.DataplexFileset = DataplexFilesetSpec_v1alpha1_ToProto(mapCtx, in.DataplexFileset)
 	return out
 }
+func GCSFileSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcsFileSpec) *krmdatacatalogv1alpha1.GCSFileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.GCSFileSpec{}
+	out.FilePath = direct.LazyPtr(in.GetFilePath())
+	// MISSING: GCSTimestamps
+	// MISSING: SizeBytes
+	return out
+}
+func GCSFileSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.GCSFileSpec) *pb.GcsFileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsFileSpec{}
+	out.FilePath = direct.ValueOf(in.FilePath)
+	// MISSING: GCSTimestamps
+	// MISSING: SizeBytes
+	return out
+}
 func GCSFileSpecObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcsFileSpec) *krmdatacatalogv1alpha1.GCSFileSpecObservedState {
 	if in == nil {
 		return nil
@@ -1433,6 +1515,22 @@ func SystemTimestampsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	return out
 }
+func TableSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krmdatacatalogv1alpha1.TableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.TableSpec{}
+	// MISSING: GroupedEntry
+	return out
+}
+func TableSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.TableSpec) *pb.TableSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TableSpec{}
+	// MISSING: GroupedEntry
+	return out
+}
 func TableSpecObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krmdatacatalogv1alpha1.TableSpecObservedState {
 	if in == nil {
 		return nil
@@ -1639,6 +1737,28 @@ func UsageSignalObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: FavoriteCount
 	return out
 }
+func UsageStats_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UsageStats) *krmdatacatalogv1alpha1.UsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.UsageStats{}
+	out.TotalCompletions = direct.LazyPtr(in.GetTotalCompletions())
+	out.TotalFailures = direct.LazyPtr(in.GetTotalFailures())
+	out.TotalCancellations = direct.LazyPtr(in.GetTotalCancellations())
+	out.TotalExecutionTimeForCompletionsMillis = direct.LazyPtr(in.GetTotalExecutionTimeForCompletionsMillis())
+	return out
+}
+func UsageStats_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.UsageStats) *pb.UsageStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UsageStats{}
+	out.TotalCompletions = direct.ValueOf(in.TotalCompletions)
+	out.TotalFailures = direct.ValueOf(in.TotalFailures)
+	out.TotalCancellations = direct.ValueOf(in.TotalCancellations)
+	out.TotalExecutionTimeForCompletionsMillis = direct.ValueOf(in.TotalExecutionTimeForCompletionsMillis)
+	return out
+}
 func VertexDatasetSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VertexDatasetSpec) *krmdatacatalogv1alpha1.VertexDatasetSpec {
 	if in == nil {
 		return nil
@@ -1697,6 +1817,22 @@ func VertexModelSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacata
 	out.VersionDescription = direct.ValueOf(in.VersionDescription)
 	out.VertexModelSourceInfo = VertexModelSourceInfo_v1alpha1_ToProto(mapCtx, in.VertexModelSourceInfo)
 	out.ContainerImageUri = direct.ValueOf(in.ContainerImageURI)
+	return out
+}
+func ViewSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ViewSpec) *krmdatacatalogv1alpha1.ViewSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdatacatalogv1alpha1.ViewSpec{}
+	// MISSING: ViewQuery
+	return out
+}
+func ViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.ViewSpec) *pb.ViewSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ViewSpec{}
+	// MISSING: ViewQuery
 	return out
 }
 func ViewSpecObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ViewSpec) *krmdatacatalogv1alpha1.ViewSpecObservedState {

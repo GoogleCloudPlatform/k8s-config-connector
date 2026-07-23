@@ -549,6 +549,58 @@ func CustomMirroringProfile_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmn
 	}
 	return out
 }
+func FirewallEndpoint_AssociationReference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpoint_AssociationReference) *krmnetworksecurityv1alpha1.FirewallEndpoint_AssociationReference {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.FirewallEndpoint_AssociationReference{}
+	// MISSING: Name
+	// MISSING: Network
+	return out
+}
+func FirewallEndpoint_AssociationReference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.FirewallEndpoint_AssociationReference) *pb.FirewallEndpoint_AssociationReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallEndpoint_AssociationReference{}
+	// MISSING: Name
+	// MISSING: Network
+	return out
+}
+func FirewallEndpoint_AssociationReferenceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpoint_AssociationReference) *krmnetworksecurityv1alpha1.FirewallEndpoint_AssociationReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.FirewallEndpoint_AssociationReferenceObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	return out
+}
+func FirewallEndpoint_AssociationReferenceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.FirewallEndpoint_AssociationReferenceObservedState) *pb.FirewallEndpoint_AssociationReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallEndpoint_AssociationReference{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Network = direct.ValueOf(in.Network)
+	return out
+}
+func FirewallEndpoint_EndpointSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallEndpoint_EndpointSettings) *krmnetworksecurityv1alpha1.FirewallEndpoint_EndpointSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.FirewallEndpoint_EndpointSettings{}
+	out.JumboFramesEnabled = direct.LazyPtr(in.GetJumboFramesEnabled())
+	return out
+}
+func FirewallEndpoint_EndpointSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.FirewallEndpoint_EndpointSettings) *pb.FirewallEndpoint_EndpointSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallEndpoint_EndpointSettings{}
+	out.JumboFramesEnabled = direct.ValueOf(in.JumboFramesEnabled)
+	return out
+}
 func GrpcEndpoint_v1beta1_FromProto(mapCtx *direct.MapContext, in *networksecuritypb.GrpcEndpoint) *krm.GrpcEndpoint {
 	if in == nil {
 		return nil
@@ -1423,6 +1475,88 @@ func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.MinTlsVersion = direct.Enum_ToProto[pb.TlsInspectionPolicy_TlsVersion](mapCtx, in.MinTLSVersion)
 	out.TlsFeatureProfile = direct.Enum_ToProto[pb.TlsInspectionPolicy_Profile](mapCtx, in.TLSFeatureProfile)
 	out.CustomTlsFeatures = in.CustomTLSFeatures
+	return out
+}
+func SecurityProfile_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityProfile) *krmnetworksecurityv1alpha1.SecurityProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.SecurityProfile{}
+	out.ThreatPreventionProfile = ThreatPreventionProfile_v1alpha1_FromProto(mapCtx, in.GetThreatPreventionProfile())
+	out.CustomMirroringProfile = CustomMirroringProfile_v1alpha1_FromProto(mapCtx, in.GetCustomMirroringProfile())
+	out.CustomInterceptProfile = CustomInterceptProfile_v1alpha1_FromProto(mapCtx, in.GetCustomInterceptProfile())
+	out.URLFilteringProfile = URLFilteringProfile_v1alpha1_FromProto(mapCtx, in.GetUrlFilteringProfile())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func SecurityProfile_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.SecurityProfile) *pb.SecurityProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityProfile{}
+	if oneof := ThreatPreventionProfile_v1alpha1_ToProto(mapCtx, in.ThreatPreventionProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_ThreatPreventionProfile{ThreatPreventionProfile: oneof}
+	}
+	if oneof := CustomMirroringProfile_v1alpha1_ToProto(mapCtx, in.CustomMirroringProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_CustomMirroringProfile{CustomMirroringProfile: oneof}
+	}
+	if oneof := CustomInterceptProfile_v1alpha1_ToProto(mapCtx, in.CustomInterceptProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_CustomInterceptProfile{CustomInterceptProfile: oneof}
+	}
+	if oneof := URLFilteringProfile_v1alpha1_ToProto(mapCtx, in.URLFilteringProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_UrlFilteringProfile{UrlFilteringProfile: oneof}
+	}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.Type = direct.Enum_ToProto[pb.SecurityProfile_ProfileType](mapCtx, in.Type)
+	return out
+}
+func SecurityProfileObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityProfile) *krmnetworksecurityv1alpha1.SecurityProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.SecurityProfileObservedState{}
+	out.ThreatPreventionProfile = ThreatPreventionProfileObservedState_v1alpha1_FromProto(mapCtx, in.GetThreatPreventionProfile())
+	// MISSING: CustomMirroringProfile
+	// MISSING: CustomInterceptProfile
+	// MISSING: URLFilteringProfile
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Labels
+	// MISSING: Type
+	return out
+}
+func SecurityProfileObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.SecurityProfileObservedState) *pb.SecurityProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityProfile{}
+	if oneof := ThreatPreventionProfileObservedState_v1alpha1_ToProto(mapCtx, in.ThreatPreventionProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_ThreatPreventionProfile{ThreatPreventionProfile: oneof}
+	}
+	// MISSING: CustomMirroringProfile
+	// MISSING: CustomInterceptProfile
+	// MISSING: URLFilteringProfile
+	// MISSING: Name
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
+	// MISSING: Type
 	return out
 }
 func SeverityOverride_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SeverityOverride) *krmnetworksecurityv1alpha1.SeverityOverride {
