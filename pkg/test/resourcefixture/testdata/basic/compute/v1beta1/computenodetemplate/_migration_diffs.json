@@ -1,0 +1,89 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeNodeTemplate/computenodetemplate-${uniqueId}",
+    "fields": [
+      {
+        "id": "cpu_overcommit_type",
+        "old": "",
+        "new": "NONE"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type."
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computenodetemplate-${uniqueId}"
+      },
+      {
+        "id": "node_affinity_labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "node_affinity_labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "node_affinity_labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "node_affinity_labels.memory_guarantee",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "node_type_flexibility.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "node_type_flexibility.0.cpus",
+        "old": "",
+        "new": "96"
+      },
+      {
+        "id": "node_type_flexibility.0.local_ssd",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "node_type_flexibility.0.memory",
+        "old": "",
+        "new": "any"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "server_binding.#",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
