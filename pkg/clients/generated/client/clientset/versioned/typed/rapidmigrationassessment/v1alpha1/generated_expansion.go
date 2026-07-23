@@ -21,8 +21,4 @@
 
 package v1alpha1
 
-type CloudAssetFolderFeedExpansion interface{}
-
-type CloudAssetOrganizationFeedExpansion interface{}
-
-type CloudAssetProjectFeedExpansion interface{}
+type RapidMigrationAssessmentCollectorExpansion interface{}
