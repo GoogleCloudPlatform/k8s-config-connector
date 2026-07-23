@@ -1,0 +1,23 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesAuthzExtension
+metadata:
+  name: authzext-max-${uniqueId}
+  labels:
+    key-create: val-create
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: authzext-max-${uniqueId}
+  description: "Initial description for AuthzExtension"
+  loadBalancingScheme: INTERNAL_MANAGED
+  authority: ext-service.example.com:443
+  backendServiceRef:
+    name: bs-callout-${uniqueId}
+  timeout: 0.100s
+  failOpen: false
+  metadata:
+    initialKey: initialVal
+  forwardHeaders:
+    - "x-my-header"
+  wireFormat: EXT_PROC_GRPC
