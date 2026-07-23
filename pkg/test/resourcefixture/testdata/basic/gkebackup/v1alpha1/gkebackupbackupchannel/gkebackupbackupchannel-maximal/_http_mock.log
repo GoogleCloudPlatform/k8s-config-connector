@@ -37,7 +37,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "description": "Initial GKE Backup Channel Description",
-  "destinationProject": "projects/${projectId}",
+  "destinationProject": "projects/shared-reservations-project",
   "labels": {
     "foo": "bar",
     "key": "value"
@@ -97,8 +97,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkebackup.v1.BackupChannel",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Initial GKE Backup Channel Description",
-    "destinationProject": "projects/${projectId}",
-    "destinationProjectId": "${projectId}",
+    "destinationProject": "projects/shared-reservations-project",
+    "destinationProjectId": "shared-reservations-project",
     "etag": "abcdef0123A=",
     "labels": {
       "foo": "bar",
@@ -130,8 +130,8 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial GKE Backup Channel Description",
-  "destinationProject": "projects/${projectId}",
-  "destinationProjectId": "${projectId}",
+  "destinationProject": "projects/shared-reservations-project",
+  "destinationProjectId": "shared-reservations-project",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "bar",
@@ -151,7 +151,7 @@ X-Goog-Request-Params: backup_channel.name=projects%2F${projectId}%2Flocations%2
 
 {
   "description": "Updated GKE Backup Channel Description",
-  "destinationProject": "projects/${projectId}",
+  "destinationProject": "projects/shared-reservations-project",
   "labels": {
     "foo": "baz",
     "new-key": "new-value"
@@ -212,8 +212,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.gkebackup.v1.BackupChannel",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated GKE Backup Channel Description",
-    "destinationProject": "projects/${projectId}",
-    "destinationProjectId": "${projectId}",
+    "destinationProject": "projects/shared-reservations-project",
+    "destinationProjectId": "shared-reservations-project",
     "etag": "abcdef0123A=",
     "labels": {
       "foo": "baz",
@@ -245,8 +245,8 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated GKE Backup Channel Description",
-  "destinationProject": "projects/${projectId}",
-  "destinationProjectId": "${projectId}",
+  "destinationProject": "projects/shared-reservations-project",
+  "destinationProjectId": "shared-reservations-project",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "baz",

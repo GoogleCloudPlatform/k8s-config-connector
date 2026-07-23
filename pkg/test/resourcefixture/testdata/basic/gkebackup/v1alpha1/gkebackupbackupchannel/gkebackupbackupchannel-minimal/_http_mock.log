@@ -36,7 +36,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "destinationProject": "projects/${projectId}"
+  "destinationProject": "projects/shared-reservations-project"
 }
 
 200 OK
@@ -91,8 +91,8 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkebackup.v1.BackupChannel",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "destinationProject": "projects/${projectId}",
-    "destinationProjectId": "${projectId}",
+    "destinationProject": "projects/shared-reservations-project",
+    "destinationProjectId": "shared-reservations-project",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-central1/backupChannels/gkebackupbackupchannel-minimal-${uniqueId}",
     "uid": "111111111111111111111",
@@ -119,8 +119,8 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destinationProject": "projects/${projectId}",
-  "destinationProjectId": "${projectId}",
+  "destinationProject": "projects/shared-reservations-project",
+  "destinationProjectId": "shared-reservations-project",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/backupChannels/gkebackupbackupchannel-minimal-${uniqueId}",
   "uid": "111111111111111111111",
