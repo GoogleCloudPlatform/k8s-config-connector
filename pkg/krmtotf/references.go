@@ -90,7 +90,8 @@ func ResolveResourceReference(path []string, obj interface{}, refConfig v1alpha1
 	// Base case. We have found the object that holds the field that is the reference. Resolve its value.
 	key := field
 	if refConfig.Key != "" {
-		key = refConfig.Key
+		parts := strings.Split(refConfig.Key, ".")
+		key = parts[len(parts)-1]
 	}
 	ref := config[key]
 	if ref == nil {
@@ -275,7 +276,8 @@ func containsReferenceField(qualifiedName string, rc *corekccv1alpha1.ResourceCo
 
 func GetKeyForReferenceField(refConfig *corekccv1alpha1.ReferenceConfig) string {
 	if refConfig.Key != "" {
-		return refConfig.Key
+		parts := strings.Split(refConfig.Key, ".")
+		return parts[len(parts)-1]
 	}
 	parts := strings.Split(refConfig.TFField, ".")
 	containerField := text.SnakeCaseToLowerCamelCase(parts[len(parts)-1])
@@ -283,6 +285,9 @@ func GetKeyForReferenceField(refConfig *corekccv1alpha1.ReferenceConfig) string 
 }
 
 func getPathToReferenceKey(refConfig *corekccv1alpha1.ReferenceConfig) []string {
+	if refConfig.Key != "" && strings.Contains(refConfig.Key, ".") {
+		return strings.Split(refConfig.Key, ".")
+	}
 	fieldCamelCase := text.SnakeCaseToLowerCamelCase(refConfig.TFField)
 	path := strings.Split(fieldCamelCase, ".")
 	if refConfig.Key != "" {

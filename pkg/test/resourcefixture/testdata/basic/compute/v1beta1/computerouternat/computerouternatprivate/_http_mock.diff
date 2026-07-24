@@ -1,19 +1,19 @@
-935c935
+937c937
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-962c962
+963c963
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-968d967
+969d968
 <       "drainNatIps": [],
-973,974d971
+974,975d972
 <       "icmpIdleTimeoutSec": 30,
 <       "logConfig": null,
-977d973
+978d974
 <       "natIps": [],
-999,1003c995
+1000,1004c996
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -21,12 +21,12 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1036c1028,1029
+1037c1029,1030
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1067c1060
+1068c1061
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
@@ -71,11 +71,11 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1268d1245
+1267d1244
 <       "enableDynamicPortAllocation": false,
-1273d1249
+1272d1248
 <       "icmpIdleTimeoutSec": 30,
-1300,1304c1276
+1299,1303c1275
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -83,22 +83,22 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PRIVATE"
-1314c1286
+1313c1285
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1317,1319c1289
+1316,1318c1288
 < {
 <   "nats": []
 < }
 ---
 > {}
-1349c1319,1320
+1348c1318,1319
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1722a1694,1730
+1721a1693,1729
 >   "nats": [
 >     {
 >       "autoNetworkTier": "PREMIUM",

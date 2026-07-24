@@ -25,6 +25,5 @@ spec:
     name: internalrange-${uniqueId}
   secondaryIpRange:
     - rangeName: secondary-range
-      ipCidrRange: 10.129.0.0/24
       reservedInternalRangeRef:
         name: internalrange-sec-${uniqueId}

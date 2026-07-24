@@ -22,8 +22,7 @@ spec:
     name: internalrange-${uniqueId}
   resourceID: ${subnetworkID}
   secondaryIpRange:
-  - ipCidrRange: 10.129.0.0/24
-    rangeName: secondary-range
+  - rangeName: secondary-range
     reservedInternalRangeRef:
       name: internalrange-sec-${uniqueId}
 status:
