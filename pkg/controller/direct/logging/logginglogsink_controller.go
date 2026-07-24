@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -109,8 +110,21 @@ func (m *modelLoggingLogSink) AdapterForObject(ctx context.Context, op *directba
 }
 
 func (m *modelLoggingLogSink) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.LoggingLogSinkIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LoggingLogSinkAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type LoggingLogSinkAdapter struct {
@@ -218,13 +232,27 @@ func (a *LoggingLogSinkAdapter) Export(ctx context.Context) (*unstructured.Unstr
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Sink)
+
+	if a.id.Project != "" {
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	} else if a.id.Folder != "" {
+		obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Folder}
+	} else if a.id.Organization != "" {
+		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Organization}
+	}
+
+	if a.actual.WriterIdentity != "" && a.actual.WriterIdentity != "serviceAccount:cloud-logs@system.gserviceaccount.com" {
+		obj.Spec.UniqueWriterIdentity = direct.LazyPtr(true)
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Sink)
 	u.SetGroupVersionKind(krm.LoggingLogSinkGVK)
 	return u, nil
 }
