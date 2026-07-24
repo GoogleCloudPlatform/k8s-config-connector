@@ -45,6 +45,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 3,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "location": "us-central1",
@@ -53,7 +54,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "transactionLogRetentionDays": 2
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "ipv4Enabled": true,
@@ -67,6 +70,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
@@ -96,177 +100,6 @@ X-Xss-Protection: 0
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "CREATE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "sqlinstance-source-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-source-direct-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
-  "databaseVersion": "POSTGRES_16",
-  "etag": "abcdef0123A=",
-  "gceZone": "us-central1-a",
-  "geminiConfig": {
-    "activeQueryEnabled": false,
-    "entitled": false,
-    "googleVacuumMgmtEnabled": false,
-    "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": false
-  },
-  "instanceType": "CLOUD_SQL_INSTANCE",
-  "ipAddresses": [
-    {
-      "ipAddress": "10.10.10.10",
-      "type": "PRIMARY"
-    },
-    {
-      "ipAddress": "10.10.10.11",
-      "type": "OUTGOING"
-    }
-  ],
-  "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
-  "name": "sqlinstance-source-direct-${uniqueId}",
-  "project": "${projectId}",
-  "region": "us-central1",
-  "satisfiesPzi": true,
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
-  "serverCaCert": {
-    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
-    "certSerialNumber": "0",
-    "commonName": "common-name",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-source-direct-${uniqueId}",
-    "kind": "sql#sslCert",
-    "sha1Fingerprint": "12345678"
-  },
-  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-  "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
-    "backupConfiguration": {
-      "backupRetentionSettings": {
-        "retainedBackups": 3,
-        "retentionUnit": "COUNT"
-      },
-      "enabled": true,
-      "kind": "sql#backupConfiguration",
-      "location": "us-central1",
-      "pointInTimeRecoveryEnabled": true,
-      "replicationLogArchivingEnabled": false,
-      "startTime": "12:00",
-      "transactionLogRetentionDays": 2,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-    },
-    "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
-    "dataDiskType": "PD_SSD",
-    "deletionProtectionEnabled": false,
-    "edition": "ENTERPRISE",
-    "ipConfiguration": {
-      "authorizedNetworks": [],
-      "ipv4Enabled": true,
-      "requireSsl": false,
-      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-    },
-    "kind": "sql#settings",
-    "locationPreference": {
-      "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
-    },
-    "pricingPlan": "PER_USE",
-    "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "123",
-    "storageAutoResize": true,
-    "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
-    "userLabels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    }
-  },
-  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "items": [
-    {
-      "etag": "abcdef0123A=",
-      "host": "",
-      "iamStatus": "IAM_STATUS_UNSPECIFIED",
-      "instance": "sqlinstance-source-direct-${uniqueId}",
-      "kind": "sql#user",
-      "name": "postgres",
-      "passwordPolicy": {
-        "status": {}
-      },
-      "project": "${projectId}"
-    }
-  ],
-  "kind": "sql#usersList"
 }
 
 ---
@@ -443,6 +276,506 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-source-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-source-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.10.10.11",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-source-direct-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-source-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 3,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": true,
+      "kind": "sql#backupConfiguration",
+      "location": "us-central1",
+      "pointInTimeRecoveryEnabled": true,
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 2,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}/users?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "items": [
+    {
+      "etag": "abcdef0123A=",
+      "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
+      "instance": "sqlinstance-source-direct-${uniqueId}",
+      "kind": "sql#user",
+      "name": "postgres",
+      "passwordPolicy": {
+        "status": {}
+      },
+      "project": "${projectId}"
+    }
+  ],
+  "kind": "sql#usersList"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-clone-minimal-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.10.10.11",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-clone-minimal-direct-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-clone-minimal-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 3,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": true,
+      "kind": "sql#backupConfiguration",
+      "location": "us-central1",
+      "pointInTimeRecoveryEnabled": true,
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 2,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-source-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.10.10.11",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-source-direct-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-source-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 3,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": true,
+      "kind": "sql#backupConfiguration",
+      "location": "us-central1",
+      "pointInTimeRecoveryEnabled": true,
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 2,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-clone-minimal-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.10.10.11",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "sqlinstance-clone-minimal-direct-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-clone-minimal-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 3,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": true,
+      "kind": "sql#backupConfiguration",
+      "location": "us-central1",
+      "pointInTimeRecoveryEnabled": true,
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 2,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -495,36 +828,6 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-clone-minimal-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
   "targetId": "sqlinstance-clone-minimal-direct-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
   "targetProject": "${projectId}",
@@ -609,6 +912,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -663,6 +967,36 @@ X-Xss-Protection: 0
   "status": "PENDING",
   "targetId": "sqlinstance-source-direct-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-source-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-clone-minimal-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-clone-minimal-direct-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
