@@ -31,11 +31,9 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
-	schema.GroupKind{
-		Group: "devicestreaming.cnrm.cloud.google.com",
-		Kind:  "DeviceStreamingSession",
-	}: true,
+var mockGCPSkipFixtures = map[string]bool{
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -68,12 +66,7 @@ func TestGoldenLogAlignment(t *testing.T) {
 			createPath := filepath.Join(path, "create.yaml")
 			if fileExists(createPath) {
 				relPath, _ := filepath.Rel(absRootDir, path)
-				if realGCPSkipFixtures[relPath] {
-					return nil
-				}
-
-				gvk, err := getGVKFromYAML(createPath)
-				if err == nil && mockGCPSkipGroupKinds[gvk.GroupKind()] {
+				if realGCPSkipFixtures[relPath] || mockGCPSkipFixtures[relPath] {
 					return nil
 				}
 
@@ -111,16 +104,8 @@ func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
 		if !d.IsDir() && d.Name() == "_http.log" {
 			dirPath := filepath.Dir(path)
 			relPath, _ := filepath.Rel(absRootDir, dirPath)
-			if realGCPSkipFixtures[relPath] {
+			if realGCPSkipFixtures[relPath] || mockGCPSkipFixtures[relPath] {
 				return nil
-			}
-
-			createPath := filepath.Join(dirPath, "create.yaml")
-			if fileExists(createPath) {
-				gvk, err := getGVKFromYAML(createPath)
-				if err == nil && mockGCPSkipGroupKinds[gvk.GroupKind()] {
-					return nil
-				}
 			}
 
 			data, err := os.ReadFile(path)
