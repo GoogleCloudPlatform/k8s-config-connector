@@ -52,20 +52,25 @@ var (
 func TestServiceResources(t *testing.T) {
 	testCases := resourcefixture.Load(t)
 	for _, tc := range testCases {
-		if _, ok := exemptedTestNames[tc.Name]; ok {
+		name := tc.Name
+		baseName := strings.TrimSuffix(name, "-labels")
+		if _, ok := exemptedTestNames[name]; ok {
+			continue
+		}
+		if _, ok := exemptedTestNames[baseName]; ok {
 			continue
 		}
 		if tc.GVK.Kind == "Service" {
 			createUnstruct := test.ToUnstructWithNamespace(t, tc.Create, mockUniqueID)
-			assertServiceAbandoned(t, tc.Name, createUnstruct)
+			assertServiceAbandoned(t, name, createUnstruct)
 		}
 		if tc.Dependencies != nil {
 			dependencyYamls := testyaml.SplitYAML(t, tc.Dependencies)
 			for _, dependBytes := range dependencyYamls {
 				depUnstruct := test.ToUnstructWithNamespace(t, dependBytes, mockUniqueID)
 				if depUnstruct.GetKind() == "Service" {
-					assertServiceAbandoned(t, tc.Name, depUnstruct)
-					assertServiceNotUnderMainTestProject(t, tc.Name, depUnstruct)
+					assertServiceAbandoned(t, name, depUnstruct)
+					assertServiceNotUnderMainTestProject(t, name, depUnstruct)
 				}
 			}
 		}
@@ -75,7 +80,7 @@ func TestServiceResources(t *testing.T) {
 func assertServiceAbandoned(t *testing.T, testName string, service *unstructured.Unstructured) {
 	annotations := service.GetAnnotations()
 	switch testName {
-	case "gkehubacmfeature", "gkehubmcifeature", "gkehubmcsdfeature":
+	case "gkehubacmfeature", "gkehubmcifeature", "gkehubmcsdfeature", "gkehubfeature-labels":
 		// The above test cases create specific projects and only enable the
 		// services in the newly created project, so they don't need to be
 		// abandoned to avoid racing conditions.

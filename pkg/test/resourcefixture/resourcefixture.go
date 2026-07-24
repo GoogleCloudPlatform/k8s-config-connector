@@ -47,6 +47,7 @@ const (
 	StateAbsentInSpec           TestType = "stateabsentinspec"
 	ResourceOverrides           TestType = "resourceoverrides"
 	ReconcileIntervalAnnotation TestType = "reconcileintervalannotations"
+	Labels                      TestType = "labels"
 )
 
 type ResourceFixture struct {
@@ -128,6 +129,9 @@ func LoadWithPathFilter(t *testing.T, pathFilter func(path string) bool, lightFi
 			if pathFilter != nil && !pathFilter(path) {
 				return nil
 			}
+			if testType == Labels {
+				return nil
+			}
 			if lightFilterFunc != nil && !lightFilterFunc(name, testType) {
 				return nil
 			}
@@ -197,6 +201,9 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 			depFile := testToFileName["dependencies"]
 			name := filepath.Base(path)
 			testType := parseTestTypeFromPath(t, path)
+			if testType == Labels {
+				return nil
+			}
 			if lightFilterFunc != nil && !lightFilterFunc(name, testType) {
 				return nil
 			}
@@ -286,6 +293,8 @@ func parseTestTypeFromPath(t *testing.T, path string) TestType {
 		return ResourceOverrides
 	case "reconcileintervalannotations":
 		return ReconcileIntervalAnnotation
+	case "labels":
+		return Labels
 	default:
 		t.Fatalf("failed to parse test type for path %v", path)
 		return Unknown

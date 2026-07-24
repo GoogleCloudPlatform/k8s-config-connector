@@ -1,0 +1,152 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesHTTPRoute
+metadata:
+  labels:
+    label-one: one
+    label-two: two
+  name: networkserviceshttproute-${uniqueId}
+spec:
+  description: A test HttpRoute
+  gateways:
+  - name: networkservicesgateway-1-${uniqueId}
+  hostnames:
+  - test1
+  - test2
+  location: global
+  meshes:
+  - name: networkservicesmesh-1-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
+  rules:
+  - action:
+      corsPolicy:
+        allowCredentials: true
+        allowHeaders:
+        - foo
+        - bar
+        allowMethods:
+        - GET
+        - POST
+        allowOriginRegexes:
+        - .*.foo.com
+        - .*.bar.com
+        allowOrigins:
+        - foo.com
+        - bar.com
+        disabled: false
+        exposeHeaders:
+        - foo
+        - bar
+        maxAge: "35"
+      destinations:
+      - serviceRef:
+          name: computebackendservice-1-${uniqueId}
+        weight: 1
+      - serviceRef:
+          name: computebackendservice-1-${uniqueId}
+        weight: 1
+      faultInjectionPolicy:
+        abort:
+          httpStatus: 501
+          percentage: 1
+        delay:
+          fixedDelay: 10s
+          percentage: 2
+      requestHeaderModifier:
+        add:
+          baz1: qux1
+          foo1: bar1
+        remove:
+        - foo3
+        - bar3
+        set:
+          baz2: qux2
+          foo2: bar2
+      requestMirrorPolicy:
+        destination:
+          serviceRef:
+            name: computebackendservice-1-${uniqueId}
+      responseHeaderModifier:
+        add:
+          baz1: qux1
+          foo1: bar1
+        remove:
+        - foo3
+        - bar3
+        set:
+          baz2: qux2
+          foo2: bar2
+      retryPolicy:
+        numRetries: 3
+        perTryTimeout: 5s
+        retryConditions:
+        - refused-stream
+        - cancelled
+      timeout: 30s
+      urlRewrite:
+        hostRewrite: foo
+        pathPrefixRewrite: foo
+    matches:
+    - fullPathMatch: /foo/bar
+      headers:
+      - header: foo-header
+        prefixMatch: bar-value
+    - ignoreCase: true
+      prefixMatch: /foo/
+    - regexMatch: /foo/.*/bar/.*
+    - headers:
+      - exactMatch: bar
+        header: foo
+      - header: foo
+        regexMatch: b.*ar
+      - header: foo
+        prefixMatch: ba
+      - header: foo
+        presentMatch: true
+      - header: foo
+        suffixMatch: ar
+      - header: foo
+        invertMatch: true
+        rangeMatch:
+          end: 5
+          start: 0
+      prefixMatch: /
+    - prefixMatch: /
+      queryParameters:
+      - exactMatch: bar
+        queryParameter: foo
+      - queryParameter: foo
+        regexMatch: .*bar.*
+      - presentMatch: true
+        queryParameter: foo
+  - action:
+      redirect:
+        hostRedirect: foo
+        httpsRedirect: true
+        portRedirect: 7777
+        responseCode: MOVED_PERMANENTLY_DEFAULT
+        stripQuery: true
+  - action:
+      redirect:
+        hostRedirect: test
+        prefixRewrite: foo
+        responseCode: FOUND
+  - action:
+      redirect:
+        hostRedirect: test
+        pathRedirect: /foo
+        responseCode: FOUND
