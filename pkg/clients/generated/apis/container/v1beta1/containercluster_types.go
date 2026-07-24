@@ -1242,6 +1242,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	IdentityServiceConfig *ClusterIdentityServiceConfig `json:"identityServiceConfig,omitempty"`
 
+	/* In-transit encryption options for the cluster. Options are IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED, IN_TRANSIT_ENCRYPTION_DISABLED, IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT */
+	// +optional
+	InTransitEncryptionConfig *string `json:"inTransitEncryptionConfig,omitempty"`
+
 	/* Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true. */
 	// +optional
 	InitialNodeCount *int64 `json:"initialNodeCount,omitempty"`

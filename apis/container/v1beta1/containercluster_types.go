@@ -1475,6 +1475,11 @@ type ContainerClusterSpec struct {
 	// +kcc:proto:field=google.container.v1.Cluster.initial_node_count
 	InitialNodeCount *int `json:"initialNodeCount,omitempty"`
 
+	/* In-transit encryption options for the cluster.*/
+	// +kcc:proto:field=google.container.v1.Cluster.network_config.in_transit_encryption_config
+	// +kubebuilder:validation:Enum=IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED;IN_TRANSIT_ENCRYPTION_DISABLED;IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT
+	InTransitEncryptionConfig *string `json:"inTransitEncryptionConfig,omitempty"`
+
 	/* Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based. */
 	// +kcc:proto:field=google.container.v1.Cluster.ip_allocation_policy
 	IPAllocationPolicy *IPAllocationPolicy `json:"ipAllocationPolicy,omitempty"`
