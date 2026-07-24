@@ -33,6 +33,7 @@ go run . generate-types \
 go run . generate-mapper \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --multiversion
 

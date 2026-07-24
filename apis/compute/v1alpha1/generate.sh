@@ -38,9 +38,8 @@ go run . generate-types \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
-  --include-skipped-output
-
-rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
+  --include-skipped-output \
+  --skip-scaffold-files
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -17,17 +17,42 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Disable core dump file creation during parallel generator execution
+ulimit -c 0 2>/dev/null || true
+
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+# Create a temporary parent directory for worker Go build caches
+export GOCACHE_BASE="/tmp/kcc-gocache-$$"
+mkdir -p "${GOCACHE_BASE}/shared"
+
+# Guarantee cleanup of GOCACHE_BASE on script completion or interruption (SIGINT, SIGTERM, EXIT)
+cleanup_gocache_base() {
+    rm -rf "${GOCACHE_BASE}" 2>/dev/null || true
+}
+trap cleanup_gocache_base EXIT INT TERM
+
+# Pre-compile controllerbuilder and goimports dependencies once upfront
+# We compile into GOCACHE_BASE/shared so all worker threads can seed their isolated caches instantly
 pushd dev/tools/controllerbuilder
 ./generate-proto.sh
+echo "Pre-compiling controllerbuilder and goimports dependencies into shared build cache..."
+GOCACHE="${GOCACHE_BASE}/shared" go build -o /dev/null .
 popd
 
-# For efficiency, we generate CRDs only once at the end
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+GOCACHE="${GOCACHE_BASE}/shared" go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} --help >/dev/null 2>&1 || true
+
+# For efficiency during parallel package generation:
+# 1. SKIP_GENERATE_CRDS=1: Defer expensive CRD YAML generation to a single step at the end.
+# 2. SKIP_GENERATE_PROTOS=1: Reuse the googleapis.pb compiled upfront rather than re-compiling protos for every package.
 export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
 
+# Collect all service generate.sh scripts to execute
+declare -A service_map
 for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
     # TODO: Fix these!
@@ -93,14 +118,45 @@ for f in $(find apis -name "generate.sh" | sort); do
         continue
     fi
 
-    echo "running ${f}"
-    ./${f}
+    scripts+=("${f}")
 done
 
-# Now we generate CRDs
-unset SKIP_GENERATE_CRDS
-unset SKIP_GENERATE_PROTOS
-echo "Cleaning Go build cache to prevent stale metadata compilation issues"
+# Cap default parallel worker processes to 8 to prevent machine memory and disk lock contention
+NUM_WORKERS="${PARALLELISM:-8}"
+echo "Running ${#scripts[@]} generator scripts in parallel with ${NUM_WORKERS} workers..."
+
+# Worker function to execute a single generate.sh script in parallel with its own isolated Go build cache
+run_one() {
+    local f="$1"
+    
+    # Create an isolated temporary GOCACHE directory per worker process, pre-seeded from shared cache.
+    # This prevents race conditions and lock collisions while allowing instant cached compilation.
+    local worker_cache
+    worker_cache=$(mktemp -d "${GOCACHE_BASE}/worker-XXXXXX")
+    cp -al "${GOCACHE_BASE}/shared/." "${worker_cache}/" 2>/dev/null || cp -r "${GOCACHE_BASE}/shared/." "${worker_cache}/"
+    export GOCACHE="${worker_cache}"
+
+    # Ensure worker cache directory is cleaned up when this worker subshell finishes
+    trap 'rm -rf "${worker_cache}"' EXIT
+
+    echo "running ${f}"
+    if ! ./${f}; then
+        echo "ERROR running ${f}" >&2
+        exit 1
+    fi
+}
+export -f run_one
+export GOCACHE_BASE
+
+# Stream the list of generate.sh paths into xargs -P to process up to NUM_WORKERS scripts concurrently
+printf "%s\n" "${scripts[@]}" | xargs -P "${NUM_WORKERS}" -I {} bash -c 'run_one "$@"' _ {}
+
+# Clean up parent Go cache directory
+cleanup_gocache_base
+
+# Now we generate CRDs once for all updated packages
+unset -v SKIP_GENERATE_CRDS SKIP_GENERATE_PROTOS
+echo "Cleaning Go build cache to prevent stale AST type-checking issues"
 go clean -cache
 echo "Generating CRDs"
 dev/tasks/generate-crds
