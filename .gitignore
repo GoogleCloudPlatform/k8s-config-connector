@@ -24,6 +24,7 @@
 tmp/_output
 tmp/_test
 .tmp
+apis/config/crd/
 
 # build output
 bin/
