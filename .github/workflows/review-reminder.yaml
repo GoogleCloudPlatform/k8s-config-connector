@@ -22,6 +22,8 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
+  issues: read
 
 jobs:
   send-reminder:
@@ -33,10 +35,12 @@ jobs:
           ref: master
 
       - name: Authenticate to GCP via Service Account Key
+        id: auth
         uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed # v2.1.13
         with:
           credentials_json: ${{ secrets.EMAIL_SA_KEY }}
-          access_token_scopes: 'https://www.googleapis.com/auth/gmail.send'
+          token_format: 'access_token'
+          access_token_scopes: 'https://www.googleapis.com/auth/chat.messages.create'
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
@@ -46,6 +50,7 @@ jobs:
       - name: Gather open PRs and send email via Gmail API
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLOUDSDK_AUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
           python3 -c '
           import os, subprocess, json, urllib.request, email.message, base64
@@ -68,20 +73,18 @@ jobs:
                       has_prs = True
                       urls = "\n".join(["* " + pr["url"] for pr in prs])
                       email_sections.append(f"{user}:\n{urls}")
+              else:
+                  print(f"Error fetching PRs for {user}: returncode={res.returncode} stderr={res.stderr}")
 
           if not has_prs:
-              print("No open PRs pending review for k8s-config-connector-team. Exiting.")
+              print("No open PRs pending review. Exiting.")
               exit(0)
 
-          body = "Hi k8s-config-connector-team,\n\nThis is a friendly reminder of open PRs that need your review:\n\n" + "\n\n".join(email_sections) + "\n"
-
-          msg = email.message.EmailMessage()
-          msg["Subject"] = "[Reminder] Open PRs requiring review for k8s-config-connector-team"
-          msg["From"] = "kcc-bot@google.com"
-          msg["To"] = "kcc-eng@google.com"
-          msg.set_content(body)
-
-          raw_msg = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+          # Replace <SPACE_ID> with the actual Google Chat Space ID from the room URL
+          # Room URL format: https://chat.google.com/room/<SPACE_ID>
+          space_id = "AAAAxxx_yyy" # TODO: Update with actual Space ID
+          
+          body = "Hi team,\n\nThis is a friendly reminder of open PRs that need your review:\n\n" + "\n\n".join(email_sections)
 
           access_token = os.environ.get("CLOUDSDK_AUTH_ACCESS_TOKEN")
           if not access_token:
@@ -89,13 +92,13 @@ jobs:
               exit(1)
 
           req = urllib.request.Request(
-              "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
-              data=json.dumps({"raw": raw_msg}).encode(),
+              f"https://chat.googleapis.com/v1/spaces/{space_id}/messages",
+              data=json.dumps({"text": body}).encode(),
               headers={
                   "Authorization": f"Bearer {access_token}",
                   "Content-Type": "application/json"
               }
           )
           with urllib.request.urlopen(req) as resp:
-              print("Email sent successfully via Gmail API. Response code:", resp.status)
+              print("Notification sent successfully to Google Chat. Response code:", resp.status)
           '
