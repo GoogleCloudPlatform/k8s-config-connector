@@ -86,6 +86,54 @@ func TestGoldenLogAlignment(t *testing.T) {
 	}
 }
 
+func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
+	rootDir := "testdata/basic"
+	absRootDir, err := filepath.Abs(rootDir)
+	if err != nil {
+		t.Fatalf("failed to get absolute path for %s: %v", rootDir, err)
+	}
+
+	// Fixtures where real GCP testing is intentionally skipped / unsupported
+	mockOnlyFixtures := map[string]bool{
+		"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
+		"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
+		"container/v1beta1/containernodepool/containernodepool-resourcemanagertags":         true,
+		"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal":          true,
+		"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal":          true,
+		"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-dynamic": true,
+		"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-maximal": true,
+		"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-minimal": true,
+	}
+
+	err = filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() && d.Name() == "_http.log" {
+			dirPath := filepath.Dir(path)
+			relPath, _ := filepath.Rel(absRootDir, dirPath)
+			if mockOnlyFixtures[relPath] {
+				return nil
+			}
+
+			data, err := os.ReadFile(path)
+			if err != nil {
+				return fmt.Errorf("error reading %s: %w", path, err)
+			}
+			if strings.Contains(string(data), "(mockgcp)") {
+				t.Errorf("real GCP log %s contains '(mockgcp)'! Never copy _http_mock.log to _http.log", path)
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		t.Fatalf("error walking directory: %v", err)
+	}
+}
+
 type httpEvent struct {
 	Method       string
 	URL          string
