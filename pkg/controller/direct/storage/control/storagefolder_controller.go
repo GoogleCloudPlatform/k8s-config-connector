@@ -188,10 +188,10 @@ func (a *FolderAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 		return nil, err
 	}
 
+	u.Object = uObj
 	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.StorageFolderGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 

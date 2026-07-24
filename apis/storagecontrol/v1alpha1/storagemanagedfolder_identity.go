@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -53,9 +55,12 @@ func (p *ManagedFolderParent) String() string {
 
 // New builds a ManagedFolderIdentity from the Config Connector ManagedFolder object.
 func NewManagedFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageManagedFolder) (*ManagedFolderIdentity, error) {
+	if obj.Spec.StorageFolderParent == nil || obj.Spec.StorageFolderParent.ProjectRef == nil || obj.Spec.StorageFolderParent.StorageBucketRef == nil {
+		return nil, fmt.Errorf("spec.projectRef and spec.storagebucketRef are required")
+	}
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.StorageFolderParent.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +68,17 @@ func NewManagedFolderIdentity(ctx context.Context, reader client.Reader, obj *St
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	bucketName := obj.Spec.StorageBucketRef.Name
+
+	if err := obj.Spec.StorageFolderParent.StorageBucketRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	external := obj.Spec.StorageFolderParent.StorageBucketRef.External
+	bucketIdentity, err := storagev1beta1.ParseStorageBucketExternal(external)
+	if err != nil {
+		return nil, err
+	}
+
+	bucketName := bucketIdentity.BucketName()
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -113,4 +128,26 @@ func ParseManagedFolderExternal(external string) (parent *ManagedFolderParent, r
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil
+}
+
+// NewManagedFolderIdentityFromExternal parses a ManagedFolderIdentity from either a standard external format or a GCP URL.
+func NewManagedFolderIdentityFromExternal(external string) (*ManagedFolderIdentity, error) {
+	external = strings.TrimPrefix(external, "//storage.googleapis.com/")
+	external = strings.TrimPrefix(external, "storage.googleapis.com/")
+	external = strings.TrimSuffix(external, "/")
+
+	tokens := strings.Split(external, "/")
+	if len(tokens) == 6 && (tokens[4] == "managedfolders" || tokens[4] == "managedFolders") {
+		tokens[4] = "managedfolders"
+		external = strings.Join(tokens, "/")
+	}
+
+	parent, resourceID, err := ParseManagedFolderExternal(external)
+	if err != nil {
+		return nil, err
+	}
+	return &ManagedFolderIdentity{
+		parent: parent,
+		id:     resourceID,
+	}, nil
 }
