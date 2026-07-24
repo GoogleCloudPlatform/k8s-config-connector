@@ -283,6 +283,8 @@ import (
 	fakekmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1/fake"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
 	fakekmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1/fake"
+	licensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/licensemanager/v1alpha1"
+	fakelicensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/licensemanager/v1alpha1/fake"
 	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1"
 	fakelivestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1/fake"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
@@ -427,6 +429,8 @@ import (
 	fakevisionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1/fake"
 	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1"
 	fakevisionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1/fake"
+	vmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1"
+	fakevmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1/fake"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	fakevmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1/fake"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
@@ -1164,6 +1168,11 @@ func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return &fakekmsv1beta1.FakeKmsV1beta1{Fake: &c.Fake}
 }
 
+// LicensemanagerV1alpha1 retrieves the LicensemanagerV1alpha1Client
+func (c *Clientset) LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface {
+	return &fakelicensemanagerv1alpha1.FakeLicensemanagerV1alpha1{Fake: &c.Fake}
+}
+
 // LivestreamV1alpha1 retrieves the LivestreamV1alpha1Client
 func (c *Clientset) LivestreamV1alpha1() livestreamv1alpha1.LivestreamV1alpha1Interface {
 	return &fakelivestreamv1alpha1.FakeLivestreamV1alpha1{Fake: &c.Fake}
@@ -1522,6 +1531,11 @@ func (c *Clientset) VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface {
 // VisionaiV1alpha1 retrieves the VisionaiV1alpha1Client
 func (c *Clientset) VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface {
 	return &fakevisionaiv1alpha1.FakeVisionaiV1alpha1{Fake: &c.Fake}
+}
+
+// VmmigrationV1alpha1 retrieves the VmmigrationV1alpha1Client
+func (c *Clientset) VmmigrationV1alpha1() vmmigrationv1alpha1.VmmigrationV1alpha1Interface {
+	return &fakevmmigrationv1alpha1.FakeVmmigrationV1alpha1{Fake: &c.Fake}
 }
 
 // VmwareengineV1alpha1 retrieves the VmwareengineV1alpha1Client

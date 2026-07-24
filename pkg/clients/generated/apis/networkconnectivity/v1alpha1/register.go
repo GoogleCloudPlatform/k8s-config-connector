@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(NetworkConnectivityInternalRange{}).Name(),
 	}
 
+	NetworkConnectivityMulticloudDataTransferConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(NetworkConnectivityMulticloudDataTransferConfig{}).Name(),
+	}
+
 	NetworkConnectivityRegionalEndpointGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
