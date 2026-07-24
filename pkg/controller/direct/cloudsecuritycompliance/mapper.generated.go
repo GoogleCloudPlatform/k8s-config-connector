@@ -161,6 +161,70 @@ func CloudSecurityComplianceCloudControlSpec_ToProto(mapCtx *direct.MapContext, 
 	out.SupportedTargetResourceTypes = direct.EnumSlice_ToProto[pb.TargetResourceType](mapCtx, in.SupportedTargetResourceTypes)
 	return out
 }
+func CloudSecurityComplianceFrameworkDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkDeployment) *krm.CloudSecurityComplianceFrameworkDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityComplianceFrameworkDeploymentObservedState{}
+	// MISSING: Name
+	out.ComputedTargetResource = direct.LazyPtr(in.GetComputedTargetResource())
+	out.DeploymentState = direct.Enum_FromProto(mapCtx, in.GetDeploymentState())
+	// MISSING: CcDeployments
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: CcGroupDeployments
+	out.TargetResourceDisplayName = direct.LazyPtr(in.GetTargetResourceDisplayName())
+	// MISSING: CloudControlDeploymentReferences
+	return out
+}
+func CloudSecurityComplianceFrameworkDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkDeploymentObservedState) *pb.FrameworkDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkDeployment{}
+	// MISSING: Name
+	out.ComputedTargetResource = direct.ValueOf(in.ComputedTargetResource)
+	out.DeploymentState = direct.Enum_ToProto[pb.DeploymentState](mapCtx, in.DeploymentState)
+	// MISSING: CcDeployments
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: CcGroupDeployments
+	out.TargetResourceDisplayName = direct.ValueOf(in.TargetResourceDisplayName)
+	// MISSING: CloudControlDeploymentReferences
+	return out
+}
+func CloudSecurityComplianceFrameworkDeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkDeployment) *krm.CloudSecurityComplianceFrameworkDeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSecurityComplianceFrameworkDeploymentSpec{}
+	// MISSING: Name
+	out.TargetResourceConfig = TargetResourceConfig_FromProto(mapCtx, in.GetTargetResourceConfig())
+	out.Framework = FrameworkReference_FromProto(mapCtx, in.GetFramework())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.CloudControlMetadata = direct.Slice_FromProto(mapCtx, in.CloudControlMetadata, CloudControlMetadata_FromProto)
+	// MISSING: CcDeployments
+	// MISSING: CcGroupDeployments
+	// MISSING: CloudControlDeploymentReferences
+	return out
+}
+func CloudSecurityComplianceFrameworkDeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudSecurityComplianceFrameworkDeploymentSpec) *pb.FrameworkDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkDeployment{}
+	// MISSING: Name
+	out.TargetResourceConfig = TargetResourceConfig_ToProto(mapCtx, in.TargetResourceConfig)
+	out.Framework = FrameworkReference_ToProto(mapCtx, in.Framework)
+	out.Description = direct.ValueOf(in.Description)
+	out.CloudControlMetadata = direct.Slice_ToProto(mapCtx, in.CloudControlMetadata, CloudControlMetadata_ToProto)
+	// MISSING: CcDeployments
+	// MISSING: CcGroupDeployments
+	// MISSING: CloudControlDeploymentReferences
+	return out
+}
 
 /* found existing non-generated mapping function "CloudSecurityComplianceFrameworkObservedState_FromProto", skipping
 func CloudSecurityComplianceFrameworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Framework) *krm.CloudSecurityComplianceFrameworkObservedState {
@@ -277,6 +341,58 @@ func CloudSecurityFrameworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.Cloud
 	// MISSING: CloudControlGroupDetails
 	out.CloudControlDetails = direct.Slice_ToProto(mapCtx, in.CloudControlDetails, CloudControlDetails_ToProto)
 	out.Category = direct.EnumSlice_ToProto[pb.FrameworkCategory](mapCtx, in.Category)
+	return out
+}
+
+/* found existing non-generated mapping function "FolderCreationConfig_FromProto", skipping
+func FolderCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.FolderCreationConfig) *krm.FolderCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FolderCreationConfig{}
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
+	}
+	out.FolderDisplayName = direct.LazyPtr(in.GetFolderDisplayName())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "FolderCreationConfig_ToProto", skipping
+
+	func FolderCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.FolderCreationConfig) *pb.FolderCreationConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FolderCreationConfig{}
+		if in.ParentRef != nil {
+			out.Parent = in.ParentRef.External
+		}
+		out.FolderDisplayName = direct.ValueOf(in.FolderDisplayName)
+		return out
+	}
+*/
+func FrameworkReference_FromProto(mapCtx *direct.MapContext, in *pb.FrameworkReference) *krm.FrameworkReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FrameworkReference{}
+	if in.GetFramework() != "" {
+		out.FrameworkRef = &krm.CloudSecurityComplianceFrameworkRef{External: in.GetFramework()}
+	}
+	out.MajorRevisionID = in.MajorRevisionId
+	return out
+}
+func FrameworkReference_ToProto(mapCtx *direct.MapContext, in *krm.FrameworkReference) *pb.FrameworkReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrameworkReference{}
+	if in.FrameworkRef != nil {
+		out.Framework = in.FrameworkRef.External
+	}
+	out.MajorRevisionId = in.MajorRevisionID
 	return out
 }
 
@@ -487,6 +603,38 @@ func PlaceholderSubstitutionRule_ToProto(mapCtx *direct.MapContext, in *krm.Plac
 	out.Attribute = direct.ValueOf(in.Attribute)
 	return out
 }
+
+/* found existing non-generated mapping function "ProjectCreationConfig_FromProto", skipping
+func ProjectCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.ProjectCreationConfig) *krm.ProjectCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProjectCreationConfig{}
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
+	}
+	out.ProjectDisplayName = direct.LazyPtr(in.GetProjectDisplayName())
+	out.BillingAccountID = direct.LazyPtr(in.GetBillingAccountId())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ProjectCreationConfig_ToProto", skipping
+
+	func ProjectCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.ProjectCreationConfig) *pb.ProjectCreationConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ProjectCreationConfig{}
+		if in.ParentRef != nil {
+			out.Parent = in.ParentRef.External
+		}
+		out.ProjectDisplayName = direct.ValueOf(in.ProjectDisplayName)
+		out.BillingAccountId = direct.ValueOf(in.BillingAccountID)
+		return out
+	}
+*/
 func RegexpPattern_FromProto(mapCtx *direct.MapContext, in *pb.RegexpPattern) *krm.RegexpPattern {
 	if in == nil {
 		return nil
@@ -571,6 +719,60 @@ func SubParameterSpec_ToProto(mapCtx *direct.MapContext, in *krm.SubParameterSpe
 	out.SubstitutionRules = direct.Slice_ToProto(mapCtx, in.SubstitutionRules, ParameterSubstitutionRule_ToProto)
 	// MISSING: SubParameters
 	out.Validation = Validation_ToProto(mapCtx, in.Validation)
+	return out
+}
+
+/* found existing non-generated mapping function "TargetResourceConfig_FromProto", skipping
+func TargetResourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.TargetResourceConfig) *krm.TargetResourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetResourceConfig{}
+	if in.GetExistingTargetResource() != "" {
+		out.ExistingTargetResourceRef = &krm.TargetResourceRef{External: in.GetExistingTargetResource()}
+	}
+	out.TargetResourceCreationConfig = TargetResourceCreationConfig_FromProto(mapCtx, in.GetTargetResourceCreationConfig())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "TargetResourceConfig_ToProto", skipping
+
+	func TargetResourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.TargetResourceConfig) *pb.TargetResourceConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.TargetResourceConfig{}
+		if in.ExistingTargetResourceRef != nil {
+			out.ExistingTargetResource = in.ExistingTargetResourceRef.External
+		}
+		if oneof := TargetResourceCreationConfig_ToProto(mapCtx, in.TargetResourceCreationConfig); oneof != nil {
+			out.ResourceConfig = &pb.TargetResourceConfig_TargetResourceCreationConfig{TargetResourceCreationConfig: oneof}
+		}
+		return out
+	}
+*/
+func TargetResourceCreationConfig_FromProto(mapCtx *direct.MapContext, in *pb.TargetResourceCreationConfig) *krm.TargetResourceCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetResourceCreationConfig{}
+	out.FolderCreationConfig = FolderCreationConfig_FromProto(mapCtx, in.GetFolderCreationConfig())
+	out.ProjectCreationConfig = ProjectCreationConfig_FromProto(mapCtx, in.GetProjectCreationConfig())
+	return out
+}
+func TargetResourceCreationConfig_ToProto(mapCtx *direct.MapContext, in *krm.TargetResourceCreationConfig) *pb.TargetResourceCreationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetResourceCreationConfig{}
+	if oneof := FolderCreationConfig_ToProto(mapCtx, in.FolderCreationConfig); oneof != nil {
+		out.ResourceCreationConfig = &pb.TargetResourceCreationConfig_FolderCreationConfig{FolderCreationConfig: oneof}
+	}
+	if oneof := ProjectCreationConfig_ToProto(mapCtx, in.ProjectCreationConfig); oneof != nil {
+		out.ResourceCreationConfig = &pb.TargetResourceCreationConfig_ProjectCreationConfig{ProjectCreationConfig: oneof}
+	}
 	return out
 }
 func Validation_FromProto(mapCtx *direct.MapContext, in *pb.Validation) *krm.Validation {
