@@ -16,7 +16,7 @@ package v1beta1
 
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -134,7 +134,7 @@ type StorageBucketCustomPlacementConfig struct {
 type StorageBucketEncryption struct {
 	/* A reference to the KMS Crypto Key that will be used to encrypt objects inserted into this bucket. */
 	// +required
-	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef"`
 }
 
 type StorageBucketLifecycleRule struct {

@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -80,20 +82,10 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-
-	if obj.Spec.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KMSKeyRef)
-		if err != nil {
-			return nil, err
-		}
-		obj.Spec.KMSKeyRef = kmsKeyRef
+	if err = common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, err
 	}
 
-	if obj.Spec.PrivateConfig != nil && obj.Spec.PrivateConfig.CAPoolRef != nil {
-		if err := obj.Spec.PrivateConfig.CAPoolRef.Normalize(ctx, reader, u.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
 	mapCtx := &direct.MapContext{}
 	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {

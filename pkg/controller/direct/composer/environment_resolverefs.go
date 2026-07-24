@@ -18,7 +18,6 @@ import (
 	"context"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -30,35 +29,11 @@ func ResolveEnvironmentRefs(ctx context.Context, kube client.Reader, obj *krm.Co
 	}
 
 	if obj.Spec.Config != nil {
-		if obj.Spec.Config.EncryptionConfig != nil && obj.Spec.Config.EncryptionConfig.KMSKeyRef != nil {
-			obj.Spec.Config.EncryptionConfig.KMSKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.Config.EncryptionConfig.KMSKeyRef)
-			if err != nil {
-				return err
-			}
-		}
 		if obj.Spec.Config.NodeConfig != nil {
 			nodeConfig := obj.Spec.Config.NodeConfig
-			if nodeConfig.SubnetworkRef != nil {
-				if err := nodeConfig.SubnetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
-					return err
-				}
-			}
 			if nodeConfig.ServiceAccountRef != nil {
 				err = nodeConfig.ServiceAccountRef.Resolve(ctx, kube, obj)
 				if err != nil {
-					return err
-				}
-			}
-			if nodeConfig.ComposerNetworkAttachmentRef != nil {
-				if err := nodeConfig.ComposerNetworkAttachmentRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
-					return err
-				}
-			}
-		}
-		if obj.Spec.Config.PrivateEnvironmentConfig != nil {
-			pec := obj.Spec.Config.PrivateEnvironmentConfig
-			if pec.CloudComposerConnectionSubnetworkRef != nil {
-				if err := pec.CloudComposerConnectionSubnetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 					return err
 				}
 			}

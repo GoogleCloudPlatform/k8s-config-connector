@@ -278,7 +278,7 @@ you do not need to provide a key to use the disk later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -288,7 +288,7 @@ you do not need to provide a key to use the disk later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSCryptoKey` resource.</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -298,7 +298,7 @@ you do not need to provide a key to use the disk later.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -878,7 +878,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -888,7 +888,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSCryptoKey` resource.</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -898,7 +898,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -988,7 +988,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -998,7 +998,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSCryptoKey` resource.</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -1008,7 +1008,7 @@ requires re-creating the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>

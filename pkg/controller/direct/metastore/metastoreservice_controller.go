@@ -25,6 +25,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -122,42 +124,12 @@ func (a *MetastoreServiceAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
-	obj := a.desired
-
-	if obj.Spec.NetworkRef != nil {
-		if err := obj.Spec.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
-			return fmt.Errorf("normalizing networkRef: %w", err)
-		}
-	}
-
-	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionConfig.KMSKeyRef)
-		if err != nil {
-			return fmt.Errorf("resolving kmsKeyRef: %w", err)
-		}
-		obj.Spec.EncryptionConfig.KMSKeyRef = kmsKeyRef
-	}
-
-	if obj.Spec.NetworkConfig != nil {
-		for i := range obj.Spec.NetworkConfig.Consumers {
-			consumer := &obj.Spec.NetworkConfig.Consumers[i]
-			if consumer.SubnetworkRef != nil {
-				if err := consumer.SubnetworkRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
-					return fmt.Errorf("resolving networkConfig.consumers[%d].subnetworkRef: %w", i, err)
-				}
-			}
-		}
-	}
-	return nil
-}
-
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *MetastoreServiceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating MetastoreService", "name", a.id)
 
-	if err := a.resolveReferences(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -197,7 +169,7 @@ func (a *MetastoreServiceAdapter) Update(ctx context.Context, updateOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating MetastoreService", "name", a.id)
 
-	if err := a.resolveReferences(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 

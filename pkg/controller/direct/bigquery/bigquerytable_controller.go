@@ -19,8 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -148,8 +149,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("creating Table", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing reference for creation: %w", err)
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return err
 	}
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
@@ -210,8 +211,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating Table", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing reference for update: %w", err)
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return err
 	}
 
 	desired := a.desired.DeepCopy()
@@ -377,16 +378,4 @@ func (a *Adapter) customTableLogic(table *bigquery.Table) {
 		DatasetId: parent.Dataset,
 		TableId:   a.id.ID(),
 	}
-}
-
-func (a *Adapter) normalizeReferences(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.EncryptionConfiguration != nil && obj.Spec.EncryptionConfiguration.KmsKeyRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.EncryptionConfiguration.KmsKeyRef = key
-	}
-	return nil
 }

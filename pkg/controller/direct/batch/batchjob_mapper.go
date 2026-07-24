@@ -23,6 +23,7 @@ import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -91,5 +92,28 @@ func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.Allocation
 	out.Type = direct.ValueOf(in.Type)
 	out.SizeGb = direct.ValueOf(in.SizeGB)
 	out.DiskInterface = direct.ValueOf(in.DiskInterface)
+	return out
+}
+
+func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMap {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment_KMSEnvMap{}
+	if in.GetKeyName() != "" {
+		out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKeyName()}
+	}
+	out.CipherText = direct.LazyPtr(in.GetCipherText())
+	return out
+}
+func Environment_KMSEnvMap_ToProto(mapCtx *direct.MapContext, in *krm.Environment_KMSEnvMap) *pb.Environment_KMSEnvMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_KMSEnvMap{}
+	if in.KMSKeyRef != nil {
+		out.KeyName = in.KMSKeyRef.External
+	}
+	out.CipherText = direct.ValueOf(in.CipherText)
 	return out
 }

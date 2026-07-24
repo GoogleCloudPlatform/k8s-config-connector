@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -125,16 +126,16 @@ func (in *CreateBackupEncryptionConfig) DeepCopyInto(out *CreateBackupEncryption
 	}
 	if in.KMSKeyRef != nil {
 		in, out := &in.KMSKeyRef, &out.KMSKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.KMSKeyRefs != nil {
 		in, out := &in.KMSKeyRefs, &out.KMSKeyRefs
-		*out = make([]*refsv1beta1.KMSCryptoKeyRef, len(*in))
+		*out = make([]*kmsv1beta1.KMSCryptoKeyRef, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(refsv1beta1.KMSCryptoKeyRef)
+				*out = new(kmsv1beta1.KMSCryptoKeyRef)
 				**out = **in
 			}
 		}

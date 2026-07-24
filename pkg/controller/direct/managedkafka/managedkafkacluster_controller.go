@@ -133,7 +133,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Cluster", "name", a.id)
 
-	if err := a.normalizeReference(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -173,7 +173,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Cluster", "name", a.id)
 
-	if err := a.normalizeReference(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -276,31 +276,4 @@ func (a *ClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 		return false, fmt.Errorf("waiting delete Cluster %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func (a *ClusterAdapter) normalizeReference(ctx context.Context) error {
-	obj := a.desired
-
-	// Normalize the subnetworkRef in the accessConfig.networkConfigs
-	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.AccessConfig != nil && obj.Spec.GcpConfig.AccessConfig.NetworkConfigs != nil {
-		for i := range obj.Spec.GcpConfig.AccessConfig.NetworkConfigs {
-			networkConfig := &obj.Spec.GcpConfig.AccessConfig.NetworkConfigs[i]
-			if networkConfig.SubnetRef != nil {
-				if err := networkConfig.SubnetRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
-					return err
-				}
-			}
-		}
-	}
-
-	// Normalize the kmsKeyRef in the gcpConfig
-	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.KMSKeyRef != nil {
-		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.GcpConfig.KMSKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.GcpConfig.KMSKeyRef = kmsKey
-	}
-
-	return nil
 }

@@ -25,6 +25,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	gcp "cloud.google.com/go/gkebackup/apiv1"
 	"cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
 	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
@@ -124,7 +126,7 @@ func (a *backupPlanAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating gkebackup backupplan", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -163,7 +165,7 @@ func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating gkebackup backupplan", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -336,23 +338,4 @@ func backupConfigsEqual(a, b *gkebackuppb.BackupPlan_BackupConfig) bool {
 	}
 
 	return true
-}
-
-func (a *backupPlanAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-
-	if obj.Spec.ClusterRef != nil {
-		if _, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
-			return err
-		}
-	}
-	if obj.Spec.BackupConfig != nil &&
-		obj.Spec.BackupConfig.EncryptionKey != nil &&
-		obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef != nil {
-		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

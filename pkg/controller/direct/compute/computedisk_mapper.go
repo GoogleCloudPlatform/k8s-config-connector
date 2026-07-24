@@ -17,6 +17,7 @@ package compute
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -52,7 +53,7 @@ func DiskDiskEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.C
 	}
 	out := &krm.DiskDiskEncryptionKey{}
 	if in.GetKmsKeyName() != "" {
-		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	if in.GetKmsKeyServiceAccount() != "" {
 		out.KmsKeyServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetKmsKeyServiceAccount()}
@@ -146,7 +147,7 @@ func DiskSourceImageEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	}
 	out := &krm.DiskSourceImageEncryptionKey{}
 	if in.GetKmsKeyName() != "" {
-		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	if in.GetKmsKeyServiceAccount() != "" {
 		out.KmsKeyServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetKmsKeyServiceAccount()}
@@ -182,7 +183,7 @@ func DiskSourceSnapshotEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext
 	}
 	out := &krm.DiskSourceSnapshotEncryptionKey{}
 	if in.GetKmsKeyName() != "" {
-		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	if in.GetKmsKeyServiceAccount() != "" {
 		out.KmsKeyServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetKmsKeyServiceAccount()}

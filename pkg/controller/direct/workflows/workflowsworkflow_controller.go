@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -68,17 +70,13 @@ func (m *modelWorkflowsWorkflow) client(ctx context.Context) (*gcp.Client, error
 
 func (a *WorkflowsWorkflowAdapter) normalizeReference(ctx context.Context) error {
 	obj := a.desired
+	if err := common.NormalizeReferences(ctx, a.reader, obj, nil); err != nil {
+		return err
+	}
 	if obj.Spec.ServiceAccountRef != nil {
 		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, a.reader, obj); err != nil {
 			return err
 		}
-	}
-	if obj.Spec.KMSCryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KMSCryptoKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.KMSCryptoKeyRef = kmsKeyRef
 	}
 	return nil
 }

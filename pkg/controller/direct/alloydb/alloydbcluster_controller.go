@@ -199,55 +199,16 @@ func (a *ClusterAdapter) resolveNetworkRef(ctx context.Context) error {
 	return nil
 }
 
-func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
+func (a *ClusterAdapter) normalizeReferences(ctx context.Context, kube client.Reader) error {
 	obj := a.desired
+
+	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+		return err
+	}
 
 	if err := a.resolveNetworkRef(ctx); err != nil {
 		return err
 	}
-
-	if obj.Spec.AutomatedBackupPolicy != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef = key
-	}
-
-	if obj.Spec.ContinuousBackupConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef = key
-	}
-
-	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.EncryptionConfig.KMSKeyNameRef = key
-	}
-
-	if obj.Spec.RestoreBackupSource != nil && obj.Spec.RestoreBackupSource.BackupNameRef != nil {
-		if err := obj.Spec.RestoreBackupSource.BackupNameRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
-			return err
-		}
-	}
-
-	if obj.Spec.RestoreContinuousBackupSource != nil && obj.Spec.RestoreContinuousBackupSource.ClusterRef != nil {
-		if err := obj.Spec.RestoreContinuousBackupSource.ClusterRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
-			return err
-		}
-	}
-
-	if obj.Spec.SecondaryConfig != nil && obj.Spec.SecondaryConfig.PrimaryClusterNameRef != nil {
-		if err := obj.Spec.SecondaryConfig.PrimaryClusterNameRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
@@ -307,7 +268,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	mapCtx := &direct.MapContext{}
 
 	// 1. Resolve reference fields.
-	if err := a.normalizeReferences(ctx); err != nil {
+	if err := a.normalizeReferences(ctx, a.reader); err != nil {
 		return fmt.Errorf("normalizing reference for creation: %w", err)
 	}
 	// 2. Resolve secret field.
@@ -517,7 +478,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// TODO: Check immutability for optional and immutable fields.
 	// 1. Resolve reference fields.
-	if err := a.normalizeReferences(ctx); err != nil {
+	if err := a.normalizeReferences(ctx, a.reader); err != nil {
 		return fmt.Errorf("normalizing reference for update: %w", err)
 	}
 	// 2. Resolve secret field.

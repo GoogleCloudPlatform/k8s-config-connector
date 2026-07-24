@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/parametermanager/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -70,19 +72,6 @@ func (m *modelParameter) client(ctx context.Context, location string) (*gcp.Clie
 		return nil, fmt.Errorf("building Parameter client: %w", err)
 	}
 	return gcpClient, err
-}
-
-func (a *ParameterAdapter) normalizeKMSKeyRef(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.KMSKeyRef != nil {
-		kmsKeyRef := obj.Spec.KMSKeyRef
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, kmsKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.KMSKeyRef = kmsKeyRef
-	}
-	return nil
 }
 
 func (m *modelParameter) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -154,8 +143,8 @@ func (a *ParameterAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("creating Parameter", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeKMSKeyRef(ctx); err != nil {
-		return fmt.Errorf("error in normalizing kmskey references: %w", err)
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return err
 	}
 
 	desired := a.desired.DeepCopy()
@@ -191,8 +180,8 @@ func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log.V(2).Info("updating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeKMSKeyRef(ctx); err != nil {
-		return fmt.Errorf("error in normalizing kmskey references: %w", err)
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return err
 	}
 
 	desired := a.desired.DeepCopy()

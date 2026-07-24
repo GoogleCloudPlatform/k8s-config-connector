@@ -16,11 +16,10 @@
 // proto.message: google.cloud.apigeeregistry.v1.Api
 // api.group: apigeeregistry.cnrm.cloud.google.com
 
-package apigeeregistryapi
+package apigeeregistry
 
 import (
 	pb "cloud.google.com/go/apigeeregistry/apiv1/apigeeregistrypb"
-	mapper "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigeeregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -30,8 +29,8 @@ func init() {
 
 func apigeeRegistryApiFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Api{},
-		mapper.ApigeeRegistryAPISpec_FromProto, mapper.ApigeeRegistryAPISpec_ToProto,
-		mapper.ApigeeRegistryAPIObservedState_FromProto, mapper.ApigeeRegistryAPIObservedState_ToProto,
+		ApigeeRegistryAPISpec_FromProto, ApigeeRegistryAPISpec_ToProto,
+		ApigeeRegistryAPIObservedState_FromProto, ApigeeRegistryAPIObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".display_name")

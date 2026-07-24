@@ -33,7 +33,7 @@ func ResolveRunWorkerPoolRefs(ctx context.Context, kube client.Reader, desired *
 		return nil
 	}
 	template := desired.Spec.Template
-	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.EncryptionKeyRef, template.ServiceAccountRef, template.VPCAccess); err != nil {
+	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.ServiceAccountRef, template.VPCAccess); err != nil {
 		return err
 	}
 
@@ -69,7 +69,7 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 		return nil
 	}
 	template := desired.Spec.Template.Template
-	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.EncryptionKeyRef, template.ServiceAccountRef, template.VPCAccess); err != nil {
+	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.ServiceAccountRef, template.VPCAccess); err != nil {
 		return err
 	}
 
@@ -103,13 +103,8 @@ type genericSecretVolumeSource interface {
 	GetVersionRefs() []*secretmanagerv1beta1.SecretVersionRef
 }
 
-func resolveCommonTemplateRefs(ctx context.Context, kube client.Reader, owner client.Object, encryptionKeyRef *refs.KMSCryptoKeyRef, serviceAccountRef *refs.IAMServiceAccountRef, vpcAccess any) error {
+func resolveCommonTemplateRefs(ctx context.Context, kube client.Reader, owner client.Object, serviceAccountRef *refs.IAMServiceAccountRef, vpcAccess any) error {
 	var err error
-	if encryptionKeyRef != nil {
-		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, kube, owner, encryptionKeyRef); err != nil {
-			return err
-		}
-	}
 	if serviceAccountRef != nil {
 		if err := serviceAccountRef.Resolve(ctx, kube, owner); err != nil {
 			return err

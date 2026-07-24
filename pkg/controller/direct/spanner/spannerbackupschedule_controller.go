@@ -80,6 +80,10 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, op *directba
 		return nil, err
 	}
 
+	if err = common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, err
+	}
+
 	// Get spannerbackupschedules GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
