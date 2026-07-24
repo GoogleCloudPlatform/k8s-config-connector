@@ -20,7 +20,7 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -1146,7 +1146,7 @@ func (in *RedisClusterSpec) DeepCopyInto(out *RedisClusterSpec) {
 	}
 	if in.KMSKeyRef != nil {
 		in, out := &in.KMSKeyRef, &out.KMSKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.CrossClusterReplicationConfig != nil {

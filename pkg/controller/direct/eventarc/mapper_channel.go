@@ -23,8 +23,7 @@ import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	connectorv1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connector/v1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -50,7 +49,7 @@ func EventarcChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *k
 		}
 	}
 	if in.GetCryptoKeyName() != "" {
-		out.KmsKeyRef = &v1beta1.KMSCryptoKeyRef{
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{
 			External: in.GetCryptoKeyName(),
 		}
 	}

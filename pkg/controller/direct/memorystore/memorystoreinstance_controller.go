@@ -84,14 +84,6 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	if obj.Spec.KmsKeyRef != nil {
-		resolved, err := refsv1beta1.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.KmsKeyRef)
-		if err != nil {
-			return nil, fmt.Errorf("resolving kmsKeyRef: %w", err)
-		}
-		obj.Spec.KmsKeyRef = resolved
-	}
-
 	// Get memorystore GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

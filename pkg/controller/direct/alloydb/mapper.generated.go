@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -571,7 +571,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 	}
 	out := &krm.EncryptionConfig{}
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	return out
 }

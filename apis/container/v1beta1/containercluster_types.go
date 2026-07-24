@@ -17,6 +17,7 @@ package v1beta1
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
@@ -133,7 +134,7 @@ type ClusterAutoscaling_AutoProvisioningDefaults struct {
 	/* Immutable. The Customer Managed Encryption Key used to encrypt the
 	boot disk attached to each node in the node pool. */
 	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.boot_disk_kms_key
-	BootDiskKMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"bootDiskKMSKeyRef,omitempty"`
+	BootDiskKMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"bootDiskKMSKeyRef,omitempty"`
 
 	/* Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +kcc:proto:field=google.container.v1.AutoprovisioningNodePoolDefaults.disk_size_gb
@@ -870,7 +871,7 @@ type NodeConfig struct {
 	NodeConfig_AdvancedMachineFeatures *NodeConfig_AdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
 	// +kcc:proto:field=google.container.v1.NodeConfig.boot_disk_kms_key
-	BootDiskKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+	BootDiskKMSCryptoKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.confidential_nodes

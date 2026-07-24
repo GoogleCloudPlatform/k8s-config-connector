@@ -362,24 +362,6 @@ func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Env
 	out.EncryptedVariables = Environment_KMSEnvMap_ToProto(mapCtx, in.EncryptedVariables)
 	return out
 }
-func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMap {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment_KMSEnvMap{}
-	// MISSING: KeyName
-	out.CipherText = direct.LazyPtr(in.GetCipherText())
-	return out
-}
-func Environment_KMSEnvMap_ToProto(mapCtx *direct.MapContext, in *krm.Environment_KMSEnvMap) *pb.Environment_KMSEnvMap {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment_KMSEnvMap{}
-	// MISSING: KeyName
-	out.CipherText = direct.ValueOf(in.CipherText)
-	return out
-}
 func GCS_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.GCS {
 	if in == nil {
 		return nil

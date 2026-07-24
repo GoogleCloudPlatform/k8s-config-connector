@@ -21,6 +21,7 @@ package v1beta1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
@@ -442,7 +443,7 @@ func (in *ClusterAutoscaling_AutoProvisioningDefaults) DeepCopyInto(out *Cluster
 	*out = *in
 	if in.BootDiskKMSKeyRef != nil {
 		in, out := &in.BootDiskKMSKeyRef, &out.BootDiskKMSKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.DiskSize != nil {
@@ -2550,7 +2551,7 @@ func (in *NodeConfig) DeepCopyInto(out *NodeConfig) {
 	}
 	if in.BootDiskKMSCryptoKeyRef != nil {
 		in, out := &in.BootDiskKMSCryptoKeyRef, &out.BootDiskKMSCryptoKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.ConfidentialNodes != nil {
@@ -3147,7 +3148,7 @@ func (in *NodePoolNodeConfig) DeepCopyInto(out *NodePoolNodeConfig) {
 	}
 	if in.BootDiskKMSCryptoKeyRef != nil {
 		in, out := &in.BootDiskKMSCryptoKeyRef, &out.BootDiskKMSCryptoKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.ConfidentialNodes != nil {

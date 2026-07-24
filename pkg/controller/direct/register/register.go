@@ -20,7 +20,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigeeregistry/apigeeregistryinstance"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigeeregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubapi"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubdeployment"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubplugin"

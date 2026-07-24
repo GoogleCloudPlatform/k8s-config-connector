@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -146,14 +148,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	desiredDataset.Labels["managed-by-cnrm"] = "true"
 
-	// Resolve KMS key reference
-	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
+	// Resolve references
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return err
 	}
+
 	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
@@ -207,13 +206,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
-	// Resolve KMS key reference
-	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
+	// Resolve references
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return err
 	}
 
 	resource := cloneBigQueryDatasetMetadate(a.actual)

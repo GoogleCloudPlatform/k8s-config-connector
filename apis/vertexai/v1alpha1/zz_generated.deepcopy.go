@@ -22,6 +22,7 @@ import (
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -357,7 +358,7 @@ func (in *EncryptionSpec) DeepCopyInto(out *EncryptionSpec) {
 	*out = *in
 	if in.KMSKeyRef != nil {
 		in, out := &in.KMSKeyRef, &out.KMSKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }

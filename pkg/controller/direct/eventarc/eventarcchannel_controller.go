@@ -125,7 +125,7 @@ func (a *channelAdapter) Create(ctx context.Context, createOp *directbase.Create
 	log.V(2).Info("creating eventarc channel", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -168,7 +168,7 @@ func (a *channelAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log.V(2).Info("updating eventarc channel", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -281,23 +281,4 @@ func (a *channelAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 
 	log.V(2).Info("successfully deleted eventarc channel", "name", a.id)
 	return true, nil
-}
-
-func (a *channelAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.ProviderRef != nil {
-		providerRef, err := obj.Spec.ProviderRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
-		if err != nil {
-			return err
-		}
-		obj.Spec.ProviderRef.External = providerRef
-	}
-	if obj.Spec.KmsKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.KmsKeyRef = kmsKeyRef
-	}
-	return nil
 }

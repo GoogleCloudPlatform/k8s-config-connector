@@ -17,6 +17,8 @@ package dataproc
 import (
 	"strconv"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
@@ -366,7 +368,7 @@ func ClusterKerberosConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.K
 	out.Keystore = direct.LazyPtr(in.GetKeystoreUri())
 	out.KeystorePassword = direct.LazyPtr(in.GetKeystorePasswordUri())
 	if in.GetKmsKeyUri() != "" {
-		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyUri()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyUri()}
 	}
 	out.Realm = direct.LazyPtr(in.GetRealm())
 	out.RootPrincipalPassword = direct.LazyPtr(in.GetRootPrincipalPasswordUri())

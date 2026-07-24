@@ -22,7 +22,6 @@ import (
 
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -39,7 +38,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -91,7 +89,7 @@ func (m *secretModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		return nil, err
 	}
 
-	if err = normalizeExternal(ctx, reader, copied, obj); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, err
 	}
 
@@ -120,45 +118,6 @@ type Adapter struct {
 }
 
 var _ directbase.Adapter = &Adapter{}
-
-func normalizeExternal(ctx context.Context, reader client.Reader, src client.Object, secret *krm.SecretManagerSecret) error {
-	if secret.Spec.Replication != nil {
-		if secret.Spec.Replication.LegacyAutomatic != nil {
-			if secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption != nil {
-				kmsKeyRef := secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption.KmsKeyRef
-
-				kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
-				if err != nil {
-					return err
-				}
-				secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
-			}
-		}
-		if secret.Spec.Replication.UserManaged != nil {
-			for _, r := range secret.Spec.Replication.UserManaged.Replicas {
-				if r.CustomerManagedEncryption != nil {
-					kmsKeyRef := r.CustomerManagedEncryption.KmsKeyRef
-					kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
-					if err != nil {
-						return err
-					}
-					r.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
-				}
-			}
-		}
-	}
-	if len(secret.Spec.TopicRefs) != 0 {
-		for _, topicRef := range secret.Spec.TopicRefs {
-			if topicRef.PubSubTopicRef != nil {
-				_, err := topicRef.PubSubTopicRef.NormalizedExternal(ctx, reader, src.GetNamespace())
-				if err != nil {
-					return err
-				}
-			}
-		}
-	}
-	return nil
-}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)

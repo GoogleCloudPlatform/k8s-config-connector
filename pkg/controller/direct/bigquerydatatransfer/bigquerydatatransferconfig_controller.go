@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	bigquerykrmapi "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -92,24 +94,9 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	// Resolve PubSubTopic Ref
-	if obj.Spec.PubSubTopicRef != nil {
-		ref := obj.Spec.PubSubTopicRef
-		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// Resolve PubSubSubscription Ref
-	if obj.Spec.ScheduleOptionsV2 != nil &&
-		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule != nil &&
-		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef != nil {
-		ref := obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef
-		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
-		if err != nil {
-			return nil, err
-		}
+	// Resolve References
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, err
 	}
 
 	// Resolve BigQueryDataSet Ref
@@ -126,15 +113,6 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 			return nil, err
 		}
 		obj.Spec.DatasetRef.External = datasetID.Dataset
-	}
-
-	// Resolve KMSCryptoKey Ref
-	if obj.Spec.EncryptionConfiguration != nil {
-		kmsCryptoKeyRef, err := refv1beta1.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.EncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return nil, err
-		}
-		obj.Spec.EncryptionConfiguration.KmsKeyRef = kmsCryptoKeyRef
 	}
 
 	// Resolve ServiceAccount Ref

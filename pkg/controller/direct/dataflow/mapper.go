@@ -17,12 +17,13 @@ package dataflow
 import (
 	"encoding/json"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	pb "cloud.google.com/go/dataflow/apiv1beta3/dataflowpb"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataflow/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -39,7 +40,7 @@ func DataflowJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Dataf
 	if env != nil {
 		out.TempGcsLocation = env.GetTempStoragePrefix()
 		if env.GetServiceKmsKeyName() != "" {
-			out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: env.GetServiceKmsKeyName()}
+			out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: env.GetServiceKmsKeyName()}
 		}
 		if len(env.GetExperiments()) > 0 {
 			out.AdditionalExperiments = env.GetExperiments()

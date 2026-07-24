@@ -9730,7 +9730,7 @@ func (in *DiskDiskEncryptionKey) DeepCopyInto(out *DiskDiskEncryptionKey) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
@@ -9785,7 +9785,7 @@ func (in *DiskSourceImageEncryptionKey) DeepCopyInto(out *DiskSourceImageEncrypt
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
@@ -9820,7 +9820,7 @@ func (in *DiskSourceSnapshotEncryptionKey) DeepCopyInto(out *DiskSourceSnapshotE
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {

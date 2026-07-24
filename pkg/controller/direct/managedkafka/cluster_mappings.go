@@ -18,32 +18,9 @@ import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func GcpConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GcpConfig{}
-	out.AccessConfig = AccessConfig_v1beta1_FromProto(mapCtx, in.GetAccessConfig())
-	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
-	}
-	return out
-}
-func GcpConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfig) *pb.GcpConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GcpConfig{}
-	out.AccessConfig = AccessConfig_v1beta1_ToProto(mapCtx, in.AccessConfig)
-	if in.KMSKeyRef != nil {
-		out.KmsKey = in.KMSKeyRef.External
-	}
-	return out
-}
 func NetworkConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil

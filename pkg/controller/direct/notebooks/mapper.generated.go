@@ -28,6 +28,7 @@ import (
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmdataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krmnotebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	krmnotebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -366,7 +367,7 @@ func NotebookInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	out.NoRemoveDataDisk = direct.LazyPtr(in.GetNoRemoveDataDisk())
 	out.DiskEncryption = direct.Enum_FromProto(mapCtx, in.GetDiskEncryption())
 	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	out.ShieldedInstanceConfig = Instance_ShieldedInstanceConfig_v1beta1_FromProto(mapCtx, in.GetShieldedInstanceConfig())
 	out.NoPublicIP = direct.LazyPtr(in.GetNoPublicIp())
