@@ -685,16 +685,185 @@ type DLPDiscoveryConfigSpec struct {
 	Targets []DiscoveryconfigTargets `json:"targets,omitempty"`
 }
 
-type DiscoveryconfigDataSourceTypeStatus struct {
-	/* Output only. An identifying string to the type of resource being profiled.
-	Current values:
-
-	* google/bigquery/table
-	* google/project
-	* google/sql/table
-	* google/gcs/bucket */
+type DiscoveryconfigAmazonS3BucketConditionsStatus struct {
+	/* Optional. Bucket types that should be profiled. Optional. Defaults to TYPE_ALL_SUPPORTED if unspecified. */
 	// +optional
-	DataSource *string `json:"dataSource,omitempty"`
+	BucketTypes []string `json:"bucketTypes,omitempty"`
+
+	/* Optional. Object classes that should be profiled. Optional. Defaults to ALL_SUPPORTED_CLASSES if unspecified. */
+	// +optional
+	ObjectStorageClasses []string `json:"objectStorageClasses,omitempty"`
+}
+
+type DiscoveryconfigAmazonS3BucketRegexStatus struct {
+	/* The AWS account regex. */
+	// +optional
+	AwsAccountRegex *DiscoveryconfigAwsAccountRegexStatus `json:"awsAccountRegex,omitempty"`
+
+	/* Optional. Regex to test the bucket name against. If empty, all buckets match. */
+	// +optional
+	BucketNameRegex *string `json:"bucketNameRegex,omitempty"`
+}
+
+type DiscoveryconfigAmazonS3BucketStatus struct {
+	/* The AWS account. */
+	// +optional
+	AwsAccount *DiscoveryconfigAwsAccountStatus `json:"awsAccount,omitempty"`
+
+	/* Required. The bucket name. */
+	// +optional
+	BucketName *string `json:"bucketName,omitempty"`
+}
+
+type DiscoveryconfigAwsAccountRegexStatus struct {
+	/* Optional. Regex to test the AWS account ID against. If empty, all accounts match. */
+	// +optional
+	AccountIDRegex *string `json:"accountIDRegex,omitempty"`
+}
+
+type DiscoveryconfigAwsAccountStatus struct {
+	/* Required. AWS account ID. */
+	// +optional
+	AccountID *string `json:"accountID,omitempty"`
+}
+
+type DiscoveryconfigBigQueryTargetStatus struct {
+	/* How often and when to update profiles. New tables that match both the filter and conditions are scanned as quickly as possible depending on system capacity. */
+	// +optional
+	Cadence *DiscoveryconfigCadenceStatus `json:"cadence,omitempty"`
+
+	/* In addition to matching the filter, these conditions must be true before a profile is generated. */
+	// +optional
+	Conditions *DiscoveryconfigConditionsStatus `json:"conditions,omitempty"`
+
+	/* Tables that match this filter will not have profiles created. */
+	// +optional
+	Disabled *DiscoveryconfigDisabledStatus `json:"disabled,omitempty"`
+
+	/* Required. The tables the discovery cadence applies to. The first target with a matching filter will be the one to apply to a table. */
+	// +optional
+	Filter *DiscoveryconfigFilterStatus `json:"filter,omitempty"`
+}
+
+type DiscoveryconfigCadenceStatus struct {
+	/* Governs when to update data profiles when the inspection rules defined by the `InspectTemplate` change. If not set, changing the template will not cause a data profile to update. */
+	// +optional
+	InspectTemplateModifiedCadence *DiscoveryconfigInspectTemplateModifiedCadenceStatus `json:"inspectTemplateModifiedCadence,omitempty"`
+
+	/* Frequency at which profiles should be updated, regardless of whether the underlying resource has changed. Defaults to never. */
+	// +optional
+	RefreshFrequency *string `json:"refreshFrequency,omitempty"`
+
+	/* Governs when to update data profiles when a schema is modified. */
+	// +optional
+	SchemaModifiedCadence *DiscoveryconfigSchemaModifiedCadenceStatus `json:"schemaModifiedCadence,omitempty"`
+
+	/* Governs when to update data profiles when a table is modified. */
+	// +optional
+	TableModifiedCadence *DiscoveryconfigTableModifiedCadenceStatus `json:"tableModifiedCadence,omitempty"`
+}
+
+type DiscoveryconfigCloudSQLTargetStatus struct {
+	/* In addition to matching the filter, these conditions must be true before a profile is generated. */
+	// +optional
+	Conditions *DiscoveryconfigConditionsStatus `json:"conditions,omitempty"`
+
+	/* Disable profiling for database resources that match this filter. */
+	// +optional
+	Disabled *DiscoveryconfigDisabledStatus `json:"disabled,omitempty"`
+
+	/* Required. The tables the discovery cadence applies to. The first target with a matching filter will be the one to apply to a table. */
+	// +optional
+	Filter *DiscoveryconfigFilterStatus `json:"filter,omitempty"`
+
+	/* How often and when to update profiles. New tables that match both the filter and conditions are scanned as quickly as possible depending on system capacity. */
+	// +optional
+	GenerationCadence *DiscoveryconfigGenerationCadenceStatus `json:"generationCadence,omitempty"`
+}
+
+type DiscoveryconfigCloudStorageConditionsStatus struct {
+	/* Required. Only objects with the specified attributes will be scanned. Defaults to [ALL_SUPPORTED_BUCKETS] if unset. */
+	// +optional
+	IncludedBucketAttributes []string `json:"includedBucketAttributes,omitempty"`
+
+	/* Required. Only objects with the specified attributes will be scanned. If an object has one of the specified attributes but is inside an excluded bucket, it will not be scanned. Defaults to [ALL_SUPPORTED_OBJECTS]. A profile will be created even if no objects match the included_object_attributes. */
+	// +optional
+	IncludedObjectAttributes []string `json:"includedObjectAttributes,omitempty"`
+}
+
+type DiscoveryconfigCloudStorageRegexStatus struct {
+	/* Optional. Regex to test the bucket name against. If empty, all buckets match. Example: "marketing2021" or "(marketing)\d{4}" will both match the bucket gs://marketing2021 */
+	// +optional
+	BucketNameRegex *string `json:"bucketNameRegex,omitempty"`
+
+	/* Optional. For organizations, if unset, will match all projects. */
+	// +optional
+	ProjectIDRegex *string `json:"projectIDRegex,omitempty"`
+}
+
+type DiscoveryconfigCloudStorageResourceReferenceStatus struct {
+	/* Required. The bucket to scan. */
+	// +optional
+	BucketName *string `json:"bucketName,omitempty"`
+
+	/* Required. If within a project-level config, then this must match the config's project id. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+}
+
+type DiscoveryconfigCloudStorageTargetStatus struct {
+	/* Optional. In addition to matching the filter, these conditions must be true before a profile is generated. */
+	// +optional
+	Conditions *DiscoveryconfigConditionsStatus `json:"conditions,omitempty"`
+
+	/* Optional. Disable profiling for buckets that match this filter. */
+	// +optional
+	Disabled *DiscoveryconfigDisabledStatus `json:"disabled,omitempty"`
+
+	/* Required. The buckets the generation_cadence applies to. The first target with a matching filter will be the one to apply to a bucket. */
+	// +optional
+	Filter *DiscoveryconfigFilterStatus `json:"filter,omitempty"`
+
+	/* Optional. How often and when to update profiles. New buckets that match both the filter and conditions are scanned as quickly as possible depending on system capacity. */
+	// +optional
+	GenerationCadence *DiscoveryconfigGenerationCadenceStatus `json:"generationCadence,omitempty"`
+}
+
+type DiscoveryconfigCollectionStatus struct {
+	/* The regex used to filter dataset resources. */
+	// +optional
+	VertexDatasetRegexes *DiscoveryconfigVertexDatasetRegexesStatus `json:"vertexDatasetRegexes,omitempty"`
+}
+
+type DiscoveryconfigConditionsStatus struct {
+	/* Vertex AI dataset must have been created after this date. Used to avoid backfilling. */
+	// +optional
+	CreatedAfter *string `json:"createdAfter,omitempty"`
+
+	/* Minimum age a Vertex AI dataset must have. If set, the value must be 1 hour or greater. */
+	// +optional
+	MinAge *string `json:"minAge,omitempty"`
+}
+
+type DiscoveryconfigDataSourceTypeStatus struct {
+}
+
+type DiscoveryconfigDatabaseResourceReferenceStatus struct {
+	/* Required. Name of a database within the instance. */
+	// +optional
+	Database *string `json:"database,omitempty"`
+
+	/* Required. Name of a database resource, for example, a table within the database. */
+	// +optional
+	DatabaseResource *string `json:"databaseResource,omitempty"`
+
+	/* Required. The instance where this resource is located. For example: Cloud SQL instance ID. */
+	// +optional
+	Instance *string `json:"instance,omitempty"`
+
+	/* Required. If within a project-level config, then this must match the config's project ID. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
 }
 
 type DiscoveryconfigDetailsStatus struct {
@@ -705,6 +874,9 @@ type DiscoveryconfigDetailsStatus struct {
 	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
 	// +optional
 	Message *string `json:"message,omitempty"`
+}
+
+type DiscoveryconfigDisabledStatus struct {
 }
 
 type DiscoveryconfigErrorsStatus struct {
@@ -719,6 +891,42 @@ type DiscoveryconfigErrorsStatus struct {
 	/* The times the error occurred. List includes the oldest timestamp and the last 9 timestamps. */
 	// +optional
 	Timestamps []string `json:"timestamps,omitempty"`
+}
+
+type DiscoveryconfigFilterStatus struct {
+	/* A specific set of Vertex AI datasets for this filter to apply to. */
+	// +optional
+	Collection *DiscoveryconfigCollectionStatus `json:"collection,omitempty"`
+
+	/* Catch-all. This should always be the last target in the list because anything above it will apply first. Should only appear once in a configuration. If none is specified, a default one will be added automatically. */
+	// +optional
+	Others *DiscoveryconfigOthersStatus `json:"others,omitempty"`
+
+	/* The dataset resource to scan. Targets including this can only include one target (the target with this dataset resource reference). */
+	// +optional
+	VertexDatasetResourceReference *DiscoveryconfigVertexDatasetResourceReferenceStatus `json:"vertexDatasetResourceReference,omitempty"`
+}
+
+type DiscoveryconfigGenerationCadenceStatus struct {
+	/* Governs when to update data profiles when the inspection rules defined by the `InspectTemplate` change. If not set, changing the template will not cause a data profile to be updated. */
+	// +optional
+	InspectTemplateModifiedCadence *DiscoveryconfigInspectTemplateModifiedCadenceStatus `json:"inspectTemplateModifiedCadence,omitempty"`
+
+	/* If you set this field, profiles are refreshed at this frequency regardless of whether the underlying datasets have changed. Defaults to never. */
+	// +optional
+	RefreshFrequency *string `json:"refreshFrequency,omitempty"`
+}
+
+type DiscoveryconfigIncludeRegexesStatus struct {
+	/* A group of regular expression patterns to match against one or more resources. Maximum of 100 entries. The sum of all regular expression's length can't exceed 10 KiB. */
+	// +optional
+	Patterns []DiscoveryconfigPatternsStatus `json:"patterns,omitempty"`
+}
+
+type DiscoveryconfigInspectTemplateModifiedCadenceStatus struct {
+	/* How frequently data profiles can be updated when the template is modified. Defaults to never. */
+	// +optional
+	Frequency *string `json:"frequency,omitempty"`
 }
 
 type DiscoveryconfigObservedStateStatus struct {
@@ -743,16 +951,159 @@ type DiscoveryconfigObservedStateStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
+type DiscoveryconfigOrConditionsStatus struct {
+	/* Minimum age a table must have before Cloud DLP can profile it. Value must be 1 hour or greater. */
+	// +optional
+	MinAge *string `json:"minAge,omitempty"`
+
+	/* Minimum number of rows that should be present before Cloud DLP profiles a table */
+	// +optional
+	MinRowCount *int32 `json:"minRowCount,omitempty"`
+}
+
 type DiscoveryconfigOtherCloudTargetStatus struct {
+	/* Optional. In addition to matching the filter, these conditions must be true before a profile is generated. */
+	// +optional
+	Conditions *DiscoveryconfigConditionsStatus `json:"conditions,omitempty"`
+
 	/* Required. The type of data profiles generated by this discovery target. Supported values are: * aws/s3/bucket */
 	// +optional
 	DataSourceType *DiscoveryconfigDataSourceTypeStatus `json:"dataSourceType,omitempty"`
+
+	/* Disable profiling for resources that match this filter. */
+	// +optional
+	Disabled *DiscoveryconfigDisabledStatus `json:"disabled,omitempty"`
+
+	/* Required. The resources that the discovery cadence applies to. The first target with a matching filter will be the one to apply to a resource. */
+	// +optional
+	Filter *DiscoveryconfigFilterStatus `json:"filter,omitempty"`
+
+	/* How often and when to update data profiles. New resources that match both the filter and conditions are scanned as quickly as possible depending on system capacity. */
+	// +optional
+	GenerationCadence *DiscoveryconfigGenerationCadenceStatus `json:"generationCadence,omitempty"`
+}
+
+type DiscoveryconfigOtherTablesStatus struct {
+}
+
+type DiscoveryconfigOthersStatus struct {
+}
+
+type DiscoveryconfigPatternsStatus struct {
+	/* For organizations, if unset, will match all projects. Has no effect for configurations created within a project. */
+	// +optional
+	ProjectIDRegex *string `json:"projectIDRegex,omitempty"`
+}
+
+type DiscoveryconfigSchemaModifiedCadenceStatus struct {
+	/* Frequency to regenerate data profiles when the schema is modified. Defaults to monthly. */
+	// +optional
+	Frequency *string `json:"frequency,omitempty"`
+
+	/* The types of schema modifications to consider. Defaults to NEW_COLUMNS. */
+	// +optional
+	Types []DiscoveryconfigTypesStatus `json:"types,omitempty"`
+}
+
+type DiscoveryconfigSecretsTargetStatus struct {
+}
+
+type DiscoveryconfigSingleResourceStatus struct {
+	/* Amazon S3 bucket. */
+	// +optional
+	AmazonS3Bucket *DiscoveryconfigAmazonS3BucketStatus `json:"amazonS3Bucket,omitempty"`
+}
+
+type DiscoveryconfigTableModifiedCadenceStatus struct {
+	/* How frequently data profiles can be updated when tables are modified. Defaults to never. */
+	// +optional
+	Frequency *string `json:"frequency,omitempty"`
+
+	/* The type of events to consider when deciding if the table has been modified and should have the profile updated. Defaults to MODIFIED_TIMESTAMP. */
+	// +optional
+	Types []DiscoveryconfigTypesStatus `json:"types,omitempty"`
+}
+
+type DiscoveryconfigTableReferenceStatus struct {
+	/* Dataset ID of the table. */
+	// +optional
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	/* The Google Cloud project ID of the project containing the table. If omitted, the project ID is inferred from the parent project. This field is required if the parent resource is an organization. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+
+	/* Name of the table. */
+	// +optional
+	TableID *string `json:"tableID,omitempty"`
+}
+
+type DiscoveryconfigTablesStatus struct {
+	/* A collection of regular expressions to match a BigQuery table against. */
+	// +optional
+	IncludeRegexes *DiscoveryconfigIncludeRegexesStatus `json:"includeRegexes,omitempty"`
 }
 
 type DiscoveryconfigTargetsStatus struct {
+	/* BigQuery target for Discovery. The first target to match a table will be the one applied. */
+	// +optional
+	BigQueryTarget *DiscoveryconfigBigQueryTargetStatus `json:"bigQueryTarget,omitempty"`
+
+	/* Cloud SQL target for Discovery. The first target to match a table will be the one applied. */
+	// +optional
+	CloudSQLTarget *DiscoveryconfigCloudSQLTargetStatus `json:"cloudSQLTarget,omitempty"`
+
+	/* Cloud Storage target for Discovery. The first target to match a table will be the one applied. */
+	// +optional
+	CloudStorageTarget *DiscoveryconfigCloudStorageTargetStatus `json:"cloudStorageTarget,omitempty"`
+
 	/* Other clouds target for discovery. The first target to match a resource will be the one applied. */
 	// +optional
 	OtherCloudTarget *DiscoveryconfigOtherCloudTargetStatus `json:"otherCloudTarget,omitempty"`
+
+	/* Discovery target that looks for credentials and secrets stored in cloud resource metadata and reports them as vulnerabilities to Security Command Center. Only one target of this type is allowed. */
+	// +optional
+	SecretsTarget *DiscoveryconfigSecretsTargetStatus `json:"secretsTarget,omitempty"`
+
+	/* Vertex AI dataset target for Discovery. The first target to match a dataset will be the one applied. Note that discovery for Vertex AI can incur Cloud Storage Class B operation charges for storage.objects.get operations and retrieval fees. For more information, see [Cloud Storage pricing](https://cloud.google.com/storage/pricing#price-tables). Note that discovery for Vertex AI dataset will not be able to scan images unless DiscoveryConfig.processing_location.image_fallback_location has multi_region_processing or global_processing configured. */
+	// +optional
+	VertexDatasetTarget *DiscoveryconfigVertexDatasetTargetStatus `json:"vertexDatasetTarget,omitempty"`
+}
+
+type DiscoveryconfigTypesStatus struct {
+	/* A set of BigQuery table types. */
+	// +optional
+	Types []DiscoveryconfigTypesStatus `json:"types,omitempty"`
+}
+
+type DiscoveryconfigVertexDatasetRegexesStatus struct {
+	/* Required. The group of regular expression patterns to match against one or more datasets. Maximum of 100 entries. The sum of the lengths of all regular expressions can't exceed 10 KiB. */
+	// +optional
+	Patterns []DiscoveryconfigPatternsStatus `json:"patterns,omitempty"`
+}
+
+type DiscoveryconfigVertexDatasetResourceReferenceStatus struct {
+	/* Required. The name of the dataset resource. If set within a project-level configuration, the specified resource must be within the project. */
+	// +optional
+	DatasetResourceName *string `json:"datasetResourceName,omitempty"`
+}
+
+type DiscoveryconfigVertexDatasetTargetStatus struct {
+	/* In addition to matching the filter, these conditions must be true before a profile is generated. */
+	// +optional
+	Conditions *DiscoveryconfigConditionsStatus `json:"conditions,omitempty"`
+
+	/* Disable profiling for datasets that match this filter. */
+	// +optional
+	Disabled *DiscoveryconfigDisabledStatus `json:"disabled,omitempty"`
+
+	/* Required. The datasets the discovery cadence applies to. The first target with a matching filter will be the one to apply to a dataset. */
+	// +optional
+	Filter *DiscoveryconfigFilterStatus `json:"filter,omitempty"`
+
+	/* How often and when to update profiles. New datasets that match both the filter and conditions are scanned as quickly as possible depending on system capacity. */
+	// +optional
+	GenerationCadence *DiscoveryconfigGenerationCadenceStatus `json:"generationCadence,omitempty"`
 }
 
 type DLPDiscoveryConfigStatus struct {
