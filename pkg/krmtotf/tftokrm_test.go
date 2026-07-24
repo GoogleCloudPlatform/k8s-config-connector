@@ -314,6 +314,59 @@ func TestConvertTFObjToKCCObj(t *testing.T) {
 			},
 		},
 		{
+			name: "set containing nested reference with nil prevSpec (export scenario)",
+			schemaOverride: map[string]*tfschema.Schema{
+				"set_of_objects_key": {
+					Type:     tfschema.TypeSet,
+					Optional: true,
+					Elem: &tfschema.Resource{
+						Schema: map[string]*tfschema.Schema{
+							"group": {
+								Type:     tfschema.TypeString,
+								Optional: true,
+							},
+						},
+					},
+				},
+			},
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceReferences: []corekccv1alpha1.ReferenceConfig{
+					{
+						TFField: "set_of_objects_key.group",
+						Types: []corekccv1alpha1.TypeConfig{
+							{
+								Key: "instanceGroupRef",
+								GVK: k8sschema.GroupVersionKind{
+									Group:   "test1.cnrm.cloud.google.com",
+									Version: "v1alpha1",
+									Kind:    "Test1Bar",
+								},
+							},
+						},
+					},
+				},
+			},
+			state: map[string]interface{}{
+				"set_of_objects_key": []interface{}{
+					map[string]interface{}{
+						"group": "ref-val-1",
+					},
+				},
+			},
+			prevSpec: nil,
+			expected: map[string]interface{}{
+				"setOfObjectsKey": []interface{}{
+					map[string]interface{}{
+						"group": map[string]interface{}{
+							"instanceGroupRef": map[string]interface{}{
+								"external": "ref-val-1",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "spec-defined values are preserved",
 			state: map[string]interface{}{
 				"string_key": "fully-expanded-string-value",
