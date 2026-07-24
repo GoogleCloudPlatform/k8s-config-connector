@@ -25,7 +25,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 # Create a temporary parent directory for worker Go build caches
-export GOCACHE_BASE="/tmp/kcc-gocache-$$"
+export GOCACHE_BASE="${REPO_ROOT}/.build/kcc-gocache-$$"
 mkdir -p "${GOCACHE_BASE}/shared"
 
 # Guarantee cleanup of GOCACHE_BASE on script completion or interruption (SIGINT, SIGTERM, EXIT)
@@ -118,16 +118,30 @@ for f in $(find apis -name "generate.sh" | sort); do
         continue
     fi
 
-    scripts+=("${f}")
+    # Extract service name (e.g. apphub from apis/apphub/v1alpha1/generate.sh)
+    parts=(${f//\// })
+    service_name="${parts[1]}"
+
+    if [[ -z "${service_map[${service_name}]:-}" ]]; then
+        service_map["${service_name}"]="./${f}"
+    else
+        service_map["${service_name}"]="${service_map[${service_name}]} && ./${f}"
+    fi
+done
+
+# Populate the scripts array from grouped service commands
+scripts=()
+for s in "${!service_map[@]}"; do
+    scripts+=("${service_map[$s]}")
 done
 
 # Cap default parallel worker processes to 8 to prevent machine memory and disk lock contention
 NUM_WORKERS="${PARALLELISM:-8}"
-echo "Running ${#scripts[@]} generator scripts in parallel with ${NUM_WORKERS} workers..."
+echo "Running ${#scripts[@]} generator tasks in parallel with ${NUM_WORKERS} workers..."
 
 # Worker function to execute a single generate.sh script in parallel with its own isolated Go build cache
 run_one() {
-    local f="$1"
+    local cmd="$1"
     
     # Create an isolated temporary GOCACHE directory per worker process, pre-seeded from shared cache.
     # This prevents race conditions and lock collisions while allowing instant cached compilation.
@@ -139,9 +153,9 @@ run_one() {
     # Ensure worker cache directory is cleaned up when this worker subshell finishes
     trap 'rm -rf "${worker_cache}"' EXIT
 
-    echo "running ${f}"
-    if ! ./${f}; then
-        echo "ERROR running ${f}" >&2
+    echo "running: ${cmd}"
+    if ! eval "${cmd}"; then
+        echo "ERROR running: ${cmd}" >&2
         exit 1
     fi
 }
@@ -157,6 +171,6 @@ cleanup_gocache_base
 # Now we generate CRDs once for all updated packages
 unset -v SKIP_GENERATE_CRDS SKIP_GENERATE_PROTOS
 echo "Cleaning Go build cache to prevent stale AST type-checking issues"
-go clean -cache
+go clean -cache || true
 echo "Generating CRDs"
 dev/tasks/generate-crds
