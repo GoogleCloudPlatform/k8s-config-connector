@@ -1,0 +1,31 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorFloorSetting
+metadata:
+  name: floor-setting
+spec:
+  projectRef:
+    external: ${PROJECT_ID}
+  location: us-central1
+  resourceID: floorSetting
+  filterConfig:
+    piAndJailbreakFilterSettings:
+      filterEnforcement: ENFORCED
+      confidenceLevel: LOW
+    raiSettings:
+      raiFilters:
+      - filterType: SEXUALLY_EXPLICIT
+        confidenceLevel: LOW
+    maliciousUriFilterSettings:
+      filterEnforcement: ENFORCED
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: ENFORCED
+  enableFloorSettingEnforcement: true
+  integratedServices:
+  - SERVICE_1
+  aiPlatformFloorSetting:
+    inspectOnly: true
+    enableCloudLogging: true
+  floorSettingMetadata:
+    multiLanguageDetection:
+      enableMultiLanguageDetection: true
