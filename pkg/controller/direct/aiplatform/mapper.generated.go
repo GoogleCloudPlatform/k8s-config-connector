@@ -325,6 +325,24 @@ func DeployedModelRef_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModelRe
 	out.DeployedModelId = direct.ValueOf(in.DeployedModelID)
 	return out
 }
+func DiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiskSpec) *krm.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiskSpec{}
+	out.BootDiskType = direct.LazyPtr(in.GetBootDiskType())
+	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
+	return out
+}
+func DiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiskSpec) *pb.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiskSpec{}
+	out.BootDiskType = direct.ValueOf(in.BootDiskType)
+	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
+	return out
+}
 
 /* found existing non-generated mapping function "EncryptionSpec_FromProto", skipping
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
@@ -1857,6 +1875,62 @@ func Probe_TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_TCPS
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+func RayLogsSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayLogsSpec) *krm.RayLogsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayLogsSpec{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func RayLogsSpec_ToProto(mapCtx *direct.MapContext, in *krm.RayLogsSpec) *pb.RayLogsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayLogsSpec{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func RayMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayMetricSpec) *krm.RayMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayMetricSpec{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func RayMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.RayMetricSpec) *pb.RayMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayMetricSpec{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func RaySpec_FromProto(mapCtx *direct.MapContext, in *pb.RaySpec) *krm.RaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RaySpec{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.ResourcePoolImages = in.ResourcePoolImages
+	out.HeadNodeResourcePoolID = direct.LazyPtr(in.GetHeadNodeResourcePoolId())
+	out.RayMetricSpec = RayMetricSpec_FromProto(mapCtx, in.GetRayMetricSpec())
+	out.RayLogsSpec = RayLogsSpec_FromProto(mapCtx, in.GetRayLogsSpec())
+	return out
+}
+func RaySpec_ToProto(mapCtx *direct.MapContext, in *krm.RaySpec) *pb.RaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RaySpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.ResourcePoolImages = in.ResourcePoolImages
+	out.HeadNodeResourcePoolId = direct.ValueOf(in.HeadNodeResourcePoolID)
+	out.RayMetricSpec = RayMetricSpec_ToProto(mapCtx, in.RayMetricSpec)
+	out.RayLogsSpec = RayLogsSpec_ToProto(mapCtx, in.RayLogsSpec)
+	return out
+}
 func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -1877,6 +1951,110 @@ func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationA
 	out.Values = in.Values
 	return out
 }
+func ResourcePool_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool) *krm.ResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePool{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.ReplicaCount = in.ReplicaCount
+	out.DiskSpec = DiskSpec_FromProto(mapCtx, in.GetDiskSpec())
+	// MISSING: UsedReplicaCount
+	out.AutoscalingSpec = ResourcePool_AutoscalingSpec_FromProto(mapCtx, in.GetAutoscalingSpec())
+	return out
+}
+func ResourcePool_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePool) *pb.ResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePool{}
+	out.Id = direct.ValueOf(in.ID)
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.ReplicaCount = in.ReplicaCount
+	out.DiskSpec = DiskSpec_ToProto(mapCtx, in.DiskSpec)
+	// MISSING: UsedReplicaCount
+	out.AutoscalingSpec = ResourcePool_AutoscalingSpec_ToProto(mapCtx, in.AutoscalingSpec)
+	return out
+}
+func ResourcePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool) *krm.ResourcePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePoolObservedState{}
+	// MISSING: ID
+	// MISSING: MachineSpec
+	// MISSING: ReplicaCount
+	// MISSING: DiskSpec
+	out.UsedReplicaCount = direct.LazyPtr(in.GetUsedReplicaCount())
+	// MISSING: AutoscalingSpec
+	return out
+}
+func ResourcePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePoolObservedState) *pb.ResourcePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePool{}
+	// MISSING: ID
+	// MISSING: MachineSpec
+	// MISSING: ReplicaCount
+	// MISSING: DiskSpec
+	out.UsedReplicaCount = direct.ValueOf(in.UsedReplicaCount)
+	// MISSING: AutoscalingSpec
+	return out
+}
+func ResourcePool_AutoscalingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool_AutoscalingSpec) *krm.ResourcePool_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourcePool_AutoscalingSpec{}
+	out.MinReplicaCount = in.MinReplicaCount
+	out.MaxReplicaCount = in.MaxReplicaCount
+	return out
+}
+func ResourcePool_AutoscalingSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePool_AutoscalingSpec) *pb.ResourcePool_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourcePool_AutoscalingSpec{}
+	out.MinReplicaCount = in.MinReplicaCount
+	out.MaxReplicaCount = in.MaxReplicaCount
+	return out
+}
+func ResourceRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntime) *krm.ResourceRuntimeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRuntimeObservedState{}
+	out.AccessURIs = in.AccessUris
+	return out
+}
+func ResourceRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeObservedState) *pb.ResourceRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRuntime{}
+	out.AccessUris = in.AccessURIs
+	return out
+}
+func ResourceRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntimeSpec) *krm.ResourceRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRuntimeSpec{}
+	out.ServiceAccountSpec = ServiceAccountSpec_FromProto(mapCtx, in.GetServiceAccountSpec())
+	out.RaySpec = RaySpec_FromProto(mapCtx, in.GetRaySpec())
+	return out
+}
+func ResourceRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeSpec) *pb.ResourceRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRuntimeSpec{}
+	out.ServiceAccountSpec = ServiceAccountSpec_ToProto(mapCtx, in.ServiceAccountSpec)
+	out.RaySpec = RaySpec_ToProto(mapCtx, in.RaySpec)
+	return out
+}
 func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {
 	if in == nil {
 		return nil
@@ -1891,6 +2069,28 @@ func SampledShapleyAttribution_ToProto(mapCtx *direct.MapContext, in *krm.Sample
 	}
 	out := &pb.SampledShapleyAttribution{}
 	out.PathCount = direct.ValueOf(in.PathCount)
+	return out
+}
+func ServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountSpec) *krm.ServiceAccountSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAccountSpec{}
+	out.EnableCustomServiceAccount = direct.LazyPtr(in.GetEnableCustomServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	return out
+}
+func ServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccountSpec) *pb.ServiceAccountSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAccountSpec{}
+	out.EnableCustomServiceAccount = direct.ValueOf(in.EnableCustomServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	return out
 }
 func SmoothGradConfig_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krm.SmoothGradConfig {
@@ -2592,6 +2792,72 @@ func VertexAIFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.Labels = in.Labels
 	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx, in.DedicatedServingEndpoint)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+func VertexAIPersistentResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.VertexAIPersistentResourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIPersistentResourceObservedState{}
+	// MISSING: Name
+	out.ResourcePools = direct.Slice_FromProto(mapCtx, in.ResourcePools, ResourcePoolObservedState_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ResourceRuntime = ResourceRuntimeObservedState_FromProto(mapCtx, in.GetResourceRuntime())
+	return out
+}
+func VertexAIPersistentResourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIPersistentResourceObservedState) *pb.PersistentResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PersistentResource{}
+	// MISSING: Name
+	out.ResourcePools = direct.Slice_ToProto(mapCtx, in.ResourcePools, ResourcePoolObservedState_ToProto)
+	out.State = direct.Enum_ToProto[pb.PersistentResource_State](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ResourceRuntime = ResourceRuntimeObservedState_ToProto(mapCtx, in.ResourceRuntime)
+	return out
+}
+func VertexAIPersistentResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.VertexAIPersistentResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIPersistentResourceSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ResourcePools = direct.Slice_FromProto(mapCtx, in.ResourcePools, ResourcePool_FromProto)
+	out.Labels = in.Labels
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.ResourceRuntimeSpec = ResourceRuntimeSpec_FromProto(mapCtx, in.GetResourceRuntimeSpec())
+	out.ReservedIPRanges = in.ReservedIpRanges
+	return out
+}
+func VertexAIPersistentResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIPersistentResourceSpec) *pb.PersistentResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PersistentResource{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ResourcePools = direct.Slice_ToProto(mapCtx, in.ResourcePools, ResourcePool_ToProto)
+	out.Labels = in.Labels
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.ResourceRuntimeSpec = ResourceRuntimeSpec_ToProto(mapCtx, in.ResourceRuntimeSpec)
+	out.ReservedIpRanges = in.ReservedIPRanges
 	return out
 }
 func VertexAIPipelineJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.VertexAIPipelineJobObservedState {
