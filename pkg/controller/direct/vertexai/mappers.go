@@ -274,3 +274,27 @@ func VertexAICustomJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
+
+func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krmv1alpha1.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.PythonPackageSpec{}
+	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
+	out.PackageURIs = in.PackageUris
+	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
+	out.Args = in.Args
+	return out
+}
+
+func PythonPackageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PythonPackageSpec) *pb.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PythonPackageSpec{}
+	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
+	out.PackageUris = in.PackageURIs
+	out.PythonModule = direct.ValueOf(in.PythonModule)
+	out.Args = in.Args
+	return out
+}

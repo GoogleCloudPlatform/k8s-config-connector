@@ -35,6 +35,11 @@ func customJobFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // special field
 
+	f.Unimplemented_NotYetTriaged(".error.details")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].python_package_spec.env")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].machine_spec.min_gpu_driver_version")
+	f.Unimplemented_NotYetTriaged(".job_spec.worker_pool_specs[].lustre_mounts")
+
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".job_spec")
 	f.SpecFields.Insert(".labels")
