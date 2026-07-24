@@ -1,0 +1,71 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: VertexAISchedule
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: vertexaischedule-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  allowQueueing: false
+  createPipelineJobRequest:
+    pipelineJob:
+      displayName: Maximal Pipeline Job
+      location: us-central1
+      pipelineSpec:
+        components:
+          hello-world-component:
+            executorLabel: hello-world-executor
+        deploymentConfig:
+          '@type': type.googleapis.com/ml_pipelines.PipelineDeploymentConfig
+          executors:
+            hello-world-executor:
+              container:
+                command:
+                - echo
+                - Hello World
+                image: alpine:latest
+        pipelineInfo:
+          name: hello-world-pipeline
+        root:
+          dag:
+            tasks:
+              hello-world-task:
+                cachingOptions:
+                  enableCache: true
+                componentRef:
+                  name: hello-world-component
+                taskInfo:
+                  name: hello-world-task
+        schemaVersion: 2.1.0
+      projectRef:
+        external: ${projectId}
+      runtimeConfig:
+        gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
+  cron: 30 * * * *
+  displayName: updated-vertexaischedule-maximal-${uniqueId}
+  location: us-central1
+  maxConcurrentRunCount: 1
+  maxRunCount: 5
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createPipelineJobRequest:
+      pipelineJob: {}
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}
+    nextRunTime: "2026-07-24T23:50:42.068372655Z"
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"

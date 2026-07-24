@@ -1,0 +1,68 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: VertexAISchedule
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: vertexaischedule-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  createPipelineJobRequest:
+    pipelineJob:
+      displayName: Minimal Pipeline Job
+      location: us-central1
+      pipelineSpec:
+        components:
+          hello-world-component:
+            executorLabel: hello-world-executor
+        deploymentConfig:
+          '@type': type.googleapis.com/ml_pipelines.PipelineDeploymentConfig
+          executors:
+            hello-world-executor:
+              container:
+                command:
+                - echo
+                - Hello World
+                image: alpine:latest
+        pipelineInfo:
+          name: hello-world-pipeline
+        root:
+          dag:
+            tasks:
+              hello-world-task:
+                cachingOptions:
+                  enableCache: true
+                componentRef:
+                  name: hello-world-component
+                taskInfo:
+                  name: hello-world-task
+        schemaVersion: 2.1.0
+      projectRef:
+        external: ${projectId}
+      runtimeConfig:
+        gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
+  cron: 1 * * * *
+  displayName: vertexaischedule-minimal-${uniqueId}
+  location: us-central1
+  maxConcurrentRunCount: 1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createPipelineJobRequest:
+      pipelineJob: {}
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectNumber}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}
+    nextRunTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
