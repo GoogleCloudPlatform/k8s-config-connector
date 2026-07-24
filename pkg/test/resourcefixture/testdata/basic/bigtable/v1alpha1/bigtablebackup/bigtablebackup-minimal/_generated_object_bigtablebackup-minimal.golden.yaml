@@ -28,5 +28,5 @@ status:
     encryptionInfo:
       encryptionType: GOOGLE_DEFAULT_ENCRYPTION
     endTime: "1970-01-01T00:00:00Z"
-    startTime: "2024-04-01T12:34:56.123456Z"
+    startTime: "1970-01-01T00:00:00Z"
     state: READY

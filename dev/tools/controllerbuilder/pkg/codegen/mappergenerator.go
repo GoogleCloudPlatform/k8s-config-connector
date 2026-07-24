@@ -149,7 +149,7 @@ func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescrip
 		expectedPackagePrefix := "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + groupName
 		var filtered []*gocode.GoStruct
 		for _, match := range matches {
-			if strings.HasPrefix(match.GoPackage, expectedPackagePrefix) {
+			if match.GoPackage == expectedPackagePrefix || strings.HasPrefix(match.GoPackage, expectedPackagePrefix+"/") {
 				filtered = append(filtered, match)
 			}
 		}

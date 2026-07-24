@@ -1,0 +1,15 @@
+apiVersion: sqladmin.cnrm.cloud.google.com/v1alpha1
+kind: SQLAdminBackup
+metadata:
+  name: sqladminbackup-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${gcpProject}
+  instanceRef:
+    name: sqlinstance-dep-${uniqueId}
+  location: us-central1
+  description: "This is a maximal backup taken on demand"
+  backupKind: "PHYSICAL"
+  diskEncryptionConfiguration:
+    kmsKeyRef:
+      external: projects/${gcpProject}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/key-${uniqueId}
