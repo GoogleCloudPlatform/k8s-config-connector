@@ -208,6 +208,11 @@ func (a *sessionAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 	log.V(2).Info("successfully created discoveryengine session in gcp", "name", a.id)
 
+	parts := strings.Split(created.GetName(), "/")
+	if len(parts) > 0 {
+		a.id.Session = parts[len(parts)-1]
+	}
+
 	return a.updateStatus(ctx, createOp, created)
 }
 
@@ -237,6 +242,11 @@ func (a *sessionAdapter) Update(ctx context.Context, updateOp *directbase.Update
 			return fmt.Errorf("updating discoveryengine session %s: %w", a.id.String(), err)
 		}
 		latest = updated
+	}
+
+	parts := strings.Split(latest.GetName(), "/")
+	if len(parts) > 0 {
+		a.id.Session = parts[len(parts)-1]
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)

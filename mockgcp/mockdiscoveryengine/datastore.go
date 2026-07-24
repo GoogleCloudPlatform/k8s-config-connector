@@ -100,6 +100,11 @@ func (s *dataStoreService) UpdateDataStore(ctx context.Context, req *pb.UpdateDa
 	// TODO: support update mask
 
 	proto.Merge(obj, req.GetDataStore())
+	if req.GetDataStore().GetName() != "" {
+		obj.Name = req.GetDataStore().GetName()
+	} else {
+		obj.Name = fqn
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
