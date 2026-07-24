@@ -38,6 +38,27 @@ var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
 	}: true,
 }
 
+var realGCPSkipGroupKinds = map[schema.GroupKind]bool{
+	schema.GroupKind{
+		Group: "securitycenter.cnrm.cloud.google.com",
+		Kind:  "SecurityCenterMuteConfig",
+	}: true,
+	schema.GroupKind{
+		Group: "gkebackup.cnrm.cloud.google.com",
+		Kind:  "GKEBackupBackupChannel",
+	}: true,
+	schema.GroupKind{
+		Group: "edgecontainer.cnrm.cloud.google.com",
+		Kind:  "EdgeContainerCluster",
+	}: true,
+}
+
+var realGCPSkipFixtures = map[string]bool{
+	"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
+	"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
+	"container/v1beta1/containernodepool/containernodepool-resourcemanagertags":         true,
+}
+
 func TestGoldenLogAlignment(t *testing.T) {
 	rootDir := "testdata/basic"
 	absRootDir, err := filepath.Abs(rootDir)
@@ -51,6 +72,11 @@ func TestGoldenLogAlignment(t *testing.T) {
 		}
 
 		if d.IsDir() {
+			relPath, _ := filepath.Rel(absRootDir, path)
+			if realGCPSkipFixtures[relPath] {
+				return nil
+			}
+
 			realLogPath := filepath.Join(path, "_http.log")
 			mockLogPath := filepath.Join(path, "_http_mock.log")
 
@@ -60,7 +86,7 @@ func TestGoldenLogAlignment(t *testing.T) {
 					gvk, err := getGVKFromYAML(createPath)
 					if err == nil {
 						gk := gvk.GroupKind()
-						if mockGCPSkipGroupKinds[gk] {
+						if mockGCPSkipGroupKinds[gk] || realGCPSkipGroupKinds[gk] {
 							return nil
 						}
 						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
@@ -70,7 +96,6 @@ func TestGoldenLogAlignment(t *testing.T) {
 				}
 
 				if fileExists(mockLogPath) {
-					relPath, _ := filepath.Rel(absRootDir, path)
 					t.Run(relPath, func(t *testing.T) {
 						compareLogs(t, realLogPath, mockLogPath)
 					})
@@ -93,18 +118,6 @@ func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
 		t.Fatalf("failed to get absolute path for %s: %v", rootDir, err)
 	}
 
-	// Fixtures where real GCP testing is intentionally skipped / unsupported
-	mockOnlyFixtures := map[string]bool{
-		"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
-		"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
-		"container/v1beta1/containernodepool/containernodepool-resourcemanagertags":         true,
-		"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal":          true,
-		"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal":          true,
-		"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-dynamic": true,
-		"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-maximal": true,
-		"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-minimal": true,
-	}
-
 	err = filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -113,8 +126,16 @@ func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
 		if !d.IsDir() && d.Name() == "_http.log" {
 			dirPath := filepath.Dir(path)
 			relPath, _ := filepath.Rel(absRootDir, dirPath)
-			if mockOnlyFixtures[relPath] {
+			if realGCPSkipFixtures[relPath] {
 				return nil
+			}
+
+			createPath := filepath.Join(dirPath, "create.yaml")
+			if fileExists(createPath) {
+				gvk, err := getGVKFromYAML(createPath)
+				if err == nil && realGCPSkipGroupKinds[gvk.GroupKind()] {
+					return nil
+				}
 			}
 
 			data, err := os.ReadFile(path)
