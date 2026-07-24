@@ -29,9 +29,17 @@ go run . generate-types \
   --include-skipped-output \
   --resource NotebooksEnvironment:Environment \
   --resource NotebooksExecution:Execution \
-  --resource NotebooksSchedule:Schedule
+  --resource NotebooksSchedule:Schedule \
+  --resource NotebookRuntime:Runtime
 
 cd ${REPO_ROOT}
+
+# The controller builder generates runtime_types.go because the proto message is Runtime.
+# But we already have notebookruntime_types.go, and we do not want to overwrite it.
+if [ -f apis/notebooks/v1alpha1/runtime_types.go ]; then
+  rm apis/notebooks/v1alpha1/runtime_types.go
+fi
+
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w  pkg/controller/direct/notebooks/

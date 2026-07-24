@@ -31,6 +31,10 @@ type FakeNotebooksV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeNotebooksV1alpha1) NotebookRuntimes(namespace string) v1alpha1.NotebookRuntimeInterface {
+	return newFakeNotebookRuntimes(c, namespace)
+}
+
 func (c *FakeNotebooksV1alpha1) NotebooksEnvironments(namespace string) v1alpha1.NotebooksEnvironmentInterface {
 	return newFakeNotebooksEnvironments(c, namespace)
 }
