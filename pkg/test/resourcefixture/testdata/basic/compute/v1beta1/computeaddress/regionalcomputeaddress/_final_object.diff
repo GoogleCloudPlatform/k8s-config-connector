@@ -6,16 +6,7 @@
 >   generation: 1
 21d19
 <   resourceID: ${addressID}
-27,29c25,28
-<     message: The resource is up to date
-<     reason: UpToDate
-<     status: "True"
----
->     message: 'Update call failed: error updating: ComputeAddress is immutable and
->       cannot be updated'
->     reason: UpdateFailed
->     status: "False"
-33c32
+33c31
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1
