@@ -1,0 +1,6 @@
+- caisURL: //beyondcorp.googleapis.com/projects/${projectId}/locations/us-central1/clientConnectorServices/clientconnectorservice-${uniqueId}
+  group: beyondcorp.cnrm.cloud.google.com
+  kind: BeyondCorpClientConnectorService
+  name: clientconnectorservice-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
