@@ -19,6 +19,8 @@
 package storage
 
 import (
+	"strings"
+
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -320,7 +322,20 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *pb.Bucket) *krm.
 	// MISSING: Billing
 	out.RetentionPolicy = StorageBucketRetentionPolicy_FromProto(mapCtx, in.GetRetentionPolicy())
 	// MISSING: LocationType
-	// MISSING: IAMConfiguration
+	if in.IamConfiguration != nil {
+		if in.IamConfiguration.UniformBucketLevelAccess != nil {
+			out.UniformBucketLevelAccess = direct.PtrTo(in.IamConfiguration.UniformBucketLevelAccess.Enabled)
+			out.BucketPolicyOnly = direct.PtrTo(in.IamConfiguration.UniformBucketLevelAccess.Enabled)
+		}
+		if in.IamConfiguration.PublicAccessPrevention != pb.Bucket_IamConfiguration_PUBLIC_ACCESS_PREVENTION_UNSPECIFIED {
+			switch in.IamConfiguration.PublicAccessPrevention {
+			case pb.Bucket_IamConfiguration_ENFORCED:
+				out.PublicAccessPrevention = direct.LazyPtr("enforced")
+			case pb.Bucket_IamConfiguration_INHERITED:
+				out.PublicAccessPrevention = direct.LazyPtr("inherited")
+			}
+		}
+	}
 	// MISSING: ZoneAffinity
 	// MISSING: SatisfiesPzs
 	out.Autoclass = StorageBucketAutoclass_FromProto(mapCtx, in.GetAutoclass())
@@ -359,7 +374,29 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	// MISSING: Billing
 	out.RetentionPolicy = StorageBucketRetentionPolicy_ToProto(mapCtx, in.RetentionPolicy)
 	// MISSING: LocationType
-	// MISSING: IAMConfiguration
+	if in.UniformBucketLevelAccess != nil || in.PublicAccessPrevention != nil || in.BucketPolicyOnly != nil {
+		out.IamConfiguration = &pb.Bucket_IamConfiguration{}
+		ubla := false
+		if in.UniformBucketLevelAccess != nil {
+			ubla = *in.UniformBucketLevelAccess
+		} else if in.BucketPolicyOnly != nil {
+			ubla = *in.BucketPolicyOnly
+		}
+		out.IamConfiguration.UniformBucketLevelAccess = &pb.Bucket_IamConfiguration_UniformBucketLevelAccess{
+			Enabled: ubla,
+		}
+
+		if in.PublicAccessPrevention != nil {
+			switch strings.ToLower(*in.PublicAccessPrevention) {
+			case "enforced":
+				out.IamConfiguration.PublicAccessPrevention = pb.Bucket_IamConfiguration_ENFORCED
+			case "inherited":
+				out.IamConfiguration.PublicAccessPrevention = pb.Bucket_IamConfiguration_INHERITED
+			default:
+				out.IamConfiguration.PublicAccessPrevention = pb.Bucket_IamConfiguration_PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+			}
+		}
+	}
 	// MISSING: ZoneAffinity
 	// MISSING: SatisfiesPzs
 	out.Autoclass = StorageBucketAutoclass_ToProto(mapCtx, in.Autoclass)
