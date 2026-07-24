@@ -17,6 +17,7 @@ package aiplatform
 import (
 	"context"
 	"fmt"
+	"time"
 
 	gcp "cloud.google.com/go/aiplatform/apiv1"
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
@@ -52,12 +53,14 @@ type pipelineJobModel struct {
 	config *config.ControllerConfig
 }
 
-func (m *pipelineJobModel) client(ctx context.Context) (*gcp.PipelineClient, error) {
+func (m *pipelineJobModel) client(ctx context.Context, location string) (*gcp.PipelineClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
+	endpoint := fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)
+	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewPipelineClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building PipelineClient client: %w", err)
@@ -81,15 +84,15 @@ func (m *pipelineJobModel) AdapterForObject(ctx context.Context, reader *directb
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
-	// Get PipelineClient client
-	gcpClient, err := m.client(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	typedID, ok := id.(*krm.VertexAIPipelineJobIdentity)
 	if !ok {
 		return nil, fmt.Errorf("expected VertexAIPipelineJobIdentity, got %T", id)
+	}
+
+	// Get PipelineClient client
+	gcpClient, err := m.client(ctx, typedID.Location)
+	if err != nil {
+		return nil, err
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -233,6 +236,62 @@ func (a *PipelineJobAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting VertexAIPipelineJob", "name", a.id.String())
 
+	// 1. Get the current state of the PipelineJob first
+	getReq := &pb.GetPipelineJobRequest{
+		Name: a.id.String(),
+	}
+	actual, err := a.gcpClient.GetPipelineJob(ctx, getReq)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
+		return false, fmt.Errorf("getting PipelineJob before deletion %q: %w", a.id.String(), err)
+	}
+
+	// 2. If the state is not terminal, initiate cancellation
+	isTerminal := func(state pb.PipelineState) bool {
+		return state == pb.PipelineState_PIPELINE_STATE_SUCCEEDED ||
+			state == pb.PipelineState_PIPELINE_STATE_FAILED ||
+			state == pb.PipelineState_PIPELINE_STATE_CANCELLED
+	}
+
+	if !isTerminal(actual.State) {
+		log.V(2).Info("cancelling VertexAIPipelineJob before deletion", "name", a.id.String(), "currentState", actual.State)
+		cancelReq := &pb.CancelPipelineJobRequest{
+			Name: a.id.String(),
+		}
+		if err := a.gcpClient.CancelPipelineJob(ctx, cancelReq); err != nil {
+			log.Error(err, "error cancelling VertexAIPipelineJob", "name", a.id.String())
+		} else {
+			// Poll until the state is terminal
+			// Wait up to 2 minutes
+			backoff := 2 * time.Second
+			limit := 120 * time.Second
+			total := 0 * time.Second
+			for {
+				time.Sleep(backoff)
+				total += backoff
+				actual, err = a.gcpClient.GetPipelineJob(ctx, getReq)
+				if err != nil {
+					if direct.IsNotFound(err) {
+						return true, nil
+					}
+					log.Error(err, "error getting PipelineJob status during cancellation poll", "name", a.id.String())
+					break
+				}
+				if isTerminal(actual.State) {
+					log.V(2).Info("VertexAIPipelineJob has reached terminal state", "name", a.id.String(), "state", actual.State)
+					break
+				}
+				if total >= limit {
+					log.V(2).Info("VertexAIPipelineJob cancellation poll timed out", "name", a.id.String(), "state", actual.State)
+					break
+				}
+			}
+		}
+	}
+
+	// 3. Delete the PipelineJob
 	req := &pb.DeletePipelineJobRequest{
 		Name: a.id.String(),
 	}
