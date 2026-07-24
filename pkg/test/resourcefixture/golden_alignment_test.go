@@ -133,7 +133,7 @@ func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
 			createPath := filepath.Join(dirPath, "create.yaml")
 			if fileExists(createPath) {
 				gvk, err := getGVKFromYAML(createPath)
-				if err == nil && realGCPSkipGroupKinds[gvk.GroupKind()] {
+				if err == nil && (realGCPSkipGroupKinds[gvk.GroupKind()] || mockGCPSkipGroupKinds[gvk.GroupKind()]) {
 					return nil
 				}
 			}
