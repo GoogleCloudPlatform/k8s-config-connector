@@ -1,0 +1,375 @@
+44c44
+<       "stateDetails": "[2026-07-22T16:38:36.028-07:00]: Connected.",
+---
+>       "stateDetails": "[2026-07-22T14:20:30.824-07:00]: Connected.",
+122c122
+< GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+---
+> GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+145c145
+< POST https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances?alt=json&instanceId=filestoreinstance-${uniqueId}
+---
+> POST https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=filestoreinstance-${uniqueId}
+152,154c152,153
+<       "capacityGb": 2560,
+<       "name": "my_share",
+<       "nfsExportOptions": []
+---
+>       "capacityGb": "2560",
+>       "name": "my_share"
+158,159c157
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+---
+>     "cnrm-test": "true"
+164c162
+<         "MODE_IPV4"
+---
+>         1
+169c167
+<   "tier": "PREMIUM"
+---
+>   "tier": 2
+186c184
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+196c194
+< GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
+---
+> GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
+213c211
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+232,233c230
+<       "cnrm-test": "true",
+<       "managed-by-cnrm": "true"
+---
+>       "cnrm-test": "true"
+255c252
+< GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+---
+> GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+279,280c276
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+---
+>     "cnrm-test": "true"
+289c285
+<         "MODE_IPV4"
+---
+>         1
+295,296c291,292
+<   "state": "READY",
+<   "tier": "PREMIUM"
+---
+>   "state": 2,
+>   "tier": 2
+301,447c297
+< PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=fileShares
+< Content-Type: application/json
+< 
+< {
+<   "description": "Test instance",
+<   "fileShares": [
+<     {
+<       "capacityGb": 2560,
+<       "name": "my_share"
+<     }
+<   ],
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   }
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "done": false,
+<   "metadata": {
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+<     "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+<     "verb": "update"
+<   },
+<   "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}"
+< }
+< 
+< ---
+< 
+< GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "done": true,
+<   "metadata": {
+<     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+<     "apiVersion": "v1beta1",
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+<     "endTime": "2024-04-01T12:34:56.123456Z",
+<     "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+<     "verb": "update"
+<   },
+<   "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}",
+<   "response": {
+<     "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
+<     "capacityGb": "2560",
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+<     "description": "Test instance",
+<     "fileShares": [
+<       {
+<         "capacityGb": "2560",
+<         "name": "my_share"
+<       }
+<     ],
+<     "labels": {
+<       "cnrm-test": "true",
+<       "managed-by-cnrm": "true"
+<     },
+<     "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+<     "networks": [
+<       {
+<         "ipAddresses": [
+<           "10.20.30.1"
+<         ],
+<         "modes": [
+<           "MODE_IPV4"
+<         ],
+<         "network": "${networkID}",
+<         "reservedIpRange": "10.20.30.0/24"
+<       }
+<     ],
+<     "state": "READY",
+<     "tier": "PREMIUM"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "capacityGb": "2560",
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "description": "Test instance",
+<   "fileShares": [
+<     {
+<       "capacityGb": "2560",
+<       "name": "my_share"
+<     }
+<   ],
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+<   "networks": [
+<     {
+<       "ipAddresses": [
+<         "10.20.30.1"
+<       ],
+<       "modes": [
+<         "MODE_IPV4"
+<       ],
+<       "network": "${networkID}",
+<       "reservedIpRange": "10.20.30.0/24"
+<     }
+<   ],
+<   "state": "READY",
+<   "tier": "PREMIUM"
+< }
+< 
+< ---
+< 
+< PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=description%2CfileShares%2Clabels
+---
+> PATCH https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+454c304
+<       "capacityGb": 4800,
+---
+>       "capacityGb": "4800",
+458,460c308,310
+<           "accessMode": "READ_ONLY",
+<           "anonGid": 65534,
+<           "anonUid": 65534,
+---
+>           "accessMode": 1,
+>           "anonGid": "65534",
+>           "anonUid": "65534",
+464c314
+<           "squashMode": "ROOT_SQUASH"
+---
+>           "squashMode": 2
+471,473c321,332
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>     "label-one": "value-one"
+>   },
+>   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+>   "networks": [
+>     {
+>       "modes": [
+>         1
+>       ],
+>       "network": "projects/${projectId}/global/networks/${networkID}"
+>     }
+>   ],
+>   "tier": 2
+490c349
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+500c359
+< GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
+---
+> GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
+517c376
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+526c385
+<     "capacityGb": "4800",
+---
+>     "capacityGb": "2560",
+531,546c390,391
+<         "capacityGb": "4800",
+<         "name": "my_share",
+<         "nfsExportOptions": [
+<           {
+<             "accessMode": "READ_ONLY",
+<             "anonGid": "65534",
+<             "anonUid": "65534",
+<             "ipRanges": [
+<               "172.217.14.238"
+<             ],
+<             "securityFlavors": [
+<               "AUTH_SYS"
+<             ],
+<             "squashMode": "ROOT_SQUASH"
+<           }
+<         ]
+---
+>         "capacityGb": "2560",
+>         "name": "my_share"
+551,552c396
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+---
+>       "label-one": "value-one"
+574c418
+< GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+---
+> GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+588c432
+<   "capacityGb": "4800",
+---
+>   "capacityGb": "2560",
+593,608c437,438
+<       "capacityGb": "4800",
+<       "name": "my_share",
+<       "nfsExportOptions": [
+<         {
+<           "accessMode": "READ_ONLY",
+<           "anonGid": "65534",
+<           "anonUid": "65534",
+<           "ipRanges": [
+<             "172.217.14.238"
+<           ],
+<           "securityFlavors": [
+<             "AUTH_SYS"
+<           ],
+<           "squashMode": "ROOT_SQUASH"
+<         }
+<       ]
+---
+>       "capacityGb": "2560",
+>       "name": "my_share"
+613,614c443
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
+>     "label-one": "value-one"
+623c452
+<         "MODE_IPV4"
+---
+>         1
+629,630c458,459
+<   "state": "READY",
+<   "tier": "PREMIUM"
+---
+>   "state": 2,
+>   "tier": 2
+635c464
+< DELETE https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+---
+> DELETE https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+652c481
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+662c491
+< GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
+---
+> GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
+679c508
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+688,710d516
+<   }
+< }
+< 
+< ---
+< 
+< GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Resource 'projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}' was not found",
+<     "status": "NOT_FOUND"

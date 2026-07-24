@@ -1,6 +1,5 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -20,6 +19,56 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": true,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": true,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": true,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": true,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "filestore-peer-205697518936",
+      "network": "https://www.googleapis.com/compute/beta/projects/r839adf9e2adedea3p-tp/global/networks/${networkID}-2309458234058",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-07-22T14:20:30.824-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "redis-peer-1035741069106",
+      "network": "https://www.googleapis.com/compute/beta/projects/n93e82bfd992400f1p-tp/global/networks/${networkID}-redis-e619463a-57d4-4053-a70d-b8c275ad4d49",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-06-19T01:48:22.502-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    }
+  ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
@@ -70,9 +119,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -94,32 +142,29 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances?alt=json&instanceId=filestoreinstance-${uniqueId}
+POST https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=filestoreinstance-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Test instance",
   "fileShares": [
     {
-      "capacityGb": 2560,
-      "name": "my_share",
-      "nfsExportOptions": []
+      "capacityGb": "2560",
+      "name": "my_share"
     }
   ],
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "networks": [
     {
       "modes": [
-        "MODE_IPV4"
+        1
       ],
       "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
-  "tier": "PREMIUM"
+  "tier": 2
 }
 
 200 OK
@@ -136,7 +181,7 @@ X-Xss-Protection: 0
   "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
     "verb": "create"
@@ -146,9 +191,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -164,7 +208,7 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
@@ -183,8 +227,7 @@ X-Xss-Protection: 0
       }
     ],
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "cnrm-test": "true"
     },
     "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
     "networks": [
@@ -206,9 +249,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -231,8 +273,7 @@ X-Xss-Protection: 0
     }
   ],
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
   "networks": [
@@ -241,313 +282,22 @@ X-Xss-Protection: 0
         "10.20.30.1"
       ],
       "modes": [
-        "MODE_IPV4"
+        1
       ],
       "network": "${networkID}",
       "reservedIpRange": "10.20.30.0/24"
     }
   ],
-  "state": "READY",
-  "tier": "PREMIUM"
+  "state": 2,
+  "tier": 2
 }
 
 ---
 
-PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=fileShares
+PATCH https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
-  "description": "Test instance",
-  "fileShares": [
-    {
-      "capacityGb": 2560,
-      "name": "my_share"
-    }
-  ],
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}"
-}
-
----
-
-GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
-    "capacityGb": "2560",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Test instance",
-    "fileShares": [
-      {
-        "capacityGb": "2560",
-        "name": "my_share"
-      }
-    ],
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
-    "networks": [
-      {
-        "ipAddresses": [
-          "10.20.30.1"
-        ],
-        "modes": [
-          "MODE_IPV4"
-        ],
-        "network": "${networkID}",
-        "reservedIpRange": "10.20.30.0/24"
-      }
-    ],
-    "state": "READY",
-    "tier": "PREMIUM"
-  }
-}
-
----
-
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "capacityGb": "2560",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Test instance",
-  "fileShares": [
-    {
-      "capacityGb": "2560",
-      "name": "my_share"
-    }
-  ],
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
-  "networks": [
-    {
-      "ipAddresses": [
-        "10.20.30.1"
-      ],
-      "modes": [
-        "MODE_IPV4"
-      ],
-      "network": "${networkID}",
-      "reservedIpRange": "10.20.30.0/24"
-    }
-  ],
-  "state": "READY",
-  "tier": "PREMIUM"
-}
-
----
-
-PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=description%2CfileShares%2Clabels
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-{
-  "description": "Updated test instance",
-  "fileShares": [
-    {
-      "capacityGb": 4800,
-      "name": "my_share",
-      "nfsExportOptions": [
-        {
-          "accessMode": "READ_ONLY",
-          "anonGid": 65534,
-          "anonUid": 65534,
-          "ipRanges": [
-            "172.217.14.238"
-          ],
-          "squashMode": "ROOT_SQUASH"
-        }
-      ]
-    }
-  ],
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}"
-}
-
----
-
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
-    "capacityGb": "4800",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Updated test instance",
-    "fileShares": [
-      {
-        "capacityGb": "4800",
-        "name": "my_share",
-        "nfsExportOptions": [
-          {
-            "accessMode": "READ_ONLY",
-            "anonGid": "65534",
-            "anonUid": "65534",
-            "ipRanges": [
-              "172.217.14.238"
-            ],
-            "securityFlavors": [
-              "AUTH_SYS"
-            ],
-            "squashMode": "ROOT_SQUASH"
-          }
-        ]
-      }
-    ],
-    "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
-    "networks": [
-      {
-        "ipAddresses": [
-          "10.20.30.1"
-        ],
-        "modes": [
-          "MODE_IPV4"
-        ],
-        "network": "${networkID}",
-        "reservedIpRange": "10.20.30.0/24"
-      }
-    ],
-    "state": "READY",
-    "tier": "PREMIUM"
-  }
-}
-
----
-
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "capacityGb": "4800",
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated test instance",
   "fileShares": [
     {
@@ -555,47 +305,32 @@ X-Xss-Protection: 0
       "name": "my_share",
       "nfsExportOptions": [
         {
-          "accessMode": "READ_ONLY",
+          "accessMode": 1,
           "anonGid": "65534",
           "anonUid": "65534",
           "ipRanges": [
             "172.217.14.238"
           ],
-          "securityFlavors": [
-            "AUTH_SYS"
-          ],
-          "squashMode": "ROOT_SQUASH"
+          "squashMode": 2
         }
       ]
     }
   ],
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   },
   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
   "networks": [
     {
-      "ipAddresses": [
-        "10.20.30.1"
-      ],
       "modes": [
-        "MODE_IPV4"
+        1
       ],
-      "network": "${networkID}",
-      "reservedIpRange": "10.20.30.0/24"
+      "network": "projects/${projectId}/global/networks/${networkID}"
     }
   ],
-  "state": "READY",
-  "tier": "PREMIUM"
+  "tier": 2
 }
-
----
-
-DELETE https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -611,7 +346,139 @@ X-Xss-Protection: 0
   "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}"
+}
+
+---
+
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.filestore.v1.Instance",
+    "capacityGb": "2560",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated test instance",
+    "fileShares": [
+      {
+        "capacityGb": "2560",
+        "name": "my_share"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one"
+    },
+    "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+    "networks": [
+      {
+        "ipAddresses": [
+          "10.20.30.1"
+        ],
+        "modes": [
+          "MODE_IPV4"
+        ],
+        "network": "${networkID}",
+        "reservedIpRange": "10.20.30.0/24"
+      }
+    ],
+    "state": "READY",
+    "tier": "PREMIUM"
+  }
+}
+
+---
+
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityGb": "2560",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated test instance",
+  "fileShares": [
+    {
+      "capacityGb": "2560",
+      "name": "my_share"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one"
+  },
+  "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+  "networks": [
+    {
+      "ipAddresses": [
+        "10.20.30.1"
+      ],
+      "modes": [
+        1
+      ],
+      "network": "${networkID}",
+      "reservedIpRange": "10.20.30.0/24"
+    }
+  ],
+  "state": 2,
+  "tier": 2
+}
+
+---
+
+DELETE https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
     "verb": "delete"
@@ -621,9 +488,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
+GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -639,7 +505,7 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
@@ -648,29 +514,5 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1-c/instances/filestoreinstance-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
   }
 }
