@@ -47,10 +47,6 @@ var realGCPSkipGroupKinds = map[schema.GroupKind]bool{
 		Group: "gkebackup.cnrm.cloud.google.com",
 		Kind:  "GKEBackupBackupChannel",
 	}: true,
-	schema.GroupKind{
-		Group: "edgecontainer.cnrm.cloud.google.com",
-		Kind:  "EdgeContainerCluster",
-	}: true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
