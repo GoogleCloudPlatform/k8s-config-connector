@@ -343,6 +343,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/storage/storageanywherecache.md
   - title: "StorageBucketAccessControl"
     path: /config-connector/docs/reference/resource-docs/storage/storagebucketaccesscontrol.md
+  - title: "StorageBucketObject"
+    path: /config-connector/docs/reference/resource-docs/storage/storagebucketobject.md
   - title: "StorageDefaultObjectAccessControl"
     path: /config-connector/docs/reference/resource-docs/storage/storagedefaultobjectaccesscontrol.md
   - title: "StorageNotification"

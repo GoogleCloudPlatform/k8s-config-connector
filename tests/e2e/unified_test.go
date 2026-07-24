@@ -276,6 +276,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				if fixture.GVK.Group == "ces.cnrm.cloud.google.com" && fixture.GVK.Kind == "CESApp" {
 					t.Skip("skipping CESApp as the controller is not implemented yet")
 				}
+				if fixture.GVK.Group == "storage.cnrm.cloud.google.com" && fixture.GVK.Kind == "StorageBucketObject" {
+					t.Skip("skipping StorageBucketObject as the controller is not implemented yet")
+				}
 
 				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
 
