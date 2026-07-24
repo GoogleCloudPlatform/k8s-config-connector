@@ -2601,6 +2601,32 @@
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].fields[].vectorConfig.flat" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].multikey" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].shardCount" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.powerSupply" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.sku" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.subscriptionDurationMonths" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.powerDistanceMeters" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.rackLocation" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.rackSpace.endRackUnit" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.rackSpace.startRackUnit" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.rackType" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.rackUnitDimensions.depthInches" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.rackUnitDimensions.heightInches" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.rackUnitDimensions.widthInches" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.installationInfo.switchDistanceMeters" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.orderRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalInfo.amperes" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalInfo.networkUplink" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalInfo.powerReceptacle" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.physicalInfo.voltage" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedInstallationDate.day" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedInstallationDate.month" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.requestedInstallationDate.year" is not set in unstructured objects
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.siteRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gdchardwaremanagementhardwares.gdchardwaremanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
 [missing_field] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.encryptionKey.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.permissiveMode" is not set in unstructured objects
 [missing_field] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.selectedApplications.namespacedNames[].name" is not set in unstructured objects

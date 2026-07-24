@@ -195,6 +195,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}": true,
 
+		// GDC Hardware Management
+		"//gdchardwaremanagement.googleapis.com/projects/{}/locations/{}/hardware/{}": true,
+
 		// IAM
 		"//iam.googleapis.com/policies/{}/denypolicies/{}": true,
 
