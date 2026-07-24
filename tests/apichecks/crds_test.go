@@ -375,6 +375,70 @@ func TestCRDsAcronyms(t *testing.T) {
 	test.CompareGoldenFile(t, "testdata/exceptions/acronyms.txt", want)
 }
 
+// Enforces that required labels are present on our CRDs.
+func TestCRDRequiredLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	for _, crd := range crds {
+		gk := schema.GroupKind{Group: crd.Spec.Group, Kind: crd.Spec.Names.Kind}
+
+		if gk.Group == "customize.core.cnrm.cloud.google.com" || gk.Group == "core.cnrm.cloud.google.com" {
+			// TODO: What labels should these have?
+			continue
+		}
+
+		if crd.Labels["cnrm.cloud.google.com/managed-by-kcc"] != "true" {
+			t.Errorf("[labels] crd=%s: missing label %q=%q", crd.Name, "cnrm.cloud.google.com/managed-by-kcc", "true")
+		}
+		if crd.Labels["cnrm.cloud.google.com/system"] != "true" {
+			t.Errorf("[labels] crd=%s: missing label %q=%q", crd.Name, "cnrm.cloud.google.com/system", "true")
+		}
+	}
+}
+
+// Enforces that reconciler labels (TF/DCL) are consistent on our CRDs.
+func TestCRDReconcilerLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		gk := schema.GroupKind{Group: crd.Spec.Group, Kind: crd.Spec.Names.Kind}
+
+		if gk.Group == "customize.core.cnrm.cloud.google.com" || gk.Group == "core.cnrm.cloud.google.com" {
+			continue
+		}
+
+		hasTF := crd.Labels["cnrm.cloud.google.com/tf2crd"] == "true"
+		hasDCL := crd.Labels["cnrm.cloud.google.com/dcl2crd"] == "true"
+		if hasTF && hasDCL {
+			errs = append(errs, fmt.Sprintf("[labels] crd=%s: ERROR: has both TF and DCL labels", crd.Name))
+		}
+
+		if registry.IsDirectByGK(gk) {
+			if hasDCL {
+				errs = append(errs, fmt.Sprintf("[labels] crd=%s: TODO: make direct default (is direct but has DCL label)", crd.Name))
+			}
+			if hasTF {
+				errs = append(errs, fmt.Sprintf("[labels] crd=%s: TODO: make direct default (is direct but has TF label)", crd.Name))
+			}
+		} else if !hasTF && !hasDCL {
+			errs = append(errs, fmt.Sprintf("[labels] crd=%s: TODO: implement controller (is not direct but has no TF or DCL labels)", crd.Name))
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/reconciler-labels.txt", want)
+}
+
 // Avoid passing sensitive data as plain text in the CRD
 func TestNoSensitiveField(t *testing.T) {
 	t.Parallel()
