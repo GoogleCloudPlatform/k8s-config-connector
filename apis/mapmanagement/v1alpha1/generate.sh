@@ -39,5 +39,13 @@ go run . generate-types \
   --include-skipped-output \
   --resource MapManagementMapConfig:MapConfig
 
+go run . generate-mapper \
+  --proto-source-path "${REPO_ROOT}/.build/googleapis-mapmanagement.pb" \
+  --service google.maps.mapmanagement.v2beta \
+  --api-version mapmanagement.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/mapmanagement/

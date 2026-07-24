@@ -60,6 +60,7 @@ require (
 	cloud.google.com/go/kms v1.31.0
 	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/maps v1.35.0
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/metastore v1.19.0
 	cloud.google.com/go/migrationcenter v1.6.0

@@ -912,6 +912,8 @@ cloud.google.com/go/maps v1.6.1/go.mod h1:4+buOHhYXFBp58Zj/K+Lc1rCmJssxxF4pJ5CJn
 cloud.google.com/go/maps v1.6.2/go.mod h1:4+buOHhYXFBp58Zj/K+Lc1rCmJssxxF4pJ5CJnhdz18=
 cloud.google.com/go/maps v1.6.3/go.mod h1:VGAn809ADswi1ASofL5lveOHPnE6Rk/SFTTBx1yuOLw=
 cloud.google.com/go/maps v1.6.4/go.mod h1:rhjqRy8NWmDJ53saCfsXQ0LKwBHfi6OSh5wkq6BaMhI=
+cloud.google.com/go/maps v1.35.0 h1:Noryf6HN6xKhNBQW0S0Pitc8Fc1L7ZjaIavLYAfneVE=
+cloud.google.com/go/maps v1.35.0/go.mod h1:HH1V8tduMn+b9oRMCdl3vok98uvHco/wElZXyJQ/9kU=
 cloud.google.com/go/mediatranslation v0.5.0/go.mod h1:jGPUhGTybqsPQn91pNXw0xVHfuJ3leR1wj37oU3y1f4=
 cloud.google.com/go/mediatranslation v0.6.0/go.mod h1:hHdBCTYNigsBxshbznuIMFNe5QXEowAuNmmC7h8pu5w=
 cloud.google.com/go/mediatranslation v0.7.0/go.mod h1:LCnB/gZr90ONOIQLgSXagp8XUW1ODs2UmUMvcgMfI2I=

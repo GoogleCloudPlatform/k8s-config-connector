@@ -1,0 +1,8 @@
+apiVersion: mapmanagement.cnrm.cloud.google.com/v1alpha1
+kind: MapManagementMapConfig
+metadata:
+  name: map-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: "Minimal Map Config ${uniqueId}"
