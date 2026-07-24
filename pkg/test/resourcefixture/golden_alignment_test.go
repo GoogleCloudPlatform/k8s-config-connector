@@ -31,11 +31,23 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
-	schema.GroupKind{
-		Group: "devicestreaming.cnrm.cloud.google.com",
-		Kind:  "DeviceStreamingSession",
-	}: true,
+var mockGCPSkipFixtures = map[string]bool{
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
+}
+
+var realGCPSkipFixtures = map[string]bool{
+	// Resource Manager Tags are org level thus requiring an owned test org.
+	"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
+	"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
+	"container/v1beta1/containernodepool/containernodepool-resourcemanagertags":         true,
+	// SecurityCenter MuteConfig requires organization-level permissions and quota project.
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-dynamic": true,
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-maximal": true,
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-minimal": true,
+	// GKEBackup BackupChannel requires distinct source and destination projects.
+	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
+	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -51,30 +63,57 @@ func TestGoldenLogAlignment(t *testing.T) {
 		}
 
 		if d.IsDir() {
-			realLogPath := filepath.Join(path, "_http.log")
-			mockLogPath := filepath.Join(path, "_http_mock.log")
-
-			if fileExists(realLogPath) {
-				createPath := filepath.Join(path, "create.yaml")
-				if fileExists(createPath) {
-					gvk, err := getGVKFromYAML(createPath)
-					if err == nil {
-						gk := gvk.GroupKind()
-						if mockGCPSkipGroupKinds[gk] {
-							return nil
-						}
-						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
-							t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
-						}
-					}
+			createPath := filepath.Join(path, "create.yaml")
+			if fileExists(createPath) {
+				relPath, _ := filepath.Rel(absRootDir, path)
+				if realGCPSkipFixtures[relPath] || mockGCPSkipFixtures[relPath] {
+					return nil
 				}
 
-				if fileExists(mockLogPath) {
-					relPath, _ := filepath.Rel(absRootDir, path)
+				realLogPath := filepath.Join(path, "_http.log")
+				mockLogPath := filepath.Join(path, "_http_mock.log")
+
+				if fileExists(realLogPath) && fileExists(mockLogPath) {
 					t.Run(relPath, func(t *testing.T) {
 						compareLogs(t, realLogPath, mockLogPath)
 					})
 				}
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		t.Fatalf("error walking directory: %v", err)
+	}
+}
+
+func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
+	rootDir := "testdata/basic"
+	absRootDir, err := filepath.Abs(rootDir)
+	if err != nil {
+		t.Fatalf("failed to get absolute path for %s: %v", rootDir, err)
+	}
+
+	err = filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() && d.Name() == "_http.log" {
+			dirPath := filepath.Dir(path)
+			relPath, _ := filepath.Rel(absRootDir, dirPath)
+			if realGCPSkipFixtures[relPath] || mockGCPSkipFixtures[relPath] {
+				return nil
+			}
+
+			data, err := os.ReadFile(path)
+			if err != nil {
+				return fmt.Errorf("error reading %s: %w", path, err)
+			}
+			if strings.Contains(string(data), "(mockgcp)") {
+				t.Errorf("real GCP log %s contains '(mockgcp)'! Never copy _http_mock.log to _http.log", path)
 			}
 		}
 
