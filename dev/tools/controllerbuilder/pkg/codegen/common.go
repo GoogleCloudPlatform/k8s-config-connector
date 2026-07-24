@@ -14,7 +14,10 @@
 
 package codegen
 
-import "strings"
+import (
+	"os"
+	"strings"
+)
 
 const (
 	// KCCProtoMessageAnnotationMisc is used for go structs that map to proto messages, but are not top-level Spec structs
@@ -61,6 +64,16 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Struct":            "apiextensionsv1.JSON",
 	"google.rpc.Status":                 "common.Status",
 	"google.cloud.connectors.v1.Secret": "secretmanagerv1beta1.SecretRef",
+}
+
+func init() {
+	for _, arg := range os.Args {
+		if strings.Contains(arg, "gsuiteaddons") {
+			protoMessagesNotMappedToGoStruct["google.protobuf.Value"] = "apiextensionsv1.JSON"
+			protoMessagesNotMappedToGoStruct["google.protobuf.ListValue"] = "apiextensionsv1.JSON"
+			break
+		}
+	}
 }
 
 // This acronym list contains both acronym (including initialism) and abbreviation.
