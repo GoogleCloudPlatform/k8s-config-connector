@@ -94,7 +94,7 @@ for f in $(find apis -name "generate.sh" | sort); do
     fi
 
     echo "running ${f}"
-    ./${f}
+    (cd "${REPO_ROOT}" && ./"${f}")
 done
 
 # Now we generate CRDs
