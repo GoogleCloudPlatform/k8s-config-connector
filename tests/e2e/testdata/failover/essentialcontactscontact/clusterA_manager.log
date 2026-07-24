@@ -1,0 +1,4 @@
+{"severity":"info","timestamp":"2026-03-05T20:36:15.271Z","logger":"setup","msg":"Creating the manager"}
+I0305 20:36:15.272449       1 kccmanager.go:139] checking for ConfigConnector object
+I0305 20:36:15.279649       1 kccmanager.go:145] found ConfigConnector object
+I0305 20:36:15.279667       1 kccmanager.go:147] multi-cluster leader election is configured
