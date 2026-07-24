@@ -1,0 +1,41 @@
+apiVersion: redis.cnrm.cloud.google.com/v1alpha1
+kind: RedisClusterEndpoint
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: redisclusterendpoint-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  clusterEndpoints:
+  - connections:
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
+  clusterRef:
+    name: rediscluster-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 1
+  observedState:
+    clusterEndpoints:
+    - connections:
+      - {}
+      - {}
+    - connections:
+      - pscConnection:
+          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
+      - pscConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
