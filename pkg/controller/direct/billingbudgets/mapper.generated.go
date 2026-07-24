@@ -25,16 +25,16 @@ package billingbudgets
 
 import (
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
+	krmbillingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krm.AllUpdatesRule {
+func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NotificationsRule) *krmbillingbudgetsv1beta1.AllUpdatesRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AllUpdatesRule{}
+	out := &krmbillingbudgetsv1beta1.AllUpdatesRule{}
 	if in.GetPubsubTopic() != "" {
 		out.PubsubTopicRef = &krmpubsubv1beta1.PubSubTopicRef{External: in.GetPubsubTopic()}
 	}
@@ -44,7 +44,7 @@ func AllUpdatesRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Notifica
 	// MISSING: EnableProjectLevelRecipients
 	return out
 }
-func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdatesRule) *pb.NotificationsRule {
+func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbillingbudgetsv1beta1.AllUpdatesRule) *pb.NotificationsRule {
 	if in == nil {
 		return nil
 	}
@@ -60,11 +60,11 @@ func AllUpdatesRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdate
 }
 
 /* found existing non-generated mapping function "BillingBudgetsBudgetSpec_v1beta1_FromProto", skipping
-func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krm.BillingBudgetsBudgetSpec {
+func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Budget) *krmbillingbudgetsv1beta1.BillingBudgetsBudgetSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BillingBudgetsBudgetSpec{}
+	out := &krmbillingbudgetsv1beta1.BillingBudgetsBudgetSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.BudgetFilter = BudgetFilter_v1beta1_FromProto(mapCtx, in.GetBudgetFilter())
@@ -79,7 +79,7 @@ func BillingBudgetsBudgetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 /*
 found existing non-generated mapping function "BillingBudgetsBudgetSpec_v1beta1_ToProto", skipping
 
-	func BillingBudgetsBudgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BillingBudgetsBudgetSpec) *pb.Budget {
+	func BillingBudgetsBudgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbillingbudgetsv1beta1.BillingBudgetsBudgetSpec) *pb.Budget {
 		if in == nil {
 			return nil
 		}
@@ -94,16 +94,16 @@ found existing non-generated mapping function "BillingBudgetsBudgetSpec_v1beta1_
 		return out
 	}
 */
-func BudgetAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) *krm.BudgetAmount {
+func BudgetAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BudgetAmount) *krmbillingbudgetsv1beta1.BudgetAmount {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BudgetAmount{}
+	out := &krmbillingbudgetsv1beta1.BudgetAmount{}
 	out.SpecifiedAmount = BudgetSpecifiedAmount_v1beta1_FromProto(mapCtx, in.GetSpecifiedAmount())
 	out.LastPeriodAmount = BudgetLastPeriodAmount_v1beta1_FromProto(mapCtx, in.GetLastPeriodAmount())
 	return out
 }
-func BudgetAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetAmount) *pb.BudgetAmount {
+func BudgetAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbillingbudgetsv1beta1.BudgetAmount) *pb.BudgetAmount {
 	if in == nil {
 		return nil
 	}
@@ -116,16 +116,16 @@ func BudgetAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetAmoun
 	}
 	return out
 }
-func BudgetCustomPeriod_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krm.BudgetCustomPeriod {
+func BudgetCustomPeriod_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomPeriod) *krmbillingbudgetsv1beta1.BudgetCustomPeriod {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BudgetCustomPeriod{}
+	out := &krmbillingbudgetsv1beta1.BudgetCustomPeriod{}
 	out.StartDate = BudgetDate_v1beta1_FromProto(mapCtx, in.GetStartDate())
 	out.EndDate = BudgetDate_v1beta1_FromProto(mapCtx, in.GetEndDate())
 	return out
 }
-func BudgetCustomPeriod_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetCustomPeriod) *pb.CustomPeriod {
+func BudgetCustomPeriod_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbillingbudgetsv1beta1.BudgetCustomPeriod) *pb.CustomPeriod {
 	if in == nil {
 		return nil
 	}
@@ -136,11 +136,11 @@ func BudgetCustomPeriod_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Budge
 }
 
 /* found existing non-generated mapping function "BudgetFilter_v1beta1_FromProto", skipping
-func BudgetFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krm.BudgetFilter {
+func BudgetFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krmbillingbudgetsv1beta1.BudgetFilter {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BudgetFilter{}
+	out := &krmbillingbudgetsv1beta1.BudgetFilter{}
 	out.Projects = BudgetFilter_Projects_FromProto(mapCtx, in.Projects)
 	// MISSING: ResourceAncestors
 	out.CreditTypes = in.CreditTypes
@@ -155,7 +155,7 @@ func BudgetFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *k
 */
 
 /* found existing non-generated mapping function "BudgetFilter_v1beta1_ToProto", skipping
-func BudgetFilter_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetFilter) *pb.Filter {
+func BudgetFilter_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbillingbudgetsv1beta1.BudgetFilter) *pb.Filter {
 	if in == nil {
 		return nil
 	}
@@ -187,14 +187,14 @@ found existing non-generated mapping function "BudgetFilter_CalendarPeriod_ToPro
 		return &pb.Filter_CalendarPeriod{CalendarPeriod: direct.Enum_ToProto[pb.CalendarPeriod](mapCtx, in)}
 	}
 */
-func BudgetLastPeriodAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LastPeriodAmount) *krm.BudgetLastPeriodAmount {
+func BudgetLastPeriodAmount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LastPeriodAmount) *krmbillingbudgetsv1beta1.BudgetLastPeriodAmount {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BudgetLastPeriodAmount{}
+	out := &krmbillingbudgetsv1beta1.BudgetLastPeriodAmount{}
 	return out
 }
-func BudgetLastPeriodAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetLastPeriodAmount) *pb.LastPeriodAmount {
+func BudgetLastPeriodAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbillingbudgetsv1beta1.BudgetLastPeriodAmount) *pb.LastPeriodAmount {
 	if in == nil {
 		return nil
 	}
@@ -203,11 +203,11 @@ func BudgetLastPeriodAmount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 }
 
 /* found existing non-generated mapping function "BudgetThresholdRule_v1beta1_FromProto", skipping
-func BudgetThresholdRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krm.BudgetThresholdRule {
+func BudgetThresholdRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ThresholdRule) *krmbillingbudgetsv1beta1.BudgetThresholdRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BudgetThresholdRule{}
+	out := &krmbillingbudgetsv1beta1.BudgetThresholdRule{}
 	out.ThresholdPercent = in.GetThresholdPercent()
 	out.SpendBasis = direct.Enum_FromProto(mapCtx, in.GetSpendBasis())
 	return out
@@ -215,7 +215,7 @@ func BudgetThresholdRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Thr
 */
 
 /* found existing non-generated mapping function "BudgetThresholdRule_v1beta1_ToProto", skipping
-func BudgetThresholdRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BudgetThresholdRule) *pb.ThresholdRule {
+func BudgetThresholdRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbillingbudgetsv1beta1.BudgetThresholdRule) *pb.ThresholdRule {
 	if in == nil {
 		return nil
 	}

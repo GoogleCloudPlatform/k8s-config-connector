@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	krmcloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	krmclouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1beta1"
+	krmclouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1beta1"
 	krmgkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -95,17 +95,17 @@ func AutomationRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return out
 }
-func Canary_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Canary) *krm.Canary {
+func Canary_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Canary) *krmclouddeployv1beta1.Canary {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Canary{}
+	out := &krmclouddeployv1beta1.Canary{}
 	out.RuntimeConfig = RuntimeConfig_v1beta1_FromProto(mapCtx, in.GetRuntimeConfig())
 	out.CanaryDeployment = CanaryDeployment_v1beta1_FromProto(mapCtx, in.GetCanaryDeployment())
 	out.CustomCanaryDeployment = CustomCanaryDeployment_v1beta1_FromProto(mapCtx, in.GetCustomCanaryDeployment())
 	return out
 }
-func Canary_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Canary) *pb.Canary {
+func Canary_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.Canary) *pb.Canary {
 	if in == nil {
 		return nil
 	}
@@ -119,18 +119,18 @@ func Canary_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Canary) *pb.Canar
 	}
 	return out
 }
-func CanaryDeployment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CanaryDeployment) *krm.CanaryDeployment {
+func CanaryDeployment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CanaryDeployment) *krmclouddeployv1beta1.CanaryDeployment {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CanaryDeployment{}
+	out := &krmclouddeployv1beta1.CanaryDeployment{}
 	out.Percentages = in.Percentages
 	out.Verify = direct.LazyPtr(in.GetVerify())
 	out.Predeploy = Predeploy_v1beta1_FromProto(mapCtx, in.GetPredeploy())
 	out.Postdeploy = Postdeploy_v1beta1_FromProto(mapCtx, in.GetPostdeploy())
 	return out
 }
-func CanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CanaryDeployment) *pb.CanaryDeployment {
+func CanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.CanaryDeployment) *pb.CanaryDeployment {
 	if in == nil {
 		return nil
 	}
@@ -141,18 +141,18 @@ func CanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CanaryD
 	out.Postdeploy = Postdeploy_v1beta1_ToProto(mapCtx, in.Postdeploy)
 	return out
 }
-func CloudRunConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krm.CloudRunConfig {
+func CloudRunConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krmclouddeployv1beta1.CloudRunConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CloudRunConfig{}
+	out := &krmclouddeployv1beta1.CloudRunConfig{}
 	out.AutomaticTrafficControl = direct.LazyPtr(in.GetAutomaticTrafficControl())
 	out.CanaryRevisionTags = in.CanaryRevisionTags
 	out.PriorRevisionTags = in.PriorRevisionTags
 	out.StableRevisionTags = in.StableRevisionTags
 	return out
 }
-func CloudRunConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CloudRunConfig) *pb.CloudRunConfig {
+func CloudRunConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.CloudRunConfig) *pb.CloudRunConfig {
 	if in == nil {
 		return nil
 	}
@@ -179,15 +179,15 @@ func CloudRunLocation_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudde
 	out.Location = direct.ValueOf(in.Location)
 	return out
 }
-func CustomCanaryDeployment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment) *krm.CustomCanaryDeployment {
+func CustomCanaryDeployment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment) *krmclouddeployv1beta1.CustomCanaryDeployment {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomCanaryDeployment{}
+	out := &krmclouddeployv1beta1.CustomCanaryDeployment{}
 	out.PhaseConfigs = direct.Slice_FromProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfig_v1beta1_FromProto)
 	return out
 }
-func CustomCanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CustomCanaryDeployment) *pb.CustomCanaryDeployment {
+func CustomCanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.CustomCanaryDeployment) *pb.CustomCanaryDeployment {
 	if in == nil {
 		return nil
 	}
@@ -195,11 +195,11 @@ func CustomCanaryDeployment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.PhaseConfigs = direct.Slice_ToProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfig_v1beta1_ToProto)
 	return out
 }
-func CustomCanaryDeployment_PhaseConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment_PhaseConfig) *krm.CustomCanaryDeployment_PhaseConfig {
+func CustomCanaryDeployment_PhaseConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment_PhaseConfig) *krmclouddeployv1beta1.CustomCanaryDeployment_PhaseConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomCanaryDeployment_PhaseConfig{}
+	out := &krmclouddeployv1beta1.CustomCanaryDeployment_PhaseConfig{}
 	out.PhaseID = direct.LazyPtr(in.GetPhaseId())
 	out.Percentage = direct.LazyPtr(in.GetPercentage())
 	out.Profiles = in.Profiles
@@ -208,7 +208,7 @@ func CustomCanaryDeployment_PhaseConfig_v1beta1_FromProto(mapCtx *direct.MapCont
 	out.Postdeploy = Postdeploy_v1beta1_FromProto(mapCtx, in.GetPostdeploy())
 	return out
 }
-func CustomCanaryDeployment_PhaseConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CustomCanaryDeployment_PhaseConfig) *pb.CustomCanaryDeployment_PhaseConfig {
+func CustomCanaryDeployment_PhaseConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.CustomCanaryDeployment_PhaseConfig) *pb.CustomCanaryDeployment_PhaseConfig {
 	if in == nil {
 		return nil
 	}
@@ -359,11 +359,11 @@ func DeliveryPipelineAttribute_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.Labels = in.Labels
 	return out
 }
-func DeliveryPipelineObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeliveryPipelineObservedState {
+func DeliveryPipelineObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krmclouddeployv1beta1.DeliveryPipelineObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeliveryPipelineObservedState{}
+	out := &krmclouddeployv1beta1.DeliveryPipelineObservedState{}
 	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
 	// MISSING: Labels
@@ -373,7 +373,7 @@ func DeliveryPipelineObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Etag
 	return out
 }
-func DeliveryPipelineObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPipelineObservedState) *pb.DeliveryPipeline {
+func DeliveryPipelineObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.DeliveryPipelineObservedState) *pb.DeliveryPipeline {
 	if in == nil {
 		return nil
 	}
@@ -387,11 +387,11 @@ func DeliveryPipelineObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Etag
 	return out
 }
-func DeliveryPipelineSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeliveryPipelineSpec {
+func DeliveryPipelineSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krmclouddeployv1beta1.DeliveryPipelineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeliveryPipelineSpec{}
+	out := &krmclouddeployv1beta1.DeliveryPipelineSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Annotations = in.Annotations
@@ -401,7 +401,7 @@ func DeliveryPipelineSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.De
 	out.Suspended = direct.LazyPtr(in.GetSuspended())
 	return out
 }
-func DeliveryPipelineSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPipelineSpec) *pb.DeliveryPipeline {
+func DeliveryPipelineSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.DeliveryPipelineSpec) *pb.DeliveryPipeline {
 	if in == nil {
 		return nil
 	}
@@ -417,16 +417,16 @@ func DeliveryPipelineSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Del
 	out.Suspended = direct.ValueOf(in.Suspended)
 	return out
 }
-func DeployParameters_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeployParameters) *krm.DeployParameters {
+func DeployParameters_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DeployParameters) *krmclouddeployv1beta1.DeployParameters {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeployParameters{}
+	out := &krmclouddeployv1beta1.DeployParameters{}
 	out.Values = in.Values
 	out.MatchTargetLabels = in.MatchTargetLabels
 	return out
 }
-func DeployParameters_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DeployParameters) *pb.DeployParameters {
+func DeployParameters_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.DeployParameters) *pb.DeployParameters {
 	if in == nil {
 		return nil
 	}
@@ -551,16 +551,16 @@ func ExecutionConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddep
 	out.Verbose = direct.ValueOf(in.Verbose)
 	return out
 }
-func KubernetesConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig) *krm.KubernetesConfig {
+func KubernetesConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig) *krmclouddeployv1beta1.KubernetesConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KubernetesConfig{}
+	out := &krmclouddeployv1beta1.KubernetesConfig{}
 	out.GatewayServiceMesh = KubernetesConfig_GatewayServiceMesh_v1beta1_FromProto(mapCtx, in.GetGatewayServiceMesh())
 	out.ServiceNetworking = KubernetesConfig_ServiceNetworking_v1beta1_FromProto(mapCtx, in.GetServiceNetworking())
 	return out
 }
-func KubernetesConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesConfig) *pb.KubernetesConfig {
+func KubernetesConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.KubernetesConfig) *pb.KubernetesConfig {
 	if in == nil {
 		return nil
 	}
@@ -573,11 +573,11 @@ func KubernetesConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Kuberne
 	}
 	return out
 }
-func KubernetesConfig_GatewayServiceMesh_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_GatewayServiceMesh) *krm.KubernetesConfig_GatewayServiceMesh {
+func KubernetesConfig_GatewayServiceMesh_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_GatewayServiceMesh) *krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KubernetesConfig_GatewayServiceMesh{}
+	out := &krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh{}
 	out.HTTPRoute = direct.LazyPtr(in.GetHttpRoute())
 	out.Service = direct.LazyPtr(in.GetService())
 	out.Deployment = direct.LazyPtr(in.GetDeployment())
@@ -587,7 +587,7 @@ func KubernetesConfig_GatewayServiceMesh_v1beta1_FromProto(mapCtx *direct.MapCon
 	out.RouteDestinations = KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_FromProto(mapCtx, in.GetRouteDestinations())
 	return out
 }
-func KubernetesConfig_GatewayServiceMesh_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesConfig_GatewayServiceMesh) *pb.KubernetesConfig_GatewayServiceMesh {
+func KubernetesConfig_GatewayServiceMesh_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh) *pb.KubernetesConfig_GatewayServiceMesh {
 	if in == nil {
 		return nil
 	}
@@ -601,17 +601,17 @@ func KubernetesConfig_GatewayServiceMesh_v1beta1_ToProto(mapCtx *direct.MapConte
 	out.RouteDestinations = KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_ToProto(mapCtx, in.RouteDestinations)
 	return out
 }
-func KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations) *krm.KubernetesConfig_GatewayServiceMesh_RouteDestinations {
+func KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations) *krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh_RouteDestinations {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
+	out := &krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
 	// MISSING: DestinationIds
 	// (near miss): "DestinationIds" vs "DestinationIDs"
 	out.PropagateService = direct.LazyPtr(in.GetPropagateService())
 	return out
 }
-func KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesConfig_GatewayServiceMesh_RouteDestinations) *pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations {
+func KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.KubernetesConfig_GatewayServiceMesh_RouteDestinations) *pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations {
 	if in == nil {
 		return nil
 	}
@@ -621,18 +621,18 @@ func KubernetesConfig_GatewayServiceMesh_RouteDestinations_v1beta1_ToProto(mapCt
 	out.PropagateService = direct.ValueOf(in.PropagateService)
 	return out
 }
-func KubernetesConfig_ServiceNetworking_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_ServiceNetworking) *krm.KubernetesConfig_ServiceNetworking {
+func KubernetesConfig_ServiceNetworking_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig_ServiceNetworking) *krmclouddeployv1beta1.KubernetesConfig_ServiceNetworking {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KubernetesConfig_ServiceNetworking{}
+	out := &krmclouddeployv1beta1.KubernetesConfig_ServiceNetworking{}
 	out.Service = direct.LazyPtr(in.GetService())
 	out.Deployment = direct.LazyPtr(in.GetDeployment())
 	out.DisablePodOverprovisioning = direct.LazyPtr(in.GetDisablePodOverprovisioning())
 	out.PodSelectorLabel = direct.LazyPtr(in.GetPodSelectorLabel())
 	return out
 }
-func KubernetesConfig_ServiceNetworking_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesConfig_ServiceNetworking) *pb.KubernetesConfig_ServiceNetworking {
+func KubernetesConfig_ServiceNetworking_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.KubernetesConfig_ServiceNetworking) *pb.KubernetesConfig_ServiceNetworking {
 	if in == nil {
 		return nil
 	}
@@ -665,17 +665,17 @@ func OneTimeWindow_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeplo
 	out.EndTime = TimeOfDay_v1alpha1_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func PipelineCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krm.PipelineCondition {
+func PipelineCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krmclouddeployv1beta1.PipelineCondition {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineCondition{}
+	out := &krmclouddeployv1beta1.PipelineCondition{}
 	out.PipelineReadyCondition = PipelineReadyCondition_v1beta1_FromProto(mapCtx, in.GetPipelineReadyCondition())
 	out.TargetsPresentCondition = TargetsPresentCondition_v1beta1_FromProto(mapCtx, in.GetTargetsPresentCondition())
 	out.TargetsTypeCondition = TargetsTypeCondition_v1beta1_FromProto(mapCtx, in.GetTargetsTypeCondition())
 	return out
 }
-func PipelineCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PipelineCondition) *pb.PipelineCondition {
+func PipelineCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.PipelineCondition) *pb.PipelineCondition {
 	if in == nil {
 		return nil
 	}
@@ -685,16 +685,16 @@ func PipelineCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Pipeli
 	out.TargetsTypeCondition = TargetsTypeCondition_v1beta1_ToProto(mapCtx, in.TargetsTypeCondition)
 	return out
 }
-func PipelineReadyCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineReadyCondition) *krm.PipelineReadyCondition {
+func PipelineReadyCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PipelineReadyCondition) *krmclouddeployv1beta1.PipelineReadyCondition {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PipelineReadyCondition{}
+	out := &krmclouddeployv1beta1.PipelineReadyCondition{}
 	out.Status = direct.LazyPtr(in.GetStatus())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func PipelineReadyCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PipelineReadyCondition) *pb.PipelineReadyCondition {
+func PipelineReadyCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.PipelineReadyCondition) *pb.PipelineReadyCondition {
 	if in == nil {
 		return nil
 	}
@@ -721,15 +721,15 @@ func PolicyRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1
 	}
 	return out
 }
-func Postdeploy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Postdeploy) *krm.Postdeploy {
+func Postdeploy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Postdeploy) *krmclouddeployv1beta1.Postdeploy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Postdeploy{}
+	out := &krmclouddeployv1beta1.Postdeploy{}
 	out.Actions = in.Actions
 	return out
 }
-func Postdeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Postdeploy) *pb.Postdeploy {
+func Postdeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.Postdeploy) *pb.Postdeploy {
 	if in == nil {
 		return nil
 	}
@@ -737,15 +737,15 @@ func Postdeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Postdeploy) *
 	out.Actions = in.Actions
 	return out
 }
-func Predeploy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Predeploy) *krm.Predeploy {
+func Predeploy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Predeploy) *krmclouddeployv1beta1.Predeploy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Predeploy{}
+	out := &krmclouddeployv1beta1.Predeploy{}
 	out.Actions = in.Actions
 	return out
 }
-func Predeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Predeploy) *pb.Predeploy {
+func Predeploy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.Predeploy) *pb.Predeploy {
 	if in == nil {
 		return nil
 	}
@@ -827,16 +827,16 @@ func RolloutRestriction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloud
 	out.TimeWindows = TimeWindows_v1alpha1_ToProto(mapCtx, in.TimeWindows)
 	return out
 }
-func RuntimeConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krm.RuntimeConfig {
+func RuntimeConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krmclouddeployv1beta1.RuntimeConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RuntimeConfig{}
+	out := &krmclouddeployv1beta1.RuntimeConfig{}
 	out.Kubernetes = KubernetesConfig_v1beta1_FromProto(mapCtx, in.GetKubernetes())
 	out.CloudRun = CloudRunConfig_v1beta1_FromProto(mapCtx, in.GetCloudRun())
 	return out
 }
-func RuntimeConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *pb.RuntimeConfig {
+func RuntimeConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.RuntimeConfig) *pb.RuntimeConfig {
 	if in == nil {
 		return nil
 	}
@@ -849,15 +849,15 @@ func RuntimeConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeCon
 	}
 	return out
 }
-func SerialPipeline_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SerialPipeline) *krm.SerialPipeline {
+func SerialPipeline_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SerialPipeline) *krmclouddeployv1beta1.SerialPipeline {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SerialPipeline{}
+	out := &krmclouddeployv1beta1.SerialPipeline{}
 	out.Stages = direct.Slice_FromProto(mapCtx, in.Stages, Stage_v1beta1_FromProto)
 	return out
 }
-func SerialPipeline_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SerialPipeline) *pb.SerialPipeline {
+func SerialPipeline_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.SerialPipeline) *pb.SerialPipeline {
 	if in == nil {
 		return nil
 	}
@@ -955,18 +955,18 @@ func SkaffoldModules_SkaffoldGitSource_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Ref = direct.ValueOf(in.Ref)
 	return out
 }
-func Stage_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Stage) *krm.Stage {
+func Stage_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Stage) *krmclouddeployv1beta1.Stage {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Stage{}
+	out := &krmclouddeployv1beta1.Stage{}
 	out.TargetID = direct.LazyPtr(in.GetTargetId())
 	out.Profiles = in.Profiles
 	out.Strategy = Strategy_v1beta1_FromProto(mapCtx, in.GetStrategy())
 	out.DeployParameters = direct.Slice_FromProto(mapCtx, in.DeployParameters, DeployParameters_v1beta1_FromProto)
 	return out
 }
-func Stage_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Stage) *pb.Stage {
+func Stage_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.Stage) *pb.Stage {
 	if in == nil {
 		return nil
 	}
@@ -977,17 +977,17 @@ func Stage_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Stage) *pb.Stage {
 	out.DeployParameters = direct.Slice_ToProto(mapCtx, in.DeployParameters, DeployParameters_v1beta1_ToProto)
 	return out
 }
-func Standard_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Standard) *krm.Standard {
+func Standard_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Standard) *krmclouddeployv1beta1.Standard {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Standard{}
+	out := &krmclouddeployv1beta1.Standard{}
 	out.Verify = direct.LazyPtr(in.GetVerify())
 	out.Predeploy = Predeploy_v1beta1_FromProto(mapCtx, in.GetPredeploy())
 	out.Postdeploy = Postdeploy_v1beta1_FromProto(mapCtx, in.GetPostdeploy())
 	return out
 }
-func Standard_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Standard) *pb.Standard {
+func Standard_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.Standard) *pb.Standard {
 	if in == nil {
 		return nil
 	}
@@ -997,16 +997,16 @@ func Standard_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Standard) *pb.S
 	out.Postdeploy = Postdeploy_v1beta1_ToProto(mapCtx, in.Postdeploy)
 	return out
 }
-func Strategy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Strategy) *krm.Strategy {
+func Strategy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Strategy) *krmclouddeployv1beta1.Strategy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Strategy{}
+	out := &krmclouddeployv1beta1.Strategy{}
 	out.Standard = Standard_v1beta1_FromProto(mapCtx, in.GetStandard())
 	out.Canary = Canary_v1beta1_FromProto(mapCtx, in.GetCanary())
 	return out
 }
-func Strategy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Strategy) *pb.Strategy {
+func Strategy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.Strategy) *pb.Strategy {
 	if in == nil {
 		return nil
 	}
@@ -1029,17 +1029,17 @@ func TargetsPresentCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func TargetsPresentCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsPresentCondition) *krm.TargetsPresentCondition {
+func TargetsPresentCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsPresentCondition) *krmclouddeployv1beta1.TargetsPresentCondition {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TargetsPresentCondition{}
+	out := &krmclouddeployv1beta1.TargetsPresentCondition{}
 	out.Status = direct.LazyPtr(in.GetStatus())
 	out.MissingTargets = in.MissingTargets
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func TargetsPresentCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TargetsPresentCondition) *pb.TargetsPresentCondition {
+func TargetsPresentCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.TargetsPresentCondition) *pb.TargetsPresentCondition {
 	if in == nil {
 		return nil
 	}
@@ -1049,16 +1049,16 @@ func TargetsPresentCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func TargetsTypeCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsTypeCondition) *krm.TargetsTypeCondition {
+func TargetsTypeCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetsTypeCondition) *krmclouddeployv1beta1.TargetsTypeCondition {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TargetsTypeCondition{}
+	out := &krmclouddeployv1beta1.TargetsTypeCondition{}
 	out.Status = direct.LazyPtr(in.GetStatus())
 	out.ErrorDetails = direct.LazyPtr(in.GetErrorDetails())
 	return out
 }
-func TargetsTypeCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TargetsTypeCondition) *pb.TargetsTypeCondition {
+func TargetsTypeCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1beta1.TargetsTypeCondition) *pb.TargetsTypeCondition {
 	if in == nil {
 		return nil
 	}
