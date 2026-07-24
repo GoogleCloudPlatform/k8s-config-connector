@@ -1,0 +1,302 @@
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurityProfileGroup
+
+{
+  "parent": "projects/${projectId}/locations/global",
+  "securityProfileGroup": {
+    "description": "Maximal security profile group",
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}"
+  },
+  "securityProfileGroupId": "spg-max-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "dataPathId": "12345",
+    "description": "Maximal security profile group",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataPathId": "12345",
+  "description": "Maximal security profile group",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataPathId": "12345",
+  "description": "Maximal security profile group",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurityProfileGroup
+
+{
+  "securityProfileGroup": {
+    "description": "Maximal security profile group - updated",
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}"
+  },
+  "updateMask": "description,labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "dataPathId": "12345",
+    "description": "Maximal security profile group - updated",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataPathId": "12345",
+  "description": "Maximal security profile group - updated",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataPathId": "12345",
+  "description": "Maximal security profile group - updated",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfileGroup
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataPathId": "12345",
+  "description": "Maximal security profile group - updated",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfileGroup
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
