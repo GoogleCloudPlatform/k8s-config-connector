@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: containernodepool-${uniqueId}
@@ -21,39 +21,18 @@ spec:
     machineType: e2-medium
     resourceManagerTags:
       tagKeys/123: tagValues/789
+  resourceID: containernodepool-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: |-
-      Update call failed: error applying desired state: summary: error creating NodePool: googleapi: Error 403: Permission denied: for service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com on TagKey "tagKeys/123" (or it may not exist).
-      Details:
-      [
-        {
-          "@type": "type.googleapis.com/google.rpc.DebugInfo",
-          "detail": "GCE_PERMISSION_DENIED: permission denied: for service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com on TagKey \"tagKeys/123\" (or it may not exist)",
-          "stackEntries": [
-            "cloud/kubernetes/engine/common/error_desc.go:437 +0x26 google3/cloud/kubernetes/engine/common/errdesc.(*GKEErrorDescriptor).createErr(0x1342519d1620, {0x55846f510948, 0x13436e01fc20})",
-            "cloud/kubernetes/engine/common/error_desc.go:312 +0x4c google3/cloud/kubernetes/engine/common/errdesc.(*GKEErrorDescriptor).WithMsgCtx(0x1343411bc890?, {0x55846f510948?, 0x13436e01fc20?}, {0x55845a771bea, 0x25}, {0x1342fb82fc60, 0x3, 0x3})",
-            "cloud/kubernetes/engine/common/clients/resource_manager_tags.go:269 +0x586 google3/cloud/kubernetes/engine/common/clients/resourcemanagertags.(*clientImpl).getTagKey(0x1342d665ee40, {0x55846f510948, 0x13436e01fc20}, {0x1343411bc890, 0xb}, {0x0, 0x0, 0x0})",
-            "cloud/kubernetes/engine/common/clients/resource_manager_tags.go:201 +0x65 google3/cloud/kubernetes/engine/common/clients/resourcemanagertags.(*clientImpl).GetTagKeyAndValue(0x1342d665ee40, {0x55846f510948, 0x13436e01fc20}, {0x1343411bc890, 0xb}, {0x1343411bc8a0, 0xd})",
-            "cloud/kubernetes/node/util/resource_manager_tag.go:46 +0xaa google3/cloud/kubernetes/node/util/resourcemanagertag.BuildResourceManagerTags({0x55846f510948, 0x13436e01fc20}, {0x55846f4e6c48?, 0x1342d665ee40?}, 0x13435f920e00)",
-            "cloud/kubernetes/server/patch/field/node/node_pool_config.go:6444 +0x46 google3/cloud/kubernetes/server/patch/field/node/config.fillInResourceManagerTagsDefaults.func1()",
-            "cloud/kubernetes/engine/common/errors.go:340 +0x57 google3/cloud/kubernetes/engine/common/errors.ConcurrencyBoundCollectFn.func1()",
-            "cloud/kubernetes/engine/common/errors.go:338 +0x96 created by google3/cloud/kubernetes/engine/common/errors.ConcurrencyBoundCollectFn in goroutine 1105177224"
-          ]
-        },
-        {
-          "@type": "type.googleapis.com/google.rpc.RequestInfo",
-          "requestId": "0x8b103de2458b34da"
-        },
-        {
-          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-          "domain": "container.googleapis.com",
-          "reason": "GCE_PERMISSION_DENIED"
-        }
-      ]
-      , forbidden
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
-  observedGeneration: 2
+  instanceGroupUrls:
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
+  managedInstanceGroupUrls:
+  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
+  observedGeneration: 3
+  observedState:
+    version: 1.30.5-gke.1014001
