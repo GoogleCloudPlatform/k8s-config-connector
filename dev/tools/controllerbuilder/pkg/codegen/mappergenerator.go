@@ -1070,6 +1070,9 @@ func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 
 func protoNameForField(protoField protoreflect.FieldDescriptor) string {
 	s := strings.Title(protoField.JSONName())
+	if strings.HasSuffix(s, "Crc32c") {
+		return strings.TrimSuffix(s, "Crc32c") + "Crc32C"
+	}
 	return s
 }
 

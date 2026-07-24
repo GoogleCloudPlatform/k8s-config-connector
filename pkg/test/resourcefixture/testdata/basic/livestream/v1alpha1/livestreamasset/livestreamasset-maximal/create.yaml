@@ -1,0 +1,14 @@
+apiVersion: livestream.cnrm.cloud.google.com/v1alpha1
+kind: LiveStreamAsset
+metadata:
+  name: livestreamasset-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: livestreamasset-maximal-${uniqueId}
+  labels:
+    key1: val1
+    key2: val2
+  video:
+    uri: "gs://cloud-samples-data/video/cat.mp4"
