@@ -46,7 +46,7 @@ jobs:
       samples_json: ${{ steps.split.outputs.samples_json }}
       scenarios_json: ${{ steps.split.outputs.scenarios_json }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Split test matrix between priority and non-priority
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/capture-pprof"
         run: |
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Free up disk space
@@ -114,7 +114,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/run-linters"
         run: |
@@ -154,7 +154,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
         run: |
@@ -173,7 +173,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v3'
         with:
@@ -196,7 +196,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-pause"
         run: |
@@ -216,7 +216,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-direct-iam"
         run: |
@@ -236,7 +236,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures"
         run: |
@@ -262,7 +262,7 @@ jobs:
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.priority_fixtures_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v3'
         with:
@@ -291,7 +291,7 @@ jobs:
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.remaining_fixtures_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v3'
         with:
@@ -320,7 +320,7 @@ jobs:
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.samples_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v3'
         with:
@@ -342,7 +342,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
@@ -361,7 +361,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-preview"
         run: |
@@ -387,7 +387,7 @@ jobs:
       matrix:
         suite: ${{ fromJSON(needs.prepare-test-matrix.outputs.scenarios_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - uses: 'google-github-actions/setup-gcloud@v3'
         with:
@@ -409,7 +409,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: ./dev/actions/cache-go
@@ -434,7 +434,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: ./dev/actions/cache-go
@@ -459,7 +459,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
@@ -478,7 +478,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
