@@ -22,6 +22,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -169,6 +170,8 @@ func TestSmoketest(t *testing.T) {
 	buildCmd.Env = append(os.Environ(),
 		"IMAGE_TAG="+imageTag,
 		"IMAGE_PREFIX="+imagePrefix,
+		fmt.Sprintf("PLATFORM=linux/%s", runtime.GOARCH),
+		"OUTPUT_TYPE=type=docker",
 	)
 	if output, err := buildCmd.CombinedOutput(); err != nil {
 		t.Fatalf("failed to build images: %v\nOutput: %s", err, string(output))

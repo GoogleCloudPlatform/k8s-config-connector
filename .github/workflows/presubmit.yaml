@@ -66,6 +66,8 @@ jobs:
       - uses: actions/checkout@v6
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - uses: ./dev/actions/cache-go
       - name: "dev/tasks/build-images"
         run: |
