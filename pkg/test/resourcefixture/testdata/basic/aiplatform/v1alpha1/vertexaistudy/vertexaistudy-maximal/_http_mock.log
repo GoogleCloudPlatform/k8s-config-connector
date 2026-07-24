@@ -1,0 +1,155 @@
+GRPC /google.cloud.aiplatform.v1.VizierService/ListStudies
+
+{
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/CreateStudy
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "study": {
+    "displayName": "Config Connector Maximal Study",
+    "studySpec": {
+      "algorithm": "GRID_SEARCH",
+      "measurementSelectionType": "BEST_MEASUREMENT",
+      "metrics": [
+        {
+          "goal": "MAXIMIZE",
+          "metricId": "accuracy"
+        }
+      ],
+      "observationNoise": "LOW",
+      "parameters": [
+        {
+          "doubleValueSpec": {
+            "maxValue": 0.1,
+            "minValue": 0.001
+          },
+          "parameterId": "learning_rate"
+        }
+      ]
+    }
+  }
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Config Connector Maximal Study",
+  "name": "projects/${projectId}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "algorithm": "GRID_SEARCH",
+    "measurementSelectionType": "BEST_MEASUREMENT",
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "observationNoise": "LOW",
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.001
+        },
+        "parameterId": "learning_rate"
+      }
+    ]
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Config Connector Maximal Study",
+  "name": "projects/${projectId}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "algorithm": "GRID_SEARCH",
+    "measurementSelectionType": "BEST_MEASUREMENT",
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "observationNoise": "LOW",
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.001
+        },
+        "parameterId": "learning_rate"
+      }
+    ]
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Config Connector Maximal Study",
+  "name": "projects/${projectId}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "algorithm": "GRID_SEARCH",
+    "measurementSelectionType": "BEST_MEASUREMENT",
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "observationNoise": "LOW",
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.001
+        },
+        "parameterId": "learning_rate"
+      }
+    ]
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/DeleteStudy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{}

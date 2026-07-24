@@ -3733,10 +3733,6 @@
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistManagerEmails[]" is not set in unstructured objects
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistWorkerEmails[]" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.algorithm" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.convexAutomatedStoppingSpec.learningRateParameterName" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.convexAutomatedStoppingSpec.maxStepCount" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.convexAutomatedStoppingSpec.minMeasurementCount" is not set in unstructured objects
@@ -3744,13 +3740,9 @@
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.convexAutomatedStoppingSpec.updateAllStoppedTrials" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.convexAutomatedStoppingSpec.useElapsedDuration" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.decayCurveStoppingSpec.useElapsedDuration" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.measurementSelectionType" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.medianAutomatedStoppingSpec.useElapsedDuration" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.metrics[].goal" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.metrics[].metricID" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.metrics[].safetyConfig.desiredMinSafeTrialsFraction" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.metrics[].safetyConfig.safetyThreshold" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.observationNoise" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].categoricalValueSpec.defaultValue" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].categoricalValueSpec.values[]" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].conditionalParameterSpecs[].parentCategoricalValues.values[]" is not set in unstructured objects
@@ -3759,12 +3751,9 @@
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].discreteValueSpec.defaultValue" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].discreteValueSpec.values[]" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].doubleValueSpec.defaultValue" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].doubleValueSpec.maxValue" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].doubleValueSpec.minValue" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].integerValueSpec.defaultValue" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].integerValueSpec.maxValue" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].integerValueSpec.minValue" is not set in unstructured objects
-[missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].parameterID" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.parameters[].scaleType" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.studyStoppingConfig.maxDurationNoProgress" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.studyStoppingConfig.maxNumTrials.value" is not set in unstructured objects
