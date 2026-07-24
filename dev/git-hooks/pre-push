@@ -27,7 +27,9 @@ cd "${REPO_ROOT}"
 
 echo "========================================================================"
 echo " [pre-push hook] Running pre-push presubmit validation..."
-echo "========================================================================"
+# Discard Git hook environment variables to prevent nested Git commands
+# from resolving relative to the wrong directories after cd.
+unset GIT_DIR GIT_WORK_TREE GIT_PREFIX GIT_COMMON_DIR GIT_INDEX_FILE
 
 if ! ./dev/tasks/validate-and-push --validate-only; then
   echo ""
