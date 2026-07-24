@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "customJob \"projects/${projectNumber}/locations/us-central1/customJobs/vertexaicustomjob-${uniqueId}\" not found",
+    "message": "customJob \"projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094",
     "status": "NOT_FOUND"
   }
 }

@@ -23,6 +23,13 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "aiplatform.googleapis.com") {
+		return
+	}
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -32,15 +39,25 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") {
 		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
-
-		event.VisitResponseStringValues(func(path string, value string) {
-			if strings.HasSuffix(path, `["vertex-ai-pipelines-run-billing-id"]`) || strings.HasSuffix(path, `.vertex-ai-pipelines-run-billing-id`) {
-				replacements.ReplaceStringValue(value, "619702208161644544")
-			}
-		})
 	}
 
 	if strings.Contains(event.URL(), "tensorboards") && strings.Contains(event.URL(), "experiments") {
 		replacements.ReplaceStringValue("updateMask=description%2CdisplayName%2Clabels%2Csource", "updateMask=description%2CdisplayName%2Clabels")
 	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") {
+			if strings.HasSuffix(path, `["vertex-ai-pipelines-run-billing-id"]`) || strings.HasSuffix(path, `.vertex-ai-pipelines-run-billing-id`) {
+				replacements.ReplaceStringValue(value, "619702208161644544")
+			}
+		}
+		if strings.Contains(value, "/customJobs/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "customJobs" {
+					replacements.ReplaceStringValue(tokens[i+1], "1784846205907728094")
+				}
+			}
+		}
+	})
 }
