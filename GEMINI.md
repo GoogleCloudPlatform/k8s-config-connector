@@ -188,3 +188,5 @@ When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as 
 # Helpful scripts
 
 * `dev/tasks/generate-types-and-mappers` will regenerate all our generated CRD files and generated mapper code.  It should be run after changing API types.
+* `dev/tasks/setup-test-containerd-secrets` sets up Secret Manager secrets (`kcc-test-ca-cert`, `kcc-test-client-cert`, `kcc-test-client-key`) and IAM permissions required when running containerD / GKE registry access tests against real GCP (`E2E_PROJECT_ID=<project_id> dev/tasks/setup-test-containerd-secrets`).
+
