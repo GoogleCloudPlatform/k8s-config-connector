@@ -1,0 +1,279 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import sys
+import json
+import subprocess
+import argparse
+import os
+import re
+
+def run_cmd(cmd, cwd=None, text=True):
+    res = subprocess.run(cmd, capture_output=True, text=text, cwd=cwd)
+    return res
+
+def get_kcc_root():
+    if os.environ.get("KCC_ROOT"):
+        return os.path.abspath(os.environ.get("KCC_ROOT"))
+    possible_paths = [
+        "k8s-config-connector",
+        os.path.expanduser("~/projects/kcc/reviewprs/k8s-config-connector")
+    ]
+    for path in possible_paths:
+        if os.path.exists(path) and os.path.exists(os.path.join(path, ".git")):
+            return os.path.abspath(path)
+    print("Error: Could not locate k8s-config-connector repository root.", file=sys.stderr)
+    sys.exit(1)
+
+def main():
+    parser = argparse.ArgumentParser(description="PR Review Summary Tool for Step 2 (Identity & Refs)")
+    parser.add_argument("pr", help="PR number or branch name")
+    args = parser.parse_args()
+
+    kcc_root = get_kcc_root()
+
+    # Query PR info using gh
+    print(f"Fetching PR #{args.pr} metadata from GitHub...")
+    gh_cmd = ["gh", "pr", "view", args.pr, "--json", "number,title,state,mergeable,statusCheckRollup,headRefName"]
+    res = run_cmd(gh_cmd, cwd=kcc_root)
+    if res.returncode != 0:
+        print(f"Error fetching PR: {res.stderr}", file=sys.stderr)
+        sys.exit(1)
+
+    pr_data = json.loads(res.stdout)
+    pr_num = pr_data.get("number")
+    title = pr_data.get("title")
+    mergeable = pr_data.get("mergeable")
+    head_branch = pr_data.get("headRefName")
+    
+    # Fetch latest master from remote first
+    remote = "upstream"
+    git_show_upstream = run_cmd(["git", "rev-parse", "--verify", "upstream/master"], cwd=kcc_root)
+    if git_show_upstream.returncode != 0:
+        remote = "origin"
+    print(f"Fetching latest master from remote '{remote}'...")
+    run_cmd(["git", "fetch", remote, "master"], cwd=kcc_root)
+
+    # Check out the PR branch if not already checked out
+    if not os.environ.get("KCC_ROOT"):
+        current_branch = run_cmd(["git", "branch", "--show-current"], cwd=kcc_root).stdout.strip()
+        if current_branch != head_branch:
+            print(f"Checking out PR branch '{head_branch}'...")
+            checkout_res = run_cmd(["gh", "pr", "checkout", str(pr_num)], cwd=kcc_root)
+            if checkout_res.returncode != 0:
+                print(f"Error checking out PR branch: {checkout_res.stderr}", file=sys.stderr)
+                sys.exit(1)
+
+    # 1. Check Mergeability / Conflicts
+    conflict_status = "✅ No merge conflicts"
+    if mergeable == "CONFLICTING":
+        conflict_status = "❌ Merge conflicts detected with master"
+    elif mergeable == "UNKNOWN":
+        conflict_status = "⚠️ Mergeability status unknown (checks still running/processing on GitHub)"
+
+    # 2. Check GitHub Actions status
+    failing_checks = []
+    pending_checks = []
+    status_rollup = pr_data.get("statusCheckRollup") or []
+    for check in status_rollup:
+        conclusion = check.get("conclusion")
+        status = check.get("status")
+        state = check.get("state")
+        name = check.get("name") or check.get("context")
+        if conclusion == "FAILURE" or state == "FAILURE":
+            failing_checks.append(name)
+        elif status in ["IN_PROGRESS", "QUEUED", "REQUESTED", "WAITING"] or state in ["PENDING"]:
+            pending_checks.append(name)
+
+    actions_status = "✅ All GitHub Actions checks passed"
+    if failing_checks:
+        actions_status = f"❌ Failing checks:\n" + "\n".join([f"  - {c}" for c in failing_checks])
+    elif pending_checks:
+        actions_status = f"⏳ Pending checks:\n" + "\n".join([f"  - {c}" for c in pending_checks])
+
+    # 3. Check CRD Diffs against merge-base
+    base = "upstream/master"
+    git_show_upstream = run_cmd(["git", "rev-parse", "--verify", "upstream/master"], cwd=kcc_root)
+    if git_show_upstream.returncode != 0:
+        base = "master"
+        
+    merge_base_res = run_cmd(["git", "merge-base", base, "HEAD"], cwd=kcc_root)
+    if merge_base_res.returncode != 0:
+        print("Error: Could not find merge-base.", file=sys.stderr)
+        sys.exit(1)
+    merge_base = merge_base_res.stdout.strip()
+
+    print(f"Computing CRD schema diffs against merge-base {merge_base}...")
+    diff_script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "diff-crds")
+    diff_res = run_cmd([diff_script_path, "--base", merge_base], cwd=kcc_root)
+    
+    crd_diff_status = "✅ No CRD schema differences detected"
+    if diff_res.returncode != 0:
+        crd_diff_status = f"❌ Error running diff-crds: {diff_res.stderr}"
+    elif diff_res.stdout.strip():
+        crd_diff_status = f"⚠️ CRD Schema differences detected:\n```\n{diff_res.stdout.strip()}\n```"
+
+    # Find changed files in this PR (diff with merge base)
+    git_diff_cmd = ["git", "diff", "--name-only", merge_base, "HEAD"]
+    diff_files = run_cmd(git_diff_cmd, cwd=kcc_root).stdout.strip().split("\n")
+
+    # Group files by Kind/Path prefix to identify the target resource being migrated
+    identity_files = [f for f in diff_files if f.endswith("_identity.go")]
+    reference_files = [f for f in diff_files if f.endswith("_reference.go")]
+    test_files = [f for f in diff_files if f.endswith("_identity_test.go")]
+    controller_files = [f for f in diff_files if f.endswith("_controller.go")]
+
+    print("\n" + "="*40)
+    print(f"### PR Step 2 Review Summary: #{pr_num} - {title}")
+    print(f"Branch: `{head_branch}` (compared against merge-base `{merge_base[:8]}`)\n")
+    print(f"**Merge Status**:\n{conflict_status}\n")
+    print(f"**GitHub Actions Status**:\n{actions_status}\n")
+    print(f"**CRD Schema Diffs**:\n{crd_diff_status}\n")
+
+    print("**Identity & Reference Migration Analysis**:")
+    for id_file in identity_files:
+        print(f"\n📂 **Identity file**: `{id_file}`")
+        full_path = os.path.join(kcc_root, id_file)
+        if not os.path.exists(full_path):
+            print("  ❌ File does not exist locally")
+            continue
+        with open(full_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # Parse key patterns
+        if "identity.IdentityV2" in content:
+            print("  ✅ Implements `identity.IdentityV2`")
+        elif "identity.ServerGeneratedIdentity" in content:
+            print("  ✅ Implements `identity.ServerGeneratedIdentity`")
+        else:
+            print("  ❌ Does not declare interface implementation for IdentityV2 or ServerGeneratedIdentity")
+
+        if "identity.Resource" in content:
+            print("  ✅ Implements `identity.Resource`")
+        else:
+            print("  ❌ Does not declare interface implementation for identity.Resource")
+
+        # Extract templates
+        templates = re.findall(r'gcpurls\.Template\[\w+\]\("[^"]+",\s*"([^"]+)"\)', content)
+        if templates:
+            for t in templates:
+                print(f"  ✅ Defined Template path: `{t}`")
+            
+            has_zonal = any("/zones/" in t for t in templates)
+            has_regional = any("/regions/" in t for t in templates)
+            if has_zonal and has_regional:
+                # Only warn if both templates share the generic {location} placeholder, causing struct field mapping collision
+                zonal_template = next(t for t in templates if "/zones/" in t)
+                regional_template = next(t for t in templates if "/regions/" in t)
+                if "{location}" in zonal_template and "{location}" in regional_template:
+                    print("  ⚠️ WARNING: Found both Zonal and Regional templates sharing a generic `{location}` placeholder. They can only be distinguished by parsing the location to guess whether it was a region or a zone.")
+        else:
+            print("  ❌ No gcpurls.Template definition found")
+
+        if "ParentString()" in content:
+            print("  ✅ Implements `ParentString()`")
+        else:
+            print("  ❌ `ParentString()` is missing")
+
+        spec_func = re.search(r"getIdentityFrom\w+Spec", content)
+        if spec_func:
+            func_name = spec_func.group(0)
+            # Check if it takes *Kind directly
+            print(f"  ✅ Found extraction function: `{func_name}`")
+        else:
+            print("  ❌ Spec extraction function is missing")
+
+        if "GetIdentity" in content:
+            print("  ✅ Implements `GetIdentity()` on Resource")
+        else:
+            print("  ❌ `GetIdentity()` on Resource is missing")
+
+    for ref_file in reference_files:
+        print(f"\n📂 **Reference file**: `{ref_file}`")
+        full_path = os.path.join(kcc_root, ref_file)
+        if not os.path.exists(full_path):
+            print("  ❌ File does not exist locally")
+            continue
+        with open(full_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        if "refs.Ref" in content or "refsv1beta1.Ref" in content:
+            print("  ✅ Implements `refs.Ref`")
+        else:
+            print("  ❌ Does not declare interface implementation for refs.Ref")
+
+        if "refs.Register" in content or "refsv1beta1.Register" in content:
+            print("  ✅ Registered in `init()` using `refs.Register`")
+        else:
+            print("  ❌ Missing reference registration in init()")
+
+        # Verify ref struct fields (External, Name, Namespace)
+        struct_match = re.search(r"type \w+Ref struct\s*\{([\s\S]*?)\n\}", content)
+        if struct_match:
+            fields = struct_match.group(1)
+            has_ext = "External" in fields
+            has_name = "Name" in fields
+            has_ns = "Namespace" in fields
+            if has_ext and has_name and has_ns:
+                print("  ✅ Has standard `External`, `Name`, and `Namespace` fields")
+            else:
+                print(f"  ❌ Missing expected reference fields (External: {has_ext}, Name: {has_name}, Namespace: {has_ns})")
+            
+            # Check godoc comment style
+            ext_doc = 'A reference to an externally managed' in content
+            name_doc = 'The name of a' in content
+            ns_doc = 'The namespace of a' in content
+            if ext_doc and name_doc and ns_doc:
+                print("  ✅ Correct godoc comments found on reference fields")
+            else:
+                print(f"  ❌ Incorrect godoc comments on reference fields (External: {ext_doc}, Name: {name_doc}, Namespace: {ns_doc})")
+        else:
+            print("  ❌ Reference struct definition not found")
+
+        if "Normalize" in content and ("refs.NormalizeWithFallback" in content or "refsv1beta1.NormalizeWithFallback" in content):
+            print("  ✅ Implements `Normalize` delegating to `refs.NormalizeWithFallback`")
+        else:
+            print("  ❌ Normalize is missing or does not use NormalizeWithFallback")
+
+    # Unit Tests verification
+    print(f"\n📂 **Unit Tests**:")
+    if test_files:
+        for tf in test_files:
+            print(f"  ✅ Test file exists: `{tf}`")
+            full_path = os.path.join(kcc_root, tf)
+            if not os.path.exists(full_path):
+                print("  ❌ File does not exist locally")
+                continue
+            with open(full_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            if "cmp.Diff" in content:
+                print("    ✅ Uses `go-cmp` for comparison")
+            else:
+                print("    ❌ Does not use `go-cmp` for comparison")
+    else:
+        print("  ❌ No `_identity_test.go` file found")
+
+    # Controller updates
+    print(f"\n📂 **Controller Changes**:")
+    if controller_files:
+        for cf in controller_files:
+            print(f"  ✅ Direct controller changed: `{cf}`")
+    else:
+        print("  ℹ️ No direct controller file modifications detected under this branch diff")
+
+    print("="*40)
+
+if __name__ == "__main__":
+    main()
