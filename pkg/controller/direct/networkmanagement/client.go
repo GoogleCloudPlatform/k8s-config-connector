@@ -36,3 +36,15 @@ func newReachabilityClient(ctx context.Context, config *config.ControllerConfig)
 	}
 	return client, err
 }
+
+func newVpcFlowLogsClient(ctx context.Context, config *config.ControllerConfig) (*api.VpcFlowLogsClient, error) {
+	opts, err := config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewVpcFlowLogsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building networkmanagement vpc flow logs client: %w", err)
+	}
+	return client, err
+}

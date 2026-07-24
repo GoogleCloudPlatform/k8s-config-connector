@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: networkmanagement.cnrm.cloud.google.com
+  kind: NetworkManagementVPCFlowLogsConfig
+  name: flowlogsconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
