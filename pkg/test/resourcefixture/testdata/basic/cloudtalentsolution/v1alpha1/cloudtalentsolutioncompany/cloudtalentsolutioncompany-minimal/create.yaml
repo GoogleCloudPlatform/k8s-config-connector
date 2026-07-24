@@ -1,0 +1,10 @@
+apiVersion: cloudtalentsolution.cnrm.cloud.google.com/v1alpha1
+kind: CloudTalentSolutionCompany
+metadata:
+  name: ctsco-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  tenant: default
+  displayName: "Minimal Test Company"
+  externalID: "min-ext-id-${uniqueId}"
