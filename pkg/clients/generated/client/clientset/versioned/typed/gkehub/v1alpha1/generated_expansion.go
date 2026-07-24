@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type GKEHubFleetExpansion interface{}
+
 type GKEHubMembershipBindingExpansion interface{}
 
 type GKEHubNamespaceExpansion interface{}

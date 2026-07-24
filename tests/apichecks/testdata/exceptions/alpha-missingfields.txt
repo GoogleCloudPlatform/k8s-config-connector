@@ -2673,6 +2673,16 @@
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].policy" is not set in unstructured objects
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].selectedPVCs.namespacedNames[].name" is not set in unstructured objects
 [missing_field] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.volumeDataRestorePolicyOverrides[].selectedPVCs.namespacedNames[].namespace" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultClusterConfig.binaryAuthorizationConfig.evaluationMode" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultClusterConfig.binaryAuthorizationConfig.policyBindingsRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultClusterConfig.compliancePostureConfig.complianceStandards[].standard" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultClusterConfig.compliancePostureConfig.mode" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultClusterConfig.securityPostureConfig.mode" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultClusterConfig.securityPostureConfig.vulnerabilityMode" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=gkehubfleets.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=gkehubscoperbacrolebindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.rbacRoleBindingID" is not set in unstructured objects
 [missing_field] crd=gkehubscoperbacrolebindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.role.customRole" is not set in unstructured objects
 [missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
