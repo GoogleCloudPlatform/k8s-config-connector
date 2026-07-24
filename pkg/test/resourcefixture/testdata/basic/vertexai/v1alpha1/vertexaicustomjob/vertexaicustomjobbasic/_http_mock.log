@@ -1,0 +1,159 @@
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/customJobs/vertexaicustomjob-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomJobs%2Fvertexaicustomjob-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "customJob \"projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/customJobs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "custom-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "args": [
+            "--arg1",
+            "val1"
+          ],
+          "imageUri": "gcr.io/cloud-aiplatform/training/tf-cpu.2-2:latest"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "custom-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "args": [
+            "--arg1",
+            "val1"
+          ],
+          "imageUri": "gcr.io/cloud-aiplatform/training/tf-cpu.2-2:latest"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094",
+  "state": 4,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FcustomJobs%2F1784846205907728094
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "custom-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "args": [
+            "--arg1",
+            "val1"
+          ],
+          "imageUri": "gcr.io/cloud-aiplatform/training/tf-cpu.2-2:latest"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094",
+  "state": 4,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FcustomJobs%2F1784846205907728094
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

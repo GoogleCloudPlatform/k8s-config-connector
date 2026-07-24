@@ -1329,12 +1329,18 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "workstations.cnrm.cloud.google.com", Kind: "WorkstationConfig"}:
 			case schema.GroupKind{Group: "workstations.cnrm.cloud.google.com", Kind: "Workstation"}:
 
-			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIDataset"}:
-			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboard"}:
-			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIEndpoint"}:
-			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIMetadataStore"}:
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestore"}:
-			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIExampleStore"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAICustomJob"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIMetadataStore"}:
+
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestore"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAICustomJob"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIMetadataStore"}:
+
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestore"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAICustomJob"}:
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIMetadataStore"}:
+
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIDeploymentResourcePool"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "VertexAIFeatureOnlineStore"}:
 			case schema.GroupKind{Group: "aiplatform.cnrm.cloud.google.com", Kind: "VertexAIPipelineJob"}:

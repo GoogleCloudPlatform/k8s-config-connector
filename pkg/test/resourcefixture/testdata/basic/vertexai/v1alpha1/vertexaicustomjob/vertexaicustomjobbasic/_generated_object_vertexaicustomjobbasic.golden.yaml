@@ -1,0 +1,40 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAICustomJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: vertexaicustomjob-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: custom-job-${uniqueId}
+  jobSpec:
+    workerPoolSpecs:
+    - containerSpec:
+        args:
+        - --arg1
+        - val1
+        imageURI: gcr.io/cloud-aiplatform/training/tf-cpu.2-2:latest
+      machineSpec:
+        machineType: n1-standard-4
+      replicaCount: 1
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectNumber}/locations/us-central1/customJobs/1784846205907728094
+    state: JOB_STATE_SUCCEEDED
+    updateTime: "1970-01-01T00:00:00Z"

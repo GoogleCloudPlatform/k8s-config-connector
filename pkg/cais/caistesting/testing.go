@@ -130,6 +130,11 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:start] + "${folderId}"
 			}
 		}
+		// Normalize VertexAICustomJob server-generated customJob IDs and project number
+		if idx := strings.Index(line, "/customJobs/"); idx != -1 {
+			lines[i] = line[:idx+len("/customJobs/")] + "vertexaicustomjob-${uniqueId}"
+			lines[i] = strings.ReplaceAll(lines[i], "projects/${projectNumber}/", "projects/${projectId}/")
+		}
 	}
 	return strings.Join(lines, "\n")
 }

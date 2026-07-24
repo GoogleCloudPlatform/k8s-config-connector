@@ -591,6 +591,8 @@ func PSCInterfaceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_v1alpha1_ToProto)
 	return out
 }
+
+/* found existing non-generated mapping function "PythonPackageSpec_v1alpha1_FromProto", skipping
 func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krmvertexaiv1alpha1.PythonPackageSpec {
 	if in == nil {
 		return nil
@@ -604,6 +606,8 @@ func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Pyth
 	// MISSING: Env
 	return out
 }
+*/
+/* found existing non-generated mapping function "PythonPackageSpec_v1alpha1_ToProto", skipping
 func PythonPackageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.PythonPackageSpec) *pb.PythonPackageSpec {
 	if in == nil {
 		return nil
@@ -617,6 +621,7 @@ func PythonPackageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertex
 	// MISSING: Env
 	return out
 }
+*/
 func ReservationAffinity_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krmvertexaiv1alpha1.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -713,42 +718,46 @@ func TrainingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.TimeoutTrainingMilliHours = direct.ValueOf(in.TimeoutTrainingMilliHours)
 	return out
 }
-func VertexAICustomJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmvertexaiv1alpha1.VertexAICustomJobObservedState {
-	if in == nil {
-		return nil
+
+/*
+	func VertexAICustomJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmvertexaiv1alpha1.VertexAICustomJobObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krmvertexaiv1alpha1.VertexAICustomJobObservedState{}
+		out.Name = direct.LazyPtr(in.GetName())
+		out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+		out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+		out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+		out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+		out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+		out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+		// MISSING: WebAccessUris
+		// (near miss): "WebAccessUris" vs "WebAccessURIs"
+		out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+		out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+		return out
 	}
-	out := &krmvertexaiv1alpha1.VertexAICustomJobObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	// MISSING: WebAccessUris
-	// (near miss): "WebAccessUris" vs "WebAccessURIs"
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	return out
-}
-func VertexAICustomJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAICustomJobObservedState) *pb.CustomJob {
-	if in == nil {
-		return nil
+
+	func VertexAICustomJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAICustomJobObservedState) *pb.CustomJob {
+		if in == nil {
+			return nil
+		}
+		out := &pb.CustomJob{}
+		out.Name = direct.ValueOf(in.Name)
+		out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+		out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+		out.Error = direct.Status_ToProto(mapCtx, in.Error)
+		// MISSING: WebAccessUris
+		// (near miss): "WebAccessUris" vs "WebAccessURIs"
+		out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+		out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+		return out
 	}
-	out := &pb.CustomJob{}
-	out.Name = direct.ValueOf(in.Name)
-	out.State = direct.Enum_ToProto[pb.JobState](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	// MISSING: WebAccessUris
-	// (near miss): "WebAccessUris" vs "WebAccessURIs"
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	return out
-}
+*/
 func VertexAICustomJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmvertexaiv1alpha1.VertexAICustomJobSpec {
 	if in == nil {
 		return nil
