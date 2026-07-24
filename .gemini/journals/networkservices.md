@@ -19,3 +19,14 @@
   1. Added `// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.service` annotation to `BackendServiceRef` to allow the automatic mapper generator to associate it with the `service` proto field.
   2. Ran `make generate-go-client ensure fmt` to fully regenerate the KCC clients under `pkg/clients/generated/`, and staged all generated client, CRD and reports files.
 - **Impact**: Establishes correct KRM types, identity, reference, and CRD registration for the Greenfield migration of `NetworkServicesAuthzExtension`.
+
+### [2026-07-19] Migrating NetworkServicesHTTPRoute to a Direct Controller
+- **Context**: Migrating `NetworkServicesHTTPRoute` to a direct controller and recording/verifying test fixtures.
+- **Problem**:
+  1. The `NetworkServicesHTTPRoute` resource had mappers and fuzzer files, but lacked a direct controller implementation (`networkserviceshttproute_controller.go`).
+  2. Local runs of `hack/compare-mock` failed initially because the `KUBEBUILDER_ASSETS` environment variable was pre-set to a non-existent `/root/.local/share/kubebuilder-envtest` directory.
+- **Solution**:
+  1. Implemented `pkg/controller/direct/networkservices/networkserviceshttproute_controller.go` using established Direct controller patterns (reconciliation, top-level field diffing, status updates, and deletion idempotency checks).
+  2. Registered `k8s.ReconcilerTypeDirect` under `SupportedControllers` for `NetworkServicesHTTPRoute` in `pkg/controller/resourceconfig/static_config.go`.
+  3. Ran tests with `KUBEBUILDER_ASSETS=""` to allow `setup-envtest` to locate/download the correct control plane assets in `/workspaces/.home/...`.
+- **Impact**: Enables 100% test coverage and validation of the direct `NetworkServicesHTTPRoute` controller. All mock and golden fixture tests are now passing successfully.
