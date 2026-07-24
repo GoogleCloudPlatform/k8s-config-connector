@@ -1,0 +1,287 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+  name: saasservicemgmtreleases.saasservicemgmt.cnrm.cloud.google.com
+spec:
+  group: saasservicemgmt.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: SaasServiceMgmtRelease
+    listKind: SaasServiceMgmtReleaseList
+    plural: saasservicemgmtreleases
+    shortNames:
+    - gcpsaasservicemgmtrelease
+    - gcpsaasservicemgmtreleases
+    singular: saasservicemgmtrelease
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SaasServiceMgmtRelease is the Schema for the SaasServiceMgmtRelease
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SaasServiceMgmtReleaseSpec defines the desired state of SaasServiceMgmtRelease
+            properties:
+              blueprint:
+                description: Optional. Blueprints are OCI Images that contain all
+                  of the artifacts needed to provision a unit.
+                properties:
+                  package:
+                    description: Optional. Immutable. URI to a blueprint used by the
+                      Unit (required unless unitKind or release is set).
+                    type: string
+                type: object
+              inputVariableDefaults:
+                description: Optional. Mapping of input variables to default values.
+                  Maximum 100
+                items:
+                  properties:
+                    type:
+                      description: Optional. Immutable. Name of a supported variable
+                        type. Supported types are string, int, bool.
+                      type: string
+                    value:
+                      description: Optional. String encoded value for the variable.
+                      type: string
+                    variable:
+                      description: Required. Immutable. Name of the variable from
+                        actuation configs.
+                      type: string
+                  type: object
+                type: array
+              location:
+                description: Immutable. The location of this resource.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              releaseRequirements:
+                description: Optional. Set of requirements to be fulfilled on the
+                  Unit when using this Release.
+                properties:
+                  upgradeableFromReleases:
+                    description: Optional. A list of releases from which a unit can
+                      be upgraded to this one (optional). If left empty no constraints
+                      will be applied. When provided, unit upgrade requests to this
+                      release will check and enforce this constraint.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              resourceID:
+                description: The SaasServiceMgmtRelease name. If not given, the metadata.name
+                  will be used.
+                type: string
+              unitKind:
+                description: Required. Immutable. Reference to the UnitKind this Release
+                  corresponds to (required and immutable once created).
+                type: string
+                x-kubernetes-validations:
+                - message: UnitKind field is immutable
+                  rule: self == oldSelf
+            required:
+            - location
+            - projectRef
+            - unitKind
+            type: object
+          status:
+            description: SaasServiceMgmtReleaseStatus defines the config connector
+              machine state of SaasServiceMgmtRelease
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the SaasServiceMgmtRelease resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  blueprint:
+                    description: Optional. Blueprints are OCI Images that contain
+                      all of the artifacts needed to provision a unit.
+                    properties:
+                      engine:
+                        description: Output only. Type of the engine used to actuate
+                          the blueprint. e.g. terraform, helm etc.
+                        type: string
+                      version:
+                        description: Output only. Version metadata if present on the
+                          blueprint.
+                        type: string
+                    type: object
+                  createTime:
+                    description: Output only. The timestamp when the resource was
+                      created.
+                    type: string
+                  etag:
+                    description: Output only. An opaque value that uniquely identifies
+                      a version or generation of a resource. It can be used to confirm
+                      that the client and server agree on the ordering of a resource
+                      being written.
+                    type: string
+                  inputVariables:
+                    description: Optional. Output only. List of input variables declared
+                      on the blueprint and can be present with their values on the
+                      unit spec
+                    items:
+                      properties:
+                        type:
+                          description: Optional. Immutable. Name of a supported variable
+                            type. Supported types are string, int, bool.
+                          type: string
+                        value:
+                          description: Optional. String encoded value for the variable.
+                          type: string
+                        variable:
+                          description: Required. Immutable. Name of the variable from
+                            actuation configs.
+                          type: string
+                      type: object
+                    type: array
+                  outputVariables:
+                    description: Optional. Output only. List of output variables declared
+                      on the blueprint and can be present with their values on the
+                      unit status
+                    items:
+                      properties:
+                        type:
+                          description: Optional. Immutable. Name of a supported variable
+                            type. Supported types are string, int, bool.
+                          type: string
+                        value:
+                          description: Optional. String encoded value for the variable.
+                          type: string
+                        variable:
+                          description: Required. Immutable. Name of the variable from
+                            actuation configs.
+                          type: string
+                      type: object
+                    type: array
+                  uid:
+                    description: Output only. The unique identifier of the resource.
+                      UID is unique in the time and space for this resource within
+                      the scope of the service. It is typically generated by the server
+                      on successful creation of a resource and must not be changed.
+                      UID is used to uniquely identify resources with resource name
+                      reuses. This should be a UUID4.
+                    type: string
+                  updateTime:
+                    description: Output only. The timestamp when the resource was
+                      last updated. Any change to the resource made by users must
+                      refresh this value. Changes to a resource made by the service
+                      should refresh this value.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

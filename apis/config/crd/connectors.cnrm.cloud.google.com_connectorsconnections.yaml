@@ -1,0 +1,822 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: connectorsconnections.connectors.cnrm.cloud.google.com
+spec:
+  group: connectors.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ConnectorsConnection
+    listKind: ConnectorsConnectionList
+    plural: connectorsconnections
+    shortNames:
+    - gcpconnectorsconnection
+    - gcpconnectorsconnections
+    singular: connectorsconnection
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ConnectorsConnection is the Schema for the ConnectorsConnection
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ConnectorsConnectionSpec defines the desired state of ConnectorsConnection
+            properties:
+              authConfig:
+                description: Optional. Configuration for establishing the connection's
+                  authentication with an external system.
+                properties:
+                  additionalVariables:
+                    description: List containing additional auth configs.
+                    items:
+                      properties:
+                        boolValue:
+                          description: Value is a bool.
+                          type: boolean
+                        intValue:
+                          description: Value is an integer
+                          format: int64
+                          type: integer
+                        key:
+                          description: Key of the config variable.
+                          type: string
+                        secretValueRef:
+                          description: Value is a secret.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed SecretManagerSecret
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                              type: string
+                            name:
+                              description: The name of a SecretManagerSecret resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a SecretManagerSecret
+                                resource.
+                              type: string
+                          type: object
+                        stringValue:
+                          description: Value is a string.
+                          type: string
+                      type: object
+                    type: array
+                  authType:
+                    description: The type of authentication configured.
+                    type: string
+                  oauth2ClientCredentials:
+                    description: Oauth2ClientCredentials.
+                    properties:
+                      clientID:
+                        description: The client identifier.
+                        type: string
+                      clientSecretRef:
+                        description: Secret version reference containing the client
+                          secret.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed SecretManagerSecret
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                            type: string
+                          name:
+                            description: The name of a SecretManagerSecret resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a SecretManagerSecret resource.
+                            type: string
+                        type: object
+                    type: object
+                  oauth2JwtBearer:
+                    description: Oauth2JwtBearer.
+                    properties:
+                      clientKeyRef:
+                        description: 'Secret version reference containing a PKCS#8
+                          PEM-encoded private key associated with the Client Certificate.
+                          This private key will be used to sign JWTs used for the
+                          jwt-bearer authorization grant. Specified in the form as:
+                          `projects/*/secrets/*/versions/*`.'
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed SecretManagerSecret
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                            type: string
+                          name:
+                            description: The name of a SecretManagerSecret resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a SecretManagerSecret resource.
+                            type: string
+                        type: object
+                      jwtClaims:
+                        description: JwtClaims providers fields to generate the token.
+                        properties:
+                          audience:
+                            description: Value for the "aud" claim.
+                            type: string
+                          issuer:
+                            description: Value for the "iss" claim.
+                            type: string
+                          subject:
+                            description: Value for the "sub" claim.
+                            type: string
+                        type: object
+                    type: object
+                  sshPublicKey:
+                    description: SSH Public Key.
+                    properties:
+                      certType:
+                        description: Format of SSH Client cert.
+                        type: string
+                      sshClientCertPassRef:
+                        description: Password (passphrase) for ssh client certificate
+                          if it has one.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed SecretManagerSecret
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                            type: string
+                          name:
+                            description: The name of a SecretManagerSecret resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a SecretManagerSecret resource.
+                            type: string
+                        type: object
+                      sshClientCertRef:
+                        description: SSH Client Cert. It should contain both public
+                          and private key.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed SecretManagerSecret
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                            type: string
+                          name:
+                            description: The name of a SecretManagerSecret resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a SecretManagerSecret resource.
+                            type: string
+                        type: object
+                      username:
+                        description: The user account used to authenticate.
+                        type: string
+                    type: object
+                  userPassword:
+                    description: UserPassword.
+                    properties:
+                      secretRef:
+                        description: Secret version reference containing the password.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed SecretManagerSecret
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                            type: string
+                          name:
+                            description: The name of a SecretManagerSecret resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a SecretManagerSecret resource.
+                            type: string
+                        type: object
+                      username:
+                        description: Username.
+                        type: string
+                    type: object
+                type: object
+              configVariables:
+                description: Optional. Configuration for configuring the connection
+                  with an external system.
+                items:
+                  properties:
+                    boolValue:
+                      description: Value is a bool.
+                      type: boolean
+                    intValue:
+                      description: Value is an integer
+                      format: int64
+                      type: integer
+                    key:
+                      description: Key of the config variable.
+                      type: string
+                    secretValueRef:
+                      description: Value is a secret.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed SecretManagerSecret
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                          type: string
+                        name:
+                          description: The name of a SecretManagerSecret resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a SecretManagerSecret resource.
+                          type: string
+                      type: object
+                    stringValue:
+                      description: Value is a string.
+                      type: string
+                  type: object
+                type: array
+              connectorVersionRef:
+                description: 'Required. Connector version on which the connection
+                  is created. The format is: projects/-*-/locations/-*-/providers/-*-/connectors/-*-/versions/-*
+                  Only global location is supported for ConnectorVersion resource.'
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ConnectorsConnectorVersion
+                      resource. Should be in the format "projects/{{projectID}}/locations/global/providers/{{providerID}}/connectors/{{connectorID}}/versions/{{versionID}}".
+                    type: string
+                  name:
+                    description: The name of a ConnectorsConnectorVersion resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ConnectorsConnectorVersion resource.
+                    type: string
+                type: object
+              description:
+                description: Optional. Description of the resource.
+                type: string
+              destinationConfigs:
+                description: Optional. Configuration of the Connector's destination.
+                  Only accepted for Connectors that accepts user defined destination(s).
+                items:
+                  properties:
+                    destinations:
+                      description: The destinations for the key.
+                      items:
+                        properties:
+                          host:
+                            description: For publicly routable host.
+                            type: string
+                          port:
+                            description: The port is the target port number that is
+                              accepted by the destination.
+                            format: int32
+                            type: integer
+                          serviceAttachmentRef:
+                            description: 'PSC service attachments. Format: projects/*/regions/*/serviceAttachments/*'
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The ComputeServiceAttachment selflink
+                                  in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                                  when not managed by Config Connector.
+                                type: string
+                              name:
+                                description: The `name` field of a `ComputeServiceAttachment`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` field of a `ComputeServiceAttachment`
+                                  resource.
+                                type: string
+                            type: object
+                        type: object
+                      type: array
+                    key:
+                      description: The key is the destination identifier that is supported
+                        by the Connector.
+                      type: string
+                  type: object
+                type: array
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource labels to represent user-provided
+                  metadata. Refer to cloud documentation on labels for more details.
+                  https://cloud.google.com/compute/docs/labeling-resources
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              lockConfig:
+                description: Optional. Configuration that indicates whether or not
+                  the Connection can be edited.
+                properties:
+                  locked:
+                    description: Indicates whether or not the connection is locked.
+                    type: boolean
+                  reason:
+                    description: Describes why a connection is locked.
+                    type: string
+                type: object
+              nodeConfig:
+                description: Optional. Node configuration for the connection.
+                properties:
+                  maxNodeCount:
+                    description: Maximum number of nodes in the runtime nodes.
+                    format: int32
+                    type: integer
+                  minNodeCount:
+                    description: Minimum number of nodes in the runtime nodes.
+                    format: int32
+                    type: integer
+                type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ConnectorsConnection name. If not given, the metadata.name
+                  will be used.
+                type: string
+              serviceAccountRef:
+                description: Optional. Service account needed for runtime plane to
+                  access GCP resources.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              sslConfig:
+                description: Optional. Ssl config of a connection
+                properties:
+                  additionalVariables:
+                    description: Additional SSL related field values
+                    items:
+                      properties:
+                        boolValue:
+                          description: Value is a bool.
+                          type: boolean
+                        intValue:
+                          description: Value is an integer
+                          format: int64
+                          type: integer
+                        key:
+                          description: Key of the config variable.
+                          type: string
+                        secretValueRef:
+                          description: Value is a secret.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed SecretManagerSecret
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                              type: string
+                            name:
+                              description: The name of a SecretManagerSecret resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a SecretManagerSecret
+                                resource.
+                              type: string
+                          type: object
+                        stringValue:
+                          description: Value is a string.
+                          type: string
+                      type: object
+                    type: array
+                  clientCertType:
+                    description: Type of Client Cert (PEM/JKS/.. etc.)
+                    type: string
+                  clientCertificateRef:
+                    description: Client Certificate
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed SecretManagerSecret
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                        type: string
+                      name:
+                        description: The name of a SecretManagerSecret resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a SecretManagerSecret resource.
+                        type: string
+                    type: object
+                  clientPrivateKeyPassRef:
+                    description: Secret containing the passphrase protecting the Client
+                      Private Key
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed SecretManagerSecret
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                        type: string
+                      name:
+                        description: The name of a SecretManagerSecret resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a SecretManagerSecret resource.
+                        type: string
+                    type: object
+                  clientPrivateKeyRef:
+                    description: Client Private Key
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed SecretManagerSecret
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                        type: string
+                      name:
+                        description: The name of a SecretManagerSecret resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a SecretManagerSecret resource.
+                        type: string
+                    type: object
+                  privateServerCertificateRef:
+                    description: Private Server Certificate. Needs to be specified
+                      if trust model is `PRIVATE`.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed SecretManagerSecret
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                        type: string
+                      name:
+                        description: The name of a SecretManagerSecret resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a SecretManagerSecret resource.
+                        type: string
+                    type: object
+                  serverCertType:
+                    description: Type of Server Cert (PEM/JKS/.. etc.)
+                    type: string
+                  trustModel:
+                    description: Trust Model of the SSL connection
+                    type: string
+                  type:
+                    description: Controls the ssl type for the given connector version.
+                    type: string
+                  useSSL:
+                    description: Bool for enabling SSL
+                    type: boolean
+                type: object
+              suspended:
+                description: Optional. Suspended indicates if a user has suspended
+                  a connection or not.
+                type: boolean
+            required:
+            - connectorVersionRef
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ConnectorsConnectionStatus defines the config connector machine
+              state of ConnectorsConnection
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ConnectorsConnection resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Created time.
+                    type: string
+                  envoyImageLocation:
+                    description: 'Output only. GCR location where the envoy image
+                      is stored. formatted like: gcr.io/{bucketName}/{imageName}'
+                    type: string
+                  imageLocation:
+                    description: 'Output only. GCR location where the runtime image
+                      is stored. formatted like: gcr.io/{bucketName}/{imageName}'
+                    type: string
+                  name:
+                    description: 'Output only. Resource name of the Connection. Format:
+                      projects/{project}/locations/{location}/connections/{connection}'
+                    type: string
+                  serviceDirectory:
+                    description: Output only. The name of the Service Directory service
+                      name. Used for Private Harpoon to resolve the ILB address. e.g.
+                      "projects/cloud-connectors-e2e-testing/locations/us-central1/namespaces/istio-system/services/istio-ingressgateway-connectors"
+                    type: string
+                  status:
+                    description: Output only. Current status of the connection.
+                    properties:
+                      description:
+                        description: Description.
+                        type: string
+                      state:
+                        description: State.
+                        type: string
+                      status:
+                        description: Status provides detailed information for the
+                          state.
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. Updated time.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
