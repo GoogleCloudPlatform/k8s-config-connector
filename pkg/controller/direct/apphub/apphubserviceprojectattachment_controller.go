@@ -22,8 +22,10 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -69,25 +71,35 @@ func (m *serviceProjectAttachmentModel) AdapterForObject(ctx context.Context, op
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	externalRef := ""
-	if obj.Status.ExternalRef != nil {
-		externalRef = *obj.Status.ExternalRef
+	// Always call common.NormalizeReferences to resolve any resource references:
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
-	id, err := krm.ParseAppHubServiceProjectAttachmentIdentity(externalRef)
+
+	idBase, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idBase.(*krm.AppHubServiceProjectAttachmentIdentity)
 
 	// Get apphub client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desired := AppHubServiceProjectAttachmentSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
 	return &ServiceProjectAttachmentAdapter{
 		id:        id,
 		inner:     obj,
 		gcpClient: gcpClient,
 		reader:    reader,
+		desired:   desired,
 	}, nil
 }
 
@@ -101,6 +113,9 @@ type ServiceProjectAttachmentAdapter struct {
 	inner     *krm.AppHubServiceProjectAttachment
 	gcpClient *gcp.Client
 	reader    client.Reader
+
+	desired *apphubpb.ServiceProjectAttachment
+	actual  *apphubpb.ServiceProjectAttachment
 }
 
 var _ directbase.Adapter = &ServiceProjectAttachmentAdapter{}
@@ -121,6 +136,8 @@ func (a *ServiceProjectAttachmentAdapter) Find(ctx context.Context) (bool, error
 		return false, fmt.Errorf("getting ServiceProjectAttachment %q: %w", a.id.String(), err)
 	}
 
+	a.actual = apiObj
+
 	mapCtx := &direct.MapContext{}
 	a.inner.Status.ObservedState = AppHubServiceProjectAttachmentObservedState_v1alpha1_FromProto(mapCtx, apiObj)
 	if mapCtx.Err() != nil {
@@ -135,24 +152,18 @@ func (a *ServiceProjectAttachmentAdapter) Create(ctx context.Context, createOp *
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ServiceProjectAttachment", "name", a.id.String())
 
-	mapCtx := &direct.MapContext{}
-	apiObj := AppHubServiceProjectAttachmentSpec_v1alpha1_ToProto(mapCtx, &a.inner.Spec)
-	if mapCtx.Err() != nil {
-		return fmt.Errorf("mapping to ServiceProjectAttachment: %w", mapCtx.Err())
-	}
-
 	projectRef, err := refs.ResolveProject(ctx, a.reader, a.inner.Namespace, a.inner.Spec.ServiceProjectRef)
 	if err != nil {
 		return err
 	}
-	apiObj.ServiceProject = "projects/" + projectRef.ProjectID
+	a.desired.ServiceProject = "projects/" + projectRef.ProjectID
 
 	parentStr := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 
 	req := &apphubpb.CreateServiceProjectAttachmentRequest{
 		Parent:                     parentStr,
 		ServiceProjectAttachmentId: a.id.ServiceProjectAttachment,
-		ServiceProjectAttachment:   apiObj,
+		ServiceProjectAttachment:   a.desired,
 	}
 
 	op, err := a.gcpClient.CreateServiceProjectAttachment(ctx, req)
@@ -160,45 +171,76 @@ func (a *ServiceProjectAttachmentAdapter) Create(ctx context.Context, createOp *
 		return fmt.Errorf("creating ServiceProjectAttachment %q: %w", a.id.String(), err)
 	}
 
-	apiObj, err = op.Wait(ctx)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("waiting for ServiceProjectAttachment %q to be created: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created ServiceProjectAttachment", "name", a.id.String())
 
-	status := &krm.AppHubServiceProjectAttachmentStatus{}
-	status.ObservedState = AppHubServiceProjectAttachmentObservedState_v1alpha1_FromProto(mapCtx, apiObj)
-	if mapCtx.Err() != nil {
-		return fmt.Errorf("mapping to AppHubServiceProjectAttachmentObservedState: %w", mapCtx.Err())
+	// Fetch the fully populated resource to be safe and update status
+	getReq := &apphubpb.GetServiceProjectAttachmentRequest{
+		Name: a.id.String(),
 	}
-	status.ExternalRef = direct.LazyPtr(apiObj.GetName())
-	return createOp.UpdateStatus(ctx, status, nil)
+	latest, err := a.gcpClient.GetServiceProjectAttachment(ctx, getReq)
+	if err != nil {
+		return fmt.Errorf("getting created ServiceProjectAttachment %q: %w", a.id.String(), err)
+	}
+
+	return a.updateStatus(ctx, createOp, latest)
 }
 
 // Update updates the GCP resource.
 func (a *ServiceProjectAttachmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ServiceProjectAttachment", "name", a.id.String())
-	status := &krm.AppHubServiceProjectAttachmentStatus{}
-	status.ObservedState = a.inner.Status.ObservedState
-	if a.inner.Status.ExternalRef != nil {
-		status.ExternalRef = a.inner.Status.ExternalRef
-	} else {
-		status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	projectRef, err := refs.ResolveProject(ctx, a.reader, a.inner.Namespace, a.inner.Spec.ServiceProjectRef)
+	if err != nil {
+		return err
 	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	a.desired.ServiceProject = "projects/" + projectRef.ProjectID
+
+	diff, err := compareServiceProjectAttachment(ctx, a.actual, a.desired, a.reader, a.inner.Namespace)
+	if err != nil {
+		return err
+	}
+
+	if diff.HasDiff() {
+		diff.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diff)
+		return fmt.Errorf("AppHubServiceProjectAttachment is immutable and cannot be updated")
+	}
+
+	return a.updateStatus(ctx, updateOp, a.actual)
 }
 
 // Export returns the KRM representation.
 func (a *ServiceProjectAttachmentAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	if a.inner == nil {
-		return nil, fmt.Errorf("inner is nil")
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
 	}
-	u, err := runtime.DefaultUnstructuredConverter.ToUnstructured(a.inner)
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.AppHubServiceProjectAttachment{}
+	mapCtx := &direct.MapContext{}
+	spec := AppHubServiceProjectAttachmentSpec_v1alpha1_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	if spec != nil {
+		obj.Spec = *spec
+	}
+
+	obj.Spec.Location = &a.id.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: fmt.Sprintf("projects/%s", a.id.Project)}
+	obj.Spec.ResourceID = &a.id.ServiceProjectAttachment
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
-	return &unstructured.Unstructured{Object: u}, nil
+	u.Object = uObj
+	return u, nil
 }
 
 // Delete deletes the GCP resource.
@@ -227,4 +269,43 @@ func (a *ServiceProjectAttachmentAdapter) Delete(ctx context.Context, deleteOp *
 	}
 
 	return true, nil
+}
+
+func (a *ServiceProjectAttachmentAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *apphubpb.ServiceProjectAttachment) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.AppHubServiceProjectAttachmentStatus{}
+	status.ObservedState = AppHubServiceProjectAttachmentObservedState_v1alpha1_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(latest.GetName())
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareServiceProjectAttachment(ctx context.Context, actual, desired *apphubpb.ServiceProjectAttachment, reader client.Reader, namespace string) (*structuredreporting.Diff, error) {
+	if actual.GetServiceProject() == desired.GetServiceProject() {
+		return &structuredreporting.Diff{}, nil
+	}
+
+	// Since actual.ServiceProject might be projects/<number> and desired.ServiceProject might be projects/<id> (or vice versa),
+	// we attempt to resolve both to see if they refer to the same project.
+	desiredRef := &refs.ProjectRef{External: desired.GetServiceProject()}
+	actualRef := &refs.ProjectRef{External: actual.GetServiceProject()}
+
+	desiredProj, err := refs.ResolveProject(ctx, reader, namespace, desiredRef)
+	if err != nil {
+		return nil, fmt.Errorf("resolving desired project: %w", err)
+	}
+	actualProj, err := refs.ResolveProject(ctx, reader, namespace, actualRef)
+	if err != nil {
+		return nil, fmt.Errorf("resolving actual project: %w", err)
+	}
+
+	if desiredProj != nil && actualProj != nil && desiredProj.ProjectID == actualProj.ProjectID {
+		return &structuredreporting.Diff{}, nil
+	}
+
+	diff := &structuredreporting.Diff{}
+	diff.AddField("spec.serviceProjectRef", actual.GetServiceProject(), desired.GetServiceProject())
+	return diff, nil
 }

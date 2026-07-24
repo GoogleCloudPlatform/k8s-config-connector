@@ -1,0 +1,12 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/proj-${uniqueId}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: proj-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: apphub.cnrm.cloud.google.com
+  kind: AppHubServiceProjectAttachment
+  name: apphubserviceprojectattachment-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
