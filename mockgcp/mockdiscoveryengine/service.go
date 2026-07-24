@@ -21,6 +21,7 @@ import (
 	"google.golang.org/grpc"
 
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pbb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -66,6 +67,8 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataStoreServiceServer(grpcServer, &dataStoreService{MockService: s})
 	pb.RegisterConversationalSearchServiceServer(grpcServer, &conversationalSearchService{MockService: s})
+	pbb.RegisterSampleQueryServiceServer(grpcServer, &sampleQueryService{MockService: s})
+	pbb.RegisterSampleQuerySetServiceServer(grpcServer, &sampleQuerySetService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,6 +79,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.AddService(pb.NewDataStoreServiceClient(conn))
 	mux.AddService(pb.NewConversationalSearchServiceClient(conn))
+	mux.AddService(pbb.NewSampleQueryServiceClient(conn))
+	mux.AddService(pbb.NewSampleQuerySetServiceClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil

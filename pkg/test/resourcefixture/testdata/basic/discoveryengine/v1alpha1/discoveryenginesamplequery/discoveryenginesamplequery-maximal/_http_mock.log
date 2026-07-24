@@ -1,0 +1,320 @@
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "SampleQuerySet projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets?%24alt=json%3Benum-encoding%3Dint&sampleQuerySetId=samplequeryset-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "Query set for maximal sample query test",
+  "displayName": "Sample Query Set Maximal ${uniqueId}",
+  "name": "projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Query set for maximal sample query test",
+  "displayName": "Sample Query Set Maximal ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}%2FsampleQueries%2Fsamplequery-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "SampleQuery projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries?%24alt=json%3Benum-encoding%3Dint&sampleQueryId=samplequery-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "name": "projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}",
+  "queryEntry": {
+    "query": "what is cloud config connector?",
+    "targets": [
+      {
+        "pageNumbers": [
+          1,
+          2
+        ],
+        "uri": "https://cloud.google.com/config-connector/docs/overview"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}",
+  "queryEntry": {
+    "query": "what is cloud config connector?",
+    "targets": [
+      {
+        "pageNumbers": [
+          1,
+          2
+        ],
+        "uri": "https://cloud.google.com/config-connector/docs/overview"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}%2FsampleQueries%2Fsamplequery-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}",
+  "queryEntry": {
+    "query": "what is cloud config connector?",
+    "targets": [
+      {
+        "pageNumbers": [
+          1,
+          2
+        ],
+        "uri": "https://cloud.google.com/config-connector/docs/overview"
+      }
+    ]
+  }
+}
+
+---
+
+PATCH https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=queryEntry
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: sample_query.name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}%2FsampleQueries%2Fsamplequery-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "name": "projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}",
+  "queryEntry": {
+    "query": "what is kubernetes config connector?",
+    "targets": [
+      {
+        "pageNumbers": [
+          1,
+          2,
+          3
+        ],
+        "uri": "https://cloud.google.com/config-connector/docs/how-to"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}",
+  "queryEntry": {
+    "query": "what is kubernetes config connector?",
+    "targets": [
+      {
+        "pageNumbers": [
+          1,
+          2,
+          3
+        ],
+        "uri": "https://cloud.google.com/config-connector/docs/how-to"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}%2FsampleQueries%2Fsamplequery-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}",
+  "queryEntry": {
+    "query": "what is kubernetes config connector?",
+    "targets": [
+      {
+        "pageNumbers": [
+          1,
+          2,
+          3
+        ],
+        "uri": "https://cloud.google.com/config-connector/docs/how-to"
+      }
+    ]
+  }
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}/sampleQueries/samplequery-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}%2FsampleQueries%2Fsamplequery-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Query set for maximal sample query test",
+  "displayName": "Sample Query Set Maximal ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}"
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/samplequeryset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsamplequeryset-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
