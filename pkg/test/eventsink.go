@@ -77,7 +77,7 @@ func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { /
 	}
 
 	// HACK: Filter oauth events
-	if strings.Contains(entry.Request.URL, "oauth2.googleapis.com") {
+	if strings.Contains(entry.Request.URL, "oauth2.googleapis.com") || strings.Contains(entry.Request.URL, "oauth2.mtls.googleapis.com") {
 		return
 	}
 	s.HTTPEvents = append(s.HTTPEvents, entry)
