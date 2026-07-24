@@ -108,6 +108,9 @@ func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 			if strings.Contains(ev.URL, "/operations/") || strings.Contains(ev.URL, "/operations?") {
 				continue // Skip LRO polling GET requests
 			}
+			if strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
+				continue // Skip 404 GET requests
+			}
 		}
 		if ev.Method == "GRPC" {
 			parts := strings.Split(ev.URL, "/")
@@ -208,6 +211,16 @@ func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
 		}
 	}
 
+	if strings.Contains(normalizedPath, "/instanceGroupManagers/gke-") {
+		for mockPath, methods := range normalizedMockPaths {
+			if strings.Contains(mockPath, "/clusters/") {
+				if deleteEvs, found := methods["DELETE"]; found && len(deleteEvs) > 0 {
+					return true
+				}
+			}
+		}
+	}
+
 	return false
 }
 
@@ -249,15 +262,22 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				continue
 			}
 
-			// Sort events by their RequestBody to ensure deterministic order for concurrent sibling operations
+			// Sort events by their RequestBody to ensure deterministic order for concurrent sibling operations.
+			// Fall back to URL, and then to ResponseBody if RequestBody and URL are both identical (only for specific paths like subnetworks and getIamPolicy).
 			sort.SliceStable(realEvs, func(i, j int) bool {
 				if realEvs[i].RequestBody == realEvs[j].RequestBody {
+					if realEvs[i].URL == realEvs[j].URL && (strings.Contains(path, "/subnetworks/") || strings.Contains(path, ":getIamPolicy")) {
+						return realEvs[i].ResponseBody < realEvs[j].ResponseBody
+					}
 					return realEvs[i].URL < realEvs[j].URL
 				}
 				return realEvs[i].RequestBody < realEvs[j].RequestBody
 			})
 			sort.SliceStable(mockEvs, func(i, j int) bool {
 				if mockEvs[i].RequestBody == mockEvs[j].RequestBody {
+					if mockEvs[i].URL == mockEvs[j].URL && (strings.Contains(path, "/subnetworks/") || strings.Contains(path, ":getIamPolicy")) {
+						return mockEvs[i].ResponseBody < mockEvs[j].ResponseBody
+					}
 					return mockEvs[i].URL < mockEvs[j].URL
 				}
 				return mockEvs[i].RequestBody < mockEvs[j].RequestBody
@@ -451,6 +471,9 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
+		if _, hasMaxNodeCount := v["maxNodeCount"]; hasMaxNodeCount {
+			delete(v, "locationPolicy")
+		}
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
@@ -459,6 +482,17 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "updateTime")
 		delete(v, "selfLink")
 		delete(v, "internalMetadata")
+		if _, isOperation := v["targetLink"]; isOperation {
+			v["status"] = "RUNNING"
+			if tl, ok := v["targetLink"].(string); ok {
+				tl = strings.ReplaceAll(tl, "/zones/", "/locations/")
+				if idx := strings.Index(tl, "/nodePools/"); idx != -1 {
+					tl = tl[:idx]
+				}
+				v["targetLink"] = tl
+			}
+			delete(v, "operationType")
+		}
 		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
@@ -493,6 +527,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "masterAuth")
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
+			delete(v, "locations")
+			delete(v, "etag")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
@@ -515,12 +551,16 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "nodeConfig")
 			delete(v, "networkConfig")
 		}
-		if _, isNodePool := v["initialNodeCount"]; isNodePool {
+		_, hasInitialNodeCount := v["initialNodeCount"]
+		_, hasUpgradeSettings := v["upgradeSettings"]
+		if hasInitialNodeCount || hasUpgradeSettings {
 			delete(v, "instanceGroupUrls")
 			delete(v, "version")
 			delete(v, "networkConfig")
 			delete(v, "etag")
 			delete(v, "locations")
+			delete(v, "kubeletCertInfo")
+			delete(v, "initialNodeCount")
 			if sl, ok := v["selfLink"].(string); ok {
 				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
 			}

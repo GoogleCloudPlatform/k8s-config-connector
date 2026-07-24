@@ -238,22 +238,21 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		}
 		visitor.replacePaths[".status.observedState.controlPlaneEndpointsConfig.dnsEndpointConfig.endpoint"] = endpoint
 
+		nodePoolName := u.GetName()
+		nodePoolPrefix := strings.TrimSuffix(nodePoolName, uniqueID)
+
 		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 			// Replace GKE instance group manager names
 			// format: gke-cluster-sample-<something>-nodepool-sample-<uniqueid>-grp
 			// or gke-cluster-sample-<something>-default-pool-<something>-grp
 			// Normalize to: gke-containercluster-abcdef-<nodepool-suffix>-grp
-			reNodePoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
-			s = reNodePoolIGM.ReplaceAllStringFunc(s, func(match string) string {
-				submatches := reNodePoolIGM.FindStringSubmatch(match)
-				return "instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
-			})
+			if nodePoolPrefix != "" {
+				reNodePoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-` + regexp.QuoteMeta(nodePoolPrefix) + `[a-z0-9\-]*`)
+				s = reNodePoolIGM.ReplaceAllString(s, "instanceGroupManagers/gke-containercluster-abcdef-"+nodePoolName+"-grp")
 
-			reNodePoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
-			s = reNodePoolIG.ReplaceAllStringFunc(s, func(match string) string {
-				submatches := reNodePoolIG.FindStringSubmatch(match)
-				return "instanceGroups/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
-			})
+				reNodePoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-` + regexp.QuoteMeta(nodePoolPrefix) + `[a-z0-9\-]*`)
+				s = reNodePoolIG.ReplaceAllString(s, "instanceGroups/gke-containercluster-abcdef-"+nodePoolName+"-grp")
+			}
 
 			reDefaultPoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-default-pool(-[a-z0-9]+)?-grp`)
 			s = reDefaultPoolIGM.ReplaceAllString(s, "instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp")

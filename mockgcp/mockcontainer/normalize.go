@@ -16,6 +16,7 @@ package mockcontainer
 
 import (
 	"net"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -39,6 +40,33 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(".maintenancePolicy.resourceVersion", "abcd1234")
 
 		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
+
+		replacements.RemovePath(".networkConfig.networkTierConfig")
+		replacements.RemovePath(".nodePools[].networkConfig.networkTierConfig")
+
+		replacements.RemovePath(".config.nodeImageConfig")
+		replacements.RemovePath(".nodePools[].config.nodeImageConfig")
+
+		replacements.RemovePath(".initialNodeCount")
+		replacements.RemovePath(".nodePools[].initialNodeCount")
+
+		replacements.RemovePath(".instanceGroupUrls")
+		replacements.RemovePath(".nodePools[].instanceGroupUrls")
+
+		replacements.RemovePath(".kubeletCertInfo")
+		replacements.RemovePath(".nodePools[].kubeletCertInfo")
+
+		// Clean up etag for GKE clusters / node pools without leakage to other services like IAM
+		replacements.TransformObject("", func(m map[string]any) {
+			isGKECluster := m["monitoringService"] != nil || m["databaseEncryption"] != nil || m["nodeConfig"] != nil || m["addonsConfig"] != nil
+			isGKENodePool := m["config"] != nil || m["upgradeSettings"] != nil
+			if isGKECluster || isGKENodePool {
+				delete(m, "etag")
+			}
+		})
+		replacements.TransformObject(".nodePools[]", func(m map[string]any) {
+			delete(m, "etag")
+		})
 	}
 }
 
@@ -50,6 +78,13 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if !isContainerAPI(event.URL()) {
 		return
 	}
+
+	// Normalize GKE version
+	versionRegex := regexp.MustCompile(`^1\.\d+\.\d+-gke\.\d+$`)
+	// Normalize GKE IP/CIDR
+	cidrRegex := regexp.MustCompile(`^10\.\d+\.\d+\.\d+/\d+$`)
+	// Normalize GKE pod range names
+	podRangeRegex := regexp.MustCompile(`^gke-[a-zA-Z0-9\-\${}]+-pods-[0-9a-fA-F\d]+$`)
 
 	// Replace public IP addresses with placeholders.
 	event.VisitResponseStringValues(func(path string, value string) {
@@ -65,6 +100,14 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			if isIPv4Address(value) {
 				replacements.ReplaceStringValue(value, "${privateEndpointIPV4}")
 			}
+		}
+
+		if versionRegex.MatchString(value) {
+			replacements.ReplaceStringValue(value, "1.35.6-gke.1049000")
+		} else if cidrRegex.MatchString(value) {
+			replacements.ReplaceStringValue(value, "10.0.0.0/14")
+		} else if podRangeRegex.MatchString(value) {
+			replacements.ReplaceStringValue(value, "gke-cluster-sample-${uniqueId}-pods-abcdef01")
 		}
 	})
 }
