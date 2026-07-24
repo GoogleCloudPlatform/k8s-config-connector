@@ -74,6 +74,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":              true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}": true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                    true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                  true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
@@ -249,7 +250,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
 
 		// Storage
-		"//storage.googleapis.com/projects/{}/buckets/{}": true,
+		"//storage.googleapis.com/projects/{}/buckets/{}":            true,
+		"//storage.googleapis.com/projects/{}/buckets/{}/objects/{}": true,
 
 		// Storage Insights
 		"//storageinsights.googleapis.com/projects/{}/locations/{}/datasetConfigs/{}": true,

@@ -79,7 +79,7 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStats.validationDataItemsCount" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
+[missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.inputs" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.latentSpaceSource" is not set in unstructured objects
@@ -3687,7 +3687,7 @@
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.projectAllowlist[]" is not set in unstructured objects
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].projectID" is not set in unstructured objects
-[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
+[missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaifeatureonlinestores.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.optimized" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" is not set in unstructured objects
@@ -3713,7 +3713,7 @@
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicEndpointEnabled" is not set in unstructured objects
 [missing_field] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
-[missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
+[missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
@@ -3722,6 +3722,64 @@
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservedIPRanges[]" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateURI" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowQueueing" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.acceleratorCount" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.acceleratorType" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.machineType" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.reservationAffinity.key" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.reservationAffinity.reservationAffinityType" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.reservationAffinity.values[]" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.tpuTopology" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.networkSpec.enableInternetAccess" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.networkSpec.networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.networkSpec.subnetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.persistentDiskSpec.diskSizeGB" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.persistentDiskSpec.diskType" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.dataformRepositorySource.commitSha" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.dataformRepositorySource.dataformRepositoryRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.directNotebookSource.content" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.displayName" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.executionTimeout" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.executionUser" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.gcsNotebookSource.generationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.gcsNotebookSource.uriRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.gcsOutputURIRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.kernelName" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.labels" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.notebookRuntimeTemplateResourceName" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.scheduleRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJobID" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.parent" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.parent" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.displayName" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.labels" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.location" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pipelineSpec" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.preflightValidations" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].targetProject" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.reservedIPRanges[]" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.runtimeConfig.failurePolicy" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.runtimeConfig.gcsOutputDirectory" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.templateURI" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJobID" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.cron" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.endTime" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.maxConcurrentRunCount" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.maxRunCount" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.startTime" is not set in unstructured objects
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
@@ -3772,7 +3830,7 @@
 [missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
+[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputDataConfig.annotationSchemaURI" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputDataConfig.annotationsFilter" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputDataConfig.bigqueryDestination.outputURI" is not set in unstructured objects
@@ -3872,7 +3930,7 @@
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.dataStats.validationDataItemsCount" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.description" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.displayName" is not set in unstructured objects
-[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.encryptionSpec.kmsKeyName" is not set in unstructured objects
+[missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.metadata.featureAttributionsSchemaURI" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.metadata.inputs" is not set in unstructured objects
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.explanationSpec.metadata.latentSpaceSource" is not set in unstructured objects
@@ -3925,7 +3983,7 @@
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingTaskInputs.structValue" is not set in unstructured objects
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModel" is not set in unstructured objects
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyName" is not set in unstructured objects
+[missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
