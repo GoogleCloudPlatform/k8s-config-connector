@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/vertexai-pipelinejob-bucket-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: vertexai-pipelinejob-bucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: VertexAISchedule
+  name: vertexaischedule-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
