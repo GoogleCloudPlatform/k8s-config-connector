@@ -24,6 +24,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".error.details")
 	replacements.ReplacePath(".pairingKey.expireTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.pairingKey.expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
