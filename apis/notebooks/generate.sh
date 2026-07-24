@@ -30,7 +30,8 @@ go run . generate-types \
   --resource NotebooksEnvironment:Environment \
   --resource NotebooksExecution:Execution \
   --resource NotebooksSchedule:Schedule \
-  --resource NotebookInstanceV2:Instance
+  --resource NotebookInstanceV2:Instance \
+  --resource NotebookRuntime:Runtime
 
 # --- v1beta1 ---
 go run . generate-types \
@@ -46,6 +47,13 @@ go run . generate-mapper \
   --include-skipped-output
 
 cd ${REPO_ROOT}
+
+# The controller builder generates runtime_types.go because the proto message is Runtime.
+# But we already have notebookruntime_types.go, and we do not want to overwrite it.
+if [ -f apis/notebooks/v1alpha1/runtime_types.go ]; then
+  rm apis/notebooks/v1alpha1/runtime_types.go
+fi
+
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/notebooks" ]; then

@@ -26,3 +26,5 @@ type CloudAssetFolderFeedExpansion interface{}
 type CloudAssetOrganizationFeedExpansion interface{}
 
 type CloudAssetProjectFeedExpansion interface{}
+
+type CloudAssetSavedQueryExpansion interface{}
