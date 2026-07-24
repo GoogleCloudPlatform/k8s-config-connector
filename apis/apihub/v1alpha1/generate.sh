@@ -22,7 +22,22 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
+
 go run . generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.apihub.v1 \
   --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
   --resource APIHubDeployment:Deployment \
@@ -31,9 +46,13 @@ go run . generate-types \
   --resource APIHubPlugin:Plugin \
   --resource APIHubExternalAPI:ExternalApi \
   --resource APIHubInstance:ApiHubInstance \
+  --resource APIHubCuration:Curation \
   --prune-unused-types=false
 
-go run . generate-mapper --service google.cloud.apihub.v1 --api-version apihub.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.apihub.v1 \
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
