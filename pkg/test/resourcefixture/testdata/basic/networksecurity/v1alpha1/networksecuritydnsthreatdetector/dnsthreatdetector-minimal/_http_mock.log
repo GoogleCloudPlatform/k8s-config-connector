@@ -1,0 +1,76 @@
+GRPC /google.cloud.networksecurity.v1.DnsThreatDetectorService/GetDnsThreatDetector
+
+{
+  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.DnsThreatDetectorService/CreateDnsThreatDetector
+
+{
+  "dnsThreatDetector": {
+    "provider": "INFOBLOX"
+  },
+  "dnsThreatDetectorId": "dnsthreatdetector-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}",
+  "provider": "INFOBLOX",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.DnsThreatDetectorService/GetDnsThreatDetector
+
+{
+  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}",
+  "provider": "INFOBLOX",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.DnsThreatDetectorService/GetDnsThreatDetector
+
+{
+  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}",
+  "provider": "INFOBLOX",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.DnsThreatDetectorService/DeleteDnsThreatDetector
+
+{
+  "name": "projects/${projectId}/locations/global/dnsThreatDetectors/dnsthreatdetector-min-${uniqueId}"
+}
+
+OK
+
+{}
