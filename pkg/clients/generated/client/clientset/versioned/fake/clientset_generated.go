@@ -233,6 +233,8 @@ import (
 	fakeedgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1/fake"
 	edgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1"
 	fakeedgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1/fake"
+	enterpriseknowledgegraphv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/enterpriseknowledgegraph/v1alpha1"
+	fakeenterpriseknowledgegraphv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/enterpriseknowledgegraph/v1alpha1/fake"
 	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1beta1"
 	fakeessentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1beta1/fake"
 	eventarcv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1alpha1"
@@ -1037,6 +1039,11 @@ func (c *Clientset) EdgecontainerV1beta1() edgecontainerv1beta1.EdgecontainerV1b
 // EdgenetworkV1beta1 retrieves the EdgenetworkV1beta1Client
 func (c *Clientset) EdgenetworkV1beta1() edgenetworkv1beta1.EdgenetworkV1beta1Interface {
 	return &fakeedgenetworkv1beta1.FakeEdgenetworkV1beta1{Fake: &c.Fake}
+}
+
+// EnterpriseknowledgegraphV1alpha1 retrieves the EnterpriseknowledgegraphV1alpha1Client
+func (c *Clientset) EnterpriseknowledgegraphV1alpha1() enterpriseknowledgegraphv1alpha1.EnterpriseknowledgegraphV1alpha1Interface {
+	return &fakeenterpriseknowledgegraphv1alpha1.FakeEnterpriseknowledgegraphV1alpha1{Fake: &c.Fake}
 }
 
 // EssentialcontactsV1beta1 retrieves the EssentialcontactsV1beta1Client

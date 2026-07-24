@@ -328,6 +328,7 @@
 | edgecontainer.cnrm.cloud.google.com            | EdgeContainerVpnConnection                      | False        | True        | False  | Terraform  | False       |
 | edgenetwork.cnrm.cloud.google.com              | EdgeNetworkNetwork                              | False        | True        | False  | Terraform  | False       |
 | edgenetwork.cnrm.cloud.google.com              | EdgeNetworkSubnet                               | False        | True        | False  | Terraform  | False       |
+| enterpriseknowledgegraph.cnrm.cloud.google.com | EnterpriseKnowledgeGraphEntityReconciliationJob | True         | False       | False  | Direct     | True        |
 | essentialcontacts.cnrm.cloud.google.com        | EssentialContactsContact                        | True         | True        | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                 | EventarcChannelConnection                       | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                 | EventarcChannel                                 | True         | False       | False  | Direct     | True        |
@@ -403,6 +404,7 @@
 | kms.cnrm.cloud.google.com                      | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                      | KMSKeyRing                                      | False        | True        | False  | Terraform  | True        |
 | kms.cnrm.cloud.google.com                      | KMSSecretCiphertext                             | True         | False       | False  | Terraform  | True        |
+| licensemanager.cnrm.cloud.google.com           | LicenseManagerConfiguration                     | True         | False       | False  | Direct     | True        |
 | livestream.cnrm.cloud.google.com               | LiveStreamAsset                                 | True         | False       | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                  | LoggingLink                                     | True         | True        | False  | Direct     | True        |
 | logging.cnrm.cloud.google.com                  | LoggingLogBucket                                | False        | True        | False  | DCL        | True        |
@@ -437,6 +439,7 @@
 | netapp.cnrm.cloud.google.com                   | NetAppBackupVault                               | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityHub                          | False        | True        | False  | DCL        | False       |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityInternalRange                | True         | False       | False  | Direct     | True        |
+| networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityMulticloudDataTransferConfig | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityRegionalEndpoint             | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivityServiceConnectionPolicy      | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com      | NetworkConnectivitySpoke                        | False        | True        | False  | DCL        | False       |
