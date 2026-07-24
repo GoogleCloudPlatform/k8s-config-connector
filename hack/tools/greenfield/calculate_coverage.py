@@ -155,7 +155,7 @@ def match_resources(gcp_resources, kcc_resources):
         name_norm = gcp_name.lower()
         for kcc_kind in kcc_map[matched_kcc_service]:
             kind_norm = kcc_kind.lower()
-            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
+            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "bigquerydata", "api"]
             if kind_norm == name_norm:
                 covered.add(gcp_type)
                 break
@@ -341,7 +341,7 @@ def main():
         name_norm = gcp_name.lower()
         for kcc_kind in kcc_map[matched_kcc_service]:
             kind_norm = kcc_kind.lower()
-            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
+            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "bigquerydata", "api"]
             if kind_norm == name_norm:
                 covered.add(key)
                 break

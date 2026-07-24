@@ -31,7 +31,6 @@ This file tracks the progress of new "Direct" resource implementations.
 | BeyondCorpClientGateway | beyondcorp | [#8419](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8419) | - | - | 1 | MERGED | - |
 | BigLakeCatalog | biglake | [#9454](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9454) | [#9615](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9615) | [#8626](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8626) | 3 | CLOSED | - |
 | BigQueryAnalyticsHubDataExchange | analyticshub | [#8471](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8471) | [#9371](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9371) | [#7530](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7530) | 2 | OPEN | - |
-| BigQueryDataTransferTransferConfig | bigquerydatatransfer | [#9030](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9030) | - | - | 1 | OPEN | - |
 | BigQueryMigrationMigrationWorkflow | bigquerymigration | [#9029](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9029) | - | - | 1 | OPEN | - |
 | BigQueryMigrationWorkflow | bigquerymigration | [#8699](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8699) | - | - | 1 | OPEN | - |
 | BigQueryReservationReservationGroup | bigqueryreservation | [#9041](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9041) | - | - | 1 | OPEN | - |
