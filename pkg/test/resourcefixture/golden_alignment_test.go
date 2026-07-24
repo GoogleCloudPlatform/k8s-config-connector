@@ -476,6 +476,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "peerings")
 			delete(v, "routingConfig")
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "compute#subnetwork" {
+			delete(v, "allowSubnetCidrRoutesOverlap")
+			delete(v, "enableFlowLogs")
+			delete(v, "stackType")
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "storage#objects" {
 			delete(v, "prefixes")
 		}
