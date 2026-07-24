@@ -17,7 +17,6 @@ package networksecurity
 import (
 	"context"
 	"fmt"
-	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
@@ -30,10 +29,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
+	networksecurity "cloud.google.com/go/networksecurity/apiv1"
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"google.golang.org/api/option"
-	"google.golang.org/api/transport/grpc"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -55,18 +53,18 @@ type tlsInspectionPolicyModel struct {
 	config config.ControllerConfig
 }
 
-func (m *tlsInspectionPolicyModel) client(ctx context.Context) (pb.NetworkSecurityClient, longrunningpb.OperationsClient, error) {
+func (m *tlsInspectionPolicyModel) client(ctx context.Context) (*networksecurity.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
-	conn, err := grpc.Dial(ctx, opts...)
+	client, err := networksecurity.NewClient(ctx, opts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("dialing networksecurity service: %w", err)
+		return nil, fmt.Errorf("creating networksecurity client: %w", err)
 	}
-	return pb.NewNetworkSecurityClient(conn), longrunningpb.NewOperationsClient(conn), nil
+	return client, nil
 }
 
 func (m *tlsInspectionPolicyModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -86,7 +84,7 @@ func (m *tlsInspectionPolicyModel) AdapterForObject(ctx context.Context, op *dir
 		return nil, err
 	}
 
-	gcpClient, operationsClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -99,17 +97,16 @@ func (m *tlsInspectionPolicyModel) AdapterForObject(ctx context.Context, op *dir
 
 	desired.Name = id.(*krm.NetworkSecurityTLSInspectionPolicyIdentity).String()
 	if obj.Spec.CaPoolRef != nil {
-		desired.CaPool = obj.Spec.CaPoolRef.External
+		desired.CaPool = privatecarefs.StripCAPoolPrefix(obj.Spec.CaPoolRef.External)
 	}
 	if obj.Spec.TrustConfigRef != nil {
 		desired.TrustConfig = obj.Spec.TrustConfigRef.External
 	}
 
 	return &tlsInspectionPolicyAdapter{
-		id:               id.(*krm.NetworkSecurityTLSInspectionPolicyIdentity),
-		gcpClient:        gcpClient,
-		operationsClient: operationsClient,
-		desired:          desired,
+		id:        id.(*krm.NetworkSecurityTLSInspectionPolicyIdentity),
+		gcpClient: gcpClient,
+		desired:   desired,
 	}, nil
 }
 
@@ -118,11 +115,10 @@ func (m *tlsInspectionPolicyModel) AdapterForURL(ctx context.Context, url string
 }
 
 type tlsInspectionPolicyAdapter struct {
-	id               *krm.NetworkSecurityTLSInspectionPolicyIdentity
-	gcpClient        pb.NetworkSecurityClient
-	operationsClient longrunningpb.OperationsClient
-	desired          *pb.TlsInspectionPolicy
-	actual           *pb.TlsInspectionPolicy
+	id        *krm.NetworkSecurityTLSInspectionPolicyIdentity
+	gcpClient *networksecurity.Client
+	desired   *pb.TlsInspectionPolicy
+	actual    *pb.TlsInspectionPolicy
 }
 
 var _ directbase.Adapter = &tlsInspectionPolicyAdapter{}
@@ -158,7 +154,7 @@ func (a *tlsInspectionPolicyAdapter) Create(ctx context.Context, createOp *direc
 		return fmt.Errorf("creating TlsInspectionPolicy %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("TlsInspectionPolicy %s waiting creation: %w", a.id, err)
 	}
@@ -202,7 +198,7 @@ func (a *tlsInspectionPolicyAdapter) Update(ctx context.Context, updateOp *direc
 	if err != nil {
 		return fmt.Errorf("updating TlsInspectionPolicy %s: %w", a.id, err)
 	}
-	err = a.waitForOperation(ctx, op)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("TlsInspectionPolicy %s waiting update: %w", a.id, err)
 	}
@@ -286,7 +282,7 @@ func (a *tlsInspectionPolicyAdapter) Delete(ctx context.Context, deleteOp *direc
 		return false, fmt.Errorf("deleting TlsInspectionPolicy %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete TlsInspectionPolicy %s: %w", a.id, err)
 	}
@@ -304,27 +300,4 @@ func (a *tlsInspectionPolicyAdapter) updateStatus(ctx context.Context, op direct
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
-}
-
-func (a *tlsInspectionPolicyAdapter) waitForOperation(ctx context.Context, op *longrunningpb.Operation) error {
-	for {
-		req := &longrunningpb.GetOperationRequest{
-			Name: op.GetName(),
-		}
-		current, err := a.operationsClient.GetOperation(ctx, req)
-		if err != nil {
-			return fmt.Errorf("getting operation %q: %w", op.GetName(), err)
-		}
-		if current.GetDone() {
-			if current.GetError() != nil {
-				return fmt.Errorf("operation failed: %s", current.GetError().GetMessage())
-			}
-			return nil
-		}
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(1 * time.Second):
-		}
-	}
 }
