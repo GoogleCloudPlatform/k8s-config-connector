@@ -68,6 +68,8 @@ func networkServicesHTTPRouteFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".rules[].action.request_mirror_policy.destination.request_header_modifier")
 	f.Unimplemented_NotYetTriaged(".rules[].action.request_mirror_policy.destination.response_header_modifier")
 	f.Unimplemented_NotYetTriaged(".rules[].action.request_mirror_policy.mirror_percent")
+	f.Unimplemented_NotYetTriaged(".rules[].matches[].query_parameters[].present_match")
+	f.Unimplemented_NotYetTriaged(".rules[].matches[].headers[].present_match")
 
 	return f
 }

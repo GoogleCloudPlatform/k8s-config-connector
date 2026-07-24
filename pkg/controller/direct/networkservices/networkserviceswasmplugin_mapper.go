@@ -136,3 +136,22 @@ func WasmPlugin_VersionDetails_PluginConfigUri_ToProto(mapCtx *direct.MapContext
 		PluginConfigUri: *in,
 	}
 }
+
+func NetworkServicesWasmPluginSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krm.NetworkServicesWasmPluginSpec {
+	return NetworkServicesWasmPluginSpec_FromProto(mapCtx, in)
+}
+func NetworkServicesWasmPluginSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesWasmPluginSpec) *pb.WasmPlugin {
+	return NetworkServicesWasmPluginSpec_ToProto(mapCtx, in)
+}
+func NetworkServicesWasmPluginObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krm.NetworkServicesWasmPluginObservedState {
+	return NetworkServicesWasmPluginObservedState_FromProto(mapCtx, in)
+}
+func NetworkServicesWasmPluginObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesWasmPluginObservedState) *pb.WasmPlugin {
+	return NetworkServicesWasmPluginObservedState_ToProto(mapCtx, in)
+}
+func WasmPlugin_VersionDetails_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_VersionDetails) *krm.WasmPlugin_VersionDetails {
+	return WasmPlugin_VersionDetails_FromProto(mapCtx, in)
+}
+func WasmPlugin_VersionDetails_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_VersionDetails) *pb.WasmPlugin_VersionDetails {
+	return WasmPlugin_VersionDetails_ToProto(mapCtx, in)
+}

@@ -28,7 +28,7 @@ import (
 	dataformpb "cloud.google.com/go/dataform/apiv1/dataformpb"
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
 	krmdataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
+	krmdataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -92,11 +92,11 @@ func DataformFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataf
 	// MISSING: CreatorIAMPrincipal
 	return out
 }
-func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.DataformRepositoryObservedState {
+func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krmdataformv1beta1.DataformRepositoryObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataformRepositoryObservedState{}
+	out := &krmdataformv1beta1.DataformRepositoryObservedState{}
 	// MISSING: Name
 	// MISSING: ContainingFolder
 	// MISSING: TeamFolderName
@@ -107,7 +107,7 @@ func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: InternalMetadata
 	return out
 }
-func DataformRepositoryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataformRepositoryObservedState) *pb.Repository {
+func DataformRepositoryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1beta1.DataformRepositoryObservedState) *pb.Repository {
 	if in == nil {
 		return nil
 	}

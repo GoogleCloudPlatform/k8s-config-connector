@@ -16,29 +16,29 @@ package networkservices
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
+	krmnetworkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
+	krmnetworkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func NetworkServicesHTTPRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krm.NetworkServicesHTTPRouteSpec {
+func NetworkServicesHTTPRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesHTTPRouteSpec{}
+	out := &krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Hostnames = in.GetHostnames()
 
 	if in.GetGateways() != nil {
-		out.Gateways = make([]krm.NetworkServicesGatewayRef, len(in.GetGateways()))
+		out.Gateways = make([]krmnetworkservicesv1beta1.NetworkServicesGatewayRef, len(in.GetGateways()))
 		for i, g := range in.GetGateways() {
-			out.Gateways[i] = krm.NetworkServicesGatewayRef{External: g}
+			out.Gateways[i] = krmnetworkservicesv1beta1.NetworkServicesGatewayRef{External: g}
 		}
 	}
 	if in.GetMeshes() != nil {
-		out.Meshes = make([]v1alpha1.NetworkServicesMeshRef, len(in.GetMeshes()))
+		out.Meshes = make([]krmnetworkservicesv1alpha1.NetworkServicesMeshRef, len(in.GetMeshes()))
 		for i, m := range in.GetMeshes() {
-			out.Meshes[i] = v1alpha1.NetworkServicesMeshRef{External: m}
+			out.Meshes[i] = krmnetworkservicesv1alpha1.NetworkServicesMeshRef{External: m}
 		}
 	}
 
@@ -46,7 +46,7 @@ func NetworkServicesHTTPRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ht
 	return out
 }
 
-func NetworkServicesHTTPRouteSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesHTTPRouteSpec) *pb.HttpRoute {
+func NetworkServicesHTTPRouteSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec) *pb.HttpRoute {
 	if in == nil {
 		return nil
 	}
@@ -71,18 +71,18 @@ func NetworkServicesHTTPRouteSpec_ToProto(mapCtx *direct.MapContext, in *krm.Net
 	return out
 }
 
-func NetworkServicesHTTPRouteStatus_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krm.NetworkServicesHTTPRouteStatus {
+func NetworkServicesHTTPRouteStatus_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesHTTPRouteStatus{}
+	out := &krmnetworkservicesv1beta1.NetworkServicesHTTPRouteStatus{}
 	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
 
-func NetworkServicesHTTPRouteStatus_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesHTTPRouteStatus) *pb.HttpRoute {
+func NetworkServicesHTTPRouteStatus_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteStatus) *pb.HttpRoute {
 	if in == nil {
 		return nil
 	}
@@ -93,13 +93,26 @@ func NetworkServicesHTTPRouteStatus_ToProto(mapCtx *direct.MapContext, in *krm.N
 	return out
 }
 
-func HttprouteDestination_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krm.HttprouteDestination {
+func NetworkServicesHTTPRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec {
+	return NetworkServicesHTTPRouteSpec_FromProto(mapCtx, in)
+}
+func NetworkServicesHTTPRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec) *pb.HttpRoute {
+	return NetworkServicesHTTPRouteSpec_ToProto(mapCtx, in)
+}
+func NetworkServicesHTTPRouteStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteStatus {
+	return NetworkServicesHTTPRouteStatus_FromProto(mapCtx, in)
+}
+func NetworkServicesHTTPRouteStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteStatus) *pb.HttpRoute {
+	return NetworkServicesHTTPRouteStatus_ToProto(mapCtx, in)
+}
+
+func HttprouteDestination_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestination {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteDestination{}
+	out := &krmnetworkservicesv1beta1.HttprouteDestination{}
 	if in.GetServiceName() != "" {
-		out.ServiceRef = &krm.BackendServiceRef{
+		out.ServiceRef = &krmnetworkservicesv1beta1.BackendServiceRef{
 			External: in.GetServiceName(),
 		}
 	}
@@ -107,7 +120,7 @@ func HttprouteDestination_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_
 	return out
 }
 
-func HttprouteDestination_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDestination) *pb.HttpRoute_Destination {
+func HttprouteDestination_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestination) *pb.HttpRoute_Destination {
 	if in == nil {
 		return nil
 	}
@@ -119,13 +132,13 @@ func HttprouteDestination_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDe
 	return out
 }
 
-func HttprouteDestinations_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krm.HttprouteDestinations {
+func HttprouteDestinations_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestinations {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteDestinations{}
+	out := &krmnetworkservicesv1beta1.HttprouteDestinations{}
 	if in.GetServiceName() != "" {
-		out.ServiceRef = &krm.BackendServiceRef{
+		out.ServiceRef = &krmnetworkservicesv1beta1.BackendServiceRef{
 			External: in.GetServiceName(),
 		}
 	}
@@ -133,7 +146,7 @@ func HttprouteDestinations_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute
 	return out
 }
 
-func HttprouteDestinations_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDestinations) *pb.HttpRoute_Destination {
+func HttprouteDestinations_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestinations) *pb.HttpRoute_Destination {
 	if in == nil {
 		return nil
 	}
@@ -145,17 +158,17 @@ func HttprouteDestinations_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteD
 	return out
 }
 
-func HttprouteAbort_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Abort) *krm.HttprouteAbort {
+func HttprouteAbort_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Abort) *krmnetworkservicesv1beta1.HttprouteAbort {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteAbort{}
+	out := &krmnetworkservicesv1beta1.HttprouteAbort{}
 	out.HTTPStatus = direct.LazyPtr(int64(in.GetHttpStatus()))
 	out.Percentage = direct.LazyPtr(int64(in.GetPercentage()))
 	return out
 }
 
-func HttprouteAbort_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteAbort) *pb.HttpRoute_FaultInjectionPolicy_Abort {
+func HttprouteAbort_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteAbort) *pb.HttpRoute_FaultInjectionPolicy_Abort {
 	if in == nil {
 		return nil
 	}
@@ -165,17 +178,17 @@ func HttprouteAbort_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteAbort) *
 	return out
 }
 
-func HttprouteRangeMatch_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch_IntegerRange) *krm.HttprouteRangeMatch {
+func HttprouteRangeMatch_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch_IntegerRange) *krmnetworkservicesv1beta1.HttprouteRangeMatch {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRangeMatch{}
+	out := &krmnetworkservicesv1beta1.HttprouteRangeMatch{}
 	out.Start = direct.LazyPtr(int64(in.GetStart()))
 	out.End = direct.LazyPtr(int64(in.GetEnd()))
 	return out
 }
 
-func HttprouteRangeMatch_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRangeMatch) *pb.HttpRoute_HeaderMatch_IntegerRange {
+func HttprouteRangeMatch_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRangeMatch) *pb.HttpRoute_HeaderMatch_IntegerRange {
 	if in == nil {
 		return nil
 	}
@@ -185,11 +198,11 @@ func HttprouteRangeMatch_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRan
 	return out
 }
 
-func HttprouteRedirect_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Redirect) *krm.HttprouteRedirect {
+func HttprouteRedirect_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Redirect) *krmnetworkservicesv1beta1.HttprouteRedirect {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRedirect{}
+	out := &krmnetworkservicesv1beta1.HttprouteRedirect{}
 	out.HostRedirect = direct.LazyPtr(in.GetHostRedirect())
 	out.PathRedirect = direct.LazyPtr(in.GetPathRedirect())
 	out.PrefixRewrite = direct.LazyPtr(in.GetPrefixRewrite())
@@ -200,7 +213,7 @@ func HttprouteRedirect_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Red
 	return out
 }
 
-func HttprouteRedirect_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRedirect) *pb.HttpRoute_Redirect {
+func HttprouteRedirect_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRedirect) *pb.HttpRoute_Redirect {
 	if in == nil {
 		return nil
 	}
@@ -215,17 +228,17 @@ func HttprouteRedirect_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRedir
 	return out
 }
 
-func HttprouteDelay_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Delay) *krm.HttprouteDelay {
+func HttprouteDelay_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Delay) *krmnetworkservicesv1beta1.HttprouteDelay {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteDelay{}
+	out := &krmnetworkservicesv1beta1.HttprouteDelay{}
 	out.FixedDelay = direct.StringDuration_FromProto(mapCtx, in.GetFixedDelay())
 	out.Percentage = direct.LazyPtr(int64(in.GetPercentage()))
 	return out
 }
 
-func HttprouteDelay_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDelay) *pb.HttpRoute_FaultInjectionPolicy_Delay {
+func HttprouteDelay_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDelay) *pb.HttpRoute_FaultInjectionPolicy_Delay {
 	if in == nil {
 		return nil
 	}
@@ -235,18 +248,18 @@ func HttprouteDelay_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDelay) *
 	return out
 }
 
-func HttprouteRetryPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RetryPolicy) *krm.HttprouteRetryPolicy {
+func HttprouteRetryPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RetryPolicy) *krmnetworkservicesv1beta1.HttprouteRetryPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRetryPolicy{}
+	out := &krmnetworkservicesv1beta1.HttprouteRetryPolicy{}
 	out.RetryConditions = in.GetRetryConditions()
 	out.NumRetries = direct.LazyPtr(int64(in.GetNumRetries()))
 	out.PerTryTimeout = direct.StringDuration_FromProto(mapCtx, in.GetPerTryTimeout())
 	return out
 }
 
-func HttprouteRetryPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRetryPolicy) *pb.HttpRoute_RetryPolicy {
+func HttprouteRetryPolicy_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRetryPolicy) *pb.HttpRoute_RetryPolicy {
 	if in == nil {
 		return nil
 	}
@@ -257,11 +270,11 @@ func HttprouteRetryPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRe
 	return out
 }
 
-func HttprouteQueryParameters_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_QueryParameterMatch) *krm.HttprouteQueryParameters {
+func HttprouteQueryParameters_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_QueryParameterMatch) *krmnetworkservicesv1beta1.HttprouteQueryParameters {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteQueryParameters{}
+	out := &krmnetworkservicesv1beta1.HttprouteQueryParameters{}
 	out.QueryParameter = direct.LazyPtr(in.GetQueryParameter())
 
 	switch m := in.MatchType.(type) {
@@ -275,7 +288,7 @@ func HttprouteQueryParameters_FromProto(mapCtx *direct.MapContext, in *pb.HttpRo
 	return out
 }
 
-func HttprouteQueryParameters_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteQueryParameters) *pb.HttpRoute_QueryParameterMatch {
+func HttprouteQueryParameters_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteQueryParameters) *pb.HttpRoute_QueryParameterMatch {
 	if in == nil {
 		return nil
 	}
@@ -293,11 +306,11 @@ func HttprouteQueryParameters_ToProto(mapCtx *direct.MapContext, in *krm.Httprou
 	return out
 }
 
-func HttprouteHeaders_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch) *krm.HttprouteHeaders {
+func HttprouteHeaders_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch) *krmnetworkservicesv1beta1.HttprouteHeaders {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteHeaders{}
+	out := &krmnetworkservicesv1beta1.HttprouteHeaders{}
 	out.Header = direct.LazyPtr(in.GetHeader())
 	out.InvertMatch = direct.LazyPtr(in.GetInvertMatch())
 
@@ -318,7 +331,7 @@ func HttprouteHeaders_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Head
 	return out
 }
 
-func HttprouteHeaders_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteHeaders) *pb.HttpRoute_HeaderMatch {
+func HttprouteHeaders_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteHeaders) *pb.HttpRoute_HeaderMatch {
 	if in == nil {
 		return nil
 	}
@@ -344,4 +357,88 @@ func HttprouteHeaders_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteHeader
 	out.Header = direct.ValueOf(in.Header)
 	out.InvertMatch = direct.ValueOf(in.InvertMatch)
 	return out
+}
+
+func HttpRoute_FaultInjectionPolicy_Abort_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Abort) *krmnetworkservicesv1beta1.HttprouteAbort {
+	return HttprouteAbort_FromProto(mapCtx, in)
+}
+func HttpRoute_FaultInjectionPolicy_Abort_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteAbort) *pb.HttpRoute_FaultInjectionPolicy_Abort {
+	return HttprouteAbort_ToProto(mapCtx, in)
+}
+func HttprouteAbort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Abort) *krmnetworkservicesv1beta1.HttprouteAbort {
+	return HttprouteAbort_FromProto(mapCtx, in)
+}
+func HttprouteAbort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteAbort) *pb.HttpRoute_FaultInjectionPolicy_Abort {
+	return HttprouteAbort_ToProto(mapCtx, in)
+}
+
+func HttpRoute_Destination_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestination {
+	return HttprouteDestination_FromProto(mapCtx, in)
+}
+func HttpRoute_Destination_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestination) *pb.HttpRoute_Destination {
+	return HttprouteDestination_ToProto(mapCtx, in)
+}
+func HttprouteDestination_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestination {
+	return HttprouteDestination_FromProto(mapCtx, in)
+}
+func HttprouteDestination_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestination) *pb.HttpRoute_Destination {
+	return HttprouteDestination_ToProto(mapCtx, in)
+}
+func HttprouteDestinations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestinations {
+	return HttprouteDestinations_FromProto(mapCtx, in)
+}
+func HttprouteDestinations_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestinations) *pb.HttpRoute_Destination {
+	return HttprouteDestinations_ToProto(mapCtx, in)
+}
+
+func HttpRoute_HeaderMatch_IntegerRange_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch_IntegerRange) *krmnetworkservicesv1beta1.HttprouteRangeMatch {
+	return HttprouteRangeMatch_FromProto(mapCtx, in)
+}
+func HttpRoute_HeaderMatch_IntegerRange_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRangeMatch) *pb.HttpRoute_HeaderMatch_IntegerRange {
+	return HttprouteRangeMatch_ToProto(mapCtx, in)
+}
+func HttprouteRangeMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch_IntegerRange) *krmnetworkservicesv1beta1.HttprouteRangeMatch {
+	return HttprouteRangeMatch_FromProto(mapCtx, in)
+}
+func HttprouteRangeMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRangeMatch) *pb.HttpRoute_HeaderMatch_IntegerRange {
+	return HttprouteRangeMatch_ToProto(mapCtx, in)
+}
+
+func HttpRoute_Redirect_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Redirect) *krmnetworkservicesv1beta1.HttprouteRedirect {
+	return HttprouteRedirect_FromProto(mapCtx, in)
+}
+func HttpRoute_Redirect_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRedirect) *pb.HttpRoute_Redirect {
+	return HttprouteRedirect_ToProto(mapCtx, in)
+}
+func HttprouteRedirect_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Redirect) *krmnetworkservicesv1beta1.HttprouteRedirect {
+	return HttprouteRedirect_FromProto(mapCtx, in)
+}
+func HttprouteRedirect_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRedirect) *pb.HttpRoute_Redirect {
+	return HttprouteRedirect_ToProto(mapCtx, in)
+}
+
+func HttpRoute_FaultInjectionPolicy_Delay_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Delay) *krmnetworkservicesv1beta1.HttprouteDelay {
+	return HttprouteDelay_FromProto(mapCtx, in)
+}
+func HttpRoute_FaultInjectionPolicy_Delay_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDelay) *pb.HttpRoute_FaultInjectionPolicy_Delay {
+	return HttprouteDelay_ToProto(mapCtx, in)
+}
+func HttprouteDelay_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Delay) *krmnetworkservicesv1beta1.HttprouteDelay {
+	return HttprouteDelay_FromProto(mapCtx, in)
+}
+func HttprouteDelay_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDelay) *pb.HttpRoute_FaultInjectionPolicy_Delay {
+	return HttprouteDelay_ToProto(mapCtx, in)
+}
+
+func HttpRoute_RetryPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RetryPolicy) *krmnetworkservicesv1beta1.HttprouteRetryPolicy {
+	return HttprouteRetryPolicy_FromProto(mapCtx, in)
+}
+func HttpRoute_RetryPolicy_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRetryPolicy) *pb.HttpRoute_RetryPolicy {
+	return HttprouteRetryPolicy_ToProto(mapCtx, in)
+}
+func HttprouteRetryPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RetryPolicy) *krmnetworkservicesv1beta1.HttprouteRetryPolicy {
+	return HttprouteRetryPolicy_FromProto(mapCtx, in)
+}
+func HttprouteRetryPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRetryPolicy) *pb.HttpRoute_RetryPolicy {
+	return HttprouteRetryPolicy_ToProto(mapCtx, in)
 }
