@@ -8,7 +8,6 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: computeglobalnetworkendpoints.compute.cnrm.cloud.google.com
 spec:
   group: compute.cnrm.cloud.google.com
@@ -70,6 +69,10 @@ spec:
               ipAddress:
                 description: Immutable. IPv4 address external endpoint.
                 type: string
+              port:
+                description: Immutable. Port number of the external endpoint.
+                format: int32
+                type: integer
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -97,15 +100,16 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
-              resourceID:
-                description: Immutable. Optional. The port of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
-                type: string
             required:
             - globalNetworkEndpointGroup
+            - port
             - projectRef
             type: object
+            x-kubernetes-validations:
+            - message: Exactly one of spec.fqdn or spec.ipAddress must be specified,
+                not both
+              rule: (has(self.fqdn) && !has(self.ipAddress)) || (!has(self.fqdn)
+                && has(self.ipAddress))
           status:
             properties:
               conditions:
@@ -134,6 +138,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the ComputeGlobalNetworkEndpoint
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
