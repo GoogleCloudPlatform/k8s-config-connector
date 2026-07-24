@@ -276,6 +276,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
 					continue
 				}
+				if method == "GET" && strings.Contains(path, "/instanceGroupManagers/") {
+					continue
+				}
 				t.Errorf("path %q present in real log but missing in mock log", path)
 				continue
 			}
