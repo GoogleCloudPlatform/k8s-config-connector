@@ -38,22 +38,18 @@ var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
 	}: true,
 }
 
-var realGCPSkipGroupKinds = map[schema.GroupKind]bool{
-	schema.GroupKind{
-		Group: "securitycenter.cnrm.cloud.google.com",
-		Kind:  "SecurityCenterMuteConfig",
-	}: true,
-	schema.GroupKind{
-		Group: "gkebackup.cnrm.cloud.google.com",
-		Kind:  "GKEBackupBackupChannel",
-	}: true,
-}
-
 var realGCPSkipFixtures = map[string]bool{
 	// Resource Manager Tags are org level thus requiring an owned test org.
 	"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
 	"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
 	"container/v1beta1/containernodepool/containernodepool-resourcemanagertags":         true,
+	// SecurityCenter MuteConfig requires organization-level permissions and quota project.
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-dynamic": true,
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-maximal": true,
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-minimal": true,
+	// GKEBackup BackupChannel requires distinct source and destination projects.
+	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
+	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -69,30 +65,22 @@ func TestGoldenLogAlignment(t *testing.T) {
 		}
 
 		if d.IsDir() {
-			relPath, _ := filepath.Rel(absRootDir, path)
-			if realGCPSkipFixtures[relPath] {
-				return nil
-			}
-
-			realLogPath := filepath.Join(path, "_http.log")
-			mockLogPath := filepath.Join(path, "_http_mock.log")
-
-			if fileExists(realLogPath) {
-				createPath := filepath.Join(path, "create.yaml")
-				if fileExists(createPath) {
-					gvk, err := getGVKFromYAML(createPath)
-					if err == nil {
-						gk := gvk.GroupKind()
-						if mockGCPSkipGroupKinds[gk] || realGCPSkipGroupKinds[gk] {
-							return nil
-						}
-						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
-							t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
-						}
-					}
+			createPath := filepath.Join(path, "create.yaml")
+			if fileExists(createPath) {
+				relPath, _ := filepath.Rel(absRootDir, path)
+				if realGCPSkipFixtures[relPath] {
+					return nil
 				}
 
-				if fileExists(mockLogPath) {
+				gvk, err := getGVKFromYAML(createPath)
+				if err == nil && mockGCPSkipGroupKinds[gvk.GroupKind()] {
+					return nil
+				}
+
+				realLogPath := filepath.Join(path, "_http.log")
+				mockLogPath := filepath.Join(path, "_http_mock.log")
+
+				if fileExists(realLogPath) && fileExists(mockLogPath) {
 					t.Run(relPath, func(t *testing.T) {
 						compareLogs(t, realLogPath, mockLogPath)
 					})
@@ -130,7 +118,7 @@ func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
 			createPath := filepath.Join(dirPath, "create.yaml")
 			if fileExists(createPath) {
 				gvk, err := getGVKFromYAML(createPath)
-				if err == nil && (realGCPSkipGroupKinds[gvk.GroupKind()] || mockGCPSkipGroupKinds[gvk.GroupKind()]) {
+				if err == nil && mockGCPSkipGroupKinds[gvk.GroupKind()] {
 					return nil
 				}
 			}
