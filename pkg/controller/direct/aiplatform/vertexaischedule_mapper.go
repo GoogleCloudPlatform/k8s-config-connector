@@ -15,15 +15,12 @@
 package aiplatform
 
 import (
-	"strings"
-
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -340,57 +337,6 @@ func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExe
 	out.Labels = in.Labels
 	out.KernelName = direct.ValueOf(in.KernelName)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	return out
-}
-
-func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_GcsNotebookSource) *krm.NotebookExecutionJob_GCSNotebookSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NotebookExecutionJob_GCSNotebookSource{}
-	if in.GetUri() != "" {
-		uri := in.GetUri()
-		if strings.HasPrefix(uri, "gs://") {
-			trimmed := strings.TrimPrefix(uri, "gs://")
-			parts := strings.SplitN(trimmed, "/", 2)
-			if len(parts) > 0 && parts[0] != "" {
-				bucket := parts[0]
-				object := ""
-				if len(parts) > 1 {
-					object = parts[1]
-				}
-				out.URIRef = &storagev1alpha1.StorageBucketObjectRef{
-					External: "projects/_/buckets/" + bucket + "/objects/" + object,
-				}
-			}
-		} else {
-			out.URIRef = &storagev1alpha1.StorageBucketObjectRef{
-				External: uri,
-			}
-		}
-	}
-	if in.GetGeneration() != "" {
-		out.GenerationRef = direct.LazyPtr(in.GetGeneration())
-	}
-	return out
-}
-
-func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GCSNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
-	if in.URIRef != nil {
-		id := &storagev1alpha1.StorageBucketObjectIdentity{}
-		if err := id.FromExternal(in.URIRef.External); err != nil {
-			mapCtx.Errorf("gcsNotebookSource.uriRef: %v", err)
-		} else {
-			bucket := id.Bucket
-			object := id.Object
-			out.Uri = "gs://" + bucket + "/" + object
-		}
-	}
-	out.Generation = direct.ValueOf(in.GenerationRef)
 	return out
 }
 

@@ -30,6 +30,7 @@ import (
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmstoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1294,8 +1295,6 @@ func NotebookExecutionJob_DirectNotebookSource_ToProto(mapCtx *direct.MapContext
 	out.Content = in.Content
 	return out
 }
-
-/* found existing non-generated mapping function "NotebookExecutionJob_GCSNotebookSource_FromProto", skipping
 func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_GcsNotebookSource) *krm.NotebookExecutionJob_GCSNotebookSource {
 	if in == nil {
 		return nil
@@ -1305,29 +1304,23 @@ func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext,
 		out.URIRef = &krmstoragev1alpha1.StorageBucketObjectRef{External: in.GetUri()}
 	}
 	if in.GetGeneration() != "" {
-		out.GenerationRef = &krm.string{External: in.GetGeneration()}
+		out.GenerationRef = &krmstoragev1alpha1.StorageBucketObjectRef{External: in.GetGeneration()}
 	}
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "NotebookExecutionJob_GCSNotebookSource_ToProto", skipping
-
-	func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GCSNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
-		if in == nil {
-			return nil
-		}
-		out := &pb.NotebookExecutionJob_GcsNotebookSource{}
-		if in.URIRef != nil {
-			out.Uri = in.URIRef.External
-		}
-		if in.GenerationRef != nil {
-			out.Generation = in.GenerationRef.External
-		}
-		return out
+func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExecutionJob_GCSNotebookSource) *pb.NotebookExecutionJob_GcsNotebookSource {
+	if in == nil {
+		return nil
 	}
-*/
+	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
+	if in.URIRef != nil {
+		out.Uri = in.URIRef.External
+	}
+	if in.GenerationRef != nil {
+		out.Generation = in.GenerationRef.External
+	}
+	return out
+}
 func NotebookExecutionJob_WorkbenchRuntime_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob_WorkbenchRuntime) *krm.NotebookExecutionJob_WorkbenchRuntime {
 	if in == nil {
 		return nil

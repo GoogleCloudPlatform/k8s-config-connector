@@ -427,7 +427,7 @@ type NotebookExecutionJob_GCSNotebookSource struct {
 	//  version of the object is read. See
 	//  https://cloud.google.com/storage/docs/metadata#generation-number.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.generation
-	GenerationRef *string `json:"generationRef,omitempty"`
+	GenerationRef *storagev1alpha1.StorageBucketObjectRef `json:"generationRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec

@@ -332,7 +332,13 @@ spec:
                             description: The version of the Cloud Storage object to
                               read. If unset, the current version of the object is
                               read. See https://cloud.google.com/storage/docs/metadata#generation-number.
-                            type: string
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  StorageBucketObject resource. Should be in the format
+                                  "projects/{{projectID}}/buckets/{{bucket}}/objects/{{object}}".
+                                type: string
+                            type: object
                           uriRef:
                             description: 'The Cloud Storage url pointing to the ipynb
                               file. Format: `gs://bucket/notebook_file.ipynb`'

@@ -2212,7 +2212,7 @@ func (in *NotebookExecutionJob_GCSNotebookSource) DeepCopyInto(out *NotebookExec
 	}
 	if in.GenerationRef != nil {
 		in, out := &in.GenerationRef, &out.GenerationRef
-		*out = new(string)
+		*out = new(storagev1alpha1.StorageBucketObjectRef)
 		**out = **in
 	}
 }
