@@ -60,6 +60,10 @@ func (i *NetworkSecurityBackendAuthenticationConfigIdentity) Host() string {
 	return NetworkSecurityBackendAuthenticationConfigIdentityFormat.Host()
 }
 
+func (i *NetworkSecurityBackendAuthenticationConfigIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromNetworkSecurityBackendAuthenticationConfigSpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkSecurityBackendAuthenticationConfigIdentity, error) {
 	resource, ok := obj.(*NetworkSecurityBackendAuthenticationConfig)
 	if !ok {
