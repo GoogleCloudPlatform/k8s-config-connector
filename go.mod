@@ -39,7 +39,7 @@ require (
 	cloud.google.com/go/dataflow v0.16.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/datalabeling v0.14.0
-	cloud.google.com/go/dataplex v1.34.0
+	cloud.google.com/go/dataplex v1.35.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
@@ -119,7 +119,7 @@ require (
 	github.com/hashicorp/terraform-provider-google-beta v0.0.0-00010101000000-000000000000
 	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/onsi/gomega v1.36.1
+	github.com/onsi/gomega v1.36.2
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.22.0
 	github.com/prometheus/procfs v0.16.0
@@ -151,7 +151,7 @@ require (
 	k8s.io/client-go v0.33.10
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.20.4
-	sigs.k8s.io/controller-tools v0.16.5
+	sigs.k8s.io/controller-tools v0.17.2
 	sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1.0.20250514194322-871029137730
 	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b
 	sigs.k8s.io/structured-merge-diff/v4 v4.6.0

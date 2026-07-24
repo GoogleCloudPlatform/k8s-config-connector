@@ -33,6 +33,11 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
 
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
+  exit 0
+fi
+
 
 THIRD_PARTY=${REPO_ROOT}/.build/third_party
 mkdir -p ${THIRD_PARTY}/
@@ -65,6 +70,17 @@ git reset --hard ${GOOGLEAPI_VERSION}
 mkdir -p google/cloud/config/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
 
+# Patch for DataplexMetadataFeed: check out catalog.proto from a newer master commit if needed
+if [ -f "google/cloud/dataplex/v1/catalog.proto" ]; then
+    if ! grep -q "MetadataFeed" google/cloud/dataplex/v1/catalog.proto; then
+        echo "Patching google/cloud/dataplex/v1/catalog.proto with MetadataFeed definitions"
+        git fetch origin e57bae6efbd075a925978a79bb9b997beb4ecc19
+        git checkout e57bae6efbd075a925978a79bb9b997beb4ecc19 -- google/cloud/dataplex/v1/catalog.proto
+        # Remove cached .pb files to force re-compilation with the patched catalog.proto
+        rm -f "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    fi
+fi
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -85,11 +101,6 @@ if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
     exit 0
-fi
-
-if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
-  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
-  exit 0
 fi
 
 shopt -s nullglob

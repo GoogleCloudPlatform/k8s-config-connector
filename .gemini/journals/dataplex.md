@@ -1,3 +1,9 @@
+### [2026-06-24] Implement DataplexMetadataFeed Greenfield types
+- **Context**: Implementing KRM types, CRD, and IdentityV2 for `DataplexMetadataFeed` (Step 1).
+- **Problem**: The pinned `googleapis` commit (`1765b559c42386788ff0c6412491277b4791107a`) did not contain the proto definitions for `MetadataFeed` (which is located in `google/cloud/dataplex/v1/catalog.proto`). Updating `apis/git.versions` globally to a newer commit caused syntax and generation errors in other services' types (e.g. `cloudsecuritycompliance`, `dialogflow`, and `dlp`) because of newer upstream changes.
+- **Solution**: Left `apis/git.versions` on its pinned commit to maintain compatibility across all other services, but patched `dev/tools/controllerbuilder/generate-proto.sh` to selectively fetch and check out the updated `google/cloud/dataplex/v1/catalog.proto` from `e57bae6efbd075a925978a79bb9b997beb4ecc19` and delete cached protobuf compilation targets. This allowed successful generation of `DataplexMetadataFeed` types and schema while keeping the rest of the repository pristine.
+- **Impact**: Provides a robust pattern for implementing new resources whose proto files only exist in newer googleapis versions than the globally pinned one.
+
 ### [2026-05-26] Implement DataplexDataScan Types
 - **Context**: Implementing KRM types for DataplexDataScan (google.cloud.dataplex.v1)
 - **Problem**: DataplexDataScan requires manual scaffolding of inner struct fields inside `datascan_types.go` because the `prunetypes` generator removes nested types in `types.generated.go` if they are unreachable. Additionally, `k8s.io/apimachinery/pkg/runtime/schema` must be correctly imported in `datascan_reference.go` instead of `k8s.io/apimachinery/pkg/schema`.
