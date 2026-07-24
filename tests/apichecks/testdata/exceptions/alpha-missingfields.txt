@@ -1148,7 +1148,6 @@
 [missing_field] crd=computenetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.zone" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.destAddressGroups[]" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.destFqdns[]" is not set in unstructured objects
-[missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.destIpRanges[]" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.destRegionCodes[]" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.destThreatIntelligences[]" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.layer4Configs[].ports[]" is not set in unstructured objects
@@ -1158,7 +1157,6 @@
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.srcSecureTags[].name" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.srcSecureTags[].state" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.srcThreatIntelligences[]" is not set in unstructured objects
-[missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.ruleName" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetSecureTags[].name" is not set in unstructured objects
 [missing_field] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetSecureTags[].state" is not set in unstructured objects

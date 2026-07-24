@@ -4861,6 +4861,11 @@ func (in *NetworkfirewallpolicyruleMatch) DeepCopyInto(out *Networkfirewallpolic
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.DestNetworkContext != nil {
+		in, out := &in.DestNetworkContext, &out.DestNetworkContext
+		*out = new(string)
+		**out = **in
+	}
 	if in.DestRegionCodes != nil {
 		in, out := &in.DestRegionCodes, &out.DestRegionCodes
 		*out = make([]string, len(*in))
@@ -4892,6 +4897,11 @@ func (in *NetworkfirewallpolicyruleMatch) DeepCopyInto(out *Networkfirewallpolic
 		in, out := &in.SrcIpRanges, &out.SrcIpRanges
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.SrcNetworkContext != nil {
+		in, out := &in.SrcNetworkContext, &out.SrcNetworkContext
+		*out = new(string)
+		**out = **in
 	}
 	if in.SrcRegionCodes != nil {
 		in, out := &in.SrcRegionCodes, &out.SrcRegionCodes

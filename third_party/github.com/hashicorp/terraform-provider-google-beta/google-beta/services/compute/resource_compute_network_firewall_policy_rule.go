@@ -235,6 +235,18 @@ func ComputeNetworkFirewallPolicyRuleMatchSchema() *schema.Resource {
 				Description: "Name of the Google Cloud Threat Intelligence list.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
+
+			"src_network_context": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "The network context of the traffic source.",
+			},
+
+			"dest_network_context": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "The network context of the traffic destination.",
+			},
 		},
 	}
 }
@@ -588,6 +600,8 @@ func expandComputeNetworkFirewallPolicyRuleMatch(o interface{}) *compute.Network
 		SrcRegionCodes:          tpgdclresource.ExpandStringArray(obj["src_region_codes"]),
 		SrcSecureTags:           expandComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsArray(obj["src_secure_tags"]),
 		SrcThreatIntelligences:  tpgdclresource.ExpandStringArray(obj["src_threat_intelligences"]),
+		SrcNetworkContext:       dcl.StringOrNil(obj["src_network_context"].(string)),
+		DestNetworkContext:      dcl.StringOrNil(obj["dest_network_context"].(string)),
 	}
 }
 
@@ -608,6 +622,8 @@ func flattenComputeNetworkFirewallPolicyRuleMatch(obj *compute.NetworkFirewallPo
 		"src_region_codes":          obj.SrcRegionCodes,
 		"src_secure_tags":           flattenComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsArray(obj.SrcSecureTags),
 		"src_threat_intelligences":  obj.SrcThreatIntelligences,
+		"src_network_context":       obj.SrcNetworkContext,
+		"dest_network_context":      obj.DestNetworkContext,
 	}
 
 	return []interface{}{transformed}
