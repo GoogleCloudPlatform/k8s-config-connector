@@ -2857,6 +2857,11 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(ClusterIdentityServiceConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.InTransitEncryptionConfig != nil {
+		in, out := &in.InTransitEncryptionConfig, &out.InTransitEncryptionConfig
+		*out = new(string)
+		**out = **in
+	}
 	if in.InitialNodeCount != nil {
 		in, out := &in.InitialNodeCount, &out.InitialNodeCount
 		*out = new(int64)

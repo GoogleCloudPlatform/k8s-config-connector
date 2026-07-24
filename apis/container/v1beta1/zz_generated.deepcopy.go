@@ -849,6 +849,11 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(int)
 		**out = **in
 	}
+	if in.InTransitEncryptionConfig != nil {
+		in, out := &in.InTransitEncryptionConfig, &out.InTransitEncryptionConfig
+		*out = new(string)
+		**out = **in
+	}
 	if in.IPAllocationPolicy != nil {
 		in, out := &in.IPAllocationPolicy, &out.IPAllocationPolicy
 		*out = new(IPAllocationPolicy)

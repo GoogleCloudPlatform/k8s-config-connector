@@ -207,6 +207,7 @@ gatewayApiConfig:
   channel: string
 identityServiceConfig:
   enabled: boolean
+inTransitEncryptionConfig: string
 initialNodeCount: integer
 ipAllocationPolicy:
   additionalIpRangesConfigs:
@@ -1699,6 +1700,16 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>Whether to enable the Identity Service component.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>inTransitEncryptionConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>In-transit encryption options for the cluster.</p>
         </td>
     </tr>
     <tr>
@@ -4374,6 +4385,27 @@ spec:
   location: us-west1
   releaseChannel:
     channel: REGULAR
+```
+
+### In Transit Encryption Container Cluster
+```yaml
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  labels:
+    availability: dev
+    target-audience: development
+  name: containercluster-sample-intransit
+spec:
+  description: Minimal VPC-Native cluster with Dataplane V2 and In-Transit Encryption.
+  location: us-central1-a
+  initialNodeCount: 1
+  networkingMode: VPC_NATIVE
+  ipAllocationPolicy:
+    clusterIpv4CidrBlock: /20
+    servicesIpv4CidrBlock: /20
+  datapathProvider: ADVANCED_DATAPATH
+  inTransitEncryptionConfig: IN_TRANSIT_ENCRYPTION_DISABLED
 ```
 
 ### Routes Based Container Cluster

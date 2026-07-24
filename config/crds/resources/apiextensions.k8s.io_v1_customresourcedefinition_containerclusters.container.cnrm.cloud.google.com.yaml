@@ -667,6 +667,13 @@ spec:
                     description: Whether to enable the Identity Service component.
                     type: boolean
                 type: object
+              inTransitEncryptionConfig:
+                description: In-transit encryption options for the cluster.
+                enum:
+                - IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED
+                - IN_TRANSIT_ENCRYPTION_DISABLED
+                - IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT
+                type: string
               initialNodeCount:
                 description: Immutable. The number of nodes to create in this cluster's
                   default node pool. In regional or multi-zonal clusters, this is
