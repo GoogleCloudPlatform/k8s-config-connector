@@ -1,0 +1,34 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecuritySecurityProfileGroup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: spg-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Maximal security profile group - updated
+  labels:
+    foo: baz
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  threatPreventionProfileRef:
+    external: projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    dataPathID: 12345
+    etag: abcdef123456
+    updateTime: "1970-01-01T00:00:00Z"

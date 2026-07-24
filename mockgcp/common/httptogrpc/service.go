@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
@@ -165,6 +166,20 @@ func findServiceName(client any) string {
 			}
 			return true
 		})
+	}
+
+	if len(matchingServices) > 1 {
+		filtered := make(map[string]protoreflect.ServiceDescriptor)
+		clientName := strings.ToLower(goType.Elem().Name())
+		for k, v := range matchingServices {
+			serviceName := strings.ToLower(string(v.Name()))
+			if strings.Contains(clientName, serviceName) {
+				filtered[k] = v
+			}
+		}
+		if len(filtered) > 0 {
+			matchingServices = filtered
+		}
 	}
 
 	if len(matchingServices) > 1 {
