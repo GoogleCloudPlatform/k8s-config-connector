@@ -3722,6 +3722,20 @@
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservedIPRanges[]" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateURI" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.apiAuth.apiKeyConfig.apiKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.pinecone.indexName" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.ragEmbeddingModelConfig.vertexPredictionEndpoint.endpointRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.ragManagedDb.ann.leafCount" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.ragManagedDb.ann.treeDepth" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.ragManagedDb.knn" is not set in unstructured objects
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.vertexVectorSearch.indexEndpointRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vectorDbConfig.vertexVectorSearch.indexRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexairagcorpora.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.vertexAiSearchConfig.servingConfigRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.allowQueueing" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.acceleratorCount" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.acceleratorType" is not set in unstructured objects
