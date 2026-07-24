@@ -34,4 +34,17 @@
   2. Leveraged Python generator `dev/tasks/generate_static_config.py` to automatically register `VertexAIPipelineJob` into `pkg/controller/resourceconfig/static_config.go` with its default/supported reconciler set to `direct`.
   3. Created `pkg/controller/direct/aiplatform/vertexaipipelinejob_fuzzer.go` and configured fuzzer fields utilizing the fluent builder pattern.
   4. Scaffolded E2E golden tests under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/vertexaipipelinejob/` (`vertexaipipelinejob-minimal` and `vertexaipipelinejob-maximal`), including `dependencies.yaml` to provision a `StorageBucket` used as the `gcsOutputDirectory` parameter.
-- **Impact**: Ensures standard, fully compliant Greenfield controller implementation and E2E testing framework support for VertexAIPipelineJob.
+- Impact**: Ensures standard, fully compliant Greenfield controller implementation and E2E testing framework support for VertexAIPipelineJob.
+
+### 2026-07-19 Implementing types, CRD, IdentityV2, Controller, and Fuzzer for VertexAIHyperparameterTuningJob
+- **Context**: Implementing Greenfield direct types, CRD, IdentityV2, and Controller for `VertexAIHyperparameterTuningJob` (Issue #8388).
+- **Problem**: 
+  1. `HyperparameterTuningJob` contains highly nested sub-structures and references like `CustomJobSpec` and `StudySpec` that were previously deemed unreachable and commented out in `types.generated.go`.
+  2. Acronym capitalization validations failed because the GCP API defines fields such as `packageUris` and `webAccessUris`, but standard acronym validation expects them to end with `URIs`.
+- **Solution**:
+  1. Updated `apis/aiplatform/v1alpha1/generate.sh` to include `VertexAIHyperparameterTuningJob:HyperparameterTuningJob`, exposing `CustomJobSpec` and its nested fields as reachable.
+  2. Implemented `VertexAIHyperparameterTuningJob` IdentityV2 matching `projects/{project}/locations/{location}/hyperparameterTuningJobs/{hyperparameterTuningJob}`.
+  3. Created an isolated direct controller under `pkg/controller/direct/aiplatform/vertexaihyperparametertuningjob/`. Since `HyperparameterTuningJob` is immutable in Vertex AI, `Update` returns a descriptive error if a diff is detected.
+  4. Implemented a KRM fuzzer using the fluent builder pattern.
+  5. Ran `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...` to cleanly regenerate exceptions (for missing references, acronyms, and missing fields in alpha objects).
+- **Impact**: Delivers a fully-validated, direct controller implementation of `VertexAIHyperparameterTuningJob` that is 100% compliant with KCC standards and validation frameworks.
