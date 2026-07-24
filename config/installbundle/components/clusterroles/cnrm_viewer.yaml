@@ -895,6 +895,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - multicluster.core.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - netapp.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1160,6 +1168,14 @@ rules:
   - watch
 - apiGroups:
   - storagetransfer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - syncer.gkelabs.io
   resources:
   - '*'
   verbs:
