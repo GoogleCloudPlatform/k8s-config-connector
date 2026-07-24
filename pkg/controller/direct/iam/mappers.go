@@ -14,6 +14,8 @@
 package iam
 
 import (
+	"strings"
+
 	adminpb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	pb "cloud.google.com/go/iam/apiv2/iampb"
 
@@ -232,7 +234,20 @@ func IAMServiceAccountStatus_FromProto(mapCtx *direct.MapContext, in *adminpb.Se
 	}
 	if in.GetName() != "" {
 		out.Name = direct.LazyPtr(in.GetName())
-		out.ExternalRef = direct.LazyPtr(in.GetName())
+		// The Name returned by GCP is projects/{project}/serviceAccounts/{email}.
+		// However, Config Connector identity system (FromExternal) expects
+		// projects/{project}/serviceAccounts/{account} where {account} is the short account ID.
+		// So we convert email to short account ID.
+		externalRef := in.GetName()
+		parts := strings.Split(externalRef, "/")
+		if len(parts) > 0 {
+			last := parts[len(parts)-1]
+			if idx := strings.Index(last, "@"); idx != -1 {
+				parts[len(parts)-1] = last[:idx]
+				externalRef = strings.Join(parts, "/")
+			}
+		}
+		out.ExternalRef = direct.LazyPtr(externalRef)
 	}
 	if in.GetUniqueId() != "" {
 		out.UniqueId = direct.LazyPtr(in.GetUniqueId())
