@@ -17,17 +17,18 @@ package networkservices
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
+	krmnetworkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
+	krmnetworkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 // NetworkServicesGatewaySpec_FromProto converts a Proto Gateway message to a KRM NetworkServicesGatewaySpec.
 // Handcoded because of type mismatch in Ports field ([]int32 vs []int64) and custom reference types.
-func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.NetworkServicesGatewaySpec {
+func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesGatewaySpec{}
+	out := &krmnetworkservicesv1beta1.NetworkServicesGatewaySpec{}
 	out.Addresses = in.Addresses
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.Ports != nil {
@@ -48,7 +49,7 @@ func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gate
 
 // NetworkServicesGatewaySpec_ToProto converts a KRM NetworkServicesGatewaySpec to a Proto Gateway message.
 // Handcoded because of type mismatch in Ports field ([]int64 vs []int32) and custom reference types.
-func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesGatewaySpec) *pb.Gateway {
+func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec) *pb.Gateway {
 	if in == nil {
 		return nil
 	}
@@ -70,11 +71,11 @@ func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.Netwo
 }
 
 // NetworkServicesGatewayStatus_FromProto converts a Proto Gateway message to a KRM NetworkServicesGatewayStatus.
-func NetworkServicesGatewayStatus_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.NetworkServicesGatewayStatus {
+func NetworkServicesGatewayStatus_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krmnetworkservicesv1beta1.NetworkServicesGatewayStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesGatewayStatus{}
+	out := &krmnetworkservicesv1beta1.NetworkServicesGatewayStatus{}
 	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -82,7 +83,7 @@ func NetworkServicesGatewayStatus_FromProto(mapCtx *direct.MapContext, in *pb.Ga
 }
 
 // NetworkServicesGatewayStatus_ToProto converts a KRM NetworkServicesGatewayStatus to a Proto Gateway message.
-func NetworkServicesGatewayStatus_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesGatewayStatus) *pb.Gateway {
+func NetworkServicesGatewayStatus_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesGatewayStatus) *pb.Gateway {
 	if in == nil {
 		return nil
 	}
@@ -91,4 +92,30 @@ func NetworkServicesGatewayStatus_ToProto(mapCtx *direct.MapContext, in *krm.Net
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
+}
+
+func NetworkServicesGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec {
+	return NetworkServicesGatewaySpec_FromProto(mapCtx, in)
+}
+func NetworkServicesGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec) *pb.Gateway {
+	return NetworkServicesGatewaySpec_ToProto(mapCtx, in)
+}
+func NetworkServicesGatewayStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krmnetworkservicesv1beta1.NetworkServicesGatewayStatus {
+	return NetworkServicesGatewayStatus_FromProto(mapCtx, in)
+}
+func NetworkServicesGatewayStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesGatewayStatus) *pb.Gateway {
+	return NetworkServicesGatewayStatus_ToProto(mapCtx, in)
+}
+
+func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
+	return NetworkServicesServiceBindingSpec_v1alpha1_ToProto(mapCtx, in)
+}
+func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec {
+	return NetworkServicesServiceBindingSpec_v1alpha1_FromProto(mapCtx, in)
+}
+func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState {
+	return NetworkServicesServiceBindingObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
+	return NetworkServicesServiceBindingObservedState_v1alpha1_ToProto(mapCtx, in)
 }

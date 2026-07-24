@@ -27,11 +27,11 @@ func NetworkServicesWasmPluginSpec_FromProto(mapCtx *direct.MapContext, in *pb.W
 	out := &krm.NetworkServicesWasmPluginSpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.MainVersionID = direct.LazyPtr(in.GetMainVersionId())
-	out.LogConfig = WasmPlugin_LogConfig_FromProto(mapCtx, in.GetLogConfig())
+	out.LogConfig = WasmPlugin_LogConfig_v1alpha1_FromProto(mapCtx, in.GetLogConfig())
 	if in.GetVersions() != nil {
 		out.Versions = make(map[string]krm.WasmPlugin_VersionDetails)
 		for k, v := range in.GetVersions() {
-			mv := WasmPlugin_VersionDetails_FromProto(mapCtx, v)
+			mv := WasmPlugin_VersionDetails_v1alpha1_FromProto(mapCtx, v)
 			if mv != nil {
 				out.Versions[k] = *mv
 			}
@@ -47,7 +47,7 @@ func NetworkServicesWasmPluginSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ne
 	out := &pb.WasmPlugin{}
 	out.Description = direct.ValueOf(in.Description)
 	out.MainVersionId = direct.ValueOf(in.MainVersionID)
-	out.LogConfig = WasmPlugin_LogConfig_ToProto(mapCtx, in.LogConfig)
+	out.LogConfig = WasmPlugin_LogConfig_v1alpha1_ToProto(mapCtx, in.LogConfig)
 	if in.Versions != nil {
 		out.Versions = make(map[string]*pb.WasmPlugin_VersionDetails)
 		for k, v := range in.Versions {
@@ -67,7 +67,7 @@ func NetworkServicesWasmPluginObservedState_FromProto(mapCtx *direct.MapContext,
 	out := &krm.NetworkServicesWasmPluginObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.UsedBy = direct.Slice_FromProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_FromProto)
+	out.UsedBy = direct.Slice_FromProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_v1alpha1_FromProto)
 	return out
 }
 
@@ -78,7 +78,7 @@ func NetworkServicesWasmPluginObservedState_ToProto(mapCtx *direct.MapContext, i
 	out := &pb.WasmPlugin{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.UsedBy = direct.Slice_ToProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_ToProto)
+	out.UsedBy = direct.Slice_ToProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_v1alpha1_ToProto)
 	return out
 }
 
@@ -135,4 +135,23 @@ func WasmPlugin_VersionDetails_PluginConfigUri_ToProto(mapCtx *direct.MapContext
 	return &pb.WasmPlugin_VersionDetails_PluginConfigUri{
 		PluginConfigUri: *in,
 	}
+}
+
+func NetworkServicesWasmPluginSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krm.NetworkServicesWasmPluginSpec {
+	return NetworkServicesWasmPluginSpec_FromProto(mapCtx, in)
+}
+func NetworkServicesWasmPluginSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesWasmPluginSpec) *pb.WasmPlugin {
+	return NetworkServicesWasmPluginSpec_ToProto(mapCtx, in)
+}
+func NetworkServicesWasmPluginObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krm.NetworkServicesWasmPluginObservedState {
+	return NetworkServicesWasmPluginObservedState_FromProto(mapCtx, in)
+}
+func NetworkServicesWasmPluginObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesWasmPluginObservedState) *pb.WasmPlugin {
+	return NetworkServicesWasmPluginObservedState_ToProto(mapCtx, in)
+}
+func WasmPlugin_VersionDetails_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_VersionDetails) *krm.WasmPlugin_VersionDetails {
+	return WasmPlugin_VersionDetails_FromProto(mapCtx, in)
+}
+func WasmPlugin_VersionDetails_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.WasmPlugin_VersionDetails) *pb.WasmPlugin_VersionDetails {
+	return WasmPlugin_VersionDetails_ToProto(mapCtx, in)
 }
