@@ -42,7 +42,7 @@ func NetworkServicesHTTPRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ht
 		}
 	}
 
-	out.Rules = direct.Slice_FromProto(mapCtx, in.GetRules(), HttprouteRules_v1beta1_FromProto)
+	out.Rules = direct.Slice_FromProto(mapCtx, in.GetRules(), HttprouteRules_FromProto)
 	return out
 }
 
@@ -67,7 +67,7 @@ func NetworkServicesHTTPRouteSpec_ToProto(mapCtx *direct.MapContext, in *krmnetw
 		}
 	}
 
-	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, HttprouteRules_v1beta1_ToProto)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, HttprouteRules_ToProto)
 	return out
 }
 
