@@ -238,5 +238,6 @@ func (s *MockService) parseFirewallEndpointName(name string) (*firewallEndpointN
 			}, nil
 		}
 	}
+	// Return invalid argument if the name does not match project-level or organization-level formats.
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
