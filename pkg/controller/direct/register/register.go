@@ -66,6 +66,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datacatalog"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datalabeling/datalabelingannotationspecset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datalabeling/datalabelinginstruction"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datamigration/databasemigrationconversionworkspace"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datamigration/databasemigrationmigrationjob"

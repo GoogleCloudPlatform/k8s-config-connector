@@ -42,7 +42,7 @@ type DataLabelingEvaluationJobRef struct {
 }
 
 func init() {
-	refs.Register(&DataLabelingEvaluationJobRef{})
+	refs.Register(&DataLabelingEvaluationJobRef{}, &DataLabelingEvaluationJob{})
 }
 
 func (r *DataLabelingEvaluationJobRef) GetGVK() schema.GroupVersionKind {

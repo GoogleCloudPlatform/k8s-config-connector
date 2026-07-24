@@ -32,8 +32,18 @@ go run . generate-types \
   --resource DataLabelingEvaluationJob:EvaluationJob \
   --prune-unused-types=false
 
+go run . generate-mapper \
+  --service google.cloud.datalabeling.v1beta1 \
+  --api-version datalabeling.cnrm.cloud.google.com/v1alpha1 \
+  --output-dir "${REPO_ROOT}/pkg/controller/direct/datalabeling/datalabelingannotationspecset"
+
+mv "${REPO_ROOT}/pkg/controller/direct/datalabeling/datalabelingannotationspecset/datalabeling/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/datalabeling/datalabelingannotationspecset/mapper.generated.go" || true
+rmdir "${REPO_ROOT}/pkg/controller/direct/datalabeling/datalabelingannotationspecset/datalabeling/" || true
+sed -i 's/package datalabeling/package datalabelingannotationspecset/g' "${REPO_ROOT}/pkg/controller/direct/datalabeling/datalabelingannotationspecset/mapper.generated.go"
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 # Format generated code
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis/datalabeling/v1alpha1/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/datalabeling/

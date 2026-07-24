@@ -443,6 +443,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
 					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
+					if krmElemTypeName == "common.Status" {
+						functionName = "direct.Status_FromProto"
+					}
 					useSliceFromProtoFunction = functionName
 				case protoreflect.StringKind:
 					if krmField.Type != "[]string" {
@@ -749,6 +752,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					if krmElemTypeName == "common.Status" {
+						functionName = "direct.Status_ToProto"
+					}
 					useSliceToProtoFunction = functionName
 
 				case protoreflect.StringKind:
