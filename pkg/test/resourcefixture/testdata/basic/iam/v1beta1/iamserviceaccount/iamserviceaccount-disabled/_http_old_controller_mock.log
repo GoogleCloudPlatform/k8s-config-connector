@@ -33,8 +33,7 @@ Content-Type: application/json
 {
   "accountId": "gsa-${uniqueId}",
   "serviceAccount": {
-    "description": "A test service account with all fields. This tests the description field.",
-    "displayName": "Test Service Account Full"
+    "displayName": "Test Service Account"
   }
 }
 
@@ -49,8 +48,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "A test service account with all fields. This tests the description field.",
-  "displayName": "Test Service Account Full",
+  "displayName": "Test Service Account",
   "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -74,8 +72,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "A test service account with all fields. This tests the description field.",
-  "displayName": "Test Service Account Full",
+  "displayName": "Test Service Account",
   "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
@@ -86,17 +83,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com:disable?alt=json&prettyPrint=false
 Content-Type: application/json
 
-{
-  "serviceAccount": {
-    "description": "Updated description for the test service account. This tests the description field update.",
-    "displayName": "Test Service Account Full Updated",
-    "etag": "abcdef0123A="
-  },
-  "updateMask": "description,display_name"
-}
+{}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -108,11 +98,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{
-  "description": "Updated description for the test service account. This tests the description field update.",
-  "displayName": "Test Service Account Full Updated",
-  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
-}
+{}
 
 ---
 
@@ -129,8 +115,8 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Updated description for the test service account. This tests the description field update.",
-  "displayName": "Test Service Account Full Updated",
+  "disabled": true,
+  "displayName": "Test Service Account",
   "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
