@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: aiplatform.cnrm.cloud.google.com
+  kind: VertexAITrainingPipeline
+  name: vertexaitrainingpipeline-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
