@@ -50,6 +50,7 @@ var realGCPSkipGroupKinds = map[schema.GroupKind]bool{
 }
 
 var realGCPSkipFixtures = map[string]bool{
+	// Resource Manager Tags are org level thus requiring an owned test org.
 	"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
 	"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
 	"container/v1beta1/containernodepool/containernodepool-resourcemanagertags":         true,
