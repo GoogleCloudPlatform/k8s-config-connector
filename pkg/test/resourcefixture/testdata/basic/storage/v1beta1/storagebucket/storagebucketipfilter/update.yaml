@@ -29,7 +29,7 @@ spec:
   softDeletePolicy:
     retentionDurationSeconds: 604800
   ipFilter:
-    mode: Enabled
+    mode: Disabled
     publicNetworkSource:
       allowedIpCidrRanges:
         - 8.8.8.8/32

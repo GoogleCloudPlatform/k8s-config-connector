@@ -18,7 +18,7 @@ spec:
   ipFilter:
     allowAllServiceAgentAccess: false
     allowCrossOrgVpcs: false
-    mode: Enabled
+    mode: Disabled
     publicNetworkSource:
       allowedIpCidrRanges:
       - 8.8.8.8/32
