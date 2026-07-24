@@ -224,6 +224,7 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 			if len(body) != 0 {
 				unmarshalOptions := protojson.UnmarshalOptions{
 					DiscardUnknown: true,
+					Resolver:       &protoResolver{},
 				}
 
 				dest := protoMessage

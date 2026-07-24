@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	pbgen "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -45,6 +46,9 @@ type MockService struct {
 
 	v1                       *internalRanges
 	v1CrossNetworkAutomation *serviceConnectionPolicies
+	v1RegionalEndpoints      *regionalEndpoints
+	v1Hubs                   *hubsServer
+	v1Spokes                 *spokesServer
 }
 
 // New creates a MockService.
@@ -56,6 +60,9 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 	}
 	s.v1 = &internalRanges{MockService: s}
 	s.v1CrossNetworkAutomation = &serviceConnectionPolicies{MockService: s}
+	s.v1RegionalEndpoints = &regionalEndpoints{MockService: s}
+	s.v1Hubs = &hubsServer{MockService: s}
+	s.v1Spokes = &spokesServer{MockService: s}
 	return s
 }
 
@@ -66,6 +73,9 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInternalRangeServiceServer(grpcServer, s.v1)
 	pb.RegisterCrossNetworkAutomationServiceServer(grpcServer, s.v1CrossNetworkAutomation)
+	pbgen.RegisterProjectsLocationsRegionalEndpointsServerServer(grpcServer, s.v1RegionalEndpoints)
+	pbgen.RegisterProjectsLocationsGlobalHubsServerServer(grpcServer, s.v1Hubs)
+	pbgen.RegisterProjectsLocationsSpokesServerServer(grpcServer, s.v1Spokes)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,6 +86,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	grpcMux.AddService(pb.NewInternalRangeServiceClient(conn))
 	grpcMux.AddService(pb.NewCrossNetworkAutomationServiceClient(conn))
+	grpcMux.AddService(pbgen.NewProjectsLocationsRegionalEndpointsServerClient(conn))
+	grpcMux.AddService(pbgen.NewProjectsLocationsGlobalHubsServerClient(conn))
+	grpcMux.AddService(pbgen.NewProjectsLocationsSpokesServerClient(conn))
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return grpcMux, nil

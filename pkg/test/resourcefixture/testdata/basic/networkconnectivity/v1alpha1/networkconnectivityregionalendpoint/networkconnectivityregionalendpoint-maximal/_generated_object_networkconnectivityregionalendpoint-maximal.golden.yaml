@@ -32,5 +32,6 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    pscForwardingRule: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/rep-autogen-fr-regionalendpoint-${uniqueId}
+    ipAddress: 10.128.0.2
+    pscForwardingRule: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/rep-regionalendpoint-${uniqueId}
     updateTime: "1970-01-01T00:00:00Z"
