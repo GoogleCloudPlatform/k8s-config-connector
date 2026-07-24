@@ -118,17 +118,13 @@ type VertexaischeduleDnsPeeringConfigs struct {
 type VertexaischeduleEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
-	KmsKeyName *string `json:"kmsKeyName,omitempty"`
+	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type VertexaischeduleGcsNotebookSource struct {
-	/* The version of the Cloud Storage object to read. If unset, the current version of the object is read. See https://cloud.google.com/storage/docs/metadata#generation-number. */
+	/* Reference to a StorageBucketObject. */
 	// +optional
-	Generation *string `json:"generation,omitempty"`
-
-	/* The Cloud Storage uri pointing to the ipynb file. Format: `gs://bucket/notebook_file.ipynb` */
-	// +optional
-	Uri *string `json:"uri,omitempty"`
+	ObjectRef *v1alpha1.ResourceRef `json:"objectRef,omitempty"`
 }
 
 type VertexaischeduleMachineSpec struct {
@@ -214,7 +210,7 @@ type VertexaischeduleNotebookExecutionJob struct {
 
 	/* The Cloud Storage location to upload the result to. Format: `gs://bucket-name` */
 	// +optional
-	GcsOutputURI *string `json:"gcsOutputURI,omitempty"`
+	GcsOutputRef *v1alpha1.ResourceRef `json:"gcsOutputRef,omitempty"`
 
 	/* The name of the kernel to use during notebook execution. If unset, the default kernel is used. */
 	// +optional
