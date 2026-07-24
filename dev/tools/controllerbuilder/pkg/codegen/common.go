@@ -14,7 +14,10 @@
 
 package codegen
 
-import "strings"
+import (
+	"os"
+	"strings"
+)
 
 const (
 	// KCCProtoMessageAnnotationMisc is used for go structs that map to proto messages, but are not top-level Spec structs
@@ -53,14 +56,22 @@ func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
 
 // special-case proto messages that are currently not mapped to KRM Go structs
 var protoMessagesNotMappedToGoStruct = map[string]string{
-	"google.protobuf.Timestamp":         "string",
-	"google.protobuf.Duration":          "string",
-	"google.protobuf.Int64Value":        "int64",
-	"google.protobuf.StringValue":       "string",
-	"google.protobuf.BoolValue":         "bool",
-	"google.protobuf.Struct":            "apiextensionsv1.JSON",
-	"google.rpc.Status":                 "common.Status",
-	"google.cloud.connectors.v1.Secret": "secretmanagerv1beta1.SecretRef",
+	"google.protobuf.Timestamp":              "string",
+	"google.protobuf.Duration":               "string",
+	"google.protobuf.Int64Value":             "int64",
+	"google.protobuf.StringValue":            "string",
+	"google.protobuf.BoolValue":              "bool",
+	"google.protobuf.Struct":                 "apiextensionsv1.JSON",
+	"google.cloud.aiplatform.v1beta1.Schema": "apiextensionsv1.JSON",
+	"google.rpc.Status":                      "common.Status",
+	"google.cloud.connectors.v1.Secret":      "secretmanagerv1beta1.SecretRef",
+}
+
+func init() {
+	if os.Getenv("MAP_VALUE_TO_JSON") == "true" {
+		protoMessagesNotMappedToGoStruct["google.protobuf.Value"] = "apiextensionsv1.JSON"
+		protoMessagesNotMappedToGoStruct["google.protobuf.ListValue"] = "apiextensionsv1.JSON"
+	}
 }
 
 // This acronym list contains both acronym (including initialism) and abbreviation.

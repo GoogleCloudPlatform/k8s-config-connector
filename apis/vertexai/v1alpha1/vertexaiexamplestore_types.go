@@ -113,3 +113,17 @@ type VertexAIExampleStoreList struct {
 func init() {
 	SchemeBuilder.Register(&VertexAIExampleStore{}, &VertexAIExampleStoreList{})
 }
+
+// +k8s:deepcopy-gen=false
+type ExampleStore struct {
+	Name               *string             `json:"name,omitempty"`
+	DisplayName        *string             `json:"displayName,omitempty"`
+	Description        *string             `json:"description,omitempty"`
+	ExampleStoreConfig *ExampleStoreConfig `json:"exampleStoreConfig,omitempty"`
+}
+
+// +k8s:deepcopy-gen=false
+type ExampleStoreObservedState struct {
+	CreateTime *string `json:"createTime,omitempty"`
+	UpdateTime *string `json:"updateTime,omitempty"`
+}

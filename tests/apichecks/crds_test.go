@@ -1090,7 +1090,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
 		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
-
+		"vertexaicachedcontents.vertexai.cnrm.cloud.google.com":                         true, // spec.tools[].urlContext is an empty object
 	}
 
 	crds, err := crdloader.LoadAllCRDs()
