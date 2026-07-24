@@ -18,7 +18,7 @@
 
 // +generated:mapper
 // krm.group: networkservices.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.networkservices.v1
 
 package networkservices
@@ -98,32 +98,6 @@ func ExtensionChain_MatchCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, i
 	out.CelExpression = direct.ValueOf(in.CelExpression)
 	return out
 }
-
-/* found existing non-generated mapping function "HttprouteAbort_v1beta1_FromProto", skipping
-func HttprouteAbort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Abort) *krmnetworkservicesv1beta1.HttprouteAbort {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.HttprouteAbort{}
-	out.HTTPStatus = direct.LazyPtr(in.GetHttpStatus())
-	out.Percentage = direct.LazyPtr(in.GetPercentage())
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "HttprouteAbort_v1beta1_ToProto", skipping
-
-	func HttprouteAbort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteAbort) *pb.HttpRoute_FaultInjectionPolicy_Abort {
-		if in == nil {
-			return nil
-		}
-		out := &pb.HttpRoute_FaultInjectionPolicy_Abort{}
-		out.HttpStatus = direct.ValueOf(in.HTTPStatus)
-		out.Percentage = direct.ValueOf(in.Percentage)
-		return out
-	}
-*/
 func HttprouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteAction) *krmnetworkservicesv1beta1.HttprouteAction {
 	if in == nil {
 		return nil
@@ -194,88 +168,6 @@ func HttprouteCorsPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetwo
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
-
-/* found existing non-generated mapping function "HttprouteDelay_v1beta1_FromProto", skipping
-func HttprouteDelay_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Delay) *krmnetworkservicesv1beta1.HttprouteDelay {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.HttprouteDelay{}
-	out.FixedDelay = direct.StringDuration_FromProto(mapCtx, in.GetFixedDelay())
-	out.Percentage = direct.LazyPtr(in.GetPercentage())
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "HttprouteDelay_v1beta1_ToProto", skipping
-func HttprouteDelay_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDelay) *pb.HttpRoute_FaultInjectionPolicy_Delay {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HttpRoute_FaultInjectionPolicy_Delay{}
-	out.FixedDelay = direct.StringDuration_ToProto(mapCtx, in.FixedDelay)
-	out.Percentage = direct.ValueOf(in.Percentage)
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "HttprouteDestination_v1beta1_FromProto", skipping
-func HttprouteDestination_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestination {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.HttprouteDestination{}
-	// MISSING: ServiceName
-	out.Weight = direct.LazyPtr(in.GetWeight())
-	// MISSING: RequestHeaderModifier
-	// MISSING: ResponseHeaderModifier
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "HttprouteDestination_v1beta1_ToProto", skipping
-func HttprouteDestination_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestination) *pb.HttpRoute_Destination {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HttpRoute_Destination{}
-	// MISSING: ServiceName
-	out.Weight = direct.ValueOf(in.Weight)
-	// MISSING: RequestHeaderModifier
-	// MISSING: ResponseHeaderModifier
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "HttprouteDestinations_v1beta1_FromProto", skipping
-func HttprouteDestinations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestinations {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.HttprouteDestinations{}
-	// MISSING: ServiceName
-	out.Weight = direct.LazyPtr(in.GetWeight())
-	// MISSING: RequestHeaderModifier
-	// MISSING: ResponseHeaderModifier
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "HttprouteDestinations_v1beta1_ToProto", skipping
-
-	func HttprouteDestinations_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestinations) *pb.HttpRoute_Destination {
-		if in == nil {
-			return nil
-		}
-		out := &pb.HttpRoute_Destination{}
-		// MISSING: ServiceName
-		out.Weight = direct.ValueOf(in.Weight)
-		// MISSING: RequestHeaderModifier
-		// MISSING: ResponseHeaderModifier
-		return out
-	}
-*/
 func HttprouteFaultInjectionPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy) *krmnetworkservicesv1beta1.HttprouteFaultInjectionPolicy {
 	if in == nil {
 		return nil
@@ -462,66 +354,6 @@ func HttprouteQueryParameters_PresentMatch_ToProto(mapCtx *direct.MapContext, in
 	}
 	return &pb.HttpRoute_QueryParameterMatch_PresentMatch{PresentMatch: *in}
 }
-
-/* found existing non-generated mapping function "HttprouteRangeMatch_v1beta1_FromProto", skipping
-func HttprouteRangeMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch_IntegerRange) *krmnetworkservicesv1beta1.HttprouteRangeMatch {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.HttprouteRangeMatch{}
-	out.Start = direct.LazyPtr(in.GetStart())
-	out.End = direct.LazyPtr(in.GetEnd())
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "HttprouteRangeMatch_v1beta1_ToProto", skipping
-func HttprouteRangeMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRangeMatch) *pb.HttpRoute_HeaderMatch_IntegerRange {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HttpRoute_HeaderMatch_IntegerRange{}
-	out.Start = direct.ValueOf(in.Start)
-	out.End = direct.ValueOf(in.End)
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "HttprouteRedirect_v1beta1_FromProto", skipping
-func HttprouteRedirect_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Redirect) *krmnetworkservicesv1beta1.HttprouteRedirect {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.HttprouteRedirect{}
-	out.HostRedirect = direct.LazyPtr(in.GetHostRedirect())
-	out.PathRedirect = direct.LazyPtr(in.GetPathRedirect())
-	out.PrefixRewrite = direct.LazyPtr(in.GetPrefixRewrite())
-	out.ResponseCode = direct.Enum_FromProto(mapCtx, in.GetResponseCode())
-	out.HTTPSRedirect = direct.LazyPtr(in.GetHttpsRedirect())
-	out.StripQuery = direct.LazyPtr(in.GetStripQuery())
-	out.PortRedirect = direct.LazyPtr(in.GetPortRedirect())
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "HttprouteRedirect_v1beta1_ToProto", skipping
-
-	func HttprouteRedirect_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRedirect) *pb.HttpRoute_Redirect {
-		if in == nil {
-			return nil
-		}
-		out := &pb.HttpRoute_Redirect{}
-		out.HostRedirect = direct.ValueOf(in.HostRedirect)
-		out.PathRedirect = direct.ValueOf(in.PathRedirect)
-		out.PrefixRewrite = direct.ValueOf(in.PrefixRewrite)
-		out.ResponseCode = direct.Enum_ToProto[pb.HttpRoute_Redirect_ResponseCode](mapCtx, in.ResponseCode)
-		out.HttpsRedirect = direct.ValueOf(in.HTTPSRedirect)
-		out.StripQuery = direct.ValueOf(in.StripQuery)
-		out.PortRedirect = direct.ValueOf(in.PortRedirect)
-		return out
-	}
-*/
 func HttprouteRequestHeaderModifier_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderModifier) *krmnetworkservicesv1beta1.HttprouteRequestHeaderModifier {
 	if in == nil {
 		return nil
@@ -580,34 +412,6 @@ func HttprouteResponseHeaderModifier_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out.Remove = in.Remove
 	return out
 }
-
-/* found existing non-generated mapping function "HttprouteRetryPolicy_v1beta1_FromProto", skipping
-func HttprouteRetryPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RetryPolicy) *krmnetworkservicesv1beta1.HttprouteRetryPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.HttprouteRetryPolicy{}
-	out.RetryConditions = in.RetryConditions
-	out.NumRetries = direct.LazyPtr(in.GetNumRetries())
-	out.PerTryTimeout = direct.StringDuration_FromProto(mapCtx, in.GetPerTryTimeout())
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "HttprouteRetryPolicy_v1beta1_ToProto", skipping
-
-	func HttprouteRetryPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRetryPolicy) *pb.HttpRoute_RetryPolicy {
-		if in == nil {
-			return nil
-		}
-		out := &pb.HttpRoute_RetryPolicy{}
-		out.RetryConditions = in.RetryConditions
-		out.NumRetries = direct.ValueOf(in.NumRetries)
-		out.PerTryTimeout = direct.StringDuration_ToProto(mapCtx, in.PerTryTimeout)
-		return out
-	}
-*/
 func HttprouteRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteRule) *krmnetworkservicesv1beta1.HttprouteRules {
 	if in == nil {
 		return nil
@@ -702,104 +506,6 @@ func NetworkServicesAuthzExtensionSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.WireFormat = direct.Enum_ToProto[pb.WireFormat](mapCtx, in.WireFormat)
 	return out
 }
-
-/* found existing non-generated mapping function "NetworkServicesGatewaySpec_v1beta1_FromProto", skipping
-func NetworkServicesGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.NetworkServicesGatewaySpec{}
-	// MISSING: Name
-	// MISSING: SelfLink
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Addresses = in.Addresses
-	out.Ports = in.Ports
-	out.Scope = in.GetScope()
-	// MISSING: ServerTLSPolicy
-	// MISSING: CertificateUrls
-	// MISSING: GatewaySecurityPolicy
-	// MISSING: Network
-	// MISSING: Subnetwork
-	// MISSING: IPVersion
-	// MISSING: EnvoyHeaders
-	// MISSING: RoutingMode
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "NetworkServicesGatewaySpec_v1beta1_ToProto", skipping
-func NetworkServicesGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec) *pb.Gateway {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Gateway{}
-	// MISSING: Name
-	// MISSING: SelfLink
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	out.Description = direct.ValueOf(in.Description)
-	out.Type = direct.Enum_ToProto[pb.Gateway_Type](mapCtx, in.Type)
-	out.Addresses = in.Addresses
-	out.Ports = in.Ports
-	out.Scope = NetworkServicesGatewaySpec_Scope_ToProto(mapCtx, in.Scope)
-	// MISSING: ServerTLSPolicy
-	// MISSING: CertificateUrls
-	// MISSING: GatewaySecurityPolicy
-	// MISSING: Network
-	// MISSING: Subnetwork
-	// MISSING: IPVersion
-	// MISSING: EnvoyHeaders
-	// MISSING: RoutingMode
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "NetworkServicesHTTPRouteSpec_v1beta1_FromProto", skipping
-func NetworkServicesHTTPRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec{}
-	// MISSING: Name
-	// MISSING: SelfLink
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Hostnames = in.Hostnames
-	out.Meshes = NetworkServicesHTTPRouteSpec_Meshes_FromProto(mapCtx, in.Meshes)
-	out.Gateways = NetworkServicesHTTPRouteSpec_Gateways_FromProto(mapCtx, in.Gateways)
-	// MISSING: Labels
-	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, HttprouteRules_v1beta1_FromProto)
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "NetworkServicesHTTPRouteSpec_v1beta1_ToProto", skipping
-
-	func NetworkServicesHTTPRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec) *pb.HttpRoute {
-		if in == nil {
-			return nil
-		}
-		out := &pb.HttpRoute{}
-		// MISSING: Name
-		// MISSING: SelfLink
-		out.Description = direct.ValueOf(in.Description)
-		// MISSING: CreateTime
-		// MISSING: UpdateTime
-		out.Hostnames = in.Hostnames
-		out.Meshes = NetworkServicesHTTPRouteSpec_Meshes_ToProto(mapCtx, in.Meshes)
-		out.Gateways = NetworkServicesHTTPRouteSpec_Gateways_ToProto(mapCtx, in.Gateways)
-		// MISSING: Labels
-		out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, HttprouteRules_v1beta1_ToProto)
-		return out
-	}
-*/
 func NetworkServicesLBRouteExtensionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionObservedState {
 	if in == nil {
 		return nil
@@ -914,70 +620,6 @@ func NetworkServicesServiceBindingSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Labels = in.Labels
 	return out
 }
-
-/* found existing non-generated mapping function "NetworkServicesWasmPluginObservedState_v1alpha1_FromProto", skipping
-func NetworkServicesWasmPluginObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1alpha1.NetworkServicesWasmPluginObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	out.UsedBy = direct.Slice_FromProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_v1alpha1_FromProto)
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "NetworkServicesWasmPluginObservedState_v1alpha1_ToProto", skipping
-func NetworkServicesWasmPluginObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginObservedState) *pb.WasmPlugin {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WasmPlugin{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	out.UsedBy = direct.Slice_ToProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_v1alpha1_ToProto)
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "NetworkServicesWasmPluginSpec_v1alpha1_FromProto", skipping
-func NetworkServicesWasmPluginSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1alpha1.NetworkServicesWasmPluginSpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Labels
-	out.MainVersionID = direct.LazyPtr(in.GetMainVersionId())
-	out.LogConfig = WasmPlugin_LogConfig_v1alpha1_FromProto(mapCtx, in.GetLogConfig())
-	out.Versions = Versions_FromProto(mapCtx, in.Versions)
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "NetworkServicesWasmPluginSpec_v1alpha1_ToProto", skipping
-
-	func NetworkServicesWasmPluginSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginSpec) *pb.WasmPlugin {
-		if in == nil {
-			return nil
-		}
-		out := &pb.WasmPlugin{}
-		// MISSING: Name
-		out.Description = direct.ValueOf(in.Description)
-		// MISSING: Labels
-		out.MainVersionId = direct.ValueOf(in.MainVersionID)
-		out.LogConfig = WasmPlugin_LogConfig_v1alpha1_ToProto(mapCtx, in.LogConfig)
-		out.Versions = Versions_ToProto(mapCtx, in.Versions)
-		return out
-	}
-*/
 func WasmPlugin_LogConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krmnetworkservicesv1alpha1.WasmPlugin_LogConfig {
 	if in == nil {
 		return nil
@@ -1014,63 +656,3 @@ func WasmPlugin_UsedByObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.Name = direct.ValueOf(in.Name)
 	return out
 }
-
-/* found existing non-generated mapping function "WasmPlugin_VersionDetails_v1alpha1_FromProto", skipping
-func WasmPlugin_VersionDetails_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_VersionDetails) *krmnetworkservicesv1alpha1.WasmPlugin_VersionDetails {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkservicesv1alpha1.WasmPlugin_VersionDetails{}
-	out.PluginConfigData = direct.LazyPtr(in.GetPluginConfigData())
-	out.PluginConfigURI = direct.LazyPtr(in.GetPluginConfigUri())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	out.ImageURI = direct.LazyPtr(in.GetImageUri())
-	// MISSING: ImageDigest
-	// MISSING: PluginConfigDigest
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "WasmPlugin_VersionDetails_v1alpha1_ToProto", skipping
-func WasmPlugin_VersionDetails_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_VersionDetails) *pb.WasmPlugin_VersionDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WasmPlugin_VersionDetails{}
-	if oneof := WasmPlugin_VersionDetails_PluginConfigData_ToProto(mapCtx, in.PluginConfigData); oneof != nil {
-		out.PluginConfigSource = oneof
-	}
-	if oneof := WasmPlugin_VersionDetails_PluginConfigUri_ToProto(mapCtx, in.PluginConfigURI); oneof != nil {
-		out.PluginConfigSource = oneof
-	}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.ImageUri = direct.ValueOf(in.ImageURI)
-	// MISSING: ImageDigest
-	// MISSING: PluginConfigDigest
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "WasmPlugin_VersionDetails_PluginConfigData_ToProto", skipping
-func WasmPlugin_VersionDetails_PluginConfigData_ToProto(mapCtx *direct.MapContext, in *string) *pb.WasmPlugin_VersionDetails_PluginConfigData {
-	if in == nil {
-		return nil
-	}
-	return &pb.WasmPlugin_VersionDetails_PluginConfigData{PluginConfigData: *in}
-}
-*/
-
-/* found existing non-generated mapping function "WasmPlugin_VersionDetails_PluginConfigUri_ToProto", skipping
-func WasmPlugin_VersionDetails_PluginConfigUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.WasmPlugin_VersionDetails_PluginConfigUri {
-	if in == nil {
-		return nil
-	}
-	return &pb.WasmPlugin_VersionDetails_PluginConfigUri{PluginConfigUri: *in}
-}
-*/

@@ -36,7 +36,9 @@ go run . generate-types \
 
 go run . generate-mapper \
     --service google.cloud.networkservices.v1 \
-    --api-version "networkservices.cnrm.cloud.google.com/v1alpha1"
+    --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
+    --api-version "networkservices.cnrm.cloud.google.com/v1beta1" \
+    --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
