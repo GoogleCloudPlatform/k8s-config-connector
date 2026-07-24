@@ -299,6 +299,7 @@
 | dialogflow.cnrm.cloud.google.com               | DialogflowKnowledgeBase                         | True         | False       | False  | Direct     | True        |
 | dialogflow.cnrm.cloud.google.com               | DialogflowSecuritySettings                      | True         | False       | False  | Direct     | True        |
 | dialogflow.cnrm.cloud.google.com               | DialogflowSipTrunk                              | True         | False       | False  | Direct     | True        |
+| dialogflow.cnrm.cloud.google.com               | DialogflowTool                                  | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineControl                          | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineConversation                     | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineDataStore                        | True         | False       | False  | Direct     | True        |
