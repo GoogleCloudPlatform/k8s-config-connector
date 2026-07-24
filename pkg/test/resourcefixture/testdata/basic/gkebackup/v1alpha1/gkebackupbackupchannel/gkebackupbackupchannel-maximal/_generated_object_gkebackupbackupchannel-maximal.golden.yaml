@@ -12,7 +12,7 @@ metadata:
 spec:
   description: Updated GKE Backup Channel Description
   destinationProjectRef:
-    external: projects/${projectId}
+    external: projects/shared-reservations-project
   labels:
     foo: baz
     new-key: new-value
@@ -30,7 +30,7 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    destinationProjectID: ${projectId}
+    destinationProjectID: shared-reservations-project
     etag: abcdef123456
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
