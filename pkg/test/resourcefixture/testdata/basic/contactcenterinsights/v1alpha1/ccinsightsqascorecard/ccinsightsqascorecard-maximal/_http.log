@@ -1,0 +1,156 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FqaScorecards%2Fqascorecard-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id qascorecard-max-${uniqueId}, revision_id latest).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards?%24alt=json%3Benum-encoding%3Dint&qaScorecardId=qascorecard-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "A description of the maximal QA scorecard",
+  "displayName": "Maximal QA Scorecard",
+  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A description of the maximal QA scorecard",
+  "displayName": "Maximal QA Scorecard",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FqaScorecards%2Fqascorecard-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A description of the maximal QA scorecard",
+  "displayName": "Maximal QA Scorecard",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}",
+  "source": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: qa_scorecard.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FqaScorecards%2Fqascorecard-max-${uniqueId}
+
+{
+  "description": "An updated description of the maximal QA scorecard",
+  "displayName": "Maximal QA Scorecard Updated",
+  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated description of the maximal QA scorecard",
+  "displayName": "Maximal QA Scorecard Updated",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}",
+  "source": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FqaScorecards%2Fqascorecard-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated description of the maximal QA scorecard",
+  "displayName": "Maximal QA Scorecard Updated",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}",
+  "source": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FqaScorecards%2Fqascorecard-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
