@@ -149,11 +149,11 @@ require (
 	k8s.io/apiextensions-apiserver v0.33.10
 	k8s.io/apimachinery v0.33.10
 	k8s.io/client-go v0.33.10
-	k8s.io/klog/v2 v2.130.1
+	k8s.io/klog/v2 v2.140.0
 	sigs.k8s.io/controller-runtime v0.20.4
 	sigs.k8s.io/controller-tools v0.16.5
 	sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1.0.20250514194322-871029137730
-	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b
+	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20260428182003-3b10c1183711
 	sigs.k8s.io/structured-merge-diff/v4 v4.6.0
 	sigs.k8s.io/yaml v1.6.0
 )

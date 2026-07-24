@@ -3946,6 +3946,8 @@ sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-87102913
 sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730/go.mod h1:aeapOP1DpzHTxam+EMh/2QKj5brSexc4IDu6g7tuY/w=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b h1:VcgyLj8SawHulvC24SRgI37mnhMmR3hW+ZVqZGBmkbc=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b/go.mod h1:smCBkOX4Z3K9+MUGAscbschHAYgbuRZ+Pri49+x2zTc=
+sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20260428182003-3b10c1183711 h1:tOe6pR2s219+6DArQR6irjuIEPFUGfSVZ0uI1p2xC5A=
+sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20260428182003-3b10c1183711/go.mod h1:MiIlZXBxGV0loD0OwpikbIQFm2/RL1IXomlah/V6QuM=
 sigs.k8s.io/kustomize/api v0.18.0 h1:hTzp67k+3NEVInwz5BHyzc9rGxIauoXferXyjv5lWPo=
 sigs.k8s.io/kustomize/api v0.18.0/go.mod h1:f8isXnX+8b+SGLHQ6yO4JG1rdkZlvhaCf/uZbLVMb0U=
 sigs.k8s.io/kustomize/kstatus v0.0.2-0.20200509233124-065f70705d4d h1:k+m3LgwVsvSDvcUWoaG2yUGcyN/HKR6Dq2lb0FYgbq8=
