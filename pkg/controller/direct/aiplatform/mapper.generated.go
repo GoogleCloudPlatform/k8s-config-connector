@@ -1094,7 +1094,9 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.DirectNotebookSource = NotebookExecutionJob_DirectNotebookSource_FromProto(mapCtx, in.GetDirectNotebookSource())
 	out.NotebookRuntimeTemplateResourceName = direct.LazyPtr(in.GetNotebookRuntimeTemplateResourceName())
 	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
-	// MISSING: GCSOutputURI
+	if in.GetGcsOutputUri() != "" {
+		out.GCSOutputURIRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetGcsOutputUri()}
+	}
 	out.ExecutionUser = direct.LazyPtr(in.GetExecutionUser())
 	if in.GetServiceAccount() != "" {
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
@@ -1138,7 +1140,9 @@ found existing non-generated mapping function "NotebookExecutionJob_ToProto", sk
 		if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
 			out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
 		}
-		// MISSING: GCSOutputURI
+		if in.GCSOutputURIRef != nil {
+			out.GcsOutputUri = in.GCSOutputURIRef.External
+		}
 		if oneof := NotebookExecutionJob_ExecutionUser_ToProto(mapCtx, in.ExecutionUser); oneof != nil {
 			out.ExecutionIdentity = oneof
 		}
@@ -1297,8 +1301,12 @@ func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krm.NotebookExecutionJob_GCSNotebookSource{}
-	// MISSING: URI
-	// MISSING: Generation
+	if in.GetUri() != "" {
+		out.URIRef = &krmstoragev1alpha1.StorageBucketObjectRef{External: in.GetUri()}
+	}
+	if in.GetGeneration() != "" {
+		out.GenerationRef = &krm.string{External: in.GetGeneration()}
+	}
 	return out
 }
 */
@@ -1311,8 +1319,12 @@ found existing non-generated mapping function "NotebookExecutionJob_GCSNotebookS
 			return nil
 		}
 		out := &pb.NotebookExecutionJob_GcsNotebookSource{}
-		// MISSING: URI
-		// MISSING: Generation
+		if in.URIRef != nil {
+			out.Uri = in.URIRef.External
+		}
+		if in.GenerationRef != nil {
+			out.Generation = in.GenerationRef.External
+		}
 		return out
 	}
 */

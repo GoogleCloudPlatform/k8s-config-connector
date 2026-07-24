@@ -285,7 +285,7 @@ type NotebookExecutionJob struct {
 	// The Cloud Storage location to upload the result to. Format:
 	//  `gs://bucket-name`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.gcs_output_uri
-	GCSOutputRef *storagev1beta1.StorageBucketRef `json:"gcsOutputRef,omitempty"`
+	GCSOutputURIRef *storagev1beta1.StorageBucketRef `json:"gcsOutputURIRef,omitempty"`
 
 	// The user email to run the execution as. Only supported by Colab runtimes.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.execution_user
@@ -418,10 +418,16 @@ type PipelineJobObservedState = VertexAIPipelineJobObservedState
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource
 type NotebookExecutionJob_GCSNotebookSource struct {
-	// Reference to a StorageBucketObject.
+	// The Cloud Storage url pointing to the ipynb file. Format:
+	//  `gs://bucket/notebook_file.ipynb`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.uri
+	URIRef *storagev1alpha1.StorageBucketObjectRef `json:"uriRef,omitempty"`
+
+	// The version of the Cloud Storage object to read. If unset, the current
+	//  version of the object is read. See
+	//  https://cloud.google.com/storage/docs/metadata#generation-number.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.generation
-	ObjectRef *storagev1alpha1.StorageBucketObjectRef `json:"objectRef,omitempty"`
+	GenerationRef *string `json:"generationRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec

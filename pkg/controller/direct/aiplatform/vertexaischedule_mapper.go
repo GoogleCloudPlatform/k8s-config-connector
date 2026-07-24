@@ -273,7 +273,7 @@ func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEx
 	out.NotebookRuntimeTemplateResourceName = direct.LazyPtr(in.GetNotebookRuntimeTemplateResourceName())
 	out.CustomEnvironmentSpec = NotebookExecutionJob_CustomEnvironmentSpec_FromProto(mapCtx, in.GetCustomEnvironmentSpec())
 	if in.GetGcsOutputUri() != "" {
-		out.GCSOutputRef = &storagev1beta1.StorageBucketRef{
+		out.GCSOutputURIRef = &storagev1beta1.StorageBucketRef{
 			External: in.GetGcsOutputUri(),
 		}
 	}
@@ -313,10 +313,10 @@ func NotebookExecutionJob_ToProto(mapCtx *direct.MapContext, in *krm.NotebookExe
 	if oneof := NotebookExecutionJob_CustomEnvironmentSpec_ToProto(mapCtx, in.CustomEnvironmentSpec); oneof != nil {
 		out.EnvironmentSpec = &pb.NotebookExecutionJob_CustomEnvironmentSpec_{CustomEnvironmentSpec: oneof}
 	}
-	if in.GCSOutputRef != nil {
+	if in.GCSOutputURIRef != nil {
 		id := &storagev1beta1.StorageBucketIdentity{}
-		if err := id.FromExternal(in.GCSOutputRef.External); err != nil {
-			mapCtx.Errorf("gcsOutputRef: %v", err)
+		if err := id.FromExternal(in.GCSOutputURIRef.External); err != nil {
+			mapCtx.Errorf("gcsOutputURIRef: %v", err)
 		} else {
 			out.ExecutionSink = &pb.NotebookExecutionJob_GcsOutputUri{
 				GcsOutputUri: "gs://" + id.Bucket,
@@ -359,22 +359,18 @@ func NotebookExecutionJob_GCSNotebookSource_FromProto(mapCtx *direct.MapContext,
 				if len(parts) > 1 {
 					object = parts[1]
 				}
-				if in.GetGeneration() != "" {
-					if object != "" {
-						object = object + "#" + in.GetGeneration()
-					} else {
-						object = "#" + in.GetGeneration()
-					}
-				}
-				out.ObjectRef = &storagev1alpha1.StorageBucketObjectRef{
+				out.URIRef = &storagev1alpha1.StorageBucketObjectRef{
 					External: "projects/_/buckets/" + bucket + "/objects/" + object,
 				}
 			}
 		} else {
-			out.ObjectRef = &storagev1alpha1.StorageBucketObjectRef{
+			out.URIRef = &storagev1alpha1.StorageBucketObjectRef{
 				External: uri,
 			}
 		}
+	}
+	if in.GetGeneration() != "" {
+		out.GenerationRef = direct.LazyPtr(in.GetGeneration())
 	}
 	return out
 }
@@ -384,24 +380,17 @@ func NotebookExecutionJob_GCSNotebookSource_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.NotebookExecutionJob_GcsNotebookSource{}
-	if in.ObjectRef != nil {
+	if in.URIRef != nil {
 		id := &storagev1alpha1.StorageBucketObjectIdentity{}
-		if err := id.FromExternal(in.ObjectRef.External); err != nil {
-			mapCtx.Errorf("gcsNotebookSource.objectRef: %v", err)
+		if err := id.FromExternal(in.URIRef.External); err != nil {
+			mapCtx.Errorf("gcsNotebookSource.uriRef: %v", err)
 		} else {
 			bucket := id.Bucket
 			object := id.Object
-			generation := ""
-			if parts := strings.SplitN(object, "#", 2); len(parts) == 2 {
-				object = parts[0]
-				generation = parts[1]
-			}
 			out.Uri = "gs://" + bucket + "/" + object
-			if generation != "" {
-				out.Generation = generation
-			}
 		}
 	}
+	out.Generation = direct.ValueOf(in.GenerationRef)
 	return out
 }
 

@@ -328,8 +328,14 @@ spec:
                         description: 'The Cloud Storage url pointing to the ipynb
                           file. Format: `gs://bucket/notebook_file.ipynb`'
                         properties:
-                          objectRef:
-                            description: Reference to a StorageBucketObject.
+                          generationRef:
+                            description: The version of the Cloud Storage object to
+                              read. If unset, the current version of the object is
+                              read. See https://cloud.google.com/storage/docs/metadata#generation-number.
+                            type: string
+                          uriRef:
+                            description: 'The Cloud Storage url pointing to the ipynb
+                              file. Format: `gs://bucket/notebook_file.ipynb`'
                             properties:
                               external:
                                 description: A reference to an externally managed
@@ -338,7 +344,7 @@ spec:
                                 type: string
                             type: object
                         type: object
-                      gcsOutputRef:
+                      gcsOutputURIRef:
                         description: 'The Cloud Storage location to upload the result
                           to. Format: `gs://bucket-name`'
                         oneOf:
