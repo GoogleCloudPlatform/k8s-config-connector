@@ -109,10 +109,51 @@ func (obj *VertexAIDataset) GetIdentity(ctx context.Context, reader client.Reade
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		if statusIdentity.Location != specIdentity.Location ||
+			!datasetMatches(statusIdentity.Dataset, specIdentity.Dataset) ||
+			!projectMatches(statusIdentity.Project, specIdentity.Project) {
 			return nil, fmt.Errorf("cannot change VertexAIDataset identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+
+		if isNumeric(statusIdentity.Dataset) && !isNumeric(specIdentity.Dataset) {
+			specIdentity.Dataset = statusIdentity.Dataset
+		}
+		if isNumeric(statusIdentity.Project) && !isNumeric(specIdentity.Project) {
+			specIdentity.Project = statusIdentity.Project
 		}
 	}
 
 	return specIdentity, nil
+}
+
+func datasetMatches(statusDataset, specDataset string) bool {
+	if statusDataset == specDataset {
+		return true
+	}
+	if isNumeric(statusDataset) && !isNumeric(specDataset) {
+		return true
+	}
+	return false
+}
+
+func projectMatches(a, b string) bool {
+	if a == b {
+		return true
+	}
+	if isNumeric(a) || isNumeric(b) {
+		return a != "" && b != ""
+	}
+	return false
+}
+
+func isNumeric(s string) bool {
+	if len(s) == 0 {
+		return false
+	}
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return true
 }

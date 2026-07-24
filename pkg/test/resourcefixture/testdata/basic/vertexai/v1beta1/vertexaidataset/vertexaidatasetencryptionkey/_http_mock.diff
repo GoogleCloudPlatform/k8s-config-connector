@@ -1,0 +1,148 @@
+451c451,474
+< POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/vertexaidataset-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?%24alt=json%3Benum-encoding%3Dint
+456,458c479
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+---
+>   "encryptionSpec": {},
+485c506
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}
+511,513c532
+<     "encryptionSpec": {
+<       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<     },
+---
+>     "encryptionSpec": {},
+527,559c546
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "an encrypted vertex AI dataset",
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "etag": "abcdef0123A=",
+<   "metadata": {
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+<   },
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+<   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+575,577c562
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+---
+>   "encryptionSpec": {},
+591c576
+< PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json&updateMask=displayName
+---
+> PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+595,609d579
+<   "displayName": "an encrypted vertex AI dataset with updated name"
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+611,619c581
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "etag": "abcdef0123A=",
+<   "metadata": {
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+<   },
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+---
+>   "encryptionSpec": {},
+621,622c583
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}"
+625,629d585
+< ---
+< 
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+< 
+643,645c599
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+---
+>   "encryptionSpec": {},
+659c613
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+675,677c629
+<   "encryptionSpec": {
+<     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+---
+>   "encryptionSpec": {},
+691c643
+< DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
