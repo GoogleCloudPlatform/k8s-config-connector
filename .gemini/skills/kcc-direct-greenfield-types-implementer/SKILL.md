@@ -41,6 +41,7 @@ Apply the baseline validations from `kcc-direct-base-types-implementer`, plus th
 - **Enums**: 
   - Use `*string` for the Go type of proto enum fields (do NOT use custom wrapped string types).
   - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
+- **Service Account References**: For any service account reference fields on a **greenfield** resource (meaning there is no existing TF or DCL controller in `pkg/controller/resourceconfig/static_config.go`), you **MUST** use the direct `IAMServiceAccountRef` defined in `apis/iam/v1beta1/iamserviceaccount_reference.go` (importing `"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"`). Do NOT use the legacy/brownfield `IAMServiceAccountRef` from `apis/refs/v1beta1/gcpserviceaccountref.go` on greenfield resources.
 
 ### 4. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.

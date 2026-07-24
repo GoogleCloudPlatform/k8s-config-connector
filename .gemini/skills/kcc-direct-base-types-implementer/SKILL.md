@@ -20,6 +20,9 @@ After running the generator (via `generate.sh`), you must verify and enforce the
   *(Note: See greenfield/brownfield skills for the correct `stability-level` label to append.)*
 - **Status Fields**: `status.observedGeneration` must be exactly `*int64`.
 - **Reference Fields**: Ensure that fields referencing other GCP/KCC resources are implemented as proper KCC reference fields (e.g., using `pubsubv1beta1.PubSubTopicRef` or `refsv1beta1.KMSCryptoKeyRef`), following the `Ref` suffix naming convention. You **MUST NOT** add new exceptions to `tests/apichecks/testdata/exceptions/missingrefs.txt`. All reference-like fields must be implemented as proper references.
+  * **Service Account Reference Decision**:
+    * If the resource is a **greenfield** resource (no pre-existing TF or DCL controllers in `pkg/controller/resourceconfig/static_config.go`), you **MUST** use the direct `IAMServiceAccountRef` defined in `apis/iam/v1beta1/iamserviceaccount_reference.go` (importing `"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"`).
+    * If the resource already has supported TF or DCL controllers (meaning it is a **brownfield** resource), you **MUST** use the legacy/brownfield `IAMServiceAccountRef` defined in `apis/refs/v1beta1/gcpserviceaccountref.go` (importing `"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"`) for backwards compatibility.
 - **Reference Types Location**: Whenever a reference type (e.g. `<Kind>Ref` implementing `refsv1beta1.Ref`) is needed, it must **always** be defined and implemented in its own separate file named `<kind>_reference.go` (e.g., `filestorebackup_reference.go`) rather than inside `_types.go`. This keeps the main type definitions clean and isolated from reference resolution boilerplate.
 
 - **KCC Proto Annotations**:

@@ -48,6 +48,7 @@ After running the generator, verify the `_types.go` file meets these requirement
 - **Status Fields**: `status.observedGeneration` must be an `*int64`.
 - **Use Existing References**: ALWAYS reuse existing resource reference structures that live in `apis/refs/` instead of hand-coding or defining duplicate types.
   * For example, `ProjectRef` (which lives in `apis/refs/v1beta1/project_ref.go`) and other resource reference types should be imported from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1` rather than being defined locally in `<kind>_types.go`.
+  * For **Service Account** references, since this is a brownfield/legacy resource (as indicated by having an entry in `pkg/controller/resourceconfig/static_config.go`), you **MUST** use the legacy/brownfield `IAMServiceAccountRef` defined in `apis/refs/v1beta1/gcpserviceaccountref.go` (importing `"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"`) for backward-compatible support of the legacy email-based reference format.
 - **Strict Schema Compatibility**: At the initial stage of creating a direct Go type for an existing resource (transitioning from Terraform/DCL), the Go type should be strictly schema-compatible with the existing CRD definition.
   * Do NOT add new fields like `externalRef` or `observedState` under `Status` yet.
   * Run `dev/tasks/diff-crds` to verify schema compatibility and ensure no unintended new fields are introduced.
