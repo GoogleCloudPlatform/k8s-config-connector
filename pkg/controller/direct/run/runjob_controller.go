@@ -79,7 +79,10 @@ func (m *modelJob) AdapterForObject(ctx context.Context, op *directbase.AdapterF
 	if err != nil {
 		return nil, err
 	}
-	if err := ResolveRunJobRefs(ctx, reader, obj); err != nil {
+	if err = common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, err
+	}
+	if err = ResolveRunJobRefs(ctx, reader, obj); err != nil {
 		return nil, err
 	}
 

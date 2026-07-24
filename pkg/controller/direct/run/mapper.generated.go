@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/run/apiv2/runpb"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmrunv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	krmrunv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
@@ -1197,7 +1198,7 @@ func TaskTemplate_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TaskTempla
 	}
 	out.ExecutionEnvironment = direct.Enum_FromProto(mapCtx, in.GetExecutionEnvironment())
 	if in.GetEncryptionKey() != "" {
-		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
+		out.EncryptionKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
 	}
 	out.VPCAccess = VPCAccess_v1beta1_FromProto(mapCtx, in.GetVpcAccess())
 	// MISSING: NodeSelector
@@ -1508,7 +1509,7 @@ func WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, Container_v1alpha1_FromProto)
 	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_v1alpha1_FromProto)
 	if in.GetEncryptionKey() != "" {
-		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
+		out.EncryptionKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
 	}
 	out.ServiceMesh = ServiceMesh_v1alpha1_FromProto(mapCtx, in.GetServiceMesh())
 	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())

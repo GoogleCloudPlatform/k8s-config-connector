@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -65,7 +66,7 @@ type EventarcGoogleAPISourceSpec struct {
 	// It must match the pattern
 	// `projects/-*-/locations/-*-/keyRings/-*-/cryptoKeys/-*`.
 	// +kubebuilder:validation:Optional
-	CryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"cryptoKeyRef,omitempty"`
+	CryptoKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"cryptoKeyRef,omitempty"`
 
 	// Optional. Config to control Platform logging for the GoogleApiSource.
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleApiSource.logging_config

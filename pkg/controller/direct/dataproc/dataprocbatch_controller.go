@@ -93,6 +93,8 @@ func (m *batchModel) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, err
 	}
 
+	//todo: resolve resource references
+
 	gcpClient, err := m.Client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err

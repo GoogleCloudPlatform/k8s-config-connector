@@ -28,6 +28,7 @@ import (
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -367,7 +368,7 @@ func ClusterAutoscaling_AutoProvisioningDefaults_FromProto(mapCtx *direct.MapCon
 	// MISSING: DiskType
 	out.ShieldedInstanceConfig = ShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
 	if in.GetBootDiskKmsKey() != "" {
-		out.BootDiskKMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetBootDiskKmsKey()}
+		out.BootDiskKMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetBootDiskKmsKey()}
 	}
 	out.ImageType = direct.LazyPtr(in.GetImageType())
 	// MISSING: InsecureKubeletReadonlyPortEnabled

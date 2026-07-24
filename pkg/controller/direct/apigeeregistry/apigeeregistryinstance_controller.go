@@ -18,7 +18,7 @@
 // crd.type: ApigeeRegistryInstance
 // crd.version: v1alpha1
 
-package apigeeregistryinstance
+package apigeeregistry
 
 import (
 	"context"
@@ -30,7 +30,6 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	mappers "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigeeregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -135,7 +134,7 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := mappers.ApigeeRegistryInstanceSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ApigeeRegistryInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -166,7 +165,7 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	desiredProto := mappers.ApigeeRegistryInstanceSpec_ToProto(mapCtx, &desired.Spec)
+	desiredProto := ApigeeRegistryInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -194,7 +193,7 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Instance) error {
 	mapCtx := &direct.MapContext{}
 	status := &krm.ApigeeRegistryInstanceStatus{}
-	status.ObservedState = mappers.ApigeeRegistryInstanceObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = ApigeeRegistryInstanceObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -204,7 +203,7 @@ func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 }
 
 func compareInstance(ctx context.Context, actual, desired *pb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := pkgmappers.OnlySpecFields(actual, mappers.ApigeeRegistryInstanceSpec_FromProto, mappers.ApigeeRegistryInstanceSpec_ToProto)
+	maskedActual, err := pkgmappers.OnlySpecFields(actual, ApigeeRegistryInstanceSpec_FromProto, ApigeeRegistryInstanceSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -233,7 +232,7 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.ApigeeRegistryInstance{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(mappers.ApigeeRegistryInstanceSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ApigeeRegistryInstanceSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

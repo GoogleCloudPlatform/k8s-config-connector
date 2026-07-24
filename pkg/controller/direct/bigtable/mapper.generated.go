@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmbigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -515,7 +515,7 @@ func Cluster_EncryptionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krmbigtablev1alpha1.Cluster_EncryptionConfig{}
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	return out
 }

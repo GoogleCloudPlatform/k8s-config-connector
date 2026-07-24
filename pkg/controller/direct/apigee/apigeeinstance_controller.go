@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -123,7 +125,7 @@ func (a *ApigeeInstanceAdapter) Create(ctx context.Context, createOp *directbase
 	desired := a.desired.DeepCopy()
 
 	// Resolve references
-	if err := ResolveApigeeInstanceRefs(ctx, a.k8sClient, desired); err != nil {
+	if err := common.NormalizeReferences(ctx, a.k8sClient, desired, nil); err != nil {
 		return err
 	}
 	// Convert to proto
@@ -167,7 +169,7 @@ func (a *ApigeeInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 	desired := a.desired.DeepCopy()
 
 	// Resolve references
-	if err := ResolveApigeeInstanceRefs(ctx, a.k8sClient, desired); err != nil {
+	if err := common.NormalizeReferences(ctx, a.k8sClient, desired, nil); err != nil {
 		return err
 	}
 	// Convert to proto

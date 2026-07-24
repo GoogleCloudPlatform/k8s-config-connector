@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krmartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -193,7 +193,7 @@ func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.CleanupPolicies = CleanupPolicies_FromProto(mapCtx, in.CleanupPolicies)
