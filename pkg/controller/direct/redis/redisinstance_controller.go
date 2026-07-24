@@ -381,6 +381,20 @@ func compareRedisInstance(ctx context.Context, actual, desired *redispb.Instance
 	maskedActual = populateInstanceDefaults(maskedActual, nil)
 	desired = populateInstanceDefaults(proto.CloneOf(desired), maskedActual)
 
+	suppressSecondary := false
+	// SecondaryIpRange can only be set during Update call when enabling readReplicasMode, or it will be ignored.
+	// See https://b.corp.google.com/issues/374126107#comment6
+	// Suppress diff when enabling readReplicasMode.
+	if desired.ReadReplicasMode == redispb.Instance_READ_REPLICAS_ENABLED &&
+		actual.ReadReplicasMode == redispb.Instance_READ_REPLICAS_DISABLED &&
+		desired.SecondaryIpRange != "" &&
+		actual.SecondaryIpRange == "" {
+		suppressSecondary = true
+	}
+	if suppressSecondary {
+		desired.SecondaryIpRange = ""
+	}
+
 	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
