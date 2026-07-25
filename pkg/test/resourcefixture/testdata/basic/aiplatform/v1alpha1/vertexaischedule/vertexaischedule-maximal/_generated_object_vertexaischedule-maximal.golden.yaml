@@ -66,6 +66,5 @@ status:
       pipelineJob: {}
     createTime: "1970-01-01T00:00:00Z"
     name: projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}
-    nextRunTime: "2026-07-24T23:50:42.068372655Z"
-    state: ACTIVE
+    nextRunTime: "1970-01-01T00:00:00Z"
     updateTime: "1970-01-01T00:00:00Z"

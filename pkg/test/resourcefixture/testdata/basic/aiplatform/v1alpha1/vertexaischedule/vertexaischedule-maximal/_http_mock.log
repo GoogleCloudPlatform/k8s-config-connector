@@ -415,7 +415,7 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
     "maxRunCount": "5",
     "name": "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}"
   },
-  "updateMask": "allowQueueing,cron,displayName,maxConcurrentRunCount,startTime"
+  "updateMask": "allowQueueing,cron,displayName,maxConcurrentRunCount"
 }
 
 OK
@@ -478,6 +478,7 @@ OK
   "maxRunCount": "5",
   "name": "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -550,6 +551,7 @@ OK
   "maxRunCount": "5",
   "name": "projects/${projectNumber}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -622,6 +624,7 @@ OK
   "maxRunCount": "5",
   "name": "projects/${projectNumber}/locations/us-central1/schedules/vertexaischedule-maximal-${uniqueId}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

@@ -342,6 +342,7 @@ OK
   "maxConcurrentRunCount": "1",
   "name": "projects/${projectNumber}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -413,6 +414,7 @@ OK
   "maxConcurrentRunCount": "1",
   "name": "projects/${projectNumber}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
