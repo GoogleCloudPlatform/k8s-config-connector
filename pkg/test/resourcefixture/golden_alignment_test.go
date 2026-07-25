@@ -504,6 +504,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "createTime")
 		delete(v, "updateTime")
 		delete(v, "selfLink")
+		delete(v, "internalMetadata")
 		if rc, ok := v["responseCode"]; ok {
 			if f, ok := rc.(float64); ok {
 				switch f {
