@@ -20,6 +20,12 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+if [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]]; then
+  echo "Skipping generate-proto.sh as requested by SKIP_GENERATE_PROTOS=1"
+  exit 0
+fi
+
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
