@@ -23,9 +23,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types --service google.cloud.edgecontainer.v1 --api-version edgecontainer.cnrm.cloud.google.com/v1alpha1 --resource EdgeContainerMachine:Machine
+go run . generate-types --service google.cloud.edgecontainer.v1 --api-version edgecontainer.cnrm.cloud.google.com/v1alpha1 --resource EdgeContainerMachine:Machine --resource EdgeContainerNodePool:NodePool --include-skipped-output
 
-go run . generate-mapper --service google.cloud.edgecontainer.v1 --api-version edgecontainer.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper --service google.cloud.edgecontainer.v1 --api-version edgecontainer.cnrm.cloud.google.com/v1alpha1 --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
