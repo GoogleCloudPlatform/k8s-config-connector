@@ -59,7 +59,7 @@ cd apis/config/crd/
 for file in *.yaml; do
     excluded=false
 
-    for substring in "${excluded_resources[@]}"; do
+    for substring in "${excluded_resources[@]+"${excluded_resources[@]}"}"; do
         if [[ "$file" == *"$substring"* ]]; then
             excluded=true
             break

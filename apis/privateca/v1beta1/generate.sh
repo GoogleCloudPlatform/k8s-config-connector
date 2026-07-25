@@ -42,14 +42,15 @@ cd ${REPO_ROOT}
 
 # Fix Value conversion (byte[] <-> string mismatch) in mapper.generated.go
 # FromProto: generated code uses direct.LazyPtr(in.GetValue()) or in.GetValue(), we want string(in.GetValue())
-sed -i 's/out.Value = direct.LazyPtr(in.GetValue())/out.Value = string(in.GetValue())/g' pkg/controller/direct/privateca/mapper.generated.go
-sed -i 's/out.Value = in.GetValue()/out.Value = string(in.GetValue())/g' pkg/controller/direct/privateca/mapper.generated.go
+sed -i.bak 's/out.Value = direct.LazyPtr(in.GetValue())/out.Value = string(in.GetValue())/g' pkg/controller/direct/privateca/mapper.generated.go
+sed -i.bak 's/out.Value = in.GetValue()/out.Value = string(in.GetValue())/g' pkg/controller/direct/privateca/mapper.generated.go
 
 # ToProto: generated code uses in.Value, we want []byte(in.Value)
-sed -i 's/out.Value = in.Value/out.Value = []byte(in.Value)/g' pkg/controller/direct/privateca/mapper.generated.go
+sed -i.bak 's/out.Value = in.Value/out.Value = []byte(in.Value)/g' pkg/controller/direct/privateca/mapper.generated.go
 
 # Remove ZeroMaxIssuerPathLength mapping if generated (SDK mismatch)
-sed -i '/ZeroMaxIssuerPathLength/d' pkg/controller/direct/privateca/mapper.generated.go
+sed -i.bak '/ZeroMaxIssuerPathLength/d' pkg/controller/direct/privateca/mapper.generated.go
+rm -f pkg/controller/direct/privateca/mapper.generated.go.bak
 
 dev/tasks/generate-crds
 

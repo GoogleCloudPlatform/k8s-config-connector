@@ -135,7 +135,10 @@ func (a *FolderAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 		return mapCtx.Err()
 	}
 
-	// The format of the request name is verified to use the following format.
+	// Parent must use the `_` project placeholder. A project ID is rejected outright, and a
+	// project number, which the API's own error text claims is valid for project-namespaced
+	// buckets, is still rejected by the client's x-goog-request-params routing with
+	// GRPC_INVALID_X_GOOG_REQUEST_PARAMS_INVALID_BUCKET_FORMAT. Only `projects/_` works.
 	// Reference: https://cloud.google.com/storage/docs/create-folders#storage-create-folders-go
 	parent := fmt.Sprintf("projects/_/buckets/%s", a.id.Parent().BucketName)
 

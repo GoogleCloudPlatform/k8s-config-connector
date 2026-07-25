@@ -44,7 +44,7 @@ go run . generate-mapper \
 
 mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/" || true
-sed -i 's/package beyondcorp/package beyondcorpclientconnectorservice/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go"
+sed -i.bak 's/package beyondcorp/package beyondcorpclientconnectorservice/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go" && rm -f "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go.bak"
 
 go run . generate-mapper \
     --service google.cloud.beyondcorp.clientgateways.v1 \
@@ -53,7 +53,7 @@ go run . generate-mapper \
 
 mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/beyondcorp/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/beyondcorp/" || true
-sed -i 's/package beyondcorp/package beyondcorpclientgateway/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/mapper.generated.go"
+sed -i.bak 's/package beyondcorp/package beyondcorpclientgateway/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/mapper.generated.go" && rm -f "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/mapper.generated.go.bak"
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds

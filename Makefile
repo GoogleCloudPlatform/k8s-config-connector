@@ -23,14 +23,18 @@ DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/deletiondefender:${SHORT_SHA}
 UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/unmanageddetector:${SHORT_SHA}
 CONFIG_CONNECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/config-connector-cli:${SHORT_SHA}
 # Detects the location of the user golangci-lint cache.
-GOLANGCI_LINT_CACHE := /tmp/golangci-lint
+GOLANGCI_LINT_CACHE ?= $(HOME)/.cache/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
 GOLANGCI_LINT_VERSION := v2.9.0
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
-DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
+# Container engine for run-based targets. Repo natively targets docker;
+# override CONTAINER_ENGINE=oci/podman/container locally (e.g. in your shell profile).
+CONTAINER_ENGINE ?= docker
+
+DOCKER_BUILD := DOCKER_BUILDKIT=1 $(CONTAINER_ENGINE) build
 
 KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 
@@ -45,6 +49,10 @@ OUTPUT_TYPE ?= type=docker
 ifneq ($(origin KUBECONTEXT), undefined)
 CONTEXT_FLAG := --context ${KUBECONTEXT}
 endif
+
+E2E_GO_IMAGE ?= docker.io/library/golang:1.26.4
+E2E_CACHE ?= $(HOME)/.cache/kcc-e2e
+E2E_RUN ?=
 
 .PHONY: all
 all: test manager operator config-connector
@@ -138,7 +146,7 @@ fmt:
 .PHONY: lint
 lint:
 	mkdir -p ${GOLANGCI_LINT_CACHE}
-	docker run --rm -v $(shell pwd):/app \
+	$(CONTAINER_ENGINE) run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
 		golangci-lint run -v --timeout=20m && echo "✅ Linting passed successfully!" || (echo "❌ Linting failed! Please fix the errors above."; exit 1)
@@ -146,6 +154,18 @@ lint:
 .PHONY: lint-custom
 lint-custom:
 	go run ./dev/linters/main.go ./pkg/... ./cmd/... ./config/... 2>&1 | go run ./dev/tools/lint-filter/main.go
+
+.PHONY: compare-mock-container
+compare-mock-container:
+	@test -n "$(E2E_RUN)" || { echo "Set E2E_RUN, e.g. make compare-mock-container E2E_RUN=TestAllInSeries/fixtures/storagemanagedfolder-minimal"; exit 1; }
+	mkdir -p $(E2E_CACHE)/go-build $(E2E_CACHE)/go-mod
+	$(CONTAINER_ENGINE) run --rm -v $(shell pwd):/app \
+		-v $(E2E_CACHE)/go-build:/root/.cache/go-build \
+		-v $(E2E_CACHE)/go-mod:/go/pkg/mod \
+		-w /app -e GOFLAGS=-buildvcs=false \
+		$(E2E_GO_IMAGE) \
+		bash -c "git config --global --add safe.directory /app && ./hack/compare-mock $(E2E_RUN)" \
+		&& echo "✅ compare-mock passed!" || (echo "❌ compare-mock failed!"; exit 1)
 
 # Run go vet against code
 .PHONY: vet
